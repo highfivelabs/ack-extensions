@@ -1,0 +1,25 @@
+# Generator configuration for ack-extensions's IAM kinds (iam.aws.hfl.dev).
+#
+# IAM's API has no Create/Delete pair for a role's managed-policy
+# attachment (AttachRolePolicy/DetachRolePolicy), so the generator cannot
+# produce RolePolicyAttachment; it is written by hand on ACK's runtime
+# (services/iam/pkg/resource/role_policy_attachment), as upstream pull
+# request #184 writes it. Every resource the generator can find is ignored:
+# it generates only the service's scaffolding (the API group, the resource
+# registry, the controller's main).
+ignore:
+  resource_names:
+    - AccessKey
+    - AccountAlias
+    - Group
+    - InstanceProfile
+    - LoginProfile
+    - OpenIDConnectProvider
+    - Policy
+    - PolicyVersion
+    - Role
+    - SAMLProvider
+    - ServiceLinkedRole
+    - ServiceSpecificCredential
+    - User
+    - VirtualMFADevice
