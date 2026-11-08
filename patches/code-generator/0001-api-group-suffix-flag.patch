@@ -1,0 +1,35 @@
+diff --git a/cmd/ack-generate/command/common.go b/cmd/ack-generate/command/common.go
+index 99a6bc4..995499d 100644
+--- a/cmd/ack-generate/command/common.go
++++ b/cmd/ack-generate/command/common.go
+@@ -66,7 +66,7 @@ func loadModelWithLatestAPIVersion(svcAlias string, metadata *ackmetadata.Servic
+ 	if err != nil {
+ 		return nil, err
+ 	}
+-	return loadModel(svcAlias, latestAPIVersion, "", cfg)
++	return loadModel(svcAlias, latestAPIVersion, optAPIGroupSuffix, cfg)
+ }
+ 
+ // loadModel finds the AWS SDK for a given service alias and creates a new model
+diff --git a/cmd/ack-generate/command/root.go b/cmd/ack-generate/command/root.go
+index 1ffe512..0d3c730 100644
+--- a/cmd/ack-generate/command/root.go
++++ b/cmd/ack-generate/command/root.go
+@@ -46,6 +46,7 @@ var (
+ 	optDocumentationConfigPath string
+ 	optOutputPath              string
+ 	optServiceAccountName      string
++	optAPIGroupSuffix          string
+ 	optImageRepository         string
+ )
+ 
+@@ -131,6 +132,9 @@ func init() {
+ 	rootCmd.PersistentFlags().StringVar(
+ 		&optServiceAccountName, "service-account-name", "", "The name of the ServiceAccount used for ACK service controller",
+ 	)
++	rootCmd.PersistentFlags().StringVar(
++		&optAPIGroupSuffix, "api-group-suffix", "", "Suffix of the Kubernetes API group of the generated kinds, after the service name. Defaults to 'services.k8s.aws'",
++	)
+ 	rootCmd.PersistentFlags().StringVar(
+ 		&optImageRepository, "image-repository", "", "the Docker image repository to use in release artifacts. Defaults to 'public.ecr.aws/aws-controllers-k8s/$service-controller'",
+ 	)
