@@ -1,0 +1,53 @@
+# Copyright 2026 High Five Labs
+# SPDX-License-Identifier: Apache-2.0
+#
+# The operator holds no AWS credentials. It reads ACK's controller
+# Deployments and ServiceAccounts, and makes, beside each, a manager
+# Deployment, a ServiceAccount (identity "own"), a leader-election Role and
+# RoleBinding, and a ClusterRoleBinding to the manager's ClusterRole. It
+# may bind only our two manager ClusterRoles (RBAC "bind" by name).
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ack-extensions-operator
+  namespace: ack-extensions-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ack-extensions-operator
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: [""]
+    resources: ["serviceaccounts"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["roles", "rolebindings", "clusterrolebindings"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["clusterroles"]
+    verbs: ["bind"]
+    resourceNames: ["ack-extensions-iam-manager", "ack-extensions-rds-manager"]
+  # The rules of the leader-election Role it makes for each manager:
+  # Kubernetes lets a Role be made only by someone who holds its rules.
+  - apiGroups: ["coordination.k8s.io"]
+    resources: ["leases"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: ack-extensions-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: ack-extensions-operator
+subjects:
+  - kind: ServiceAccount
+    name: ack-extensions-operator
+    namespace: ack-extensions-system

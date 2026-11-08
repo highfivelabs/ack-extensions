@@ -1,0 +1,51 @@
+# Copyright 2026 High Five Labs
+# SPDX-License-Identifier: Apache-2.0
+#
+# Images are ko:// references; `ko resolve -f config/default` builds them.
+# --identity: "own" (default; one more AWS grant per role) or "ack" (share
+# ACK's ServiceAccount). An ACK controller's Deployment can override it
+# with the annotation aws.hfl.dev/identity.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ack-extensions-operator
+  namespace: ack-extensions-system
+  labels:
+    app.kubernetes.io/name: ack-extensions-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ack-extensions-operator
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ack-extensions-operator
+    spec:
+      serviceAccountName: ack-extensions-operator
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: operator
+          image: ko://github.com/highfivelabs/ack-extensions/cmd/operator
+          args:
+            - --identity=own
+          env:
+            - name: MANAGER_IMAGE_IAM
+              value: ko://github.com/highfivelabs/ack-extensions/services/iam/cmd/controller
+            - name: MANAGER_IMAGE_RDS
+              value: ko://github.com/highfivelabs/ack-extensions/services/rds/cmd/controller
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          livenessProbe:
+            httpGet: {path: /healthz, port: 8081}
+          readinessProbe:
+            httpGet: {path: /readyz, port: 8081}
+          resources:
+            requests: {cpu: 10m, memory: 64Mi}
+            limits: {memory: 128Mi}
