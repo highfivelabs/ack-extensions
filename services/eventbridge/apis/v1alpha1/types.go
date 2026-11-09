@@ -27,11 +27,16 @@ var (
 )
 
 // Contains details about an API destination.
-type APIDestination struct {
-	ConnectionARN      *string      `json:"connectionARN,omitempty"`
-	CreationTime       *metav1.Time `json:"creationTime,omitempty"`
-	InvocationEndpoint *string      `json:"invocationEndpoint,omitempty"`
-	LastModifiedTime   *metav1.Time `json:"lastModifiedTime,omitempty"`
+type APIDestination_SDK struct {
+	APIDestinationARN            *string      `json:"apiDestinationARN,omitempty"`
+	APIDestinationState          *string      `json:"apiDestinationState,omitempty"`
+	ConnectionARN                *string      `json:"connectionARN,omitempty"`
+	CreationTime                 *metav1.Time `json:"creationTime,omitempty"`
+	HTTPMethod                   *string      `json:"httpMethod,omitempty"`
+	InvocationEndpoint           *string      `json:"invocationEndpoint,omitempty"`
+	InvocationRateLimitPerSecond *int64       `json:"invocationRateLimitPerSecond,omitempty"`
+	LastModifiedTime             *metav1.Time `json:"lastModifiedTime,omitempty"`
+	Name                         *string      `json:"name,omitempty"`
 }
 
 // An Archive object that contains details about an archive.
