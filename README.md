@@ -22,12 +22,15 @@ ack-extensions is not affiliated with or endorsed by Amazon Web Services.
 | `ecr.aws.hfl.dev/v1alpha1` `ReplicationConfiguration` | An ECR registry's replication rules, put whole and put back when changed outside Kubernetes; delete puts no rules. ACK's ecr-controller has no replication. | ecr-controller PR #121 (API and behaviour), on PR #184's hand-written skeleton |
 | `eventbridge.aws.hfl.dev/v1alpha1` `Connection` | An EventBridge connection: the credentials (basic, API key, OAuth) an API destination calls an endpoint with, its secrets read from Kubernetes Secrets. ACK's eventbridge-controller ignores it. | Generated; no ACK pull request adds it |
 | `iam.aws.hfl.dev/v1alpha1` `RolePolicyAttachment` | Attaches one managed policy to one IAM role, and detaches it on delete. It is for a role ACK does not manage (made by another team, by Terraform, or by EKS for a node group). | Copied from ACK iam-controller pull request #184 (open) |
+| `iam.aws.hfl.dev/v1alpha1` `UserGroupMembership` | An IAM user in a list of groups, by name or by reference to ACK's `User` and `Group`s. Not exclusive: only the listed groups are added or removed, and a group taken off the list is removed. ACK's iam-controller has no membership. | Hand-written on iam-controller PR #184's skeleton; no ACK pull request adds it |
+| `iam.aws.hfl.dev/v1alpha1` `LoginProfile` | An IAM user's console password, from a Kubernetes Secret, and whether it must be reset at first sign-in. ACK's iam-controller has none. | Generated; ACK's PR #147 was closed |
 | `iam.aws.hfl.dev/v1alpha1` `AccountAlias` | The account's sign-in alias, set back if changed outside Kubernetes. ACK's iam-controller has none. | Hand-written on iam-controller PR #184's skeleton; no ACK pull request adds it |
 | `rds.aws.hfl.dev/v1alpha1` `OptionGroup` | An RDS option group (MySQL, MariaDB, SQL Server and Oracle options such as the audit plugin), with its options added and removed through `ModifyOptionGroup`. | Generated from ACK rds-controller pull request #257 (open) |
 | `rds.aws.hfl.dev/v1alpha1` `DBProxyTarget` | Registers an RDS instance or an Aurora cluster with an RDS Proxy. ACK's `DBProxy` makes a proxy but never registers what it fronts, so without this the proxy accepts no connections. It becomes synced once RDS Proxy reports every target `AVAILABLE`. | New: no ACK code or pull request covers it |
 | `kms.aws.hfl.dev/v1alpha1` `ReplicaKey` | A multi-Region KMS key's replica in another Region: created with `ReplicateKey` in the primary key's Region, then read, changed (policy, tags) and deleted in its own Region, never touching the primary key. | Copied from ACK kms-controller pull request #112 (open), with its Region handling corrected: the pull request's read, update and delete act on the primary key |
 | `lambda.aws.hfl.dev/v1alpha1` `Permission` | One statement of a Lambda function's resource-based policy (`AddPermission`), so that S3, an ALB, EventBridge or SNS may invoke the function; removed on delete, and added back if removed outside Kubernetes. ACK has permissions only inside an `Alias`. | New: the calls and policy reading are copied from ACK's `Alias`; no ACK pull request adds the kind |
 | `rds.aws.hfl.dev/v1alpha1` `DBRoleAssociation` | Associates an IAM role with an Aurora cluster or an RDS instance for one feature (`s3Import`, `s3Export`, `Lambda`, `S3_INTEGRATION`), and removes it on delete. ACK's `DBCluster` and `DBInstance` only report associated roles. It becomes synced once RDS reports the association `ACTIVE`. | New: no ACK code or pull request covers it |
+| `wafv2.aws.hfl.dev/v1alpha1` `WebACLAssociation` | A regional web ACL associated with a load balancer, API stage or other resource, by ARN or by reference to ACK's `WebACL`; associated again if removed outside Kubernetes, disassociated on delete. ACK's wafv2-controller has no association. | Hand-written on iam-controller PR #184's skeleton; no ACK pull request adds it |
 
 Each kind can reference ACK's own objects, the way ACK's kinds reference
 each other: `RolePolicyAttachment.spec.roleRef` names an
@@ -94,10 +97,12 @@ own kinds. `docs/plan.md`, section 7, compares the two.
 
 ## Develop
 
+The tasks are in `Taskfile.yml` (run with [Task](https://taskfile.dev); `task` lists them).
+
 ```sh
-make tools         # ACK's generator at the pin, controller-gen, goimports, setup-envtest, moto
-make check         # generated files current, gofmt, vet, SPDX lines, build, tests
-make operator-e2e  # the operator on kind beside ACK's real rds-controller, against moto
+task tools         # ACK's generator at the pin, controller-gen, goimports, setup-envtest, moto
+task check         # generated files current, gofmt, vet, SPDX lines, build, tests
+task operator-e2e  # the operator on kind beside ACK's real rds-controller, against moto
 ```
 
 The tests use moto, a fake AWS, in server mode. Nothing here uses real

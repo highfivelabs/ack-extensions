@@ -12,3 +12,4 @@ resources:
   - kms-manager-role.yaml
   - lambda-manager-role.yaml
   - rds-manager-role.yaml
+  - wafv2-manager-role.yaml

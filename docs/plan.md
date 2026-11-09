@@ -1,6 +1,6 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has seventeen kinds:
+Status, 2026-11-09: the repository has twenty kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
@@ -8,12 +8,13 @@ Status, 2026-11-09: the repository has seventeen kinds:
   `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
-- `iam.aws.hfl.dev` `RolePolicyAttachment` and `AccountAlias`;
+- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile` and `AccountAlias`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
 - `rds.aws.hfl.dev` `OptionGroup`;
 - `rds.aws.hfl.dev` `DBProxyTarget`;
-- `rds.aws.hfl.dev` `DBRoleAssociation`.
+- `rds.aws.hfl.dev` `DBRoleAssociation`;
+- `wafv2.aws.hfl.dev` `WebACLAssociation`.
 
 There is an operator that runs our managers beside ACK's controllers as
 the same AWS identity, and tests against a fake AWS (moto), in Go and on
@@ -108,7 +109,7 @@ for one controller, for each of our services:
    (`config/crds/bases`) and the managers' RBAC (`config/rbac`);
 5. gofmt and goimports.
 
-`make check` fails if it changes anything committed. Generation is
+`task check` fails if it changes anything committed. Generation is
 deterministic: two runs give identical trees.
 
 **One patch to the generator**, `patches/code-generator/0001`, adds
@@ -131,7 +132,7 @@ with the patch.
   of them to one ACK release:
   1. Update `UPSTREAM.md`'s generator commit and `go.mod`'s runtime and
      controller versions.
-  2. Run `make upstream generate`, then `make check`.
+  2. Run `task upstream generate`, then `task check`.
 
   Keep the AWS SDK modules at the versions ACK's controllers use, so
   shared dependencies are the ones ACK tests with. Adding the EC2 client
@@ -183,9 +184,26 @@ the credentials `testing`/`testing`.
 The tests assert on two sides: the Kubernetes object (conditions,
 status) and the fake cloud through the real AWS SDK clients.
 
-### 4.3 Results (`make test`; latest 2026-11-09 on a Spot VM, linux amd64, Go 1.27.3)
+### 4.3 Results (`task test`; latest 2026-11-09 on a Spot VM, linux amd64, Go 1.27.3)
 
 ```text
+--- PASS: TestUserGroupMembership
+    the user is put in the listed groups and a group it was in for
+    another reason is left (no update across three resyncs); a group
+    taken off the list is removed and one added is added; a removal
+    outside Kubernetes is put back; the user cannot change; userRef and
+    groupRefs resolve to ACK's User and Group; deletion-policy retain
+    leaves the user in the groups; delete removes the listed groups and
+    leaves the others
+--- PASS: TestManagedIgnoresOtherGroups, TestChanges,
+          TestGroupOrderIsNoDrift (membership unit tests)
+--- PASS: TestLoginProfile
+    a login profile is made from a Kubernetes Secret's password and
+    settles (no update across three resyncs); passwordResetRequired is
+    updated; the user cannot change; deletion-policy retain leaves the
+    profile; delete deletes it
+--- PASS: TestDefaultResetIsNoDrift, TestSetResetIsCompared
+          (login profile unit tests)
 --- PASS: TestAccountAlias
     the alias is set and settles (no update across three resyncs); an
     alias set outside Kubernetes is put back; the CRD refuses what IAM
@@ -274,6 +292,13 @@ status) and the fake cloud through the real AWS SDK clients.
           (replication configuration unit tests)
 --- PASS: TestKeepSecretsIsNoDrift, TestKeepSecretsKeepsOtherDrift
           (connection unit tests)
+--- PASS: TestWebACLAssociation
+    the referenced web ACL (ACK's WebACL, its ARN from status) is
+    associated and settles (no update across three resyncs); the
+    resource cannot change; a disassociation outside Kubernetes is put
+    back; deletion-policy retain leaves the association; delete
+    disassociates
+--- PASS: TestOtherWebACLIsDrift (web ACL association unit test)
 --- PASS: TestReplicaKey
     a replica is made in its Region (tags put there); a policy is put on
     the replica only; the replica Region cannot change; references
@@ -423,6 +448,14 @@ controller to show it can fail:
 - **EventBridge API destinations.** moto marks a destination `ACTIVE` at
   once and, when the spec leaves the rate limit out, reports none (AWS
   reports 300 per second). A unit test shows that default is no drift.
+- **WAFv2 associations.** moto keeps a web ACL's list of resources. It
+  does not check that the resource exists, and associating a resource
+  with a second web ACL adds it there without taking it off the first
+  (AWS replaces the association).
+- **IAM login profiles.** moto stores the password, which no IAM API
+  returns, so the test cannot read it back. It ignores
+  `PasswordResetRequired` on create (the update sets it) and does not
+  check the account's password policy.
 - **IAM account alias.** moto replaces the alias on create, as AWS
   does, and does not check that another account already has it (AWS
   answers `EntityAlreadyExists`).
@@ -491,7 +524,7 @@ its master (5.2.5 is the pin).
 | 9 | CloudWatch Logs `MetricFilter`; CloudWatch `CompositeAlarm` | metric filters: cloudwatchlogs-controller PR #61, as a field on ACK's `LogGroup`. `CompositeAlarm`: ignored in cloudwatch-controller `v1.11.0`. | metric filters yes; `PutCompositeAlarm` no | skipped. Metric filters wait on open question 1. `CompositeAlarm`: moto has none of it. |
 | 10 | EventBridge Scheduler `Schedule` and `ScheduleGroup`; EventBridge `Connection` and `ApiDestination` | Scheduler: no controller (`community` issue #2784). `Connection` and `ApiDestination`: ignored in eventbridge-controller `v1.9.2`. | yes | `Connection` and `ApiDestination` built; Scheduler skipped: ACK has no Scheduler controller for our manager to run beside (open question 8) |
 | 11 | ECR `ReplicationConfiguration`; `RegistryPolicy`, `RegistryScanningConfiguration` | `ReplicationConfiguration`: ecr-controller PR #121, open, conflicts with base, no review, last updated 2026-10-18. The others: none. | yes (one replication rule at most) | built: `ReplicationConfiguration` (PR #121's API; rechecked 2026-11-09: still open, conflicting, no review, head `f6c7d57e`). `RegistryPolicy` and `RegistryScanningConfiguration` next |
-| 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`) | yes | to build |
+| 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`; no pull request or issue, rechecked 2026-11-09) | yes | built |
 | 13 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237: mergeable, active 2026-11-06 | none | skipped: may be close to merging, and moto has none of it |
 | 14 | Route 53 DNSSEC and `KeySigningKey`, VPC association authorization | ignored in route53-controller's `generator.yaml` | none | skipped: moto has none of it |
 | 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | `AccountAlias` built; the rest under way |
@@ -1077,6 +1110,100 @@ delete of its own, only `PutReplicationConfiguration` (the whole set) and
 account's registry policy (moto does not check it), and replication
 itself.
 
+### 6.17 `wafv2.aws.hfl.dev` `WebACLAssociation`
+
+A regional web ACL associated with a resource it protects: an
+Application Load Balancer, an API Gateway REST API stage, an AppSync API,
+a Cognito user pool, an App Runner service or a Verified Access instance.
+It is Terraform's `aws_wafv2_web_acl_association`. ACK's wafv2-controller
+`v1.8.1` has `WebACL`, `RuleGroup` and `IPSet`, and no association; no
+pull request or issue adds one (rechecked 2026-11-09). A CloudFront
+distribution names its web ACL in its own configuration instead.
+
+**Hand-written** on ACK's runtime, on PR #184's skeleton:
+`AssociateWebACL`, `GetWebACLForResource` and `DisassociateWebACL` are no
+create, describe and delete the generator reads. A new service,
+`services/wafv2`, where the generator ignores every resource it finds.
+
+- **Spec:** `resourceARN`, and `webACLARN` or `webACLRef` (ACK's own
+  `WebACL`, its `status.ackResourceMetadata.arn`; wafv2-controller
+  `v1.8.1` is a Go module here for its API types). Both are immutable,
+  as in Terraform.
+- **Read:** `GetWebACLForResource`. No web ACL, or no resource, is not
+  found, so a disassociation outside Kubernetes is associated again.
+  Another web ACL put on the resource outside Kubernetes is drift, and
+  the update associates the spec's again (`AssociateWebACL` replaces).
+- **Delete** disassociates only if the resource still has the spec's
+  web ACL; one since given another web ACL is left alone.
+- **Synced** once read: an association has no pending state.
+  `status.webACLName` names the web ACL. WAFv2 has no ARN for an
+  association; a WAFv2 ARN form with the resource's ARN appended stands
+  in, for ACK's metadata only.
+- **Errors:** a resource or web ACL not there yet is retried; a bad
+  parameter or operation (a `CLOUDFRONT` web ACL, a resource WAFv2 cannot
+  protect) is terminal.
+- **No `resourceRef`.** The resources live in other ACK controllers
+  (elbv2, apigateway, cognito); `resourceARN` takes the ARN.
+
+**Not proven:** another web ACL put on the resource outside Kubernetes
+being replaced (moto keeps both), the delete leaving such a resource
+alone, that the resource exists (moto does not check), and the
+terminal errors.
+### 6.18 `iam.aws.hfl.dev` `UserGroupMembership`
+
+An IAM user's membership of a list of groups: Terraform's
+`aws_iam_user_group_membership`. ACK's iam-controller `v1.11.3` has
+`User` and `Group` but no membership; no pull request adds one
+(rechecked 2026-11-09).
+
+**Not exclusive (assumed; open question 9).** Only the listed groups are
+added or removed. Groups the user is in for any other reason (another
+object, the console, Terraform) are left alone. `status.groups`
+remembers what this object put, so a group taken off the list is
+removed and nothing else is.
+
+**Hand-written** on ACK's runtime, on PR #184's skeleton: IAM has
+`AddUserToGroup`, `RemoveUserFromGroup` and `ListGroupsForUser`, no
+create, describe and delete of a membership.
+
+- **Spec:** `userName` or `userRef` (ACK's `User`, its `spec.name`),
+  immutable; `groups` or `groupRefs` (ACK's `Group`s), which may change.
+- **Read:** the user's groups, kept to those listed or put before. The
+  groups compare as a set. A user that does not exist has no membership;
+  so has one never made whose groups the user is in none of. Once made,
+  a membership with all its groups gone outside Kubernetes is put back.
+- **Delete** takes the user out of the listed and put groups; a user,
+  group or membership already gone is removed.
+- **Errors:** a user or group not there yet is retried; IAM's limit of
+  groups per user (`LimitExceeded`) is terminal.
+- **Synced** once read. IAM has no ARN for a membership; the IAM ARN form
+  with the user appended stands in, for ACK's metadata only.
+
+**Not proven:** IAM's limit of ten groups per user (not tested), and
+real AWS.
+### 6.19 `iam.aws.hfl.dev` `LoginProfile`
+
+An IAM user's console password: Terraform's `aws_iam_user_login_profile`,
+with the password from a Kubernetes Secret instead of a generated one.
+ACK's iam-controller `v1.11.3` has none; its pull request #147 was closed
+(rechecked 2026-11-09).
+
+**Generated** from `CreateLoginProfile`, `GetLoginProfile`,
+`UpdateLoginProfile` and `DeleteLoginProfile`.
+
+- **Spec:** `userName` (required, immutable), `password` (a
+  `SecretKeyReference`, required) and `passwordResetRequired`.
+- **The password is never read back** (IAM returns none), so it is no
+  drift; the spec's stays. A changed Secret is not pushed until the spec
+  changes, as for `Connection`.
+- **Server default is no drift:** IAM reports `passwordResetRequired`
+  false when the spec leaves it out (`custom_delta.go`).
+- **Not found:** `NoSuchEntity`. No tags: a login profile has none.
+- **No `userRef`.** ACK's `User` is in the same service, and a generated
+  reference to it is the case of section 8, item 10.
+
+**Not proven:** that the password reached IAM (no API returns it), the
+account's password policy refusing a password, and a changed Secret.
 ### 6.21 `iam.aws.hfl.dev` `AccountAlias`
 
 The AWS account's alias, the name in its sign-in URL: Terraform's
@@ -1215,7 +1342,7 @@ and patch; that is ACK's design, not ours.
   binding moved;
 - ACK's controller removed: everything of ours is deleted.
 
-**`tests/operator/run.sh` (`make operator-e2e`) on kind** (kindest/node
+**`tests/operator/run.sh` (`task operator-e2e`) on kind** (kindest/node
 v1.37.0; last run 2026-11-09 on a Spot VM, e2-standard-8, by
 `../offload`), with moto in the cluster and ACK's **real** rds-controller
 `v1.14.2` installed from its own chart, with a credentials Secret and an
@@ -1300,7 +1427,7 @@ Before it can run on a real cluster:
    found (both conflict with their base).
 6. `hack/upstream-pr.sh`, as gaps-gcp has, to follow the PR heads copied
    from.
-7. CI: `make check` on Linux, with the envtest assets and moto cached.
+7. CI: `task check` on Linux, with the envtest assets and moto cached.
 8. The OptionGroup test takes about 50 seconds: options are added on the
    second reconcile, after the runtime's requeue delay.
 9. `DBRoleAssociation`'s delete is proven end to end only up to the
@@ -1312,7 +1439,7 @@ Before it can run on a real cluster:
     a hand-written references file.
 11. The heavy checks run on a Spot VM (`../offload`), not the laptop. A
     fresh VM has no `third_party/` (gitignored), so the command is
-    `make tools && make check && make operator-e2e`.
+    `task tools && task check && task operator-e2e`.
 
 ## 9. Open questions
 
@@ -1378,3 +1505,34 @@ Before it can run on a real cluster:
 
    Proposed: the first, beside EventBridge's controller, documented as
    needing `scheduler:*` on that role. Scheduler waits for the answer.
+9. **IAM group membership: exclusive or not** (rank 15). Terraform has
+   both: `aws_iam_group_membership` owns a group's whole list of users,
+   `aws_iam_user_group_membership` adds one user to listed groups and
+   leaves the rest. An exclusive kind removes any member another writer
+   added (a second object, the console, Terraform), and that writer adds
+   it back: the tug of war of questions 3 and 7. `UserGroupMembership`
+   is built non-exclusive, remembering in `status.groups` what it put so
+   a group taken off its list is still removed. Assumed (coordinator,
+   2026-11-09); the builder to confirm. An exclusive group-side kind can
+   be added later beside it.
+10. **IAM `AccessKey`** (rank 15). `CreateAccessKey` returns the secret
+    access key once, and never again. A kind has to put it somewhere,
+    and ACK's runtime has no pattern for writing a secret out (it only
+    reads them, as `SecretKeyReference`). Options:
+    - the controller writes a Kubernetes Secret, named in the spec, in
+      the object's namespace. The manager then needs rights to create
+      and update Secrets, and a lost Secret means rotating the key;
+    - the controller writes to an external secret store (Secrets Manager,
+      through a reference), which adds a second service and its rights
+      to the IAM manager;
+    - leave `AccessKey` out.
+
+    Recommended: leave it out. A static key is a long-lived credential
+    for a user, where the identity in this repository is a workload's
+    role (IRSA or EKS Pod Identity, section 7), and the coordinator
+    reports the builder's direction for identity points the same way.
+    Each of the other options would make this repository a writer of
+    credentials, which nothing else here is. If a package needs one
+    later, the first option is the smallest. `LoginProfile`,
+    `SSHPublicKey`, the account alias and the password policy do not
+    depend on the answer and go ahead.

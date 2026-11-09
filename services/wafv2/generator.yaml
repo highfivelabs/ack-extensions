@@ -1,0 +1,20 @@
+# Generator configuration for ack-extensions's WAFv2 kinds (wafv2.aws.hfl.dev).
+#
+# A web ACL's association with a regional resource (an Application Load
+# Balancer, an API Gateway REST API stage, an AppSync API, a Cognito user
+# pool, an App Runner service, a Verified Access instance) has no
+# Create/Describe/Delete of its own (AssociateWebACL, GetWebACLForResource
+# and DisassociateWebACL), so the generator cannot produce
+# WebACLAssociation; it is written by hand on ACK's runtime
+# (services/wafv2/pkg/resource/web_acl_association). Every resource the
+# generator can find is ignored: ACK's wafv2-controller has IPSet,
+# RuleGroup and WebACL, and ignores APIKey and RegexPatternSet. It
+# generates only the service's scaffolding (the API group, the resource
+# registry, the controller's main).
+ignore:
+  resource_names:
+    - APIKey
+    - IPSet
+    - RegexPatternSet
+    - RuleGroup
+    - WebACL

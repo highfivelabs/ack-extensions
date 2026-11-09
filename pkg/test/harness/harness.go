@@ -86,11 +86,11 @@ func moduleDir(t testing.TB, root, module string) string {
 }
 
 // Start brings up moto, envtest and the controller of one service
-// ("applicationautoscaling", "autoscaling", "ec2", "ecr", "eventbridge", "iam", "kms", "lambda", "rds"), and registers their teardown with t.Cleanup.
+// ("applicationautoscaling", "autoscaling", "ec2", "ecr", "eventbridge", "iam", "kms", "lambda", "rds", "wafv2"), and registers their teardown with t.Cleanup.
 func Start(t *testing.T, service string, scheme *runtime.Scheme) *Env {
 	t.Helper()
 	if os.Getenv("KUBEBUILDER_ASSETS") == "" {
-		t.Skip("KUBEBUILDER_ASSETS is not set; run through make test")
+		t.Skip("KUBEBUILDER_ASSETS is not set; run through task test")
 	}
 	root := RepoRoot(t)
 
@@ -106,6 +106,7 @@ func Start(t *testing.T, service string, scheme *runtime.Scheme) *Env {
 		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/kms-controller"), "config", "crd", "bases"),
 		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/lambda-controller"), "config", "crd", "bases"),
 		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/rds-controller"), "config", "crd", "bases"),
+		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/wafv2-controller"), "config", "crd", "bases"),
 	}
 	te := &envtest.Environment{CRDDirectoryPaths: crds, ErrorIfCRDPathMissing: true}
 	cfg, err := te.Start()
