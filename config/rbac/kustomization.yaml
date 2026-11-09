@@ -4,4 +4,5 @@
 # +kubebuilder:rbac markers: hack/generate.sh). The operator binds them.
 resources:
   - iam-manager-role.yaml
+  - lambda-manager-role.yaml
   - rds-manager-role.yaml

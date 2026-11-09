@@ -1,8 +1,9 @@
 # ack-extensions plan
 
-Status, 2026-11-08: the repository has four kinds:
+Status, 2026-11-09: the repository has five kinds:
 
 - `iam.aws.hfl.dev` `RolePolicyAttachment`;
+- `lambda.aws.hfl.dev` `Permission`;
 - `rds.aws.hfl.dev` `OptionGroup`;
 - `rds.aws.hfl.dev` `DBProxyTarget`;
 - `rds.aws.hfl.dev` `DBRoleAssociation`.
@@ -77,7 +78,8 @@ Two ways to build a kind:
      upstream PR #184 does);
    - `RegisterDBProxyTargets`/`DeregisterDBProxyTargets` (`DBProxyTarget`);
    - `AddRoleToDBCluster`/`AddRoleToDBInstance` and their
-     `RemoveRoleFrom...` (`DBRoleAssociation`).
+     `RemoveRoleFrom...` (`DBRoleAssociation`);
+   - `AddPermission`/`GetPolicy`/`RemovePermission` (`Permission`).
 
    The files follow the generated layout (descriptor, resource,
    identifiers, manager, manager factory, references, delta, sdk), so the
@@ -170,7 +172,7 @@ the credentials `testing`/`testing`.
 The tests assert on two sides: the Kubernetes object (conditions,
 status) and the fake cloud through the real AWS SDK clients.
 
-### 4.3 Results (2026-11-08, macOS arm64, Go 1.27.1, `make test`)
+### 4.3 Results (`make test`; latest 2026-11-09 on a Spot VM, linux amd64, Go 1.27.3)
 
 ```text
 --- PASS: TestRolePolicyAttachment
@@ -193,6 +195,15 @@ status) and the fake cloud through the real AWS SDK clients.
     retain leaves the role associated; delete calls
     RemoveRoleFromDBCluster and keeps the object while it fails (moto
     does not implement it, section 4.4)
+--- PASS: TestPermission
+    a service may invoke the function; an account may invoke an alias
+    (the spec keeps the account ID as written); the CRD refuses no
+    function, a statement ID Lambda refuses and an unknown auth type; a
+    statement cannot change; a statement removed outside Kubernetes is
+    added back; references resolve to ACK's Function; deletion-policy
+    retain leaves the statement; delete removes the statement
+--- PASS: TestObservedSpec, TestFindStatementMissing, TestFillUnset,
+          TestPermissionARN (permission unit tests)
 --- PASS: TestAssociatedExactlyOne, TestMatchingRoleAndFeature,
           TestSyncedFollowsAssociationStatus, TestDeleteRemovesTheRole
           (db_role_association unit tests; the last against a stand-in
@@ -212,6 +223,9 @@ controller to show it can fail:
 - With `DBRoleAssociation`'s delete returning before
   `RemoveRoleFromDBCluster`, the delete step failed: "the removal
   attempted and the object kept: not within 1m30s: object not kept".
+- With `Permission`'s read overwriting fields the spec sets,
+  `TestFillUnset` failed: "principal rewritten to
+  arn:aws:iam::210987654321:root".
 - With its readiness rule replaced by `true`,
   `TestSyncedFollowsAssociationStatus` failed: "IsSynced with status
   "PENDING" = true, want false".
@@ -247,6 +261,19 @@ controller to show it can fail:
   gone), releases the object is unit-tested
   (`db_role_association/sdk_test.go`) against a stand-in serving the
   responses RDS documents, not against a fake with state.
+- **A function's versions and aliases share one policy in moto.** AWS
+  keeps one policy per function, version and alias. moto keeps one for the
+  function and all its versions and aliases, and its `RemovePermission`
+  ignores the qualifier. `TestPermission` shows that a qualified
+  statement is sent with its qualifier and read back with it, not that
+  the policies are separate.
+- **An account principal.** moto stores `Principal: "210987654321"` as
+  given; AWS stores `{"AWS": "arn:aws:iam::210987654321:root"}`. Our read
+  keeps a field the spec sets as written, so neither form is drift. Both
+  forms are unit-tested.
+- **The event source token.** moto drops `EventSourceToken` from the
+  statement, where AWS writes a `lambda:EventSourceToken` condition. Only
+  the unit tests read it back.
 - **An association's status.** moto marks a new association `ACTIVE` at
   once. On AWS it is `PENDING` first, and `INVALID` when RDS cannot assume
   the role. The rule (synced only when `ACTIVE`) is unit-tested.
@@ -448,6 +475,53 @@ ACK `Role` (section 6.1), there is no tug of war. If ACK later adds
 and retiring this kind would mean moving each association into that
 field rather than adopting a kind.
 
+### 6.5 `lambda.aws.hfl.dev` `Permission`
+
+New: no ACK kind or pull request adds it. `community` issues #3051 and
+#2659 ask for it. ACK's lambda-controller `v1.19.0` has permissions only
+inside an `Alias`, as `spec.permissions`, which ACK treats as the alias's
+whole policy. A function's own policy, the one S3 notifications, an ALB
+target group, EventBridge rules and SNS subscriptions need, has no kind.
+
+The calls, and the reading of a policy statement back into the fields of
+ACK's `AddPermissionInput`, are copied from ACK's `Alias`
+(`pkg/resource/alias/hooks.go`). One change: the policy is parsed with
+`encoding/json` instead of `github.com/micahhausler/aws-iam-policy`, so
+there is no new dependency.
+
+The spec names:
+- the function (`functionName`, or `functionRef` to ACK's `Function`);
+- optionally a version or alias (`qualifier`);
+- the statement's `statementID`, `action` and `principal`;
+- optionally `sourceARN`, `sourceAccount`, `eventSourceToken`,
+  `principalOrgID` and `functionURLAuthType`.
+
+Lambda cannot change a statement, so every field is immutable.
+
+- **Create** is `AddPermission`.
+- **Read** is `GetPolicy`, keeping the statement with this ID:
+  - no function, no policy or no such statement reads as not found;
+  - a statement removed outside Kubernetes is added again;
+  - a field the spec sets is kept as written, because AWS stores some in
+    a normal form (an account ID as its root ARN);
+  - an unset field is filled from the statement, as adoption needs.
+- **Delete** is `RemovePermission`. A statement or function already gone
+  counts as removed.
+- **Status** carries the statement as Lambda stores it.
+- **Terminal faults:** a statement Lambda refuses
+  (`InvalidParameterValueException`) and a full policy
+  (`PolicyLengthExceededException`). A function that does not exist yet,
+  and a concurrent policy change (`ResourceConflictException`), are
+  retried.
+
+**Do not point it at an alias that an ACK `Alias` manages.** ACK's
+`Alias` reads the alias's whole policy and removes every statement its
+`spec.permissions` does not list, even when the list is empty
+(`syncPermissions`, `comparePermissions`). Use `Alias.spec.permissions`
+there. ACK's `Function` and `Version` manage no policy, so a statement
+on a function or version stands alone. This is the same tug of war as
+open questions 3 and 7, documented here as section 6.1 documents its own.
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)
@@ -576,12 +650,12 @@ ok: moto ready in fake-aws
 == ACK's rds-controller v1.14.2, from its own chart
 ok: ACK's controller ack-system/ack-rds-rds-chart running as ack-system/ack-rds-controller
 == ours: config/default by ko
-ok: CRDs installed: rolepolicyattachments.iam, dbproxytargets.rds, dbroleassociations.rds, optiongroups.rds (*.aws.hfl.dev); operator running
+ok: CRDs installed: rolepolicyattachments.iam, permissions.lambda, dbproxytargets.rds, dbroleassociations.rds, optiongroups.rds (*.aws.hfl.dev); operator running
 == identity own: our manager beside ACK's, as ACK's role
 ok: manager ack-system/ack-extensions-rds-manager rolled out
 ok: manager pod runs as ack-system/ack-extensions-rds-manager, annotated with ACK's role arn:aws:iam::123456789012:role/ack-rds-controller
 ok: same credentials Secret (aws-creds), region (us-west-2) and endpoint as ACK's controller
-ok: no iam manager: no ACK iam-controller is installed
+ok: no iam or lambda manager: no ACK iam- or lambda-controller is installed
 ok: rights: ours manages *.rds.aws.hfl.dev and only reads ACK's rds kinds and Roles; ACK's controller has nothing of ours
 == gap kinds reconcile against moto
 ok: port-forward to moto
