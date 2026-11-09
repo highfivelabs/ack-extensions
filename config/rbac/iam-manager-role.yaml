@@ -28,6 +28,7 @@ rules:
   - accountaliases
   - loginprofiles
   - rolepolicyattachments
+  - sshpublickeys
   - usergroupmemberships
   verbs:
   - create
@@ -43,6 +44,7 @@ rules:
   - accountaliases/status
   - loginprofiles/status
   - rolepolicyattachments/status
+  - sshpublickeys/status
   - usergroupmemberships/status
   verbs:
   - get

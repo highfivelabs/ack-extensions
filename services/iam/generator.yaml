@@ -34,6 +34,10 @@ resources:
     tags:
       ignore: true
 ignore:
+  # A shape with the name of a hand-written kind (services/iam/apis, written
+  # here) would be generated as a second type of that name.
+  shape_names:
+    - SSHPublicKey
   resource_names:
     - AccessKey
     - AccountAlias

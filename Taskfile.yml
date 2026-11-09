@@ -134,3 +134,13 @@ tasks:
     desc: The operator on kind beside ACK's real rds-controller (tests/operator/run.sh).
     cmds:
       - tests/operator/run.sh
+
+  coverage:
+    desc: Regenerate docs/coverage/ and the README's Coverage section (hack/coverage/, docs/coverage/README.md).
+    cmds:
+      - hack/coverage/run.sh
+
+  coverage:check:
+    desc: Fail if the committed coverage outputs differ from a regeneration from the pinned inputs.
+    cmds:
+      - hack/coverage/run.sh --check

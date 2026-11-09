@@ -256,15 +256,6 @@ type SAMLProviderListEntry struct {
 	ValidUntil *metav1.Time `json:"validUntil,omitempty"`
 }
 
-// Contains information about an SSH public key.
-//
-// This data type is used as a response element in the GetSSHPublicKey and UploadSSHPublicKey
-// operations.
-type SSHPublicKey struct {
-	UploadDate *metav1.Time `json:"uploadDate,omitempty"`
-	UserName   *string      `json:"userName,omitempty"`
-}
-
 // Contains information about an SSH public key, without the key's body or fingerprint.
 //
 // This data type is used as a response element in the ListSSHPublicKeys operation.

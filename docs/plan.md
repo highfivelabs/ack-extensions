@@ -1,6 +1,6 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has twenty kinds:
+Status, 2026-11-09: the repository has twenty-one kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
@@ -8,7 +8,7 @@ Status, 2026-11-09: the repository has twenty kinds:
   `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
-- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile` and `AccountAlias`;
+- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey` and `AccountAlias`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
 - `rds.aws.hfl.dev` `OptionGroup`;
@@ -204,6 +204,13 @@ status) and the fake cloud through the real AWS SDK clients.
     profile; delete deletes it
 --- PASS: TestDefaultResetIsNoDrift, TestSetResetIsCompared
           (login profile unit tests)
+--- PASS: TestSSHPublicKey
+    a key is uploaded, active, and settles (no update across three
+    resyncs); it is deactivated; a reactivation outside Kubernetes is
+    put back; the body cannot change; deletion-policy retain leaves the
+    key; delete deletes it
+--- PASS: TestStatusDefaultAndBodyAreNoDrift, TestStatusIsCompared
+          (SSH public key unit tests)
 --- PASS: TestAccountAlias
     the alias is set and settles (no update across three resyncs); an
     alias set outside Kubernetes is put back; the CRD refuses what IAM
@@ -456,6 +463,9 @@ controller to show it can fail:
   returns, so the test cannot read it back. It ignores
   `PasswordResetRequired` on create (the update sets it) and does not
   check the account's password policy.
+- **IAM SSH public keys.** moto does not parse the key body (IAM
+  refuses one that is not a valid RSA key of 2048 bits or more), returns
+  it as uploaded, and does not refuse a key the user already has.
 - **IAM account alias.** moto replaces the alias on create, as AWS
   does, and does not check that another account already has it (AWS
   answers `EntityAlreadyExists`).
@@ -1204,6 +1214,33 @@ ACK's iam-controller `v1.11.3` has none; its pull request #147 was closed
 
 **Not proven:** that the password reached IAM (no API returns it), the
 account's password policy refusing a password, and a changed Secret.
+### 6.20 `iam.aws.hfl.dev` `SSHPublicKey`
+
+An IAM user's SSH public key, for AWS CodeCommit: Terraform's
+`aws_iam_user_ssh_key`. ACK's iam-controller `v1.11.3` has none, and no
+pull request adds one (rechecked 2026-11-09).
+
+**Hand-written** on ACK's runtime, on PR #184's skeleton: the key is made
+with `UploadSSHPublicKey`, which the generator does not read as a
+create, and it is known by an ID IAM gives it.
+
+- **Spec:** `userName` or `userRef` (ACK's `User`), and
+  `sshPublicKeyBody`, both immutable; `status`, `Active` (the default) or
+  `Inactive`.
+- **Status:** `sshPublicKeyID` (the key's name in CodeCommit and SSH
+  configuration), `fingerprint`, `uploadDate`.
+- **Read:** `GetSSHPublicKey` by the ID. The body is not compared: it is
+  immutable, and IAM may return it in another form. The status is, so a
+  key reactivated outside Kubernetes is set back.
+- **Update** sets the status (`UpdateSSHPublicKey`). **Delete** deletes
+  the key; a key or user already gone is deleted.
+- **Errors:** a user not there yet is retried; a malformed or duplicate
+  key, or a user at IAM's limit of keys, is terminal.
+- **Synced** once read. IAM has no ARN for a key; the IAM ARN form with
+  the user and key ID stands in, for ACK's metadata only.
+
+**Not proven:** IAM parsing the key (moto does not), a duplicate key
+being refused, and real AWS.
 ### 6.21 `iam.aws.hfl.dev` `AccountAlias`
 
 The AWS account's alias, the name in its sign-in URL: Terraform's
@@ -1402,6 +1439,37 @@ What is proven is everything on our side of that:
   annotation, in ACK's namespace, with ACK's credentials file;
 - on EKS, the one extra trust-policy entry or association then applies to
   it.
+
+## 3a. The coverage dashboard
+
+How far ACK and this repository reach is measured, not guessed
+(builder's ask, 2026-11-09): `hack/coverage/` reads the CloudFormation
+resource schemas (the denominator: every writable property of every
+resource, per service), every ACK controller's latest released CRDs
+(official) and our `config/crds/bases/` (ours), matches CRD spec paths
+to CloudFormation properties, and writes `docs/coverage/` (CSV per
+service, resource and attribute; an SVG bar per service) and the
+Coverage section of `README.md`. `docs/coverage/README.md` has the
+method, pins, matching rules, known error and spot checks;
+`task coverage` regenerates, `task coverage:check` fails when the
+committed outputs are stale. The CloudFormation zip is committed
+because AWS replaces the file at its URL every hour. The Google Cloud
+and Azure repositories get the same dashboard with the same CSV schema.
+
+- **Tiers.** `docs/coverage/priority.csv` (hand-edited, never written by
+  the generator) puts each service in tier 1 (the ten most-downloaded
+  terraform-aws-modules' services), 2 (any other tracked module's) or 3
+  (the default); the README and `bars/_tiers.svg` roll coverage up by
+  tier, `tiers.csv` has the numbers.
+- **After adding or changing a kind:** run `task coverage` and commit
+  the result; a kind that is a property of a larger CloudFormation
+  resource, or a new rename, is a line in `hack/coverage/mappings.yaml`.
+- **When ACK releases:** `hack/coverage/run.sh --update-pins`, review
+  `docs/coverage/sources.yaml`, commit.
+- **Known limits:** official coverage is under-counted where ACK follows
+  the SDK's shape and CloudFormation its own and nobody has written the
+  alias (about 2% of covered attributes in the spot checks); services
+  ACK covers that CloudFormation lacks are listed, not measured.
 
 ## 8. What is left
 
