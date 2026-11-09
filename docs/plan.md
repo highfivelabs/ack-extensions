@@ -549,7 +549,8 @@ and patch; that is ACK's design, not ours.
 - ACK's controller removed: everything of ours is deleted.
 
 **`tests/operator/run.sh` (`make operator-e2e`) on kind** (kindest/node
-v1.37.0), with moto in the cluster and ACK's **real** rds-controller
+v1.37.0; last run 2026-11-09 on a Spot VM, e2-standard-8, by
+`../offload`), with moto in the cluster and ACK's **real** rds-controller
 `v1.14.2` installed from its own chart, with a credentials Secret and an
 IRSA role annotation:
 
@@ -562,18 +563,19 @@ ok: moto ready in fake-aws
 == ACK's rds-controller v1.14.2, from its own chart
 ok: ACK's controller ack-system/ack-rds-rds-chart running as ack-system/ack-rds-controller
 == ours: config/default by ko
-ok: CRDs installed: rolepolicyattachments.iam, dbproxytargets.rds, optiongroups.rds (*.aws.hfl.dev); operator running
+ok: CRDs installed: rolepolicyattachments.iam, dbproxytargets.rds, dbroleassociations.rds, optiongroups.rds (*.aws.hfl.dev); operator running
 == identity own: our manager beside ACK's, as ACK's role
 ok: manager ack-system/ack-extensions-rds-manager rolled out
 ok: manager pod runs as ack-system/ack-extensions-rds-manager, annotated with ACK's role arn:aws:iam::123456789012:role/ack-rds-controller
 ok: same credentials Secret (aws-creds), region (us-west-2) and endpoint as ACK's controller
 ok: no iam manager: no ACK iam-controller is installed
-ok: rights: ours manages *.rds.aws.hfl.dev and only reads ACK's rds kinds; ACK's controller has nothing of ours
+ok: rights: ours manages *.rds.aws.hfl.dev and only reads ACK's rds kinds and Roles; ACK's controller has nothing of ours
 == gap kinds reconcile against moto
 ok: port-forward to moto
 ok: DBProxyTarget default/app-db synced through the manager on kind
 ok: OptionGroup default/app-mysql synced through the manager on kind
-ok: in moto: app-proxy targets ['app-db'] ; app-mysql options ['MARIADB_AUDIT_PLUGIN']
+ok: DBRoleAssociation default/app-db-s3-import synced through the manager on kind
+ok: in moto: app-proxy targets ['app-db'] ; app-mysql options ['MARIADB_AUDIT_PLUGIN'] ; app-db roles [('app-db-s3', 's3Import')]
 == identity ack: share ACK's ServiceAccount
 ok: manager switched to ack-system/ack-rds-controller
 ok: our ServiceAccount removed
@@ -582,7 +584,13 @@ ok: back to identity own
 all checks passed (cluster ack-extensions-operator left running; kind delete cluster --name ack-extensions-operator)
 ```
 
-On the way: moto crash-looped on kind because a Service named `moto`
+On the way, `kubectl auth can-i get roles.iam.services.k8s.aws` answered
+"no" although our ClusterRole grants it. ACK's iam CRDs are not on this
+cluster, so kubectl could not resolve the resource and asked about a
+core resource of that literal name. The checks of ACK's `Role`s now use a
+SubjectAccessReview, which names the group and resource itself.
+
+Also on the way: moto crash-looped on kind because a Service named `moto`
 makes Kubernetes set `MOTO_PORT=tcp://...` in the pod, which moto reads
 as its port (`enableServiceLinks: false` in `config/fake-aws`). An image
 known only by digest loads into kind under a placeholder name, so the
@@ -630,12 +638,9 @@ Before it can run on a real cluster:
    second reconcile, after the runtime's requeue delay.
 9. `DBRoleAssociation`'s delete is proven end to end only up to the
    `RemoveRoleFrom...` call (section 4.4, open question 6).
-10. `make operator-e2e` has not yet run with `DBRoleAssociation`'s steps
-    (its CRD, the manager reading but not deleting ACK's `Role`s, an
-    association syncing on kind). On 2026-11-08 the laptop's Docker VM
-    was at a load average of about 150. The run's kind API server lost
-    etcd mid-run, and the rerun on a fresh cluster could not finish
-    `kubeadm init`. The output in section 7.4 is from before this kind.
+10. The heavy checks run on a Spot VM (`../offload`), not the laptop. A
+    fresh VM has no `third_party/` (gitignored), so the command is
+    `make tools && make check && make operator-e2e`.
 
 ## 9. Open questions
 
