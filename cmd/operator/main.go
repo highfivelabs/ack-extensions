@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // The operator: runs our managers beside ACK's service controllers, as
-// the same AWS identity (pkg/operator).
+// the same AWS identity, and a Cloud Control manager in each namespace
+// that has a CloudControlContext, as that namespace's own identity
+// (pkg/operator).
 package main
 
 import (
@@ -20,8 +22,27 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 
+	ccv1alpha1 "github.com/highfivelabs/ack-extensions/cloudcontrol/apis/v1alpha1"
 	"github.com/highfivelabs/ack-extensions/pkg/operator"
 )
+
+// repeated is a flag given any number of times.
+type repeated []string
+
+func (r *repeated) String() string     { return strings.Join(*r, ",") }
+func (r *repeated) Set(v string) error { *r = append(*r, v); return nil }
+
+func envVars(kvs []string) ([]corev1.EnvVar, error) {
+	var out []corev1.EnvVar
+	for _, kv := range kvs {
+		k, v, ok := strings.Cut(kv, "=")
+		if !ok || k == "" {
+			return nil, fmt.Errorf("--cloudcontrol-manager-env: %q is not NAME=value", kv)
+		}
+		out = append(out, corev1.EnvVar{Name: k, Value: v})
+	}
+	return out, nil
+}
 
 // imagesFromEnv reads MANAGER_IMAGE_<SERVICE> (one whole image reference
 // each, so `ko resolve` can fill them in config/operator).
@@ -61,10 +82,13 @@ func parseImages(s string) (map[string]string, error) {
 
 func main() {
 	var images, identity, metrics, probes string
+	var ccArgs, ccEnv repeated
 	flag.StringVar(&images, "manager-images", "", "service=image of each manager to run, comma-separated (iam=...,rds=...); default: the MANAGER_IMAGE_<SERVICE> environment variables")
 	flag.StringVar(&identity, "identity", operator.IdentityOwn, `default identity of a manager: "own" (its own ServiceAccount carrying ACK's role annotations) or "ack" (ACK's ServiceAccount)`)
 	flag.StringVar(&metrics, "metrics-bind-address", ":8080", "metrics address")
 	flag.StringVar(&probes, "health-probe-bind-address", ":8081", "health probe address")
+	flag.Var(&ccArgs, "cloudcontrol-manager-arg", "an argument added to every Cloud Control manager (repeatable); for a fake AWS's endpoint in tests, never needed on EKS")
+	flag.Var(&ccEnv, "cloudcontrol-manager-env", "NAME=value added to every Cloud Control manager's environment (repeatable); for a fake AWS's dummy credentials in tests, never needed on EKS")
 	opts := zap.Options{}
 	opts.BindFlags(flag.CommandLine)
 	flag.Parse()
@@ -85,6 +109,7 @@ func main() {
 	_ = appsv1.AddToScheme(scheme)
 	_ = corev1.AddToScheme(scheme)
 	_ = rbacv1.AddToScheme(scheme)
+	_ = ccv1alpha1.AddToScheme(scheme)
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
 		Scheme:                 scheme,
 		Metrics:                metricsserver.Options{BindAddress: metrics},
@@ -98,6 +123,19 @@ func main() {
 	if err := r.SetupWithManager(mgr); err != nil {
 		setup.Error(err, "controller")
 		os.Exit(1)
+	}
+	// Cloud Control: on when its manager image is given.
+	if img := imgs[operator.ImageCloudControl]; img != "" {
+		env, err := envVars(ccEnv)
+		if err != nil {
+			setup.Error(err, "bad flags")
+			os.Exit(2)
+		}
+		cc := &operator.ContextReconciler{Client: mgr.GetClient(), Image: img, ExtraArgs: ccArgs, ExtraEnv: env}
+		if err := cc.SetupWithManager(mgr); err != nil {
+			setup.Error(err, "cloudcontrol controller")
+			os.Exit(1)
+		}
 	}
 	_ = mgr.AddHealthzCheck("healthz", healthz.Ping)
 	_ = mgr.AddReadyzCheck("readyz", healthz.Ping)

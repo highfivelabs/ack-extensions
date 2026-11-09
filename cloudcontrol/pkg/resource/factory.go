@@ -28,11 +28,13 @@ type factory struct {
 
 var _ acktypes.AWSResourceManagerFactory = &factory{}
 
-// Factories is one factory per registered type: the whole list of kinds
-// the manager serves.
-func Factories() []acktypes.AWSResourceManagerFactory {
+// Factories is one factory per registered type.
+func Factories() []acktypes.AWSResourceManagerFactory { return FactoriesFor(registry.Types) }
+
+// FactoriesFor is one factory per type given: the kinds a manager serves.
+func FactoriesFor(types []*registry.Type) []acktypes.AWSResourceManagerFactory {
 	var out []acktypes.AWSResourceManagerFactory
-	for _, t := range registry.Types {
+	for _, t := range types {
 		out = append(out, &factory{t: t, rm: map[string]*manager{}})
 	}
 	return out

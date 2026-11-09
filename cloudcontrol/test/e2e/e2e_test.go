@@ -201,7 +201,7 @@ func TestTransitGatewayRouteTable(t *testing.T) {
 		t.Fatalf("status.transitGatewayRouteTableId = %q", id)
 	}
 	tags := rtTags(t, e, id)
-	if tags["env"] != "dev" || tags["services.k8s.aws/namespace"] != "default" {
+	if tags["env"] != "dev" || tags["services.k8s.aws/namespace"] != envNS {
 		t.Errorf("tags in moto: %v; want env=dev and ACK's services.k8s.aws/namespace=default", tags)
 	}
 	if l, _, _ := unstructured.NestedSlice(got.Object, "spec", "tags"); len(l) != 1 {
@@ -331,10 +331,17 @@ func TestTransitGatewayRouteTable(t *testing.T) {
 
 // TestDetector: nested objects and unordered arrays of objects; drift made
 // in GuardDuty's own API is put back on the resync with one replace; a
-// reorder of features is no update; delete.
+// reorder of features is no update; delete. And the environment's scope: a
+// detector in another namespace is never touched by this namespace's
+// manager, which can neither see it nor write it.
 func TestDetector(t *testing.T) {
 	e := start(t)
 	const typ = "AWS::GuardDuty::Detector"
+	outside := obj("Detector", "outside-detector", map[string]any{"enable": true})
+	outside.SetNamespace(otherNS)
+	if err := e.c.Create(e.ctx, outside); err != nil {
+		t.Fatal(err)
+	}
 	u := obj("Detector", "account-detector", map[string]any{
 		"enable":                     true,
 		"findingPublishingFrequency": "SIX_HOURS",
@@ -421,5 +428,19 @@ func TestDetector(t *testing.T) {
 	e.waitGone(t, u)
 	if _, err := gd.GetDetector(e.ctx, &guardduty.GetDetectorInput{DetectorId: aws.String(id)}); err == nil {
 		t.Errorf("the detector is still in moto after delete")
+	}
+
+	// Over a minute and many resyncs later, the other namespace's detector
+	// has no finalizer, no status and no request: the manager watches its
+	// own namespace only.
+	o := e.get(t, outside)
+	if len(o.GetFinalizers()) > 0 || o.Object["status"] != nil {
+		t.Errorf("%s/%s was reconciled by %s's manager: finalizers %v, status %v", otherNS, outside.GetName(), envNS, o.GetFinalizers(), o.Object["status"])
+	}
+	if n := len(e.calls("CreateResource", typ)); n != 1 {
+		t.Errorf("%d CreateResource calls for detectors, want 1 (this namespace's)", n)
+	}
+	if strings.Contains(e.logs.String(), otherNS+"/") {
+		t.Errorf("the manager's log names %s", otherNS)
 	}
 }

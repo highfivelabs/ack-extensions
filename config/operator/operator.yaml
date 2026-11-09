@@ -5,6 +5,8 @@
 # --identity: "own" (default; one more AWS grant per role) or "ack" (share
 # ACK's ServiceAccount). An ACK controller's Deployment can override it
 # with the annotation aws.hfl.dev/identity.
+# MANAGER_IMAGE_CLOUDCONTROL turns Cloud Control on: a manager in each
+# namespace with a CloudControlContext (docs/cloudcontrol.md).
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -35,6 +37,8 @@ spec:
           env:
             - name: MANAGER_IMAGE_APPLICATIONAUTOSCALING
               value: ko://github.com/highfivelabs/ack-extensions/services/applicationautoscaling/cmd/controller
+            - name: MANAGER_IMAGE_CLOUDCONTROL
+              value: ko://github.com/highfivelabs/ack-extensions/cloudcontrol/cmd/manager
             - name: MANAGER_IMAGE_AUTOSCALING
               value: ko://github.com/highfivelabs/ack-extensions/services/autoscaling/cmd/controller
             - name: MANAGER_IMAGE_EC2

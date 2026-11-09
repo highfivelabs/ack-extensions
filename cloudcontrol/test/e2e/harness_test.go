@@ -3,9 +3,13 @@
 
 // Package e2e runs the generic Cloud Control manager the way it runs in a
 // cluster: envtest's real kube-apiserver with the generated CRDs and ACK's
-// core CRDs, the manager's real binary started with ACK's chart flags, and
-// the fake Cloud Control (cloudcontrol/test/fake) doing the work in moto.
-// Nothing here may reach AWS (fake/guard.go says how that is enforced).
+// core CRDs; the manager's real binary started as the operator starts it
+// for a CloudControlContext (pkg/operator: the arguments, watching only the
+// environment's namespace), authenticated as that namespace's
+// ServiceAccount and holding only the rights the operator's RoleBinding
+// gives it; and the fake Cloud Control (cloudcontrol/test/fake) doing the
+// work in moto. Nothing here may reach AWS (fake/guard.go says how that is
+// enforced).
 package e2e
 
 import (
@@ -23,7 +27,9 @@ import (
 
 	ackv1alpha1 "github.com/aws-controllers-k8s/runtime/apis/core/v1alpha1"
 	"github.com/aws/aws-sdk-go-v2/aws"
+	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
+	rbacv1 "k8s.io/api/rbac/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -35,12 +41,22 @@ import (
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
+	"sigs.k8s.io/yaml"
 
+	ccv1alpha1 "github.com/highfivelabs/ack-extensions/cloudcontrol/apis/v1alpha1"
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/pkg/registry"
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/test/fake"
+	"github.com/highfivelabs/ack-extensions/pkg/operator"
 )
 
 const region = "us-west-2"
+
+// envNS is the environment the manager serves; otherNS is a namespace it
+// must leave alone.
+const (
+	envNS   = "team-a"
+	otherNS = "team-b"
+)
 
 type env struct {
 	c      client.Client
@@ -222,11 +238,61 @@ func start(t *testing.T) *env {
 		t.Fatal(err)
 	}
 
+	// The environment, as the operator makes it for a CloudControlContext:
+	// the ServiceAccount and the RoleBinding to the generated ClusterRole.
+	ctx := context.Background()
+	for _, n := range []string{envNS, otherNS} {
+		if err := c.Create(ctx, &corev1.Namespace{ObjectMeta: metav1.ObjectMeta{Name: n}}); err != nil {
+			t.Fatal(err)
+		}
+	}
+	roleYAML, err := os.ReadFile(filepath.Join(root, "cloudcontrol", "config", "rbac", "role.yaml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var role rbacv1.ClusterRole
+	if err := yaml.Unmarshal(roleYAML, &role); err != nil {
+		t.Fatal(err)
+	}
+	if err := c.Create(ctx, &role); err != nil {
+		t.Fatal(err)
+	}
+	cctx := &ccv1alpha1.CloudControlContext{
+		ObjectMeta: metav1.ObjectMeta{Name: ccv1alpha1.ContextName, Namespace: envNS, UID: "00000000-0000-0000-0000-000000000001"},
+		Spec:       ccv1alpha1.CloudControlContextSpec{RoleARN: "arn:aws:iam::123456789012:role/team-a", Region: region},
+	}
+	var kinds []string
+	for _, ty := range registry.Types {
+		kinds = append(kinds, ty.Ref())
+	}
+	op := &operator.ContextReconciler{Image: "unused"}
+	var managerArgs []string
+	for _, o := range op.PlanContext(cctx, kinds) {
+		switch o := o.(type) {
+		case *rbacv1.RoleBinding:
+			o.OwnerReferences = nil
+			if err := c.Create(ctx, o); err != nil {
+				t.Fatal(err)
+			}
+		case *appsv1.Deployment:
+			managerArgs = o.Spec.Template.Spec.Containers[0].Args
+		}
+	}
+	// The manager authenticates as the namespace's ServiceAccount would.
+	user, err := te.AddUser(envtest.User{
+		Name:   "system:serviceaccount:" + envNS + ":" + ccv1alpha1.ManagerServiceAccount,
+		Groups: []string{"system:serviceaccounts", "system:serviceaccounts:" + envNS, "system:authenticated"},
+	}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	bin := buildManager(t, root)
 	logs := &syncBuffer{}
-	ctx, cancel := context.WithCancel(context.Background())
-	cmd := exec.CommandContext(ctx, bin,
-		"--aws-region", region,
+	ctx, cancel := context.WithCancel(ctx)
+	// The operator's arguments, then the test's: the fake's endpoints, and
+	// local ports (a later flag wins).
+	args := append(append([]string{}, managerArgs...),
 		"--aws-endpoint-url", ccURL,
 		"--aws-identity-endpoint-url", motoURL,
 		"--allow-unsafe-aws-endpoint-urls",
@@ -236,13 +302,13 @@ func start(t *testing.T) *env {
 		"--reconcile-default-resync-seconds", "5",
 		"--metrics-addr", fmt.Sprintf("127.0.0.1:%d", freePort(t)),
 		"--healthz-addr", fmt.Sprintf("127.0.0.1:%d", freePort(t)),
-		"--enable-carm=false",
 	)
+	cmd := exec.CommandContext(ctx, bin, args...)
 	cmd.Env = fake.ChildEnv(
-		"KUBECONFIG="+writeKubeconfig(t, cfg),
+		"KUBECONFIG="+writeKubeconfig(t, user.Config()),
 		"HOME="+t.TempDir(),
 		"PATH="+os.Getenv("PATH"),
-		"ACK_SYSTEM_NAMESPACE=default",
+		"ACK_SYSTEM_NAMESPACE="+envNS,
 	)
 	cmd.Stdout, cmd.Stderr = logs, logs
 	if err := cmd.Start(); err != nil {
@@ -275,7 +341,7 @@ func gvk(kind string) schema.GroupVersionKind {
 func obj(kind, name string, spec map[string]any) *unstructured.Unstructured {
 	u := &unstructured.Unstructured{Object: map[string]any{"spec": spec}}
 	u.SetGroupVersionKind(gvk(kind))
-	u.SetNamespace("default")
+	u.SetNamespace(envNS)
 	u.SetName(name)
 	return u
 }
@@ -372,7 +438,7 @@ func (e *env) calls(action, typeName string) []fake.Call {
 }
 
 func secret(name string, data map[string]string) *corev1.Secret {
-	s := &corev1.Secret{ObjectMeta: metav1.ObjectMeta{Name: name, Namespace: "default"}, Type: corev1.SecretTypeOpaque, Data: map[string][]byte{}}
+	s := &corev1.Secret{ObjectMeta: metav1.ObjectMeta{Name: name, Namespace: envNS}, Type: corev1.SecretTypeOpaque, Data: map[string][]byte{}}
 	for k, v := range data {
 		s.Data[k] = []byte(v)
 	}

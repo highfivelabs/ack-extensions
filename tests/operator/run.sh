@@ -13,7 +13,13 @@
 #   3. ours (config/default) built by ko into the cluster;
 #   4. checks: the CRDs, our manager beside ACK's with ACK's arguments,
 #      credentials and role ARN, its narrow rights, gap kinds reconciling
-#      against moto, and the switch to sharing ACK's ServiceAccount.
+#      against moto, and the switch to sharing ACK's ServiceAccount;
+#   5. Cloud Control: a CloudControlContext in one namespace (an
+#      environment) runs a manager there, as that namespace's own
+#      ServiceAccount (no IRSA annotation: EKS Pod Identity binds it, which
+#      kind cannot show), with rights in that namespace only; it takes up
+#      its namespace's objects and leaves another namespace's alone; it
+#      goes with the context.
 #
 # Needs docker, kind, kubectl, helm, ko, crane, and hack/moto.sh (boto3
 # for the fixtures). Nothing touches real AWS.
@@ -101,11 +107,20 @@ echo "== ours: config/default by ko"
 kubectl kustomize config/default \
   | KO_DOCKER_REPO=kind.local KIND_CLUSTER_NAME="${CLUSTER}" ko resolve --platform="linux/${arch}" -f - >"${work}/ours.yaml"
 kubectl apply --server-side -f "${work}/ours.yaml" >/dev/null
+# Cloud Control managers talk to moto here, with dummy credentials: the
+# operator's test-only flags (never a context's: a namespace cannot point
+# its manager elsewhere). On EKS neither is set.
+kubectl -n ack-extensions-system patch deploy ack-extensions-operator --type=json -p '[
+  {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--cloudcontrol-manager-arg=--aws-endpoint-url=http://moto.fake-aws:5000"},
+  {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--cloudcontrol-manager-arg=--allow-unsafe-aws-endpoint-urls"},
+  {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--cloudcontrol-manager-env=AWS_ACCESS_KEY_ID=testing"},
+  {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--cloudcontrol-manager-env=AWS_SECRET_ACCESS_KEY=testing"}
+]' >/dev/null
 kubectl -n ack-extensions-system rollout status deploy/ack-extensions-operator --timeout=180s >/dev/null
-for crd in scheduledactions.applicationautoscaling.aws.hfl.dev scalingpolicies.autoscaling.aws.hfl.dev scheduledactions.autoscaling.aws.hfl.dev customergateways.ec2.aws.hfl.dev volumeattachments.ec2.aws.hfl.dev volumes.ec2.aws.hfl.dev vpngateways.ec2.aws.hfl.dev replicationconfigurations.ecr.aws.hfl.dev apidestinations.eventbridge.aws.hfl.dev connections.eventbridge.aws.hfl.dev rolepolicyattachments.iam.aws.hfl.dev accountpasswordpolicies.iam.aws.hfl.dev accountaliases.iam.aws.hfl.dev sshpublickeys.iam.aws.hfl.dev loginprofiles.iam.aws.hfl.dev usergroupmemberships.iam.aws.hfl.dev replicakeys.kms.aws.hfl.dev permissions.lambda.aws.hfl.dev policies.organizations.aws.hfl.dev policyattachments.organizations.aws.hfl.dev dbproxytargets.rds.aws.hfl.dev dbroleassociations.rds.aws.hfl.dev optiongroups.rds.aws.hfl.dev schedulegroups.scheduler.aws.hfl.dev schedules.scheduler.aws.hfl.dev webaclassociations.wafv2.aws.hfl.dev; do
+for crd in scheduledactions.applicationautoscaling.aws.hfl.dev scalingpolicies.autoscaling.aws.hfl.dev scheduledactions.autoscaling.aws.hfl.dev customergateways.ec2.aws.hfl.dev volumeattachments.ec2.aws.hfl.dev volumes.ec2.aws.hfl.dev vpngateways.ec2.aws.hfl.dev replicationconfigurations.ecr.aws.hfl.dev apidestinations.eventbridge.aws.hfl.dev connections.eventbridge.aws.hfl.dev rolepolicyattachments.iam.aws.hfl.dev accountpasswordpolicies.iam.aws.hfl.dev accountaliases.iam.aws.hfl.dev sshpublickeys.iam.aws.hfl.dev loginprofiles.iam.aws.hfl.dev usergroupmemberships.iam.aws.hfl.dev replicakeys.kms.aws.hfl.dev permissions.lambda.aws.hfl.dev policies.organizations.aws.hfl.dev policyattachments.organizations.aws.hfl.dev dbproxytargets.rds.aws.hfl.dev dbroleassociations.rds.aws.hfl.dev optiongroups.rds.aws.hfl.dev schedulegroups.scheduler.aws.hfl.dev schedules.scheduler.aws.hfl.dev webaclassociations.wafv2.aws.hfl.dev cloudcontrolcontexts.cloudcontrol.aws.hfl.dev samlproviders.iam.cloudcontrol.aws.hfl.dev transitgatewayroutetables.ec2.cloudcontrol.aws.hfl.dev detectors.guardduty.cloudcontrol.aws.hfl.dev; do
   kubectl get crd "${crd}" >/dev/null || fail "CRD ${crd} missing"
 done
-ok "CRDs installed: scheduledactions.applicationautoscaling, scalingpolicies.autoscaling, scheduledactions.autoscaling, customergateways.ec2, volumeattachments.ec2, volumes.ec2, vpngateways.ec2, replicationconfigurations.ecr, apidestinations.eventbridge, connections.eventbridge, rolepolicyattachments.iam, accountpasswordpolicies.iam, accountaliases.iam, sshpublickeys.iam, loginprofiles.iam, usergroupmemberships.iam, replicakeys.kms, permissions.lambda, policies.organizations, policyattachments.organizations, dbproxytargets.rds, dbroleassociations.rds, optiongroups.rds, schedulegroups.scheduler, schedules.scheduler, webaclassociations.wafv2 (*.aws.hfl.dev); operator running"
+ok "CRDs installed: scheduledactions.applicationautoscaling, scalingpolicies.autoscaling, scheduledactions.autoscaling, customergateways.ec2, volumeattachments.ec2, volumes.ec2, vpngateways.ec2, replicationconfigurations.ecr, apidestinations.eventbridge, connections.eventbridge, rolepolicyattachments.iam, accountpasswordpolicies.iam, accountaliases.iam, sshpublickeys.iam, loginprofiles.iam, usergroupmemberships.iam, replicakeys.kms, permissions.lambda, policies.organizations, policyattachments.organizations, dbproxytargets.rds, dbroleassociations.rds, optiongroups.rds, schedulegroups.scheduler, schedules.scheduler, webaclassociations.wafv2 (*.aws.hfl.dev); cloudcontrolcontexts.cloudcontrol, samlproviders.iam, transitgatewayroutetables.ec2, detectors.guardduty (*.cloudcontrol.aws.hfl.dev); operator running"
 
 echo "== identity own: our manager beside ACK's, as ACK's role"
 wait_for 180 "manager ${ACK_NS}/ack-extensions-rds-manager rolled out" \
@@ -212,5 +227,83 @@ kubectl -n "${ACK_NS}" rollout status deploy/ack-extensions-rds-manager --timeou
 ok "shared: ACK's ServiceAccount now also manages our kinds"
 kubectl -n "${ACK_NS}" annotate deploy "${ACK_DEPLOY}" aws.hfl.dev/identity- >/dev/null
 wait_for 60 "back to identity own" bash -c "[[ \$(kubectl -n ${ACK_NS} get deploy ack-extensions-rds-manager -o jsonpath='{.spec.template.spec.serviceAccountName}') == ack-extensions-rds-manager ]]"
+
+echo "== Cloud Control: one manager per environment (namespace), as that environment's identity"
+CC_ROLE="arn:aws:iam::123456789012:role/team-a-cloudcontrol"
+CC_SA=ack-extensions-cloudcontrol
+for n in team-a team-b; do kubectl create namespace "${n}" --dry-run=client -o yaml | kubectl apply -f - >/dev/null; done
+kubectl get deploy -A -l aws.hfl.dev/component=cloudcontrol -o name | grep -q . && fail "a Cloud Control manager without a CloudControlContext"
+if kubectl apply -f - >/dev/null 2>"${work}/cc-name.err" <<YAML
+apiVersion: cloudcontrol.aws.hfl.dev/v1alpha1
+kind: CloudControlContext
+metadata: {name: not-cloudcontrol, namespace: team-a}
+spec: {roleARN: "${CC_ROLE}", region: us-west-2}
+YAML
+then fail "a CloudControlContext not named cloudcontrol was accepted"; fi
+grep -q "must be named cloudcontrol" "${work}/cc-name.err" || fail "unexpected refusal: $(cat "${work}/cc-name.err")"
+ok "a context not named cloudcontrol is refused: one per namespace"
+cat <<YAML | kubectl apply -f - >/dev/null
+apiVersion: cloudcontrol.aws.hfl.dev/v1alpha1
+kind: CloudControlContext
+metadata: {name: cloudcontrol, namespace: team-a}
+spec:
+  roleARN: "${CC_ROLE}"
+  region: us-west-2
+  kinds: [SAMLProvider.iam, Detector.guardduty]
+YAML
+cc_ready() { [[ "$(kubectl -n team-a get cloudcontrolcontext cloudcontrol -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')" == True ]]; }
+wait_for 240 "CloudControlContext team-a/cloudcontrol Ready: its manager rolled out" cc_ready
+cc_pod_sa="$(kubectl -n team-a get pod -l app.kubernetes.io/name=ack-extensions-cloudcontrol-manager -o jsonpath='{.items[0].spec.serviceAccountName}')"
+[[ "${cc_pod_sa}" == "${CC_SA}" ]] || fail "the Cloud Control manager runs as ${cc_pod_sa}"
+kubectl -n team-a get sa "${CC_SA}" -o jsonpath='{.metadata.annotations}' | grep -q 'eks.amazonaws.com' && fail "an IRSA annotation on ${CC_SA}: the identity is EKS Pod Identity"
+cc_args="$(kubectl -n team-a get deploy ack-extensions-cloudcontrol-manager -o jsonpath='{.spec.template.spec.containers[0].args}')"
+for a in --watch-namespace=team-a --aws-region=us-west-2 --cloudcontrol-kinds=Detector.guardduty,SAMLProvider.iam; do
+  grep -q -- "${a}" <<<"${cc_args}" || fail "manager args lack ${a}: ${cc_args}"
+done
+pia="$(kubectl -n team-a get cloudcontrolcontext cloudcontrol -o jsonpath='{.status.podIdentityAssociation.namespace}/{.status.podIdentityAssociation.serviceAccount} -> {.status.podIdentityAssociation.roleARN}')"
+[[ "${pia}" == "team-a/${CC_SA} -> ${CC_ROLE}" ]] || fail "status.podIdentityAssociation: ${pia}"
+ok "manager team-a/ack-extensions-cloudcontrol-manager runs as team-a/${CC_SA} (no IRSA annotation), watching team-a; the association it needs: ${pia}"
+ccsar() { # ccsar <verb> <group> <resource> <namespace>: may team-a's manager?
+  local allowed
+  allowed="$(kubectl create -o jsonpath='{.status.allowed}' -f - <<SAR
+apiVersion: authorization.k8s.io/v1
+kind: SubjectAccessReview
+spec:
+  user: system:serviceaccount:team-a:${CC_SA}
+  groups: [system:serviceaccounts, "system:serviceaccounts:team-a", system:authenticated]
+  resourceAttributes: {verb: $1, group: "$2", resource: $3, namespace: "$4"}
+SAR
+)"
+  [[ "${allowed}" == true ]] && echo true || echo false
+}
+[[ "$(ccsar create iam.cloudcontrol.aws.hfl.dev samlproviders team-a)" == true ]] || fail "team-a's manager cannot create SAMLProviders in team-a"
+[[ "$(ccsar get "" secrets team-a)" == true ]] || fail "team-a's manager cannot read team-a's Secrets (Secret references)"
+[[ "$(ccsar create iam.cloudcontrol.aws.hfl.dev samlproviders team-b)" == false ]] || fail "team-a's manager may create SAMLProviders in team-b"
+[[ "$(ccsar get "" secrets team-b)" == false ]] || fail "team-a's manager may read team-b's Secrets"
+[[ "$(ccsar list "" namespaces "")" == false ]] || fail "team-a's manager may list namespaces"
+[[ "$(ccsar create rbac.authorization.k8s.io rolebindings team-a)" == false ]] || fail "team-a's manager may create RoleBindings"
+ok "rights: team-a's manager manages Cloud Control kinds and reads Secrets in team-a only; nothing in team-b, nothing cluster-wide"
+for n in team-a team-b; do
+  cat <<YAML | kubectl apply -f - >/dev/null
+apiVersion: guardduty.cloudcontrol.aws.hfl.dev/v1alpha1
+kind: Detector
+metadata: {name: account-detector, namespace: ${n}}
+spec: {enable: true}
+YAML
+done
+taken() { kubectl -n team-a get detectors.guardduty.cloudcontrol.aws.hfl.dev account-detector -o jsonpath='{.metadata.finalizers}' | grep -q 'finalizers.guardduty.cloudcontrol.aws.hfl.dev'; }
+wait_for 120 "team-a's Detector taken up by team-a's manager (moto has no Cloud Control API; the request fails there, recoverably)" taken
+sleep 15
+[[ -z "$(kubectl -n team-b get detectors.guardduty.cloudcontrol.aws.hfl.dev account-detector -o jsonpath='{.metadata.finalizers}{.status}')" ]] || fail "team-b's Detector was touched without a context in team-b"
+ok "team-b's Detector left alone: no context there, no manager"
+kubectl -n team-a delete cloudcontrolcontext cloudcontrol >/dev/null
+cc_gone() { ! kubectl -n team-a get deploy ack-extensions-cloudcontrol-manager >/dev/null 2>&1 && ! kubectl -n team-a get sa "${CC_SA}" >/dev/null 2>&1 && ! kubectl -n team-a get rolebinding ack-extensions-cloudcontrol-manager >/dev/null 2>&1; }
+wait_for 120 "the context deleted: its manager, ServiceAccount and RoleBinding go with it" cc_gone
+# The manager is gone, so nothing finishes the Detector's delete: drop its
+# finalizer (the resource was never made; moto has no Cloud Control API).
+for n in team-a team-b; do
+  kubectl -n "${n}" patch detectors.guardduty.cloudcontrol.aws.hfl.dev account-detector --type=merge -p '{"metadata":{"finalizers":null}}' >/dev/null
+  kubectl -n "${n}" delete detectors.guardduty.cloudcontrol.aws.hfl.dev account-detector --wait=false >/dev/null 2>&1 || true
+done
 
 echo "all checks passed (cluster ${CLUSTER} left running; kind delete cluster --name ${CLUSTER})"
