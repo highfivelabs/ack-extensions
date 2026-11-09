@@ -887,6 +887,13 @@ regenerates differently.
 - **Read:** `InvalidVolume.NotFound` is not found, and a volume
   `deleting` or `deleted` reads as gone.
 - **Synced** when `available` or `in-use`.
+- **No attachments in status.** `Volume.Attachments` and
+  `CreateVolumeOutput.Attachments` are ignored. The attachment belongs to
+  the `VolumeAttachment` kind that follows. The generator also cannot
+  rename a shape, so leaving the field in would have emitted a
+  `VolumeAttachment` type that clashes with that kind's name, which
+  matches Terraform's `aws_volume_attachment`. `status.state` still says
+  `in-use`.
 
 **Not proven:** a modification's `modifying` and `optimizing` states,
 and EBS's limit of one modification per six hours. moto applies a

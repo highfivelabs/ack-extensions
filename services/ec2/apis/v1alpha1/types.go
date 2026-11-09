@@ -5265,18 +5265,6 @@ type VerifiedAccessTrustProviderCondensed struct {
 	VerifiedAccessTrustProviderID *string `json:"verifiedAccessTrustProviderID,omitempty"`
 }
 
-// Describes volume attachment details.
-type VolumeAttachment struct {
-	AssociatedResource    *string      `json:"associatedResource,omitempty"`
-	AttachTime            *metav1.Time `json:"attachTime,omitempty"`
-	DeleteOnTermination   *bool        `json:"deleteOnTermination,omitempty"`
-	Device                *string      `json:"device,omitempty"`
-	InstanceID            *string      `json:"instanceID,omitempty"`
-	InstanceOwningService *string      `json:"instanceOwningService,omitempty"`
-	State                 *string      `json:"state,omitempty"`
-	VolumeID              *string      `json:"volumeID,omitempty"`
-}
-
 // Describes an EBS volume.
 type VolumeDetail struct {
 	Size *int64 `json:"size,omitempty"`
@@ -5338,14 +5326,13 @@ type VolumeStatusItem struct {
 
 // Describes a volume.
 type Volume_SDK struct {
-	Attachments        []*VolumeAttachment `json:"attachments,omitempty"`
-	AvailabilityZone   *string             `json:"availabilityZone,omitempty"`
-	CreateTime         *metav1.Time        `json:"createTime,omitempty"`
-	Encrypted          *bool               `json:"encrypted,omitempty"`
-	FastRestored       *bool               `json:"fastRestored,omitempty"`
-	IOPS               *int64              `json:"iops,omitempty"`
-	KMSKeyID           *string             `json:"kmsKeyID,omitempty"`
-	MultiAttachEnabled *bool               `json:"multiAttachEnabled,omitempty"`
+	AvailabilityZone   *string      `json:"availabilityZone,omitempty"`
+	CreateTime         *metav1.Time `json:"createTime,omitempty"`
+	Encrypted          *bool        `json:"encrypted,omitempty"`
+	FastRestored       *bool        `json:"fastRestored,omitempty"`
+	IOPS               *int64       `json:"iops,omitempty"`
+	KMSKeyID           *string      `json:"kmsKeyID,omitempty"`
+	MultiAttachEnabled *bool        `json:"multiAttachEnabled,omitempty"`
 	// Describes whether the resource is managed by an service provider and, if
 	// so, describes the service provider that manages it.
 	Operator   *OperatorResponse `json:"operator,omitempty"`

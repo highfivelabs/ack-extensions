@@ -161,12 +161,6 @@ type VolumeStatus struct {
 	// resource
 	// +kubebuilder:validation:Optional
 	Conditions []*ackv1alpha1.Condition `json:"conditions"`
-	//
-	// This parameter is not returned by CreateVolume.
-	//
-	// Information about the volume attachments.
-	// +kubebuilder:validation:Optional
-	Attachments []*VolumeAttachment `json:"attachments,omitempty"`
 	// The time stamp when volume creation was initiated.
 	// +kubebuilder:validation:Optional
 	CreateTime *metav1.Time `json:"createTime,omitempty"`

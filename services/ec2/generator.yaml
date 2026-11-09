@@ -148,6 +148,11 @@ ignore:
     - CreateVolumeInput.ClientToken
     - CreateVolumeInput.TagSpecifications
     - CreateVolumeInput.Operator
+    # The attachments are the VolumeAttachment kind's to report; ignoring
+    # them also keeps the generator from emitting a VolumeAttachment type
+    # that would clash with that kind.
+    - Volume.Attachments
+    - CreateVolumeOutput.Attachments
   resource_names:
     - CapacityReservation
     - CapacityReservationBySplitting

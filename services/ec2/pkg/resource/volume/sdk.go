@@ -92,40 +92,6 @@ func (rm *resourceManager) sdkFind(
 
 	found := false
 	for _, elem := range resp.Volumes {
-		if elem.Attachments != nil {
-			f0 := []*svcapitypes.VolumeAttachment{}
-			for _, f0iter := range elem.Attachments {
-				f0elem := &svcapitypes.VolumeAttachment{}
-				if f0iter.AssociatedResource != nil {
-					f0elem.AssociatedResource = f0iter.AssociatedResource
-				}
-				if f0iter.AttachTime != nil {
-					f0elem.AttachTime = &metav1.Time{*f0iter.AttachTime}
-				}
-				if f0iter.DeleteOnTermination != nil {
-					f0elem.DeleteOnTermination = f0iter.DeleteOnTermination
-				}
-				if f0iter.Device != nil {
-					f0elem.Device = f0iter.Device
-				}
-				if f0iter.InstanceId != nil {
-					f0elem.InstanceID = f0iter.InstanceId
-				}
-				if f0iter.InstanceOwningService != nil {
-					f0elem.InstanceOwningService = f0iter.InstanceOwningService
-				}
-				if f0iter.State != "" {
-					f0elem.State = aws.String(string(f0iter.State))
-				}
-				if f0iter.VolumeId != nil {
-					f0elem.VolumeID = f0iter.VolumeId
-				}
-				f0 = append(f0, f0elem)
-			}
-			ko.Status.Attachments = f0
-		} else {
-			ko.Status.Attachments = nil
-		}
 		if elem.AvailabilityZone != nil {
 			ko.Spec.AvailabilityZone = elem.AvailabilityZone
 		} else {
@@ -163,14 +129,14 @@ func (rm *resourceManager) sdkFind(
 			ko.Spec.MultiAttachEnabled = nil
 		}
 		if elem.Operator != nil {
-			f8 := &svcapitypes.OperatorResponse{}
+			f7 := &svcapitypes.OperatorResponse{}
 			if elem.Operator.Managed != nil {
-				f8.Managed = elem.Operator.Managed
+				f7.Managed = elem.Operator.Managed
 			}
 			if elem.Operator.Principal != nil {
-				f8.Principal = elem.Operator.Principal
+				f7.Principal = elem.Operator.Principal
 			}
-			ko.Status.Operator = f8
+			ko.Status.Operator = f7
 		} else {
 			ko.Status.Operator = nil
 		}
@@ -201,18 +167,18 @@ func (rm *resourceManager) sdkFind(
 			ko.Status.State = nil
 		}
 		if elem.Tags != nil {
-			f14 := []*svcapitypes.Tag{}
-			for _, f14iter := range elem.Tags {
-				f14elem := &svcapitypes.Tag{}
-				if f14iter.Key != nil {
-					f14elem.Key = f14iter.Key
+			f13 := []*svcapitypes.Tag{}
+			for _, f13iter := range elem.Tags {
+				f13elem := &svcapitypes.Tag{}
+				if f13iter.Key != nil {
+					f13elem.Key = f13iter.Key
 				}
-				if f14iter.Value != nil {
-					f14elem.Value = f14iter.Value
+				if f13iter.Value != nil {
+					f13elem.Value = f13iter.Value
 				}
-				f14 = append(f14, f14elem)
+				f13 = append(f13, f13elem)
 			}
-			ko.Spec.Tags = f14
+			ko.Spec.Tags = f13
 		} else {
 			ko.Spec.Tags = nil
 		}
@@ -304,40 +270,6 @@ func (rm *resourceManager) sdkCreate(
 	// the original Kubernetes object we passed to the function
 	ko := desired.ko.DeepCopy()
 
-	if resp.Attachments != nil {
-		f0 := []*svcapitypes.VolumeAttachment{}
-		for _, f0iter := range resp.Attachments {
-			f0elem := &svcapitypes.VolumeAttachment{}
-			if f0iter.AssociatedResource != nil {
-				f0elem.AssociatedResource = f0iter.AssociatedResource
-			}
-			if f0iter.AttachTime != nil {
-				f0elem.AttachTime = &metav1.Time{*f0iter.AttachTime}
-			}
-			if f0iter.DeleteOnTermination != nil {
-				f0elem.DeleteOnTermination = f0iter.DeleteOnTermination
-			}
-			if f0iter.Device != nil {
-				f0elem.Device = f0iter.Device
-			}
-			if f0iter.InstanceId != nil {
-				f0elem.InstanceID = f0iter.InstanceId
-			}
-			if f0iter.InstanceOwningService != nil {
-				f0elem.InstanceOwningService = f0iter.InstanceOwningService
-			}
-			if f0iter.State != "" {
-				f0elem.State = aws.String(string(f0iter.State))
-			}
-			if f0iter.VolumeId != nil {
-				f0elem.VolumeID = f0iter.VolumeId
-			}
-			f0 = append(f0, f0elem)
-		}
-		ko.Status.Attachments = f0
-	} else {
-		ko.Status.Attachments = nil
-	}
 	if resp.AvailabilityZone != nil {
 		ko.Spec.AvailabilityZone = resp.AvailabilityZone
 	} else {
@@ -375,14 +307,14 @@ func (rm *resourceManager) sdkCreate(
 		ko.Spec.MultiAttachEnabled = nil
 	}
 	if resp.Operator != nil {
-		f8 := &svcapitypes.OperatorResponse{}
+		f7 := &svcapitypes.OperatorResponse{}
 		if resp.Operator.Managed != nil {
-			f8.Managed = resp.Operator.Managed
+			f7.Managed = resp.Operator.Managed
 		}
 		if resp.Operator.Principal != nil {
-			f8.Principal = resp.Operator.Principal
+			f7.Principal = resp.Operator.Principal
 		}
-		ko.Status.Operator = f8
+		ko.Status.Operator = f7
 	} else {
 		ko.Status.Operator = nil
 	}
@@ -413,18 +345,18 @@ func (rm *resourceManager) sdkCreate(
 		ko.Status.State = nil
 	}
 	if resp.Tags != nil {
-		f14 := []*svcapitypes.Tag{}
-		for _, f14iter := range resp.Tags {
-			f14elem := &svcapitypes.Tag{}
-			if f14iter.Key != nil {
-				f14elem.Key = f14iter.Key
+		f13 := []*svcapitypes.Tag{}
+		for _, f13iter := range resp.Tags {
+			f13elem := &svcapitypes.Tag{}
+			if f13iter.Key != nil {
+				f13elem.Key = f13iter.Key
 			}
-			if f14iter.Value != nil {
-				f14elem.Value = f14iter.Value
+			if f13iter.Value != nil {
+				f13elem.Value = f13iter.Value
 			}
-			f14 = append(f14, f14elem)
+			f13 = append(f13, f13elem)
 		}
-		ko.Spec.Tags = f14
+		ko.Spec.Tags = f13
 	} else {
 		ko.Spec.Tags = nil
 	}

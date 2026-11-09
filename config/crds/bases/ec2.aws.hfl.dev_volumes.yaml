@@ -248,33 +248,6 @@ spec:
                 - ownerAccountID
                 - region
                 type: object
-              attachments:
-                description: |-
-                  This parameter is not returned by CreateVolume.
-
-                  Information about the volume attachments.
-                items:
-                  description: Describes volume attachment details.
-                  properties:
-                    associatedResource:
-                      type: string
-                    attachTime:
-                      format: date-time
-                      type: string
-                    deleteOnTermination:
-                      type: boolean
-                    device:
-                      type: string
-                    instanceID:
-                      type: string
-                    instanceOwningService:
-                      type: string
-                    state:
-                      type: string
-                    volumeID:
-                      type: string
-                  type: object
-                type: array
               conditions:
                 description: |-
                   All CRs managed by ACK have a common `Status.Conditions` member that
