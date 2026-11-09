@@ -121,8 +121,11 @@ func TestWebACLAssociation(t *testing.T) {
 			t.Fatal(err)
 		}
 		got := waitSynced(t, web)
-		if aws.ToString(got.Spec.WebACLARN) != aclARN || aws.ToString(got.Status.WebACLName) != "edge" {
-			t.Fatalf("spec.webACLARN %q (want %q), status.webACLName %q", aws.ToString(got.Spec.WebACLARN), aclARN, aws.ToString(got.Status.WebACLName))
+		// The runtime resolves webACLRef for each reconcile and does not
+		// write the ARN into the stored spec; the cloud shows which web ACL
+		// it associated.
+		if aws.ToString(got.Status.WebACLName) != "edge" {
+			t.Fatalf("status.webACLName %q", aws.ToString(got.Status.WebACLName))
 		}
 		if a, err := webACLOf(ctx, cloud, lb); err != nil || a != aclARN {
 			t.Fatalf("cloud web ACL for the load balancer %q: %v", a, err)
