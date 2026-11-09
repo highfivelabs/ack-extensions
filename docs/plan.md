@@ -1,6 +1,6 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has twenty-one kinds:
+Status, 2026-11-09: the repository has twenty-three kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
@@ -8,7 +8,7 @@ Status, 2026-11-09: the repository has twenty-one kinds:
   `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
-- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile` and `SSHPublicKey`;
+- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias` and `AccountPasswordPolicy`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
 - `rds.aws.hfl.dev` `OptionGroup`;
@@ -212,6 +212,19 @@ status) and the fake cloud through the real AWS SDK clients.
     key; delete deletes it
 --- PASS: TestStatusDefaultAndBodyAreNoDrift, TestStatusIsCompared
           (SSH public key unit tests)
+--- PASS: TestAccountAlias
+    the alias is set and settles (no update across three resyncs); an
+    alias set outside Kubernetes is put back; the CRD refuses what IAM
+    would; the alias cannot change; deletion-policy retain leaves it;
+    delete deletes it
+--- PASS: TestSameAliasIsNoDrift (account alias unit test)
+--- PASS: TestAccountPasswordPolicy
+    the policy is set, IAM's defaults are no drift, and it settles (no
+    update across three resyncs); a changed length is put; a change
+    outside Kubernetes is put back; the CRD refuses what IAM would;
+    deletion-policy retain leaves the policy; delete deletes it
+--- PASS: TestUnsetFieldsAreNoDrift, TestSetFieldsAreCompared
+          (password policy unit tests)
 --- PASS: TestRolePolicyAttachment
     create attaches the policy; references resolve to ACK's Role; delete
     detaches the policy; deletion-policy retain keeps the attachment
@@ -472,6 +485,12 @@ controller to show it can fail:
 - **IAM SSH public keys.** moto does not parse the key body (IAM
   refuses one that is not a valid RSA key of 2048 bits or more), returns
   it as uploaded, and does not refuse a key the user already has.
+- **IAM account alias.** moto replaces the alias on create, as AWS
+  does, and does not check that another account already has it (AWS
+  answers `EntityAlreadyExists`).
+- **IAM password policy.** moto stores the policy and fills IAM's
+  defaults for fields left out, as AWS does; it checks the lengths and
+  ages IAM limits.
 - **KMS replica keys.**
   - moto keeps a replica in its own Region's backend, under the primary
     key's key ID, as AWS does.
@@ -540,7 +559,7 @@ its master (5.2.5 is the pin).
 | 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`; no pull request or issue, rechecked 2026-11-09) | yes | built |
 | 13 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237: mergeable, active 2026-11-06 | none | skipped: may be close to merging, and moto has none of it |
 | 14 | Route 53 DNSSEC and `KeySigningKey`, VPC association authorization | ignored in route53-controller's `generator.yaml` | none | skipped: moto has none of it |
-| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | `SSHPublicKey` built; the rest under way |
+| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | `AccountPasswordPolicy` built; the rest under way |
 | 16 | EC2 `PlacementGroup` | ignored in ec2-controller's `generator.yaml` | none | skipped: moto has none of it |
 | 17 | S3 `Object`, the account's public access block | none | yes | to build |
 | 18 | EC2 `KeyPair` | ec2-controller PR #396: both reviews' changes made, main merged in 2026-11-04, mergeable | yes | skipped: close to merging; wait for the release |
@@ -1244,6 +1263,54 @@ create, and it is known by an ID IAM gives it.
 
 **Not proven:** IAM parsing the key (moto does not), a duplicate key
 being refused, and real AWS.
+### 6.21 `iam.aws.hfl.dev` `AccountAlias`
+
+The AWS account's alias, the name in its sign-in URL: Terraform's
+`aws_iam_account_alias`. ACK's iam-controller `v1.11.3` has none, and no
+pull request adds one (rechecked 2026-11-09).
+
+**Hand-written** on ACK's runtime, on PR #184's skeleton: an
+account-wide setting (`CreateAccountAlias`, `ListAccountAliases`,
+`DeleteAccountAlias`), not a resource the generator reads.
+
+- **Spec:** `accountAlias`, immutable, with IAM's pattern (except the
+  rule against two hyphens in a row, which a CRD pattern cannot say).
+- **Read:** the account's alias. Another alias, or none, is not this
+  object's: the create that follows sets it back, since a new alias
+  replaces the old. A new object sets the alias even when the account
+  already has it, instead of ACK's "already exists".
+- **Delete** deletes the alias only while it is still this object's.
+- **One per account.** Two objects would set their aliases in turn, as
+  for `ReplicationConfiguration`.
+- **Errors:** an alias another account has (`EntityAlreadyExists`) is
+  terminal.
+
+**Not proven:** an alias another account already has (moto does not
+check), and real AWS.
+### 6.22 `iam.aws.hfl.dev` `AccountPasswordPolicy`
+
+The AWS account's password policy for IAM users: Terraform's
+`aws_iam_account_password_policy`. ACK's iam-controller `v1.11.3` has
+none, and no pull request adds one (rechecked 2026-11-09).
+
+**Hand-written** on ACK's runtime, on PR #184's skeleton: an
+account-wide setting (`UpdateAccountPasswordPolicy`,
+`GetAccountPasswordPolicy`, `DeleteAccountPasswordPolicy`), not a
+resource the generator reads.
+
+- **Spec:** the nine settings, each optional, with IAM's limits in the
+  CRD. A field left out keeps IAM's default and is no drift; IAM reports
+  every field.
+- **Update** puts the whole policy (`UpdateAccountPasswordPolicy`
+  replaces it), also when changed outside Kubernetes.
+- **Delete** deletes the policy, so IAM's defaults apply.
+- **One per account.** An account's existing policy is taken over by a
+  new object (its first read finds nothing, so the create puts the
+  policy, instead of ACK's "already exists"), and two objects would put theirs in turn, as for
+  `AccountAlias`.
+- **Synced** once read; `status.expirePasswords` as IAM reports it.
+
+**Not proven:** real AWS.
 
 ### 6.23 `scheduler.aws.hfl.dev` `ScheduleGroup`
 
