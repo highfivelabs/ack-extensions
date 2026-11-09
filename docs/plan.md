@@ -445,7 +445,7 @@ its master (5.2.5 is the pin).
 | 7 | EC2 `VPNGateway` (attachment, route propagation), `CustomerGateway` | ignored in ec2-controller `v1.23.1`'s `generator.yaml` | yes, except `EnableVgwRoutePropagation` | built: `CustomerGateway`, `VPNGateway` (attachment); route propagation not built (moto has none of it) |
 | 8 | EBS `Volume`, `VolumeAttachment` | ignored in ec2-controller's `generator.yaml`; `aws-controllers-k8s/ebs-controller` exists, with no release | yes | to build |
 | 9 | CloudWatch Logs `MetricFilter`; CloudWatch `CompositeAlarm` | metric filters: cloudwatchlogs-controller PR #61, as a field on ACK's `LogGroup`. `CompositeAlarm`: ignored in cloudwatch-controller `v1.11.0`. | metric filters yes; `PutCompositeAlarm` no | skipped. Metric filters wait on open question 1. `CompositeAlarm`: moto has none of it. |
-| 10 | EventBridge Scheduler `Schedule` and `ScheduleGroup`; EventBridge `Connection` and `ApiDestination` | Scheduler: no controller (`community` issue #2784). `Connection` and `ApiDestination`: ignored in eventbridge-controller `v1.9.2`. | yes | `Connection` and `ApiDestination` built; Scheduler next |
+| 10 | EventBridge Scheduler `Schedule` and `ScheduleGroup`; EventBridge `Connection` and `ApiDestination` | Scheduler: no controller (`community` issue #2784). `Connection` and `ApiDestination`: ignored in eventbridge-controller `v1.9.2`. | yes | `Connection` and `ApiDestination` built; Scheduler skipped: ACK has no Scheduler controller for our manager to run beside (open question 8) |
 | 11 | ECR `ReplicationConfiguration`; `RegistryPolicy`, `RegistryScanningConfiguration` | `ReplicationConfiguration`: ecr-controller PR #121, open, conflicts with base, no review, last updated 2026-10-18. The others: none. | yes (one replication rule at most) | `ReplicationConfiguration` written, waits for its turn (branch `agent/ecr-replication-configuration`) |
 | 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`) | yes | to build |
 | 13 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237: mergeable, active 2026-11-06 | none | skipped: may be close to merging, and moto has none of it |
@@ -1187,3 +1187,18 @@ Before it can run on a real cluster:
 
    Proposed: the second, the same answer as question 3, so the two
    behave alike.
+8. **A service ACK has no controller for** (EventBridge Scheduler,
+   rank 10). The operator runs our manager beside an ACK controller, and
+   takes its identity from it: the ServiceAccount's role annotations, the
+   credentials Secret, the region, CARM and the flags (section 7). With no
+   ACK Scheduler controller there is nothing to find, nothing to copy the
+   identity from, and the manager would never run. Options:
+   - run it beside another ACK controller (EventBridge's, as Scheduler is
+     an EventBridge product), with that controller's identity, which then
+     needs the `scheduler:*` rights too;
+   - an install of its own: a Deployment, ServiceAccount and identity the
+     user configures, as ACK's chart does, outside the operator;
+   - leave such services out until ACK has a controller for them.
+
+   Proposed: the first, beside EventBridge's controller, documented as
+   needing `scheduler:*` on that role. Scheduler waits for the answer.
