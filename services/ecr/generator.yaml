@@ -1,0 +1,16 @@
+# Generator configuration for ack-extensions's ECR kinds (ecr.aws.hfl.dev).
+#
+# ECR's registry replication configuration is a registry-wide singleton
+# with no Create/Describe/Delete of its own (PutReplicationConfiguration
+# and DescribeRegistry), so the generator cannot produce
+# ReplicationConfiguration; it is written by hand on ACK's runtime
+# (services/ecr/pkg/resource/replication_configuration), from upstream pull
+# request #121's API and behaviour. Every resource the generator can find
+# is ignored: ACK's ecr-controller has them. It generates only the
+# service's scaffolding (the API group, the resource registry, the
+# controller's main).
+ignore:
+  resource_names:
+    - PullThroughCacheRule
+    - Repository
+    - RepositoryCreationTemplate

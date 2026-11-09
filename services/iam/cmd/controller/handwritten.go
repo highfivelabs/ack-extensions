@@ -12,13 +12,17 @@ import (
 	// RolePolicyAttachment has no Create/Delete pair in IAM's model, so it
 	// is not generated; registering its package adds its manager factory.
 	_ "github.com/highfivelabs/ack-extensions/services/iam/pkg/resource/role_policy_attachment"
+	// UserGroupMembership is AddUserToGroup and RemoveUserFromGroup, which
+	// the generator does not read as a create and delete either.
+	_ "github.com/highfivelabs/ack-extensions/services/iam/pkg/resource/user_group_membership"
 	// SSHPublicKey is UploadSSHPublicKey, which the generator does not read
 	// as a create.
 	_ "github.com/highfivelabs/ack-extensions/services/iam/pkg/resource/ssh_public_key"
 )
 
 func init() {
-	// roleRef and policyRef name ACK's own Role and Policy
-	// (iam.services.k8s.aws), read through the manager's client.
+	// roleRef and policyRef name ACK's own Role and Policy, and userRef and
+	// groupRefs its User and Group (iam.services.k8s.aws), read through the
+	// manager's client.
 	_ = ackiamapitypes.AddToScheme(scheme)
 }
