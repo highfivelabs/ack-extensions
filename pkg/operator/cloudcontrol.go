@@ -111,7 +111,7 @@ func (r *ContextReconciler) SetupWithManager(mgr ctrl.Manager) error {
 		return []reconcile.Request{{NamespacedName: types.NamespacedName{Namespace: env, Name: ccv1alpha1.ContextName}}}
 	})
 	return ctrl.NewControllerManagedBy(mgr).
-		Named(Name + "-cloudcontrol").
+		Named(Name+"-cloudcontrol").
 		For(&ccv1alpha1.CloudControlContext{}).
 		Owns(&rbacv1.RoleBinding{}).
 		Watches(&appsv1.Deployment{}, toContext).
