@@ -81,12 +81,23 @@ func inputFromSpec(s svcapitypes.AccountPasswordPolicySpec) *svcsdk.UpdateAccoun
 	}
 }
 
+// made is whether this object has put the policy once.
+func made(ko *svcapitypes.AccountPasswordPolicy) bool {
+	return ko.Status.ACKResourceMetadata != nil && ko.Status.ACKResourceMetadata.ARN != nil
+}
+
 // sdkFind reads the account's password policy. An account with none has
-// no policy to find.
+// no policy to find. Before this object has put the policy once (no ARN
+// yet), it has nothing to find either: the create takes over an existing
+// policy, rather than the runtime refusing an object for a setting that
+// already exists.
 func (rm *resourceManager) sdkFind(ctx context.Context, r *resource) (latest *resource, err error) {
 	rlog := ackrtlog.FromContext(ctx)
 	exit := rlog.Trace("rm.sdkFind")
 	defer func() { exit(err) }()
+	if !made(r.ko) {
+		return nil, ackerr.NotFound
+	}
 	resp, err := rm.sdkapi.GetAccountPasswordPolicy(ctx, &svcsdk.GetAccountPasswordPolicyInput{})
 	rm.metrics.RecordAPICall("READ_ONE", "GetAccountPasswordPolicy", err)
 	if err != nil {

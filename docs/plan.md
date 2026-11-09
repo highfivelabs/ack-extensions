@@ -1095,8 +1095,9 @@ resource the generator reads.
 - **Update** puts the whole policy (`UpdateAccountPasswordPolicy`
   replaces it), also when changed outside Kubernetes.
 - **Delete** deletes the policy, so IAM's defaults apply.
-- **One per account.** An account's existing policy is taken over by the
-  first object, and two objects would put theirs in turn, as for
+- **One per account.** An account's existing policy is taken over by a
+  new object (its first read finds nothing, so the create puts the
+  policy, instead of ACK's "already exists"), and two objects would put theirs in turn, as for
   `AccountAlias`.
 - **Synced** once read; `status.expirePasswords` as IAM reports it.
 
