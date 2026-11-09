@@ -7,7 +7,7 @@ package registry
 
 // Types are the kinds served, from cloudcontrol/types.yaml.
 var Types = []*Type{
-	{Group: "iam.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "SAMLProvider", Plural: "samlproviders", TypeName: "AWS::IAM::SAMLProvider", SchemaFile: "schemas/aws-iam-samlprovider.json"},
+	{Group: "iam.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "SAMLProvider", Plural: "samlproviders", TypeName: "AWS::IAM::SAMLProvider", SchemaFile: "schemas/aws-iam-samlprovider.json", Secrets: []string{"/properties/AddPrivateKey"}},
 	{Group: "ec2.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "TransitGatewayRouteTable", Plural: "transitgatewayroutetables", TypeName: "AWS::EC2::TransitGatewayRouteTable", SchemaFile: "schemas/aws-ec2-transitgatewayroutetable.json"},
 	{Group: "guardduty.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "Detector", Plural: "detectors", TypeName: "AWS::GuardDuty::Detector", SchemaFile: "schemas/aws-guardduty-detector.json"},
 }

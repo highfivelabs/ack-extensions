@@ -6,14 +6,15 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 
 | Type | Kind | Spec fields | Status fields | CEL rules | Secret refs | Lossy nodes | Patterns dropped |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| `AWS::IAM::SAMLProvider` | `SAMLProvider.iam.cloudcontrol.aws.hfl.dev` | 7 | 2 | 6 | 2 | 0 | 3 |
+| `AWS::IAM::SAMLProvider` | `SAMLProvider.iam.cloudcontrol.aws.hfl.dev` | 7 | 2 | 6 | 1 | 0 | 4 |
 | `AWS::EC2::TransitGatewayRouteTable` | `TransitGatewayRouteTable.ec2.cloudcontrol.aws.hfl.dev` | 2 | 1 | 2 | 0 | 0 | 0 |
 | `AWS::GuardDuty::Detector` | `Detector.guardduty.cloudcontrol.aws.hfl.dev` | 5 | 1 | 0 | 0 | 0 | 0 |
 
 ## `AWS::IAM::SAMLProvider`
 
-- Secret references (write-only strings): `/properties/AddPrivateKey`, `/properties/RemovePrivateKey`
-- Write-only kept as plain fields: none
+- Secret references (opted in, `secrets` in types.yaml): `/properties/AddPrivateKey`
+- Write-only kept as plain fields: `/properties/RemovePrivateKey`
+- Of those, write-only strings that could be opted in if they are secrets: `/properties/RemovePrivateKey`
 - Create-only paths without a CEL rule: none
 - Nodes made `x-kubernetes-preserve-unknown-fields`: none
 - Read-only properties nested in writable objects (dropped): none
@@ -23,8 +24,9 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 
 ## `AWS::EC2::TransitGatewayRouteTable`
 
-- Secret references (write-only strings): none
+- Secret references (opted in, `secrets` in types.yaml): none
 - Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
 - Nodes made `x-kubernetes-preserve-unknown-fields`: none
 - Read-only properties nested in writable objects (dropped): none
@@ -34,8 +36,9 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 
 ## `AWS::GuardDuty::Detector`
 
-- Secret references (write-only strings): none
+- Secret references (opted in, `secrets` in types.yaml): none
 - Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
 - Nodes made `x-kubernetes-preserve-unknown-fields`: none
 - Read-only properties nested in writable objects (dropped): none

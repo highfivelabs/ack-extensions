@@ -14,7 +14,7 @@ import (
 
 func TestGeneratedCRDs(t *testing.T) {
 	for _, ty := range registry.Types {
-		crd, rep, err := crdgen.Generate(ty.Schema(), crdgen.Options{Group: ty.Group, Version: ty.Version, Kind: ty.Kind})
+		crd, rep, err := crdgen.Generate(ty.Schema(), crdgen.Options{Group: ty.Group, Version: ty.Version, Kind: ty.Kind, Secrets: ty.Secrets})
 		if err != nil {
 			t.Fatalf("%s: %v", ty.TypeName, err)
 		}
@@ -53,8 +53,13 @@ func TestGeneratedCRDs(t *testing.T) {
 			if !presence {
 				t.Errorf("no presence rule for name on spec: %+v", spec.XValidations)
 			}
-			if len(rep.SecretRefs) != 2 {
+			// Opted in: the private key. Not opted in: the key ID to
+			// remove, write-only but no secret, a plain string.
+			if len(rep.SecretRefs) != 1 || rep.SecretRefs[0] != "/properties/AddPrivateKey" {
 				t.Errorf("secret refs %v", rep.SecretRefs)
+			}
+			if rm := spec.Properties["removePrivateKey"]; rm.Type != "string" {
+				t.Errorf("write-only removePrivateKey not opted in, yet not a plain string: %+v", rm)
 			}
 		case "AWS::EC2::TransitGatewayRouteTable":
 			if len(spec.Required) != 1 || spec.Required[0] != "transitGatewayId" {

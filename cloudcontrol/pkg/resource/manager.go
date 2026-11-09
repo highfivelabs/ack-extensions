@@ -108,7 +108,7 @@ func inProgress(ev *cctypes.ProgressEvent) error {
 func (m *manager) model(ctx context.Context, r *resource) (map[string]any, string, error) {
 	spec := cfn.Normalise(r.spec()).(map[string]any)
 	writeOnly := map[string]any{}
-	for _, path := range m.s.SecretPaths() {
+	for _, path := range m.t.SecretPaths() {
 		fields := m.s.FieldPath(path)
 		parent := spec
 		for _, f := range fields[:len(fields)-1] {

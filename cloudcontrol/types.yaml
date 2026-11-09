@@ -9,12 +9,25 @@
 #
 # The group is <service, lower case>.<groupSuffix>; the kind is the
 # resource's name. A type ACK serves, or that ACK's generator could build
-# here, does not belong in this list (docs/cloudcontrol.md, "Which route").
+# here with better behaviour, does not belong in this list
+# (docs/cloudcontrol.md, "Which route").
+#
+# Per type:
+#   typeName  the CloudFormation type (required);
+#   kind      the kind's name, when the resource's name will not do;
+#   secrets   write-only string properties that are secrets, as property
+#             pointers: each becomes a Kubernetes Secret reference. Opt-in
+#             per field (the builder, 2026-11-09); every other write-only
+#             property is a plain field. The generation report lists the
+#             candidates.
 groupSuffix: cloudcontrol.aws.hfl.dev
 version: v1alpha1
 types:
   # F03: IAM SAML providers. ACK's iam-controller ignores SAMLProvider.
   - typeName: AWS::IAM::SAMLProvider
+    # The private key is a secret; RemovePrivateKey, also write-only, is
+    # the ID of a key to remove and stays a plain field.
+    secrets: [/properties/AddPrivateKey]
   # F04: Transit Gateway route tables. ACK's ec2-controller ignores them.
   - typeName: AWS::EC2::TransitGatewayRouteTable
   # F15: GuardDuty's detector. ACK has no GuardDuty controller.

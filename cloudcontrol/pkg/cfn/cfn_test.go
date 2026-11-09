@@ -38,8 +38,32 @@ func TestProvisioningAndSets(t *testing.T) {
 	if s.TagProperty() != "Tags" {
 		t.Errorf("tag property %q", s.TagProperty())
 	}
-	if len(s.SecretPaths()) != 2 {
-		t.Errorf("secret paths %v", s.SecretPaths())
+	if got := s.SecretCandidates(); len(got) != 2 {
+		t.Errorf("secret candidates %v", got)
+	}
+}
+
+// Secret references are opt-in per field; anything but a write-only string
+// reachable through objects is refused, so a typo cannot quietly make a
+// secret a plain field.
+func TestSecretPathsOptIn(t *testing.T) {
+	s := registry.ByTypeName("AWS::IAM::SAMLProvider").Schema()
+	got, err := s.SecretPaths([]string{"/properties/AddPrivateKey"})
+	if err != nil || len(got) != 1 || got[0][0] != "AddPrivateKey" {
+		t.Errorf("opt-in AddPrivateKey: %v, %v", got, err)
+	}
+	if got, err := s.SecretPaths(nil); err != nil || len(got) != 0 {
+		t.Errorf("no opt-in: %v, %v", got, err)
+	}
+	for _, bad := range [][]string{
+		{"/properties/Name"},         // not write-only
+		{"/properties/AddPrivatKey"}, // a typo
+		{"AddPrivateKey"},            // not a pointer
+		{"/properties/AddPrivateKey", "/properties/AddPrivateKey"},
+	} {
+		if _, err := s.SecretPaths(bad); err == nil {
+			t.Errorf("SecretPaths(%v) accepted", bad)
+		}
 	}
 }
 

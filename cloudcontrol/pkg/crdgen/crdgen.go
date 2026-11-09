@@ -11,8 +11,10 @@
 //     field, and has(self.f) == has(oldSelf.f) on its parent, so the API
 //     server refuses the change instead of the cloud (rules cannot reach
 //     inside arrays; those are reported, and the reconciler refuses them);
-//   - writeOnlyProperties of type string to Secret references (ACK's
-//     SecretKeyReference shape), resolved by the reconciler;
+//   - the writeOnlyProperties a type opts in (Options.Secrets: write-only
+//     strings only) to Secret references (ACK's SecretKeyReference shape),
+//     resolved by the reconciler; every other write-only property is a
+//     plain field;
 //   - primaryIdentifier to status.cloudControl.identifier (Cloud Control's
 //     identifier), beside the last request and a digest of write-only values;
 //   - the status fields every ACK kind has: ackResourceMetadata and
@@ -44,9 +46,11 @@ var reservedStatus = map[string]bool{
 	"ackResourceMetadata": true, "conditions": true, "cloudControl": true,
 }
 
-// Options name the kind.
+// Options name the kind and the write-only properties served as Secret
+// references (property pointers, cloudcontrol/types.yaml `secrets`).
 type Options struct {
 	Group, Version, Kind string
+	Secrets              []string
 }
 
 // Report is what the generation could not map exactly.
@@ -55,8 +59,9 @@ type Report struct {
 	SpecFields      int
 	StatusFields    int
 	CELRules        int
-	SecretRefs      []string // write-only strings made Secret references
+	SecretRefs      []string // write-only strings opted in to Secret references
 	PlainWriteOnly  []string // write-only properties kept as plain fields
+	SecretCandidate []string // plain write-only strings that could be opted in
 	CELSkipped      []string // create-only paths no CEL rule can reach
 	Lossy           []string // nodes made x-kubernetes-preserve-unknown-fields
 	NestedReadOnly  []string // read-only properties inside writable objects, dropped
@@ -74,13 +79,23 @@ type gen struct {
 // Generate makes the CRD.
 func Generate(s *cfn.Schema, o Options) (*apiextv1.CustomResourceDefinition, *Report, error) {
 	g := &gen{s: s, sets: s.Sets(), secrets: map[string]bool{}, rep: &Report{TypeName: s.TypeName}}
-	for _, p := range s.SecretPaths() {
+	paths, err := s.SecretPaths(o.Secrets)
+	if err != nil {
+		return nil, nil, err
+	}
+	for _, p := range paths {
 		g.secrets[cfn.Pointer(p...)] = true
 		g.rep.SecretRefs = append(g.rep.SecretRefs, cfn.Pointer(p...))
 	}
+	opted := cfn.NewPointerSet(o.Secrets)
 	for _, p := range s.WriteOnlyProperties {
-		if !g.secrets[p] {
+		if !opted.Has(p) {
 			g.rep.PlainWriteOnly = append(g.rep.PlainWriteOnly, p)
+		}
+	}
+	for _, p := range s.SecretCandidates() {
+		if !opted.Has(p) {
+			g.rep.SecretCandidate = append(g.rep.SecretCandidate, p)
 		}
 	}
 

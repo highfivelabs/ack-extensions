@@ -14,7 +14,7 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 
 ## Foundation gaps (platform-foundation and security-adjacent types with no kind)
 
-| Type | Category | Provisioning | CRD | Lossy | CEL skipped | Secret refs | Sensitive IAM |
+| Type | Category | Provisioning | CRD | Lossy | CEL skipped | Write-only strings | Sensitive IAM |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: |
 | `AWS::AccessAnalyzer::Analyzer` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::AccessAnalyzer::ArchiveRule` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |

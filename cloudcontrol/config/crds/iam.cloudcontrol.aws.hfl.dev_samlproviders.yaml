@@ -101,22 +101,10 @@ spec:
                 maxItems: 2
                 type: array
               removePrivateKey:
-                description: The Key ID of the private key to remove A reference to
-                  a key of a Kubernetes Secret holding this write-only value.
-                properties:
-                  key:
-                    description: The key in the Secret's data.
-                    type: string
-                  name:
-                    description: The Secret's name.
-                    type: string
-                  namespace:
-                    description: The Secret's namespace; the object's own when empty.
-                    type: string
-                required:
-                - key
-                - name
-                type: object
+                description: The Key ID of the private key to remove
+                maxLength: 64
+                minLength: 22
+                type: string
                 x-kubernetes-validations:
                 - message: 'removePrivateKey is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
