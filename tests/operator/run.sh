@@ -109,10 +109,19 @@ kubectl kustomize config/default \
 kubectl apply --server-side -f "${work}/ours.yaml" >/dev/null
 # Cloud Control managers talk to moto here, with dummy credentials: the
 # operator's test-only flags (never a context's: a namespace cannot point
-# its manager elsewhere). On EKS neither is set.
+# its manager elsewhere). On EKS none is set. Both endpoints: ACK's runtime
+# asks STS who it is at start, at the identity endpoint, else at real AWS
+# (a first run here did that, with the dummy key; refused by AWS). And the
+# guard the Go tests have (cloudcontrol/test/fake ChildEnv): every request
+# to a host outside the cluster goes to a closed proxy port and fails.
 kubectl -n ack-extensions-system patch deploy ack-extensions-operator --type=json -p '[
   {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--cloudcontrol-manager-arg=--aws-endpoint-url=http://moto.fake-aws:5000"},
+  {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--cloudcontrol-manager-arg=--aws-identity-endpoint-url=http://moto.fake-aws:5000"},
   {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--cloudcontrol-manager-arg=--allow-unsafe-aws-endpoint-urls"},
+  {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--cloudcontrol-manager-env=AWS_ENDPOINT_URL=http://moto.fake-aws:5000"},
+  {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--cloudcontrol-manager-env=HTTP_PROXY=http://127.0.0.1:9"},
+  {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--cloudcontrol-manager-env=HTTPS_PROXY=http://127.0.0.1:9"},
+  {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--cloudcontrol-manager-env=NO_PROXY=moto.fake-aws,.svc,.cluster.local,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"},
   {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--cloudcontrol-manager-env=AWS_ACCESS_KEY_ID=testing"},
   {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--cloudcontrol-manager-env=AWS_SECRET_ACCESS_KEY=testing"}
 ]' >/dev/null
@@ -253,12 +262,27 @@ spec:
   kinds: [SAMLProvider.iam, Detector.guardduty]
 YAML
 cc_ready() { [[ "$(kubectl -n team-a get cloudcontrolcontext cloudcontrol -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')" == True ]]; }
-wait_for 240 "CloudControlContext team-a/cloudcontrol Ready: its manager rolled out" cc_ready
+cc_debug() {
+  echo "-- context"; kubectl -n team-a get cloudcontrolcontext cloudcontrol -o yaml || true
+  echo "-- manager"; kubectl -n "${OP_NS}" get deploy,pod -l aws.hfl.dev/environment=team-a -o wide || true
+  kubectl -n "${OP_NS}" describe pod -l aws.hfl.dev/environment=team-a | tail -30 || true
+  kubectl -n "${OP_NS}" logs -l aws.hfl.dev/environment=team-a --tail=60 --all-containers || true
+  kubectl -n "${OP_NS}" logs -l aws.hfl.dev/environment=team-a --tail=60 --previous 2>/dev/null || true
+  echo "-- operator"; kubectl -n "${OP_NS}" logs deploy/ack-extensions-operator --tail=40 || true
+}
+end=$((SECONDS + 240))
+until cc_ready; do
+  [[ ${SECONDS} -ge ${end} ]] && { cc_debug; fail "CloudControlContext team-a/cloudcontrol Ready: its manager rolled out (not within 240s)"; }
+  sleep 2
+done
+ok "CloudControlContext team-a/cloudcontrol Ready: its manager rolled out"
 cc_pod_sa="$(kubectl -n "${OP_NS}" get pod -l aws.hfl.dev/environment=team-a -o jsonpath='{.items[0].spec.serviceAccountName}')"
 [[ "${cc_pod_sa}" == "${CC_SA}" ]] || fail "the Cloud Control manager runs as ${cc_pod_sa}"
 kubectl get pod -n team-a -o name | grep -q . && fail "a pod in team-a: the manager belongs in ${OP_NS}"
 kubectl -n "${OP_NS}" get sa "${CC_SA}" -o jsonpath='{.metadata.annotations}' | grep -q 'eks.amazonaws.com' && fail "an IRSA annotation on ${CC_SA}: the identity is EKS Pod Identity"
 cc_args="$(kubectl -n "${OP_NS}" get deploy "${CC_SA}" -o jsonpath='{.spec.template.spec.containers[0].args}')"
+cc_env="$(kubectl -n "${OP_NS}" get deploy "${CC_SA}" -o jsonpath='{.spec.template.spec.containers[0].env}')"
+grep -q '127.0.0.1:9' <<<"${cc_env}" || fail "the manager has no dead proxy: ${cc_env}"
 for a in --watch-namespace=team-a --aws-region=us-west-2 --cloudcontrol-kinds=Detector.guardduty,SAMLProvider.iam; do
   grep -q -- "${a}" <<<"${cc_args}" || fail "manager args lack ${a}: ${cc_args}"
 done

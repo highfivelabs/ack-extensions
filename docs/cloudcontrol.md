@@ -311,6 +311,21 @@ three independent locks, each enough on its own:
    and `HTTP(S)_PROXY` at `127.0.0.1:9`, a closed port; Go never proxies
    loopback, so every other request the manager makes dies at the proxy.
 
+**On kind** (`task operator-e2e`), the managers run in pods, so the locks
+are the operator's test-only flags: both endpoints at moto in the cluster
+(`--aws-endpoint-url`, `--aws-identity-endpoint-url`, `AWS_ENDPOINT_URL`),
+and the third lock again, `HTTP(S)_PROXY` at `127.0.0.1:9` with `NO_PROXY`
+covering only in-cluster names and addresses; the operator refuses an
+endpoint override without the identity endpoint (`cmd/operator`,
+`checkEndpoints`). **A mistake made once, 2026-11-09:** the first kind run
+gave the Cloud Control manager only `--aws-endpoint-url`. ACK's runtime asks
+STS who it is at start, at the identity endpoint or `AWS_ENDPOINT_URL`,
+else at the real regional STS endpoint; so that manager almost certainly
+sent `GetCallerIdentity`, signed with the dummy key `testing`, to real AWS
+STS, which refused it (the manager never became ready; no AWS account or
+credential was involved). The kind test had none of the Go tests' locks
+then; it has all three now.
+
 `TestGuard` proves each: the real endpoint is refused by `LocalOnly`; an SDK
 client with no endpoint override fails with "refusing to dial"; the child
 environment sends the real endpoint to the dead proxy and loopback direct.

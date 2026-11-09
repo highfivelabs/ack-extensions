@@ -32,6 +32,24 @@ type repeated []string
 func (r *repeated) String() string     { return strings.Join(*r, ",") }
 func (r *repeated) Set(v string) error { *r = append(*r, v); return nil }
 
+// checkEndpoints refuses a fake AWS endpoint for the managers without the
+// identity endpoint too: ACK's runtime asks STS who it is at start, at
+// --aws-identity-endpoint-url or AWS_ENDPOINT_URL, else at real AWS.
+func checkEndpoints(args []string, env []corev1.EnvVar) error {
+	var endpoint, identity bool
+	for _, a := range args {
+		endpoint = endpoint || strings.HasPrefix(a, "--aws-endpoint-url")
+		identity = identity || strings.HasPrefix(a, "--aws-identity-endpoint-url")
+	}
+	for _, e := range env {
+		identity = identity || e.Name == "AWS_ENDPOINT_URL" || e.Name == "AWS_ENDPOINT_URL_STS"
+	}
+	if endpoint && !identity {
+		return fmt.Errorf("--cloudcontrol-manager-arg=--aws-endpoint-url needs --aws-identity-endpoint-url (or AWS_ENDPOINT_URL), or the managers ask real AWS STS who they are")
+	}
+	return nil
+}
+
 func envVars(kvs []string) ([]corev1.EnvVar, error) {
 	var out []corev1.EnvVar
 	for _, kv := range kvs {
@@ -128,6 +146,10 @@ func main() {
 	if img := imgs[operator.ImageCloudControl]; img != "" {
 		env, err := envVars(ccEnv)
 		if err != nil {
+			setup.Error(err, "bad flags")
+			os.Exit(2)
+		}
+		if err := checkEndpoints(ccArgs, env); err != nil {
 			setup.Error(err, "bad flags")
 			os.Exit(2)
 		}
