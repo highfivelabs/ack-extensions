@@ -52,6 +52,7 @@ and what changed.
 | `services/applicationautoscaling/generator.yaml` (the `ScheduledAction` entry's `operations` mapping) | applicationautoscaling-controller `v1.9.0` `generator.yaml` (`ScalingPolicy` from `PutScalingPolicy`) | `009baef3…` | `PutScheduledAction`, `DescribeScheduledActions`, `DeleteScheduledAction`; the resources ACK has ignored |
 | `services/applicationautoscaling/pkg/resource/scheduled_action/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; the server's default time zone instead of `SuspendedState` |
 | `services/eventbridge/pkg/resource/api_destination/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; an API destination's rate limit instead of `SuspendedState` |
+| `services/iam/pkg/resource/login_profile/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; a login profile's `passwordResetRequired` instead of `SuspendedState` |
 | `services/autoscaling/pkg/resource/scheduled_action/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; `ScheduledAction`'s server-defaulted fields (start time, time zone) |
 | `services/autoscaling/pkg/resource/scaling_policy/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; `ScalingPolicy`'s server-defaulted fields instead of `SuspendedState` |
 | `services/kms/apis/v1alpha1/replica_key.go` | kms-controller PR #112 `apis/v1alpha1/replica_key.go` | `eb4057e4…` (PR head) | written by hand here, so the generator's header is replaced; documentation shortened; ACK's `Tag` and `KeyMetadata`; `keyID`/`keyRef` exactly one, `keyID` immutable |
@@ -85,6 +86,7 @@ Written here: `services/rds/apis/v1alpha1/db_proxy_target.go`,
 `services/autoscaling/pkg/resource/scheduled_action/{hooks,hooks_test}.go`,
 `services/lambda/pkg/resource/permission/{delta,references,sdk_test}.go`,
 `services/rds/pkg/resource/db_role_association/{sdk,delta,references,sdk_test}.go`,
+`services/iam/pkg/resource/login_profile/custom_delta_test.go`,
 `services/ec2/apis/v1alpha1/volume_attachment.go`,
 `services/ec2/pkg/resource/volume_attachment/{sdk,delta,references,sdk_test}.go`,
 `services/*/cmd/controller/handwritten.go`, `pkg/`, `cmd/operator`,

@@ -1,13 +1,13 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has fifteen kinds:
+Status, 2026-11-09: the repository has sixteen kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
 - `ec2.aws.hfl.dev` `CustomerGateway`, `VPNGateway`, `Volume` and
   `VolumeAttachment`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
-- `iam.aws.hfl.dev` `RolePolicyAttachment`;
+- `iam.aws.hfl.dev` `RolePolicyAttachment` and `LoginProfile`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
 - `rds.aws.hfl.dev` `OptionGroup`;
@@ -185,6 +185,13 @@ status) and the fake cloud through the real AWS SDK clients.
 ### 4.3 Results (`make test`; latest 2026-11-09 on a Spot VM, linux amd64, Go 1.27.3)
 
 ```text
+--- PASS: TestLoginProfile
+    a login profile is made from a Kubernetes Secret's password and
+    settles (no update across three resyncs); passwordResetRequired is
+    updated; the user cannot change; deletion-policy retain leaves the
+    profile; delete deletes it
+--- PASS: TestDefaultResetIsNoDrift, TestSetResetIsCompared
+          (login profile unit tests)
 --- PASS: TestRolePolicyAttachment
     create attaches the policy; references resolve to ACK's Role; delete
     detaches the policy; deletion-policy retain keeps the attachment
@@ -403,6 +410,10 @@ controller to show it can fail:
 - **EventBridge API destinations.** moto marks a destination `ACTIVE` at
   once and, when the spec leaves the rate limit out, reports none (AWS
   reports 300 per second). A unit test shows that default is no drift.
+- **IAM login profiles.** moto stores the password, which no IAM API
+  returns, so the test cannot read it back. It ignores
+  `PasswordResetRequired` on create (the update sets it) and does not
+  check the account's password policy.
 - **KMS replica keys.**
   - moto keeps a replica in its own Region's backend, under the primary
     key's key ID, as AWS does.
@@ -471,7 +482,7 @@ its master (5.2.5 is the pin).
 | 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`) | yes | to build |
 | 13 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237: mergeable, active 2026-11-06 | none | skipped: may be close to merging, and moto has none of it |
 | 14 | Route 53 DNSSEC and `KeySigningKey`, VPC association authorization | ignored in route53-controller's `generator.yaml` | none | skipped: moto has none of it |
-| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none | yes | to build |
+| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | `LoginProfile` built; the rest under way |
 | 16 | EC2 `PlacementGroup` | ignored in ec2-controller's `generator.yaml` | none | skipped: moto has none of it |
 | 17 | S3 `Object`, the account's public access block | none | yes | to build |
 | 18 | EC2 `KeyPair` | ec2-controller PR #396: both reviews' changes made, main merged in 2026-11-04, mergeable | yes | skipped: close to merging; wait for the release |
@@ -1020,6 +1031,30 @@ ACK's own initialisms do; the AWS name is `ApiDestination`.
 **Not proven:** AWS's default rate limit coming back from a real read
 (moto returns none; the unit test feeds 300 in), and a destination whose
 connection is not yet authorized (moto authorizes at once).
+
+### 6.19 `iam.aws.hfl.dev` `LoginProfile`
+
+An IAM user's console password: Terraform's `aws_iam_user_login_profile`,
+with the password from a Kubernetes Secret instead of a generated one.
+ACK's iam-controller `v1.11.3` has none; its pull request #147 was closed
+(rechecked 2026-11-09).
+
+**Generated** from `CreateLoginProfile`, `GetLoginProfile`,
+`UpdateLoginProfile` and `DeleteLoginProfile`.
+
+- **Spec:** `userName` (required, immutable), `password` (a
+  `SecretKeyReference`, required) and `passwordResetRequired`.
+- **The password is never read back** (IAM returns none), so it is no
+  drift; the spec's stays. A changed Secret is not pushed until the spec
+  changes, as for `Connection`.
+- **Server default is no drift:** IAM reports `passwordResetRequired`
+  false when the spec leaves it out (`custom_delta.go`).
+- **Not found:** `NoSuchEntity`. No tags: a login profile has none.
+- **No `userRef`.** ACK's `User` is in the same service, and a generated
+  reference to it is the case of section 8, item 10.
+
+**Not proven:** that the password reached IAM (no API returns it), the
+account's password policy refusing a password, and a changed Secret.
 
 ## 7. The operator: ACK's identity, beside ACK's controller
 
