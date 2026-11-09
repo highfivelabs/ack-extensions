@@ -10,6 +10,8 @@ resources:
   - bases/ec2.aws.hfl.dev_volumeattachments.yaml
   - bases/ec2.aws.hfl.dev_volumes.yaml
   - bases/ec2.aws.hfl.dev_vpngateways.yaml
+  - bases/ecr.aws.hfl.dev_replicationconfigurations.yaml
+  - bases/eventbridge.aws.hfl.dev_apidestinations.yaml
   - bases/eventbridge.aws.hfl.dev_connections.yaml
   - bases/iam.aws.hfl.dev_rolepolicyattachments.yaml
   - bases/iam.aws.hfl.dev_usergroupmemberships.yaml
