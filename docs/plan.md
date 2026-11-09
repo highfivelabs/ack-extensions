@@ -1,7 +1,8 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has eight kinds:
+Status, 2026-11-09: the repository has nine kinds:
 
+- `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
 - `iam.aws.hfl.dev` `RolePolicyAttachment`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
@@ -73,7 +74,7 @@ Two ways to build a kind:
 1. **Generated**, when the AWS API has a Create/Describe/Delete shape the
    generator recognises (`OptionGroup`), or a Put/Describe/Delete shape
    mapped to one in `generator.yaml`'s `operations`, as ACK does for its
-   own Put-shaped kinds (`ScalingPolicy`, `ScheduledAction`). The `generator.yaml` entry and
+   own Put-shaped kinds (`ScalingPolicy`, and the two `ScheduledAction`s). The `generator.yaml` entry and
    hook templates are ACK's, copied from upstream where they exist, and
    the generated code is regenerated here, never copied.
 2. **Hand-written on ACK's runtime interfaces**, when the API's shape is
@@ -211,6 +212,11 @@ status) and the fake cloud through the real AWS SDK clients.
     again; a one-time action is put with its start time; the action name
     cannot change; deletion-policy retain leaves the action; delete
     removes the actions
+--- PASS: TestApplicationScheduledAction
+    a recurring action is put and settles (no update across three
+    resyncs); a changed capacity and schedule is put again; the target
+    cannot change; deletion-policy retain leaves the action; delete
+    removes the action
 --- PASS: TestReplicaKey
     a replica is made in its Region (tags put there); a policy is put on
     the replica only; the replica Region cannot change; references
@@ -323,6 +329,10 @@ controller to show it can fail:
   given. It does not compute a recurring action's next start time, does
   not delete a one-time action after it runs, and returns no
   `ScheduledActionARN`.
+- **Application Auto Scaling scheduled actions.** moto stores an action
+  as given. It does not require a registered scalable target, does not
+  check the schedule expression, and returns the time zone only when one
+  was set.
 - **KMS replica keys.**
   - moto keeps a replica in its own Region's backend, under the primary
     key's key ID, as AWS does.
@@ -380,7 +390,7 @@ its master (5.2.5 is the pin).
 | 1 | Lambda `Permission` (`AddPermission`/`RemovePermission`) | No PR; `community` issues #3051 and #2659 are open. lambda-controller `v1.19.0`'s `Alias.permissions` adds permissions to an alias only. | yes | built: `Permission` |
 | 2 | Secrets Manager rotation on `Secret` | secretsmanager-controller PR #69 | yes | skipped: a field on an existing kind (open question 1) |
 | 3 | RDS role associations | none | adds yes, removes no (section 4.4) | built: `DBRoleAssociation` |
-| 4 | EC2 Auto Scaling `ScalingPolicy` and `ScheduledAction`; Application Auto Scaling `ScheduledAction` | none: autoscaling-controller `v1.5.0` has only `AutoScalingGroup`; applicationautoscaling-controller `v1.9.0` has `ScalableTarget` and `ScalingPolicy` | yes | `ScalingPolicy` and EC2 Auto Scaling `ScheduledAction` built; Application Auto Scaling `ScheduledAction` next |
+| 4 | EC2 Auto Scaling `ScalingPolicy` and `ScheduledAction`; Application Auto Scaling `ScheduledAction` | none: autoscaling-controller `v1.5.0` has only `AutoScalingGroup`; applicationautoscaling-controller `v1.9.0` has `ScalableTarget` and `ScalingPolicy` | yes | built: `ScalingPolicy`, EC2 Auto Scaling `ScheduledAction`, Application Auto Scaling `ScheduledAction` |
 | 5 | KMS `ReplicaKey` | kms-controller PR #112: open, conflicts with base, not approved; an ACK maintainer's review finds its read, update and delete act on the primary key | `ReplicateKey` yes, `UpdatePrimaryRegion` no | built: `ReplicaKey` |
 | 6 | Standalone security group rules | none; ec2-controller has rule-sync fixes open (#394, #385) | yes | skipped: open question 7 |
 | 7 | EC2 `VPNGateway` (attachment, route propagation), `CustomerGateway` | ignored in ec2-controller `v1.23.1`'s `generator.yaml` | yes, except `EnableVgwRoutePropagation` | to build |
@@ -720,6 +730,34 @@ its ARN:
 `keyRef` resolves to ACK's `Key` (`status.keyID`). The status's
 `replicaKeyMetadata` and the `tags` use ACK kms-controller's own types, as
 the pull request does.
+
+### 6.9 `applicationautoscaling.aws.hfl.dev` `ScheduledAction`
+
+A scheduled change of an Application Auto Scaling scalable target's
+minimum and maximum capacity, on an `at()`, `rate()` or `cron()`
+schedule in a time zone. The target can be an ECS service, a DynamoDB
+table, Aurora replicas, a Lambda alias's provisioned concurrency and so
+on. ACK's applicationautoscaling-controller `v1.9.0` has `ScalableTarget`
+and `ScalingPolicy`, and its `generator.yaml` ignores `ScheduledAction`.
+No pull request adds it.
+
+**Generated** the way that controller generates its own Put-shaped
+`ScalingPolicy`:
+
+- `PutScheduledAction` creates and updates;
+- `DescribeScheduledActions` reads (the generated request already names
+  the action, resource and dimension);
+- `DeleteScheduledAction` deletes.
+
+The service namespace, resource, scalable dimension and name are
+immutable. A time zone the spec leaves unset is no drift:
+`custom_delta.go` is copied from the same controller, as for the EC2 Auto
+Scaling kinds.
+
+**Not built: a reference to ACK's `ScalableTarget`.** As with
+`ScalingPolicy` and its group (section 6.6), a generated kind cannot
+reference ACK's kind of the same service yet (section 8). The target is
+named by `serviceNamespace`, `resourceID` and `scalableDimension`.
 
 ## 7. The operator: ACK's identity, beside ACK's controller
 
