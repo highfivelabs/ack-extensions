@@ -1,0 +1,19 @@
+# Generator configuration for ack-extensions's Lambda kinds
+# (lambda.aws.hfl.dev).
+#
+# A function's resource-based policy statement has no Create/Describe/
+# Delete of its own (AddPermission, GetPolicy, RemovePermission), so the
+# generator cannot produce Permission; it is written by hand on ACK's
+# runtime (services/lambda/pkg/resource/permission), from the permission
+# code of ACK's own Alias (lambda-controller v1.19.0,
+# pkg/resource/alias/hooks.go). Every resource the generator can find is
+# ignored: ACK's lambda-controller has them. It generates only the
+# service's scaffolding (the API group, the resource registry, the
+# controller's main).
+ignore:
+  resource_names:
+    - Alias
+    - CodeSigningConfig
+    - EventSourceMapping
+    - Function
+    - FunctionUrlConfig

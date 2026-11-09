@@ -1,0 +1,251 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: permissions.lambda.aws.hfl.dev
+spec:
+  group: lambda.aws.hfl.dev
+  names:
+    categories:
+    - aws
+    - hfl
+    kind: Permission
+    listKind: PermissionList
+    plural: permissions
+    shortNames:
+    - hfllambdapermission
+    singular: permission
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.functionName
+      name: FUNCTION
+      type: string
+    - jsonPath: .spec.principal
+      name: PRINCIPAL
+      type: string
+    - jsonPath: .status.conditions[?(@.type=="ACK.ResourceSynced")].status
+      name: SYNCED
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Permission is the Schema for the Permissions API.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              PermissionSpec is one statement of a Lambda function's resource-based
+              policy (AddPermission): it lets a service or account invoke the
+              function, as S3 notifications, an ALB target group, EventBridge rules
+              and SNS subscriptions need. The fields after functionName and qualifier
+              are those of ACK's own AddPermissionInput (lambda-controller v1.19.0,
+              Alias.spec.permissions). Lambda cannot change a statement, so every
+              field is immutable.
+            properties:
+              action:
+                description: |-
+                  The action the principal may use: lambda:InvokeFunction or
+                  lambda:GetFunction, for example. Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              eventSourceToken:
+                description: 'For an Alexa Smart Home function: the event source token.
+                  Immutable.'
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              functionName:
+                description: The function's name, ARN or partial ARN. Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              functionRef:
+                description: |-
+                  An ACK lambda.services.k8s.aws Function whose spec.name is the
+                  function.
+                properties:
+                  from:
+                    description: |-
+                      AWSResourceReference provides all the values necessary to reference another
+                      k8s resource for finding the identifier(Id/ARN/Name)
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+              functionURLAuthType:
+                description: |-
+                  For lambda:InvokeFunctionUrl: the function URL's auth type.
+                  Immutable.
+                enum:
+                - NONE
+                - AWS_IAM
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              principal:
+                description: |-
+                  The service (s3.amazonaws.com, elasticloadbalancing.amazonaws.com,
+                  events.amazonaws.com, sns.amazonaws.com) or account that may invoke
+                  the function. Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              principalOrgID:
+                description: The organization whose accounts may invoke the function.
+                  Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              qualifier:
+                description: |-
+                  A version or alias, to add the statement to that version's or
+                  alias's policy instead of the function's. Do not name an alias that
+                  an ACK Alias manages: ACK's Alias owns that alias's whole policy and
+                  removes statements it does not list (use its spec.permissions).
+                  Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              sourceARN:
+                description: |-
+                  For a service principal: the ARN of the resource that may invoke the
+                  function (the bucket, target group, rule or topic). Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              sourceAccount:
+                description: |-
+                  For a service principal: the account that owns the resource.
+                  Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              statementID:
+                description: The statement's identifier, unique in the policy. Immutable.
+                maxLength: 100
+                pattern: ^[a-zA-Z0-9-_]+$
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+            required:
+            - action
+            - principal
+            - statementID
+            type: object
+            x-kubernetes-validations:
+            - message: exactly one of functionName and functionRef must be set
+              rule: '[has(self.functionName), has(self.functionRef)].filter(x, x).size()
+                == 1'
+          status:
+            description: PermissionStatus defines the observed state of Permission.
+            properties:
+              ackResourceMetadata:
+                description: |-
+                  ResourceMetadata is common to all custom resources (CRs) managed by an ACK
+                  service controller. It is contained in the CR's `Status` member field and
+                  comprises various status and identifier fields useful to ACK for tracking
+                  state changes between Kubernetes and the backend AWS service API
+                properties:
+                  arn:
+                    description: |-
+                      ARN is the Amazon Resource Name for the resource. This is a
+                      globally-unique identifier and is set only by the ACK service controller
+                      once the controller has orchestrated the creation of the resource OR
+                      when it has verified that an "adopted" resource (a resource where the
+                      ARN annotation was set by the Kubernetes user on the CR) exists and
+                      matches the supplied CR's Spec field values.
+                      https://github.com/aws/aws-controllers-k8s/issues/270
+                    type: string
+                  ownerAccountID:
+                    description: |-
+                      OwnerAccountID is the AWS Account ID of the account that owns the
+                      backend AWS service API resource.
+                    type: string
+                  partition:
+                    description: Partition is the AWS partition in which the resource
+                      exists or will exist
+                    type: string
+                  region:
+                    description: Region is the AWS region in which the resource exists
+                      or will exist.
+                    type: string
+                required:
+                - ownerAccountID
+                - region
+                type: object
+              conditions:
+                items:
+                  description: |-
+                    Condition is the common struct used by all CRDs managed by ACK service
+                    controllers to indicate terminal states  of the CR and its backend AWS
+                    service API resource
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A human readable message indicating details about
+                        the transition.
+                      type: string
+                    reason:
+                      description: The reason for the condition's last transition.
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the Condition
+                      type: string
+                  required:
+                  - status
+                  - type
+                  type: object
+                type: array
+              statement:
+                description: The statement as Lambda stores it in the policy (GetPolicy),
+                  JSON.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

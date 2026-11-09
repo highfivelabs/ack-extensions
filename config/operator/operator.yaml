@@ -33,10 +33,22 @@ spec:
           args:
             - --identity=own
           env:
+            - name: MANAGER_IMAGE_APPLICATIONAUTOSCALING
+              value: ko://github.com/highfivelabs/ack-extensions/services/applicationautoscaling/cmd/controller
+            - name: MANAGER_IMAGE_AUTOSCALING
+              value: ko://github.com/highfivelabs/ack-extensions/services/autoscaling/cmd/controller
+            - name: MANAGER_IMAGE_EC2
+              value: ko://github.com/highfivelabs/ack-extensions/services/ec2/cmd/controller
             - name: MANAGER_IMAGE_ECR
               value: ko://github.com/highfivelabs/ack-extensions/services/ecr/cmd/controller
+            - name: MANAGER_IMAGE_EVENTBRIDGE
+              value: ko://github.com/highfivelabs/ack-extensions/services/eventbridge/cmd/controller
             - name: MANAGER_IMAGE_IAM
               value: ko://github.com/highfivelabs/ack-extensions/services/iam/cmd/controller
+            - name: MANAGER_IMAGE_KMS
+              value: ko://github.com/highfivelabs/ack-extensions/services/kms/cmd/controller
+            - name: MANAGER_IMAGE_LAMBDA
+              value: ko://github.com/highfivelabs/ack-extensions/services/lambda/cmd/controller
             - name: MANAGER_IMAGE_RDS
               value: ko://github.com/highfivelabs/ack-extensions/services/rds/cmd/controller
           securityContext:

@@ -86,7 +86,7 @@ func moduleDir(t testing.TB, root, module string) string {
 }
 
 // Start brings up moto, envtest and the controller of one service
-// ("iam", "rds"), and registers their teardown with t.Cleanup.
+// ("applicationautoscaling", "autoscaling", "ec2", "ecr", "eventbridge", "iam", "kms", "lambda", "rds"), and registers their teardown with t.Cleanup.
 func Start(t *testing.T, service string, scheme *runtime.Scheme) *Env {
 	t.Helper()
 	if os.Getenv("KUBEBUILDER_ASSETS") == "" {
@@ -103,6 +103,8 @@ func Start(t *testing.T, service string, scheme *runtime.Scheme) *Env {
 		filepath.Join(root, "config", "crds", "bases"),
 		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/runtime"), "config", "crd", "bases"),
 		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/iam-controller"), "config", "crd", "bases"),
+		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/kms-controller"), "config", "crd", "bases"),
+		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/lambda-controller"), "config", "crd", "bases"),
 		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/rds-controller"), "config", "crd", "bases"),
 	}
 	te := &envtest.Environment{CRDDirectoryPaths: crds, ErrorIfCRDPathMissing: true}

@@ -1,0 +1,737 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: scalingpolicies.autoscaling.aws.hfl.dev
+spec:
+  group: autoscaling.aws.hfl.dev
+  names:
+    kind: ScalingPolicy
+    listKind: ScalingPolicyList
+    plural: scalingpolicies
+    singular: scalingpolicy
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ScalingPolicy is the Schema for the ScalingPolicies API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              ScalingPolicySpec defines the desired state of ScalingPolicy.
+
+              Describes a scaling policy.
+            properties:
+              adjustmentType:
+                description: |-
+                  Specifies how the scaling adjustment is interpreted (for example, an absolute
+                  number or a percentage). The valid values are ChangeInCapacity, ExactCapacity,
+                  and PercentChangeInCapacity.
+
+                  Required if the policy type is StepScaling or SimpleScaling. For more information,
+                  see Scaling adjustment types (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-simple-step.html#as-scaling-adjustment)
+                  in the Amazon EC2 Auto Scaling User Guide.
+
+                  Regex Pattern: `^[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDC00-\uDBFF\uDFFF\r\n\t]*$`
+                type: string
+              autoScalingGroupName:
+                description: |-
+                  The name of the Auto Scaling group.
+
+                  Regex Pattern: `^[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDC00-\uDBFF\uDFFF\r\n\t]*$`
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              cooldown:
+                description: |-
+                  A cooldown period, in seconds, that applies to a specific simple scaling
+                  policy. When a cooldown period is specified here, it overrides the default
+                  cooldown.
+
+                  Valid only if the policy type is SimpleScaling. For more information, see
+                  Scaling cooldowns for Amazon EC2 Auto Scaling (https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-scaling-cooldowns.html)
+                  in the Amazon EC2 Auto Scaling User Guide.
+
+                  Default: None
+                format: int64
+                type: integer
+              enabled:
+                description: |-
+                  Indicates whether the scaling policy is enabled or disabled. The default
+                  is enabled. For more information, see Disable a scaling policy for an Auto
+                  Scaling group (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-enable-disable-scaling-policy.html)
+                  in the Amazon EC2 Auto Scaling User Guide.
+                type: boolean
+              estimatedInstanceWarmup:
+                description: |-
+                  Not needed if the default instance warmup is defined for the group.
+
+                  The estimated time, in seconds, until a newly launched instance can contribute
+                  to the CloudWatch metrics. This warm-up period applies to instances launched
+                  due to a specific target tracking or step scaling policy. When a warm-up
+                  period is specified here, it overrides the default instance warmup.
+
+                  Valid only if the policy type is TargetTrackingScaling or StepScaling.
+
+                  The default is to use the value for the default instance warmup defined for
+                  the group. If default instance warmup is null, then EstimatedInstanceWarmup
+                  falls back to the value of default cooldown.
+                format: int64
+                type: integer
+              metricAggregationType:
+                description: |-
+                  The aggregation type for the CloudWatch metrics. The valid values are Minimum,
+                  Maximum, and Average. If the aggregation type is null, the value is treated
+                  as Average.
+
+                  Valid only if the policy type is StepScaling.
+
+                  Regex Pattern: `^[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDC00-\uDBFF\uDFFF\r\n\t]*$`
+                type: string
+              minAdjustmentMagnitude:
+                description: |-
+                  The minimum value to scale by when the adjustment type is PercentChangeInCapacity.
+                  For example, suppose that you create a step scaling policy to scale out an
+                  Auto Scaling group by 25 percent and you specify a MinAdjustmentMagnitude
+                  of 2. If the group has 4 instances and the scaling policy is performed, 25
+                  percent of 4 is 1. However, because you specified a MinAdjustmentMagnitude
+                  of 2, Amazon EC2 Auto Scaling scales out the group by 2 instances.
+
+                  Valid only if the policy type is StepScaling or SimpleScaling. For more information,
+                  see Scaling adjustment types (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-simple-step.html#as-scaling-adjustment)
+                  in the Amazon EC2 Auto Scaling User Guide.
+
+                  Some Auto Scaling groups use instance weights. In this case, set the MinAdjustmentMagnitude
+                  to a value that is at least as large as your largest instance weight.
+                format: int64
+                type: integer
+              minAdjustmentStep:
+                description: Available for backward compatibility. Use MinAdjustmentMagnitude
+                  instead.
+                format: int64
+                type: integer
+              policyName:
+                description: |-
+                  The name of the policy.
+
+                  Regex Pattern: `^[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDC00-\uDBFF\uDFFF\r\n\t]*$`
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              policyType:
+                description: |-
+                  One of the following policy types:
+
+                     * TargetTrackingScaling
+
+                     * StepScaling
+
+                     * SimpleScaling (default)
+
+                     * PredictiveScaling
+
+                  Regex Pattern: `^[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDC00-\uDBFF\uDFFF\r\n\t]*$`
+                type: string
+              predictiveScalingConfiguration:
+                description: |-
+                  A predictive scaling policy. Provides support for predefined and custom metrics.
+
+                  Predefined metrics include CPU utilization, network in/out, and the Application
+                  Load Balancer request count.
+
+                  For more information, see PredictiveScalingConfiguration (https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_PredictiveScalingConfiguration.html)
+                  in the Amazon EC2 Auto Scaling API Reference.
+
+                  Required if the policy type is PredictiveScaling.
+                properties:
+                  maxCapacityBreachBehavior:
+                    type: string
+                  maxCapacityBuffer:
+                    format: int64
+                    type: integer
+                  metricSpecifications:
+                    items:
+                      description: |-
+                        This structure specifies the metrics and target utilization settings for
+                        a predictive scaling policy.
+
+                        You must specify either a metric pair, or a load metric and a scaling metric
+                        individually. Specifying a metric pair instead of individual metrics provides
+                        a simpler way to configure metrics for a scaling policy. You choose the metric
+                        pair, and the policy automatically knows the correct sum and average statistics
+                        to use for the load metric and the scaling metric.
+
+                        Example
+
+                           * You create a predictive scaling policy and specify ALBRequestCount as
+                           the value for the metric pair and 1000.0 as the target value. For this
+                           type of metric, you must provide the metric dimension for the corresponding
+                           target group, so you also provide a resource label for the Application
+                           Load Balancer target group that is attached to your Auto Scaling group.
+
+                           * The number of requests the target group receives per minute provides
+                           the load metric, and the request count averaged between the members of
+                           the target group provides the scaling metric. In CloudWatch, this refers
+                           to the RequestCount and RequestCountPerTarget metrics, respectively.
+
+                           * For optimal use of predictive scaling, you adhere to the best practice
+                           of using a dynamic scaling policy to automatically scale between the minimum
+                           capacity and maximum capacity in response to real-time changes in resource
+                           utilization.
+
+                           * Amazon EC2 Auto Scaling consumes data points for the load metric over
+                           the last 14 days and creates an hourly load forecast for predictive scaling.
+                           (A minimum of 24 hours of data is required.)
+
+                           * After creating the load forecast, Amazon EC2 Auto Scaling determines
+                           when to reduce or increase the capacity of your Auto Scaling group in
+                           each hour of the forecast period so that the average number of requests
+                           received by each instance is as close to 1000 requests per minute as possible
+                           at all times.
+
+                        For information about using custom metrics with predictive scaling, see Advanced
+                        predictive scaling policy configurations using custom metrics (https://docs.aws.amazon.com/autoscaling/ec2/userguide/predictive-scaling-customized-metric-specification.html)
+                        in the Amazon EC2 Auto Scaling User Guide.
+                      properties:
+                        customizedCapacityMetricSpecification:
+                          description: Describes a customized capacity metric for
+                            a predictive scaling policy.
+                          properties:
+                            metricDataQueries:
+                              items:
+                                description: |-
+                                  The metric data to return. Also defines whether this call is returning data
+                                  for one metric only, or whether it is performing a math expression on the
+                                  values of returned metric statistics to create a new time series. A time
+                                  series is a series of data points, each of which is associated with a timestamp.
+
+                                  For more information and examples, see Advanced predictive scaling policy
+                                  configurations using custom metrics (https://docs.aws.amazon.com/autoscaling/ec2/userguide/predictive-scaling-customized-metric-specification.html)
+                                  in the Amazon EC2 Auto Scaling User Guide.
+                                properties:
+                                  expression:
+                                    type: string
+                                  id:
+                                    type: string
+                                  label:
+                                    type: string
+                                  metricStat:
+                                    description: |-
+                                      This structure defines the CloudWatch metric to return, along with the statistic
+                                      and unit.
+
+                                      For more information about the CloudWatch terminology below, see Amazon CloudWatch
+                                      concepts (https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html)
+                                      in the Amazon CloudWatch User Guide.
+                                    properties:
+                                      metric:
+                                        description: Represents a specific metric.
+                                        properties:
+                                          dimensions:
+                                            items:
+                                              description: Describes the dimension
+                                                of a metric.
+                                              properties:
+                                                name:
+                                                  type: string
+                                                value:
+                                                  type: string
+                                              type: object
+                                            type: array
+                                          metricName:
+                                            type: string
+                                          namespace:
+                                            type: string
+                                        type: object
+                                      stat:
+                                        type: string
+                                      unit:
+                                        type: string
+                                    type: object
+                                  returnData:
+                                    type: boolean
+                                type: object
+                              type: array
+                          type: object
+                        customizedLoadMetricSpecification:
+                          description: Describes a custom load metric for a predictive
+                            scaling policy.
+                          properties:
+                            metricDataQueries:
+                              items:
+                                description: |-
+                                  The metric data to return. Also defines whether this call is returning data
+                                  for one metric only, or whether it is performing a math expression on the
+                                  values of returned metric statistics to create a new time series. A time
+                                  series is a series of data points, each of which is associated with a timestamp.
+
+                                  For more information and examples, see Advanced predictive scaling policy
+                                  configurations using custom metrics (https://docs.aws.amazon.com/autoscaling/ec2/userguide/predictive-scaling-customized-metric-specification.html)
+                                  in the Amazon EC2 Auto Scaling User Guide.
+                                properties:
+                                  expression:
+                                    type: string
+                                  id:
+                                    type: string
+                                  label:
+                                    type: string
+                                  metricStat:
+                                    description: |-
+                                      This structure defines the CloudWatch metric to return, along with the statistic
+                                      and unit.
+
+                                      For more information about the CloudWatch terminology below, see Amazon CloudWatch
+                                      concepts (https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html)
+                                      in the Amazon CloudWatch User Guide.
+                                    properties:
+                                      metric:
+                                        description: Represents a specific metric.
+                                        properties:
+                                          dimensions:
+                                            items:
+                                              description: Describes the dimension
+                                                of a metric.
+                                              properties:
+                                                name:
+                                                  type: string
+                                                value:
+                                                  type: string
+                                              type: object
+                                            type: array
+                                          metricName:
+                                            type: string
+                                          namespace:
+                                            type: string
+                                        type: object
+                                      stat:
+                                        type: string
+                                      unit:
+                                        type: string
+                                    type: object
+                                  returnData:
+                                    type: boolean
+                                type: object
+                              type: array
+                          type: object
+                        customizedScalingMetricSpecification:
+                          description: Describes a custom scaling metric for a predictive
+                            scaling policy.
+                          properties:
+                            metricDataQueries:
+                              items:
+                                description: |-
+                                  The metric data to return. Also defines whether this call is returning data
+                                  for one metric only, or whether it is performing a math expression on the
+                                  values of returned metric statistics to create a new time series. A time
+                                  series is a series of data points, each of which is associated with a timestamp.
+
+                                  For more information and examples, see Advanced predictive scaling policy
+                                  configurations using custom metrics (https://docs.aws.amazon.com/autoscaling/ec2/userguide/predictive-scaling-customized-metric-specification.html)
+                                  in the Amazon EC2 Auto Scaling User Guide.
+                                properties:
+                                  expression:
+                                    type: string
+                                  id:
+                                    type: string
+                                  label:
+                                    type: string
+                                  metricStat:
+                                    description: |-
+                                      This structure defines the CloudWatch metric to return, along with the statistic
+                                      and unit.
+
+                                      For more information about the CloudWatch terminology below, see Amazon CloudWatch
+                                      concepts (https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html)
+                                      in the Amazon CloudWatch User Guide.
+                                    properties:
+                                      metric:
+                                        description: Represents a specific metric.
+                                        properties:
+                                          dimensions:
+                                            items:
+                                              description: Describes the dimension
+                                                of a metric.
+                                              properties:
+                                                name:
+                                                  type: string
+                                                value:
+                                                  type: string
+                                              type: object
+                                            type: array
+                                          metricName:
+                                            type: string
+                                          namespace:
+                                            type: string
+                                        type: object
+                                      stat:
+                                        type: string
+                                      unit:
+                                        type: string
+                                    type: object
+                                  returnData:
+                                    type: boolean
+                                type: object
+                              type: array
+                          type: object
+                        predefinedLoadMetricSpecification:
+                          description: |-
+                            Describes a load metric for a predictive scaling policy.
+
+                            When returned in the output of DescribePolicies, it indicates that a predictive
+                            scaling policy uses individually specified load and scaling metrics instead
+                            of a metric pair.
+                          properties:
+                            predefinedMetricType:
+                              type: string
+                            resourceLabel:
+                              type: string
+                          type: object
+                        predefinedMetricPairSpecification:
+                          description: Represents a metric pair for a predictive scaling
+                            policy.
+                          properties:
+                            predefinedMetricType:
+                              type: string
+                            resourceLabel:
+                              type: string
+                          type: object
+                        predefinedScalingMetricSpecification:
+                          description: |-
+                            Describes a scaling metric for a predictive scaling policy.
+
+                            When returned in the output of DescribePolicies, it indicates that a predictive
+                            scaling policy uses individually specified load and scaling metrics instead
+                            of a metric pair.
+                          properties:
+                            predefinedMetricType:
+                              type: string
+                            resourceLabel:
+                              type: string
+                          type: object
+                        targetValue:
+                          type: number
+                      type: object
+                    type: array
+                  mode:
+                    type: string
+                  schedulingBufferTime:
+                    format: int64
+                    type: integer
+                type: object
+              scalingAdjustment:
+                description: |-
+                  The amount by which to scale, based on the specified adjustment type. A positive
+                  value adds to the current capacity while a negative number removes from the
+                  current capacity. For exact capacity, you must specify a non-negative value.
+
+                  Required if the policy type is SimpleScaling. (Not used with any other policy
+                  type.)
+                format: int64
+                type: integer
+              stepAdjustments:
+                description: |-
+                  A set of adjustments that enable you to scale based on the size of the alarm
+                  breach.
+
+                  Required if the policy type is StepScaling. (Not used with any other policy
+                  type.)
+                items:
+                  description: |-
+                    Describes information used to create a step adjustment for a step scaling
+                    policy.
+
+                    For the following examples, suppose that you have an alarm with a breach
+                    threshold of 50:
+
+                       * To trigger the adjustment when the metric is greater than or equal to
+                       50 and less than 60, specify a lower bound of 0 and an upper bound of
+                       10.
+
+                       * To trigger the adjustment when the metric is greater than 40 and less
+                       than or equal to 50, specify a lower bound of -10 and an upper bound of
+                       0.
+
+                    There are a few rules for the step adjustments for your step policy:
+
+                       * The ranges of your step adjustments can't overlap or have a gap.
+
+                       * At most, one step adjustment can have a null lower bound. If one step
+                       adjustment has a negative lower bound, then there must be a step adjustment
+                       with a null lower bound.
+
+                       * At most, one step adjustment can have a null upper bound. If one step
+                       adjustment has a positive upper bound, then there must be a step adjustment
+                       with a null upper bound.
+
+                       * The upper and lower bound can't be null in the same step adjustment.
+
+                    For more information, see Step adjustments (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-simple-step.html#as-scaling-steps)
+                    in the Amazon EC2 Auto Scaling User Guide.
+                  properties:
+                    metricIntervalLowerBound:
+                      type: number
+                    metricIntervalUpperBound:
+                      type: number
+                    scalingAdjustment:
+                      format: int64
+                      type: integer
+                  type: object
+                type: array
+              targetTrackingConfiguration:
+                description: |-
+                  A target tracking scaling policy. Provides support for predefined or custom
+                  metrics.
+
+                  The following predefined metrics are available:
+
+                     * ASGAverageCPUUtilization
+
+                     * ASGAverageNetworkIn
+
+                     * ASGAverageNetworkOut
+
+                     * ALBRequestCountPerTarget
+
+                  If you specify ALBRequestCountPerTarget for the metric, you must specify
+                  the ResourceLabel property with the PredefinedMetricSpecification.
+
+                  For more information, see TargetTrackingConfiguration (https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_TargetTrackingConfiguration.html)
+                  in the Amazon EC2 Auto Scaling API Reference.
+
+                  Required if the policy type is TargetTrackingScaling.
+                properties:
+                  customizedMetricSpecification:
+                    description: |-
+                      Represents a CloudWatch metric of your choosing for a target tracking scaling
+                      policy to use with Amazon EC2 Auto Scaling.
+
+                      To create your customized metric specification:
+
+                         * Add values for each required property from CloudWatch. You can use an
+                         existing metric, or a new metric that you create. To use your own metric,
+                         you must first publish the metric to CloudWatch. For more information,
+                         see Publish custom metrics (https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html)
+                         in the Amazon CloudWatch User Guide.
+
+                         * Choose a metric that changes proportionally with capacity. The value
+                         of the metric should increase or decrease in inverse proportion to the
+                         number of capacity units. That is, the value of the metric should decrease
+                         when capacity increases.
+
+                      For more information about the CloudWatch terminology below, see Amazon CloudWatch
+                      concepts (https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html).
+
+                      Each individual service provides information about the metrics, namespace,
+                      and dimensions they use. For more information, see Amazon Web Services services
+                      that publish CloudWatch metrics (https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html)
+                      in the Amazon CloudWatch User Guide.
+                    properties:
+                      dimensions:
+                        items:
+                          description: Describes the dimension of a metric.
+                          properties:
+                            name:
+                              type: string
+                            value:
+                              type: string
+                          type: object
+                        type: array
+                      metricName:
+                        type: string
+                      metrics:
+                        items:
+                          description: |-
+                            The metric data to return. Also defines whether this call is returning data
+                            for one metric only, or whether it is performing a math expression on the
+                            values of returned metric statistics to create a new time series. A time
+                            series is a series of data points, each of which is associated with a timestamp.
+                          properties:
+                            expression:
+                              type: string
+                            id:
+                              type: string
+                            label:
+                              type: string
+                            metricStat:
+                              description: |-
+                                This structure defines the CloudWatch metric to return, along with the statistic
+                                and unit.
+
+                                For more information about the CloudWatch terminology below, see Amazon CloudWatch
+                                concepts (https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html)
+                                in the Amazon CloudWatch User Guide.
+                              properties:
+                                metric:
+                                  description: Represents a specific metric.
+                                  properties:
+                                    dimensions:
+                                      items:
+                                        description: Describes the dimension of a
+                                          metric.
+                                        properties:
+                                          name:
+                                            type: string
+                                          value:
+                                            type: string
+                                        type: object
+                                      type: array
+                                    metricName:
+                                      type: string
+                                    namespace:
+                                      type: string
+                                  type: object
+                                period:
+                                  format: int64
+                                  type: integer
+                                stat:
+                                  type: string
+                                unit:
+                                  type: string
+                              type: object
+                            period:
+                              format: int64
+                              type: integer
+                            returnData:
+                              type: boolean
+                          type: object
+                        type: array
+                      namespace:
+                        type: string
+                      period:
+                        format: int64
+                        type: integer
+                      statistic:
+                        type: string
+                      unit:
+                        type: string
+                    type: object
+                  disableScaleIn:
+                    type: boolean
+                  predefinedMetricSpecification:
+                    description: |-
+                      Represents a predefined metric for a target tracking scaling policy to use
+                      with Amazon EC2 Auto Scaling.
+                    properties:
+                      predefinedMetricType:
+                        type: string
+                      resourceLabel:
+                        type: string
+                    type: object
+                  targetValue:
+                    type: number
+                type: object
+            required:
+            - autoScalingGroupName
+            - policyName
+            type: object
+          status:
+            description: ScalingPolicyStatus defines the observed state of ScalingPolicy
+            properties:
+              ackResourceMetadata:
+                description: |-
+                  All CRs managed by ACK have a common `Status.ACKResourceMetadata` member
+                  that is used to contain resource sync state, account ownership,
+                  constructed ARN for the resource
+                properties:
+                  arn:
+                    description: |-
+                      ARN is the Amazon Resource Name for the resource. This is a
+                      globally-unique identifier and is set only by the ACK service controller
+                      once the controller has orchestrated the creation of the resource OR
+                      when it has verified that an "adopted" resource (a resource where the
+                      ARN annotation was set by the Kubernetes user on the CR) exists and
+                      matches the supplied CR's Spec field values.
+                      https://github.com/aws/aws-controllers-k8s/issues/270
+                    type: string
+                  ownerAccountID:
+                    description: |-
+                      OwnerAccountID is the AWS Account ID of the account that owns the
+                      backend AWS service API resource.
+                    type: string
+                  partition:
+                    description: Partition is the AWS partition in which the resource
+                      exists or will exist
+                    type: string
+                  region:
+                    description: Region is the AWS region in which the resource exists
+                      or will exist.
+                    type: string
+                required:
+                - ownerAccountID
+                - region
+                type: object
+              alarms:
+                description: The CloudWatch alarms created for the target tracking
+                  scaling policy.
+                items:
+                  description: Describes an alarm.
+                  properties:
+                    alarmARN:
+                      type: string
+                    alarmName:
+                      type: string
+                  type: object
+                type: array
+              conditions:
+                description: |-
+                  All CRs managed by ACK have a common `Status.Conditions` member that
+                  contains a collection of `ackv1alpha1.Condition` objects that describe
+                  the various terminal states of the CR and its backend AWS service API
+                  resource
+                items:
+                  description: |-
+                    Condition is the common struct used by all CRDs managed by ACK service
+                    controllers to indicate terminal states  of the CR and its backend AWS
+                    service API resource
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A human readable message indicating details about
+                        the transition.
+                      type: string
+                    reason:
+                      description: The reason for the condition's last transition.
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the Condition
+                      type: string
+                  required:
+                  - status
+                  - type
+                  type: object
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

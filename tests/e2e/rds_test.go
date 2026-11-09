@@ -11,6 +11,7 @@ import (
 	"testing"
 	"time"
 
+	ackiam "github.com/aws-controllers-k8s/iam-controller/apis/v1alpha1"
 	ackrds "github.com/aws-controllers-k8s/rds-controller/apis/v1alpha1"
 	ackv1alpha1 "github.com/aws-controllers-k8s/runtime/apis/core/v1alpha1"
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -30,6 +31,7 @@ func rdsEnv(t *testing.T) (*harness.Env, *rds.Client) {
 	scheme := runtime.NewScheme()
 	_ = rdsv1.AddToScheme(scheme)
 	_ = ackrds.AddToScheme(scheme)
+	_ = ackiam.AddToScheme(scheme)
 	env := harness.Start(t, "rds", scheme)
 	return env, rds.NewFromConfig(env.AWS)
 }

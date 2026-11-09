@@ -1,0 +1,74 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ack-extensions-kms-manager
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  - secrets
+  verbs:
+  - get
+  - list
+  - patch
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - kms.aws.hfl.dev
+  resources:
+  - replicakeys
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - kms.aws.hfl.dev
+  resources:
+  - replicakeys/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - kms.services.k8s.aws
+  resources:
+  - keys
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - services.k8s.aws
+  resources:
+  - fieldexports
+  - iamroleselectors
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - services.k8s.aws
+  resources:
+  - fieldexports/status
+  - iamroleselectors/status
+  verbs:
+  - get
+  - patch
+  - update
