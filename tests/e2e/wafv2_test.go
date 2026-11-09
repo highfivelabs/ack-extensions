@@ -72,7 +72,8 @@ func TestWebACLAssociation(t *testing.T) {
 		t.Fatal(err)
 	}
 	arn := ackv1alpha1.AWSResourceName(aclARN)
-	ackACL.Status.ACKResourceMetadata = &ackv1alpha1.ResourceMetadata{ARN: &arn}
+	account, region := ackv1alpha1.AWSAccountID("123456789012"), ackv1alpha1.AWSRegion("us-west-2")
+	ackACL.Status.ACKResourceMetadata = &ackv1alpha1.ResourceMetadata{ARN: &arn, OwnerAccountID: &account, Region: &region}
 	ackACL.Status.Conditions = []*ackv1alpha1.Condition{{Type: ackv1alpha1.ConditionTypeResourceSynced, Status: corev1.ConditionTrue}}
 	if err := env.Client.Status().Update(ctx, ackACL); err != nil {
 		t.Fatal(err)
