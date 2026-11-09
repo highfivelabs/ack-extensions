@@ -571,6 +571,220 @@ func TestOrganizationsPolicyAttachment(t *testing.T) {
 	})
 }
 
+// delegatedTo is the accounts registered as a service's delegated
+// administrator in the cloud, sorted.
+func delegatedTo(ctx context.Context, c *organizations.Client, principal string) (string, error) {
+	out, err := c.ListDelegatedAdministrators(ctx, &organizations.ListDelegatedAdministratorsInput{ServicePrincipal: aws.String(principal)})
+	if err != nil {
+		return "", err
+	}
+	var ids []string
+	for _, a := range out.DelegatedAdministrators {
+		ids = append(ids, aws.ToString(a.Id))
+	}
+	sort.Strings(ids)
+	return strings.Join(ids, ","), nil
+}
+
+// newMemberAccount makes an account in moto's organization and returns its ID.
+func newMemberAccount(t *testing.T, ctx context.Context, c *organizations.Client, name string) string {
+	t.Helper()
+	out, err := c.CreateAccount(ctx, &organizations.CreateAccountInput{AccountName: aws.String(name), Email: aws.String(name + "@example.com")})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if out.CreateAccountStatus.AccountId != nil {
+		return *out.CreateAccountStatus.AccountId
+	}
+	st, err := c.DescribeCreateAccountStatus(ctx, &organizations.DescribeCreateAccountStatusInput{CreateAccountRequestId: out.CreateAccountStatus.Id})
+	if err != nil || st.CreateAccountStatus.AccountId == nil {
+		t.Fatalf("account %s: %+v %v", name, st, err)
+	}
+	return *st.CreateAccountStatus.AccountId
+}
+
+// DelegatedAdministrator: a member account registered as an AWS service's
+// delegated administrator for the organization.
+func TestOrganizationsDelegatedAdministrator(t *testing.T) {
+	scheme := runtime.NewScheme()
+	_ = orgv1.AddToScheme(scheme)
+	_ = ackorg.AddToScheme(scheme)
+	env := harness.Start(t, "organizations", scheme)
+	cloud := organizations.NewFromConfig(env.AWS)
+	ctx := context.Background()
+
+	org, err := cloud.CreateOrganization(ctx, &organizations.CreateOrganizationInput{FeatureSet: orgtypes.OrganizationFeatureSetAll})
+	if err != nil {
+		t.Fatal(err)
+	}
+	management := aws.ToString(org.Organization.MasterAccountId)
+	security := newMemberAccount(t, ctx, cloud, "security")
+	audit := newMemberAccount(t, ctx, cloud, "audit")
+	const guardduty = "guardduty.amazonaws.com"
+
+	// ACK's Account, as ACK's organizations-controller would leave it once
+	// synced (that controller does not run here).
+	ackAccount := &ackorg.Account{
+		ObjectMeta: metav1.ObjectMeta{Name: "security", Namespace: "default"},
+		Spec:       ackorg.AccountSpec{Name: aws.String("security"), Email: aws.String("security@example.com")},
+	}
+	if err := env.Client.Create(ctx, ackAccount); err != nil {
+		t.Fatal(err)
+	}
+	ackAccount.Status.AccountID = aws.String(security)
+	ackAccount.Status.Conditions = []*ackv1alpha1.Condition{{Type: ackv1alpha1.ConditionTypeResourceSynced, Status: corev1.ConditionTrue}}
+	if err := env.Client.Status().Update(ctx, ackAccount); err != nil {
+		t.Fatal(err)
+	}
+
+	waitSynced := func(t *testing.T, obj *orgv1.DelegatedAdministrator) {
+		t.Helper()
+		harness.Eventually(t, 60*time.Second, obj.Name+" synced", func() error {
+			if err := env.Client.Get(ctx, client.ObjectKeyFromObject(obj), obj); err != nil {
+				return err
+			}
+			if ok, why := synced(obj.Status.Conditions); !ok {
+				return fmt.Errorf("not synced: %s", why)
+			}
+			return nil
+		})
+	}
+	gone := func(t *testing.T, obj client.Object) {
+		t.Helper()
+		harness.Eventually(t, 60*time.Second, obj.GetName()+" gone", func() error {
+			err := env.Client.Get(ctx, client.ObjectKeyFromObject(obj), &orgv1.DelegatedAdministrator{})
+			if err == nil {
+				return fmt.Errorf("object still present")
+			}
+			return client.IgnoreNotFound(err)
+		})
+	}
+	delegatedAre := func(t *testing.T, want string) {
+		t.Helper()
+		harness.Eventually(t, 60*time.Second, "delegated to "+want, func() error {
+			got, err := delegatedTo(ctx, cloud, guardduty)
+			if err != nil {
+				return err
+			}
+			if got != want {
+				return fmt.Errorf("delegated to %q", got)
+			}
+			return nil
+		})
+	}
+
+	byRef := &orgv1.DelegatedAdministrator{
+		ObjectMeta: metav1.ObjectMeta{Name: "guardduty-security", Namespace: "default"},
+		Spec: orgv1.DelegatedAdministratorSpec{
+			AccountRef:       &ackv1alpha1.AWSResourceReferenceWrapper{From: &ackv1alpha1.AWSResourceReference{Name: aws.String("security")}},
+			ServicePrincipal: aws.String(guardduty),
+		},
+	}
+
+	t.Run("ACK's Account is registered by reference, and settles", func(t *testing.T) {
+		if err := env.Client.Create(ctx, byRef); err != nil {
+			t.Fatal(err)
+		}
+		waitSynced(t, byRef)
+		delegatedAre(t, security)
+		creates := func() int {
+			n := 0
+			for _, line := range strings.Split(env.Logs(), "\n") {
+				if strings.Contains(line, ">>> rm.sdkCreate") && strings.Contains(line, `"name": "guardduty-security"`) {
+					n++
+				}
+			}
+			return n
+		}
+		before := creates()
+		time.Sleep(15 * time.Second)
+		if n := creates(); n != before {
+			t.Fatalf("registered %d more times across resyncs", n-before)
+		}
+	})
+
+	t.Run("deregistered outside Kubernetes, it is registered again", func(t *testing.T) {
+		if _, err := cloud.DeregisterDelegatedAdministrator(ctx, &organizations.DeregisterDelegatedAdministratorInput{AccountId: aws.String(security), ServicePrincipal: aws.String(guardduty)}); err != nil {
+			t.Fatal(err)
+		}
+		delegatedAre(t, security)
+	})
+
+	t.Run("the service principal cannot change", func(t *testing.T) {
+		harness.Eventually(t, 30*time.Second, "the CRD's immutability refusal", func() error {
+			got := &orgv1.DelegatedAdministrator{}
+			if err := env.Client.Get(ctx, client.ObjectKeyFromObject(byRef), got); err != nil {
+				return err
+			}
+			got.Spec.ServicePrincipal = aws.String("config.amazonaws.com")
+			err := env.Client.Update(ctx, got)
+			if err != nil && strings.Contains(err.Error(), "immutable") {
+				return nil
+			}
+			if err == nil {
+				t.Fatal("servicePrincipal changed")
+			}
+			return err
+		})
+	})
+
+	t.Run("the management account is refused", func(t *testing.T) {
+		self := &orgv1.DelegatedAdministrator{
+			ObjectMeta: metav1.ObjectMeta{Name: "self", Namespace: "default"},
+			Spec:       orgv1.DelegatedAdministratorSpec{AccountID: aws.String(management), ServicePrincipal: aws.String(guardduty)},
+		}
+		if err := env.Client.Create(ctx, self); err != nil {
+			t.Fatal(err)
+		}
+		harness.Eventually(t, 60*time.Second, "terminal condition", func() error {
+			got := &orgv1.DelegatedAdministrator{}
+			if err := env.Client.Get(ctx, client.ObjectKeyFromObject(self), got); err != nil {
+				return err
+			}
+			for _, c := range got.Status.Conditions {
+				if c.Type == ackv1alpha1.ConditionTypeTerminal && c.Status == corev1.ConditionTrue {
+					return nil
+				}
+			}
+			return fmt.Errorf("no terminal condition: %+v", got.Status.Conditions)
+		})
+		if err := env.Client.Delete(ctx, self); err != nil {
+			t.Fatal(err)
+		}
+		gone(t, self)
+	})
+
+	t.Run("deletion-policy retain leaves the registration", func(t *testing.T) {
+		keep := &orgv1.DelegatedAdministrator{
+			ObjectMeta: metav1.ObjectMeta{
+				Name: "kept", Namespace: "default",
+				Annotations: map[string]string{ackv1alpha1.AnnotationDeletionPolicy: string(ackv1alpha1.DeletionPolicyRetain)},
+			},
+			Spec: orgv1.DelegatedAdministratorSpec{AccountID: aws.String(audit), ServicePrincipal: aws.String(guardduty)},
+		}
+		if err := env.Client.Create(ctx, keep); err != nil {
+			t.Fatal(err)
+		}
+		waitSynced(t, keep)
+		if err := env.Client.Delete(ctx, keep); err != nil {
+			t.Fatal(err)
+		}
+		gone(t, keep)
+		delegatedAre(t, strings.Join(sortedIDs(security, audit), ","))
+		if _, err := cloud.DeregisterDelegatedAdministrator(ctx, &organizations.DeregisterDelegatedAdministratorInput{AccountId: aws.String(audit), ServicePrincipal: aws.String(guardduty)}); err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	t.Run("delete deregisters the account", func(t *testing.T) {
+		if err := env.Client.Delete(ctx, byRef); err != nil {
+			t.Fatal(err)
+		}
+		gone(t, byRef)
+		delegatedAre(t, "")
+	})
+}
+
 func sortedIDs(ids ...string) []string {
 	sort.Strings(ids)
 	return ids

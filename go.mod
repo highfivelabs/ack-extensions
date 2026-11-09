@@ -6,6 +6,7 @@ require (
 	github.com/aws-controllers-k8s/iam-controller v1.11.3
 	github.com/aws-controllers-k8s/kms-controller v1.7.0
 	github.com/aws-controllers-k8s/lambda-controller v1.19.0
+	github.com/aws-controllers-k8s/organizations-controller v1.7.0
 	github.com/aws-controllers-k8s/rds-controller v1.14.2
 	github.com/aws-controllers-k8s/runtime v0.67.0
 	github.com/aws-controllers-k8s/wafv2-controller v1.8.1
@@ -36,7 +37,6 @@ require (
 )
 
 require (
-	github.com/aws-controllers-k8s/organizations-controller v1.7.0 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.7.8 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.28.6 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.21 // indirect

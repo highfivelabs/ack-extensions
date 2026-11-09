@@ -81,7 +81,7 @@ pins:
     repo: aws-controllers-k8s/organizations-controller
     version: v1.7.0
     commit: 5824700fd7
-    use: ACK's Account and OrganizationalUnit are left to it; the SDK client at its version
+    use: Go module (API types of Account and OrganizationalUnit, which DelegatedAdministrator and PolicyAttachment reference); ACK's Account and OrganizationalUnit are left to it; the SDK client at its version
   - name: aws-sdk-go-v2 models
     repo: aws/aws-sdk-go-v2
     version: v1.34.0
