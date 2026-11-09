@@ -17,6 +17,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/apimachinery/pkg/util/validation"
 	"k8s.io/client-go/tools/record"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
@@ -473,4 +474,21 @@ func TestReconcileOrganizationScoped(t *testing.T) {
 			t.Fatalf("events %v", ev)
 		}
 	})
+}
+
+// A label value is at most 63 characters; ACK's Deployment in
+// ack-organizations-system can be longer than that with its namespace.
+func TestSourceLabel(t *testing.T) {
+	short := "ack-system.ack-rds-rds-chart"
+	if got := SourceLabel(short); got != short {
+		t.Fatalf("short source changed: %s", got)
+	}
+	a := SourceLabel("ack-organizations-system.ack-organizations-controller-organizations-chart")
+	b := SourceLabel("ack-organizations-system.ack-organizations-controller-organizations-chart2")
+	if len(a) > 63 || len(b) > 63 || a == b {
+		t.Fatalf("long sources: %q (%d), %q (%d)", a, len(a), b, len(b))
+	}
+	if errs := validation.IsValidLabelValue(a); len(errs) > 0 {
+		t.Fatalf("%q: %v", a, errs)
+	}
 }

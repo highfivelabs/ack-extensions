@@ -37,6 +37,8 @@ package operator
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"sort"
 	"strings"
@@ -66,7 +68,8 @@ const (
 	managedBy      = Name + "-operator"
 	// LabelService is our service (applicationautoscaling, autoscaling, ec2, ecr, eventbridge, iam, kms, lambda, organizations, rds, scheduler, wafv2).
 	LabelService = "aws.hfl.dev/service"
-	// LabelSource is the ACK controller Deployment, namespace.name.
+	// LabelSource is the ACK controller Deployment, namespace.name, or, past
+	// a label value's 63 characters, its start and a hash (SourceLabel).
 	LabelSource = "aws.hfl.dev/source"
 	// AnnotationACKService names the ACK service of a Deployment that does
 	// not carry the Helm chart's label.
@@ -245,9 +248,20 @@ func labels(service string, src *appsv1.Deployment) map[string]string {
 	return map[string]string{
 		LabelManagedBy:           managedBy,
 		LabelService:             service,
-		LabelSource:              src.Namespace + "." + src.Name,
+		LabelSource:              SourceLabel(src.Namespace + "." + src.Name),
 		"app.kubernetes.io/name": managerName(service),
 	}
+}
+
+// SourceLabel is s as a label value: s itself if it fits in 63
+// characters, else its first 52 and a hash of the whole, so two long
+// sources still differ.
+func SourceLabel(s string) string {
+	if len(s) <= 63 {
+		return s
+	}
+	sum := sha256.Sum256([]byte(s))
+	return strings.TrimRight(s[:52], "-._") + "-" + hex.EncodeToString(sum[:])[:10]
 }
 
 func owner(src *appsv1.Deployment) []metav1.OwnerReference {
