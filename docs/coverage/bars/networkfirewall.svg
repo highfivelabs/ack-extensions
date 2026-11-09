@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="22" viewBox="0 0 300 22" role="img" aria-label="networkfirewall: official 56.0%, ours beyond official 0.0%, uncovered 44.0% of 116 attributes">
+<title>networkfirewall: official 56.0%, ours beyond official 0.0%, uncovered 44.0% of 116 attributes</title>
+<rect x="0" y="0" width="300" height="22" rx="3" fill="#d0d7de"/>
+<rect x="0" y="0" width="168.1" height="22" fill="#2f81f7"/>
+<text x="84" y="12" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">56.0%</text>
+<rect x="168.1" y="0" width="131.9" height="22" fill="#d0d7de"/>
+<text x="234" y="12" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">44.0%</text>
+<rect x="0.5" y="0.5" width="299" height="21" rx="3" fill="none" stroke="#8c959f"/>
+</svg>
