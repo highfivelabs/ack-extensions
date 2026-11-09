@@ -30,6 +30,10 @@ resources:
         template_path: hooks/scaling_policy/sdk_read_many_post_build_request.go.tpl
       sdk_read_many_post_set_output:
         template_path: hooks/scaling_policy/sdk_read_many_post_set_output.go.tpl
+      # Server defaults are no drift (custom_delta.go), as ACK's
+      # applicationautoscaling-controller does for ScalableTarget.
+      delta_pre_compare:
+        code: customSetDefaults(a, b)
     fields:
       PolicyName:
         is_primary_key: true
@@ -39,18 +43,6 @@ resources:
         is_immutable: true
       PolicyARN:
         is_arn: true
-      # Server defaults (EC2 Auto Scaling API reference, PutScalingPolicy):
-      # read back into a spec that left them unset, so they are no drift.
-      PolicyType:
-        late_initialize: {}
-      Enabled:
-        late_initialize: {}
-      MetricAggregationType:
-        late_initialize: {}
-      Cooldown:
-        late_initialize: {}
-      TargetTrackingConfiguration.DisableScaleIn:
-        late_initialize: {}
     tags:
       ignore: true
 ignore:

@@ -50,7 +50,7 @@ var (
 // +kubebuilder:rbac:groups=autoscaling.aws.hfl.dev,resources=scalingpolicies,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=autoscaling.aws.hfl.dev,resources=scalingpolicies/status,verbs=get;update;patch
 
-var lateInitializeFieldNames = []string{"Cooldown", "Enabled", "MetricAggregationType", "PolicyType", "DisableScaleIn"}
+var lateInitializeFieldNames = []string{}
 
 // resourceManager is responsible for providing a consistent way to perform
 // CRUD operations in a backend AWS service API for Book custom resources.
@@ -251,24 +251,6 @@ func (rm *resourceManager) LateInitialize(
 func (rm *resourceManager) incompleteLateInitialization(
 	res acktypes.AWSResource,
 ) bool {
-	ko := rm.concreteResource(res).ko.DeepCopy()
-	if ko.Spec.Cooldown == nil {
-		return true
-	}
-	if ko.Spec.Enabled == nil {
-		return true
-	}
-	if ko.Spec.MetricAggregationType == nil {
-		return true
-	}
-	if ko.Spec.PolicyType == nil {
-		return true
-	}
-	if ko.Spec.TargetTrackingConfiguration != nil {
-		if ko.Spec.TargetTrackingConfiguration.DisableScaleIn == nil {
-			return true
-		}
-	}
 	return false
 }
 
@@ -278,26 +260,7 @@ func (rm *resourceManager) lateInitializeFromReadOneOutput(
 	observed acktypes.AWSResource,
 	latest acktypes.AWSResource,
 ) acktypes.AWSResource {
-	observedKo := rm.concreteResource(observed).ko.DeepCopy()
-	latestKo := rm.concreteResource(latest).ko.DeepCopy()
-	if observedKo.Spec.Cooldown != nil && latestKo.Spec.Cooldown == nil {
-		latestKo.Spec.Cooldown = observedKo.Spec.Cooldown
-	}
-	if observedKo.Spec.Enabled != nil && latestKo.Spec.Enabled == nil {
-		latestKo.Spec.Enabled = observedKo.Spec.Enabled
-	}
-	if observedKo.Spec.MetricAggregationType != nil && latestKo.Spec.MetricAggregationType == nil {
-		latestKo.Spec.MetricAggregationType = observedKo.Spec.MetricAggregationType
-	}
-	if observedKo.Spec.PolicyType != nil && latestKo.Spec.PolicyType == nil {
-		latestKo.Spec.PolicyType = observedKo.Spec.PolicyType
-	}
-	if observedKo.Spec.TargetTrackingConfiguration != nil && latestKo.Spec.TargetTrackingConfiguration != nil {
-		if observedKo.Spec.TargetTrackingConfiguration.DisableScaleIn != nil && latestKo.Spec.TargetTrackingConfiguration.DisableScaleIn == nil {
-			latestKo.Spec.TargetTrackingConfiguration.DisableScaleIn = observedKo.Spec.TargetTrackingConfiguration.DisableScaleIn
-		}
-	}
-	return &resource{latestKo}
+	return latest
 }
 
 // IsSynced returns true if the resource is synced.

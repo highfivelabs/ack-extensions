@@ -154,23 +154,17 @@ func TestScalingPolicy(t *testing.T) {
 		},
 	}
 
-	t.Run("server defaults are read into the spec and settle", func(t *testing.T) {
+	t.Run("server defaults are no drift", func(t *testing.T) {
 		if err := env.Client.Create(ctx, step); err != nil {
 			t.Fatal(err)
 		}
 		waitSynced(t, step)
-		// PolicyType defaults to SimpleScaling; moto also returns a default
-		// cooldown of 300 (AWS returns one only when it was set).
-		harness.Eventually(t, 30*time.Second, "policyType late-initialized", func() error {
-			got := get(t, step)
-			if aws.ToString(got.Spec.PolicyType) != "SimpleScaling" {
-				return fmt.Errorf("spec.policyType %q", aws.ToString(got.Spec.PolicyType))
-			}
-			return nil
-		})
-		// No drift is left: the object stays synced over several resyncs
-		// (every 5 seconds here), with no recoverable error.
-		before := get(t, step).Generation
+		// The spec leaves the policy type and cooldown unset; the fake
+		// reports SimpleScaling and a cooldown of 300 (AWS reports the
+		// type, and a cooldown only when one was set). Over several
+		// resyncs (every 5 seconds here) the object stays synced, with no
+		// recoverable error, and the policy is not put again with
+		// anything else.
 		time.Sleep(15 * time.Second)
 		got := get(t, step)
 		if ok, why := synced(got.Status.Conditions); !ok {
@@ -181,8 +175,12 @@ func TestScalingPolicy(t *testing.T) {
 				t.Fatalf("recoverable error: %s", aws.ToString(c.Message))
 			}
 		}
-		if got.Generation != before {
-			t.Fatalf("spec kept changing: generation %d -> %d", before, got.Generation)
+		p, err := cloudPolicy(ctx, cloud, "web", "web-up")
+		if err != nil || p == nil {
+			t.Fatalf("policy in the cloud: %v %v", p, err)
+		}
+		if aws.ToString(p.PolicyType) != "SimpleScaling" || aws.ToInt32(p.ScalingAdjustment) != 1 {
+			t.Fatalf("cloud policy type %q adjustment %d", aws.ToString(p.PolicyType), aws.ToInt32(p.ScalingAdjustment))
 		}
 	})
 
