@@ -1,0 +1,182 @@
+# Generator configuration for ack-extensions's EC2 kinds (ec2.aws.hfl.dev).
+#
+# ACK's ec2-controller (v1.23.1) ignores CustomerGateway and VpnGateway.
+# They are generated
+# here with that controller's own patterns for an EC2 resource: tags
+# passed as TagSpecifications on create and synced with CreateTags and
+# DeleteTags after (copied from its InternetGateway and pkg/tags), and
+# readiness on the resource's state. Every other resource the generator
+# finds in the EC2 model is ignored: ACK has it, or it is not built here.
+operations:
+  CreateCustomerGateway:
+    output_wrapper_field_path: CustomerGateway
+  CreateVpnGateway:
+    output_wrapper_field_path: VpnGateway
+resources:
+  CustomerGateway:
+    fields:
+      Tags:
+        from:
+          operation: CreateTags
+          path: Tags
+      CustomerGatewayID:
+        print:
+          name: ID
+      BGPASN:
+        is_immutable: true
+        # The input takes a number, CustomerGateway (output) a string: the
+        # spec keeps what was written (the field is immutable).
+        set:
+          - ignore: "from"
+      BGPASNExtended:
+        is_immutable: true
+        # The input takes a number, CustomerGateway (output) a string: the
+        # spec keeps what was written (the field is immutable).
+        set:
+          - ignore: "from"
+      CertificateARN:
+        is_immutable: true
+      DeviceName:
+        is_immutable: true
+      IPAddress:
+        is_immutable: true
+      Type:
+        is_immutable: true
+    hooks:
+      sdk_create_post_build_request:
+        template_path: hooks/customer_gateway/sdk_create_post_build_request.go.tpl
+      sdk_read_many_post_set_output:
+        template_path: hooks/customer_gateway/sdk_read_many_post_set_output.go.tpl
+    update_operation:
+      custom_method_name: customUpdateCustomerGateway
+    synced:
+      when:
+        - path: Status.State
+          in:
+            - available
+  VpnGateway:
+    fields:
+      Tags:
+        from:
+          operation: CreateTags
+          path: Tags
+      # The VPC the gateway is attached to (AttachVpnGateway), as ACK's
+      # InternetGateway models its VPC.
+      VPC:
+        from:
+          operation: AttachVpnGateway
+          path: VpcId
+      VPNGatewayID:
+        print:
+          name: ID
+      AmazonSideASN:
+        is_immutable: true
+      AvailabilityZone:
+        is_immutable: true
+      Type:
+        is_immutable: true
+    hooks:
+      sdk_create_post_build_request:
+        template_path: hooks/vpn_gateway/sdk_create_post_build_request.go.tpl
+      sdk_create_post_set_output:
+        template_path: hooks/vpn_gateway/sdk_create_post_set_output.go.tpl
+      sdk_read_many_post_set_output:
+        template_path: hooks/vpn_gateway/sdk_read_many_post_set_output.go.tpl
+      sdk_delete_pre_build_request:
+        template_path: hooks/vpn_gateway/sdk_delete_pre_build_request.go.tpl
+    update_operation:
+      custom_method_name: customUpdateVpnGateway
+    synced:
+      when:
+        - path: Status.State
+          in:
+            - available
+ignore:
+  field_paths:
+    # Deprecated: IpAddress replaces it (EC2 API reference).
+    - CreateCustomerGatewayInput.PublicIp
+    - CreateCustomerGatewayInput.DryRun
+    # Tags are spec.tags (TagSpecifications built from them on create).
+    - CreateCustomerGatewayInput.TagSpecifications
+    - CreateVpnGatewayInput.DryRun
+    - CreateVpnGatewayInput.TagSpecifications
+  resource_names:
+    - CapacityReservation
+    - CapacityReservationBySplitting
+    - CapacityReservationFleet
+    - CarrierGateway
+    - ClientVpnEndpoint
+    - ClientVpnRoute
+    - CoipCidr
+    - CoipPool
+    - DefaultSubnet
+    - DefaultVpc
+    - EgressOnlyInternetGateway
+    - Fleet
+    - FpgaImage
+    - Image
+    - InstanceConnectEndpoint
+    - InstanceEventWindow
+    - InstanceExportTask
+    - InternetGateway
+    - Ipam
+    - IpamExternalResourceVerificationToken
+    - IpamPool
+    - IpamResourceDiscovery
+    - IpamScope
+    - KeyPair
+    - LaunchTemplate
+    - LaunchTemplateVersion
+    - LocalGatewayRoute
+    - LocalGatewayRouteTable
+    - LocalGatewayRouteTableVirtualInterfaceGroupAssociation
+    - LocalGatewayRouteTableVpcAssociation
+    - ManagedPrefixList
+    - NatGateway
+    - NetworkAcl
+    - NetworkAclEntry
+    - NetworkInsightsAccessScope
+    - NetworkInsightsPath
+    - NetworkInterface
+    - NetworkInterfacePermission
+    - PlacementGroup
+    - PublicIpv4Pool
+    - ReplaceRootVolumeTask
+    - ReservedInstancesListing
+    - RestoreImageTask
+    - Route
+    - RouteTable
+    - SecurityGroup
+    - Snapshot
+    - SpotDatafeedSubscription
+    - StoreImageTask
+    - Subnet
+    - SubnetCidrReservation
+    - TrafficMirrorFilter
+    - TrafficMirrorFilterRule
+    - TrafficMirrorSession
+    - TrafficMirrorTarget
+    - TransitGateway
+    - TransitGatewayConnect
+    - TransitGatewayConnectPeer
+    - TransitGatewayMulticastDomain
+    - TransitGatewayPeeringAttachment
+    - TransitGatewayPolicyTable
+    - TransitGatewayPrefixListReference
+    - TransitGatewayRoute
+    - TransitGatewayRouteTable
+    - TransitGatewayRouteTableAnnouncement
+    - TransitGatewayVpcAttachment
+    - VerifiedAccessEndpoint
+    - VerifiedAccessGroup
+    - VerifiedAccessInstance
+    - VerifiedAccessTrustProvider
+    - Volume
+    - Vpc
+    - VpcBlockPublicAccessExclusion
+    - VpcEndpoint
+    - VpcEndpointConnectionNotification
+    - VpcEndpointServiceConfiguration
+    - VpcPeeringConnection
+    - VpnConnection
+    - VpnConnectionRoute

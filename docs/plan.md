@@ -1,9 +1,10 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has nine kinds:
+Status, 2026-11-09: the repository has eleven kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
+- `ec2.aws.hfl.dev` `CustomerGateway` and `VPNGateway`;
 - `iam.aws.hfl.dev` `RolePolicyAttachment`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
@@ -220,6 +221,14 @@ status) and the fake cloud through the real AWS SDK clients.
     resyncs); a changed capacity and schedule is put again; the target
     cannot change; deletion-policy retain leaves the action; delete
     removes the action
+--- PASS: TestCustomerGateway
+    a customer gateway is made, tagged, and available; its tags change;
+    its address cannot change; deletion-policy retain leaves the gateway;
+    delete deletes the gateway (listed as deleted, the object gone)
+--- PASS: TestVpnGateway
+    a VPN gateway is made, tagged, and attached to its VPC; it moves to
+    another VPC; its ASN cannot change; deletion-policy retain leaves the
+    gateway attached; delete detaches and deletes the gateway
 --- PASS: TestReplicaKey
     a replica is made in its Region (tags put there); a policy is put on
     the replica only; the replica Region cannot change; references
@@ -340,6 +349,15 @@ controller to show it can fail:
   as given. It does not require a registered scalable target, does not
   check the schedule expression, and returns the time zone only when one
   was set.
+- **EC2 customer gateways.** moto keeps a deleted gateway listed in
+  state `deleted`, as AWS does, and creates one `available` at once (AWS
+  goes through `pending`). It does not check that the address is
+  public.
+- **EC2 VPN gateways.** moto attaches and detaches at once (`attached`,
+  `detached`; AWS goes through `attaching` and `detaching`, and refuses
+  to delete a gateway until it is detached). It keeps a deleted gateway
+  listed in state `deleted`, as AWS does. It does not implement
+  `EnableVgwRoutePropagation`, so route propagation is not built.
 - **KMS replica keys.**
   - moto keeps a replica in its own Region's backend, under the primary
     key's key ID, as AWS does.
@@ -400,7 +418,7 @@ its master (5.2.5 is the pin).
 | 4 | EC2 Auto Scaling `ScalingPolicy` and `ScheduledAction`; Application Auto Scaling `ScheduledAction` | none: autoscaling-controller `v1.5.0` has only `AutoScalingGroup`; applicationautoscaling-controller `v1.9.0` has `ScalableTarget` and `ScalingPolicy` | yes | built: `ScalingPolicy`, EC2 Auto Scaling `ScheduledAction`, Application Auto Scaling `ScheduledAction` |
 | 5 | KMS `ReplicaKey` | kms-controller PR #112: open, conflicts with base, not approved; an ACK maintainer's review finds its read, update and delete act on the primary key | `ReplicateKey` yes, `UpdatePrimaryRegion` no | built: `ReplicaKey` |
 | 6 | Standalone security group rules | none; ec2-controller has rule-sync fixes open (#394, #385) | yes | skipped: open question 7 |
-| 7 | EC2 `VPNGateway` (attachment, route propagation), `CustomerGateway` | ignored in ec2-controller `v1.23.1`'s `generator.yaml` | yes, except `EnableVgwRoutePropagation` | to build |
+| 7 | EC2 `VPNGateway` (attachment, route propagation), `CustomerGateway` | ignored in ec2-controller `v1.23.1`'s `generator.yaml` | yes, except `EnableVgwRoutePropagation` | built: `CustomerGateway`, `VPNGateway` (attachment); route propagation not built (moto has none of it) |
 | 8 | EBS `Volume`, `VolumeAttachment` | ignored in ec2-controller's `generator.yaml`; `aws-controllers-k8s/ebs-controller` exists, with no release | yes | to build |
 | 9 | CloudWatch Logs `MetricFilter`; CloudWatch `CompositeAlarm` | metric filters: cloudwatchlogs-controller PR #61, as a field on ACK's `LogGroup`. `CompositeAlarm`: ignored in cloudwatch-controller `v1.11.0`. | metric filters yes; `PutCompositeAlarm` no | skipped. Metric filters wait on open question 1. `CompositeAlarm`: moto has none of it. |
 | 10 | EventBridge Scheduler `Schedule` and `ScheduleGroup`; EventBridge `Connection` and `ApiDestination` | Scheduler: no controller (`community` issue #2784). `Connection` and `ApiDestination`: ignored in eventbridge-controller `v1.9.2`. | yes | to build |
@@ -777,6 +795,61 @@ Scaling kinds.
 `ScalingPolicy` and its group (section 6.6), a generated kind cannot
 reference ACK's kind of the same service yet (section 8). The target is
 named by `serviceNamespace`, `resourceID` and `scalableDimension`.
+
+### 6.10 `ec2.aws.hfl.dev` `CustomerGateway`
+
+The on-premises end of a site-to-site VPN: its public address, BGP ASN
+and type (`ipsec.1`), or a certificate. ACK's ec2-controller `v1.23.1`
+ignores it in its `generator.yaml`, and no pull request adds it.
+
+**Generated** from `CreateCustomerGateway`, `DescribeCustomerGateways` and
+`DeleteCustomerGateway`, with ACK ec2-controller's own patterns for an EC2
+resource, copied from its `InternetGateway`:
+
+- tags passed as `TagSpecifications` on create (`hooks.go`);
+- tags synced with `CreateTags` and `DeleteTags` afterwards (its
+  `pkg/tags`, copied with our types);
+- synced when the state is `available`.
+
+A gateway in state `deleted` reads as gone: EC2 keeps it listed for a
+while. Every field but the tags is immutable, because EC2 has no call
+that changes a customer gateway. `BgpAsn` is a number on create but a
+string on output, so the spec keeps the value written
+(`set: ignore: "from"`). The generator also names the type field
+`type_`, which is kept as it is.
+
+`services/ec2/generator.yaml` ignores the other 80 resources the
+generator finds in the EC2 model.
+
+### 6.11 `ec2.aws.hfl.dev` `VPNGateway`
+
+The AWS end of a site-to-site VPN (a virtual private gateway), attached
+to one VPC. ACK's ec2-controller `v1.23.1` ignores it, and no pull
+request adds it.
+
+**Generated** from `CreateVpnGateway`, `DescribeVpnGateways` and
+`DeleteVpnGateway`. Its VPC attachment is modelled as ACK's ec2-controller
+models its `InternetGateway`'s, with that controller's hooks copied:
+
+- `spec.vpc` (from `AttachVpnGateway`'s `VpcId`) is attached after the
+  create;
+- a changed VPC is moved with `DetachVpnGateway` and `AttachVpnGateway`;
+- the VPC is read back from the gateway's `VpcAttachments`;
+- the gateway is detached before the delete, because EC2 refuses to
+  delete an attached one.
+
+Tags and readiness work as for `CustomerGateway`. The type, Amazon-side
+ASN and Availability Zone are immutable.
+
+**Not built: a reference to ACK's `VPC`,** the same-service limit
+(section 8). **Not built: route propagation**
+(`EnableVgwRoutePropagation` on a route table): moto does not implement
+it, so nothing about it could be proven.
+
+**Not proven: detaching takes time on AWS.** A delete right after the
+detach can be refused while the gateway is `detaching`. The runtime
+retries it as a recoverable error, but moto detaches at once, so this
+path is not exercised.
 
 ## 7. The operator: ACK's identity, beside ACK's controller
 

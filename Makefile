@@ -12,7 +12,7 @@ NAME := ack-extensions
 export GOTOOLCHAIN ?= local
 
 BIN := $(CURDIR)/bin
-SERVICES := applicationautoscaling autoscaling eventbridge iam kms lambda rds
+SERVICES := applicationautoscaling autoscaling ec2 eventbridge iam kms lambda rds
 ENVTEST_K8S_VERSION := 1.35.x
 # Pinned tool versions (2026-11-07). controller-gen is the version ACK's
 # code generator requires (scripts/lib/common.sh).

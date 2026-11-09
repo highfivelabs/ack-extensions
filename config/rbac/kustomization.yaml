@@ -5,6 +5,7 @@
 resources:
   - applicationautoscaling-manager-role.yaml
   - autoscaling-manager-role.yaml
+  - ec2-manager-role.yaml
   - eventbridge-manager-role.yaml
   - iam-manager-role.yaml
   - kms-manager-role.yaml
