@@ -374,6 +374,33 @@ server's defaults) cause no update. Reordering the features is no update
 across three resyncs. Turning off S3 logs in the nested object is one
 replace, merged over AWS's value, and moto shows it off. Delete removes it.
 
+**Per environment** (the productionized route, `task check` and
+`task operator-e2e` on a Spot VM, 2026-11-09, commit d5bf9e7; three
+e2e tests in 156 s). The end-to-end tests above now run the manager with
+exactly the arguments the operator gives it for a `CloudControlContext`
+(`--watch-namespace=team-a`, `--cloudcontrol-kinds` of all three), as
+envtest user `system:serviceaccount:ack-extensions-system:ack-extensions-cloudcontrol-team-a`
+holding only the operator's RoleBinding in `team-a` to the generated
+ClusterRole: so the generated rights suffice. `TestDetector` also makes a
+detector in `team-b`; after every step and many resyncs it has no
+finalizer, no status and no Cloud Control request. `TestCloudControlContext`
+(`pkg/operator`, envtest): a context not named `cloudcontrol` and a
+malformed role ARN are refused; an unknown kind sets `Ready=False`
+(`UnknownKinds`) and makes nothing; the ServiceAccount (no
+`eks.amazonaws.com/*` annotation) and the Deployment are in the operator's
+namespace with the expected arguments, the RoleBinding in the environment,
+owned by the context; `status.podIdentityAssociation`; by
+SubjectAccessReview the manager may manage the kinds, read Secrets and take
+leases in its environment and nothing in another namespace, in the
+operator's namespace or cluster-wide; the ACK side's clean-up leaves it
+alone; deleting the context removes the manager and its ServiceAccount
+(finalizer). On kind (`tests/operator/run.sh`), with the operator from
+`config/default`: the context becomes `Ready` when its manager rolls out,
+the manager runs in `ack-extensions-system` as its environment's
+ServiceAccount, the rights hold as above, `team-a`'s Detector is taken up
+(finalizer) while `team-b`'s is never touched, and deleting the context
+removes the manager, its ServiceAccount and the RoleBinding.
+
 **Unit tests** (`cloudcontrol/pkg/...`, `cloudcontrol/test/fake`): names,
 pointer sets, conversion round trips, the drift rules, the three CRDs
 (validated as the API server would), patches never touching read-only or
