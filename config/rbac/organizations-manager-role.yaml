@@ -27,6 +27,7 @@ rules:
   resources:
   - delegatedadministrators
   - policies
+  - policyattachments
   verbs:
   - create
   - delete
@@ -40,6 +41,7 @@ rules:
   resources:
   - delegatedadministrators/status
   - policies/status
+  - policyattachments/status
   verbs:
   - get
   - patch
@@ -49,6 +51,8 @@ rules:
   resources:
   - accounts
   - accounts/status
+  - organizationalunits
+  - organizationalunits/status
   verbs:
   - get
   - list

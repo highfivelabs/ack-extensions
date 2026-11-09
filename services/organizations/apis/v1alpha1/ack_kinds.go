@@ -16,3 +16,6 @@ import (
 
 // Account is named by DelegatedAdministrator.spec.accountRef.
 type Account = ackorg.Account
+
+// OrganizationalUnit is named by PolicyAttachment.spec.targetRef.
+type OrganizationalUnit = ackorg.OrganizationalUnit

@@ -3,6 +3,11 @@
 ack-extensions builds on AWS Controllers for Kubernetes (ACK). This file is the
 record of exactly which ACK code it uses, and of every file copied from it.
 
+`upstream.yaml` says the same as this file's tables in machine-readable
+form (pins, pull requests, patches, copied files), for tools such as the
+factory's daily watch. Change both together; `task upstream:yaml-check`
+(part of `task check`) fails when they disagree.
+
 ## Pins
 
 | Project | Version | Commit | How it is used |
@@ -21,7 +26,7 @@ record of exactly which ACK code it uses, and of every file copied from it.
 | wafv2-controller | `v1.8.1` | `d910e96f94d5b860cffc5dde648e87bafe94689c` | Go module: the API types of ACK's `WebACL`, which `WebACLAssociation` references; the WAFv2 SDK client at its version (`service/wafv2` `v1.55.11`) |
 | lambda-controller | `v1.19.0` | `86905357482d01538cb00ab28d59c6af5c46e6f4` | Go module: the API types of ACK's `Function`, which `Permission` references; the Lambda SDK client at its version (`service/lambda` `v1.88.5`) |
 | iam-controller | `v1.11.3` | `91ed7f353255e54e2c6372b3ce757bd2e7fae4ad` | Go module: the API types of ACK's `Role` and `Policy`, which our kinds reference |
-| organizations-controller | `v1.7.0` | `5824700fd7` | Go module: the API types of ACK's `Account`, which `DelegatedAdministrator` references (and its CRDs, for the tests); ACK's `Account` and `OrganizationalUnit` are left to it (the generator ignores them); the Organizations SDK client is at its version (`service/organizations` `v1.37.4`) |
+| organizations-controller | `v1.7.0` | `5824700fd7` | Go module: the API types of ACK's `Account` and `OrganizationalUnit`, which `DelegatedAdministrator` and `PolicyAttachment` reference (and its CRDs, for the tests); ACK's `Account` and `OrganizationalUnit` are left to it (the generator ignores them); the Organizations SDK client is at its version (`service/organizations` `v1.37.4`) |
 | EventBridge Scheduler | none | | no ACK controller (`community` issue #2784); the Scheduler SDK client is `service/scheduler` `v1.12.13`, its version in aws-sdk-go-v2 `v1.34.0`, the release of the models below |
 | aws-sdk-go-v2 models | `v1.34.0` | tag | the Smithy model the generator reads (`--aws-sdk-go-version`), the version rds-controller `v1.14.2` was generated from |
 
@@ -103,6 +108,8 @@ Written here: `services/rds/apis/v1alpha1/db_proxy_target.go`,
 `services/organizations/pkg/resource/policy/{custom_delta,custom_delta_test}.go`,
 `services/organizations/templates/hooks/delegated_administrator/*.go.tpl`,
 `services/organizations/pkg/resource/delegated_administrator/{hooks,hooks_test}.go`,
+`services/organizations/templates/hooks/policy_attachment/*.go.tpl`,
+`services/organizations/pkg/resource/policy_attachment/{hooks,hooks_test}.go`,
 `services/organizations/apis/v1alpha1/ack_kinds.go`, `services/organizations/cmd/controller/handwritten.go`,
 `services/kms/pkg/resource/replica_key/{delta,references,sdk_test}.go`,
 `services/autoscaling/templates/hooks/scaling_policy/*.go.tpl`,

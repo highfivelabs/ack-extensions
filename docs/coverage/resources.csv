@@ -1327,6 +1327,7 @@ organizations,DelegatedAdministrator,0,,0,DelegatedAdministrator,0,0,false,outsi
 organizations,Organization,1,,0,,0,1,false,
 organizations,OrganizationalUnit,4,OrganizationalUnit,4,,0,0,false,
 organizations,Policy,7,,0,Policy,6,1,false,
+organizations,PolicyAttachment,0,,0,PolicyAttachment,0,0,false,outside-denominator;ours_crd_attributes=2
 organizations,ResourcePolicy,3,,0,,0,3,false,
 osis,Pipeline,17,,0,,0,17,false,
 osis,PipelineEndpoint,3,,0,,0,3,false,

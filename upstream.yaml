@@ -1,0 +1,256 @@
+# Copyright 2026 High Five Labs
+# SPDX-License-Identifier: Apache-2.0
+#
+# UPSTREAM.md's tables, machine-readable: the pins, the pull requests copied
+# from, the patch series and the copied files. UPSTREAM.md stays the prose
+# and the record people read; this file says the same things for tools
+# (highfivelabs/factory's daily watch reads it). `task upstream:yaml-check`
+# fails when the two disagree, so change both together.
+#
+# Fields: docs in hack/upstream-yaml/pins/pins.go (a copy of
+# highfivelabs/factory internal/pins/pins.go).
+schema: 1
+
+pins:
+  - name: code-generator
+    repo: aws-controllers-k8s/code-generator
+    version: v0.67.0
+    commit: 5a7bcc2cc51b71344ec1f64d235e158731970bea
+    patches: patches/code-generator
+    use: third_party/code-generator, patched, built as bin/ack-generate (hack/upstream.sh)
+  - name: runtime
+    repo: aws-controllers-k8s/runtime
+    version: v0.67.0
+    commit: 6655c7437e711aa149dbaf7956b2540ee93dc4b2
+    use: Go module
+  - name: rds-controller
+    repo: aws-controllers-k8s/rds-controller
+    version: v1.14.2
+    commit: ca4f0d529241be52349f6b38478be0cb4b9acb53
+    use: Go module (API types our kinds reference)
+  - name: applicationautoscaling-controller
+    repo: aws-controllers-k8s/applicationautoscaling-controller
+    version: v1.9.0
+    commit: 009baef3a28e7d8a49a61c520eb6c537c674d52b
+    use: copied from; the SDK client at its version
+  - name: autoscaling-controller
+    repo: aws-controllers-k8s/autoscaling-controller
+    version: v1.5.0
+    commit: 56316c75a5da8fdf8079917a16e540be4e84e986
+    use: the SDK client at its version
+  - name: kms-controller
+    repo: aws-controllers-k8s/kms-controller
+    version: v1.7.0
+    commit: 57250fba83d58aeb84a3ec2770cf3e9b45708895
+    use: Go module (API types ReplicaKey references)
+  - name: ec2-controller
+    repo: aws-controllers-k8s/ec2-controller
+    version: v1.23.1
+    commit: 9303654c2cffad05147e4260105439149f7c81bf
+    use: copied from (pkg/tags, hooks); the SDK client at its version
+  - name: ecr-controller
+    repo: aws-controllers-k8s/ecr-controller
+    version: v1.11.1
+    commit: 72590cedeb2a4a92d086175762a97aa2ed2bc979
+    use: ACK's ECR kinds are left to it; the SDK client at its version
+  - name: eventbridge-controller
+    repo: aws-controllers-k8s/eventbridge-controller
+    version: v1.9.2
+    commit: fd084a0bb4d9025f294516d6319b88293be1de8d
+    use: copied from (event_bus hooks); the SDK client at its version
+  - name: secretsmanager-controller
+    repo: aws-controllers-k8s/secretsmanager-controller
+    version: v1.8.2
+    use: the SDK client the end-to-end tests use, at its version
+  - name: wafv2-controller
+    repo: aws-controllers-k8s/wafv2-controller
+    version: v1.8.1
+    commit: d910e96f94d5b860cffc5dde648e87bafe94689c
+    use: Go module (API types WebACLAssociation references)
+  - name: lambda-controller
+    repo: aws-controllers-k8s/lambda-controller
+    version: v1.19.0
+    commit: 86905357482d01538cb00ab28d59c6af5c46e6f4
+    use: Go module (API types Permission references)
+  - name: iam-controller
+    repo: aws-controllers-k8s/iam-controller
+    version: v1.11.3
+    commit: 91ed7f353255e54e2c6372b3ce757bd2e7fae4ad
+    use: Go module (API types of Role and Policy)
+  - name: organizations-controller
+    repo: aws-controllers-k8s/organizations-controller
+    version: v1.7.0
+    commit: 5824700fd7
+    use: Go module (API types of Account and OrganizationalUnit, which DelegatedAdministrator and PolicyAttachment reference); ACK's Account and OrganizationalUnit are left to it; the SDK client at its version
+  - name: aws-sdk-go-v2 models
+    repo: aws/aws-sdk-go-v2
+    version: v1.34.0
+    use: the Smithy models the generator reads (--aws-sdk-go-version)
+
+pull_requests:
+  - ref: aws-controllers-k8s/iam-controller#184
+    head: 78eb350ec61caa74b08e8242380b0545164b5576
+    read_on: "2026-11-08"
+    role: copied
+    for: RolePolicyAttachment, and the hand-written kind skeleton copied for ten kinds
+  - ref: aws-controllers-k8s/kms-controller#112
+    head: eb4057e4
+    read_on: "2026-11-08"
+    role: copied
+    for: ReplicaKey
+  - ref: aws-controllers-k8s/rds-controller#257
+    head: 32c3cb2394518c5e976eba841e070cc6053484b1
+    read_on: "2026-11-08"
+    role: copied
+    for: OptionGroup
+  - ref: aws-controllers-k8s/ecr-controller#121
+    head: f6c7d57e0b169547ed2300cbba0c65b11691b0eb
+    read_on: "2026-11-09"
+    role: copied
+    for: ReplicationConfiguration
+
+patches:
+  - {file: patches/code-generator/0001-api-group-suffix-flag.patch, pin: code-generator, upstream_candidate: "yes"}
+  - {file: patches/code-generator/0002-sdk-v2-createvolume-output-shape.patch, pin: code-generator, upstream_candidate: "yes"}
+
+# "What is copied": here (our paths) and from (the source's paths at a
+# pin's release, or at a pull request's head; a directory ends in /).
+copied:
+  - here: [services/iam/apis/v1alpha1/role_policy_attachment.go]
+    from: {pr: aws-controllers-k8s/iam-controller#184, paths: [apis/v1alpha1/role_policy_attachment.go]}
+  - here:
+      - services/iam/pkg/resource/role_policy_attachment/delta.go
+      - services/iam/pkg/resource/role_policy_attachment/descriptor.go
+      - services/iam/pkg/resource/role_policy_attachment/identifiers.go
+      - services/iam/pkg/resource/role_policy_attachment/manager.go
+      - services/iam/pkg/resource/role_policy_attachment/manager_factory.go
+      - services/iam/pkg/resource/role_policy_attachment/resource.go
+      - services/iam/pkg/resource/role_policy_attachment/sdk.go
+    from: {pr: aws-controllers-k8s/iam-controller#184, paths: [pkg/resource/role_policy_attachment/]}
+  - here: [services/iam/pkg/resource/role_policy_attachment/references.go]
+    from: {pr: aws-controllers-k8s/iam-controller#184, paths: [pkg/resource/role_policy_attachment/references.go]}
+  - here: [services/rds/generator.yaml]
+    from: {pr: aws-controllers-k8s/rds-controller#257, paths: [generator.yaml]}
+  - here: [services/rds/templates/hooks/option_group/*.go.tpl]
+    from: {pr: aws-controllers-k8s/rds-controller#257, paths: [templates/hooks/option_group/]}
+  - here: [services/rds/pkg/resource/option_group/hooks.go, services/rds/pkg/resource/option_group/hooks_test.go]
+    from: {pr: aws-controllers-k8s/rds-controller#257, paths: [pkg/resource/option_group/]}
+  - here: [services/rds/pkg/util/tags.go]
+    from: {pr: aws-controllers-k8s/rds-controller#257, paths: [pkg/util/tags.go]}
+  - here: [services/ecr/apis/v1alpha1/replication_configuration.go]
+    from: {pr: aws-controllers-k8s/ecr-controller#121, paths: [apis/v1alpha1/replication_configuration.go]}
+  - here: [services/ecr/pkg/resource/replication_configuration/sdk.go]
+    from: {pr: aws-controllers-k8s/ecr-controller#121, paths: [pkg/resource/replication_configuration/manager.go]}
+  - here:
+      - services/ecr/pkg/resource/replication_configuration/descriptor.go
+      - services/ecr/pkg/resource/replication_configuration/identifiers.go
+      - services/ecr/pkg/resource/replication_configuration/manager.go
+      - services/ecr/pkg/resource/replication_configuration/manager_factory.go
+      - services/ecr/pkg/resource/replication_configuration/resource.go
+    from: &skeleton {pr: aws-controllers-k8s/iam-controller#184, paths: [pkg/resource/role_policy_attachment/]}
+  - here:
+      - services/rds/pkg/resource/db_proxy_target/descriptor.go
+      - services/rds/pkg/resource/db_proxy_target/identifiers.go
+      - services/rds/pkg/resource/db_proxy_target/manager.go
+      - services/rds/pkg/resource/db_proxy_target/manager_factory.go
+      - services/rds/pkg/resource/db_proxy_target/resource.go
+    from: *skeleton
+  - here: [services/autoscaling/generator.yaml]
+    from: {pin: applicationautoscaling-controller, paths: [generator.yaml]}
+  - here: [services/applicationautoscaling/generator.yaml]
+    from: {pin: applicationautoscaling-controller, paths: [generator.yaml]}
+  - here: [services/applicationautoscaling/pkg/resource/scheduled_action/custom_delta.go]
+    from: &custom_delta {pin: applicationautoscaling-controller, paths: [pkg/resource/scalable_target/custom_delta.go]}
+  - here: [services/eventbridge/pkg/resource/api_destination/custom_delta.go]
+    from: *custom_delta
+  - here: [services/iam/pkg/resource/login_profile/custom_delta.go]
+    from: *custom_delta
+  - here: [services/scheduler/pkg/resource/schedule/custom_delta.go]
+    from: *custom_delta
+  - here: [services/autoscaling/pkg/resource/scheduled_action/custom_delta.go]
+    from: *custom_delta
+  - here: [services/autoscaling/pkg/resource/scaling_policy/custom_delta.go]
+    from: *custom_delta
+  - here: [services/kms/apis/v1alpha1/replica_key.go]
+    from: {pr: aws-controllers-k8s/kms-controller#112, paths: [apis/v1alpha1/replica_key.go]}
+  - here: [services/kms/pkg/resource/replica_key/sdk.go, services/kms/pkg/resource/replica_key/keymetadata.go]
+    from: {pr: aws-controllers-k8s/kms-controller#112, paths: [pkg/resource/replica_key/hook.go, pkg/resource/replica_key/policy_hooks.go, pkg/resource/replica_key/tag_hooks.go]}
+  - here:
+      - services/kms/pkg/resource/replica_key/descriptor.go
+      - services/kms/pkg/resource/replica_key/identifiers.go
+      - services/kms/pkg/resource/replica_key/manager.go
+      - services/kms/pkg/resource/replica_key/manager_factory.go
+      - services/kms/pkg/resource/replica_key/resource.go
+    from: *skeleton
+  - here: [services/ec2/pkg/tags/sync.go, services/ec2/pkg/tags/sync_test.go]
+    from: {pin: ec2-controller, paths: [pkg/tags/]}
+  - here: [services/ec2/pkg/resource/customer_gateway/hooks.go]
+    from: &igw_hooks {pin: ec2-controller, paths: [pkg/resource/internet_gateway/hooks.go]}
+  - here: [services/ec2/pkg/resource/vpn_gateway/hooks.go, services/ec2/templates/hooks/vpn_gateway/*.go.tpl]
+    from: {pin: ec2-controller, paths: [pkg/resource/internet_gateway/hooks.go, templates/hooks/internet_gateway/]}
+  - here: [services/ec2/pkg/resource/volume/hooks.go]
+    from: *igw_hooks
+  - here: [services/ec2/pkg/resource/volume/custom_delta.go]
+    from: *custom_delta
+  - here: [services/organizations/pkg/resource/policy/hooks.go]
+    from: &event_bus_hooks {pin: eventbridge-controller, paths: [pkg/resource/event_bus/hooks.go]}
+  - here: [services/scheduler/pkg/resource/schedule_group/hooks.go]
+    from: *event_bus_hooks
+  - here: [services/lambda/pkg/resource/permission/sdk.go]
+    from: {pin: lambda-controller, paths: [pkg/resource/alias/hooks.go]}
+  - here:
+      - services/lambda/pkg/resource/permission/descriptor.go
+      - services/lambda/pkg/resource/permission/identifiers.go
+      - services/lambda/pkg/resource/permission/manager.go
+      - services/lambda/pkg/resource/permission/manager_factory.go
+      - services/lambda/pkg/resource/permission/resource.go
+    from: *skeleton
+  - here:
+      - services/ec2/pkg/resource/volume_attachment/descriptor.go
+      - services/ec2/pkg/resource/volume_attachment/identifiers.go
+      - services/ec2/pkg/resource/volume_attachment/manager.go
+      - services/ec2/pkg/resource/volume_attachment/manager_factory.go
+      - services/ec2/pkg/resource/volume_attachment/resource.go
+    from: *skeleton
+  - here:
+      - services/wafv2/pkg/resource/web_acl_association/descriptor.go
+      - services/wafv2/pkg/resource/web_acl_association/identifiers.go
+      - services/wafv2/pkg/resource/web_acl_association/manager.go
+      - services/wafv2/pkg/resource/web_acl_association/manager_factory.go
+      - services/wafv2/pkg/resource/web_acl_association/resource.go
+    from: *skeleton
+  - here:
+      - services/iam/pkg/resource/user_group_membership/descriptor.go
+      - services/iam/pkg/resource/user_group_membership/identifiers.go
+      - services/iam/pkg/resource/user_group_membership/manager.go
+      - services/iam/pkg/resource/user_group_membership/manager_factory.go
+      - services/iam/pkg/resource/user_group_membership/resource.go
+    from: *skeleton
+  - here:
+      - services/iam/pkg/resource/ssh_public_key/descriptor.go
+      - services/iam/pkg/resource/ssh_public_key/identifiers.go
+      - services/iam/pkg/resource/ssh_public_key/manager.go
+      - services/iam/pkg/resource/ssh_public_key/manager_factory.go
+      - services/iam/pkg/resource/ssh_public_key/resource.go
+    from: *skeleton
+  - here:
+      - services/iam/pkg/resource/account_alias/descriptor.go
+      - services/iam/pkg/resource/account_alias/identifiers.go
+      - services/iam/pkg/resource/account_alias/manager.go
+      - services/iam/pkg/resource/account_alias/manager_factory.go
+      - services/iam/pkg/resource/account_alias/resource.go
+    from: *skeleton
+  - here:
+      - services/iam/pkg/resource/account_password_policy/descriptor.go
+      - services/iam/pkg/resource/account_password_policy/identifiers.go
+      - services/iam/pkg/resource/account_password_policy/manager.go
+      - services/iam/pkg/resource/account_password_policy/manager_factory.go
+      - services/iam/pkg/resource/account_password_policy/resource.go
+    from: *skeleton
+  - here:
+      - services/rds/pkg/resource/db_role_association/descriptor.go
+      - services/rds/pkg/resource/db_role_association/identifiers.go
+      - services/rds/pkg/resource/db_role_association/manager.go
+      - services/rds/pkg/resource/db_role_association/manager_factory.go
+      - services/rds/pkg/resource/db_role_association/resource.go
+    from: *skeleton

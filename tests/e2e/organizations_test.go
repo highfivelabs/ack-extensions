@@ -338,6 +338,239 @@ func TestOrganizationsPolicy(t *testing.T) {
 	})
 }
 
+// targetsOf is the IDs a policy is attached to in the cloud, sorted.
+func targetsOf(ctx context.Context, c *organizations.Client, policyID string) (string, error) {
+	var ids []string
+	var next *string
+	for {
+		out, err := c.ListTargetsForPolicy(ctx, &organizations.ListTargetsForPolicyInput{PolicyId: aws.String(policyID), NextToken: next})
+		if err != nil {
+			return "", err
+		}
+		for _, t := range out.Targets {
+			ids = append(ids, aws.ToString(t.TargetId))
+		}
+		if out.NextToken == nil {
+			break
+		}
+		next = out.NextToken
+	}
+	sort.Strings(ids)
+	return strings.Join(ids, ","), nil
+}
+
+// PolicyAttachment: one policy attached to one root, OU or account,
+// leaving the target's other policies alone.
+func TestOrganizationsPolicyAttachment(t *testing.T) {
+	scheme := runtime.NewScheme()
+	_ = orgv1.AddToScheme(scheme)
+	_ = ackorg.AddToScheme(scheme)
+	env := harness.Start(t, "organizations", scheme)
+	cloud := organizations.NewFromConfig(env.AWS)
+	ctx := context.Background()
+
+	if _, err := cloud.CreateOrganization(ctx, &organizations.CreateOrganizationInput{FeatureSet: orgtypes.OrganizationFeatureSetAll}); err != nil {
+		t.Fatal(err)
+	}
+	roots, err := cloud.ListRoots(ctx, &organizations.ListRootsInput{})
+	if err != nil || len(roots.Roots) != 1 {
+		t.Fatalf("roots %+v: %v", roots, err)
+	}
+	root := aws.ToString(roots.Roots[0].Id)
+	ou, err := cloud.CreateOrganizationalUnit(ctx, &organizations.CreateOrganizationalUnitInput{ParentId: aws.String(root), Name: aws.String("workloads")})
+	if err != nil {
+		t.Fatal(err)
+	}
+	ouID := aws.ToString(ou.OrganizationalUnit.Id)
+
+	// ACK's OrganizationalUnit, as ACK's organizations-controller would
+	// leave it once synced (that controller does not run here).
+	ackOU := &ackorg.OrganizationalUnit{
+		ObjectMeta: metav1.ObjectMeta{Name: "workloads", Namespace: "default"},
+		Spec:       ackorg.OrganizationalUnitSpec{Name: aws.String("workloads"), ParentID: aws.String(root)},
+	}
+	if err := env.Client.Create(ctx, ackOU); err != nil {
+		t.Fatal(err)
+	}
+	ackOU.Status.ID = aws.String(ouID)
+	ackOU.Status.Conditions = []*ackv1alpha1.Condition{{Type: ackv1alpha1.ConditionTypeResourceSynced, Status: corev1.ConditionTrue}}
+	if err := env.Client.Status().Update(ctx, ackOU); err != nil {
+		t.Fatal(err)
+	}
+
+	waitSynced := func(t *testing.T, obj client.Object, conds func() []*ackv1alpha1.Condition) {
+		t.Helper()
+		harness.Eventually(t, 60*time.Second, obj.GetName()+" synced", func() error {
+			if err := env.Client.Get(ctx, client.ObjectKeyFromObject(obj), obj); err != nil {
+				return err
+			}
+			if ok, why := synced(conds()); !ok {
+				return fmt.Errorf("not synced: %s", why)
+			}
+			return nil
+		})
+	}
+	gone := func(t *testing.T, obj client.Object) {
+		t.Helper()
+		harness.Eventually(t, 60*time.Second, obj.GetName()+" gone", func() error {
+			err := env.Client.Get(ctx, client.ObjectKeyFromObject(obj), &orgv1.PolicyAttachment{})
+			if err == nil {
+				return fmt.Errorf("object still present")
+			}
+			return client.IgnoreNotFound(err)
+		})
+	}
+	targetsAre := func(t *testing.T, policyID, want string) {
+		t.Helper()
+		harness.Eventually(t, 60*time.Second, policyID+" attached to "+want, func() error {
+			got, err := targetsOf(ctx, cloud, policyID)
+			if err != nil {
+				return err
+			}
+			if got != want {
+				return fmt.Errorf("attached to %q", got)
+			}
+			return nil
+		})
+	}
+
+	scp := &orgv1.Policy{
+		ObjectMeta: metav1.ObjectMeta{Name: "no-leaving", Namespace: "default"},
+		Spec: orgv1.PolicySpec{
+			Name:        aws.String("no-leaving"),
+			Description: aws.String("Nobody leaves"),
+			Type:        aws.String("SERVICE_CONTROL_POLICY"),
+			Content:     aws.String(denyLeaveOrg),
+		},
+	}
+	if err := env.Client.Create(ctx, scp); err != nil {
+		t.Fatal(err)
+	}
+	waitSynced(t, scp, func() []*ackv1alpha1.Condition { return scp.Status.Conditions })
+	policyID := *scp.Status.ID
+
+	toOU := &orgv1.PolicyAttachment{
+		ObjectMeta: metav1.ObjectMeta{Name: "no-leaving-workloads", Namespace: "default"},
+		Spec: orgv1.PolicyAttachmentSpec{
+			PolicyRef: &ackv1alpha1.AWSResourceReferenceWrapper{From: &ackv1alpha1.AWSResourceReference{Name: aws.String("no-leaving")}},
+			TargetRef: &ackv1alpha1.AWSResourceReferenceWrapper{From: &ackv1alpha1.AWSResourceReference{Name: aws.String("workloads")}},
+		},
+	}
+
+	t.Run("a policy is attached to ACK's OU by reference, and settles", func(t *testing.T) {
+		if err := env.Client.Create(ctx, toOU); err != nil {
+			t.Fatal(err)
+		}
+		waitSynced(t, toOU, func() []*ackv1alpha1.Condition { return toOU.Status.Conditions })
+		targetsAre(t, policyID, ouID)
+		creates := func() int {
+			n := 0
+			for _, line := range strings.Split(env.Logs(), "\n") {
+				if strings.Contains(line, ">>> rm.sdkCreate") && strings.Contains(line, `"name": "no-leaving-workloads"`) {
+					n++
+				}
+			}
+			return n
+		}
+		before := creates()
+		time.Sleep(15 * time.Second)
+		if n := creates(); n != before {
+			t.Fatalf("attached %d more times across resyncs", n-before)
+		}
+	})
+
+	t.Run("detached outside Kubernetes, it is attached again", func(t *testing.T) {
+		if _, err := cloud.DetachPolicy(ctx, &organizations.DetachPolicyInput{PolicyId: aws.String(policyID), TargetId: aws.String(ouID)}); err != nil {
+			t.Fatal(err)
+		}
+		targetsAre(t, policyID, ouID)
+	})
+
+	t.Run("the target cannot change", func(t *testing.T) {
+		byID := &orgv1.PolicyAttachment{
+			ObjectMeta: metav1.ObjectMeta{Name: "by-id", Namespace: "default"},
+			Spec:       orgv1.PolicyAttachmentSpec{PolicyID: aws.String(policyID), TargetID: aws.String(ouID)},
+		}
+		if err := env.Client.Create(ctx, byID); err != nil {
+			t.Fatal(err)
+		}
+		harness.Eventually(t, 30*time.Second, "the CRD's immutability refusal", func() error {
+			got := &orgv1.PolicyAttachment{}
+			if err := env.Client.Get(ctx, client.ObjectKeyFromObject(byID), got); err != nil {
+				return err
+			}
+			got.Spec.TargetID = aws.String(root)
+			err := env.Client.Update(ctx, got)
+			if err != nil && strings.Contains(err.Error(), "immutable") {
+				return nil
+			}
+			if err == nil {
+				t.Fatal("targetID changed")
+			}
+			return err
+		})
+		// Two objects for one attachment: deleting this one detaches it,
+		// and the first attaches it again.
+		if err := env.Client.Delete(ctx, byID); err != nil {
+			t.Fatal(err)
+		}
+		gone(t, byID)
+		targetsAre(t, policyID, ouID)
+	})
+
+	t.Run("the root keeps its other policies", func(t *testing.T) {
+		toRoot := &orgv1.PolicyAttachment{
+			ObjectMeta: metav1.ObjectMeta{Name: "no-leaving-root", Namespace: "default"},
+			Spec:       orgv1.PolicyAttachmentSpec{PolicyID: aws.String(policyID), TargetID: aws.String(root)},
+		}
+		if err := env.Client.Create(ctx, toRoot); err != nil {
+			t.Fatal(err)
+		}
+		waitSynced(t, toRoot, func() []*ackv1alpha1.Condition { return toRoot.Status.Conditions })
+		targetsAre(t, policyID, strings.Join(sortedIDs(ouID, root), ","))
+		if err := env.Client.Delete(ctx, toRoot); err != nil {
+			t.Fatal(err)
+		}
+		gone(t, toRoot)
+		targetsAre(t, policyID, ouID)
+		// FullAWSAccess, attached to the root when the organization was
+		// made, was never this object's: it stays.
+		if got, err := targetsOf(ctx, cloud, "p-FullAWSAccess"); err != nil || !strings.Contains(got, root) {
+			t.Fatalf("FullAWSAccess attached to %q: %v", got, err)
+		}
+	})
+
+	t.Run("deletion-policy retain leaves the attachment", func(t *testing.T) {
+		keep := &orgv1.PolicyAttachment{
+			ObjectMeta: metav1.ObjectMeta{
+				Name: "kept", Namespace: "default",
+				Annotations: map[string]string{ackv1alpha1.AnnotationDeletionPolicy: string(ackv1alpha1.DeletionPolicyRetain)},
+			},
+			Spec: orgv1.PolicyAttachmentSpec{PolicyID: aws.String(policyID), TargetID: aws.String(root)},
+		}
+		if err := env.Client.Create(ctx, keep); err != nil {
+			t.Fatal(err)
+		}
+		waitSynced(t, keep, func() []*ackv1alpha1.Condition { return keep.Status.Conditions })
+		if err := env.Client.Delete(ctx, keep); err != nil {
+			t.Fatal(err)
+		}
+		gone(t, keep)
+		targetsAre(t, policyID, strings.Join(sortedIDs(ouID, root), ","))
+		if _, err := cloud.DetachPolicy(ctx, &organizations.DetachPolicyInput{PolicyId: aws.String(policyID), TargetId: aws.String(root)}); err != nil {
+			t.Fatal(err)
+		}
+	})
+
+	t.Run("delete detaches the policy", func(t *testing.T) {
+		if err := env.Client.Delete(ctx, toOU); err != nil {
+			t.Fatal(err)
+		}
+		gone(t, toOU)
+		targetsAre(t, policyID, "")
+	})
+}
+
 // delegatedTo is the accounts registered as a service's delegated
 // administrator in the cloud, sorted.
 func delegatedTo(ctx context.Context, c *organizations.Client, principal string) (string, error) {

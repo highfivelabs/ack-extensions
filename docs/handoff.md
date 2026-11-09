@@ -42,7 +42,8 @@ not repeat them.
 2. **Branch from the latest main:** `agent/<short-kind-name>`, one PR per
    kind. Avoid stacking; if a kind needs another's code (Schedule needs
    ScheduleGroup), say so in the PR body.
-3. **Generated or hand-written?** If the API has a Create, Describe and
+3. **Generate first (the builder, 2026-11-09).** Prefer ACK's generator for every kind it can produce and keep hooks small; say in the PR roughly what share is generated. An attach/detach pair is generable: map the calls in `generator.yaml` `operations` (`operation_type: Create`/`Delete`/`List`) and match the list on the target (`list_operation.match_fields`), as `PolicyAttachment` does. A reference to an ACK kind of the same service: alias ACK's type into our `apis/v1alpha1` (`organizations/apis/v1alpha1/ack_kinds.go`), add ACK's RBAC marker by hand and its scheme in `handwritten.go`. Any generator call you script goes in `hack/`.
+   **Generated or hand-written?** If the API has a Create, Describe and
    Delete, add the resource to the service's `generator.yaml` (remove it
    from `ignore.resource_names`), copy upstream's hooks and templates when
    ACK has a similar kind, run `task generate`. Otherwise write it by hand on
