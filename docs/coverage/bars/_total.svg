@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="660" height="138" viewBox="0 0 660 138" role="img" aria-label="All services: official 7.0%, ours beyond official 0.3%, uncovered 92.7% of 85773 attributes; resources: official 14.2%, ours beyond official 0.9%, uncovered 85.0% of 1875">
-<title>All services: official 7.0%, ours beyond official 0.3%, uncovered 92.7% of 85773 attributes; resources: official 14.2%, ours beyond official 0.9%, uncovered 85.0% of 1875</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="660" height="138" viewBox="0 0 660 138" role="img" aria-label="All services: official 7.0%, ours beyond official 0.3%, uncovered 92.7% of 85773 attributes; resources: official 14.2%, ours beyond official 0.9%, uncovered 84.9% of 1875">
+<title>All services: official 7.0%, ours beyond official 0.3%, uncovered 92.7% of 85773 attributes; resources: official 14.2%, ours beyond official 0.9%, uncovered 84.9% of 1875</title>
 <rect x="0.5" y="0.5" width="659" height="137" rx="6" fill="#ffffff" stroke="#d0d7de"/>
 <text x="10" y="19" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" dominant-baseline="central">Attributes (85,773)</text>
 <rect x="10" y="28" width="640" height="26" rx="3" fill="#d0d7de"/>
@@ -13,9 +13,9 @@
 <rect x="10" y="80" width="640" height="26" rx="3" fill="#d0d7de"/>
 <rect x="10" y="80" width="90.7" height="26" fill="#2f81f7"/>
 <text x="55.3" y="94" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">14.2%</text>
-<rect x="100.7" y="80" width="5.5" height="26" fill="#2da44e"/>
-<rect x="106.2" y="80" width="543.8" height="26" fill="#d0d7de"/>
-<text x="378.1" y="94" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">85.0%</text>
+<rect x="100.7" y="80" width="5.8" height="26" fill="#2da44e"/>
+<rect x="106.5" y="80" width="543.5" height="26" fill="#d0d7de"/>
+<text x="378.2" y="94" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">84.9%</text>
 <rect x="10.5" y="80.5" width="639" height="25" rx="3" fill="none" stroke="#8c959f"/>
 <rect x="10.5" y="115.5" width="11" height="11" rx="2" fill="#2f81f7" stroke="#8c959f"/>
 <text x="27" y="121" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#1f2328" dominant-baseline="central">ACK</text>

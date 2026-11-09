@@ -1,0 +1,234 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: policies.organizations.aws.hfl.dev
+spec:
+  group: organizations.aws.hfl.dev
+  names:
+    kind: Policy
+    listKind: PolicyList
+    plural: policies
+    singular: policy
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Policy is the Schema for the Policies API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              PolicySpec defines the desired state of Policy.
+
+              Contains rules to be applied to the affected accounts. Policies can be attached
+              directly to accounts, or to roots and OUs to affect all accounts in those
+              hierarchies.
+            properties:
+              content:
+                description: |-
+                  The policy text content to add to the new policy. The text that you supply
+                  must adhere to the rules of the policy type you specify in the Type parameter.
+
+                  The maximum size of a policy document depends on the policy's type. For more
+                  information, see Maximum and minimum values (https://docs.aws.amazon.com/organizations/latest/userguide/orgs_reference_limits.html#min-max-values)
+                  in the Organizations User Guide.
+
+                  Regex Pattern: `^[\s\S]*$`
+                type: string
+              description:
+                description: |-
+                  An optional description to assign to the policy.
+
+                  Regex Pattern: `^[\s\S]*$`
+                type: string
+              name:
+                description: |-
+                  The friendly name to assign to the policy.
+
+                  The regex pattern (http://wikipedia.org/wiki/regex) that is used to validate
+                  this parameter is a string of any of the characters in the ASCII character
+                  range.
+
+                  Regex Pattern: `^[\s\S]*$`
+                type: string
+              tags:
+                description: |-
+                  A list of tags that you want to attach to the newly created policy. For each
+                  tag in the list, you must specify both a tag key and a value. You can set
+                  the value to an empty string, but you can't set it to null. For more information
+                  about tagging, see Tagging Organizations resources (https://docs.aws.amazon.com/organizations/latest/userguide/orgs_tagging.html)
+                  in the Organizations User Guide.
+
+                  If any one of the tags is not valid or if you exceed the allowed number of
+                  tags for a policy, then the entire request fails and the policy is not created.
+                items:
+                  description: |-
+                    A custom key-value pair associated with a resource within your organization.
+
+                    You can attach tags to any of the following organization resources.
+
+                       * Amazon Web Services account
+
+                       * Organizational unit (OU)
+
+                       * Organization root
+
+                       * Policy
+                  properties:
+                    key:
+                      type: string
+                    value:
+                      type: string
+                  type: object
+                type: array
+              type_:
+                description: |-
+                  The type of policy to create. You can specify one of the following values:
+
+                     * SERVICE_CONTROL_POLICY (https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scp.html)
+
+                     * RESOURCE_CONTROL_POLICY (https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_rcps.html)
+
+                     * DECLARATIVE_POLICY_EC2 (https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_declarative.html)
+
+                     * BACKUP_POLICY (https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_backup.html)
+
+                     * TAG_POLICY (https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_tag-policies.html)
+
+                     * CHATBOT_POLICY (https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_chatbot.html)
+
+                     * AISERVICES_OPT_OUT_POLICY (https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_ai-opt-out.html)
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+            required:
+            - content
+            - description
+            - name
+            - type_
+            type: object
+          status:
+            description: PolicyStatus defines the observed state of Policy
+            properties:
+              ackResourceMetadata:
+                description: |-
+                  All CRs managed by ACK have a common `Status.ACKResourceMetadata` member
+                  that is used to contain resource sync state, account ownership,
+                  constructed ARN for the resource
+                properties:
+                  arn:
+                    description: |-
+                      ARN is the Amazon Resource Name for the resource. This is a
+                      globally-unique identifier and is set only by the ACK service controller
+                      once the controller has orchestrated the creation of the resource OR
+                      when it has verified that an "adopted" resource (a resource where the
+                      ARN annotation was set by the Kubernetes user on the CR) exists and
+                      matches the supplied CR's Spec field values.
+                      https://github.com/aws/aws-controllers-k8s/issues/270
+                    type: string
+                  ownerAccountID:
+                    description: |-
+                      OwnerAccountID is the AWS Account ID of the account that owns the
+                      backend AWS service API resource.
+                    type: string
+                  partition:
+                    description: Partition is the AWS partition in which the resource
+                      exists or will exist
+                    type: string
+                  region:
+                    description: Region is the AWS region in which the resource exists
+                      or will exist.
+                    type: string
+                required:
+                - ownerAccountID
+                - region
+                type: object
+              conditions:
+                description: |-
+                  All CRs managed by ACK have a common `Status.Conditions` member that
+                  contains a collection of `ackv1alpha1.Condition` objects that describe
+                  the various terminal states of the CR and its backend AWS service API
+                  resource
+                items:
+                  description: |-
+                    Condition is the common struct used by all CRDs managed by ACK service
+                    controllers to indicate terminal states  of the CR and its backend AWS
+                    service API resource
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A human readable message indicating details about
+                        the transition.
+                      type: string
+                    reason:
+                      description: The reason for the condition's last transition.
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the Condition
+                      type: string
+                  required:
+                  - status
+                  - type
+                  type: object
+                type: array
+              id:
+                description: |-
+                  The unique identifier (ID) of the policy.
+
+                  The regex pattern (http://wikipedia.org/wiki/regex) for a policy ID string
+                  requires "p-" followed by from 8 to 128 lowercase or uppercase letters, digits,
+                  or the underscore character (_).
+
+                  Regex Pattern: `^p-[0-9a-zA-Z_]{8,128}$`
+                type: string
+              policySummary:
+                description: A structure that contains additional details about the
+                  policy.
+                properties:
+                  arn:
+                    type: string
+                  awsManaged:
+                    type: boolean
+                  description:
+                    type: string
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  type_:
+                    type: string
+                type: object
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

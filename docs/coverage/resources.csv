@@ -1325,7 +1325,7 @@ opensearchservice,VPCEndpointAccess,0,VPCEndpointAccess,0,,0,0,false,outside-den
 organizations,Account,6,Account,5,,0,1,false,official_unmapped=1
 organizations,Organization,1,,0,,0,1,false,
 organizations,OrganizationalUnit,4,OrganizationalUnit,4,,0,0,false,
-organizations,Policy,7,,0,,0,7,false,
+organizations,Policy,7,,0,Policy,6,1,false,
 organizations,ResourcePolicy,3,,0,,0,3,false,
 osis,Pipeline,17,,0,,0,17,false,
 osis,PipelineEndpoint,3,,0,,0,3,false,

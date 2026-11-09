@@ -19,6 +19,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/iam v1.38.8
 	github.com/aws/aws-sdk-go-v2/service/kms v1.37.14
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.88.5
+	github.com/aws/aws-sdk-go-v2/service/organizations v1.37.4
 	github.com/aws/aws-sdk-go-v2/service/rds v1.93.8
 	github.com/aws/aws-sdk-go-v2/service/scheduler v1.12.13
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.34.14

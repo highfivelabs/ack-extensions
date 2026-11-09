@@ -133,7 +133,23 @@ tasks:
   operator-e2e:
     desc: The operator on kind beside ACK's real rds-controller (tests/operator/run.sh).
     cmds:
-      - tests/operator/run.sh
+      # A script that is empty or truncated runs and exits 0, so the task
+      # also checks the script is whole and that its output ends with its
+      # last line. The output is captured to a file and read after, not
+      # piped to grep -q, which can fail a long log under pipefail.
+      - |
+        script=tests/operator/run.sh
+        [ -s "$script" ] || { echo "FAIL: $script is missing or empty"; exit 1; }
+        lines="$(wc -l < "$script")"
+        [ "$lines" -gt 200 ] || { echo "FAIL: $script has $lines lines (more than 200 expected): truncated?"; exit 1; }
+        out="$(mktemp)"
+        "$script" 2>&1 | tee "$out"
+        last="$(grep -v '^[[:space:]]*$' "$out" | tail -n 1 || true)"
+        rm -f "$out"
+        case "$last" in
+          "all checks passed"*) ;;
+          *) echo "FAIL: $script did not end with 'all checks passed' (last line: '$last')"; exit 1 ;;
+        esac
 
   coverage:
     desc: Regenerate docs/coverage/ and the README's Coverage section (hack/coverage/, docs/coverage/README.md).

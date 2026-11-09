@@ -1,0 +1,64 @@
+# Generator configuration for ack-extensions's AWS Organizations kinds
+# (organizations.aws.hfl.dev), beside ACK's organizations-controller
+# (v1.7.0), which has Account and OrganizationalUnit.
+#
+# Policy is generated from CreatePolicy, DescribePolicy, UpdatePolicy and
+# DeletePolicy: service control policies and the other policy types.
+# ACK's generator.yaml ignores Policy and Organization; community issue
+# #2884 proposes Policy, PolicyAttachment and DelegatedAdministrator, with
+# no pull request (docs/plan.md, section 6.25).
+#
+# Every response wraps the policy in a PolicySummary (id, ARN, name,
+# description, type) beside its content, so the generator cannot read the
+# identifier or the spec's name, description and type back; the hooks do
+# (hooks.go). Tags are not in the response either: ListTagsForResource.
+ignore:
+  resource_names:
+    - Account
+    - GovCloudAccount
+    - Organization
+    - OrganizationalUnit
+resources:
+  Policy:
+    exceptions:
+      errors:
+        404:
+          code: PolicyNotFoundException
+      terminal_codes:
+        - InvalidInputException
+        - MalformedPolicyDocumentException
+        - DuplicatePolicyException
+    fields:
+      ID:
+        is_primary_key: true
+        is_read_only: true
+        from:
+          operation: CreatePolicy
+          path: Policy.PolicySummary.Id
+      Type:
+        # UpdatePolicy cannot change it.
+        is_immutable: true
+      Content:
+        # Compared as JSON, not as text (customPreCompare).
+        compare:
+          is_ignored: true
+    renames:
+      operations:
+        DescribePolicy:
+          input_fields:
+            PolicyId: ID
+        UpdatePolicy:
+          input_fields:
+            PolicyId: ID
+        DeletePolicy:
+          input_fields:
+            PolicyId: ID
+    hooks:
+      delta_pre_compare:
+        code: customPreCompare(delta, a, b)
+      sdk_create_post_set_output:
+        template_path: hooks/policy/sdk_create_post_set_output.go.tpl
+      sdk_read_one_post_set_output:
+        template_path: hooks/policy/sdk_read_one_post_set_output.go.tpl
+      sdk_update_pre_build_request:
+        template_path: hooks/policy/sdk_update_pre_build_request.go.tpl
