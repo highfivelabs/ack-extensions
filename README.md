@@ -18,86 +18,96 @@ How much of AWS the official ACK controllers cover, and how much more this repos
 
 Of 85,773 attributes in 1875 resources across 305 services, ACK covers 6,030 (7.0%) and ours adds 197 more (0.2%), 22 of them copied from open upstream pull requests. By resource, ACK has a released kind for 266 of 1,875 (14.2%) and ours adds 14 more (0.7%).
 
-| Service | Coverage | Official | Ours beyond | Uncovered |
-| --- | --- | ---: | ---: | ---: |
-| `sagemaker` | ![sagemaker](docs/coverage/bars/sagemaker.svg) | 49.9% | 0.0% | 50.1% |
-| `wafv2` | ![wafv2](docs/coverage/bars/wafv2.svg) | 82.6% | 0.3% | 17.0% |
-| `quicksight` | ![quicksight](docs/coverage/bars/quicksight.svg) | 0.8% | 0.0% | 99.2% |
-| `ec2` | ![ec2](docs/coverage/bars/ec2.svg) | 22.7% | 1.8% | 75.5% |
-| `bedrockagentcore` | ![bedrockagentcore](docs/coverage/bars/bedrockagentcore.svg) | 36.4% | 0.0% | 63.6% |
-| `dms` | ![dms](docs/coverage/bars/dms.svg) | 68.1% | 0.0% | 31.9% |
-| `ecs` | ![ecs](docs/coverage/bars/ecs.svg) | 53.6% | 0.0% | 46.4% |
-| `cloudfront` | ![cloudfront](docs/coverage/bars/cloudfront.svg) | 63.3% | 0.0% | 36.7% |
-| `rds` | ![rds](docs/coverage/bars/rds.svg) | 53.8% | 6.6% | 39.6% |
-| `autoscaling` | ![autoscaling](docs/coverage/bars/autoscaling.svg) | 38.5% | 35.9% | 25.5% |
-| `pipes` | ![pipes](docs/coverage/bars/pipes.svg) | 85.1% | 0.0% | 14.9% |
-| `acmpca` | ![acmpca](docs/coverage/bars/acmpca.svg) | 95.1% | 0.0% | 4.9% |
-| `elasticloadbalancingv2` | ![elasticloadbalancingv2](docs/coverage/bars/elasticloadbalancingv2.svg) | 76.0% | 0.0% | 24.0% |
-| `eks` | ![eks](docs/coverage/bars/eks.svg) | 82.5% | 0.0% | 17.5% |
-| `elasticache` | ![elasticache](docs/coverage/bars/elasticache.svg) | 79.2% | 0.0% | 20.8% |
+Not every service matters equally, so services are in three tiers by how much a team migrating from Terraform needs them: tier 1 is what the ten most-downloaded terraform-aws-modules use (iam, s3, vpc and security groups, eks, kms, lambda, rds, acm), tier 2 every other service some tracked module uses, tier 3 everything else ([how and why](docs/coverage/README.md#tiers); the list is the hand-editable [priority.csv](docs/coverage/priority.csv)). Upper bar of each pair: attributes; lower: resources.
 
-<details><summary>The other 54 services with any coverage</summary>
+![Coverage by tier](docs/coverage/bars/_tiers.svg)
 
-| Service | Coverage | Official | Ours beyond | Uncovered |
-| --- | --- | ---: | ---: | ---: |
-| `s3` | ![s3](docs/coverage/bars/s3.svg) | 47.5% | 0.0% | 52.5% |
-| `events` | ![events](docs/coverage/bars/events.svg) | 59.2% | 28.5% | 12.3% |
-| `lambda` | ![lambda](docs/coverage/bars/lambda.svg) | 42.6% | 3.3% | 54.1% |
-| `cognito` | ![cognito](docs/coverage/bars/cognito.svg) | 36.8% | 0.0% | 63.2% |
-| `kinesisfirehose` | ![kinesisfirehose](docs/coverage/bars/kinesisfirehose.svg) | 26.1% | 0.0% | 73.9% |
-| `apigatewayv2` | ![apigatewayv2](docs/coverage/bars/apigatewayv2.svg) | 62.0% | 0.0% | 38.0% |
-| `fsx` | ![fsx](docs/coverage/bars/fsx.svg) | 46.2% | 0.0% | 53.8% |
-| `apigateway` | ![apigateway](docs/coverage/bars/apigateway.svg) | 34.1% | 0.0% | 65.9% |
-| `networkfirewall` | ![networkfirewall](docs/coverage/bars/networkfirewall.svg) | 56.0% | 0.0% | 44.0% |
-| `opensearchservice` | ![opensearchservice](docs/coverage/bars/opensearchservice.svg) | 62.6% | 0.0% | 37.4% |
-| `cloudwatch` | ![cloudwatch](docs/coverage/bars/cloudwatch.svg) | 25.3% | 0.0% | 74.7% |
-| `memorydb` | ![memorydb](docs/coverage/bars/memorydb.svg) | 84.8% | 0.0% | 15.2% |
-| `ssm` | ![ssm](docs/coverage/bars/ssm.svg) | 31.7% | 0.0% | 68.3% |
-| `msk` | ![msk](docs/coverage/bars/msk.svg) | 31.9% | 0.0% | 68.1% |
-| `route53` | ![route53](docs/coverage/bars/route53.svg) | 46.9% | 0.0% | 53.1% |
-| `elasticsearch` | ![elasticsearch](docs/coverage/bars/elasticsearch.svg) | 97.7% | 0.0% | 2.3% |
-| `docdb` | ![docdb](docs/coverage/bars/docdb.svg) | 60.3% | 0.0% | 39.7% |
-| `applicationautoscaling` | ![applicationautoscaling](docs/coverage/bars/applicationautoscaling.svg) | 35.1% | 7.4% | 57.4% |
-| `backup` | ![backup](docs/coverage/bars/backup.svg) | 32.0% | 0.0% | 68.0% |
-| `ecr` | ![ecr](docs/coverage/bars/ecr.svg) | 63.0% | 7.4% | 29.6% |
-| `amazonmq` | ![amazonmq](docs/coverage/bars/amazonmq.svg) | 69.8% | 0.0% | 30.2% |
-| `emrserverless` | ![emrserverless](docs/coverage/bars/emrserverless.svg) | 88.1% | 0.0% | 11.9% |
-| `glue` | ![glue](docs/coverage/bars/glue.svg) | 5.2% | 0.0% | 94.8% |
-| `iam` | ![iam](docs/coverage/bars/iam.svg) | 38.8% | 3.5% | 57.6% |
-| `dynamodb` | ![dynamodb](docs/coverage/bars/dynamodb.svg) | 21.9% | 0.0% | 78.1% |
-| `mwaa` | ![mwaa](docs/coverage/bars/mwaa.svg) | 97.2% | 0.0% | 2.8% |
-| `efs` | ![efs](docs/coverage/bars/efs.svg) | 86.5% | 0.0% | 13.5% |
-| `certificatemanager` | ![certificatemanager](docs/coverage/bars/certificatemanager.svg) | 88.2% | 0.0% | 11.8% |
-| `athena` | ![athena](docs/coverage/bars/athena.svg) | 29.9% | 0.0% | 70.1% |
-| `bedrock` | ![bedrock](docs/coverage/bars/bedrock.svg) | 5.3% | 0.0% | 94.7% |
-| `cloudtrail` | ![cloudtrail](docs/coverage/bars/cloudtrail.svg) | 37.3% | 0.0% | 62.7% |
-| `route53resolver` | ![route53resolver](docs/coverage/bars/route53resolver.svg) | 35.1% | 0.0% | 64.9% |
-| `s3files` | ![s3files](docs/coverage/bars/s3files.svg) | 87.1% | 0.0% | 12.9% |
-| `logs` | ![logs](docs/coverage/bars/logs.svg) | 13.6% | 0.0% | 86.4% |
-| `s3tables` | ![s3tables](docs/coverage/bars/s3tables.svg) | 38.9% | 0.0% | 61.1% |
-| `sns` | ![sns](docs/coverage/bars/sns.svg) | 61.8% | 0.0% | 38.2% |
-| `opensearchserverless` | ![opensearchserverless](docs/coverage/bars/opensearchserverless.svg) | 23.7% | 0.0% | 76.3% |
-| `kms` | ![kms](docs/coverage/bars/kms.svg) | 54.5% | 22.7% | 22.7% |
-| `sqs` | ![sqs](docs/coverage/bars/sqs.svg) | 81.0% | 0.0% | 19.0% |
-| `stepfunctions` | ![stepfunctions](docs/coverage/bars/stepfunctions.svg) | 45.9% | 0.0% | 54.1% |
-| `cassandra` | ![cassandra](docs/coverage/bars/cassandra.svg) | 25.9% | 0.0% | 74.1% |
-| `s3vectors` | ![s3vectors](docs/coverage/bars/s3vectors.svg) | 78.9% | 0.0% | 21.1% |
-| `mwaaserverless` | ![mwaaserverless](docs/coverage/bars/mwaaserverless.svg) | 81.3% | 0.0% | 18.8% |
-| `ram` | ![ram](docs/coverage/bars/ram.svg) | 54.2% | 0.0% | 45.8% |
-| `rbin` | ![rbin](docs/coverage/bars/rbin.svg) | 76.9% | 0.0% | 23.1% |
-| `codeartifact` | ![codeartifact](docs/coverage/bars/codeartifact.svg) | 36.0% | 0.0% | 64.0% |
-| `organizations` | ![organizations](docs/coverage/bars/organizations.svg) | 42.9% | 0.0% | 57.1% |
-| `secretsmanager` | ![secretsmanager](docs/coverage/bars/secretsmanager.svg) | 17.8% | 0.0% | 82.2% |
-| `aps` | ![aps](docs/coverage/bars/aps.svg) | 13.2% | 0.0% | 86.8% |
-| `dsql` | ![dsql](docs/coverage/bars/dsql.svg) | 85.7% | 0.0% | 14.3% |
-| `emrcontainers` | ![emrcontainers](docs/coverage/bars/emrcontainers.svg) | 9.0% | 0.0% | 91.0% |
-| `kinesis` | ![kinesis](docs/coverage/bars/kinesis.svg) | 10.2% | 0.0% | 89.8% |
-| `emr` | ![emr](docs/coverage/bars/emr.svg) | 0.5% | 0.0% | 99.5% |
-| `ses` | ![ses](docs/coverage/bars/ses.svg) | 0.4% | 0.0% | 99.6% |
+| Tier | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) |
+| --- | ---: | ---: | ---: |
+| 1 | 10 | 28.8% / 3.4% | 35.2% / 2.2% |
+| 2 | 35 | 41.6% / 2.5% | 54.0% / 2.8% |
+| 3 | 260 | 7.0% / 0.0% | 3.1% / 0.0% |
+
+| Tier | Service | Coverage | Official | Ours beyond | Uncovered |
+| ---: | --- | --- | ---: | ---: | ---: |
+| 1 | `ec2` | ![ec2](docs/coverage/bars/ec2.svg) | 22.7% | 1.8% | 75.5% |
+| 1 | `rds` | ![rds](docs/coverage/bars/rds.svg) | 53.8% | 6.6% | 39.6% |
+| 1 | `eks` | ![eks](docs/coverage/bars/eks.svg) | 82.5% | 0.0% | 17.5% |
+| 1 | `s3` | ![s3](docs/coverage/bars/s3.svg) | 47.5% | 0.0% | 52.5% |
+| 1 | `lambda` | ![lambda](docs/coverage/bars/lambda.svg) | 42.6% | 3.3% | 54.1% |
+| 1 | `route53` | ![route53](docs/coverage/bars/route53.svg) | 46.9% | 0.0% | 53.1% |
+| 1 | `iam` | ![iam](docs/coverage/bars/iam.svg) | 38.8% | 3.5% | 57.6% |
+| 1 | `certificatemanager` | ![certificatemanager](docs/coverage/bars/certificatemanager.svg) | 88.2% | 0.0% | 11.8% |
+| 1 | `logs` | ![logs](docs/coverage/bars/logs.svg) | 13.6% | 0.0% | 86.4% |
+| 1 | `kms` | ![kms](docs/coverage/bars/kms.svg) | 54.5% | 22.7% | 22.7% |
+
+<details><summary>The 59 tier 2 and 3 services with any coverage</summary>
+
+| Tier | Service | Coverage | Official | Ours beyond | Uncovered |
+| ---: | --- | --- | ---: | ---: | ---: |
+| 2 | `wafv2` | ![wafv2](docs/coverage/bars/wafv2.svg) | 82.6% | 0.3% | 17.0% |
+| 2 | `dms` | ![dms](docs/coverage/bars/dms.svg) | 68.1% | 0.0% | 31.9% |
+| 2 | `ecs` | ![ecs](docs/coverage/bars/ecs.svg) | 53.6% | 0.0% | 46.4% |
+| 2 | `cloudfront` | ![cloudfront](docs/coverage/bars/cloudfront.svg) | 63.3% | 0.0% | 36.7% |
+| 2 | `autoscaling` | ![autoscaling](docs/coverage/bars/autoscaling.svg) | 38.5% | 35.9% | 25.5% |
+| 2 | `pipes` | ![pipes](docs/coverage/bars/pipes.svg) | 85.1% | 0.0% | 14.9% |
+| 2 | `elasticloadbalancingv2` | ![elasticloadbalancingv2](docs/coverage/bars/elasticloadbalancingv2.svg) | 76.0% | 0.0% | 24.0% |
+| 2 | `elasticache` | ![elasticache](docs/coverage/bars/elasticache.svg) | 79.2% | 0.0% | 20.8% |
+| 2 | `events` | ![events](docs/coverage/bars/events.svg) | 59.2% | 28.5% | 12.3% |
+| 2 | `apigatewayv2` | ![apigatewayv2](docs/coverage/bars/apigatewayv2.svg) | 62.0% | 0.0% | 38.0% |
+| 2 | `networkfirewall` | ![networkfirewall](docs/coverage/bars/networkfirewall.svg) | 56.0% | 0.0% | 44.0% |
+| 2 | `opensearchservice` | ![opensearchservice](docs/coverage/bars/opensearchservice.svg) | 62.6% | 0.0% | 37.4% |
+| 2 | `cloudwatch` | ![cloudwatch](docs/coverage/bars/cloudwatch.svg) | 25.3% | 0.0% | 74.7% |
+| 2 | `ssm` | ![ssm](docs/coverage/bars/ssm.svg) | 31.7% | 0.0% | 68.3% |
+| 2 | `msk` | ![msk](docs/coverage/bars/msk.svg) | 31.9% | 0.0% | 68.1% |
+| 2 | `applicationautoscaling` | ![applicationautoscaling](docs/coverage/bars/applicationautoscaling.svg) | 35.1% | 7.4% | 57.4% |
+| 2 | `ecr` | ![ecr](docs/coverage/bars/ecr.svg) | 63.0% | 7.4% | 29.6% |
+| 2 | `dynamodb` | ![dynamodb](docs/coverage/bars/dynamodb.svg) | 21.9% | 0.0% | 78.1% |
+| 2 | `efs` | ![efs](docs/coverage/bars/efs.svg) | 86.5% | 0.0% | 13.5% |
+| 2 | `route53resolver` | ![route53resolver](docs/coverage/bars/route53resolver.svg) | 35.1% | 0.0% | 64.9% |
+| 2 | `s3files` | ![s3files](docs/coverage/bars/s3files.svg) | 87.1% | 0.0% | 12.9% |
+| 2 | `s3tables` | ![s3tables](docs/coverage/bars/s3tables.svg) | 38.9% | 0.0% | 61.1% |
+| 2 | `sns` | ![sns](docs/coverage/bars/sns.svg) | 61.8% | 0.0% | 38.2% |
+| 2 | `sqs` | ![sqs](docs/coverage/bars/sqs.svg) | 81.0% | 0.0% | 19.0% |
+| 2 | `stepfunctions` | ![stepfunctions](docs/coverage/bars/stepfunctions.svg) | 45.9% | 0.0% | 54.1% |
+| 2 | `s3vectors` | ![s3vectors](docs/coverage/bars/s3vectors.svg) | 78.9% | 0.0% | 21.1% |
+| 2 | `ram` | ![ram](docs/coverage/bars/ram.svg) | 54.2% | 0.0% | 45.8% |
+| 2 | `secretsmanager` | ![secretsmanager](docs/coverage/bars/secretsmanager.svg) | 17.8% | 0.0% | 82.2% |
+| 2 | `aps` | ![aps](docs/coverage/bars/aps.svg) | 13.2% | 0.0% | 86.8% |
+| 2 | `dsql` | ![dsql](docs/coverage/bars/dsql.svg) | 85.7% | 0.0% | 14.3% |
+| 3 | `sagemaker` | ![sagemaker](docs/coverage/bars/sagemaker.svg) | 49.9% | 0.0% | 50.1% |
+| 3 | `quicksight` | ![quicksight](docs/coverage/bars/quicksight.svg) | 0.8% | 0.0% | 99.2% |
+| 3 | `bedrockagentcore` | ![bedrockagentcore](docs/coverage/bars/bedrockagentcore.svg) | 36.4% | 0.0% | 63.6% |
+| 3 | `acmpca` | ![acmpca](docs/coverage/bars/acmpca.svg) | 95.1% | 0.0% | 4.9% |
+| 3 | `cognito` | ![cognito](docs/coverage/bars/cognito.svg) | 36.8% | 0.0% | 63.2% |
+| 3 | `kinesisfirehose` | ![kinesisfirehose](docs/coverage/bars/kinesisfirehose.svg) | 26.1% | 0.0% | 73.9% |
+| 3 | `fsx` | ![fsx](docs/coverage/bars/fsx.svg) | 46.2% | 0.0% | 53.8% |
+| 3 | `apigateway` | ![apigateway](docs/coverage/bars/apigateway.svg) | 34.1% | 0.0% | 65.9% |
+| 3 | `memorydb` | ![memorydb](docs/coverage/bars/memorydb.svg) | 84.8% | 0.0% | 15.2% |
+| 3 | `elasticsearch` | ![elasticsearch](docs/coverage/bars/elasticsearch.svg) | 97.7% | 0.0% | 2.3% |
+| 3 | `docdb` | ![docdb](docs/coverage/bars/docdb.svg) | 60.3% | 0.0% | 39.7% |
+| 3 | `backup` | ![backup](docs/coverage/bars/backup.svg) | 32.0% | 0.0% | 68.0% |
+| 3 | `amazonmq` | ![amazonmq](docs/coverage/bars/amazonmq.svg) | 69.8% | 0.0% | 30.2% |
+| 3 | `emrserverless` | ![emrserverless](docs/coverage/bars/emrserverless.svg) | 88.1% | 0.0% | 11.9% |
+| 3 | `glue` | ![glue](docs/coverage/bars/glue.svg) | 5.2% | 0.0% | 94.8% |
+| 3 | `mwaa` | ![mwaa](docs/coverage/bars/mwaa.svg) | 97.2% | 0.0% | 2.8% |
+| 3 | `athena` | ![athena](docs/coverage/bars/athena.svg) | 29.9% | 0.0% | 70.1% |
+| 3 | `bedrock` | ![bedrock](docs/coverage/bars/bedrock.svg) | 5.3% | 0.0% | 94.7% |
+| 3 | `cloudtrail` | ![cloudtrail](docs/coverage/bars/cloudtrail.svg) | 37.3% | 0.0% | 62.7% |
+| 3 | `opensearchserverless` | ![opensearchserverless](docs/coverage/bars/opensearchserverless.svg) | 23.7% | 0.0% | 76.3% |
+| 3 | `cassandra` | ![cassandra](docs/coverage/bars/cassandra.svg) | 25.9% | 0.0% | 74.1% |
+| 3 | `mwaaserverless` | ![mwaaserverless](docs/coverage/bars/mwaaserverless.svg) | 81.3% | 0.0% | 18.8% |
+| 3 | `rbin` | ![rbin](docs/coverage/bars/rbin.svg) | 76.9% | 0.0% | 23.1% |
+| 3 | `codeartifact` | ![codeartifact](docs/coverage/bars/codeartifact.svg) | 36.0% | 0.0% | 64.0% |
+| 3 | `organizations` | ![organizations](docs/coverage/bars/organizations.svg) | 42.9% | 0.0% | 57.1% |
+| 3 | `emrcontainers` | ![emrcontainers](docs/coverage/bars/emrcontainers.svg) | 9.0% | 0.0% | 91.0% |
+| 3 | `kinesis` | ![kinesis](docs/coverage/bars/kinesis.svg) | 10.2% | 0.0% | 89.8% |
+| 3 | `emr` | ![emr](docs/coverage/bars/emr.svg) | 0.5% | 0.0% | 99.5% |
+| 3 | `ses` | ![ses](docs/coverage/bars/ses.svg) | 0.4% | 0.0% | 99.6% |
 
 </details>
 
-Services are sorted by attributes covered; blue is covered by ACK's released controllers, green by our kinds beyond ACK, grey by neither. The other 236 services in the CloudFormation schemas are uncovered. Full data: [services.csv](docs/coverage/services.csv) (one row per service), [resources.csv](docs/coverage/resources.csv) (one row per resource) and [attributes.csv](docs/coverage/attributes.csv) (one row per attribute).
+Services are sorted by tier, then by attributes covered; blue is covered by ACK's released controllers, green by our kinds beyond ACK, grey by neither. The other 236 services in the CloudFormation schemas are uncovered. Full data: [services.csv](docs/coverage/services.csv) (one row per service), [resources.csv](docs/coverage/resources.csv) (one row per resource) and [attributes.csv](docs/coverage/attributes.csv) (one row per attribute).
 
 <!-- coverage:end -->
 

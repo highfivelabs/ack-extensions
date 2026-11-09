@@ -57,6 +57,8 @@ func outputs(c config, m *model, r *results) (map[string][]byte, error) {
 		files[dir+"bars/"+s.service+".svg"] = barSVG(barTitle(s.service, s), s)
 	}
 	files[dir+"bars/_total.svg"] = totalSVG(r.total, "ACK")
+	files[dir+"bars/_tiers.svg"] = tiersSVG(r.tierRows())
+	files[dir+"tiers.csv"] = r.tiersCSV()
 	files[dir+"README.md"] = docsReadme(m, r)
 
 	readme, err := os.ReadFile(filepath.Join(c.root, "README.md"))

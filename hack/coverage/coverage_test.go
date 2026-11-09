@@ -4,6 +4,7 @@
 package main
 
 import (
+	"os"
 	"strings"
 	"testing"
 )
@@ -221,5 +222,54 @@ func TestReplaceSection(t *testing.T) {
 	}
 	if _, err := replaceSection([]byte("no markers"), "x"); err == nil {
 		t.Error("missing markers should be an error")
+	}
+}
+
+func TestLoadPriority(t *testing.T) {
+	dir := t.TempDir()
+	c := config{outDir: dir}
+	write := func(s string) {
+		if err := os.WriteFile(c.priorityPath(), []byte(s), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	services := []string{"iam", "s3", "quicksight"}
+	write("service,tier,rationale,source\niam,1,\"a, b\",x\ns3,2,y,z\n")
+	got, err := loadPriority(c, services)
+	if err != nil || got["iam"] != 1 || got["s3"] != 2 {
+		t.Fatalf("got %v, %v", got, err)
+	}
+	r := &results{priority: got}
+	if r.tierOf("quicksight") != 3 {
+		t.Error("a service missing from the file is tier 3")
+	}
+	for name, bad := range map[string]string{
+		"header":    "service,tier\niam,1\n",
+		"tier":      "service,tier,rationale,source\niam,4,y,z\n",
+		"unknown":   "service,tier,rationale,source\nnope,1,y,z\n",
+		"duplicate": "service,tier,rationale,source\niam,1,y,z\niam,2,y,z\n",
+	} {
+		write(bad)
+		if _, err := loadPriority(c, services); err == nil {
+			t.Errorf("%s: want an error", name)
+		}
+	}
+}
+
+func TestTierRows(t *testing.T) {
+	r := &results{
+		priority: map[string]int{"a": 1, "b": 2},
+		svcs: []svcRow{
+			{service: "a", resTotal: 2, resOfficial: 1, attrTotal: 10, attrOfficial: 4, attrUncov: 6},
+			{service: "b", resTotal: 1, resOursBeyond: 1, attrTotal: 5, attrOursBeyond: 5},
+			{service: "c", resTotal: 3, attrTotal: 100, attrUncov: 100},
+		},
+	}
+	rows := r.tierRows()
+	if rows[0].services != 1 || rows[0].attrOfficial != 4 || rows[1].attrOursBeyond != 5 || rows[2].attrTotal != 100 || rows[2].services != 1 {
+		t.Errorf("%+v", rows)
+	}
+	if !strings.Contains(string(tiersSVG(rows)), "Tier 3: 1 services") {
+		t.Error("tiers svg lacks the tier 3 label")
 	}
 }

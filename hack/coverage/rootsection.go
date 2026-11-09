@@ -39,34 +39,49 @@ func rootSection(r *results) string {
 		}
 	}
 	sort.SliceStable(covered, func(i, j int) bool {
+		ti, tj := r.tierOf(covered[i].service), r.tierOf(covered[j].service)
+		if ti != tj {
+			return ti < tj
+		}
 		ci, cj := covered[i].attrOfficial+covered[i].attrOursBeyond, covered[j].attrOfficial+covered[j].attrOursBeyond
 		if ci != cj {
 			return ci > cj
 		}
 		return covered[i].service < covered[j].service
 	})
-	const head = 15
+
+	tiers := r.tierRows()
+	b.WriteString("Not every service matters equally, so services are in three tiers by how much a team migrating from Terraform needs them: tier 1 is what the ten most-downloaded terraform-aws-modules use (iam, s3, vpc and security groups, eks, kms, lambda, rds, acm), tier 2 every other service some tracked module uses, tier 3 everything else ([how and why](docs/coverage/README.md#tiers); the list is the hand-editable [priority.csv](docs/coverage/priority.csv)). Upper bar of each pair: attributes; lower: resources.\n\n")
+	b.WriteString("![Coverage by tier](docs/coverage/bars/_tiers.svg)\n\n")
+	b.WriteString("| Tier | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) |\n| --- | ---: | ---: | ---: |\n")
+	for _, t := range tiers {
+		fmt.Fprintf(&b, "| %d | %d | %s%% / %s%% | %s%% / %s%% |\n", t.tier, t.services, pct1(t.resOfficial, t.resTotal), pct1(t.resOursBeyond, t.resTotal), pct1(t.attrOfficial, t.attrTotal), pct1(t.attrOursBeyond, t.attrTotal))
+	}
+	b.WriteString("\n")
+
 	row := func(s svcRow) string {
-		return fmt.Sprintf("| `%s` | ![%s](docs/coverage/bars/%s.svg) | %s%% | %s%% | %s%% |\n", s.service, s.service, s.service,
+		return fmt.Sprintf("| %d | `%s` | ![%s](docs/coverage/bars/%s.svg) | %s%% | %s%% | %s%% |\n", r.tierOf(s.service), s.service, s.service, s.service,
 			pct1(s.attrOfficial, s.attrTotal), pct1(s.attrOursBeyond, s.attrTotal), pct1(s.attrUncov, s.attrTotal))
 	}
-	const tableHead = "| Service | Coverage | Official | Ours beyond | Uncovered |\n| --- | --- | ---: | ---: | ---: |\n"
+	const tableHead = "| Tier | Service | Coverage | Official | Ours beyond | Uncovered |\n| ---: | --- | --- | ---: | ---: | ---: |\n"
 	b.WriteString(tableHead)
-	for i, s := range covered {
-		if i == head {
-			break
+	var rest []svcRow
+	for _, s := range covered {
+		if r.tierOf(s.service) == 1 {
+			b.WriteString(row(s))
+		} else {
+			rest = append(rest, s)
 		}
-		b.WriteString(row(s))
 	}
-	if len(covered) > head {
-		fmt.Fprintf(&b, "\n<details><summary>The other %d services with any coverage</summary>\n\n", len(covered)-head)
+	if len(rest) > 0 {
+		fmt.Fprintf(&b, "\n<details><summary>The %d tier 2 and 3 services with any coverage</summary>\n\n", len(rest))
 		b.WriteString(tableHead)
-		for _, s := range covered[head:] {
+		for _, s := range rest {
 			b.WriteString(row(s))
 		}
 		b.WriteString("\n</details>\n")
 	}
-	fmt.Fprintf(&b, "\nServices are sorted by attributes covered; blue is covered by ACK's released controllers, green by our kinds beyond ACK, grey by neither. The other %d services in the CloudFormation schemas are uncovered. Full data: [services.csv](docs/coverage/services.csv) (one row per service), [resources.csv](docs/coverage/resources.csv) (one row per resource) and [attributes.csv](docs/coverage/attributes.csv) (one row per attribute).\n\n", len(r.svcs)-len(covered))
+	fmt.Fprintf(&b, "\nServices are sorted by tier, then by attributes covered; blue is covered by ACK's released controllers, green by our kinds beyond ACK, grey by neither. The other %d services in the CloudFormation schemas are uncovered. Full data: [services.csv](docs/coverage/services.csv) (one row per service), [resources.csv](docs/coverage/resources.csv) (one row per resource) and [attributes.csv](docs/coverage/attributes.csv) (one row per attribute).\n\n", len(r.svcs)-len(covered))
 	return b.String()
 }
 

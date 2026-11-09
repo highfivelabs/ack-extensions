@@ -1386,6 +1386,11 @@ committed outputs are stale. The CloudFormation zip is committed
 because AWS replaces the file at its URL every hour. The Google Cloud
 and Azure repositories get the same dashboard with the same CSV schema.
 
+- **Tiers.** `docs/coverage/priority.csv` (hand-edited, never written by
+  the generator) puts each service in tier 1 (the ten most-downloaded
+  terraform-aws-modules' services), 2 (any other tracked module's) or 3
+  (the default); the README and `bars/_tiers.svg` roll coverage up by
+  tier, `tiers.csv` has the numbers.
 - **After adding or changing a kind:** run `task coverage` and commit
   the result; a kind that is a property of a larger CloudFormation
   resource, or a new rename, is a line in `hack/coverage/mappings.yaml`.
