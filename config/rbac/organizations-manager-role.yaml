@@ -25,6 +25,7 @@ rules:
 - apiGroups:
   - organizations.aws.hfl.dev
   resources:
+  - organizations
   - policies
   - policyattachments
   verbs:
@@ -38,6 +39,7 @@ rules:
 - apiGroups:
   - organizations.aws.hfl.dev
   resources:
+  - organizations/status
   - policies/status
   - policyattachments/status
   verbs:

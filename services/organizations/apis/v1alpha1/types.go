@@ -26,12 +26,60 @@ var (
 	_ = ackv1alpha1.AWSAccountID("")
 )
 
+// Contains information about an Amazon Web Services account that is a member
+// of an organization.
+type Account struct {
+	ARN   *string `json:"arn,omitempty"`
+	Email *string `json:"email,omitempty"`
+	ID    *string `json:"id,omitempty"`
+}
+
+// Contains the status about a CreateAccount or CreateGovCloudAccount request
+// to create an Amazon Web Services account or an Amazon Web Services GovCloud
+// (US) account in an organization.
+type CreateAccountStatus struct {
+	AccountID         *string `json:"accountID,omitempty"`
+	GovCloudAccountID *string `json:"govCloudAccountID,omitempty"`
+}
+
+// Contains information about the delegated administrator.
+type DelegatedAdministrator struct {
+	ARN   *string `json:"arn,omitempty"`
+	Email *string `json:"email,omitempty"`
+	ID    *string `json:"id,omitempty"`
+}
+
+// Contains information about the Amazon Web Services service for which the
+// account is a delegated administrator.
+type DelegatedService struct {
+	ServicePrincipal *string `json:"servicePrincipal,omitempty"`
+}
+
 // Contains rules to be applied to the affected accounts. The effective policy
 // is the aggregation of any policies the account inherits, plus any policy
 // directly attached to the account.
 type EffectivePolicy struct {
 	PolicyContent *string `json:"policyContent,omitempty"`
 	TargetID      *string `json:"targetID,omitempty"`
+}
+
+// A structure that contains details of a service principal that represents
+// an Amazon Web Services service that is enabled to integrate with Organizations.
+type EnabledServicePrincipal struct {
+	ServicePrincipal *string `json:"servicePrincipal,omitempty"`
+}
+
+// Contains details about an organization. An organization is a collection of
+// accounts that are centrally managed together using consolidated billing,
+// organized hierarchically with organizational units (OUs), and controlled
+// with policies .
+type Organization_SDK struct {
+	ARN                *string `json:"arn,omitempty"`
+	FeatureSet         *string `json:"featureSet,omitempty"`
+	ID                 *string `json:"id,omitempty"`
+	MasterAccountARN   *string `json:"masterAccountARN,omitempty"`
+	MasterAccountEmail *string `json:"masterAccountEmail,omitempty"`
+	MasterAccountID    *string `json:"masterAccountID,omitempty"`
 }
 
 // Contains information about a policy, but does not include the content. To

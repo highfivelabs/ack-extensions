@@ -25,9 +25,11 @@ not repeat them.
   `RegistryPolicy`, `RegistryScanningConfiguration`), rank 17 (S3 `Object`,
   the account's public access block), rank 19 (Secrets Manager resource
   policy), rank 20 (RDS event subscriptions). Recheck upstream first (below).
-- **Foundation queue** (`docs/coverage/foundation.md`, F01 to F18) is the work list now, ahead of the ranks above. Done: F01 `Policy` (PR #30, plan 6.25), `PolicyAttachment` (plan 6.26: generated from mapped operations; a reference to an ACK kind of the same service works through a type alias in `apis/v1alpha1/ack_kinds.go`). Next: `DelegatedAdministrator`, `Organization`, `AccountPlacement`, F02. Open question 11 (which account) is in plan 9.
-- **Open questions awaiting the builder:** 9 (non-exclusive group
-  membership was assumed) and 10 (`AccessKey`). Question 8 is answered.
+- **Foundation queue** (`docs/coverage/foundation.md`, F01 to F18) is the work list now, ahead of the ranks above. Done: F01 `Policy` (PR #30, plan 6.25), `PolicyAttachment` (plan 6.26: generated from mapped operations; a reference to an ACK kind of the same service works through a type alias in `apis/v1alpha1/ack_kinds.go`), `Organization` (plan 6.28). Next: `AccountPlacement`, then IAM `AccessKey` (open question 10, answered: a Secret), then F02.
+- **Organization-scoped identity** (open question 11, answered; plan 7.5): the Organizations kinds run only in a namespace kept for organization-level objects, beside an ACK organizations-controller with an organization-scoped role. Next for the operator: refuse (or warn on) an Organizations manager whose namespace also has an account-level ACK controller, and an `operator-e2e` check of it.
+- **Retain-only kinds** (open question 12; plan 6.28): a kind for something that is not deleted from Kubernetes (an organization; later an account's closure, root-level settings) has no delete call (`ignore.operations` in `generator.yaml`, so `sdkDelete` is a no-op), and its resource is added to `config/admission/retain-only.yaml`'s `resourceRules`, which requires `services.k8s.aws/deletion-policy: retain` on every object. Its e2e test deletes an object made before the policy is installed and checks the cloud thing stays, then checks the policy's refusals (`tests/e2e/organizations_organization_test.go`). **The factory's scaffolder should generate this pattern** (the ignored delete, the policy entry and the two tests) for a kind marked retain-only.
+- **Open questions:** 8 to 12 are answered. Assumed, for the builder to
+  confirm: `Organization`'s two lists are exclusive (plan 6.28).
 
 ## The loop for one kind
 

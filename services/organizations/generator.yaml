@@ -17,6 +17,17 @@
 # reference as a type of this package, so apis/v1alpha1/ack_kinds.go
 # aliases ACK's type.
 #
+# Organization is generated from CreateOrganization (create) and
+# DescribeOrganization (read, which takes no input: it finds the account's
+# organization). The create adopts an existing organization and makes one
+# only when there is none; until an object has done so, its read finds
+# nothing, as for the other account-wide singletons here.
+# DeleteOrganization is ignored, so the controller has no code that calls
+# it: deleting the object only stops managing the organization (docs/plan.md
+# section 9, question 12). The enabled policy types and trusted service
+# access are custom fields, applied by hand-written syncs (hooks.go) after
+# the create and in the update (there is no UpdateOrganization).
+#
 # Every response wraps the policy in a PolicySummary (id, ARN, name,
 # description, type) beside its content, so the generator cannot read the
 # identifier or the spec's name, description and type back; the hooks do
@@ -32,10 +43,16 @@ operations:
     operation_type: List
     resource_name: PolicyAttachment
 ignore:
+  operations:
+    # Never called: an organization is not deleted from Kubernetes.
+    - DeleteOrganization
+  field_paths:
+    # Deprecated in the API; the root's policy types are read instead.
+    - CreateOrganizationOutput.Organization.AvailablePolicyTypes
+    - DescribeOrganizationOutput.Organization.AvailablePolicyTypes
   resource_names:
     - Account
     - GovCloudAccount
-    - Organization
     - OrganizationalUnit
 resources:
   Policy:
@@ -111,3 +128,55 @@ resources:
         template_path: hooks/policy_attachment/sdk_read_many_post_request.go.tpl
       sdk_delete_post_request:
         template_path: hooks/policy_attachment/sdk_delete_post_request.go.tpl
+  Organization:
+    tags:
+      ignore: true
+    exceptions:
+      errors:
+        404:
+          code: AWSOrganizationsNotInUseException
+      terminal_codes:
+        - InvalidInputException
+        - ConstraintViolationException
+        - AccessDeniedForDependencyException
+        # A policy type the feature set does not allow (consolidated billing).
+        - PolicyTypeNotAvailableForOrganizationException
+    update_operation:
+      # There is no UpdateOrganization: the feature set is immutable and the
+      # custom fields have their own calls (hooks.go).
+      custom_method_name: customUpdateOrganization
+    fields:
+      ID:
+        # The organization's ID (o-...), from the response.
+        is_primary_key: true
+        is_read_only: true
+      FeatureSet:
+        is_immutable: true
+        late_initialize: {}
+      EnabledPolicyTypes:
+        # EnablePolicyType/DisablePolicyType on the root, read with ListRoots.
+        custom_field:
+          list_of: PolicyType
+        compare:
+          is_ignored: true
+      AWSServiceAccessPrincipals:
+        # EnableAWSServiceAccess/DisableAWSServiceAccess, read with
+        # ListAWSServiceAccessForOrganization.
+        custom_field:
+          list_of: ServicePrincipal
+        compare:
+          is_ignored: true
+      RootID:
+        is_read_only: true
+        type: string
+    hooks:
+      delta_pre_compare:
+        code: customPreCompare(delta, a, b)
+      sdk_create_pre_build_request:
+        template_path: hooks/organization/sdk_create_pre_build_request.go.tpl
+      sdk_create_post_set_output:
+        template_path: hooks/organization/sdk_create_post_set_output.go.tpl
+      sdk_read_one_pre_build_request:
+        template_path: hooks/organization/sdk_read_one_pre_build_request.go.tpl
+      sdk_read_one_post_set_output:
+        template_path: hooks/organization/sdk_read_one_post_set_output.go.tpl
