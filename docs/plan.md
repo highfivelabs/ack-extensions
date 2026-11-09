@@ -1565,11 +1565,21 @@ committed outputs are stale. The CloudFormation zip is committed
 because AWS replaces the file at its URL every hour. The Google Cloud
 and Azure repositories get the same dashboard with the same CSV schema.
 
-- **Tiers.** `docs/coverage/priority.csv` (hand-edited, never written by
-  the generator) puts each service in tier 1 (the ten most-downloaded
-  terraform-aws-modules' services), 2 (any other tracked module's) or 3
-  (the default); the README and `bars/_tiers.svg` roll coverage up by
-  tier, `tiers.csv` has the numbers.
+- **Tiers and categories.** `docs/coverage/priority.csv` (hand-edited,
+  never written by the generator) gives each service a category
+  (`platform-foundation`, `security-adjacent`, `application`, `other`)
+  and a tier (1 platform-foundation, 2 security-adjacent plus the
+  application services a tracked terraform-aws-module uses, 3 the rest,
+  the default); the README and `bars/_tiers.svg` and
+  `bars/_categories.svg` roll coverage up by both, `tiers.csv` and
+  `categories.csv` have the numbers.
+- **The foundation gap report.** `docs/coverage/foundation.md` is the
+  ranked work queue for the kind agents (every platform-foundation and
+  security-adjacent resource, with what upstream has, moto, module need,
+  size and the proposed kinds; first item: Organizations policies, SCP
+  attachment, delegated administrators). The numbers are regenerated; the
+  research is `hack/coverage/foundation.yaml`, a snapshot of 2026-11-09
+  that must be re-read against upstream before an item is started.
 - **After adding or changing a kind:** run `task coverage` and commit
   the result; a kind that is a property of a larger CloudFormation
   resource, or a new rename, is a line in `hack/coverage/mappings.yaml`.

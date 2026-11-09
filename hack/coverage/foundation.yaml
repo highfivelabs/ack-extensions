@@ -1,0 +1,578 @@
+# Research behind docs/coverage/foundation.md, read by hack/coverage (foundation.go).
+# The numbers in the report come from the coverage data; this file holds what the
+# generator cannot compute: the rank of each service, what upstream has and is
+# building, what moto implements, sizes, proposed kinds, and the work queue.
+# Edit it when the research changes, then run hack/coverage/run.sh.
+
+researched: "2026-11-09"
+
+sources:
+  - "ACK controllers: the latest release of each, pinned in [sources.yaml](sources.yaml); `generator.yaml` of each read at its release commit (raw.githubusercontent.com, read-only). A resource in a generator's `ignore.resource_names` is ignored on purpose or not yet wired."
+  - "ACK open pull requests of the controllers named below: `gh pr list --repo aws-controllers-k8s/<service>-controller --state open`, 2026-11-09."
+  - "ACK `community` issues: `gh search issues` and `gh api repos/aws-controllers-k8s/community/issues/<n>`, 2026-11-09 (numbers are cited where they are used)."
+  - "moto 5.2.5 (the version `hack/moto-requirements.txt` pins): `IMPLEMENTATION_COVERAGE.md` at tag 5.2.5, which marks each API operation as implemented or not. 'Implemented' means a handler exists, not that every field behaves as AWS does."
+  - "Module need: [`module-usage.csv`](../../hack/coverage/module-usage.csv), the AWS rows of the High Five Labs catalog's `docs/coverage/resource-types.csv` at catalog commit `debccf7362c21a2f633f24ee92f51852213994af` (40 terraform-aws-modules at the releases pinned in the catalog's `upstream/modules.yaml`, 469 resource-type uses), and the gap ranking in the catalog's `docs/aws.md` (commit `b6fdd5342346997fe855357eeee225afb7530e95`, sha256 `8c2ab34d8e50130e19bfa0619ffc0c9800646d26e8bebac9de347a574a681533`)."
+  - "Which of our kinds exist: `config/crds/bases/` of this commit; which are copied from open PRs: `UPSTREAM.md`."
+
+services:
+  organizations:
+    rank: 1
+    controller: "`organizations-controller` v1.7.0 (2026-10-23): `Account` and `OrganizationalUnit` only"
+    ignored: [GovCloudAccount, Organization, Policy]
+    upstream: "Community #2884 (open since 2026-05-11, one comment): add `Policy`, `PolicyAttachment` and `DelegatedAdministrator`, 'three separate PRs, in order', the reporter volunteers to implement; no pull request is open on the controller at 2026-11-09. `Policy` was put in the ignore list in the controller's first commit and never enabled. Community #2369 (open): `MoveAccount`, no resource or field for an account's parent OU."
+    moto: "moto `organizations`: 41 of 63 operations, including `CreateOrganization`, `CreateAccount`, `CreateOrganizationalUnit`, `CreatePolicy`/`UpdatePolicy`/`DeletePolicy`, `AttachPolicy`/`DetachPolicy`, `EnablePolicyType`, `EnableAWSServiceAccess`, `RegisterDelegatedAdministrator`/`DeregisterDelegatedAdministrator`, `MoveAccount`, `ListPoliciesForTarget`, `TagResource`; not `PutResourcePolicy`, `DescribeEffectivePolicy`, `EnableAllFeatures`, `InviteAccountToOrganization`."
+  sso:
+    rank: 2
+    controller: "none released. `ssoadmin-controller` exists in the ACK organisation but holds only its initial commit (2023-07-27: README, licence, code of conduct)"
+    upstream: "Community #1857 'IAM Identity Center / SSO Controller' (open since 2023-07-27, three reactions, no comment from a maintainer); no pull request."
+    moto: "moto `sso-admin`: 25 of 79 operations: `CreatePermissionSet`/`DescribePermissionSet`/`UpdatePermissionSet`, `AttachManagedPolicyToPermissionSet`, `AttachCustomerManagedPolicyReferenceToPermissionSet`, `PutInlinePolicyToPermissionSet`, `CreateAccountAssignment`/`DeleteAccountAssignment`/`ListAccountAssignments`/`DescribeAccountAssignmentCreationStatus`, `ProvisionPermissionSet`, `ListInstances`; not `PutPermissionsBoundaryToPermissionSet`, `CreateInstanceAccessControlAttributeConfiguration`, `CreateApplication`, `CreateInstance`."
+    newService: true
+  iam:
+    rank: 3
+    controller: "`iam-controller` v1.11.3: `Group`, `InstanceProfile`, `OpenIDConnectProvider`, `Policy`, `Role`, `ServiceLinkedRole`, `User`"
+    ignored: [AccessKey, AccountAlias, LoginProfile, PolicyVersion, SAMLProvider, ServiceSpecificCredential, VirtualMFADevice]
+    upstream: "Open PRs: #184 `RolePolicyAttachment` (we copy it), #167 'controlling Users in IAM Groups' (membership; our `UserGroupMembership` exists); #201, #204, #210 and #211 are fixes. Community #1879 asks for an option to get an access key's secret."
+    moto: "moto `iam`: 119 of 180 operations, including `CreateSAMLProvider`, `CreateOpenIDConnectProvider`, `CreateAccessKey`, `CreateLoginProfile`, `PutRolePermissionsBoundary`, `AttachRolePolicy`, `CreateServiceLinkedRole`, `AddUserToGroup`, `CreateAccountAlias`, `UpdateAccountPasswordPolicy`, `UploadSSHPublicKey`, `CreateVirtualMFADevice`, `CreatePolicyVersion`."
+  ec2:
+    rank: 4
+    core: [VPC, Subnet, SubnetCidrBlock, SubnetCidrReservation, RouteTable, Route, SubnetRouteTableAssociation, GatewayRouteTableAssociation, InternetGateway, EgressOnlyInternetGateway, CarrierGateway, VPCGatewayAttachment, NatGateway, EIP, EIPAssociation, NetworkAcl, NetworkAclEntry, SubnetNetworkAclAssociation, DHCPOptions, VPCDHCPOptionsAssociation, SecurityGroup, SecurityGroupIngress, SecurityGroupEgress, SecurityGroupVpcAssociation, PrefixList, VPCEndpoint, VPCEndpointService, VPCEndpointServicePermissions, VPCEndpointConnectionNotification, VPCPeeringConnection, TransitGateway, TransitGatewayAttachment, TransitGatewayVpcAttachment, TransitGatewayRouteTable, TransitGatewayRouteTableAssociation, TransitGatewayRouteTablePropagation, TransitGatewayRoute, TransitGatewayPeeringAttachment, TransitGatewayConnect, TransitGatewayConnectPeer, TransitGatewayPolicyTable, TransitGatewayPolicyTableAssociation, TransitGatewayPolicyTableEntry, TransitGatewayAttachmentNatConfiguration, VPNGateway, VPNConnection, VPNConnectionRoute, VPNGatewayRoutePropagation, CustomerGateway, VPCCidrBlock, VPCBlockPublicAccessExclusion, VPCBlockPublicAccessOptions, NetworkInterface, NetworkInterfaceAttachment, NetworkInterfacePermission, FlowLog, VPCEncryptionControl]
+    controller: "`ec2-controller` v1.23.1: 20 kinds (VPC, Subnet, RouteTable, InternetGateway, EgressOnlyInternetGateway, NATGateway, ElasticIPAddress, NetworkACL, SecurityGroup, ManagedPrefixList, DHCPOptions, VPCEndpoint, VPCEndpointServiceConfiguration, VPCPeeringConnection, TransitGateway, TransitGatewayVPCAttachment, FlowLog, Instance, LaunchTemplate, CapacityReservation); routes, ACL entries, security group rules and subnet associations are fields of those kinds, not kinds"
+    ignored: [CustomerGateway, VpnGateway, VpnConnection, VpnConnectionRoute, TransitGatewayRouteTable, TransitGatewayRoute, TransitGatewayPeeringAttachment, TransitGatewayConnect, TransitGatewayConnectPeer, TransitGatewayPolicyTable, TransitGatewayPrefixListReference, TransitGatewayMulticastDomain, Route, NetworkAclEntry, NetworkInterface, NetworkInterfacePermission, PlacementGroup, KeyPair, VpcCidrBlock, VpcBlockPublicAccessExclusion, VpcEncryptionControl, SubnetCidrReservation, VpcEndpointConnectionNotification, Ipam, IpamPool, IpamScope, ClientVpnEndpoint, Volume, Snapshot, Fleet]
+    upstream: "Open PRs: #396 `KeyPair`, #308 `Fleet`; the rest are fixes (#394 and #385 security group rules, #383, #377, #376, #404). `generator.yaml` also ignores the operations `ModifyTransitGateway` and `ModifyVpcEndpoint`, so a Transit Gateway's options and an endpoint's settings cannot be changed after create. Community #1868 'VPN resources' (open since 2023-08-03, ten comments), #1865 `TransitGatewayAttachment` (closed)."
+    moto: "moto `ec2`: 232 of 809 operations. Implemented: Transit Gateway, its VPC and peering attachments, route tables, association, propagation and routes; `CreateVpnConnection`, `CreateVpnGateway`, `AttachVpnGateway`, `CreateCustomerGateway`; `CreateNetworkInterface`; flow logs; endpoints and endpoint services; managed prefix lists; peering; `CreateTags`. Not implemented: `CreateVpnConnectionRoute`, `EnableVgwRoutePropagation`, `CreatePlacementGroup`, `CreateVpcBlockPublicAccessExclusion`, `ModifyVpcBlockPublicAccessOptions`."
+  controltower:
+    rank: 5
+    controller: "none: no ACK repository for Control Tower"
+    upstream: "No community issue or pull request found (searches for 'Control Tower' and 'controltower' return nothing)."
+    moto: "none: moto 5.2.5 has no `controltower` service in its implementation coverage. Nothing here can be proved against moto."
+    newService: true
+  route53:
+    rank: 6
+    controller: "`route53-controller` v1.8.0: `HealthCheck`, `HostedZone`, `RecordSet`"
+    ignored: [CidrCollection, KeySigningKey, QueryLoggingConfig, ReusableDelegationSet, TrafficPolicy, TrafficPolicyInstance, TrafficPolicyVersion, VPCAssociationAuthorization]
+    upstream: "Open PRs are fixes (#134, #121, #120: trailing-dot and alias comparison). No issue found for DNSSEC or key-signing keys."
+    moto: "moto `route53`: 30 of 71 operations: hosted zones, record sets, health checks, query logging config, reusable delegation sets, `AssociateVPCWithHostedZone`; not `EnableHostedZoneDNSSEC`, `CreateKeySigningKey`, `CreateVPCAssociationAuthorization`, CIDR collections."
+  route53resolver:
+    rank: 7
+    controller: "`route53resolver-controller` v1.11.0: `ResolverEndpoint`, `ResolverRule`, `ResolverRuleAssociation`, `ResolverQueryLogConfig`, `ResolverQueryLogConfigAssociation`"
+    ignored: [OutpostResolver, FirewallDomainList, FirewallRule, FirewallRuleGroup]
+    upstream: "Open PRs are fixes (#90 resolver endpoint IPs, #89 rule domain name). `generator.yaml` also ignores resolver endpoint `Protocols`, `PreferredInstanceType` and `OutpostArn`."
+    moto: "moto `route53resolver`: 28 of 72 operations: endpoints, rules, rule associations, query log configs, `UpdateResolverDnssecConfig`; not the Firewall operations (`CreateFirewallRuleGroup`, `CreateFirewallDomainList`, `CreateFirewallRule`, `AssociateFirewallRuleGroup`)."
+  ram:
+    rank: 8
+    controller: "`ram-controller` v1.7.0: `Permission`, `ResourceShare`"
+    ignored: [PermissionVersion]
+    upstream: "Open PRs: #43 `ResourceShareAccepter`, #44 accept mode on `ResourceShare`, #58 ARN as the unique identifier. Associations (principals, resources, permissions) are fields of `ResourceShare` in ACK."
+    moto: "moto `ram`: 8 of 35 operations: `CreateResourceShare`, `GetResourceShares`, `UpdateResourceShare`, `DeleteResourceShare`, `EnableSharingWithAwsOrganization`; not `AssociateResourceShare`, `AcceptResourceShareInvitation`, `TagResource`, `ListResources`, `CreatePermission`."
+  kms:
+    rank: 9
+    controller: "`kms-controller` v1.7.0: `Alias`, `Grant`, `Key`"
+    ignored: [CustomKeyStore]
+    upstream: "Open PR #112 `ReplicaKey` (we copy and correct it: ours `ReplicaKey`)."
+    moto: "moto `kms`: 40 of 54 operations, including `CreateKey`, `CreateAlias`, `CreateGrant`, `ReplicateKey`, `EnableKeyRotation`, `PutKeyPolicy`, `ScheduleKeyDeletion`, `TagResource`; not `CreateCustomKeyStore`."
+  cloudtrail:
+    rank: 10
+    controller: "`cloudtrail-controller` v1.9.1: `Trail`, `EventDataStore`"
+    ignored: [Channel, Dashboard]
+    upstream: "No open pull request or issue found. `pkg/resource/trail/hooks.go` and the read hook of `Trail` at v1.9.1 make no `StartLogging`, `PutEventSelectors`, `PutAdvancedEventSelectors` or `PutInsightSelectors` call, and the CRD has no `isLogging`, selector or insight field: a Trail ACK creates is not told to log and has no event selectors of its own."
+    moto: "moto `cloudtrail`: 16 of 60 operations: `CreateTrail`, `UpdateTrail`, `DeleteTrail`, `StartLogging`, `StopLogging`, `GetTrailStatus`, `PutEventSelectors`, `GetEventSelectors`, `PutInsightSelectors`, `AddTags`, `DescribeTrails`; not `PutAdvancedEventSelectors`, event data stores or channels."
+  ecr:
+    rank: 11
+    controller: "`ecr-controller` v1.11.1: `PullThroughCacheRule`, `Repository`, `RepositoryCreationTemplate`"
+    upstream: "Open PR #121 registry-level `ReplicationConfiguration` (we copy it: ours). No issue found for registry policy or scanning configuration."
+    moto: "moto `ecr`: 33 of 58 operations: repositories, `PutRegistryPolicy`, `PutReplicationConfiguration`, `PutRegistryScanningConfiguration`, `PutLifecyclePolicy`, `SetRepositoryPolicy`; not `CreatePullThroughCacheRule`, `CreateRepositoryCreationTemplate`, `PutAccountSetting`."
+  eks:
+    rank: 12
+    controller: "`eks-controller` v1.26.0: `AccessEntry`, `Addon`, `Capability`, `Cluster`, `FargateProfile`, `IdentityProviderConfig`, `Nodegroup`, `PodIdentityAssociation`"
+    ignored: [EksAnywhereSubscription, CertificateAuthority]
+    upstream: "Open PRs are fixes (#256 node group late-init, #202 cluster logging comparison, #170 desired size). Its `generator.yaml` ignores, to keep SDK bumps mechanical: `NodeRepairConfig`, `WarmPoolConfig`, `UpdateConfig.UpdateStrategy`, `OutpostConfig` placement, `CreateAddonInput.NamespaceConfig`, and the new `CertificateAuthority` API."
+    moto: "moto `eks`: 17 of 70 operations: clusters, node groups, Fargate profiles; not `CreateAddon`, `CreateAccessEntry`, `AssociateAccessPolicy`, `CreatePodIdentityAssociation`, `AssociateIdentityProviderConfig`. Add-ons, access entries and pod identity are ACK's kinds and cannot be proved against moto here."
+  identitystore:
+    rank: 13
+    controller: "none (the same missing controller as `sso`: `ssoadmin-controller` is empty)"
+    upstream: "Community #1857 asks for 'users and groups as well as permission sets'; nothing else."
+    moto: "moto `identitystore`: 17 of 22 operations: users, groups, group memberships."
+    newService: true
+  networkmanager:
+    rank: 14
+    controller: "`networkmanager-controller` exists with no release"
+    upstream: "Open PRs: #3 'adds corenetwork', #4 'CoreNetwork, CoreNetworkPolicy and attachment resources', #16 VPC attachment (all updated 2026-04 to 2026-10, none merged). Wait for them."
+    moto: "moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `CreateSite`."
+  directconnect:
+    rank: 15
+    controller: "none"
+    upstream: "No ACK repository, issue or pull request found."
+    moto: "moto `directconnect`: 10 of 73 operations: `CreateConnection`; not `CreateDirectConnectGateway` or virtual interfaces."
+    newService: true
+  route53profiles:
+    rank: 16
+    controller: "none"
+    upstream: "No ACK repository, issue or pull request found."
+    moto: "none: moto 5.2.5 has no `route53profiles`."
+    newService: true
+  config:
+    rank: 20
+    controller: "none"
+    upstream: "Community #2445 '[AWS Config] service controller' (open since 2025-04-29, seven comments): asks for `ConfigRule`, `OrganizationConfigRule`, `OrganizationConformancePack`; no pull request."
+    moto: "moto `config`: 38 of 102 operations: `PutConfigRule`, `PutConfigurationRecorder`, `PutDeliveryChannel`, `StartConfigurationRecorder`, `PutConfigurationAggregator`, `PutAggregationAuthorization`, `PutOrganizationConformancePack`; not `PutOrganizationConfigRule`, `PutConformancePack`, `PutRemediationConfigurations`, `PutStoredQuery`."
+    newService: true
+  guardduty:
+    rank: 21
+    controller: "none"
+    upstream: "Community #2916 'GuardDuty service controller' (open since 2026-06-14, one comment): lists Detector, MalwareProtectionPlan, PublishingDestination, IPSet/ThreatIntelSet, Filter, Member/organization config; no pull request."
+    moto: "moto `guardduty`: 12 of 102 operations: `CreateDetector`, `UpdateDetector`, `CreateFilter`, `EnableOrganizationAdminAccount`; not `CreateMembers`, `CreateIPSet`, `CreateThreatIntelSet`, `CreatePublishingDestination`, `UpdateOrganizationConfiguration`, `CreateMalwareProtectionPlan`."
+    newService: true
+  securityhub:
+    rank: 22
+    controller: "none"
+    upstream: "No issue or pull request found."
+    moto: "moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAccount`, `UpdateOrganizationConfiguration`, `CreateMembers`; not `BatchEnableStandards`, `CreateActionTarget`, `CreateFindingAggregator`, `CreateConfigurationPolicy`, `CreateAutomationRule`."
+    newService: true
+  secretsmanager:
+    rank: 23
+    controller: "`secretsmanager-controller` v1.8.2: `Secret`"
+    upstream: "Open PRs: #69 rotation management on `Secret` (open since 2026-06-26), #68 update `secretString` on secret ref changes."
+    moto: "moto `secretsmanager`: 21 of 23 operations, including `CreateSecret`, `RotateSecret`, `PutResourcePolicy`."
+  wafv2:
+    rank: 24
+    controller: "`wafv2-controller` v1.8.1: `IPSet`, `RuleGroup`, `WebACL`"
+    upstream: "Open PRs: #85 field references for IPSets and RuleGroups, #82 AntiDDoS rule set. Association of a web ACL with a load balancer is ours (`WebACLAssociation`)."
+    moto: "moto `wafv2`: 30 of 59 operations, including `CreateWebACL`, `AssociateWebACL`, `CreateRuleGroup`, `CreateIPSet`, `PutLoggingConfiguration`."
+  certificatemanager:
+    rank: 25
+    controller: "`acm-controller` v1.11.0: `Certificate`, `AcmeDomainValidation`, `AcmeEndpoint`, `AcmeExternalAccountBinding`"
+    upstream: "Open PR #104 import certificates from a Kubernetes TLS Secret."
+    moto: "moto `acm`: 13 of 40 operations, including `RequestCertificate`, `ImportCertificate`."
+  accessanalyzer:
+    rank: 26
+    controller: "none"
+    upstream: "No ACK repository, issue or pull request found."
+    moto: "none: moto 5.2.5 has no `accessanalyzer`."
+    newService: true
+  macie:
+    rank: 27
+    controller: "none"
+    upstream: "No ACK repository, issue or pull request found."
+    moto: "moto `macie2`: 13 of 81 operations (CloudFormation's `Macie` service is the same API)."
+    newService: true
+  inspectorv2:
+    rank: 28
+    controller: "none"
+    upstream: "No ACK repository, issue or pull request found."
+    moto: "moto `inspector2`: 19 of 81 operations."
+    newService: true
+  detective:
+    rank: 29
+    controller: "none"
+    upstream: "No ACK repository, issue or pull request found."
+    moto: "none: moto 5.2.5 has no `detective`."
+    newService: true
+  fms:
+    rank: 30
+    controller: "none"
+    upstream: "No ACK repository, issue or pull request found."
+    moto: "none: moto 5.2.5 has no `fms`."
+    newService: true
+  auditmanager:
+    rank: 31
+    controller: "none"
+    upstream: "No ACK repository, issue or pull request found."
+    moto: "none: moto 5.2.5 has no `auditmanager`."
+    newService: true
+  securitylake:
+    rank: 32
+    controller: "none"
+    upstream: "No ACK repository, issue or pull request found."
+    moto: "none: moto 5.2.5 has no `securitylake`."
+    newService: true
+  acmpca:
+    rank: 33
+    controller: "`acmpca-controller` v1.7.0: `Certificate`, `CertificateAuthority`, `CertificateAuthorityActivation`"
+    upstream: "Open PR #132 is a test."
+    moto: "moto `acm-pca`: 17 of 23 operations."
+  networkfirewall:
+    rank: 34
+    controller: "`networkfirewall-controller` v1.7.0: `Firewall`, `FirewallPolicy`, `RuleGroup`"
+    upstream: "No open pull requests."
+    moto: "moto `network-firewall`: 5 of 85 operations."
+
+  inspector:
+    rank: 35
+    controller: "none"
+    upstream: "Not researched: Inspector classic is superseded by `inspectorv2`."
+    moto: "not researched"
+  waf:
+    rank: 36
+    controller: "none"
+    upstream: "Not researched: WAF classic is superseded by `wafv2`."
+    moto: "not researched"
+  wafregional:
+    rank: 37
+    controller: "none"
+    upstream: "Not researched: WAF regional classic is superseded by `wafv2`."
+    moto: "not researched"
+
+resources:
+  # Covered as fields of another kind: the coverage CSVs do not credit it, the work is done.
+  "ec2/Route": {inline: "ACK `RouteTable.spec.routes[]` (14 route fields)", kinds: "none (inline)"}
+  "ec2/NetworkAclEntry": {inline: "ACK `NetworkACL.spec.entries[]`", kinds: "none (inline)"}
+  "ec2/SubnetNetworkAclAssociation": {inline: "ACK `NetworkACL.spec.associations[]`", kinds: "none (inline)"}
+  "ec2/SubnetRouteTableAssociation": {inline: "ACK `Subnet.spec.routeTables[]` and `routeTableRefs`", kinds: "none (inline)"}
+  "ec2/SecurityGroupIngress": {inline: "ACK `SecurityGroup.spec.ingressRules[]`", kinds: "none (inline); a standalone rule kind is a design question (catalog gap 6)"}
+  "ec2/SecurityGroupEgress": {inline: "ACK `SecurityGroup.spec.egressRules[]`", kinds: "none (inline)"}
+  "ec2/VPCCidrBlock": {inline: "ACK `VPC.spec.cidrBlocks[]`", kinds: "none (inline)"}
+  "ec2/VPCGatewayAttachment": {inline: "ACK `InternetGateway.spec.vpc`; ours `VPNGateway.spec.vpc`", kinds: "none (inline)"}
+  "ec2/VPCDHCPOptionsAssociation": {inline: "ACK `DHCPOptions.spec.vpc[]`", kinds: "none (inline)"}
+  "ec2/VPCEndpointServicePermissions": {inline: "ACK `VPCEndpointServiceConfiguration.spec.allowedPrincipals`", kinds: "none (inline)"}
+  "ec2/TransitGatewayAttachment": {upstream: "ACK has the VPC type only (`TransitGatewayVPCAttachment`); peering, Connect and VPN types are ignored", kinds: "one kind per attachment type: `TransitGatewayPeeringAttachment` (F04); VPN attachments come with `VPNConnection` (F05)"}
+  "iam/Policy": {inline: "ACK `Role.spec.inlinePolicies`, `User.spec.inlinePolicies`, `Group.spec.inlinePolicies`", kinds: "none (inline); this is the inline `AWS::IAM::Policy`, ACK's managed `Policy` is `ManagedPolicy`"}
+  "iam/RolePolicy": {inline: "ACK `Role.spec.inlinePolicies`", kinds: "none (inline)"}
+  "iam/UserPolicy": {inline: "ACK `User.spec.inlinePolicies`", kinds: "none (inline)"}
+  "iam/GroupPolicy": {inline: "ACK `Group.spec.inlinePolicies`", kinds: "none (inline)"}
+  "iam/UserToGroupAddition": {inline: "ours `UserGroupMembership` (user in groups); ACK PR #167 is group-side", kinds: "none (ours)"}
+  "ram/PrincipalAssociation": {inline: "ACK `ResourceShare.spec.principals`", kinds: "none (inline)"}
+  "ram/ResourceAssociation": {inline: "ACK `ResourceShare.spec.resourceARNs`", kinds: "none (inline)"}
+  "ram/SourceAssociation": {inline: "ACK `ResourceShare.spec.sources`", kinds: "none (inline)"}
+  "ram/PermissionAssociation": {inline: "ACK `ResourceShare.spec.permissionARNs`", kinds: "none (inline)"}
+  "route53/RecordSetGroup": {inline: "ACK `RecordSet` (one record per object; CloudFormation's group is a list of them)", kinds: "none (a chart writes one `RecordSet` per record)"}
+  "route53/DelegationSet": {note: "CloudFormation `AWS::Route53::DelegationSet` has no writable property other than the hosted zone it is attached to", kinds: "-"}
+
+  # Partial or missing: what matters, sizes, proposed kinds.
+  "cloudtrail/Trail":
+    size: M
+    matters: ["IsLogging (StartLogging)", "EventSelectors[]", "AdvancedEventSelectors[]", "InsightSelectors[]", "AggregationConfigurations[]"]
+    kinds: "`cloudtrail.aws.hfl.dev/TrailLogging` (sidecar kind by `trailRef`: `StartLogging`/`StopLogging`, `PutEventSelectors`, `PutAdvancedEventSelectors`, `PutInsightSelectors`), or the fields upstream (design question, plan section 9 question 1); F10"
+  "cloudtrail/EventDataStore": {matters: ["KmsKeyId", "IngestionEnabled", "FederationEnabled", "InsightSelectors[]", "MaxEventSize"], upstream: "ACK ignores `KmsKeyId`, `BillingMode` and `StartIngestion` on create"}
+  "cloudtrail/Channel": {size: S, upstream: "ignored in ACK's generator.yaml", kinds: "`cloudtrail.aws.hfl.dev/Channel`, generated; low priority (CloudTrail Lake integrations)"}
+  "cloudtrail/Dashboard": {size: S, upstream: "ignored in ACK's generator.yaml", kinds: "`cloudtrail.aws.hfl.dev/Dashboard`, generated; low priority"}
+  "cloudtrail/ResourcePolicy": {size: S, kinds: "`cloudtrail.aws.hfl.dev/ResourcePolicy`, hand-written put/delete (no Create/Describe shape)", moto: "no: `PutResourcePolicy` is not in moto's cloudtrail"}
+  "organizations/Account": {matters: ["ParentIds[] (MoveAccount)"], kinds: "`organizations.aws.hfl.dev/AccountPlacement` (sidecar by `accountRef`: `MoveAccount`, `ListParents`), F01", moto: "yes: `MoveAccount` is implemented"}
+  "organizations/Organization": {size: M, kinds: "`organizations.aws.hfl.dev/Organization`, hand-written singleton (feature set, enabled policy types, service access principals), F01", moto: "yes: `CreateOrganization`, `EnablePolicyType`, `EnableAWSServiceAccess` are implemented; `EnableAllFeatures` is not"}
+  "organizations/Policy": {size: M, matters: ["Name", "Type", "Content", "Description", "Tags[]", "TargetIds[] (attach)"], kinds: "`organizations.aws.hfl.dev/Policy` (generated) and `PolicyAttachment` (hand-written), F01", moto: "yes: `CreatePolicy`, `UpdatePolicy`, `DeletePolicy`, `AttachPolicy`, `DetachPolicy`, `EnablePolicyType` are implemented"}
+  "organizations/ResourcePolicy": {size: S, moto: "no: `PutResourcePolicy` is not in moto's organizations", kinds: "`organizations.aws.hfl.dev/ResourcePolicy`, hand-written singleton; low priority"}
+  "sso/PermissionSet": {size: L, kinds: "`ssoadmin.aws.hfl.dev/PermissionSet`, generated base plus hooks for the policy-attachment calls, F02", moto: "yes except `PutPermissionsBoundaryToPermissionSet`"}
+  "sso/Assignment": {size: M, kinds: "`ssoadmin.aws.hfl.dev/Assignment`, hand-written (asynchronous create and delete), F02", moto: "yes: `CreateAccountAssignment`, `DeleteAccountAssignment`, `ListAccountAssignments`, `DescribeAccountAssignmentCreationStatus`"}
+  "sso/InstanceAccessControlAttributeConfiguration": {size: S, moto: "no: `CreateInstanceAccessControlAttributeConfiguration` is not in moto", kinds: "`ssoadmin.aws.hfl.dev/InstanceAccessControlAttributeConfiguration`, hand-written singleton; low priority"}
+  "sso/Instance": {kinds: "not a kind: an organization has one instance, found with `ListInstances`; `instanceARN` is a field of the other kinds"}
+  "sso/Application": {size: M, moto: "no: `CreateApplication` is not in moto", kinds: "`ssoadmin.aws.hfl.dev/Application`; low priority (customer applications)"}
+  "sso/ApplicationAssignment": {size: S, moto: "no: not in moto", kinds: "`ssoadmin.aws.hfl.dev/ApplicationAssignment`; low priority"}
+  "iam/SAMLProvider": {size: S, kinds: "`iam.aws.hfl.dev/SAMLProvider`, generated (`CreateSAMLProvider`/`GetSAMLProvider`/`UpdateSAMLProvider`/`DeleteSAMLProvider`), F03", moto: "yes: `CreateSAMLProvider` is implemented"}
+  "iam/AccessKey": {size: M, kinds: "`iam.aws.hfl.dev/AccessKey`, hand-written; the secret is returned once, so it needs a Kubernetes Secret write-back (F03 recommends not building it)", moto: "yes: `CreateAccessKey` is implemented"}
+  "iam/VirtualMFADevice": {size: S, kinds: "`iam.aws.hfl.dev/VirtualMFADevice`, generated; low priority (a person's device)", moto: "yes: `CreateVirtualMFADevice` is implemented"}
+  "iam/ServerCertificate": {size: S, kinds: "`iam.aws.hfl.dev/ServerCertificate`, generated; legacy (ACM replaced it)"}
+  "ec2/TransitGatewayRouteTable": {size: M, kinds: "`ec2.aws.hfl.dev/TransitGatewayRouteTable`, generated, with `associations[]`, `propagations[]` and `routes[]` as fields (the pattern of ACK's `RouteTable`), F04", moto: "yes: `CreateTransitGatewayRouteTable`, `AssociateTransitGatewayRouteTable`, `EnableTransitGatewayRouteTablePropagation`, `CreateTransitGatewayRoute`"}
+  "ec2/TransitGatewayPeeringAttachment": {size: M, kinds: "`ec2.aws.hfl.dev/TransitGatewayPeeringAttachment`, generated (create, accept in the peer account, delete), F04", moto: "yes: `CreateTransitGatewayPeeringAttachment` is implemented"}
+  "ec2/TransitGatewayRouteTableAssociation": {inline: "to be a field of `TransitGatewayRouteTable.spec.associations[]` (F04)", kinds: "a field of the `TransitGatewayRouteTable` kind"}
+  "ec2/TransitGatewayRouteTablePropagation": {inline: "to be a field of `TransitGatewayRouteTable.spec.propagations[]` (F04)", kinds: "a field of the `TransitGatewayRouteTable` kind"}
+  "ec2/TransitGatewayRoute": {inline: "to be a field of `TransitGatewayRouteTable.spec.routes[]` (F04)", kinds: "a field of the `TransitGatewayRouteTable` kind"}
+  "ec2/VPNConnection": {size: L, kinds: "`ec2.aws.hfl.dev/VPNConnection`, generated (`CreateVpnConnection` with tunnel options), static routes as a field, F05", moto: "partly: `CreateVpnConnection` yes, `CreateVpnConnectionRoute` no"}
+  "ec2/VPNConnectionRoute": {inline: "to be a field of `VPNConnection.spec.staticRoutes[]` (F05)", moto: "no: `CreateVpnConnectionRoute` is not in moto", kinds: "a field of the `VPNConnection` kind"}
+  "ec2/VPNGatewayRoutePropagation": {size: S, moto: "no: `EnableVgwRoutePropagation` is not in moto", kinds: "a field of `RouteTable` upstream (`propagatingVGWs`) or a sidecar kind; F05"}
+  "ec2/VPNGateway": {note: "ours; ACK ignores it"}
+  "ec2/CustomerGateway": {note: "ours; ACK ignores it"}
+  "ec2/NetworkInterface": {size: M, kinds: "`ec2.aws.hfl.dev/NetworkInterface`, generated (`CreateNetworkInterface`), with attachment as a field, F06", moto: "yes: `CreateNetworkInterface` is implemented"}
+  "ec2/VPCBlockPublicAccessOptions": {size: S, moto: "no: `ModifyVpcBlockPublicAccessOptions` is not in moto", kinds: "`ec2.aws.hfl.dev/VPCBlockPublicAccessOptions`, hand-written account/Region singleton; F06"}
+  "ec2/VPCBlockPublicAccessExclusion": {size: S, moto: "no: `CreateVpcBlockPublicAccessExclusion` is not in moto", kinds: "`ec2.aws.hfl.dev/VPCBlockPublicAccessExclusion`, generated; F06"}
+  "ec2/SubnetCidrReservation": {size: S, kinds: "`ec2.aws.hfl.dev/SubnetCidrReservation`, generated; low priority"}
+  "ec2/KeyPair": {upstream: "ACK PR #396 (open, updated 2026-11-04): wait for it", kinds: "none: wait for ACK PR #396"}
+  "ec2/PlacementGroup": {size: S, moto: "no: `CreatePlacementGroup` is not in moto", kinds: "`ec2.aws.hfl.dev/PlacementGroup`, generated; F06"}
+  "ecr/RegistryPolicy": {size: S, kinds: "`ecr.aws.hfl.dev/RegistryPolicy`, hand-written singleton (`PutRegistryPolicy`/`DeleteRegistryPolicy`), F11", moto: "yes: `PutRegistryPolicy` is implemented"}
+  "ecr/RegistryScanningConfiguration": {size: S, kinds: "`ecr.aws.hfl.dev/RegistryScanningConfiguration`, hand-written singleton (`PutRegistryScanningConfiguration`), F11", moto: "yes: `PutRegistryScanningConfiguration` is implemented"}
+  "ecr/ReplicationConfiguration": {note: "ours, copied from ACK PR #121; retire when ACK releases it"}
+  "ecr/SigningConfiguration": {size: S, moto: "no: not in moto's ecr", kinds: "`ecr.aws.hfl.dev/SigningConfiguration`, hand-written singleton; new API, low priority"}
+  "ecr/PullTimeUpdateExclusion": {size: S, moto: "no: not in moto's ecr", kinds: "`ecr.aws.hfl.dev/PullTimeUpdateExclusion`; new API, low priority"}
+  "ecr/PublicRepository": {upstream: "ACK `ecrpublic-controller` covers it; CloudFormation names its catalog data differently", kinds: "none: the gap is how names pair (`ecrpublic` `Repository` is mapped to this resource by hand)"}
+  "eks/Nodegroup": {matters: ["NodeRepairConfig.*", "UpdateConfig.UpdateStrategy", "WarmPoolConfig.*", "ForceUpdateEnabled"], upstream: "ACK ignores `NodeRepairConfig`, `WarmPoolConfig` and `UpdateStrategy` in generator.yaml", kinds: "the fields upstream (an ACK PR to un-ignore them), not a kind of ours"}
+  "eks/Cluster": {matters: ["Logging.ClusterLogging.EnabledTypes[] (ACK has `logging.clusterLogging[]`: a rename)", "RollbackConfig.TimeoutMinutes", "OutpostConfig.*", "KubernetesNetworkConfig.ElasticLoadBalancing.GatewayApi.Crds.Managed"], kinds: "the fields upstream"}
+  "eks/Addon": {matters: ["NamespaceConfig.Namespace", "PreserveOnDelete"], upstream: "ACK ignores `NamespaceConfig` in generator.yaml", kinds: "the fields upstream"}
+  "eks/CertificateAuthority": {upstream: "ignored in ACK's generator.yaml until its own change wires it up", kinds: "wait for ACK"}
+  "kms/Key": {matters: ["Enabled", "PendingWindowInDays", "RotationPeriodInDays"], kinds: "the fields upstream, or ours as a sidecar; low priority (rotation is set through `EnableKeyRotation`)"}
+  "kms/ReplicaKey": {note: "ours, copied from ACK PR #112 with its Region handling corrected; retire when ACK releases it"}
+  "ram/ResourceShare": {matters: ["ResourceShareConfiguration.ExclusiveAccountAccess", "ResourceShareConfiguration.RetainSharingOnAccountLeaveOrganization"], upstream: "ACK PRs #43 (accepter) and #44 (accept mode) are open: wait"}
+  "route53/DNSSEC": {size: S, moto: "no: `EnableHostedZoneDNSSEC` is not in moto", kinds: "`route53.aws.hfl.dev/DNSSEC`, hand-written (`EnableHostedZoneDNSSEC`/`DisableHostedZoneDNSSEC`), F08"}
+  "route53/KeySigningKey": {size: S, moto: "no: `CreateKeySigningKey` is not in moto", kinds: "`route53.aws.hfl.dev/KeySigningKey`, generated (`CreateKeySigningKey`), F08"}
+  "route53/QueryLoggingConfig": {size: S, kinds: "`route53.aws.hfl.dev/QueryLoggingConfig`, generated (`CreateQueryLoggingConfig`), F08", moto: "yes: `CreateQueryLoggingConfig` is implemented"}
+  "route53/HostedZone": {matters: ["VPCs[] (ACK `vpc`: one VPC only)", "HostedZoneFeatures.EnableAcceleratedRecovery", "QueryLoggingConfig"], kinds: "the fields upstream; a second VPC is `VPCAssociation` (F08)"}
+  "route53/CidrCollection": {size: S, moto: "no: not in moto's route53", kinds: "`route53.aws.hfl.dev/CidrCollection`; low priority"}
+  "route53/TrafficPolicy": {size: S, kinds: "`route53.aws.hfl.dev/TrafficPolicy`; low priority (traffic flow)"}
+  "route53/TrafficPolicyInstance": {size: S, kinds: "`route53.aws.hfl.dev/TrafficPolicyInstance`; low priority"}
+  "route53resolver/FirewallDomainList": {size: S, kinds: "`route53resolver.aws.hfl.dev/FirewallDomainList`, generated, F09"}
+  "route53resolver/FirewallRuleGroup": {size: M, kinds: "`route53resolver.aws.hfl.dev/FirewallRuleGroup`, generated, with rules as a field (CloudFormation does), F09"}
+  "route53resolver/FirewallRuleGroupAssociation": {size: S, kinds: "`route53resolver.aws.hfl.dev/FirewallRuleGroupAssociation`, generated, F09"}
+  "route53resolver/FirewallConfig": {size: S, kinds: "`route53resolver.aws.hfl.dev/FirewallConfig`, hand-written per-VPC setting; F09"}
+  "route53resolver/ResolverEndpoint": {matters: ["Protocols[]", "PreferredInstanceType", "OutpostArn", "Dns64Enabled", "Ipv6InternetAccessEnabled"], upstream: "ACK ignores `Protocols`, `PreferredInstanceType` and `OutpostArn` in generator.yaml"}
+  "secretsmanager/Secret": {matters: ["GenerateSecretString.* (a generated password)", "Type"], kinds: "the fields upstream (ACK PR #69 is rotation)"}
+  "secretsmanager/RotationSchedule": {size: M, upstream: "ACK PR #69 (open since 2026-06-26): wait", kinds: "none: wait for ACK PR #69", moto: "yes: `RotateSecret` is implemented"}
+  "secretsmanager/ResourcePolicy": {size: S, kinds: "`secretsmanager.aws.hfl.dev/ResourcePolicy`, hand-written (`PutResourcePolicy`/`DeleteResourcePolicy`), F17", moto: "yes: `PutResourcePolicy` is implemented"}
+  "secretsmanager/SecretTargetAttachment": {size: S, kinds: "`secretsmanager.aws.hfl.dev/SecretTargetAttachment`; low priority (writes the target's connection details into the secret)"}
+  "certificatemanager/Certificate": {matters: ["ValidationMethod", "CertificateExport", "DomainValidationOptions[].HostedZoneId"], upstream: "ACK PR #104 (import from a TLS Secret) is open; ACK ignores `ValidationMethod` in generator.yaml"}
+
+  # moto per resource where the queue depends on it
+  "config/ConfigurationRecorder": {moto: "yes: `PutConfigurationRecorder`, `StartConfigurationRecorder`"}
+  "config/DeliveryChannel": {moto: "yes: `PutDeliveryChannel`"}
+  "config/ConfigRule": {moto: "yes: `PutConfigRule`"}
+  "config/ConfigurationAggregator": {moto: "yes: `PutConfigurationAggregator`"}
+  "config/AggregationAuthorization": {moto: "yes: `PutAggregationAuthorization`"}
+  "config/OrganizationConformancePack": {moto: "yes: `PutOrganizationConformancePack`"}
+  "config/OrganizationConfigRule": {moto: "no: `PutOrganizationConfigRule` is not in moto"}
+  "config/ConformancePack": {moto: "no: `PutConformancePack` is not in moto"}
+  "config/RemediationConfiguration": {moto: "no: `PutRemediationConfigurations` is not in moto"}
+  "config/StoredQuery": {moto: "no: `PutStoredQuery` is not in moto"}
+  "guardduty/Detector": {moto: "yes: `CreateDetector`, `UpdateDetector`"}
+  "guardduty/Filter": {moto: "yes: `CreateFilter`"}
+  "guardduty/IPSet": {moto: "no: `CreateIPSet` is not in moto"}
+  "guardduty/ThreatIntelSet": {moto: "no: `CreateThreatIntelSet` is not in moto"}
+  "guardduty/Member": {moto: "no: `CreateMembers` is not in moto"}
+  "guardduty/PublishingDestination": {moto: "no: `CreatePublishingDestination` is not in moto"}
+  "guardduty/MalwareProtectionPlan": {moto: "no: `CreateMalwareProtectionPlan` is not in moto"}
+  "securityhub/Hub": {moto: "yes: `EnableSecurityHub` is implemented"}
+  "securityhub/DelegatedAdmin": {moto: "yes: `EnableOrganizationAdminAccount` is implemented"}
+  "securityhub/OrganizationConfiguration": {moto: "yes: `UpdateOrganizationConfiguration` is implemented"}
+  "securityhub/Standard": {moto: "no: `BatchEnableStandards` is not in moto"}
+  "securityhub/FindingAggregator": {moto: "no: `CreateFindingAggregator` is not in moto"}
+  "securityhub/ConfigurationPolicy": {moto: "no: `CreateConfigurationPolicy` is not in moto"}
+  "securityhub/AutomationRule": {moto: "no: `CreateAutomationRule` is not in moto"}
+  "securityhub/ActionTarget": {moto: "no: `CreateActionTarget` is not in moto"}
+
+queue:
+  - id: F01
+    title: "AWS Organizations: SCPs and the other policy types, attachment, delegated administrators, organization features, account placement"
+    resources: ["organizations/Policy", "organizations/Organization", "organizations/Account", "organizations/ResourcePolicy"]
+    why: "The builder's first ask: manage accounts, OUs and SCPs early and show it to platform teams. ACK ships `Account` and `OrganizationalUnit` but ignores `Policy` and `Organization`, so there is no way to declare an SCP, attach it, delegate an administrator or enable a policy type. Three of the five Organizations resources in CloudFormation are open here, and the API has more (delegated administrators, service access and policy-type enablement have no CloudFormation resource, so they are in none of the coverage numbers)."
+    kinds: |
+      In `organizations.aws.hfl.dev`, beside ACK's `Account` and `OrganizationalUnit`:
+      (1) `Policy`: generated from `CreatePolicy`/`DescribePolicy`/`UpdatePolicy`/`DeletePolicy`; `name`, `description`, `type` (immutable: `SERVICE_CONTROL_POLICY`, `TAG_POLICY`, `BACKUP_POLICY`, `AISERVICES_OPT_OUT_POLICY` and the newer types), `content` (a JSON document, compared as canonical JSON), `tags`.
+      (2) `PolicyAttachment`: hand-written on the `RolePolicyAttachment` skeleton (iam-controller PR #184): `policyID` or `policyRef`, `targetID` or `targetRef` (ACK's `OrganizationalUnit` or `Account`, or the root), `AttachPolicy`/`DetachPolicy`, read with `ListPoliciesForTarget`; non-exclusive (it never detaches policies it did not attach), the precedent being `Role.policies` against `RolePolicyAttachment`. CloudFormation's `Policy.TargetIds` is the exclusive form: do not add it to `Policy`.
+      (3) `DelegatedAdministrator`: hand-written, `accountID` or `accountRef` and `servicePrincipal`; `RegisterDelegatedAdministrator`/`DeregisterDelegatedAdministrator`, read with `ListDelegatedAdministrators`.
+      (4) `Organization`: hand-written singleton on the shape of our `ReplicationConfiguration`: `featureSet`, `enabledPolicyTypes[]` (`EnablePolicyType`/`DisablePolicyType` on the root), `awsServiceAccessPrincipals[]` (`EnableAWSServiceAccess`/`DisableAWSServiceAccess`); adopts the existing organization, creating one only if told to.
+      (5) `AccountPlacement`: hand-written sidecar by `accountRef`/`accountID` and `parentID`/`parentRef`: `MoveAccount`, read with `ListParents` (community #2369).
+    upstream: "ACK `organizations-controller` v1.7.0 has `Account` and `OrganizationalUnit`; its `generator.yaml` ignores `Policy`, `Organization` and `GovCloudAccount`. Community #2884 (2026-05-11) proposes `Policy`, `PolicyAttachment` and `DelegatedAdministrator` in three PRs and the reporter offers to write them; no pull request is open at 2026-11-09. The rule in `CLAUDE.md` and plan section 3: build here when upstream has neither released nor a PR close to merging; that is the case today. Recheck #2884 before starting each kind and re-copy if a PR appears."
+    moto: "Good: `CreateOrganization`, `CreateAccount`, `CreateOrganizationalUnit`, `CreatePolicy`/`UpdatePolicy`/`DeletePolicy`, `AttachPolicy`/`DetachPolicy`, `EnablePolicyType`, `EnableAWSServiceAccess`, `RegisterDelegatedAdministrator`/`DeregisterDelegatedAdministrator`, `MoveAccount`, `ListPoliciesForTarget`, `ListRoots`, `TagResource` are implemented, so kinds (1) to (5) can be proved end to end. Not implemented: `PutResourcePolicy` (so `ResourcePolicy` cannot be proved), `DescribeEffectivePolicy`, `EnableAllFeatures`, `InviteAccountToOrganization`."
+    modules: "None of the 40 tracked terraform-aws-modules creates an Organizations resource (Terraform users use `aws_organizations_*` directly, or a landing-zone module outside the tracked set); a module need of 0 here is a gap in the module space, not low demand."
+    size: "M (Policy), M (PolicyAttachment), S (DelegatedAdministrator), M (Organization), S (AccountPlacement); plus one for the new `services/organizations/` manager"
+    approach: |
+      Start with `Policy`: create `services/organizations/` like `services/rds/`: a `generator.yaml` that ignores `Account` and `OrganizationalUnit` (ACK has them) and configures `Policy` (start from the shape of ACK's `OrganizationalUnit` entry at organizations-controller commit `5824700fd7`), generate with `hack/generate.sh`, add the manager to the operator's mapping and `config/rbac`. The SDK client is `github.com/aws/aws-sdk-go-v2/service/organizations`; pin it to the version ACK's `organizations-controller` v1.7.0 `go.mod` names, as `UPSTREAM.md` does for the others. Then `PolicyAttachment` and `DelegatedAdministrator` by copying `services/iam/pkg/resource/role_policy_attachment/`, and `Organization` from `services/ecr/pkg/resource/replication_configuration/`.
+      An SCP document is JSON: reuse the canonical-JSON comparison of `services/lambda/pkg/resource/permission/` (it reads policy statements) so key order and whitespace do not cause a delta. Test only what moto implements and write the rest in `docs/plan.md`, as the fake cloud's doc requires.
+    done: "Each kind has an end-to-end test in `tests/e2e` on moto (create, update or refusal, delete, `deletion-policy: retain`); `task check` passes; the README table and `docs/plan.md` list the kinds; `task coverage` shows `organizations/Policy` at 100% and moves the `organizations` bar; `PolicyAttachment` attaches a policy to an ACK-made `OrganizationalUnit` by `targetRef` in one apply."
+
+  - id: F02
+    title: "IAM Identity Center: permission sets and account assignments"
+    resources: ["sso/PermissionSet", "sso/Assignment", "sso/Instance", "sso/InstanceAccessControlAttributeConfiguration"]
+    why: "How people get into accounts: a platform team's access model is permission sets assigned to groups per account. ACK has no controller (the `ssoadmin-controller` repository is empty), no PR, only an open request since 2023. It is the other half of the builder's account story."
+    kinds: |
+      In `ssoadmin.aws.hfl.dev` (ACK's service id is `ssoadmin`, so the group will match when ACK ships one; CloudFormation calls the service `sso`):
+      (1) `PermissionSet`: `name`, `description`, `sessionDuration`, `relayState`, `tags`, `managedPolicies[]` (ARNs), `customerManagedPolicyReferences[]` (name and path), `inlinePolicy` (JSON), `permissionsBoundary`; `instanceARN` or the organization's only instance found with `ListInstances`. Generated base from `CreatePermissionSet`/`DescribePermissionSet`/`UpdatePermissionSet`/`DeletePermissionSet`, with hooks for the attachment APIs (`AttachManagedPolicyToPermissionSet`, `AttachCustomerManagedPolicyReferenceToPermissionSet`, `PutInlinePolicyToPermissionSet`, `PutPermissionsBoundaryToPermissionSet`) and `ProvisionPermissionSet` after a change that reaches assigned accounts.
+      (2) `Assignment`: hand-written on the `RolePolicyAttachment` skeleton: `permissionSetRef`/`permissionSetARN`, `principalType` (`USER` or `GROUP`), `principalID`, `targetAccountID` or `targetAccountRef` (ACK's organizations `Account`); `CreateAccountAssignment`/`DeleteAccountAssignment` are asynchronous, so synced waits on `DescribeAccountAssignmentCreationStatus`; read with `ListAccountAssignments`.
+      (3) `InstanceAccessControlAttributeConfiguration`: hand-written singleton, low priority (attribute-based access control).
+      `Instance` is not a kind: an organization has one instance, found by `ListInstances` (creating one is a console act or `CreateInstance`); take `instanceARN` as a field.
+    upstream: "No controller release: `ssoadmin-controller` holds only the 2023-07-27 initial commit. Community #1857 (open, three reactions). No pull request. Nothing to copy but ACK's conventions."
+    moto: "Mostly good: `CreatePermissionSet`/`DescribePermissionSet`/`UpdatePermissionSet`, `AttachManagedPolicyToPermissionSet`, `AttachCustomerManagedPolicyReferenceToPermissionSet`, `PutInlinePolicyToPermissionSet`, `CreateAccountAssignment`/`DeleteAccountAssignment`/`ListAccountAssignments`/`DescribeAccountAssignmentCreationStatus`, `ProvisionPermissionSet`, `ListInstances`. Not implemented: `PutPermissionsBoundaryToPermissionSet` and `CreateInstanceAccessControlAttributeConfiguration`: those two cannot be proved."
+    modules: "0 of 40: no terraform-aws-modules module wraps Identity Center (the Terraform resources are `aws_ssoadmin_*`)."
+    size: "L (PermissionSet: six APIs behind one kind), M (Assignment: async), S (attribute config); plus one for the new `services/ssoadmin/` manager"
+    approach: |
+      Copy conventions from `services/iam/`. `PermissionSet` is the hard one: ACK's code generator makes the base kind from the Create/Describe pair, but policy attachment is a set of separate calls, so write the diff of `managedPolicies[]` and `customerManagedPolicyReferences[]` as an update hook (`ListManagedPoliciesInPermissionSet`, `ListCustomerManagedPolicyReferencesInPermissionSet`, `GetInlinePolicyForPermissionSet`); ram-controller's `ResourceShare` update hook (`templates/hooks/resource_share/sdk_update_pre_build_request.go.tpl`) is a worked example of syncing a list through separate calls. Call `ProvisionPermissionSet` only after an update, and report not-synced until its request status is `SUCCEEDED`.
+      Do not write `identitystore` here: users and groups are item F12.
+    done: "`PermissionSet` and `Assignment` pass end-to-end tests on moto (create, update a policy list and see `ProvisionPermissionSet` called, delete, retain); the two moto-less calls are listed in `docs/plan.md` as untested; a chart can create a permission set and assign it to an ACK `Account` by reference; `task check` passes; `task coverage` shows `sso` above 0%."
+
+  - id: F03
+    title: "IAM: SAML providers (and the access-key question)"
+    resources: ["iam/SAMLProvider", "iam/AccessKey", "iam/VirtualMFADevice", "iam/ServerCertificate", "iam/OIDCProvider", "iam/ManagedPolicy"]
+    why: "Federation into the account is what a platform team wires first after roles and policies: `OpenIDConnectProvider` is covered (EKS IRSA), `SAMLProvider` is not and ACK ignores it. The rest of IAM that a platform team uses (roles, policies, boundaries through `Role.permissionsBoundary`, instance profiles, service-linked roles, users, groups, OIDC) is covered by ACK; ours already adds `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias` and `AccountPasswordPolicy`."
+    kinds: |
+      `iam.aws.hfl.dev/SAMLProvider`, generated: `CreateSAMLProvider`, `GetSAMLProvider`, `UpdateSAMLProvider`, `DeleteSAMLProvider`; `name` (immutable), `samlMetadataDocument` (the XML, read from a Secret or inline), `assertionEncryptionMode`, `addPrivateKey`/`removePrivateKey`, `tags`. The ARN is the identifier.
+      `AccessKey`: recommend NOT building. The secret is returned once on create; a kind needs a Kubernetes Secret write-back and the key is a long-lived credential (community #1879 asks for it). If the builder wants it, hand-write it on the `LoginProfile` pattern (which already writes a password) and add the Secret write-back in the same change.
+      `VirtualMFADevice` and `ServerCertificate`: low priority (a person's device; a legacy resource).
+    upstream: "ACK `iam-controller` v1.11.3 ignores `SAMLProvider`, `AccessKey`, `VirtualMFADevice`, `ServiceSpecificCredential`, `PolicyVersion`, `LoginProfile`, `AccountAlias`. No PR for `SAMLProvider`. PR #167 (group membership, open) and #184 (`RolePolicyAttachment`, open) are already tracked in `UPSTREAM.md`."
+    moto: "Good: `CreateSAMLProvider`, `CreateAccessKey`, `CreateVirtualMFADevice` are implemented."
+    modules: "`iam` (#1, ranked first by downloads): `iam-user` (access key, login profile, SSH key), `iam-account` (alias, password policy; both ours already). SAML providers are in no tracked module."
+    size: "S (SAMLProvider), M (AccessKey if wanted)"
+    approach: "Add `SAMLProvider` to the generated-kind setup of `services/iam/` (`generator.yaml`, which already ignores what ACK has). The SAML metadata is a document: take it from `samlMetadataSecretRef` so it is not in the spec."
+    done: "`SAMLProvider` passes an end-to-end test on moto (create, update metadata, delete, retain); README and `docs/plan.md` updated; `task coverage` moves `iam/SAMLProvider` to 100%."
+
+  - id: F04
+    title: "EC2 networking: Transit Gateway route tables, associations, propagation, routes and peering"
+    resources: ["ec2/TransitGatewayRouteTable", "ec2/TransitGatewayRouteTableAssociation", "ec2/TransitGatewayRouteTablePropagation", "ec2/TransitGatewayRoute", "ec2/TransitGatewayPeeringAttachment", "ec2/TransitGateway", "ec2/TransitGatewayVpcAttachment"]
+    why: "A Transit Gateway is how a platform team joins VPCs and accounts. ACK has `TransitGateway` and the VPC attachment only; without route tables a gateway routes everything through its default table. Its generator also ignores `ModifyTransitGateway`, so a gateway's options cannot change after create."
+    kinds: |
+      In `ec2.aws.hfl.dev`: `TransitGatewayRouteTable`, generated from `CreateTransitGatewayRouteTable`/`DescribeTransitGatewayRouteTables`/`DeleteTransitGatewayRouteTable`, with `associations[]` (attachment refs, `AssociateTransitGatewayRouteTable`), `propagations[]` (`EnableTransitGatewayRouteTablePropagation`) and `routes[]` (`CreateTransitGatewayRoute`, static or blackhole) as fields, the way ACK's `RouteTable` carries routes (see its route handling in ec2-controller `pkg/resource/route_table/hooks.go`). `TransitGatewayPeeringAttachment`, generated, with the peer account's accept step as a field.
+      Then ask ACK for `ModifyTransitGateway`: four `TransitGateway` attributes are uncovered (`AssociationDefaultRouteTableId` and `PropagationDefaultRouteTableId`, which only make sense once route tables are kinds, `EncryptionSupport` and `SecurityGroupReferencingSupport`).
+    upstream: "`ec2-controller` v1.23.1 ignores `TransitGatewayRouteTable`, `TransitGatewayRoute`, `TransitGatewayPeeringAttachment`, `TransitGatewayConnect`, `TransitGatewayConnectPeer` and the operation `ModifyTransitGateway`. No open PR or issue for them (#1865 `TransitGatewayAttachment` is closed). Recheck before starting."
+    moto: "Good: `CreateTransitGateway`, `CreateTransitGatewayVpcAttachment`, `CreateTransitGatewayRouteTable`, `AssociateTransitGatewayRouteTable`, `EnableTransitGatewayRouteTablePropagation`, `CreateTransitGatewayRoute` and `CreateTransitGatewayPeeringAttachment` are implemented."
+    modules: "`transit-gateway` (#32): gateway, route tables, VPC attachments, routes, RAM share; `vpn-gateway` (#30) attaches to a gateway; `vpc` (#3) can attach to one."
+    size: "M, M"
+    approach: "Add the kinds to `services/ec2/` (it has the EC2 SDK client at ACK's version and our patch 0002). Start from the generator entries and hook templates of ACK's `TransitGateway` and `RouteTable` at ec2-controller `9303654c`; record each copied file in `UPSTREAM.md`. `transitGatewayRef` and `attachmentRef` should resolve to ACK's `TransitGateway` and `TransitGatewayVPCAttachment`; plan section 8, point 10 describes the limit on kinds that reference ACK's own kinds of the same service (the generator rewrites ACK's import path): read it first."
+    done: "End-to-end tests on moto for a gateway with two VPC attachments, a route table, an association, a propagation and a blackhole route, then deletion in dependency order; `task check`; `task coverage` moves `ec2/TransitGatewayRouteTable` to 100%."
+
+  - id: F05
+    title: "EC2 networking: site-to-site VPN connections and route propagation"
+    resources: ["ec2/VPNConnection", "ec2/VPNConnectionRoute", "ec2/VPNGatewayRoutePropagation", "ec2/VPNGateway", "ec2/CustomerGateway"]
+    why: "Hybrid connectivity: a customer gateway and a VPN gateway (ours already) mean nothing without the connection that joins them. ACK has none of the three; community #1868 has asked since 2023."
+    kinds: |
+      `ec2.aws.hfl.dev/VPNConnection`, generated from `CreateVpnConnection`/`DescribeVpnConnections`/`DeleteVpnConnection`: `type`, `customerGatewayRef` and `vpnGatewayRef` (our kinds) or `transitGatewayRef` (ACK's), `staticRoutesOnly`, `tunnelOptions[]` (two tunnels: pre-shared key from a Secret, CIDRs, IKE and phase lifetimes), `staticRoutes[]` (a field, `CreateVpnConnectionRoute`), tags. 43 CloudFormation attributes: the largest EC2 networking kind. Route propagation to a route table is a field of `RouteTable` upstream (`EnableVgwRoutePropagation`) or a small sidecar kind of ours.
+    upstream: "ec2-controller ignores `VpnConnection`, `VpnConnectionRoute`, `VpnGateway`, `CustomerGateway` in generator.yaml. Community #1868 'VPN resources' (open since 2023-08-03, ten comments, no PR). Ours: `VPNGateway`, `CustomerGateway`."
+    moto: "Partial: `CreateVpnConnection`, `CreateVpnGateway`, `AttachVpnGateway`, `CreateCustomerGateway` are implemented; `CreateVpnConnectionRoute` and `EnableVgwRoutePropagation` are not, so static routes and propagation cannot be proved on moto."
+    modules: "`vpn-gateway` (#30) and `vpc` (#3)."
+    size: "L (VPNConnection), S (propagation)"
+    approach: "Add to `services/ec2/` next to `vpn_gateway` and `customer_gateway`, whose hooks and references you copy (`hooks.go`, `templates/hooks/vpn_gateway/`). The tunnel pre-shared keys are secrets: take them from a `secretKeyRef` as ACK's kinds do. Write what moto cannot show in the fake cloud's section of `docs/plan.md`."
+    done: "An end-to-end test creates a connection from our `CustomerGateway` and `VPNGateway`, updates a tunnel option and deletes it; static routes and propagation are documented as unproved; `task coverage` moves `ec2/VPNConnection` above 90%."
+
+  - id: F06
+    title: "EC2 networking: smaller VPC kinds (network interfaces, block public access, placement groups, CIDR reservations)"
+    resources: ["ec2/NetworkInterface", "ec2/VPCBlockPublicAccessOptions", "ec2/VPCBlockPublicAccessExclusion", "ec2/PlacementGroup", "ec2/SubnetCidrReservation", "ec2/SecurityGroupVpcAssociation"]
+    why: "Gaps the VPC module (#3) and the EKS module (#4) touch: network interfaces (ENIs for pods and appliances), VPC block public access (a security team's account-wide guardrail), placement groups (EKS node groups)."
+    kinds: |
+      `NetworkInterface`, generated (`CreateNetworkInterface`/`DescribeNetworkInterfaces`/`DeleteNetworkInterface`; 22 attributes; attachment as a field). `VPCBlockPublicAccessOptions`, hand-written singleton per Region (`ModifyVpcBlockPublicAccessOptions`), and `VPCBlockPublicAccessExclusion`, generated. `PlacementGroup`, generated. `SubnetCidrReservation`, generated. `SecurityGroupVpcAssociation` (associate a security group with another VPC): hand-written.
+    upstream: "ec2-controller ignores `NetworkInterface`, `PlacementGroup`, `VpcBlockPublicAccessExclusion`, `SubnetCidrReservation`. ACK PR #396 `KeyPair` is open (wait for it; not ours). Community #2765 and #3132 touch network interfaces on `Instance`."
+    moto: "Partial: `CreateNetworkInterface` is implemented; `CreatePlacementGroup`, `CreateVpcBlockPublicAccessExclusion` and `ModifyVpcBlockPublicAccessOptions` are not."
+    modules: "`eks` (#4) node groups (placement groups), `vpc` (#3) (block public access), `ec2-instance` (#11)."
+    size: "M (NetworkInterface), S each for the rest"
+    approach: "Add to `services/ec2/`; start from ACK's generator entries where ACK has a neighbour (`Instance` for the interface shape)."
+    done: "`NetworkInterface` proved on moto; the three moto-less kinds written with their gap documented."
+
+  - id: F07
+    title: "Control Tower: landing zone, enabled controls, enabled baselines"
+    resources: ["controltower/LandingZone", "controltower/EnabledControl", "controltower/EnabledBaseline"]
+    why: "Where a platform team runs a multi-account landing zone, Control Tower is how guardrails are enabled. The builder asked for it 'where it has APIs': it has three CloudFormation resources and an asynchronous API. It ranks here, not first, because nothing can prove it yet."
+    kinds: |
+      In a new service `controltower.aws.hfl.dev`: `EnabledControl` (`EnableControl`/`GetEnabledControl`/`DisableControl`; the target is an OU ARN, with a control identifier and parameters), `EnabledBaseline` (`EnableBaseline`/`GetEnabledBaseline`/`DisableBaseline`), `LandingZone` (`CreateLandingZone`/`GetLandingZone`/`UpdateLandingZone`/`DeleteLandingZone`; the manifest is a JSON document, plus a version). All three are asynchronous: each call returns an operation identifier to poll (`GetControlOperation`, `GetBaselineOperation`, `GetLandingZoneOperation`), so write them by hand on the `Assignment` skeleton of F02 with a status poll rather than generating them.
+    upstream: "No ACK repository, issue or pull request found. Nothing to copy."
+    moto: "None: moto 5.2.5 has no `controltower`. **Blocked**: the repository's rule is to prove kinds only against recordings or emulators named in `docs/plan.md`; none exists for this API. Either record the calls from a real account (not allowed here) or write a small test double for the harness; that is the builder's call (open question for plan section 9)."
+    modules: "0 of 40; Control Tower is wrapped by AWS's own account factory modules, outside the tracked set."
+    size: "L each, and no emulator"
+    approach: "Do after F01 and F02, because `EnabledControl` targets an OU that ACK's `OrganizationalUnit` creates. If the builder approves a test double, keep it in `pkg/test/` as a small HTTP fake of the three operation pairs, with the polling states the real service returns."
+    done: "A decision on the emulator is recorded; then `EnabledControl` is proved end to end and `LandingZone` follows."
+
+  - id: F08
+    title: "Route 53: DNSSEC and key-signing keys, query logging, CIDR collections, second-VPC association"
+    resources: ["route53/DNSSEC", "route53/KeySigningKey", "route53/QueryLoggingConfig", "route53/HostedZone", "route53/CidrCollection", "route53/TrafficPolicy", "route53/TrafficPolicyInstance"]
+    why: "ACK covers hosted zones, records and health checks. DNSSEC signing, query logging and attaching a private zone to more than one VPC (ACK's `HostedZone.vpc` is one VPC) are the platform and security teams' DNS gaps."
+    kinds: |
+      `route53.aws.hfl.dev/KeySigningKey` (generated, needs a KMS key reference), `DNSSEC` (hand-written: `EnableHostedZoneDNSSEC`/`DisableHostedZoneDNSSEC`), `QueryLoggingConfig` (generated), `VPCAssociation` (hand-written sidecar by `hostedZoneRef`: `AssociateVPCWithHostedZone`, `DisassociateVPCFromHostedZone`, plus the cross-account authorization calls).
+    upstream: "route53-controller v1.8.0 ignores `KeySigningKey`, `QueryLoggingConfig`, `VPCAssociationAuthorization`, `CidrCollection`, `ReusableDelegationSet`, `TrafficPolicy*`. The three open PRs (#134, #121, #120) are comparison fixes."
+    moto: "Partial: `CreateHostedZone`, `ChangeResourceRecordSets`, `CreateQueryLoggingConfig`, `AssociateVPCWithHostedZone`, `CreateReusableDelegationSet` are implemented; `EnableHostedZoneDNSSEC`, `CreateKeySigningKey`, `CreateVPCAssociationAuthorization` and CIDR collections are not."
+    modules: "`route53` (#13): DNSSEC, key-signing key, VPC association authorization."
+    size: "S each"
+    approach: "Add to a new `services/route53/` manager; `QueryLoggingConfig` and `VPCAssociation` are provable on moto, the DNSSEC pair is not."
+    done: "`QueryLoggingConfig` and `VPCAssociation` proved on moto; DNSSEC kinds written with the gap documented."
+
+  - id: F09
+    title: "Route 53 Resolver: DNS Firewall, resolver endpoint settings, resolver configuration"
+    resources: ["route53resolver/FirewallDomainList", "route53resolver/FirewallRuleGroup", "route53resolver/FirewallRuleGroupAssociation", "route53resolver/FirewallConfig", "route53resolver/ResolverEndpoint", "route53resolver/ResolverConfig", "route53resolver/ResolverDNSSECConfig", "route53resolver/ResolverRule"]
+    why: "DNS Firewall is a security team's egress control for DNS; the resolver endpoint's protocols and IPv6 settings are what ACK's generator ignores."
+    kinds: |
+      `FirewallDomainList`, `FirewallRuleGroup` (rules as a field), `FirewallRuleGroupAssociation`, all generated; `FirewallConfig` and `ResolverConfig`, hand-written per-VPC singletons; the `ResolverEndpoint` fields (`protocols`, `preferredInstanceType`, `ipv6InternetAccessEnabled`) upstream.
+    upstream: "route53resolver-controller v1.11.0 ignores `FirewallDomainList`, `FirewallRule`, `FirewallRuleGroup`, `OutpostResolver`, and the endpoint fields named above. PRs #90 and #89 are fixes."
+    moto: "No for the Firewall kinds (`CreateFirewallRuleGroup`, `CreateFirewallDomainList`, `CreateFirewallRule`, `AssociateFirewallRuleGroup` are not implemented); `UpdateResolverDnssecConfig` is. **Blocked** for the main part of this item."
+    modules: "`route53` (#13): `resolver-firewall-rule-group` submodule (and its RAM share)."
+    size: "M, L, S"
+    approach: "Defer until a test double or a recording exists for the Firewall APIs, or build `ResolverDNSSECConfig` and `ResolverConfig` first (provable on moto)."
+    done: "Decision on the emulator recorded; `ResolverDNSSECConfig` proved on moto."
+
+  - id: F10
+    title: "CloudTrail: start logging and select events on a Trail (and organization trails)"
+    resources: ["cloudtrail/Trail", "cloudtrail/EventDataStore", "cloudtrail/ResourcePolicy", "cloudtrail/Channel", "cloudtrail/Dashboard"]
+    why: "Audit logging is the first thing a security team checks. ACK's `Trail` covers 13 of 31 attributes including `isOrganizationTrail`, `isMultiRegionTrail`, the bucket, KMS key and log file validation, but a Trail it creates is never told to `StartLogging` (no `isLogging` field, and the controller's hooks make no such call) and has no event, advanced event or insight selectors. An organization trail is only useful once it logs."
+    kinds: |
+      A sidecar kind `cloudtrail.aws.hfl.dev/TrailLogging` that references an ACK `Trail` by `trailRef` or `trailARN`: `isLogging`, `eventSelectors[]`, `advancedEventSelectors[]`, `insightSelectors[]`, calling `StartLogging`/`StopLogging`, `PutEventSelectors`, `PutAdvancedEventSelectors`, `PutInsightSelectors`. Hand-written on the `RolePolicyAttachment` skeleton. The alternative is to add the fields to ACK's `Trail` upstream (plan section 9, question 1: wait for the release unless a package cannot work without the field; a trail that does not log cannot work, so this meets the rule). `ResourcePolicy`, `Channel`, `Dashboard`: low priority.
+    upstream: "cloudtrail-controller v1.9.1; no open PRs or issues found. Its generator ignores `Channel` and `Dashboard`, and `EventDataStore` `KmsKeyId`, `BillingMode` and `StartIngestion`."
+    moto: "Good for the first three: `StartLogging`, `StopLogging`, `PutEventSelectors`, `GetEventSelectors`, `PutInsightSelectors`, `GetTrailStatus` are implemented. `PutAdvancedEventSelectors` is not in moto's coverage list, and event data stores and channels are not implemented."
+    modules: "None of the 40 tracked modules creates a Trail."
+    size: "M"
+    approach: "New `services/cloudtrail/` manager (there is none yet). Read ACK's `Trail` hook (`pkg/resource/trail/hooks.go` at cloudtrail-controller v1.9.1) to see its tag and update handling before you write."
+    done: "An end-to-end test creates an ACK `Trail` and a `TrailLogging` that starts logging with one event selector, flips `isLogging` off and on, and deletes; the advanced-selector call is documented as unproved; `task coverage` moves `cloudtrail/Trail` above 70%."
+
+  - id: F11
+    title: "ECR: registry policy, registry scanning, replication (ours), signing"
+    resources: ["ecr/RegistryPolicy", "ecr/RegistryScanningConfiguration", "ecr/ReplicationConfiguration", "ecr/SigningConfiguration", "ecr/PullTimeUpdateExclusion", "ecr/PublicRepository"]
+    why: "The registry a cluster pulls from: ACK covers repositories, pull-through cache rules and creation templates; the registry-level singletons are missing (replication is ours, from ACK PR #121)."
+    kinds: "`ecr.aws.hfl.dev/RegistryPolicy` and `RegistryScanningConfiguration`, hand-written singletons on the shape of our `ReplicationConfiguration` (`PutRegistryPolicy`/`DeleteRegistryPolicy`, `PutRegistryScanningConfiguration`)."
+    upstream: "ecr-controller v1.11.1; PR #121 (replication) is open and copied. No issue found for the other two."
+    moto: "Good: `PutRegistryPolicy`, `PutRegistryScanningConfiguration`, `PutReplicationConfiguration` are implemented; the signing and pull-time-exclusion APIs are not."
+    modules: "`ecr` (#23): registry policy, registry scanning, replication."
+    size: "S, S"
+    approach: "Add to `services/ecr/` by copying `replication_configuration`."
+    done: "End-to-end tests on moto; `task coverage` moves both to 100%."
+
+  - id: F12
+    title: "Identity Store: users, groups and group memberships of the Identity Center directory"
+    resources: ["identitystore/User", "identitystore/Group", "identitystore/GroupMembership"]
+    why: "With Identity Center's built-in directory, the users and groups that permission sets are assigned to are made through the Identity Store API. With an external identity provider (SCIM) they are read-only, so this item is only for built-in directories: do it after F02."
+    kinds: "`identitystore.aws.hfl.dev/User` (39 attributes), `Group`, `GroupMembership`, generated; the identity store ID is a field, found with `ListInstances` (F02)."
+    upstream: "No controller; community #1857 mentions users and groups."
+    moto: "Good: `CreateUser`, `CreateGroup`, `CreateGroupMembership`, `DescribeUser`, `ListUsers`, `DeleteGroup` are implemented (17 of 22)."
+    modules: "0 of 40."
+    size: "M (User), S, S"
+    approach: "New `services/identitystore/`; generated from the SDK's `identitystore` Create/Describe/Delete shapes."
+    done: "End-to-end tests on moto; an `Assignment` from F02 can reference a `Group` by `principalRef`."
+
+  - id: F13
+    title: "Network Manager (Cloud WAN) and Direct Connect (wait for ACK on the first)"
+    resources: ["networkmanager/GlobalNetwork", "networkmanager/CoreNetwork", "networkmanager/VpcAttachment", "directconnect/DirectConnectGateway", "directconnect/Connection", "directconnect/PrivateVirtualInterface"]
+    why: "Backbone networking: Cloud WAN and Direct Connect. ACK's `networkmanager-controller` has three open PRs (#3, #4, #16) and no release: wait. Direct Connect has no controller or issue, and a physical circuit is not something a chart creates."
+    kinds: "None for Network Manager (wait for ACK PRs #3, #4, #16, then re-evaluate). Direct Connect: `DirectConnectGateway` and its association first if the builder wants them."
+    upstream: "networkmanager-controller: PRs #3 'adds corenetwork', #4 'CoreNetwork, CoreNetworkPolicy and attachment resources', #16 VPC attachment, none merged. Direct Connect: nothing."
+    moto: "Network Manager: `CreateGlobalNetwork`, `CreateCoreNetwork`, `CreateSite` are implemented (18 of 97). Direct Connect: `CreateConnection` only; no gateway or virtual interface."
+    modules: "0 of 40."
+    size: "wait; M for the gateway"
+    approach: "Recheck the three PRs before spending anything here."
+    done: "ACK releases the controller, or the builder asks for Direct Connect gateways."
+
+  - id: F14
+    title: "Config: recorder, delivery channel, rules, aggregators, organization rules and conformance packs"
+    resources: ["config/ConfigurationRecorder", "config/DeliveryChannel", "config/ConfigRule", "config/ConfigurationAggregator", "config/AggregationAuthorization", "config/OrganizationConformancePack", "config/OrganizationConfigRule", "config/ConformancePack", "config/RemediationConfiguration", "config/StoredQuery", "config/Connector"]
+    why: "The compliance record: what a security team turns on in every account. No ACK controller; community #2445 (open since 2025-04-29, seven comments) asks for `ConfigRule`, `OrganizationConfigRule` and `OrganizationConformancePack`."
+    kinds: "A new service `config.aws.hfl.dev`: `ConfigurationRecorder` (and its start, `StartConfigurationRecorder`) and `DeliveryChannel` first (Config does nothing without them), then `ConfigRule`, `ConfigurationAggregator`, `AggregationAuthorization`, `OrganizationConformancePack`; all are put/describe/delete shapes, so mostly generated with `operation_type` mappings like our `ScalingPolicy`."
+    upstream: "No controller, no pull request. Community #2445 only."
+    moto: "Good for the first six: `PutConfigRule`, `PutConfigurationRecorder`, `PutDeliveryChannel`, `StartConfigurationRecorder`, `PutConfigurationAggregator`, `PutAggregationAuthorization`, `PutOrganizationConformancePack`. Not implemented: `PutOrganizationConfigRule`, `PutConformancePack`, `PutRemediationConfigurations`, `PutStoredQuery`."
+    modules: "0 of 40."
+    size: "L (new service, eleven resources); S each after the first"
+    approach: "Generate with the Put-shaped configuration used for `autoscaling` `ScalingPolicy` (`services/autoscaling/generator.yaml`)."
+    done: "Recorder, channel and rule proved on moto end to end."
+
+  - id: F15
+    title: "GuardDuty: detector, filters, IP and threat intel sets, members"
+    resources: ["guardduty/Detector", "guardduty/Filter", "guardduty/IPSet", "guardduty/ThreatIntelSet", "guardduty/Member", "guardduty/PublishingDestination", "guardduty/MalwareProtectionPlan", "guardduty/Master"]
+    why: "Threat detection every security team enables in every account. Community #2916 (open since 2026-06-14) asks for a controller; no PR."
+    kinds: "A new service `guardduty.aws.hfl.dev`: `Detector` (generated; features as a field), `Filter`, `IPSet`, `ThreatIntelSet`, `Member`, `PublishingDestination`, `MalwareProtectionPlan`."
+    upstream: "No controller or PR. Community #2916."
+    moto: "Partial: `CreateDetector`, `UpdateDetector`, `CreateFilter`, `EnableOrganizationAdminAccount` are implemented; `CreateMembers`, `CreateIPSet`, `CreateThreatIntelSet`, `CreatePublishingDestination` are not. Only `Detector` and `Filter` can be proved."
+    modules: "0 of 40."
+    size: "L (new service)"
+    approach: "Generate `Detector` and `Filter` first; the rest as moto-less kinds with gaps documented."
+    done: "`Detector` and `Filter` proved on moto."
+
+  - id: F16
+    title: "Security Hub: hub, standards, organization configuration, aggregator, automation rules"
+    resources: ["securityhub/Hub", "securityhub/OrganizationConfiguration", "securityhub/DelegatedAdmin", "securityhub/Standard", "securityhub/FindingAggregator", "securityhub/ConfigurationPolicy", "securityhub/PolicyAssociation", "securityhub/AutomationRule", "securityhub/ActionTarget"]
+    why: "The findings aggregator of a multi-account security setup. No controller, no issue."
+    kinds: "A new service `securityhub.aws.hfl.dev`: `Hub`, `DelegatedAdmin`, `OrganizationConfiguration` first; standards and automation rules after."
+    upstream: "No controller, issue or PR."
+    moto: "Partial: `EnableSecurityHub`, `EnableOrganizationAdminAccount`, `UpdateOrganizationConfiguration`, `CreateMembers` are implemented; standards, aggregators, configuration policies and automation rules are not."
+    modules: "0 of 40."
+    size: "L (new service; `AutomationRule` has 105 attributes and `Insight` 238)"
+    approach: "Defer until F01 to F05 are done; build `Hub` and the organization pair on moto."
+    done: "`Hub` and `DelegatedAdmin` proved on moto."
+
+  - id: F17
+    title: "Secrets Manager: resource policy and rotation (wait for ACK on rotation)"
+    resources: ["secretsmanager/ResourcePolicy", "secretsmanager/RotationSchedule", "secretsmanager/Secret", "secretsmanager/SecretTargetAttachment"]
+    why: "Secrets are the security team's first ask after keys; ACK covers `Secret` (8 of 19 attributes). Rotation and a resource policy are the gaps; the catalog ranks them 2nd and 'next'."
+    kinds: "`secretsmanager.aws.hfl.dev/ResourcePolicy`, hand-written put/delete (`PutResourcePolicy`/`DeleteResourcePolicy`, `BlockPublicPolicy`). Rotation: wait for ACK PR #69 (open since 2026-06-26)."
+    upstream: "ACK PR #69 rotation management on `Secret`; PR #68 `secretString` updates."
+    moto: "Good: `CreateSecret`, `RotateSecret`, `PutResourcePolicy` are implemented (21 of 23 operations)."
+    modules: "`secrets-manager` (#20): policy and rotation; `rds` (#8) and `rds-aurora` (#9): rotation; `datadog-forwarders` (#38)."
+    size: "S"
+    approach: "New `services/secretsmanager/` (the SDK client is already a test dependency in `go.mod`); start from ACK's `Secret` references so `secretRef` resolves."
+    done: "`ResourcePolicy` proved on moto; `task coverage` moves `secretsmanager/ResourcePolicy` to 100%."
+
+  - id: F18
+    title: "Access Analyzer, Macie, Inspector, Detective, Firewall Manager, Audit Manager, Security Lake"
+    resources: ["accessanalyzer/Analyzer", "accessanalyzer/ArchiveRule", "macie/Session", "macie/FindingsFilter", "inspectorv2/Filter", "detective/Graph", "fms/Policy", "auditmanager/Assessment", "securitylake/DataLake"]
+    why: "The rest of the security-adjacent set the builder named. Each is a new service with no controller, no issue and (for five of them) no emulator."
+    kinds: "One new service manager each, generated where the API has a Create/Describe/Delete shape. Order by what moto can prove: Macie (`macie2` 13 of 81 operations) and Inspector (`inspector2` 19 of 81) first; Access Analyzer, Detective, Firewall Manager, Audit Manager and Security Lake have no moto service."
+    upstream: "No ACK repository, issue or pull request for any of them."
+    moto: "Macie, Inspector2: partial. Access Analyzer, Detective, FMS, Audit Manager, Security Lake: none. **Blocked** for those five."
+    modules: "0 of 40."
+    size: "L each for a new service"
+    approach: "Defer until the foundation items above are built; ask the builder whether security teams need them before the foundation is done."
+    done: "A decision from the builder."

@@ -34,7 +34,7 @@ func rootSection(r *results) string {
 
 	var covered []svcRow
 	for _, s := range r.svcs {
-		if s.attrOfficial+s.attrOursBeyond > 0 || s.resOfficial+s.resOursBeyond > 0 {
+		if s.attrOfficial+s.attrOursBeyond > 0 || s.resOfficial+s.resOursBeyond > 0 || r.tierOf(s.service) == 1 {
 			covered = append(covered, s)
 		}
 	}
@@ -50,20 +50,25 @@ func rootSection(r *results) string {
 		return covered[i].service < covered[j].service
 	})
 
-	tiers := r.tierRows()
-	b.WriteString("Not every service matters equally, so services are in three tiers by how much a team migrating from Terraform needs them: tier 1 is what the ten most-downloaded terraform-aws-modules use (iam, s3, vpc and security groups, eks, kms, lambda, rds, acm), tier 2 every other service some tracked module uses, tier 3 everything else ([how and why](docs/coverage/README.md#tiers); the list is the hand-editable [priority.csv](docs/coverage/priority.csv)). Upper bar of each pair: attributes; lower: resources.\n\n")
+	b.WriteString("Not every service matters equally. Each service has a **category**: *platform-foundation* (what a platform team needs to stand up a target, up to a managed Kubernetes cluster: Organizations and Control Tower, IAM and Identity Center, VPC networking and DNS, KMS, CloudTrail, RAM, EKS and ECR), *security-adjacent* (Config, GuardDuty, Security Hub, WAF, Secrets Manager, ACM, ...), *application* (S3, SQS, Lambda, RDS, DynamoDB, ...) or *other*. Tier 1 is platform-foundation, tier 2 is security-adjacent plus the application services some tracked Terraform module uses, tier 3 is everything else ([how and why](docs/coverage/README.md#tiers); the hand-editable list is [priority.csv](docs/coverage/priority.csv)). In each bar pair the upper bar is attributes and the lower is resources.\n\n")
+	b.WriteString("![Coverage by category](docs/coverage/bars/_categories.svg)\n\n")
+	b.WriteString("| Category | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) |\n| --- | ---: | ---: | ---: |\n")
+	for _, t := range r.categoryRows() {
+		fmt.Fprintf(&b, "| %s | %d | %s%% / %s%% | %s%% / %s%% |\n", t.label, t.services, pct1(t.resOfficial, t.resTotal), pct1(t.resOursBeyond, t.resTotal), pct1(t.attrOfficial, t.attrTotal), pct1(t.attrOursBeyond, t.attrTotal))
+	}
+	b.WriteString("\nThe ranked work queue for the foundation and security categories, resource by resource, with what upstream has and what to build first, is [docs/coverage/foundation.md](docs/coverage/foundation.md).\n\n")
 	b.WriteString("![Coverage by tier](docs/coverage/bars/_tiers.svg)\n\n")
 	b.WriteString("| Tier | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) |\n| --- | ---: | ---: | ---: |\n")
-	for _, t := range tiers {
+	for _, t := range r.tierRows() {
 		fmt.Fprintf(&b, "| %d | %d | %s%% / %s%% | %s%% / %s%% |\n", t.tier, t.services, pct1(t.resOfficial, t.resTotal), pct1(t.resOursBeyond, t.resTotal), pct1(t.attrOfficial, t.attrTotal), pct1(t.attrOursBeyond, t.attrTotal))
 	}
 	b.WriteString("\n")
 
 	row := func(s svcRow) string {
-		return fmt.Sprintf("| %d | `%s` | ![%s](docs/coverage/bars/%s.svg) | %s%% | %s%% | %s%% |\n", r.tierOf(s.service), s.service, s.service, s.service,
+		return fmt.Sprintf("| %d | %s | `%s` | ![%s](docs/coverage/bars/%s.svg) | %s%% | %s%% | %s%% |\n", r.tierOf(s.service), r.categoryOf(s.service), s.service, s.service, s.service,
 			pct1(s.attrOfficial, s.attrTotal), pct1(s.attrOursBeyond, s.attrTotal), pct1(s.attrUncov, s.attrTotal))
 	}
-	const tableHead = "| Tier | Service | Coverage | Official | Ours beyond | Uncovered |\n| ---: | --- | --- | ---: | ---: | ---: |\n"
+	const tableHead = "| Tier | Category | Service | Coverage | Official | Ours beyond | Uncovered |\n| ---: | --- | --- | --- | ---: | ---: | ---: |\n"
 	b.WriteString(tableHead)
 	var rest []svcRow
 	for _, s := range covered {
@@ -81,7 +86,7 @@ func rootSection(r *results) string {
 		}
 		b.WriteString("\n</details>\n")
 	}
-	fmt.Fprintf(&b, "\nServices are sorted by tier, then by attributes covered; blue is covered by ACK's released controllers, green by our kinds beyond ACK, grey by neither. The other %d services in the CloudFormation schemas are uncovered. Full data: [services.csv](docs/coverage/services.csv) (one row per service), [resources.csv](docs/coverage/resources.csv) (one row per resource) and [attributes.csv](docs/coverage/attributes.csv) (one row per attribute).\n\n", len(r.svcs)-len(covered))
+	fmt.Fprintf(&b, "\nServices are sorted by tier, then by attributes covered, and every tier 1 service is listed even where nothing covers it; blue is covered by ACK's released controllers, green by our kinds beyond ACK, grey by neither. The other %d services in the CloudFormation schemas have no coverage and are not tier 1. Full data: [services.csv](docs/coverage/services.csv) (one row per service), [resources.csv](docs/coverage/resources.csv) (one row per resource) and [attributes.csv](docs/coverage/attributes.csv) (one row per attribute).\n\n", len(r.svcs)-len(covered))
 	return b.String()
 }
 

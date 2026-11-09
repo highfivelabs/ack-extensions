@@ -33,6 +33,9 @@ type mappings struct {
 	// the names differ. OursAttributes is the same for our kinds.
 	Attributes     map[string]map[string]string `json:"attributes"`
 	OursAttributes map[string]map[string]string `json:"oursAttributes"`
+	// Terraform maps a Terraform resource type to the CloudFormation resources it
+	// creates or configures (see foundation.go).
+	Terraform map[string][]string `json:"terraform"`
 	// Notes adds a note to a resource row, keyed "<cfn service>/<Resource>".
 	Notes map[string]string `json:"notes"`
 }

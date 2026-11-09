@@ -37,7 +37,7 @@ type model struct {
 	unmappedOurs      int
 	howOfficial       map[string]int
 	howOurs           map[string]int
-	priority          map[string]int
+	priority          map[string]priorityEntry
 	cfnReadOnly       int
 	cfnCut            int
 }
