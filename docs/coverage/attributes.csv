@@ -81956,9 +81956,9 @@ scheduler,Schedule,Target.RoleArn,string,true,none,,
 scheduler,Schedule,Target.SageMakerPipelineParameters.PipelineParameterList[].Name,string,false,none,,
 scheduler,Schedule,Target.SageMakerPipelineParameters.PipelineParameterList[].Value,string,false,none,,
 scheduler,Schedule,Target.SqsParameters.MessageGroupId,string,false,none,,
-scheduler,ScheduleGroup,Name,string,false,none,,
-scheduler,ScheduleGroup,Tags[].Key,string,false,none,,
-scheduler,ScheduleGroup,Tags[].Value,string,false,none,,
+scheduler,ScheduleGroup,Name,string,false,ours,,spec.name
+scheduler,ScheduleGroup,Tags[].Key,string,false,ours,,spec.tags[].key
+scheduler,ScheduleGroup,Tags[].Value,string,false,ours,,spec.tags[].value
 scn,DataIntegrationFlow,InstanceId,string,true,none,,
 scn,DataIntegrationFlow,Name,string,true,none,,
 scn,DataIntegrationFlow,Sources[].DatasetSource.DatasetIdentifier,string,false,none,,

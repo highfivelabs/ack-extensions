@@ -1,0 +1,36 @@
+# Generator configuration for ack-extensions's EventBridge Scheduler kinds
+# (scheduler.aws.hfl.dev).
+#
+# ACK has no Scheduler controller (community issue #2784). The manager
+# runs beside ACK's EventBridge controller, with its identity (open
+# question 8, answered by the builder: pkg/operator, Beside).
+#
+# ScheduleGroup is generated from CreateScheduleGroup, GetScheduleGroup and
+# DeleteScheduleGroup. A group has no update; its tags are synced with
+# TagResource and UntagResource (customUpdate in hooks.go, copied from
+# eventbridge-controller's EventBus).
+resources:
+  ScheduleGroup:
+    exceptions:
+      errors:
+        404:
+          code: ResourceNotFoundException
+    fields:
+      Name:
+        is_primary_key: true
+        is_immutable: true
+      Tags:
+        compare:
+          is_ignored: true
+    update_operation:
+      custom_method_name: customUpdate
+    hooks:
+      delta_pre_compare:
+        code: compareTags(delta, a, b)
+      sdk_read_one_post_set_output:
+        template_path: hooks/schedule_group/sdk_read_one_post_set_output.go.tpl
+ignore:
+  resource_names:
+    - Schedule
+  field_paths:
+    - CreateScheduleGroupInput.ClientToken

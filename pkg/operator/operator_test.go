@@ -258,3 +258,78 @@ func TestReconcile(t *testing.T) {
 		}
 	})
 }
+
+// A service ACK has no controller for runs beside the controller Beside
+// names, and only there.
+func TestOurServices(t *testing.T) {
+	r := &Reconciler{Options: Options{Images: map[string]string{"eventbridge": "e", "scheduler": "s", "rds": "r"}}}
+	for ack, want := range map[string][]string{
+		"eventbridge": {"eventbridge", "scheduler"},
+		"rds":         {"rds"},
+		"s3":          nil,
+		// Should ACK ship a Scheduler controller, the manager runs beside
+		// it as for any other service.
+		"scheduler": {"scheduler"},
+	} {
+		if got := r.ourServices(ack); !reflect.DeepEqual(got, want) {
+			t.Errorf("beside ACK's %s: %v, want %v", ack, got, want)
+		}
+	}
+	only := &Reconciler{Options: Options{Images: map[string]string{"scheduler": "s"}}}
+	if got := only.ourServices("eventbridge"); !reflect.DeepEqual(got, []string{"scheduler"}) {
+		t.Errorf("scheduler alone beside ACK's eventbridge: %v", got)
+	}
+}
+
+// Beside ACK's EventBridge controller the operator runs the scheduler
+// manager with that controller's identity.
+func TestReconcileBeside(t *testing.T) {
+	c := startEnv(t)
+	ctx := context.Background()
+	r := &Reconciler{Client: c, Options: Options{
+		Images:   map[string]string{"eventbridge": "example.test/eventbridge-manager:dev", "scheduler": "example.test/scheduler-manager:dev"},
+		Identity: IdentityOwn,
+	}}
+	dep, sa := ackController("eventbridge")
+	if err := c.Create(ctx, sa); err != nil {
+		t.Fatal(err)
+	}
+	if err := c.Create(ctx, dep); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := r.Reconcile(ctx, allKey); err != nil {
+		t.Fatal(err)
+	}
+	for _, svc := range []string{"eventbridge", "scheduler"} {
+		var d appsv1.Deployment
+		if err := c.Get(ctx, types.NamespacedName{Namespace: ns, Name: "ack-extensions-" + svc + "-manager"}, &d); err != nil {
+			t.Fatalf("%s manager: %v", svc, err)
+		}
+		if img := d.Spec.Template.Spec.Containers[0].Image; img != "example.test/"+svc+"-manager:dev" {
+			t.Fatalf("%s manager image %s", svc, img)
+		}
+		if len(d.OwnerReferences) != 1 || d.OwnerReferences[0].Name != dep.Name {
+			t.Fatalf("%s manager owner %v", svc, d.OwnerReferences)
+		}
+		var own corev1.ServiceAccount
+		if err := c.Get(ctx, types.NamespacedName{Namespace: ns, Name: "ack-extensions-" + svc + "-manager"}, &own); err != nil {
+			t.Fatal(err)
+		}
+		if own.Annotations["eks.amazonaws.com/role-arn"] != roleARN {
+			t.Fatalf("%s manager's role %v, want ACK EventBridge's", svc, own.Annotations)
+		}
+	}
+	if err := c.Delete(ctx, dep); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := r.Reconcile(ctx, allKey); err != nil {
+		t.Fatal(err)
+	}
+	var left appsv1.DeploymentList
+	if err := c.List(ctx, &left, client.MatchingLabels{LabelManagedBy: managedBy}); err != nil {
+		t.Fatal(err)
+	}
+	if len(left.Items) != 0 {
+		t.Fatalf("%d managers left after ACK's EventBridge controller went", len(left.Items))
+	}
+}
