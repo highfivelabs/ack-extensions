@@ -92,17 +92,19 @@ func TestUserGroupMembership(t *testing.T) {
 	}
 	setGroups := func(t *testing.T, obj *iamv1.UserGroupMembership, groups ...string) {
 		t.Helper()
-		got := &iamv1.UserGroupMembership{}
-		if err := env.Client.Get(ctx, client.ObjectKeyFromObject(obj), got); err != nil {
-			t.Fatal(err)
-		}
-		got.Spec.Groups = nil
-		for _, g := range groups {
-			got.Spec.Groups = append(got.Spec.Groups, aws.String(g))
-		}
-		if err := env.Client.Update(ctx, got); err != nil {
-			t.Fatal(err)
-		}
+		// The controller writes the object's status on every reconcile, so
+		// an update can meet a newer version: read and try again.
+		harness.Eventually(t, 30*time.Second, obj.Name+" groups updated", func() error {
+			got := &iamv1.UserGroupMembership{}
+			if err := env.Client.Get(ctx, client.ObjectKeyFromObject(obj), got); err != nil {
+				return err
+			}
+			got.Spec.Groups = nil
+			for _, g := range groups {
+				got.Spec.Groups = append(got.Spec.Groups, aws.String(g))
+			}
+			return env.Client.Update(ctx, got)
+		})
 	}
 	gone := func(t *testing.T, obj client.Object) {
 		t.Helper()
