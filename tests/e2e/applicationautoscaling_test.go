@@ -52,15 +52,9 @@ func TestApplicationScheduledAction(t *testing.T) {
 	cloud := aas.NewFromConfig(env.AWS)
 	ctx := context.Background()
 
-	// The scalable target, registered directly in the fake cloud (ACK's
-	// ScalableTarget would register it on a real cluster).
-	if _, err := cloud.RegisterScalableTarget(ctx, &aas.RegisterScalableTargetInput{
-		ServiceNamespace: aastypes.ServiceNamespaceEcs, ResourceId: aws.String(ecsService),
-		ScalableDimension: aastypes.ScalableDimensionECSServiceDesiredCount,
-		MinCapacity:       aws.Int32(1), MaxCapacity: aws.Int32(4),
-	}); err != nil {
-		t.Fatal(err)
-	}
+	// No scalable target is registered: moto does not require one for a
+	// scheduled action (AWS does), and registering an ECS service's would
+	// need the ECS service itself in moto.
 
 	get := func(t *testing.T, obj *aasv1.ScheduledAction) *aasv1.ScheduledAction {
 		t.Helper()
