@@ -219,7 +219,8 @@ status) and the fake cloud through the real AWS SDK clients.
     (the primary key checked Enabled and untagged after every step)
 --- PASS: TestDeleteNeverReachesThePrimaryRegion,
           TestFindReadsTheReplicaInItsRegion, TestSyncedWhenEnabled,
-          TestTagsAreASet, TestThePrimaryKeyIsFoundByItsRegion
+          TestTagsAreASet, TestThePrimaryKeyIsFoundByItsRegion,
+          TestDeleteRefusesAnARNFromAnotherRegion, TestKeyIDInRegion
           (replica_key unit tests, against a stand-in
           that records each call's signed Region)
 --- PASS: TestPermission
@@ -337,6 +338,11 @@ controller to show it can fail:
     end-to-end run failed on this. The read now checks that the primary
     key's `PrimaryKey.Region` is the manager's Region, which means the
     same on AWS.
+  - moto's `ScheduleKeyDeletion` does not resolve a key ARN (a server
+    error, `KeyError`); AWS accepts a key ID or an ARN, and refuses an ARN
+    from another Region. The manager sends the replica's key ID to the
+    replica's Region, after checking that the replica's ARN is in that
+    Region, which stands in for AWS's check.
 - **An association's status.** moto marks a new association `ACTIVE` at
   once. On AWS it is `PENDING` first, and `INVALID` when RDS cannot assume
   the role. The rule (synced only when `ACTIVE`) is unit-tested.
@@ -694,7 +700,8 @@ its ARN:
   `UntagResource`) in the replica's Region. The key, the replica Region,
   the description and `bypassPolicyLockoutSafetyCheck` are immutable. The
   policy is compared as JSON and the tags as a set.
-- **Delete** is `ScheduleKeyDeletion` of the replica's ARN in its Region,
+- **Delete** is `ScheduleKeyDeletion` of the replica in its Region (its
+  key ID, after checking its ARN is in that Region),
   with ACK's own `kms.services.k8s.aws/pending-window-in-days` annotation,
   as ACK's `Key` uses it.
 - **Synced** once the replica is `Enabled`; a new replica is `Creating`

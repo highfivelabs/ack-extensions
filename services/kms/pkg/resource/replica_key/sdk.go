@@ -39,6 +39,7 @@ import (
 	"reflect"
 	"sort"
 	"strconv"
+	"strings"
 
 	ackkmsapitypes "github.com/aws-controllers-k8s/kms-controller/apis/v1alpha1"
 	ackv1alpha1 "github.com/aws-controllers-k8s/runtime/apis/core/v1alpha1"
@@ -288,9 +289,19 @@ func (rm *resourceManager) sdkDelete(ctx context.Context, r *resource) (deleted 
 			return nil, nil
 		}
 	}
-	client := rm.replicaClient(aws.ToString(r.ko.Spec.ReplicaRegion))
+	// The ARN must name a key in the replica's Region, the Region the
+	// client sends to: a key ID there names the replica and nothing else.
+	// The key ID is sent rather than the ARN (moto's ScheduleKeyDeletion
+	// does not resolve an ARN; docs/plan.md section 4.4), with this check
+	// standing in for the one AWS makes on an ARN from another Region.
+	region := aws.ToString(r.ko.Spec.ReplicaRegion)
+	keyID, err := keyIDInRegion(arn, region)
+	if err != nil {
+		return nil, err
+	}
+	client := rm.replicaClient(region)
 	_, err = client.ScheduleKeyDeletion(ctx, &svcsdk.ScheduleKeyDeletionInput{
-		KeyId:               aws.String(arn),
+		KeyId:               aws.String(keyID),
 		PendingWindowInDays: aws.Int32(int32(GetDeletePendingWindowInDays(&r.ko.ObjectMeta))),
 	})
 	rm.metrics.RecordAPICall("DELETE", "ScheduleKeyDeletion", err)
@@ -298,6 +309,20 @@ func (rm *resourceManager) sdkDelete(ctx context.Context, r *resource) (deleted 
 		return nil, err
 	}
 	return nil, nil
+}
+
+// keyIDInRegion returns the key ID of a KMS key ARN
+// (arn:<partition>:kms:<region>:<account>:key/<key-id>) when the ARN is in
+// region, and a terminal error otherwise.
+func keyIDInRegion(arn, region string) (string, error) {
+	parts := strings.SplitN(arn, ":", 6)
+	if len(parts) != 6 || parts[2] != "kms" || !strings.HasPrefix(parts[5], "key/") || strings.TrimPrefix(parts[5], "key/") == "" {
+		return "", ackerr.NewTerminalError(fmt.Errorf("%q is not a KMS key ARN", arn))
+	}
+	if parts[3] != region {
+		return "", ackerr.NewTerminalError(fmt.Errorf("the replica's ARN %s is not in its Region %s; refusing to delete", arn, region))
+	}
+	return strings.TrimPrefix(parts[5], "key/"), nil
 }
 
 // updatePolicy performs the PutKeyPolicy operation (PR #112,

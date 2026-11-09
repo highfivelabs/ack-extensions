@@ -159,8 +159,8 @@ func TestDeleteNeverReachesThePrimaryRegion(t *testing.T) {
 					deletes = append(deletes, c)
 				}
 			}
-			if len(deletes) != 1 || deletes[0].region != replicaRegion || deletes[0].keyID != replicaARN {
-				t.Fatalf("ScheduleKeyDeletion calls %+v, want one, in %s, for %s", deletes, replicaRegion, replicaARN)
+			if len(deletes) != 1 || deletes[0].region != replicaRegion || deletes[0].keyID != keyID {
+				t.Fatalf("ScheduleKeyDeletion calls %+v, want one, in %s, for %s", deletes, replicaRegion, keyID)
 			}
 		})
 	}
@@ -227,5 +227,32 @@ func TestThePrimaryKeyIsFoundByItsRegion(t *testing.T) {
 	rm.sdkapi = svcsdk.NewFromConfig(rm.clientcfg, func(o *svcsdk.Options) { o.Region = "ap-south-1" })
 	if _, err := rm.sdkFind(context.Background(), &resource{replica()}); err == nil || !strings.Contains(err.Error(), "not a multi-Region primary key") {
 		t.Fatalf("a key whose primary is in us-west-2, read from ap-south-1: %v, want refused", err)
+	}
+}
+
+// A replica ARN that is not in the replica's Region is refused before any
+// call: a key ID sent to the replica's Region must name the replica.
+func TestDeleteRefusesAnARNFromAnotherRegion(t *testing.T) {
+	s := &kmsStandIn{}
+	rm := standInManager(t, s)
+	ko := replica()
+	ko.Status.ReplicaKeyMetadata = &ackkmsapitypes.KeyMetadata{KeyID: aws.String(keyID), ARN: aws.String(primaryARN)}
+	_, err := rm.sdkDelete(context.Background(), &resource{ko})
+	if err == nil || !strings.Contains(err.Error(), "refusing to delete") {
+		t.Fatalf("got %v, want a refusal", err)
+	}
+	if len(s.calls) != 0 {
+		t.Fatalf("calls made: %+v", s.calls)
+	}
+}
+
+func TestKeyIDInRegion(t *testing.T) {
+	if id, err := keyIDInRegion(replicaARN, replicaRegion); err != nil || id != keyID {
+		t.Fatalf("got %q %v", id, err)
+	}
+	for _, bad := range []string{"", keyID, "arn:aws:kms:eu-west-1:123456789012:alias/x", "arn:aws:kms:eu-west-1:123456789012:key/"} {
+		if _, err := keyIDInRegion(bad, replicaRegion); err == nil {
+			t.Errorf("%q accepted", bad)
+		}
 	}
 }
