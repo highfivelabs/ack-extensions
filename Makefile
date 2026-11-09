@@ -21,7 +21,7 @@ GOIMPORTS := golang.org/x/tools/cmd/goimports@v0.38.0
 SETUP_ENVTEST := sigs.k8s.io/controller-runtime/tools/setup-envtest@v0.0.0-20260305142021-f9589b9f2b9d
 GO_LICENSES := github.com/google/go-licenses@v1.6.0
 
-.PHONY: all tools upstream upstream-check generate build test check licenses operator-e2e
+.PHONY: all tools upstream upstream-check generate build test check licenses operator-e2e coverage coverage-check
 
 all: check
 
@@ -89,3 +89,12 @@ licenses: $(BIN)/go-licenses
 # The operator on kind beside ACK's real rds-controller (tests/operator/run.sh).
 operator-e2e:
 	tests/operator/run.sh
+
+# The coverage dashboard: docs/coverage/ and the README's Coverage section
+# (hack/coverage/, docs/coverage/README.md). `coverage-check` fails if the
+# committed outputs differ from a regeneration from the pinned inputs.
+coverage:
+	hack/coverage/run.sh
+
+coverage-check:
+	hack/coverage/run.sh --check
