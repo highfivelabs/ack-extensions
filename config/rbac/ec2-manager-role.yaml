@@ -26,6 +26,7 @@ rules:
   - ec2.aws.hfl.dev
   resources:
   - customergateways
+  - volumes
   - vpngateways
   verbs:
   - create
@@ -39,6 +40,7 @@ rules:
   - ec2.aws.hfl.dev
   resources:
   - customergateways/status
+  - volumes/status
   - vpngateways/status
   verbs:
   - get
