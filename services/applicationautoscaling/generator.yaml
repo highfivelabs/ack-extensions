@@ -1,0 +1,51 @@
+# Generator configuration for ack-extensions's Application Auto Scaling
+# kinds (applicationautoscaling.aws.hfl.dev).
+#
+# ACK's applicationautoscaling-controller (v1.9.0) has ScalableTarget and
+# ScalingPolicy and ignores ScheduledAction. ScheduledAction is generated
+# the way that controller generates its ScalingPolicy from a Put
+# operation: PutScheduledAction creates and updates,
+# DescribeScheduledActions reads and DeleteScheduledAction deletes. The
+# resources ACK has are ignored.
+sdk_names:
+  model_name: application-auto-scaling
+operations:
+  PutScheduledAction:
+    operation_type:
+      - Create
+      - Update
+    resource_name: ScheduledAction
+  DescribeScheduledActions:
+    operation_type:
+      - ReadMany
+    resource_name: ScheduledAction
+  DeleteScheduledAction:
+    operation_type:
+      - Delete
+    resource_name: ScheduledAction
+resources:
+  ScheduledAction:
+    hooks:
+      sdk_read_many_post_build_request:
+        template_path: hooks/scheduled_action/sdk_read_many_post_build_request.go.tpl
+    fields:
+      ScheduledActionName:
+        is_primary_key: true
+        is_immutable: true
+      ServiceNamespace:
+        is_required: true
+        is_immutable: true
+      ResourceID:
+        is_required: true
+        is_immutable: true
+      ScalableDimension:
+        is_required: true
+        is_immutable: true
+      ScheduledActionARN:
+        is_arn: true
+    tags:
+      ignore: true
+ignore:
+  resource_names:
+    - ScalableTarget
+    - ScalingPolicy
