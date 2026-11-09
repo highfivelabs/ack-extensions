@@ -13,10 +13,12 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.34.10
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.64.3
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.290.1
+	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.36.7
 	github.com/aws/aws-sdk-go-v2/service/iam v1.38.8
 	github.com/aws/aws-sdk-go-v2/service/kms v1.37.14
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.88.5
 	github.com/aws/aws-sdk-go-v2/service/rds v1.93.8
+	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.34.14
 	github.com/aws/smithy-go v1.28.8
 	github.com/go-logr/logr v1.4.3
 	github.com/spf13/pflag v1.0.9
@@ -34,6 +36,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.4.21 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.7.21 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.1 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/v4a v1.3.29 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.13.24 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.13.21 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.24.7 // indirect
