@@ -1,10 +1,11 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has twelve kinds:
+Status, 2026-11-09: the repository has thirteen kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
 - `ec2.aws.hfl.dev` `CustomerGateway`, `VPNGateway` and `Volume`;
+- `eventbridge.aws.hfl.dev` `Connection`;
 - `iam.aws.hfl.dev` `RolePolicyAttachment`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
@@ -234,6 +235,14 @@ status) and the fake cloud through the real AWS SDK clients.
     change; EC2's defaults are no drift (no update across three
     resyncs); deletion-policy retain leaves the volume; delete deletes
     the volume
+--- PASS: TestConnection
+    a connection is made with the Secret's password (read from the
+    connection's managed secret in moto); it settles, the secrets read
+    back as no drift (no update across three resyncs); a changed
+    parameter is updated; the name cannot change; deletion-policy retain
+    leaves the connection; delete deletes it
+--- PASS: TestKeepSecretsIsNoDrift, TestKeepSecretsKeepsOtherDrift
+          (connection unit tests)
 --- PASS: TestReplicaKey
     a replica is made in its Region (tags put there); a policy is put on
     the replica only; the replica Region cannot change; references
@@ -368,6 +377,11 @@ controller to show it can fail:
   `modifying` and `optimizing`), and removes a deleted volume at once.
   It fills in a volume type when the spec leaves it out, which
   `TestVolume` shows is no drift.
+- **EventBridge connections.** moto marks a connection `AUTHORIZED` at
+  once (an OAuth connection is `AUTHORIZING` first on AWS). It stores
+  the credentials in a Secrets Manager secret, as EventBridge does, which
+  the test reads. It returns `AuthParameters` as given, where AWS omits
+  the secrets. The read hook keeps the spec's secrets either way.
 - **KMS replica keys.**
   - moto keeps a replica in its own Region's backend, under the primary
     key's key ID, as AWS does.
@@ -431,7 +445,7 @@ its master (5.2.5 is the pin).
 | 7 | EC2 `VPNGateway` (attachment, route propagation), `CustomerGateway` | ignored in ec2-controller `v1.23.1`'s `generator.yaml` | yes, except `EnableVgwRoutePropagation` | built: `CustomerGateway`, `VPNGateway` (attachment); route propagation not built (moto has none of it) |
 | 8 | EBS `Volume`, `VolumeAttachment` | ignored in ec2-controller's `generator.yaml`; `aws-controllers-k8s/ebs-controller` is an empty scaffold for the EBS direct API (no kinds, no release) | yes | `Volume` built; the attachment next |
 | 9 | CloudWatch Logs `MetricFilter`; CloudWatch `CompositeAlarm` | metric filters: cloudwatchlogs-controller PR #61, as a field on ACK's `LogGroup`. `CompositeAlarm`: ignored in cloudwatch-controller `v1.11.0`. | metric filters yes; `PutCompositeAlarm` no | skipped. Metric filters wait on open question 1. `CompositeAlarm`: moto has none of it. |
-| 10 | EventBridge Scheduler `Schedule` and `ScheduleGroup`; EventBridge `Connection` and `ApiDestination` | Scheduler: no controller (`community` issue #2784). `Connection` and `ApiDestination`: ignored in eventbridge-controller `v1.9.2`. | yes | to build |
+| 10 | EventBridge Scheduler `Schedule` and `ScheduleGroup`; EventBridge `Connection` and `ApiDestination` | Scheduler: no controller (`community` issue #2784). `Connection` and `ApiDestination`: ignored in eventbridge-controller `v1.9.2`. | yes | `Connection` built; `ApiDestination` and Scheduler next |
 | 11 | ECR `ReplicationConfiguration`; `RegistryPolicy`, `RegistryScanningConfiguration` | `ReplicationConfiguration`: ecr-controller PR #121, open, conflicts with base, no review, last updated 2026-10-18. The others: none. | yes (one replication rule at most) | `ReplicationConfiguration` written, waits for its turn (branch `agent/ecr-replication-configuration`) |
 | 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`) | yes | to build |
 | 13 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237: mergeable, active 2026-11-06 | none | skipped: may be close to merging, and moto has none of it |
@@ -860,6 +874,31 @@ it, so nothing about it could be proven.
 detach can be refused while the gateway is `detaching`. The runtime
 retries it as a recoverable error, but moto detaches at once, so this
 path is not exercised.
+
+### 6.12 `eventbridge.aws.hfl.dev` `Connection`
+
+An EventBridge connection: the credentials an API destination calls an
+HTTP endpoint with (basic, API key or OAuth client credentials), and the
+parameters added to every call. ACK's eventbridge-controller `v1.9.2`
+ignores `Connection` and `ApiDestination` in its `generator.yaml`, and no
+pull request adds them.
+
+**Generated** from `CreateConnection`, `DescribeConnection`,
+`UpdateConnection` and `DeleteConnection`, and synced when the
+connection is `AUTHORIZED`.
+
+**Secrets come from Kubernetes Secrets.** The password, API key and
+OAuth client secret are ACK `SecretKeyReference`s (`is_secret`), read
+when the connection is created or updated. EventBridge never returns
+them, nor the value of an HTTP parameter marked secret. A read hook
+(`hooks.go`) keeps the spec's values; without it every resync saw drift
+and updated the connection. A non-secret field read back, such as a
+username, an endpoint or a parameter, is still compared.
+
+**Not proven: a changed Secret.** Changing the Kubernetes Secret's value
+does not change the spec or anything the read compares. So nothing here
+pushes the new value until something else in the spec changes. This was
+not tested.
 
 ### 6.13 `ec2.aws.hfl.dev` `Volume`
 
