@@ -20,7 +20,9 @@ This directory measures how much of AWS is covered by Kubernetes kinds: by the c
 | [services.csv](services.csv) | service | `service,resources_total,resources_official,resources_ours_beyond,attributes_total,attributes_official,attributes_ours_beyond,attributes_uncovered,pct_official,pct_ours_beyond,pct_uncovered` |
 | [resources.csv](resources.csv) | resource | `service,resource,attributes_total,official_kinds,attributes_official,ours_kinds,attributes_ours_beyond,attributes_uncovered,ours_from_upstream_pr,notes` |
 | [attributes.csv](attributes.csv) | attribute | `service,resource,attribute,type,required,covered_by,official_path,ours_path` |
-| `bars/<service>.svg`, `bars/_total.svg` | service, and all | stacked bars: official blue, ours beyond official green, uncovered light grey |
+| `bars/<service>.svg`, `bars/_total.svg` | service, and all | stacked bars: official blue, ours beyond official green, uncovered light grey; `_total.svg` shows attributes and resources |
+| [priority.csv](priority.csv) | service | `service,tier,rationale,source`: the tier of each service, **hand-edited input** (see Tiers); a service not in it is tier 3 |
+| [tiers.csv](tiers.csv), `bars/_tiers.svg` | tier | `tier,services,resources_total,resources_official,resources_ours_beyond,resources_uncovered,attributes_total,attributes_official,attributes_ours_beyond,attributes_uncovered,pct_attributes_official,pct_attributes_ours_beyond,pct_attributes_uncovered,pct_resources_official,pct_resources_ours_beyond,pct_resources_uncovered` |
 | [sources.yaml](sources.yaml) | | every pinned input: the schema zip and each ACK controller's release and commit |
 
 In `attributes.csv`, `covered_by` is `official` (an official ACK kind covers it and ours does not), `ours` (ours covers it and official does not), `both`, or `none`; `official_path` and `ours_path` are the CRD `spec` path that covers it (`;`-separated, with the kind in front when several kinds of that side cover the resource). In `services.csv` and `resources.csv`, `attributes_official` counts `official` and `both`, `attributes_ours_beyond` counts `ours` only, and the three percentages are of `attributes_total` (so each row adds to 100.0, give or take rounding). `resources_official` counts resources with an official kind; `resources_ours_beyond` counts resources with a kind of ours and none official. `notes` carries `official_unmapped=N` and `ours_unmapped=N` (spec paths of the CRDs that matched no CloudFormation property), the kind of ours that is a property of a larger resource, and `outside-denominator`.
@@ -33,6 +35,30 @@ In `attributes.csv`, `covered_by` is `official` (an official ACK kind covers it 
 - **official**: covered by ACK's own controllers (`aws-controllers-k8s/<service>-controller`) at the **latest release** of each. A service is covered when the controller's released CRDs (`helm/crds/` at the release commit) have a CRD for the resource. Controllers with no release are not official (listed below).
 - **ours**: covered by a kind in this repository's CRDs (`config/crds/bases/`, at the commit being measured). A kind whose coverage is copied from an open upstream pull request has `ours_from_upstream_pr=true` (22 of the attributes ours adds beyond official come only from such kinds).
 - **uncovered**: in the CloudFormation schemas, covered by neither.
+
+## Tiers
+
+Services do not matter equally: `quicksight` alone has more attributes than all of tier 1 together, yet a team moving off Terraform needs `iam`, `s3`, `vpc` and `rds` first. So every service has a **tier**, and the README shows coverage per tier as well as in total.
+
+- **Tier 1**: the services used by the foundational modules people migrate first, the ten most-downloaded terraform-aws-modules (iam, s3-bucket, vpc, eks, kms, lambda, security-group, rds, rds-aurora, acm): `certificatemanager`, `ec2`, `eks`, `iam`, `kms`, `lambda`, `logs`, `rds`, `route53`, `s3`.
+- **Tier 2**: every other service that some tracked module uses (the 40 modules ranked in the catalog, through their submodules): 35 services, the ones in [priority.csv](priority.csv) with tier 2.
+- **Tier 3**: everything else in the CloudFormation schemas (260 services). A service missing from `priority.csv` is tier 3.
+
+| Tier | Services | Resources | ACK | Ours beyond | Attributes | ACK | Ours beyond |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 10 | 233 | 28.8% | 3.4% | 2,888 | 35.2% | 2.2% |
+| 2 | 35 | 243 | 41.6% | 2.5% | 4,743 | 54.0% | 2.8% |
+| 3 | 260 | 1,399 | 7.0% | 0.0% | 78,142 | 3.1% | 0.0% |
+
+**Where it comes from.** `priority.csv` was derived once, by hand, from the usage ranking in `catalog/docs/aws.md` (the High Five Labs catalog repository, commit `b6fdd5342346997fe855357eeee225afb7530e95`, file sha256 `8c2ab34d8e50130e19bfa0619ffc0c9800646d26e8bebac9de347a574a681533`, read 2026-11-09). That document ranks the terraform-aws-modules by Terraform Registry downloads over the last year and lists what each top module and submodule creates. A service is tier 1 if a top-ten module creates it in its main path, tier 2 if any ranked module (or one of its submodules) creates it, and each row's `rationale` and `source` say which module and section of the catalog document. Services are the CloudFormation service names used everywhere else here. The generator **reads** the file and never rewrites it, so the builder can override any tier by editing a row; the generator rejects a tier outside 1 to 3, a duplicate, and a service that is not in the CloudFormation schemas (a typo guard).
+
+**Limits.**
+
+- Module usage is a proxy for what teams need. Downloads count module fetches, not teams, and the modules ranked are the terraform-aws-modules organisation's only: a service nobody wraps in a public module (an in-house pattern, a vendor module outside the organisation) is tier 3 however important it is to you.
+- A tier is a whole service, but a module uses a few of its resources. `ec2` is tier 1 for the VPC, subnets, security groups and launch templates, and its other resources (it has 126; the modules use perhaps a dozen) ride along; so tier 1's coverage understates how well the *used* resources are covered. The per-resource data is in `resources.csv` for anyone who wants to narrow it.
+- Tiers do not weigh services within a tier, and `iam` (one module on every stack) counts the same as `redshift` (one subnet group).
+- The ranking is a snapshot of 2026-11-09. It is not regenerated; when the catalog changes, edit `priority.csv`.
+- Tier 3 is not 'unimportant': it holds the services nobody has asked for yet, and the bulk of the attribute total.
 
 ## Method
 
@@ -168,7 +194,7 @@ This repository's own pins (`UPSTREAM.md`) cover only a few of these controllers
 Kinds with no CloudFormation resource get a row in `resources.csv` with `notes=outside-denominator` and zero attributes, and are in none of the percentages.
 
 - **Official (22):** `apigateway/APIIntegrationResponse`, `apigateway/APIMethodResponse`, `apigateway/Integration`, `bedrock/InferenceProfile`, `cloudwatchlogs/DeliveryDestinationPolicy`, `dynamodb/Backup`, `emrcontainers/JobRun`, `kms/Grant`, `lambdamicrovms/Microvm`, `lambdamicrovms/MicrovmImage`, `opensearchservice/VPCEndpoint`, `opensearchservice/VPCEndpointAccess`, `prometheusservice/AlertManagerDefinition`, `prometheusservice/LoggingConfiguration`, `rds/DBClusterSnapshot`, `sagemaker/HyperParameterTuningJob`, `sagemaker/LabelingJob`, `sagemaker/PipelineExecution`, `sagemaker/TrainingJob`, `sagemaker/TransformJob`, `sns/PlatformApplication`, `sns/PlatformEndpoint`.
-- **Ours (0):** none. Six of our kinds are not CloudFormation resources of their own but properties of a larger one (point 4 of the Method); they are measured as those properties.
+- **Ours (2):** `iam/AccountPasswordPolicy`, `iam/SSHPublicKey`.
 
 **Services missing from the CloudFormation schemas.** `lambdamicrovms`. The plan was to fall back to the Create* input shapes in botocore or aws-sdk-go-v2's `api-models` for such a service; that fallback is not built, because only 1 service (a few kinds, all brand new) needs it. Its kinds are listed above as outside the denominator rather than being measured against a model, so they are neither credited nor penalised.
 
@@ -247,6 +273,6 @@ hack/coverage/run.sh -explain s3/Bucket
 task coverage                      # the first; `task coverage:check` is the second
 ```
 
-The generator is Go (`hack/coverage/`, run from the root module; `go test ./hack/coverage` has its unit tests). Regeneration reads only the committed zip, `sources.yaml`, `hack/coverage/mappings.yaml` and `config/crds/bases/`, plus the pinned ACK CRDs, which it downloads from `raw.githubusercontent.com` at the pinned commits into the git-ignored `.cache/coverage/`. Outputs carry no timestamps; the only dates are the pins' own. `--update-pins` needs the `gh` CLI (read-only calls) and changes the committed zip; review the diff of `sources.yaml` before committing it.
+The generator is Go (`hack/coverage/`, run from the root module; `go test ./hack/coverage` has its unit tests). Regeneration reads only the committed zip, `sources.yaml`, `priority.csv`, `hack/coverage/mappings.yaml` and `config/crds/bases/`, plus the pinned ACK CRDs, which it downloads from `raw.githubusercontent.com` at the pinned commits into the git-ignored `.cache/coverage/`. Outputs carry no timestamps; the only dates are the pins' own. `--update-pins` needs the `gh` CLI (read-only calls) and changes the committed zip; review the diff of `sources.yaml` before committing it.
 
 To teach the matcher a rename, add a line to `attributes:` (an official kind) or `oursAttributes:` in `mappings.yaml`, a CRD path prefix on the left and the CloudFormation path prefix on the right, then regenerate and read `-explain` for that resource.

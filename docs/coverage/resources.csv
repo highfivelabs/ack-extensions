@@ -903,6 +903,7 @@ healthimaging,Datastore,3,,0,,0,3,false,
 healthlake,DataTransformationProfile,10,,0,,0,10,false,
 healthlake,FHIRDatastore,14,,0,,0,14,false,
 iam,AccessKey,3,,0,,0,3,false,
+iam,AccountPasswordPolicy,0,,0,AccountPasswordPolicy,0,0,false,outside-denominator;ours_crd_attributes=9
 iam,Group,5,Group,4,,0,1,false,
 iam,GroupPolicy,3,,0,,0,3,false,
 iam,InstanceProfile,3,InstanceProfile,2,,0,1,false,official_unmapped=3
@@ -914,6 +915,7 @@ iam,RolePolicy,3,,0,,0,3,false,
 iam,SAMLProvider,9,,0,,0,9,false,
 iam,ServerCertificate,7,,0,,0,7,false,
 iam,ServiceLinkedRole,3,ServiceLinkedRole,3,,0,0,false,
+iam,SSHPublicKey,0,,0,SSHPublicKey,0,0,false,outside-denominator;ours_crd_attributes=3
 iam,User,11,User,7,LoginProfile;UserGroupMembership,3,1,false,ours LoginProfile covers a property of this resource;ours UserGroupMembership covers a property of this resource
 iam,UserPolicy,3,,0,,0,3,false,
 iam,UserToGroupAddition,2,,0,,0,2,false,

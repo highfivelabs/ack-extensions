@@ -73,10 +73,11 @@ type results struct {
 	total    svcRow
 	outside  []resRow
 	svcIndex map[string]*svcRow
+	priority map[string]int // service to tier, from priority.csv
 }
 
 func (m *model) compute() *results {
-	r := &results{svcIndex: map[string]*svcRow{}}
+	r := &results{svcIndex: map[string]*svcRow{}, priority: m.priority}
 	for _, s := range m.services {
 		r.svcs = append(r.svcs, svcRow{service: s})
 	}

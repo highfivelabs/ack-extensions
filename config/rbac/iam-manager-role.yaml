@@ -28,6 +28,7 @@ rules:
   - accountpasswordpolicies
   - loginprofiles
   - rolepolicyattachments
+  - sshpublickeys
   - usergroupmemberships
   verbs:
   - create
@@ -43,6 +44,7 @@ rules:
   - accountpasswordpolicies/status
   - loginprofiles/status
   - rolepolicyattachments/status
+  - sshpublickeys/status
   - usergroupmemberships/status
   verbs:
   - get

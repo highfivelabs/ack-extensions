@@ -15,6 +15,9 @@ import (
 	// UserGroupMembership is AddUserToGroup and RemoveUserFromGroup, which
 	// the generator does not read as a create and delete either.
 	_ "github.com/highfivelabs/ack-extensions/services/iam/pkg/resource/user_group_membership"
+	// SSHPublicKey is UploadSSHPublicKey, which the generator does not read
+	// as a create.
+	_ "github.com/highfivelabs/ack-extensions/services/iam/pkg/resource/ssh_public_key"
 	// AccountPasswordPolicy is UpdateAccountPasswordPolicy and
 	// GetAccountPasswordPolicy, an account-wide setting the generator does
 	// not read as a resource.
