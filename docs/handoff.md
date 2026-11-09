@@ -25,6 +25,7 @@ not repeat them.
   `RegistryPolicy`, `RegistryScanningConfiguration`), rank 17 (S3 `Object`,
   the account's public access block), rank 19 (Secrets Manager resource
   policy), rank 20 (RDS event subscriptions). Recheck upstream first (below).
+- **Foundation queue** (`docs/coverage/foundation.md`, F01 to F18) is the work list now, ahead of the ranks above. Done: F01 `Policy` (PR #30, `services/organizations`, plan 6.25). Next: F01 `PolicyAttachment` (hand-written on `role_policy_attachment`, ACK's `OrganizationalUnit`/`Account` by `targetRef` needs `organizations-controller` v1.7.0 as a Go module; moto: a second attach and a second detach both succeed where AWS refuses, `ListPoliciesForTarget` includes `FullAWSAccess`), then `DelegatedAdministrator`, `Organization`, `AccountPlacement`, F02. Open question 11 (which account) is in plan 9.
 - **Open questions awaiting the builder:** 9 (non-exclusive group
   membership was assumed) and 10 (`AccessKey`). Question 8 is answered.
 
