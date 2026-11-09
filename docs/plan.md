@@ -257,59 +257,72 @@ controller to show it can fail:
 
 ## 5. Candidates, ranked
 
-Read on 2026-11-07 with read-only `gh` against `aws-controllers-k8s/*`,
-which has 80 or so controller repositories, and against the gap scan
-`krm-gapscan-results-2026-10-19` (AWS part: 1,732 Terraform resources,
-470 with an ACK kind; read as data, unverified). Ranked by how likely a
-typical application stack (a database, its secrets and access, a
-workload's IAM, DNS, a registry) is to block on it.
+**The ranking (2026-11-09)** follows the usage-ranked gap list in
+`highfivelabs/catalog` `docs/aws.md`, section 5. That list counts which of
+the most-downloaded terraform-aws-modules (Terraform Registry downloads,
+2026-11-09) need something ACK lacks, and ranks the gaps by how many of the
+top 25 modules need them. Candidates from this plan's earlier tables that
+the catalog does not rank follow it, from rank 19.
 
-**Rechecked 2026-11-08** (read-only `gh`, and `git fetch` of
-rds-controller), before building `DBRoleAssociation`:
+The rules are unchanged:
 
-- rds-controller: latest release `v1.14.2` (2026-11-03), and `main` has
-  nothing after it. Its open pull requests are #335 (tags-only updates),
-  #293 (`DBInstanceParameterGroupName` on `DBCluster`) and #257
-  (`OptionGroup`). Searching its code, issues and pull requests, and
-  `community`'s issues, for `AddRoleToDBCluster`, `AddRoleToDBInstance`
-  and associated roles finds nothing. `DBCluster` and `DBInstance` carry
-  `associatedRoles` in their status only.
-- The pull requests in table (a): ssm-controller #85, ecr-controller
-  #121, secretsmanager-controller #69, acm-controller #104 and
-  iam-controller #184 are open and conflict with their base.
-  elasticache-controller #237 (`GlobalReplicationGroup`) is open,
-  mergeable and was updated on 2026-11-06, so it may be close to merging:
-  wait for it.
-- Secrets Manager resource policy: no secretsmanager-controller or
-  `community` issue or pull request.
+- **Upstream first.** Build only what upstream has neither released nor
+  has in a pull request close to merging; otherwise wait for the release.
+- **Open questions.** Skip anything blocked on an open question
+  (section 9), and say so here.
+- **The fake cloud.** Prove what moto can show, and list the rest as not
+  proven. Where moto implements none of a kind's API, nothing could be
+  proven, so it waits.
 
-Why `DBRoleAssociation` came next: this table's ranks 3 to 5 wait on open
-question 1 or would change ACK's own `Role`; rank 6 is marked "not an
-application-stack need", the measure this ranking uses; rank 7 may be
-close to merging. Table (b) marked RDS role associations "next", first.
+Upstream was read on 2026-11-09 with read-only `gh`: each ACK controller's
+latest release and its `generator.yaml`, open pull requests, and the
+`community` issues. moto support is moto's `IMPLEMENTATION_COVERAGE.md` on
+its master (5.2.5 is the pin).
 
-### (a) Upstream code exists, not released
-
-| Rank | Candidate | Upstream | Why | Done |
+| Rank | Candidate | Upstream (2026-11-09) | moto | Status |
 | --- | --- | --- | --- | --- |
-| 1 | `RolePolicyAttachment` | iam-controller PR #184 (open since 2026-06, conflicts with base) | grant a workload access by attaching a policy to a role the stack does not own (EKS node roles, a platform team's roles) | built |
-| 2 | `OptionGroup` | rds-controller PR #257 (open since 2025-12, conflicts with base) | MySQL, MariaDB, SQL Server and Oracle features (audit plugin, native backup) need an option group; ACK ignores the kind | built |
-| 3 | Secrets Manager rotation on `Secret` | secretsmanager-controller PR #69 | rotating database passwords | not built: a field on an existing kind (open question 1) |
-| 4 | `Role` additive policy mode | iam-controller PR #184, second commit | lets an ACK `Role` and a `RolePolicyAttachment` share a role (section 6.1) | not built: changes ACK's own `Role` |
-| 5 | ACM import from a Kubernetes TLS Secret | acm-controller PR #104 | bring-your-own certificates | not built: field (open question 1) |
-| 6 | SSM `Association` | ssm-controller PR #85 | agent configuration on instances | not built: not an application-stack need |
-| 7 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237 (mergeable, active 2026-11-06) | cross-region caches | not built: may be close to merging |
-| 8 | ECR `ReplicationConfiguration` | ecr-controller PR #121 | an account-wide singleton | not built |
-| 9 | CloudWatch Logs metric filters, EC2 `KeyPair`, KMS replica keys | PRs #61, #396, #112 | | not built |
+| 1 | Lambda `Permission` (`AddPermission`/`RemovePermission`) | No PR; `community` issues #3051 and #2659 are open. lambda-controller `v1.19.0`'s `Alias.permissions` adds permissions to an alias only. | yes | next |
+| 2 | Secrets Manager rotation on `Secret` | secretsmanager-controller PR #69 | yes | skipped: a field on an existing kind (open question 1) |
+| 3 | RDS role associations | none | adds yes, removes no (section 4.4) | built: `DBRoleAssociation` |
+| 4 | EC2 Auto Scaling `ScalingPolicy` and `ScheduledAction`; Application Auto Scaling `ScheduledAction` | none: autoscaling-controller `v1.5.0` has only `AutoScalingGroup`; applicationautoscaling-controller `v1.9.0` has `ScalableTarget` and `ScalingPolicy` | yes | to build |
+| 5 | KMS `ReplicaKey` | kms-controller PR #112: open, conflicts with base, not approved, last updated 2026-10-18 | `ReplicateKey` yes, `UpdatePrimaryRegion` no | to build |
+| 6 | Standalone security group rules | none; ec2-controller has rule-sync fixes open (#394, #385) | yes | skipped: open question 7 |
+| 7 | EC2 `VPNGateway` (attachment, route propagation), `CustomerGateway` | ignored in ec2-controller `v1.23.1`'s `generator.yaml` | yes, except `EnableVgwRoutePropagation` | to build |
+| 8 | EBS `Volume`, `VolumeAttachment` | ignored in ec2-controller's `generator.yaml`; `aws-controllers-k8s/ebs-controller` exists, with no release | yes | to build |
+| 9 | CloudWatch Logs `MetricFilter`; CloudWatch `CompositeAlarm` | metric filters: cloudwatchlogs-controller PR #61, as a field on ACK's `LogGroup`. `CompositeAlarm`: ignored in cloudwatch-controller `v1.11.0`. | metric filters yes; `PutCompositeAlarm` no | skipped. Metric filters wait on open question 1. `CompositeAlarm`: moto has none of it. |
+| 10 | EventBridge Scheduler `Schedule` and `ScheduleGroup`; EventBridge `Connection` and `ApiDestination` | Scheduler: no controller (`community` issue #2784). `Connection` and `ApiDestination`: ignored in eventbridge-controller `v1.9.2`. | yes | to build |
+| 11 | ECR `ReplicationConfiguration`; `RegistryPolicy`, `RegistryScanningConfiguration` | `ReplicationConfiguration`: ecr-controller PR #121, open, conflicts with base, no review, last updated 2026-10-18. The others: none. | yes (one replication rule at most) | `ReplicationConfiguration` written, waits for its turn (branch `agent/ecr-replication-configuration`) |
+| 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`) | yes | to build |
+| 13 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237: mergeable, active 2026-11-06 | none | skipped: may be close to merging, and moto has none of it |
+| 14 | Route 53 DNSSEC and `KeySigningKey`, VPC association authorization | ignored in route53-controller's `generator.yaml` | none | skipped: moto has none of it |
+| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none | yes | to build |
+| 16 | EC2 `PlacementGroup` | ignored in ec2-controller's `generator.yaml` | none | skipped: moto has none of it |
+| 17 | S3 `Object`, the account's public access block | none | yes | to build |
+| 18 | EC2 `KeyPair` | ec2-controller PR #396: both reviews' changes made, main merged in 2026-11-04, mergeable | yes | skipped: close to merging; wait for the release |
+| 19 | Secrets Manager resource policy (`PutResourcePolicy`) | no issue or PR | yes | to build |
+| 20 | RDS event subscriptions | ignored in rds-controller's `generator.yaml` | create and delete yes, modify no | to build |
+| 21 | SSM `Association` | ssm-controller PR #85, conflicts with base | none | skipped: moto has none of it |
+| 22 | ACM import from a Kubernetes TLS Secret | acm-controller PR #104 | | skipped: a field on an existing kind (open question 1) |
+| 23 | `Role` additive policy mode | iam-controller PR #184, second commit | | skipped: changes ACK's own `Role` (open question 3) |
 
-### (b) In the AWS API, in no ACK code or pull request
+Built before this ranking:
 
-| Candidate | Why | Done |
-| --- | --- | --- |
-| `DBProxyTarget` (`RegisterDBProxyTargets`) | ACK's `DBProxy` cannot be used without it: a proxy with no target accepts no connections. No ACK code or issue covers it (code search, 2026-11-07). | built |
-| RDS role associations (`AddRoleToDBCluster`/`AddRoleToDBInstance`) | Aurora's S3 import and export, and Lambda calls; RDS for PostgreSQL's S3 import and export; SQL Server's and Oracle's S3 integration. No ACK code, issue or pull request (2026-11-08). moto supports adding them, not removing them (section 4.4). | built: `DBRoleAssociation` |
-| Secrets Manager resource policy (`PutResourcePolicy`) | cross-account access to a secret | next |
-| Route 53 DNSSEC and key-signing keys, S3 access grants, RDS event subscriptions | ignored in ACK's generator configurations | later |
+- `RolePolicyAttachment`: iam-controller PR #184.
+- `OptionGroup`: rds-controller PR #257.
+- `DBProxyTarget`: new.
+
+**`DBRoleAssociation` came next on 2026-11-08** for these reasons:
+
+- the old ranks 3 to 5 waited on open question 1 or would have changed
+  ACK's own `Role`;
+- rank 6 was marked "not an application-stack need";
+- rank 7 may be close to merging;
+- table (b) marked RDS role associations "next".
+
+The upstream recheck that day found:
+
+- rds-controller `v1.14.2` with nothing after it on `main`;
+- no code, issue or pull request covering `AddRoleToDB*`.
 
 **Database users and roles have no AWS API.** On Google Cloud the Cloud
 SQL Admin API manages them (gaps-gcp's `SQLUser.databaseRoles`). On AWS
@@ -677,3 +690,17 @@ Before it can run on a real cluster:
 
    Proposed: contribute them to moto, and leave it until then. It does
    not change the kind.
+7. **Standalone security group rules** (rank 6 in section 5). ACK's
+   `SecurityGroup` holds its rules inline (`ingressRules`, `egressRules`)
+   and syncs them as the whole set. A rule kind, for a stack that adds a
+   rule to a group it does not own (an EKS node group's, an ALB target's),
+   would be revoked by the group's next sync. The same tug of war happens
+   between `RolePolicyAttachment` and an ACK `Role` (section 6.1, open
+   question 3). Options:
+   - build the kind for groups ACK does not manage, and document it, as
+     section 6.1 does;
+   - refuse a rule whose group is an ACK `SecurityGroup` that lists rules;
+   - wait for an additive mode upstream.
+
+   Proposed: the second, the same answer as question 3, so the two
+   behave alike.
