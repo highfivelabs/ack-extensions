@@ -162,10 +162,23 @@ func TestScalingPolicy(t *testing.T) {
 		// The spec leaves the policy type and cooldown unset; the fake
 		// reports SimpleScaling and a cooldown of 300 (AWS reports the
 		// type, and a cooldown only when one was set). Over several
-		// resyncs (every 5 seconds here) the object stays synced, with no
-		// recoverable error, and the policy is not put again with
-		// anything else.
+		// resyncs (every 5 seconds here) the policy is not put again (the
+		// controller's log shows no update), and the object stays synced
+		// with no recoverable error.
+		updates := func() int {
+			n := 0
+			for _, line := range strings.Split(env.Logs(), "\n") {
+				if strings.Contains(line, ">>> rm.sdkUpdate") && strings.Contains(line, `"name": "web-up"`) {
+					n++
+				}
+			}
+			return n
+		}
+		before := updates()
 		time.Sleep(15 * time.Second)
+		if n := updates(); n != before {
+			t.Fatalf("the policy was put again %d times across resyncs: the server's defaults read as drift", n-before)
+		}
 		got := get(t, step)
 		if ok, why := synced(got.Status.Conditions); !ok {
 			t.Fatalf("not synced after resyncs: %s", why)
