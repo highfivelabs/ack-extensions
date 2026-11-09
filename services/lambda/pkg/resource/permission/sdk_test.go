@@ -14,7 +14,7 @@ import (
 // Statements as Lambda writes them for AddPermission (Lambda developer
 // guide, "Viewing resource-based IAM policies"): a service with a source
 // ARN and account, an account (its root ARN), anyone in an organization,
-// and a list-valued action.
+// a list-valued action, a function URL and an Alexa event source token.
 const policy = `{"Version":"2012-10-17","Id":"default","Statement":[
  {"Sid":"s3-invoke","Effect":"Allow","Principal":{"Service":"s3.amazonaws.com"},"Action":"lambda:InvokeFunction","Resource":"arn:aws:lambda:us-west-2:123456789012:function:app",
   "Condition":{"StringEquals":{"AWS:SourceAccount":"123456789012"},"ArnLike":{"AWS:SourceArn":"arn:aws:s3:::uploads"}}},
@@ -22,18 +22,21 @@ const policy = `{"Version":"2012-10-17","Id":"default","Statement":[
  {"Sid":"org","Effect":"Allow","Principal":"*","Action":"lambda:InvokeFunction","Resource":"arn:aws:lambda:us-west-2:123456789012:function:app",
   "Condition":{"StringEquals":{"aws:PrincipalOrgID":"o-abc123"}}},
  {"Sid":"url","Effect":"Allow","Principal":"*","Action":"lambda:InvokeFunctionUrl","Resource":"arn:aws:lambda:us-west-2:123456789012:function:app",
-  "Condition":{"StringEquals":{"lambda:FunctionUrlAuthType":"NONE"}}}
+  "Condition":{"StringEquals":{"lambda:FunctionUrlAuthType":"NONE"}}},
+ {"Sid":"alexa","Effect":"Allow","Principal":{"Service":"alexa-connectedhome.amazon.com"},"Action":"lambda:InvokeFunction","Resource":"arn:aws:lambda:us-west-2:123456789012:function:app",
+  "Condition":{"StringEquals":{"lambda:EventSourceToken":"amzn1.ask.skill.1"}}}
 ]}`
 
 func TestObservedSpec(t *testing.T) {
 	for _, c := range []struct {
-		sid                                                    string
-		action, principal, sourceARN, sourceAccount, org, auth string
+		sid                                                           string
+		action, principal, sourceARN, sourceAccount, org, auth, token string
 	}{
-		{"s3-invoke", "lambda:InvokeFunction", "s3.amazonaws.com", "arn:aws:s3:::uploads", "123456789012", "", ""},
-		{"other-account", "lambda:GetFunction", "arn:aws:iam::210987654321:root", "", "", "", ""},
-		{"org", "lambda:InvokeFunction", "*", "", "", "o-abc123", ""},
-		{"url", "lambda:InvokeFunctionUrl", "*", "", "", "", "NONE"},
+		{"s3-invoke", "lambda:InvokeFunction", "s3.amazonaws.com", "arn:aws:s3:::uploads", "123456789012", "", "", ""},
+		{"other-account", "lambda:GetFunction", "arn:aws:iam::210987654321:root", "", "", "", "", ""},
+		{"org", "lambda:InvokeFunction", "*", "", "", "o-abc123", "", ""},
+		{"url", "lambda:InvokeFunctionUrl", "*", "", "", "", "NONE", ""},
+		{"alexa", "lambda:InvokeFunction", "alexa-connectedhome.amazon.com", "", "", "", "", "amzn1.ask.skill.1"},
 	} {
 		st, ok, err := findStatement(policy, c.sid)
 		if err != nil || !ok {
@@ -51,6 +54,7 @@ func TestObservedSpec(t *testing.T) {
 			{"sourceAccount", got.SourceAccount, c.sourceAccount},
 			{"principalOrgID", got.PrincipalOrgID, c.org},
 			{"functionURLAuthType", got.FunctionURLAuthType, c.auth},
+			{"eventSourceToken", got.EventSourceToken, c.token},
 		} {
 			if aws.ToString(f.got) != f.want {
 				t.Errorf("%s: %s = %q, want %q", c.sid, f.name, aws.ToString(f.got), f.want)

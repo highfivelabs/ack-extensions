@@ -17,7 +17,7 @@
 // RemovePermission and GetPolicy calls, and the reading of a statement's
 // principal, action and conditions back into AddPermissionInput's fields,
 // are copied from aws-controllers-k8s/lambda-controller v1.19.0
-// (251806273b5d), pkg/resource/alias/hooks.go (addPermission,
+// (86905357482d), pkg/resource/alias/hooks.go (addPermission,
 // removePermission, setPermissions). Changes: one statement for a
 // function, version or alias instead of an alias's whole set; the policy
 // is parsed with encoding/json instead of github.com/micahhausler/
