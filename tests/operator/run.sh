@@ -15,11 +15,11 @@
 #      credentials and role ARN, its narrow rights, gap kinds reconciling
 #      against moto, and the switch to sharing ACK's ServiceAccount;
 #   5. Cloud Control: a CloudControlContext in one namespace (an
-#      environment) runs a manager there, as that namespace's own
-#      ServiceAccount (no IRSA annotation: EKS Pod Identity binds it, which
-#      kind cannot show), with rights in that namespace only; it takes up
-#      its namespace's objects and leaves another namespace's alone; it
-#      goes with the context.
+#      environment) runs a manager for it in the operator's namespace, as
+#      the environment's own ServiceAccount (no IRSA annotation: EKS Pod
+#      Identity binds it, which kind cannot show), with rights in the
+#      environment's namespace only; it takes up that namespace's objects
+#      and leaves another namespace's alone; it goes with the context.
 #
 # Needs docker, kind, kubectl, helm, ko, crane, and hack/moto.sh (boto3
 # for the fixtures). Nothing touches real AWS.
@@ -230,7 +230,8 @@ wait_for 60 "back to identity own" bash -c "[[ \$(kubectl -n ${ACK_NS} get deplo
 
 echo "== Cloud Control: one manager per environment (namespace), as that environment's identity"
 CC_ROLE="arn:aws:iam::123456789012:role/team-a-cloudcontrol"
-CC_SA=ack-extensions-cloudcontrol
+CC_SA=ack-extensions-cloudcontrol-team-a
+OP_NS=ack-extensions-system
 for n in team-a team-b; do kubectl create namespace "${n}" --dry-run=client -o yaml | kubectl apply -f - >/dev/null; done
 kubectl get deploy -A -l aws.hfl.dev/component=cloudcontrol -o name | grep -q . && fail "a Cloud Control manager without a CloudControlContext"
 if kubectl apply -f - >/dev/null 2>"${work}/cc-name.err" <<YAML
@@ -253,24 +254,25 @@ spec:
 YAML
 cc_ready() { [[ "$(kubectl -n team-a get cloudcontrolcontext cloudcontrol -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')" == True ]]; }
 wait_for 240 "CloudControlContext team-a/cloudcontrol Ready: its manager rolled out" cc_ready
-cc_pod_sa="$(kubectl -n team-a get pod -l app.kubernetes.io/name=ack-extensions-cloudcontrol-manager -o jsonpath='{.items[0].spec.serviceAccountName}')"
+cc_pod_sa="$(kubectl -n "${OP_NS}" get pod -l aws.hfl.dev/environment=team-a -o jsonpath='{.items[0].spec.serviceAccountName}')"
 [[ "${cc_pod_sa}" == "${CC_SA}" ]] || fail "the Cloud Control manager runs as ${cc_pod_sa}"
-kubectl -n team-a get sa "${CC_SA}" -o jsonpath='{.metadata.annotations}' | grep -q 'eks.amazonaws.com' && fail "an IRSA annotation on ${CC_SA}: the identity is EKS Pod Identity"
-cc_args="$(kubectl -n team-a get deploy ack-extensions-cloudcontrol-manager -o jsonpath='{.spec.template.spec.containers[0].args}')"
+kubectl get pod -n team-a -o name | grep -q . && fail "a pod in team-a: the manager belongs in ${OP_NS}"
+kubectl -n "${OP_NS}" get sa "${CC_SA}" -o jsonpath='{.metadata.annotations}' | grep -q 'eks.amazonaws.com' && fail "an IRSA annotation on ${CC_SA}: the identity is EKS Pod Identity"
+cc_args="$(kubectl -n "${OP_NS}" get deploy "${CC_SA}" -o jsonpath='{.spec.template.spec.containers[0].args}')"
 for a in --watch-namespace=team-a --aws-region=us-west-2 --cloudcontrol-kinds=Detector.guardduty,SAMLProvider.iam; do
   grep -q -- "${a}" <<<"${cc_args}" || fail "manager args lack ${a}: ${cc_args}"
 done
 pia="$(kubectl -n team-a get cloudcontrolcontext cloudcontrol -o jsonpath='{.status.podIdentityAssociation.namespace}/{.status.podIdentityAssociation.serviceAccount} -> {.status.podIdentityAssociation.roleARN}')"
-[[ "${pia}" == "team-a/${CC_SA} -> ${CC_ROLE}" ]] || fail "status.podIdentityAssociation: ${pia}"
-ok "manager team-a/ack-extensions-cloudcontrol-manager runs as team-a/${CC_SA} (no IRSA annotation), watching team-a; the association it needs: ${pia}"
+[[ "${pia}" == "${OP_NS}/${CC_SA} -> ${CC_ROLE}" ]] || fail "status.podIdentityAssociation: ${pia}"
+ok "team-a's manager runs in ${OP_NS} as ${CC_SA} (no IRSA annotation), watching team-a; the association it needs: ${pia}"
 ccsar() { # ccsar <verb> <group> <resource> <namespace>: may team-a's manager?
   local allowed
   allowed="$(kubectl create -o jsonpath='{.status.allowed}' -f - <<SAR
 apiVersion: authorization.k8s.io/v1
 kind: SubjectAccessReview
 spec:
-  user: system:serviceaccount:team-a:${CC_SA}
-  groups: [system:serviceaccounts, "system:serviceaccounts:team-a", system:authenticated]
+  user: system:serviceaccount:${OP_NS}:${CC_SA}
+  groups: [system:serviceaccounts, "system:serviceaccounts:${OP_NS}", system:authenticated]
   resourceAttributes: {verb: $1, group: "$2", resource: $3, namespace: "$4"}
 SAR
 )"
@@ -282,7 +284,8 @@ SAR
 [[ "$(ccsar get "" secrets team-b)" == false ]] || fail "team-a's manager may read team-b's Secrets"
 [[ "$(ccsar list "" namespaces "")" == false ]] || fail "team-a's manager may list namespaces"
 [[ "$(ccsar create rbac.authorization.k8s.io rolebindings team-a)" == false ]] || fail "team-a's manager may create RoleBindings"
-ok "rights: team-a's manager manages Cloud Control kinds and reads Secrets in team-a only; nothing in team-b, nothing cluster-wide"
+[[ "$(ccsar get "" secrets "${OP_NS}")" == false ]] || fail "team-a's manager may read the operator namespace's Secrets"
+ok "rights: team-a's manager manages Cloud Control kinds and reads Secrets in team-a only; nothing in team-b or ${OP_NS}, nothing cluster-wide"
 for n in team-a team-b; do
   cat <<YAML | kubectl apply -f - >/dev/null
 apiVersion: guardduty.cloudcontrol.aws.hfl.dev/v1alpha1
@@ -297,7 +300,7 @@ sleep 15
 [[ -z "$(kubectl -n team-b get detectors.guardduty.cloudcontrol.aws.hfl.dev account-detector -o jsonpath='{.metadata.finalizers}{.status}')" ]] || fail "team-b's Detector was touched without a context in team-b"
 ok "team-b's Detector left alone: no context there, no manager"
 kubectl -n team-a delete cloudcontrolcontext cloudcontrol >/dev/null
-cc_gone() { ! kubectl -n team-a get deploy ack-extensions-cloudcontrol-manager >/dev/null 2>&1 && ! kubectl -n team-a get sa "${CC_SA}" >/dev/null 2>&1 && ! kubectl -n team-a get rolebinding ack-extensions-cloudcontrol-manager >/dev/null 2>&1; }
+cc_gone() { ! kubectl -n "${OP_NS}" get deploy "${CC_SA}" >/dev/null 2>&1 && ! kubectl -n "${OP_NS}" get sa "${CC_SA}" >/dev/null 2>&1 && ! kubectl -n team-a get rolebinding ack-extensions-cloudcontrol-manager >/dev/null 2>&1 && ! kubectl -n team-a get cloudcontrolcontext cloudcontrol >/dev/null 2>&1; }
 wait_for 120 "the context deleted: its manager, ServiceAccount and RoleBinding go with it" cc_gone
 # The manager is gone, so nothing finishes the Detector's delete: drop its
 # finalizer (the resource was never made; moto has no Cloud Control API).

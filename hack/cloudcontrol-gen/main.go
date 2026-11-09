@@ -60,6 +60,7 @@ func main() {
 	survey := flag.Bool("survey", false, "survey every type in the zip instead")
 	iam := flag.Bool("iam", false, "write one environment's IAM role policies instead (--namespace, --account, --cluster-arn, --kinds, --out)")
 	flag.StringVar(&envOpts.namespace, "namespace", "", "--iam: the environment's namespace")
+	flag.StringVar(&envOpts.systemNamespace, "system-namespace", "ack-extensions-system", "--iam: the operator's namespace, where the environment's manager runs")
 	flag.StringVar(&envOpts.account, "account", "", "--iam: the AWS account of the cluster")
 	flag.StringVar(&envOpts.clusterARN, "cluster-arn", "", "--iam: the EKS cluster's ARN")
 	flag.StringVar(&envOpts.kinds, "kinds", "", "--iam: the CloudControlContext's kinds, Kind.service, comma-separated; empty: every kind")
@@ -77,7 +78,7 @@ func main() {
 	}
 }
 
-var envOpts struct{ namespace, account, clusterARN, kinds, out string }
+var envOpts struct{ namespace, systemNamespace, account, clusterARN, kinds, out string }
 
 func readConfig(root string) (config, map[string][]byte, error) {
 	var cfg config
@@ -153,7 +154,7 @@ func runIAM(root string) error {
 			return err
 		}
 	}
-	tb, _ := json.MarshalIndent(iamgen.TrustPolicy(iamgen.Trust{AccountID: o.account, ClusterARN: o.clusterARN, Namespace: o.namespace}), "", "  ")
+	tb, _ := json.MarshalIndent(iamgen.TrustPolicy(iamgen.Trust{AccountID: o.account, ClusterARN: o.clusterARN, Environment: o.namespace, SystemNamespace: o.systemNamespace}), "", "  ")
 	if err := writeFile(filepath.Join(o.out, "trust.json"), append(tb, '\n')); err != nil {
 		return err
 	}

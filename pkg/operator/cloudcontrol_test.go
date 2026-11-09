@@ -30,7 +30,12 @@ import (
 	ccv1alpha1 "github.com/highfivelabs/ack-extensions/cloudcontrol/apis/v1alpha1"
 )
 
-const envRole = "arn:aws:iam::111122223333:role/team-a-prod-cloudcontrol"
+const (
+	envRole = "arn:aws:iam::111122223333:role/team-a-prod-cloudcontrol"
+	sysNS   = "ack-extensions-system"
+)
+
+var envManager = ccv1alpha1.ManagerName("team-a-prod")
 
 func repoRoot(t *testing.T) string {
 	_, f, _, _ := runtime.Caller(0)
@@ -73,7 +78,7 @@ func startCCEnv(t *testing.T) client.Client {
 	if err := c.Create(ctx, &role); err != nil {
 		t.Fatal(err)
 	}
-	for _, n := range []string{"team-a-prod", "team-b-prod"} {
+	for _, n := range []string{"team-a-prod", "team-b-prod", sysNS} {
 		if err := c.Create(ctx, &corev1.Namespace{ObjectMeta: metav1.ObjectMeta{Name: n}}); err != nil {
 			t.Fatal(err)
 		}
@@ -88,13 +93,13 @@ func ccContext(ns string, kinds ...string) *ccv1alpha1.CloudControlContext {
 	}
 }
 
-// can asks the API server whether the namespace's manager ServiceAccount
-// may do verb on resource in ns.
-func can(t *testing.T, c client.Client, saNS, verb, group, resource, ns string) bool {
+// can asks the API server whether a ServiceAccount of the operator's
+// namespace may do verb on resource in ns.
+func can(t *testing.T, c client.Client, sa, verb, group, resource, ns string) bool {
 	t.Helper()
 	sar := &authv1.SubjectAccessReview{Spec: authv1.SubjectAccessReviewSpec{
-		User:   "system:serviceaccount:" + saNS + ":" + ccv1alpha1.ManagerServiceAccount,
-		Groups: []string{"system:serviceaccounts", "system:serviceaccounts:" + saNS, "system:authenticated"},
+		User:   "system:serviceaccount:" + sysNS + ":" + sa,
+		Groups: []string{"system:serviceaccounts", "system:serviceaccounts:" + sysNS, "system:authenticated"},
 		ResourceAttributes: &authv1.ResourceAttributes{
 			Namespace: ns, Verb: verb, Group: group, Resource: resource,
 		},
@@ -109,7 +114,7 @@ func TestCloudControlContext(t *testing.T) {
 	c := startCCEnv(t)
 	ctx := context.Background()
 	r := &ContextReconciler{
-		Client: c, Image: "example.test/cloudcontrol-manager:dev",
+		Client: c, Namespace: sysNS, Image: "example.test/cloudcontrol-manager:dev",
 		ExtraArgs: []string{"--aws-endpoint-url=http://moto.fake-aws:5000"},
 		ExtraEnv:  []corev1.EnvVar{{Name: "AWS_ACCESS_KEY_ID", Value: "testing"}},
 	}
@@ -153,12 +158,12 @@ func TestCloudControlContext(t *testing.T) {
 			t.Fatalf("Ready condition %+v", cond)
 		}
 		var deps appsv1.DeploymentList
-		if err := c.List(ctx, &deps, client.InNamespace("team-a-prod")); err != nil || len(deps.Items) != 0 {
+		if err := c.List(ctx, &deps, client.MatchingLabels{LabelComponent: componentCC}); err != nil || len(deps.Items) != 0 {
 			t.Fatalf("made %d Deployments for a context with an unknown kind (%v)", len(deps.Items), err)
 		}
 	})
 
-	t.Run("the namespace's manager, its ServiceAccount and its binding", func(t *testing.T) {
+	t.Run("the environment's manager and ServiceAccount in the operator's namespace, its binding in the environment", func(t *testing.T) {
 		cc := getCC(t)
 		cc.Spec.Kinds = []string{"SAMLProvider.iam", "Detector.guardduty"}
 		cc.Spec.DeletionPolicy = "retain"
@@ -167,8 +172,11 @@ func TestCloudControlContext(t *testing.T) {
 		}
 		pass(t)
 
+		if !slices.Contains(getCC(t).Finalizers, FinalizerContext) {
+			t.Errorf("no finalizer on the context: %v", getCC(t).Finalizers)
+		}
 		var sa corev1.ServiceAccount
-		if err := c.Get(ctx, types.NamespacedName{Namespace: "team-a-prod", Name: ccv1alpha1.ManagerServiceAccount}, &sa); err != nil {
+		if err := c.Get(ctx, types.NamespacedName{Namespace: sysNS, Name: envManager}, &sa); err != nil {
 			t.Fatal(err)
 		}
 		for k := range sa.Annotations {
@@ -184,16 +192,16 @@ func TestCloudControlContext(t *testing.T) {
 		if err := c.Get(ctx, types.NamespacedName{Namespace: "team-a-prod", Name: CloudControlManager}, &rb); err != nil {
 			t.Fatal(err)
 		}
-		if rb.RoleRef.Kind != "ClusterRole" || rb.RoleRef.Name != CloudControlManager || len(rb.Subjects) != 1 || rb.Subjects[0].Name != ccv1alpha1.ManagerServiceAccount {
+		if rb.RoleRef.Kind != "ClusterRole" || rb.RoleRef.Name != CloudControlManager || len(rb.Subjects) != 1 || rb.Subjects[0].Name != envManager || rb.Subjects[0].Namespace != sysNS {
 			t.Errorf("RoleBinding %+v", rb)
 		}
 
 		var dep appsv1.Deployment
-		if err := c.Get(ctx, types.NamespacedName{Namespace: "team-a-prod", Name: CloudControlManager}, &dep); err != nil {
+		if err := c.Get(ctx, types.NamespacedName{Namespace: sysNS, Name: envManager}, &dep); err != nil {
 			t.Fatal(err)
 		}
 		pod := dep.Spec.Template.Spec
-		if pod.ServiceAccountName != ccv1alpha1.ManagerServiceAccount {
+		if pod.ServiceAccountName != envManager {
 			t.Errorf("runs as %q", pod.ServiceAccountName)
 		}
 		args := pod.Containers[0].Args
@@ -210,17 +218,17 @@ func TestCloudControlContext(t *testing.T) {
 		if pod.Containers[0].Image != r.Image {
 			t.Errorf("image %s", pod.Containers[0].Image)
 		}
+		if len(rb.OwnerReferences) != 1 || rb.OwnerReferences[0].Kind != "CloudControlContext" {
+			t.Errorf("the RoleBinding is not owned by the context: %v", rb.OwnerReferences)
+		}
 		for _, o := range []metav1.Object{&sa, &rb, &dep} {
-			if len(o.GetOwnerReferences()) != 1 || o.GetOwnerReferences()[0].Kind != "CloudControlContext" {
-				t.Errorf("%s not owned by the context: %v", o.GetName(), o.GetOwnerReferences())
-			}
-			if o.GetLabels()[LabelComponent] != componentCC {
+			if o.GetLabels()[LabelComponent] != componentCC || o.GetLabels()[LabelEnvironment] != "team-a-prod" {
 				t.Errorf("%s labels %v", o.GetName(), o.GetLabels())
 			}
 		}
 
 		st := getCC(t).Status
-		if st.PodIdentityAssociation == nil || *st.PodIdentityAssociation != (ccv1alpha1.PodIdentityAssociation{Namespace: "team-a-prod", ServiceAccount: ccv1alpha1.ManagerServiceAccount, RoleARN: envRole}) {
+		if st.PodIdentityAssociation == nil || *st.PodIdentityAssociation != (ccv1alpha1.PodIdentityAssociation{Namespace: sysNS, ServiceAccount: envManager, RoleARN: envRole}) {
 			t.Errorf("status.podIdentityAssociation %+v", st.PodIdentityAssociation)
 		}
 		if !slices.Equal(st.Kinds, []string{"Detector.guardduty", "SAMLProvider.iam"}) {
@@ -247,8 +255,11 @@ func TestCloudControlContext(t *testing.T) {
 			{"list", "", "namespaces", "", false},
 			{"create", "cloudcontrol.aws.hfl.dev", "cloudcontrolcontexts", "team-a-prod", false},
 			{"create", "rbac.authorization.k8s.io", "rolebindings", "team-a-prod", false},
+			// Nothing in the operator's namespace, where it runs.
+			{"get", "", "secrets", sysNS, false},
+			{"create", "", "pods", sysNS, false},
 		} {
-			if got := can(t, c, "team-a-prod", tc.verb, tc.group, tc.resource, tc.ns); got != tc.want {
+			if got := can(t, c, envManager, tc.verb, tc.group, tc.resource, tc.ns); got != tc.want {
 				t.Errorf("can %s %s.%s in %q = %v, want %v", tc.verb, tc.resource, tc.group, tc.ns, got, tc.want)
 			}
 		}
@@ -262,7 +273,7 @@ func TestCloudControlContext(t *testing.T) {
 		}
 		pass(t)
 		var dep appsv1.Deployment
-		if err := c.Get(ctx, types.NamespacedName{Namespace: "team-a-prod", Name: CloudControlManager}, &dep); err != nil {
+		if err := c.Get(ctx, types.NamespacedName{Namespace: sysNS, Name: envManager}, &dep); err != nil {
 			t.Fatal(err)
 		}
 		for _, a := range dep.Spec.Template.Spec.Containers[0].Args {
@@ -281,8 +292,24 @@ func TestCloudControlContext(t *testing.T) {
 			t.Fatal(err)
 		}
 		var dep appsv1.Deployment
-		if err := c.Get(ctx, types.NamespacedName{Namespace: "team-a-prod", Name: CloudControlManager}, &dep); err != nil {
+		if err := c.Get(ctx, types.NamespacedName{Namespace: sysNS, Name: envManager}, &dep); err != nil {
 			t.Fatalf("the ACK side's clean-up removed the Cloud Control manager: %v", err)
+		}
+	})
+
+	t.Run("deleting the context removes the manager and its ServiceAccount", func(t *testing.T) {
+		if err := c.Delete(ctx, getCC(t)); err != nil {
+			t.Fatal(err)
+		}
+		pass(t)
+		for _, o := range []client.Object{&appsv1.Deployment{}, &corev1.ServiceAccount{}} {
+			if err := c.Get(ctx, types.NamespacedName{Namespace: sysNS, Name: envManager}, o); !apierrors.IsNotFound(err) {
+				t.Errorf("%T still there after the context's deletion: %v", o, err)
+			}
+		}
+		var cc ccv1alpha1.CloudControlContext
+		if err := c.Get(ctx, key, &cc); !apierrors.IsNotFound(err) {
+			t.Errorf("the context is still there (finalizers %v): %v", cc.Finalizers, err)
 		}
 	})
 }

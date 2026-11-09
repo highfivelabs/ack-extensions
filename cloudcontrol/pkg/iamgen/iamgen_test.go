@@ -73,8 +73,8 @@ func TestEnvironmentSplit(t *testing.T) {
 }
 
 func TestTrustPolicy(t *testing.T) {
-	b, _ := json.Marshal(iamgen.TrustPolicy(iamgen.Trust{AccountID: "111122223333", ClusterARN: "arn:aws:eks:us-west-2:111122223333:cluster/platform", Namespace: "team-a-prod"}))
-	for _, want := range []string{`"Service":"pods.eks.amazonaws.com"`, `"sts:TagSession"`, `"aws:RequestTag/kubernetes-namespace":"team-a-prod"`, `"aws:RequestTag/kubernetes-service-account":"ack-extensions-cloudcontrol"`, `"aws:SourceArn":"arn:aws:eks:us-west-2:111122223333:cluster/platform"`} {
+	b, _ := json.Marshal(iamgen.TrustPolicy(iamgen.Trust{AccountID: "111122223333", ClusterARN: "arn:aws:eks:us-west-2:111122223333:cluster/platform", Environment: "team-a-prod"}))
+	for _, want := range []string{`"Service":"pods.eks.amazonaws.com"`, `"sts:TagSession"`, `"aws:RequestTag/kubernetes-namespace":"ack-extensions-system"`, `"aws:RequestTag/kubernetes-service-account":"ack-extensions-cloudcontrol-team-a-prod"`, `"aws:SourceArn":"arn:aws:eks:us-west-2:111122223333:cluster/platform"`} {
 		if !strings.Contains(string(b), want) {
 			t.Errorf("trust policy lacks %s: %s", want, b)
 		}

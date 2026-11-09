@@ -6,9 +6,10 @@
 # Deployment, a ServiceAccount (identity "own"), a leader-election Role and
 # RoleBinding, and a ClusterRoleBinding to the manager's ClusterRole. It
 # may bind only our manager ClusterRoles (RBAC "bind" by name).
-# For Cloud Control it reads CloudControlContexts and makes, in each one's
-# namespace, a ServiceAccount, a manager Deployment and a RoleBinding to
-# the Cloud Control manager's ClusterRole (rights in that namespace only).
+# For Cloud Control it reads CloudControlContexts (and puts its finalizer
+# on them), and makes for each a ServiceAccount and a manager Deployment in
+# its own namespace, and in the context's namespace a RoleBinding to the
+# Cloud Control manager's ClusterRole (rights in that namespace only).
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -35,7 +36,7 @@ rules:
     resourceNames: ["ack-extensions-applicationautoscaling-manager", "ack-extensions-autoscaling-manager", "ack-extensions-ec2-manager", "ack-extensions-ecr-manager", "ack-extensions-eventbridge-manager", "ack-extensions-iam-manager", "ack-extensions-kms-manager", "ack-extensions-lambda-manager", "ack-extensions-organizations-manager", "ack-extensions-rds-manager", "ack-extensions-scheduler-manager", "ack-extensions-wafv2-manager", "ack-extensions-cloudcontrol-manager"]
   - apiGroups: ["cloudcontrol.aws.hfl.dev"]
     resources: ["cloudcontrolcontexts"]
-    verbs: ["get", "list", "watch"]
+    verbs: ["get", "list", "watch", "update", "patch"]
   - apiGroups: ["cloudcontrol.aws.hfl.dev"]
     resources: ["cloudcontrolcontexts/status"]
     verbs: ["get", "update", "patch"]

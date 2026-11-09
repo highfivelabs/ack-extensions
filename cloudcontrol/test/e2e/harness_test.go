@@ -5,7 +5,7 @@
 // cluster: envtest's real kube-apiserver with the generated CRDs and ACK's
 // core CRDs; the manager's real binary started as the operator starts it
 // for a CloudControlContext (pkg/operator: the arguments, watching only the
-// environment's namespace), authenticated as that namespace's
+// environment's namespace), authenticated as the environment's
 // ServiceAccount and holding only the rights the operator's RoleBinding
 // gives it; and the fake Cloud Control (cloudcontrol/test/fake) doing the
 // work in moto. Nothing here may reach AWS (fake/guard.go says how that is
@@ -278,10 +278,12 @@ func start(t *testing.T) *env {
 			managerArgs = o.Spec.Template.Spec.Containers[0].Args
 		}
 	}
-	// The manager authenticates as the namespace's ServiceAccount would.
+	// The manager authenticates as the environment's ServiceAccount in the
+	// operator's namespace would.
+	sys := ccv1alpha1.DefaultSystemNamespace
 	user, err := te.AddUser(envtest.User{
-		Name:   "system:serviceaccount:" + envNS + ":" + ccv1alpha1.ManagerServiceAccount,
-		Groups: []string{"system:serviceaccounts", "system:serviceaccounts:" + envNS, "system:authenticated"},
+		Name:   "system:serviceaccount:" + sys + ":" + ccv1alpha1.ManagerName(envNS),
+		Groups: []string{"system:serviceaccounts", "system:serviceaccounts:" + sys, "system:authenticated"},
 	}, nil)
 	if err != nil {
 		t.Fatal(err)

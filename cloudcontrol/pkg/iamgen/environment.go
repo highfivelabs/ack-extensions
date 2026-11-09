@@ -14,11 +14,6 @@ import (
 // document, in characters not counting white space.
 const MaxManagedPolicySize = 6144
 
-// ServiceAccount is the Kubernetes ServiceAccount the operator gives the
-// Cloud Control manager in every namespace that enables it, and so the
-// one an environment's EKS Pod Identity association names.
-const ServiceAccount = v1alpha1.ManagerServiceAccount
-
 // Environment is the permission policy of one environment's role: the
 // Cloud Control actions once, then each enabled type's handler statements
 // (ForType), split into as many managed policy documents as IAM's size
@@ -64,18 +59,25 @@ type Trust struct {
 	AccountID string
 	// ClusterARN is the EKS cluster's ARN (aws:SourceArn).
 	ClusterARN string
-	// Namespace is the environment's namespace.
-	Namespace string
+	// Environment is the environment's namespace.
+	Environment string
+	// SystemNamespace is the operator's namespace, where the environment's
+	// manager runs (v1alpha1.DefaultSystemNamespace when empty).
+	SystemNamespace string
 }
 
 // TrustPolicy is an environment role's trust policy for EKS Pod Identity:
 // the Pod Identity service may assume it, and tag the session, only for
 // the cluster named, and only when the session tags Pod Identity sets name
-// this environment's namespace and the manager's ServiceAccount. So an
-// association made by mistake for another namespace's ServiceAccount, or
-// in another cluster, cannot use the role. The tags are also in CloudTrail,
-// so every call the manager makes is attributed to its namespace.
+// the operator's namespace and this environment's manager ServiceAccount.
+// So an association made by mistake for another ServiceAccount (another
+// environment's manager, a pod in the environment's own namespace), or in
+// another cluster, cannot use the role. The tags are also in CloudTrail,
+// so every call is attributed to the environment's manager.
 func TrustPolicy(t Trust) map[string]any {
+	if t.SystemNamespace == "" {
+		t.SystemNamespace = v1alpha1.DefaultSystemNamespace
+	}
 	return map[string]any{
 		"Version": "2012-10-17",
 		"Statement": []any{map[string]any{
@@ -86,8 +88,8 @@ func TrustPolicy(t Trust) map[string]any {
 			"Condition": map[string]any{
 				"StringEquals": map[string]any{
 					"aws:SourceAccount":                         t.AccountID,
-					"aws:RequestTag/kubernetes-namespace":       t.Namespace,
-					"aws:RequestTag/kubernetes-service-account": ServiceAccount,
+					"aws:RequestTag/kubernetes-namespace":       t.SystemNamespace,
+					"aws:RequestTag/kubernetes-service-account": v1alpha1.ManagerName(t.Environment),
 				},
 				"ArnEquals": map[string]any{"aws:SourceArn": t.ClusterARN},
 			},

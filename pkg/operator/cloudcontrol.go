@@ -20,6 +20,8 @@ import (
 	"k8s.io/utils/ptr"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
+	"sigs.k8s.io/controller-runtime/pkg/handler"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
 	ccv1alpha1 "github.com/highfivelabs/ack-extensions/cloudcontrol/apis/v1alpha1"
@@ -35,59 +37,85 @@ import (
 // namespace to run KCC, and really that namespace has a scope that it works
 // within."
 //
-// So a CloudControlContext in a namespace (an environment) makes, in that
-// namespace and owned by the context:
+// So a CloudControlContext in a namespace (an environment) makes:
 //
-//   - the ServiceAccount ack-extensions-cloudcontrol, with no IRSA
-//     annotation: an EKS Pod Identity association (made outside the
-//     cluster) binds it to the environment's role;
-//   - a RoleBinding of that ServiceAccount to the manager's generated
-//     ClusterRole (cloudcontrol/config/rbac), so its Kubernetes rights hold
-//     in this namespace only;
-//   - the manager's Deployment, watching only this namespace, serving the
-//     kinds the context enables.
+//   - in the operator's namespace, as Config Connector runs each
+//     namespace's manager in cnrm-system: the ServiceAccount
+//     ack-extensions-cloudcontrol-<environment>, with no IRSA annotation (an
+//     EKS Pod Identity association, made outside the cluster, binds it to
+//     the environment's role), and the manager's Deployment, watching only
+//     the environment's namespace and serving the kinds the context
+//     enables. Nobody who may only create pods in the environment's
+//     namespace can run as the role, so Kubernetes admission policy on the
+//     kinds cannot be stepped around with the role's credentials;
+//   - in the environment's namespace, owned by the context: a RoleBinding
+//     of that ServiceAccount to the manager's generated ClusterRole, so its
+//     Kubernetes rights hold there only (its leader-election lease and
+//     events are there too).
 //
+// The context carries a finalizer, since an owner reference cannot cross
+// namespaces: deleting it deletes the manager and its ServiceAccount.
 // Unlike the ACK side of the operator, nothing is copied from an ACK
 // controller: the context says the role and the region.
 const (
-	// CloudControlManager names the manager's Deployment and RoleBinding in
-	// each namespace, and its ClusterRole.
+	// CloudControlManager names the RoleBinding in each environment and
+	// the manager's ClusterRole.
 	CloudControlManager = Name + "-cloudcontrol-manager"
 	// ImageCloudControl is the Images key of the Cloud Control manager's
 	// image (MANAGER_IMAGE_CLOUDCONTROL).
 	ImageCloudControl = "cloudcontrol"
 	// LabelComponent marks what the Cloud Control side made, so the ACK
 	// side's clean-up leaves it alone.
-	LabelComponent     = "aws.hfl.dev/component"
+	LabelComponent = "aws.hfl.dev/component"
+	// LabelEnvironment names the environment a manager serves.
+	LabelEnvironment = "aws.hfl.dev/environment"
+	// FinalizerContext keeps a context until its manager is gone.
+	FinalizerContext   = "cloudcontrol.aws.hfl.dev/manager"
 	componentCC        = "cloudcontrol"
 	annotationRoleARN  = "aws.hfl.dev/role-arn"
 	conditionReady     = "Ready"
 	reasonUnknownKinds = "UnknownKinds"
 )
 
-// ContextReconciler runs a Cloud Control manager in each namespace that has
-// a CloudControlContext.
+// ContextReconciler runs a Cloud Control manager for each namespace that
+// has a CloudControlContext.
 type ContextReconciler struct {
 	Client client.Client
+	// Namespace is the operator's own, where the managers run.
+	Namespace string
 	// Image is the manager's image.
 	Image string
 	// ExtraArgs and ExtraEnv are added to every manager. They exist for a
 	// fake AWS (an endpoint and dummy credentials in tests and on kind),
 	// set from the operator's flags by the platform team, never from a
-	// context: a namespace cannot point its manager elsewhere.
+	// context: an environment cannot point its manager elsewhere.
 	ExtraArgs []string
 	ExtraEnv  []corev1.EnvVar
 }
 
-// SetupWithManager reconciles each context, and again when what it owns
+func (r *ContextReconciler) systemNamespace() string {
+	if r.Namespace == "" {
+		return ccv1alpha1.DefaultSystemNamespace
+	}
+	return r.Namespace
+}
+
+// SetupWithManager reconciles each context, and again when what it made
 // changes.
 func (r *ContextReconciler) SetupWithManager(mgr ctrl.Manager) error {
+	toContext := handler.EnqueueRequestsFromMapFunc(func(_ context.Context, o client.Object) []reconcile.Request {
+		env := o.GetLabels()[LabelEnvironment]
+		if o.GetLabels()[LabelComponent] != componentCC || env == "" {
+			return nil
+		}
+		return []reconcile.Request{{NamespacedName: types.NamespacedName{Namespace: env, Name: ccv1alpha1.ContextName}}}
+	})
 	return ctrl.NewControllerManagedBy(mgr).
 		Named(Name + "-cloudcontrol").
 		For(&ccv1alpha1.CloudControlContext{}).
-		Owns(&appsv1.Deployment{}).
-		Owns(&corev1.ServiceAccount{}).
 		Owns(&rbacv1.RoleBinding{}).
+		Watches(&appsv1.Deployment{}, toContext).
+		Watches(&corev1.ServiceAccount{}, toContext).
 		Complete(r)
 }
 
@@ -110,12 +138,12 @@ func ContextKinds(cc *ccv1alpha1.CloudControlContext) ([]string, error) {
 	return out, nil
 }
 
-func ccLabels(ns string) map[string]string {
+func ccLabels(env string) map[string]string {
 	return map[string]string{
 		LabelManagedBy:           managedBy,
 		LabelComponent:           componentCC,
-		LabelSource:              ns + "." + ccv1alpha1.ContextName,
-		"app.kubernetes.io/name": CloudControlManager,
+		LabelEnvironment:         env,
+		"app.kubernetes.io/name": Name + "-cloudcontrol-manager",
 	}
 }
 
@@ -124,7 +152,7 @@ func ccOwner(cc *ccv1alpha1.CloudControlContext) []metav1.OwnerReference {
 }
 
 // ManagerArgs is the manager's command line for a context: ACK's runtime
-// flags, scoped to the namespace.
+// flags, scoped to the environment's namespace.
 func (r *ContextReconciler) ManagerArgs(cc *ccv1alpha1.CloudControlContext, kinds []string) []string {
 	policy := cc.Spec.DeletionPolicy
 	if policy == "" {
@@ -148,38 +176,41 @@ func (r *ContextReconciler) ManagerArgs(cc *ccv1alpha1.CloudControlContext, kind
 	return append(args, r.ExtraArgs...)
 }
 
-// PlanContext is what should exist in the context's namespace.
+// PlanContext is what should exist for a context: the RoleBinding in its
+// namespace, the ServiceAccount and the manager in the operator's.
 func (r *ContextReconciler) PlanContext(cc *ccv1alpha1.CloudControlContext, kinds []string) []client.Object {
-	ns := cc.Namespace
-	lbl := ccLabels(ns)
-	sa := ccv1alpha1.ManagerServiceAccount
-	podLabels := map[string]string{"app.kubernetes.io/name": CloudControlManager, LabelComponent: componentCC}
-	env := append([]corev1.EnvVar{
-		{Name: "ACK_SYSTEM_NAMESPACE", ValueFrom: &corev1.EnvVarSource{FieldRef: &corev1.ObjectFieldSelector{FieldPath: "metadata.namespace"}}},
+	env, sys := cc.Namespace, r.systemNamespace()
+	name := ccv1alpha1.ManagerName(env)
+	lbl := ccLabels(env)
+	podLabels := map[string]string{LabelComponent: componentCC, LabelEnvironment: env}
+	vars := append([]corev1.EnvVar{
+		// ACK's runtime looks for its own ConfigMaps (CARM, off here) in
+		// this namespace.
+		{Name: "ACK_SYSTEM_NAMESPACE", Value: env},
 	}, r.ExtraEnv...)
 	return []client.Object{
+		&rbacv1.RoleBinding{
+			ObjectMeta: metav1.ObjectMeta{Name: CloudControlManager, Namespace: env, Labels: lbl, OwnerReferences: ccOwner(cc)},
+			RoleRef:    rbacv1.RoleRef{APIGroup: rbacv1.GroupName, Kind: "ClusterRole", Name: CloudControlManager},
+			Subjects:   []rbacv1.Subject{{Kind: rbacv1.ServiceAccountKind, Name: name, Namespace: sys}},
+		},
 		&corev1.ServiceAccount{
 			ObjectMeta: metav1.ObjectMeta{
-				Name: sa, Namespace: ns, Labels: lbl, OwnerReferences: ccOwner(cc),
+				Name: name, Namespace: sys, Labels: lbl,
 				// Informational: EKS Pod Identity reads no annotation; the
 				// association names this ServiceAccount.
 				Annotations: map[string]string{annotationRoleARN: cc.Spec.RoleARN},
 			},
 		},
-		&rbacv1.RoleBinding{
-			ObjectMeta: metav1.ObjectMeta{Name: CloudControlManager, Namespace: ns, Labels: lbl, OwnerReferences: ccOwner(cc)},
-			RoleRef:    rbacv1.RoleRef{APIGroup: rbacv1.GroupName, Kind: "ClusterRole", Name: CloudControlManager},
-			Subjects:   []rbacv1.Subject{{Kind: rbacv1.ServiceAccountKind, Name: sa, Namespace: ns}},
-		},
 		&appsv1.Deployment{
-			ObjectMeta: metav1.ObjectMeta{Name: CloudControlManager, Namespace: ns, Labels: lbl, OwnerReferences: ccOwner(cc)},
+			ObjectMeta: metav1.ObjectMeta{Name: name, Namespace: sys, Labels: lbl},
 			Spec: appsv1.DeploymentSpec{
 				Replicas: ptr.To[int32](1),
 				Selector: &metav1.LabelSelector{MatchLabels: podLabels},
 				Template: corev1.PodTemplateSpec{
 					ObjectMeta: metav1.ObjectMeta{Labels: podLabels},
 					Spec: corev1.PodSpec{
-						ServiceAccountName: sa,
+						ServiceAccountName: name,
 						SecurityContext: &corev1.PodSecurityContext{
 							RunAsNonRoot:   ptr.To(true),
 							SeccompProfile: &corev1.SeccompProfile{Type: corev1.SeccompProfileTypeRuntimeDefault},
@@ -188,18 +219,18 @@ func (r *ContextReconciler) PlanContext(cc *ccv1alpha1.CloudControlContext, kind
 							Name:  "manager",
 							Image: r.Image,
 							Args:  r.ManagerArgs(cc, kinds),
-							Env:   env,
+							Env:   vars,
 							Ports: []corev1.ContainerPort{{Name: "metrics", ContainerPort: 8080}, {Name: "health", ContainerPort: 8081}},
 							SecurityContext: &corev1.SecurityContext{
 								AllowPrivilegeEscalation: ptr.To(false),
 								ReadOnlyRootFilesystem:   ptr.To(true),
 								Capabilities:             &corev1.Capabilities{Drop: []corev1.Capability{"ALL"}},
 							},
-							LivenessProbe:  &corev1.Probe{ProbeHandler: corev1.ProbeHandler{HTTPGet: &corev1.HTTPGetAction{Path: "/healthz", Port: intstrPort(8081)}}},
-							ReadinessProbe: &corev1.Probe{ProbeHandler: corev1.ProbeHandler{HTTPGet: &corev1.HTTPGetAction{Path: "/readyz", Port: intstrPort(8081)}}},
+							LivenessProbe:  &corev1.Probe{ProbeHandler: corev1.ProbeHandler{HTTPGet: &corev1.HTTPGetAction{Path: "/healthz", Port: intstr.FromInt(8081)}}},
+							ReadinessProbe: &corev1.Probe{ProbeHandler: corev1.ProbeHandler{HTTPGet: &corev1.HTTPGetAction{Path: "/readyz", Port: intstr.FromInt(8081)}}},
 							Resources: corev1.ResourceRequirements{
-								Requests: corev1.ResourceList{corev1.ResourceCPU: mustQuantity("10m"), corev1.ResourceMemory: mustQuantity("64Mi")},
-								Limits:   corev1.ResourceList{corev1.ResourceMemory: mustQuantity("256Mi")},
+								Requests: corev1.ResourceList{corev1.ResourceCPU: resource.MustParse("10m"), corev1.ResourceMemory: resource.MustParse("64Mi")},
+								Limits:   corev1.ResourceList{corev1.ResourceMemory: resource.MustParse("256Mi")},
 							},
 						}},
 					},
@@ -209,22 +240,51 @@ func (r *ContextReconciler) PlanContext(cc *ccv1alpha1.CloudControlContext, kind
 	}
 }
 
-// Reconcile makes the context's namespace match its plan and reports it.
+// removeManager deletes what a context made in the operator's namespace.
+func (r *ContextReconciler) removeManager(ctx context.Context, env string) error {
+	sys, name := r.systemNamespace(), ccv1alpha1.ManagerName(env)
+	for _, o := range []client.Object{
+		&appsv1.Deployment{ObjectMeta: metav1.ObjectMeta{Name: name, Namespace: sys}},
+		&corev1.ServiceAccount{ObjectMeta: metav1.ObjectMeta{Name: name, Namespace: sys}},
+	} {
+		if err := r.Client.Delete(ctx, o, client.PropagationPolicy(metav1.DeletePropagationBackground)); client.IgnoreNotFound(err) != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// Reconcile makes the plan for a context exist and reports it.
 func (r *ContextReconciler) Reconcile(ctx context.Context, req reconcile.Request) (reconcile.Result, error) {
 	var cc ccv1alpha1.CloudControlContext
 	if err := r.Client.Get(ctx, req.NamespacedName, &cc); err != nil {
-		// Gone: what it owned goes with it (owner references).
-		return reconcile.Result{}, client.IgnoreNotFound(err)
+		if client.IgnoreNotFound(err) == nil {
+			// Gone without the finalizer running (it was removed by
+			// hand): remove the manager anyway.
+			return reconcile.Result{}, r.removeManager(ctx, req.Namespace)
+		}
+		return reconcile.Result{}, err
 	}
 	if !cc.DeletionTimestamp.IsZero() {
+		if err := r.removeManager(ctx, cc.Namespace); err != nil {
+			return reconcile.Result{}, err
+		}
+		if controllerutil.RemoveFinalizer(&cc, FinalizerContext) {
+			return reconcile.Result{}, r.Client.Update(ctx, &cc)
+		}
 		return reconcile.Result{}, nil
 	}
-	sa := ccv1alpha1.ManagerServiceAccount
+	if controllerutil.AddFinalizer(&cc, FinalizerContext) {
+		if err := r.Client.Update(ctx, &cc); err != nil {
+			return reconcile.Result{}, err
+		}
+	}
+	name := ccv1alpha1.ManagerName(cc.Namespace)
 	status := ccv1alpha1.CloudControlContextStatus{
 		ObservedGeneration: cc.Generation,
-		ServiceAccount:     sa,
+		ServiceAccount:     r.systemNamespace() + "/" + name,
 		PodIdentityAssociation: &ccv1alpha1.PodIdentityAssociation{
-			Namespace: cc.Namespace, ServiceAccount: sa, RoleARN: cc.Spec.RoleARN,
+			Namespace: r.systemNamespace(), ServiceAccount: name, RoleARN: cc.Spec.RoleARN,
 		},
 		Conditions: cc.Status.Conditions,
 	}
@@ -255,11 +315,11 @@ func (r *ContextReconciler) Reconcile(ctx context.Context, req reconcile.Request
 	switch {
 	case len(errs) > 0:
 		cond.Status, cond.Reason, cond.Message = metav1.ConditionFalse, "ApplyFailed", strings.Join(errs, "; ")
-	case r.Client.Get(ctx, types.NamespacedName{Namespace: cc.Namespace, Name: CloudControlManager}, &dep) != nil:
+	case r.Client.Get(ctx, types.NamespacedName{Namespace: r.systemNamespace(), Name: name}, &dep) != nil:
 		cond.Status, cond.Reason, cond.Message = metav1.ConditionFalse, "RollingOut", "the manager's Deployment is not readable yet"
 	case dep.Status.ObservedGeneration >= dep.Generation && dep.Status.AvailableReplicas >= 1 && dep.Status.UpdatedReplicas >= 1:
 		cond.Status, cond.Reason, cond.Message = metav1.ConditionTrue, "ManagerAvailable",
-			fmt.Sprintf("the manager runs in %s as %s; the role comes from the EKS Pod Identity association in status", cc.Namespace, sa)
+			fmt.Sprintf("the manager runs as %s/%s, watching %s; its AWS role comes from the EKS Pod Identity association in status", r.systemNamespace(), name, cc.Namespace)
 	default:
 		cond.Status, cond.Reason, cond.Message = metav1.ConditionFalse, "RollingOut", "the manager's Deployment is rolling out"
 	}
@@ -280,7 +340,3 @@ func (r *ContextReconciler) writeStatus(ctx context.Context, cc *ccv1alpha1.Clou
 	}
 	return nil
 }
-
-func intstrPort(p int) intstr.IntOrString { return intstr.FromInt(p) }
-
-func mustQuantity(s string) resource.Quantity { return resource.MustParse(s) }

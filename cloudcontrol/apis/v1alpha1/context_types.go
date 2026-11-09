@@ -11,19 +11,27 @@ import (
 // one per namespace, as there is one ConfigConnectorContext.
 const ContextName = "cloudcontrol"
 
-// ManagerServiceAccount is the ServiceAccount the operator gives the
-// manager in every namespace that enables Cloud Control, so the one an
-// environment's EKS Pod Identity association names.
-const ManagerServiceAccount = "ack-extensions-cloudcontrol"
+// DefaultSystemNamespace is where the operator runs, and with it every
+// environment's manager.
+const DefaultSystemNamespace = "ack-extensions-system"
+
+// ManagerName names an environment's manager: its Deployment and its
+// ServiceAccount, in the operator's namespace (as Config Connector runs
+// each namespace's manager in cnrm-system), so that nobody who may create
+// pods in the environment's namespace can run as the environment's role.
+// It is the ServiceAccount the environment's EKS Pod Identity association
+// names.
+func ManagerName(environment string) string { return "ack-extensions-cloudcontrol-" + environment }
 
 // CloudControlContextSpec is how an environment (a namespace) runs Cloud
 // Control: as which AWS role, in which region, and for which kinds.
 type CloudControlContextSpec struct {
 	// RoleARN is the environment's IAM role. The operator runs the
-	// namespace's manager as the ServiceAccount ack-extensions-cloudcontrol,
-	// and an EKS Pod Identity association, made outside the cluster (the
-	// operator holds no AWS credentials), binds that ServiceAccount to this
-	// role. status.podIdentityAssociation says exactly which association.
+	// namespace's manager as the ServiceAccount
+	// ack-extensions-cloudcontrol-<namespace> in its own namespace, and an
+	// EKS Pod Identity association, made outside the cluster (the operator
+	// holds no AWS credentials), binds that ServiceAccount to this role.
+	// status.podIdentityAssociation says exactly which association.
 	// The role's permissions are the generated policies of the kinds this
 	// context enables (task cloudcontrol:iam).
 	// +kubebuilder:validation:Pattern=`^arn:aws[a-z-]*:iam::[0-9]{12}:role/[\w+=,.@/-]+$`
@@ -82,12 +90,13 @@ type CloudControlContextStatus struct {
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
 }
 
-// CloudControlContext enables Cloud Control in its namespace: the operator
-// runs a manager there, watching only that namespace, as that namespace's
+// CloudControlContext enables Cloud Control in its namespace (an
+// environment): the operator runs a manager for it, watching only that
+// namespace and holding Kubernetes rights only there, as the environment's
 // own ServiceAccount, bound by EKS Pod Identity to the environment's IAM
-// role, serving the Cloud Control kinds the context enables. It is
-// Config Connector's ConfigConnectorContext (namespaced mode) for AWS. One
-// per namespace, named cloudcontrol.
+// role, serving the Cloud Control kinds the context enables. It is Config
+// Connector's ConfigConnectorContext (namespaced mode) for AWS. One per
+// namespace, named cloudcontrol.
 //
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status

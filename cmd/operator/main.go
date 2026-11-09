@@ -131,7 +131,9 @@ func main() {
 			setup.Error(err, "bad flags")
 			os.Exit(2)
 		}
-		cc := &operator.ContextReconciler{Client: mgr.GetClient(), Image: img, ExtraArgs: ccArgs, ExtraEnv: env}
+		// The managers run in the operator's own namespace (POD_NAMESPACE,
+		// from the downward API in config/operator).
+		cc := &operator.ContextReconciler{Client: mgr.GetClient(), Namespace: os.Getenv("POD_NAMESPACE"), Image: img, ExtraArgs: ccArgs, ExtraEnv: env}
 		if err := cc.SetupWithManager(mgr); err != nil {
 			setup.Error(err, "cloudcontrol controller")
 			os.Exit(1)
