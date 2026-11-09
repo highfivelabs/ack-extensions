@@ -35,6 +35,11 @@ func isAPIError(err error, codes ...string) bool {
 	return false
 }
 
+// made is whether this object has set the alias once.
+func made(ko *svcapitypes.AccountAlias) bool {
+	return ko.Status.ACKResourceMetadata != nil && ko.Status.ACKResourceMetadata.ARN != nil
+}
+
 func (rm *resourceManager) requiredFieldsMissingFromReadOneInput(r *resource) bool {
 	return aws.ToString(r.ko.Spec.AccountAlias) == ""
 }
@@ -54,12 +59,15 @@ func (rm *resourceManager) currentAlias(ctx context.Context) (string, error) {
 
 // sdkFind reads the account's alias. Any other alias, or none, is not
 // this object's: the create that follows sets it back (a new alias
-// replaces the old).
+// replaces the old). Before this object has set it once (no ARN yet), it
+// has nothing to find either: the create sets the alias even when the
+// account already has it, rather than the runtime refusing an object for
+// a setting that already exists.
 func (rm *resourceManager) sdkFind(ctx context.Context, r *resource) (latest *resource, err error) {
 	rlog := ackrtlog.FromContext(ctx)
 	exit := rlog.Trace("rm.sdkFind")
 	defer func() { exit(err) }()
-	if rm.requiredFieldsMissingFromReadOneInput(r) {
+	if rm.requiredFieldsMissingFromReadOneInput(r) || !made(r.ko) {
 		return nil, ackerr.NotFound
 	}
 	alias, err := rm.currentAlias(ctx)

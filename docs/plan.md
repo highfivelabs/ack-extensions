@@ -1091,7 +1091,8 @@ account-wide setting (`CreateAccountAlias`, `ListAccountAliases`,
   rule against two hyphens in a row, which a CRD pattern cannot say).
 - **Read:** the account's alias. Another alias, or none, is not this
   object's: the create that follows sets it back, since a new alias
-  replaces the old.
+  replaces the old. A new object sets the alias even when the account
+  already has it, instead of ACK's "already exists".
 - **Delete** deletes the alias only while it is still this object's.
 - **One per account.** Two objects would set their aliases in turn, as
   for `ReplicationConfiguration`.
