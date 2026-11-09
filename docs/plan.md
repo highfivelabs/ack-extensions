@@ -1,10 +1,10 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has eleven kinds:
+Status, 2026-11-09: the repository has twelve kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
-- `ec2.aws.hfl.dev` `CustomerGateway` and `VPNGateway`;
+- `ec2.aws.hfl.dev` `CustomerGateway`, `VPNGateway` and `Volume`;
 - `iam.aws.hfl.dev` `RolePolicyAttachment`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
@@ -229,6 +229,11 @@ status) and the fake cloud through the real AWS SDK clients.
     a VPN gateway is made, tagged, and attached to its VPC; it moves to
     another VPC; its ASN cannot change; deletion-policy retain leaves the
     gateway attached; delete detaches and deletes the gateway
+--- PASS: TestVolume
+    a volume is made, tagged, and available; it grows; its zone cannot
+    change; EC2's defaults are no drift (no update across three
+    resyncs); deletion-policy retain leaves the volume; delete deletes
+    the volume
 --- PASS: TestReplicaKey
     a replica is made in its Region (tags put there); a policy is put on
     the replica only; the replica Region cannot change; references
@@ -358,6 +363,11 @@ controller to show it can fail:
   to delete a gateway until it is detached). It keeps a deleted gateway
   listed in state `deleted`, as AWS does. It does not implement
   `EnableVgwRoutePropagation`, so route propagation is not built.
+- **EBS volumes.** moto creates a volume `available` at once (AWS goes
+  through `creating`), applies `ModifyVolume` at once (AWS goes through
+  `modifying` and `optimizing`), and removes a deleted volume at once.
+  It fills in a volume type when the spec leaves it out, which
+  `TestVolume` shows is no drift.
 - **KMS replica keys.**
   - moto keeps a replica in its own Region's backend, under the primary
     key's key ID, as AWS does.
@@ -419,7 +429,7 @@ its master (5.2.5 is the pin).
 | 5 | KMS `ReplicaKey` | kms-controller PR #112: open, conflicts with base, not approved; an ACK maintainer's review finds its read, update and delete act on the primary key | `ReplicateKey` yes, `UpdatePrimaryRegion` no | built: `ReplicaKey` |
 | 6 | Standalone security group rules | none; ec2-controller has rule-sync fixes open (#394, #385) | yes | skipped: open question 7 |
 | 7 | EC2 `VPNGateway` (attachment, route propagation), `CustomerGateway` | ignored in ec2-controller `v1.23.1`'s `generator.yaml` | yes, except `EnableVgwRoutePropagation` | built: `CustomerGateway`, `VPNGateway` (attachment); route propagation not built (moto has none of it) |
-| 8 | EBS `Volume`, `VolumeAttachment` | ignored in ec2-controller's `generator.yaml`; `aws-controllers-k8s/ebs-controller` exists, with no release | yes | to build |
+| 8 | EBS `Volume`, `VolumeAttachment` | ignored in ec2-controller's `generator.yaml`; `aws-controllers-k8s/ebs-controller` is an empty scaffold for the EBS direct API (no kinds, no release) | yes | `Volume` built; the attachment next |
 | 9 | CloudWatch Logs `MetricFilter`; CloudWatch `CompositeAlarm` | metric filters: cloudwatchlogs-controller PR #61, as a field on ACK's `LogGroup`. `CompositeAlarm`: ignored in cloudwatch-controller `v1.11.0`. | metric filters yes; `PutCompositeAlarm` no | skipped. Metric filters wait on open question 1. `CompositeAlarm`: moto has none of it. |
 | 10 | EventBridge Scheduler `Schedule` and `ScheduleGroup`; EventBridge `Connection` and `ApiDestination` | Scheduler: no controller (`community` issue #2784). `Connection` and `ApiDestination`: ignored in eventbridge-controller `v1.9.2`. | yes | to build |
 | 11 | ECR `ReplicationConfiguration`; `RegistryPolicy`, `RegistryScanningConfiguration` | `ReplicationConfiguration`: ecr-controller PR #121, open, conflicts with base, no review, last updated 2026-10-18. The others: none. | yes (one replication rule at most) | `ReplicationConfiguration` written, waits for its turn (branch `agent/ecr-replication-configuration`) |
@@ -850,6 +860,37 @@ it, so nothing about it could be proven.
 detach can be refused while the gateway is `detaching`. The runtime
 retries it as a recoverable error, but moto detaches at once, so this
 path is not exercised.
+
+### 6.13 `ec2.aws.hfl.dev` `Volume`
+
+An EBS volume. ACK's ec2-controller `v1.23.1` ignores it, and no pull
+request adds it. `aws-controllers-k8s/ebs-controller` is an empty
+scaffold for the EBS direct API (snapshot blocks), not for volumes.
+
+**Generated** from `CreateVolume`, `DescribeVolumes` and `DeleteVolume`.
+It needs patch 0002 to the generator: `CreateVolume` was on the
+generator's list of operations whose output keeps the v1 SDK's shape
+name, so the generated code called for `*ec2.Volume`, which SDK v2 does
+not have (`UPSTREAM.md`, Patches). With the patch, only `services/ec2`
+regenerates differently.
+
+- **Update:** `ModifyVolume` changes the size, type, IOPS, throughput and
+  multi-attach; the tags are synced as for the gateways. Tags go on
+  create as `TagSpecifications`. Both are copied from ec2-controller's
+  `InternetGateway`.
+- **Immutable:** the Availability Zone, snapshot, encryption, KMS key and
+  Outpost.
+- **Server defaults are no drift.** EC2 fills in the type, IOPS,
+  throughput, multi-attach and encryption, each for some volume types
+  only. `custom_delta.go` keeps them from reading as drift, as for the
+  Auto Scaling kinds.
+- **Read:** `InvalidVolume.NotFound` is not found, and a volume
+  `deleting` or `deleted` reads as gone.
+- **Synced** when `available` or `in-use`.
+
+**Not proven:** a modification's `modifying` and `optimizing` states,
+and EBS's limit of one modification per six hours. moto applies a
+change at once, and a second change within six hours is refused on AWS.
 
 ## 7. The operator: ACK's identity, beside ACK's controller
 
