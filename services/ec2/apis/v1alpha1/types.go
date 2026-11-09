@@ -534,6 +534,7 @@ type CapacityReservationTargetResponse struct {
 type CarrierGateway struct {
 	OwnerID *string `json:"ownerID,omitempty"`
 	Tags    []*Tag  `json:"tags,omitempty"`
+	VPCID   *string `json:"vpcID,omitempty"`
 }
 
 // Information about the client certificate used for authentication.
@@ -646,6 +647,7 @@ type ClientVPNEndpoint struct {
 	SessionTimeoutHours        *int64    `json:"sessionTimeoutHours,omitempty"`
 	SplitTunnel                *bool     `json:"splitTunnel,omitempty"`
 	Tags                       []*Tag    `json:"tags,omitempty"`
+	VPCID                      *string   `json:"vpcID,omitempty"`
 	VPNPort                    *int64    `json:"vpnPort,omitempty"`
 }
 
@@ -1061,6 +1063,7 @@ type EBSBlockDevice struct {
 type EBSInstanceBlockDevice struct {
 	AssociatedResource  *string `json:"associatedResource,omitempty"`
 	DeleteOnTermination *bool   `json:"deleteOnTermination,omitempty"`
+	Status              *string `json:"status,omitempty"`
 	VolumeID            *string `json:"volumeID,omitempty"`
 	VolumeOwnerID       *string `json:"volumeOwnerID,omitempty"`
 }
@@ -1080,6 +1083,7 @@ type EC2InstanceConnectEndpoint struct {
 	PreserveClientIP *bool   `json:"preserveClientIP,omitempty"`
 	StateMessage     *string `json:"stateMessage,omitempty"`
 	Tags             []*Tag  `json:"tags,omitempty"`
+	VPCID            *string `json:"vpcID,omitempty"`
 }
 
 // ENA Express uses Amazon Web Services Scalable Reliable Datagram (SRD) technology
@@ -2192,6 +2196,7 @@ type InstanceNetworkInterfaceAttachment struct {
 	DeleteOnTermination *bool   `json:"deleteOnTermination,omitempty"`
 	DeviceIndex         *int64  `json:"deviceIndex,omitempty"`
 	NetworkCardIndex    *int64  `json:"networkCardIndex,omitempty"`
+	Status              *string `json:"status,omitempty"`
 }
 
 // Describes a network interface.
@@ -2362,6 +2367,7 @@ type InternetGateway struct {
 // Describes the attachment of a VPC to an internet gateway or an egress-only
 // internet gateway.
 type InternetGatewayAttachment struct {
+	State *string `json:"state,omitempty"`
 	VPCID *string `json:"vpcID,omitempty"`
 }
 
@@ -2982,6 +2988,7 @@ type NetworkInterfaceAttachment struct {
 	InstanceID          *string `json:"instanceID,omitempty"`
 	InstanceOwnerID     *string `json:"instanceOwnerID,omitempty"`
 	NetworkCardIndex    *int64  `json:"networkCardIndex,omitempty"`
+	Status              *string `json:"status,omitempty"`
 }
 
 // Describes an attachment change.
@@ -3857,6 +3864,7 @@ type SecurityGroupRuleRequest struct {
 // (https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_AssociateSecurityGroupVpc.html).
 type SecurityGroupVPCAssociation struct {
 	StateReason *string `json:"stateReason,omitempty"`
+	VPCID       *string `json:"vpcID,omitempty"`
 	VPCOwnerID  *string `json:"vpcOwnerID,omitempty"`
 }
 
@@ -4715,6 +4723,7 @@ type VPC struct {
 
 // Describes an attachment between a virtual private gateway and a VPC.
 type VPCAttachment struct {
+	State *string `json:"state,omitempty"`
 	VPCID *string `json:"vpcID,omitempty"`
 }
 
@@ -4843,6 +4852,7 @@ type VPNConnection struct {
 	CoreNetworkARN           *string `json:"coreNetworkARN,omitempty"`
 	CoreNetworkAttachmentARN *string `json:"coreNetworkAttachmentARN,omitempty"`
 	CustomerGatewayID        *string `json:"customerGatewayID,omitempty"`
+	State                    *string `json:"state,omitempty"`
 	Tags                     []*Tag  `json:"tags,omitempty"`
 	TransitGatewayID         *string `json:"transitGatewayID,omitempty"`
 	Type                     *string `json:"type_,omitempty"`
@@ -4885,17 +4895,20 @@ type VPNConnectionOptionsSpecification struct {
 }
 
 // Describes a virtual private gateway.
-type VPNGateway struct {
-	AmazonSideASN    *int64  `json:"amazonSideASN,omitempty"`
-	AvailabilityZone *string `json:"availabilityZone,omitempty"`
-	Tags             []*Tag  `json:"tags,omitempty"`
-	Type             *string `json:"type_,omitempty"`
-	VPNGatewayID     *string `json:"vpnGatewayID,omitempty"`
+type VPNGateway_SDK struct {
+	AmazonSideASN    *int64           `json:"amazonSideASN,omitempty"`
+	AvailabilityZone *string          `json:"availabilityZone,omitempty"`
+	State            *string          `json:"state,omitempty"`
+	Tags             []*Tag           `json:"tags,omitempty"`
+	Type             *string          `json:"type_,omitempty"`
+	VPCAttachments   []*VPCAttachment `json:"vpcAttachments,omitempty"`
+	VPNGatewayID     *string          `json:"vpnGatewayID,omitempty"`
 }
 
 // Describes a static route for a VPN connection.
 type VPNStaticRoute struct {
 	DestinationCIDRBlock *string `json:"destinationCIDRBlock,omitempty"`
+	State                *string `json:"state,omitempty"`
 }
 
 // The tunnel options for a single VPN tunnel.
