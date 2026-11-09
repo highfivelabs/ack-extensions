@@ -82,6 +82,15 @@ func (rm *resourceManager) sdkFind(
 
 	var resp *svcsdk.DescribeScheduledActionsOutput
 	resp, err = rm.sdkapi.DescribeScheduledActions(ctx, input)
+	// A one-time action EC2 Auto Scaling ran and deleted is completed, not
+	// gone (hooks.go).
+	if err == nil {
+		if done := rm.completedOneTimeAction(r, resp); done != nil {
+			rm.metrics.RecordAPICall("READ_MANY", "DescribeScheduledActions", nil)
+			return done, nil
+		}
+	}
+
 	rm.metrics.RecordAPICall("READ_MANY", "DescribeScheduledActions", err)
 	if err != nil {
 		var awsErr smithy.APIError
@@ -395,6 +404,11 @@ func (rm *resourceManager) sdkDelete(
 	defer func() {
 		exit(err)
 	}()
+	// A completed one-time action is already gone from EC2 Auto Scaling.
+	if completed(r) {
+		return nil, nil
+	}
+
 	input, err := rm.newDeleteRequestPayload(r)
 	if err != nil {
 		return nil, err

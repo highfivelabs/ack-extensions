@@ -29,7 +29,7 @@ rules:
   - apiGroups: ["rbac.authorization.k8s.io"]
     resources: ["clusterroles"]
     verbs: ["bind"]
-    resourceNames: ["ack-extensions-autoscaling-manager", "ack-extensions-ec2-manager", "ack-extensions-iam-manager", "ack-extensions-kms-manager", "ack-extensions-lambda-manager", "ack-extensions-rds-manager"]
+    resourceNames: ["ack-extensions-applicationautoscaling-manager", "ack-extensions-autoscaling-manager", "ack-extensions-ec2-manager", "ack-extensions-iam-manager", "ack-extensions-kms-manager", "ack-extensions-lambda-manager", "ack-extensions-rds-manager"]
   # The rules of the leader-election Role it makes for each manager:
   # Kubernetes lets a Role be made only by someone who holds its rules.
   - apiGroups: ["coordination.k8s.io"]
