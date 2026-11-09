@@ -18,6 +18,9 @@ import (
 	// SSHPublicKey is UploadSSHPublicKey, which the generator does not read
 	// as a create.
 	_ "github.com/highfivelabs/ack-extensions/services/iam/pkg/resource/ssh_public_key"
+	// AccountAlias is CreateAccountAlias and ListAccountAliases, an
+	// account-wide setting the generator does not read as a resource.
+	_ "github.com/highfivelabs/ack-extensions/services/iam/pkg/resource/account_alias"
 	// AccountPasswordPolicy is UpdateAccountPasswordPolicy and
 	// GetAccountPasswordPolicy, an account-wide setting the generator does
 	// not read as a resource.

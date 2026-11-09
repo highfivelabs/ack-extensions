@@ -1,6 +1,6 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has twenty-one kinds:
+Status, 2026-11-09: the repository has twenty-two kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
@@ -8,7 +8,7 @@ Status, 2026-11-09: the repository has twenty-one kinds:
   `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
-- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey` and `AccountPasswordPolicy`;
+- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias` and `AccountPasswordPolicy`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
 - `rds.aws.hfl.dev` `OptionGroup`;
@@ -211,6 +211,12 @@ status) and the fake cloud through the real AWS SDK clients.
     key; delete deletes it
 --- PASS: TestStatusDefaultAndBodyAreNoDrift, TestStatusIsCompared
           (SSH public key unit tests)
+--- PASS: TestAccountAlias
+    the alias is set and settles (no update across three resyncs); an
+    alias set outside Kubernetes is put back; the CRD refuses what IAM
+    would; the alias cannot change; deletion-policy retain leaves it;
+    delete deletes it
+--- PASS: TestSameAliasIsNoDrift (account alias unit test)
 --- PASS: TestAccountPasswordPolicy
     the policy is set, IAM's defaults are no drift, and it settles (no
     update across three resyncs); a changed length is put; a change
@@ -467,6 +473,9 @@ controller to show it can fail:
 - **IAM SSH public keys.** moto does not parse the key body (IAM
   refuses one that is not a valid RSA key of 2048 bits or more), returns
   it as uploaded, and does not refuse a key the user already has.
+- **IAM account alias.** moto replaces the alias on create, as AWS
+  does, and does not check that another account already has it (AWS
+  answers `EntityAlreadyExists`).
 - **IAM password policy.** moto stores the policy and fills IAM's
   defaults for fields left out, as AWS does; it checks the lengths and
   ages IAM limits.
@@ -1242,6 +1251,30 @@ create, and it is known by an ID IAM gives it.
 
 **Not proven:** IAM parsing the key (moto does not), a duplicate key
 being refused, and real AWS.
+### 6.21 `iam.aws.hfl.dev` `AccountAlias`
+
+The AWS account's alias, the name in its sign-in URL: Terraform's
+`aws_iam_account_alias`. ACK's iam-controller `v1.11.3` has none, and no
+pull request adds one (rechecked 2026-11-09).
+
+**Hand-written** on ACK's runtime, on PR #184's skeleton: an
+account-wide setting (`CreateAccountAlias`, `ListAccountAliases`,
+`DeleteAccountAlias`), not a resource the generator reads.
+
+- **Spec:** `accountAlias`, immutable, with IAM's pattern (except the
+  rule against two hyphens in a row, which a CRD pattern cannot say).
+- **Read:** the account's alias. Another alias, or none, is not this
+  object's: the create that follows sets it back, since a new alias
+  replaces the old. A new object sets the alias even when the account
+  already has it, instead of ACK's "already exists".
+- **Delete** deletes the alias only while it is still this object's.
+- **One per account.** Two objects would set their aliases in turn, as
+  for `ReplicationConfiguration`.
+- **Errors:** an alias another account has (`EntityAlreadyExists`) is
+  terminal.
+
+**Not proven:** an alias another account already has (moto does not
+check), and real AWS.
 ### 6.22 `iam.aws.hfl.dev` `AccountPasswordPolicy`
 
 The AWS account's password policy for IAM users: Terraform's

@@ -903,6 +903,7 @@ healthimaging,Datastore,3,,0,,0,3,false,
 healthlake,DataTransformationProfile,10,,0,,0,10,false,
 healthlake,FHIRDatastore,14,,0,,0,14,false,
 iam,AccessKey,3,,0,,0,3,false,
+iam,AccountAlias,0,,0,AccountAlias,0,0,false,outside-denominator;ours_crd_attributes=1
 iam,AccountPasswordPolicy,0,,0,AccountPasswordPolicy,0,0,false,outside-denominator;ours_crd_attributes=9
 iam,Group,5,Group,4,,0,1,false,
 iam,GroupPolicy,3,,0,,0,3,false,
