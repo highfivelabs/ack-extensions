@@ -1,6 +1,6 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has twenty-six kinds:
+Status, 2026-11-09: the repository has twenty-seven kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
@@ -11,7 +11,7 @@ Status, 2026-11-09: the repository has twenty-six kinds:
 - `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias` and `AccountPasswordPolicy`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
-- `organizations.aws.hfl.dev` `Policy` and `PolicyAttachment`;
+- `organizations.aws.hfl.dev` `DelegatedAdministrator`, `Policy` and `PolicyAttachment`;
 - `rds.aws.hfl.dev` `OptionGroup`;
 - `rds.aws.hfl.dev` `DBProxyTarget`;
 - `rds.aws.hfl.dev` `DBRoleAssociation`;
@@ -550,6 +550,13 @@ controller to show it can fail:
     the last SCP be detached. It answers `OrganizationalUnitNotFoundException`
     for an unknown OU, and attaches `FullAWSAccess` to the root when the
     organization is made, as AWS does.
+  - Delegated administrators: moto refuses the management account
+    (`ConstraintViolationException`), a second registration
+    (`AccountAlreadyRegisteredException`), a second deregistration
+    (`AccountNotRegisteredException`) and a principal it does not know
+    (`InvalidInputException`, including `sso.amazonaws.com`), as AWS does
+    for the first three. It does not require trusted access for the
+    service, and takes more than one administrator for a service.
 - **An association's status.** moto marks a new association `ACTIVE` at
   once. On AWS it is `PENDING` first, and `INVALID` when RDS cannot assume
   the role. The rule (synced only when `ACTIVE`) is unit-tested.
@@ -1503,6 +1510,43 @@ is unit-tested; that a policy type must be enabled on the root before a
 policy of that type is attached (moto does not check); that the last SCP
 cannot be detached from a target (AWS refuses, `ConstraintViolationException`);
 real AWS.
+
+### 6.27 `organizations.aws.hfl.dev` `DelegatedAdministrator`
+
+A member account registered as the delegated administrator of an AWS
+service for the organization: the account a security team runs GuardDuty,
+Security Hub, Config or Identity Center from. F01's third kind. Upstream
+rechecked 2026-11-09: no release after organizations-controller `v1.7.0`,
+no pull request; community #2884 still only proposes it.
+
+**Generated**, from operations mapped in `generator.yaml`:
+`RegisterDelegatedAdministrator` is the create,
+`DeregisterDelegatedAdministrator` the delete, and
+`ListDelegatedAdministrators` the read, filtered by `servicePrincipal` and
+matched on `accountID` (the list's `Id`, renamed). About 90% of the new
+Go is generated; written here are two hook templates (paging, and an
+idempotent deregister, `hooks.go`), the alias of ACK's `Account`
+(`apis/v1alpha1/ack_kinds.go`) and the scheme registration.
+
+- **Reference:** `accountRef` names ACK's `Account`
+  (`organizations.services.k8s.aws`, its `status.accountID`), through a
+  type alias, as `PolicyAttachment`'s `targetRef` does for ACK's OU. The
+  SDK's own `Account` shape is ignored so the alias does not clash.
+- **Immutable:** the account and the service principal. **Delete** treats
+  `AccountNotRegisteredException` and a gone account as done.
+  **Terminal:** `InvalidInputException` (an unknown principal),
+  `AccountAlreadyRegisteredException`, `ConstraintViolationException` (the
+  management account, or a service's limit of one administrator).
+- **`status.ackResourceMetadata.arn`** is the account's ARN.
+- **Trusted access first:** AWS requires the service's trusted access
+  (`EnableAWSServiceAccess`) before most services accept a delegated
+  administrator; that is `Organization.awsServiceAccessPrincipals`
+  (next). moto does not require it.
+
+**Not proven on moto:** that trusted access must be enabled first; each
+service's own limit on administrators (moto takes several for GuardDuty;
+AWS takes one); the principals moto does not know (it refuses
+`sso.amazonaws.com`, which AWS accepts); real AWS.
 
 ## 7. The operator: ACK's identity, beside ACK's controller
 
