@@ -471,7 +471,7 @@ its master (5.2.5 is the pin).
 | 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`) | yes | to build |
 | 13 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237: mergeable, active 2026-11-06 | none | skipped: may be close to merging, and moto has none of it |
 | 14 | Route 53 DNSSEC and `KeySigningKey`, VPC association authorization | ignored in route53-controller's `generator.yaml` | none | skipped: moto has none of it |
-| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | `UserGroupMembership` built (non-exclusive, open question 9); the rest next |
+| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | `UserGroupMembership` built (non-exclusive, open question 9); `AccessKey` waits on open question 10; the rest next |
 | 16 | EC2 `PlacementGroup` | ignored in ec2-controller's `generator.yaml` | none | skipped: moto has none of it |
 | 17 | S3 `Object`, the account's public access block | none | yes | to build |
 | 18 | EC2 `KeyPair` | ec2-controller PR #396: both reviews' changes made, main merged in 2026-11-04, mergeable | yes | skipped: close to merging; wait for the release |
@@ -1299,3 +1299,24 @@ Before it can run on a real cluster:
    a group taken off its list is still removed. Assumed (coordinator,
    2026-11-09); the builder to confirm. An exclusive group-side kind can
    be added later beside it.
+10. **IAM `AccessKey`** (rank 15). `CreateAccessKey` returns the secret
+    access key once, and never again. A kind has to put it somewhere,
+    and ACK's runtime has no pattern for writing a secret out (it only
+    reads them, as `SecretKeyReference`). Options:
+    - the controller writes a Kubernetes Secret, named in the spec, in
+      the object's namespace. The manager then needs rights to create
+      and update Secrets, and a lost Secret means rotating the key;
+    - the controller writes to an external secret store (Secrets Manager,
+      through a reference), which adds a second service and its rights
+      to the IAM manager;
+    - leave `AccessKey` out.
+
+    Recommended: leave it out. A static key is a long-lived credential
+    for a user, where the identity in this repository is a workload's
+    role (IRSA or EKS Pod Identity, section 7), and the coordinator
+    reports the builder's direction for identity points the same way.
+    Each of the other options would make this repository a writer of
+    credentials, which nothing else here is. If a package needs one
+    later, the first option is the smallest. `LoginProfile`,
+    `SSHPublicKey`, the account alias and the password policy do not
+    depend on the answer and go ahead.
