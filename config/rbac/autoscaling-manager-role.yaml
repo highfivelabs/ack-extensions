@@ -26,6 +26,7 @@ rules:
   - autoscaling.aws.hfl.dev
   resources:
   - scalingpolicies
+  - scheduledactions
   verbs:
   - create
   - delete
@@ -38,6 +39,7 @@ rules:
   - autoscaling.aws.hfl.dev
   resources:
   - scalingpolicies/status
+  - scheduledactions/status
   verbs:
   - get
   - patch

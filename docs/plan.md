@@ -1,8 +1,8 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has six kinds:
+Status, 2026-11-09: the repository has seven kinds:
 
-- `autoscaling.aws.hfl.dev` `ScalingPolicy`;
+- `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
 - `iam.aws.hfl.dev` `RolePolicyAttachment`;
 - `lambda.aws.hfl.dev` `Permission`;
 - `rds.aws.hfl.dev` `OptionGroup`;
@@ -72,7 +72,7 @@ Two ways to build a kind:
 1. **Generated**, when the AWS API has a Create/Describe/Delete shape the
    generator recognises (`OptionGroup`), or a Put/Describe/Delete shape
    mapped to one in `generator.yaml`'s `operations`, as ACK does for its
-   own Put-shaped kinds (`ScalingPolicy`). The `generator.yaml` entry and
+   own Put-shaped kinds (`ScalingPolicy`, `ScheduledAction`). The `generator.yaml` entry and
    hook templates are ACK's, copied from upstream where they exist, and
    the generated code is regenerated here, never copied.
 2. **Hand-written on ACK's runtime interfaces**, when the API's shape is
@@ -203,6 +203,11 @@ status) and the fake cloud through the real AWS SDK clients.
     server defaults are no drift (no update across three resyncs); the
     policy name cannot change; deletion-policy retain leaves the
     policy; delete removes the policies
+--- PASS: TestScheduledAction
+    a recurring action is put and settles; a changed schedule is put
+    again; a one-time action is put with its start time; the action name
+    cannot change; deletion-policy retain leaves the action; delete
+    removes the actions
 --- PASS: TestPermission
     a service may invoke the function; an account may invoke an alias
     (the spec keeps the account ID as written); the CRD refuses no
@@ -295,6 +300,10 @@ controller to show it can fail:
   - The read treats an empty predictive configuration as none. Server
     defaults count as no drift (section 6.6). `TestScalingPolicy` shows
     the object then stays synced across resyncs.
+- **EC2 Auto Scaling scheduled actions.** moto stores an action as
+  given. It does not compute a recurring action's next start time, does
+  not delete a one-time action after it runs, and returns no
+  `ScheduledActionARN`.
 - **An association's status.** moto marks a new association `ACTIVE` at
   once. On AWS it is `PENDING` first, and `INVALID` when RDS cannot assume
   the role. The rule (synced only when `ACTIVE`) is unit-tested.
@@ -332,7 +341,7 @@ its master (5.2.5 is the pin).
 | 1 | Lambda `Permission` (`AddPermission`/`RemovePermission`) | No PR; `community` issues #3051 and #2659 are open. lambda-controller `v1.19.0`'s `Alias.permissions` adds permissions to an alias only. | yes | built: `Permission` |
 | 2 | Secrets Manager rotation on `Secret` | secretsmanager-controller PR #69 | yes | skipped: a field on an existing kind (open question 1) |
 | 3 | RDS role associations | none | adds yes, removes no (section 4.4) | built: `DBRoleAssociation` |
-| 4 | EC2 Auto Scaling `ScalingPolicy` and `ScheduledAction`; Application Auto Scaling `ScheduledAction` | none: autoscaling-controller `v1.5.0` has only `AutoScalingGroup`; applicationautoscaling-controller `v1.9.0` has `ScalableTarget` and `ScalingPolicy` | yes | `ScalingPolicy` built; the two `ScheduledAction`s next |
+| 4 | EC2 Auto Scaling `ScalingPolicy` and `ScheduledAction`; Application Auto Scaling `ScheduledAction` | none: autoscaling-controller `v1.5.0` has only `AutoScalingGroup`; applicationautoscaling-controller `v1.9.0` has `ScalableTarget` and `ScalingPolicy` | yes | `ScalingPolicy` and EC2 Auto Scaling `ScheduledAction` built; Application Auto Scaling `ScheduledAction` next |
 | 5 | KMS `ReplicaKey` | kms-controller PR #112: open, conflicts with base, not approved, last updated 2026-10-18 | `ReplicateKey` yes, `UpdatePrimaryRegion` no | to build |
 | 6 | Standalone security group rules | none; ec2-controller has rule-sync fixes open (#394, #385) | yes | skipped: open question 7 |
 | 7 | EC2 `VPNGateway` (attachment, route propagation), `CustomerGateway` | ignored in ec2-controller `v1.23.1`'s `generator.yaml` | yes, except `EnableVgwRoutePropagation` | to build |
@@ -594,6 +603,34 @@ hard-code it for the generated packages. So a generated kind cannot
 reference ACK's kind of its own service. The group is named by
 `autoScalingGroupName`, and section 8 tracks the reference.
 
+### 6.7 `autoscaling.aws.hfl.dev` `ScheduledAction`
+
+A scheduled change of an EC2 Auto Scaling group's minimum, maximum or
+desired capacity: once at a start time, or on a cron recurrence in a
+time zone. ACK's autoscaling-controller `v1.5.0` has none, and no pull
+request adds it.
+
+**Generated** as `ScalingPolicy` is:
+
+- `PutScheduledUpdateGroupAction` creates and updates;
+- `DescribeScheduledActions` reads, asked for the one action by name;
+- `DeleteScheduledAction` deletes.
+
+The action name and group are immutable, and the deprecated `Time` field
+is ignored.
+
+**Server defaults are no drift.** For a recurring action, EC2 Auto
+Scaling reports the next start time it computed, and it may report the
+time zone it applies. `custom_delta.go`, copied from ACK's
+applicationautoscaling-controller as for `ScalingPolicy`, keeps them
+from reading as drift.
+
+**Known gap: a one-time action after it runs.** AWS deletes a one-time
+action once it has run. The object then reads as not found, and the
+runtime puts it again with a start time in the past, which AWS refuses.
+The object keeps a recoverable error until it is deleted. moto cannot
+show this, and it is not handled.
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)
@@ -722,12 +759,12 @@ ok: moto ready in fake-aws
 == ACK's rds-controller v1.14.2, from its own chart
 ok: ACK's controller ack-system/ack-rds-rds-chart running as ack-system/ack-rds-controller
 == ours: config/default by ko
-ok: CRDs installed: rolepolicyattachments.iam, permissions.lambda, dbproxytargets.rds, dbroleassociations.rds, optiongroups.rds (*.aws.hfl.dev); operator running
+ok: CRDs installed: scalingpolicies.autoscaling, scheduledactions.autoscaling, rolepolicyattachments.iam, permissions.lambda, dbproxytargets.rds, dbroleassociations.rds, optiongroups.rds (*.aws.hfl.dev); operator running
 == identity own: our manager beside ACK's, as ACK's role
 ok: manager ack-system/ack-extensions-rds-manager rolled out
 ok: manager pod runs as ack-system/ack-extensions-rds-manager, annotated with ACK's role arn:aws:iam::123456789012:role/ack-rds-controller
 ok: same credentials Secret (aws-creds), region (us-west-2) and endpoint as ACK's controller
-ok: no iam or lambda manager: no ACK iam- or lambda-controller is installed
+ok: no autoscaling, iam or lambda manager: none of their ACK controllers is installed
 ok: rights: ours manages *.rds.aws.hfl.dev and only reads ACK's rds kinds and Roles; ACK's controller has nothing of ours
 == gap kinds reconcile against moto
 ok: port-forward to moto
