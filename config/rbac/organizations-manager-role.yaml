@@ -25,6 +25,7 @@ rules:
 - apiGroups:
   - organizations.aws.hfl.dev
   resources:
+  - delegatedadministrators
   - organizations
   - policies
   - policyattachments
@@ -39,6 +40,7 @@ rules:
 - apiGroups:
   - organizations.aws.hfl.dev
   resources:
+  - delegatedadministrators/status
   - organizations/status
   - policies/status
   - policyattachments/status
@@ -49,6 +51,8 @@ rules:
 - apiGroups:
   - organizations.services.k8s.aws
   resources:
+  - accounts
+  - accounts/status
   - organizationalunits
   - organizationalunits/status
   verbs:

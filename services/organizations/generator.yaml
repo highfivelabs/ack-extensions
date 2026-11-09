@@ -7,6 +7,10 @@
 # ACK's generator.yaml ignores Policy and Organization; community issue
 # #2884 proposes Policy, PolicyAttachment and DelegatedAdministrator, with
 # no pull request (docs/plan.md, section 6.25).
+# Every response wraps the policy in a PolicySummary (id, ARN, name,
+# description, type) beside its content, so the generator cannot read the
+# identifier or the spec's name, description and type back; the hooks do
+# (hooks.go). Tags are not in the response either: ListTagsForResource.
 #
 # PolicyAttachment is generated from AttachPolicy (create), DetachPolicy
 # (delete) and ListTargetsForPolicy (read, matched on the target),
@@ -16,6 +20,12 @@
 # targetRef names ACK's OrganizationalUnit; the generator writes such a
 # reference as a type of this package, so apis/v1alpha1/ack_kinds.go
 # aliases ACK's type.
+#
+# DelegatedAdministrator is generated from RegisterDelegatedAdministrator
+# (create), DeregisterDelegatedAdministrator (delete) and
+# ListDelegatedAdministrators (read, filtered by the service principal and
+# matched on the account), mapped below. accountRef names ACK's Account,
+# through a type alias of ACK's type (apis/v1alpha1/ack_kinds.go).
 #
 # Organization is generated from CreateOrganization (create) and
 # DescribeOrganization (read, which takes no input: it finds the account's
@@ -27,11 +37,6 @@
 # section 9, question 12). The enabled policy types and trusted service
 # access are custom fields, applied by hand-written syncs (hooks.go) after
 # the create and in the update (there is no UpdateOrganization).
-#
-# Every response wraps the policy in a PolicySummary (id, ARN, name,
-# description, type) beside its content, so the generator cannot read the
-# identifier or the spec's name, description and type back; the hooks do
-# (hooks.go). Tags are not in the response either: ListTagsForResource.
 operations:
   AttachPolicy:
     operation_type: Create
@@ -42,7 +47,20 @@ operations:
   ListTargetsForPolicy:
     operation_type: List
     resource_name: PolicyAttachment
+  RegisterDelegatedAdministrator:
+    operation_type: Create
+    resource_name: DelegatedAdministrator
+  DeregisterDelegatedAdministrator:
+    operation_type: Delete
+    resource_name: DelegatedAdministrator
+  ListDelegatedAdministrators:
+    operation_type: List
+    resource_name: DelegatedAdministrator
 ignore:
+  # The SDK's Account shape (no field of ours uses it) would clash with the
+  # alias of ACK's Account kind (apis/v1alpha1/ack_kinds.go).
+  shape_names:
+    - Account
   operations:
     # Never called: an organization is not deleted from Kubernetes.
     - DeleteOrganization
@@ -128,6 +146,36 @@ resources:
         template_path: hooks/policy_attachment/sdk_read_many_post_request.go.tpl
       sdk_delete_post_request:
         template_path: hooks/policy_attachment/sdk_delete_post_request.go.tpl
+  DelegatedAdministrator:
+    tags:
+      ignore: true
+    exceptions:
+      terminal_codes:
+        - InvalidInputException
+        - AccountAlreadyRegisteredException
+        - ConstraintViolationException
+    renames:
+      operations:
+        ListDelegatedAdministrators:
+          output_fields:
+            Id: AccountId
+    list_operation:
+      match_fields:
+        - AccountId
+    fields:
+      AccountID:
+        is_primary_key: true
+        is_immutable: true
+        references:
+          resource: Account
+          path: Status.AccountID
+      ServicePrincipal:
+        is_immutable: true
+    hooks:
+      sdk_read_many_post_request:
+        template_path: hooks/delegated_administrator/sdk_read_many_post_request.go.tpl
+      sdk_delete_post_request:
+        template_path: hooks/delegated_administrator/sdk_delete_post_request.go.tpl
   Organization:
     tags:
       ignore: true

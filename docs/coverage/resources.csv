@@ -1323,6 +1323,7 @@ opensearchservice,Domain,87,Domain,62,,0,25,false,official_unmapped=7
 opensearchservice,VPCEndpoint,0,VPCEndpoint,0,,0,0,false,outside-denominator;official_crd_attributes=3
 opensearchservice,VPCEndpointAccess,0,VPCEndpointAccess,0,,0,0,false,outside-denominator;official_crd_attributes=3
 organizations,Account,6,Account,5,,0,1,false,official_unmapped=1
+organizations,DelegatedAdministrator,0,,0,DelegatedAdministrator,0,0,false,outside-denominator;ours_crd_attributes=2
 organizations,Organization,1,,0,Organization,1,0,false,ours_unmapped=2
 organizations,OrganizationalUnit,4,OrganizationalUnit,4,,0,0,false,
 organizations,Policy,7,,0,Policy,6,1,false,

@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	// PolicyAttachment's targetRef names ACK's OrganizationalUnit
+	// Our kinds' references name ACK's Account and OrganizationalUnit
 	// (organizations.services.k8s.aws), read through the manager's client.
 	_ = ackorgapitypes.AddToScheme(scheme)
 }
