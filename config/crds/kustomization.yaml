@@ -13,6 +13,7 @@ resources:
   - bases/ecr.aws.hfl.dev_replicationconfigurations.yaml
   - bases/eventbridge.aws.hfl.dev_apidestinations.yaml
   - bases/eventbridge.aws.hfl.dev_connections.yaml
+  - bases/iam.aws.hfl.dev_accountpasswordpolicies.yaml
   - bases/iam.aws.hfl.dev_rolepolicyattachments.yaml
   - bases/kms.aws.hfl.dev_replicakeys.yaml
   - bases/lambda.aws.hfl.dev_permissions.yaml
