@@ -7,6 +7,7 @@ resources:
   - bases/autoscaling.aws.hfl.dev_scalingpolicies.yaml
   - bases/autoscaling.aws.hfl.dev_scheduledactions.yaml
   - bases/ec2.aws.hfl.dev_customergateways.yaml
+  - bases/ec2.aws.hfl.dev_volumeattachments.yaml
   - bases/ec2.aws.hfl.dev_volumes.yaml
   - bases/ec2.aws.hfl.dev_vpngateways.yaml
   - bases/eventbridge.aws.hfl.dev_apidestinations.yaml
