@@ -198,6 +198,11 @@ status) and the fake cloud through the real AWS SDK clients.
     retain leaves the role associated; delete calls
     RemoveRoleFromDBCluster and keeps the object while it fails (moto
     does not implement it, section 4.4)
+--- PASS: TestScalingPolicy
+    a target-tracking policy is put; a changed target is put again;
+    server defaults are no drift (no update across three resyncs); the
+    policy name cannot change; deletion-policy retain leaves the
+    policy; delete removes the policies
 --- PASS: TestPermission
     a service may invoke the function; an account may invoke an alias
     (the spec keeps the account ID as written); the CRD refuses no
@@ -226,6 +231,9 @@ controller to show it can fail:
 - With `DBRoleAssociation`'s delete returning before
   `RemoveRoleFromDBCluster`, the delete step failed: "the removal
   attempted and the object kept: not within 1m30s: object not kept".
+- With `ScalingPolicy`'s server-defaults hook removed from its delta,
+  the defaults step failed: "the policy was put again 3 times across
+  resyncs: the server's defaults read as drift".
 - With `Permission`'s read overwriting fields the spec sets,
   `TestFillUnset` failed: "principal rewritten to
   arn:aws:iam::210987654321:root".
