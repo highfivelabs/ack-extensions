@@ -129,9 +129,25 @@ can() { kubectl auth can-i "$1" "$2" --as="system:serviceaccount:${ACK_NS}:$3" $
 [[ "$(can create dbproxytargets.rds.aws.hfl.dev ack-extensions-rds-manager default)" == yes ]] || fail "our manager cannot create dbproxytargets"
 [[ "$(can delete dbinstances.rds.services.k8s.aws ack-extensions-rds-manager default)" == no ]] || fail "our manager may delete ACK's DBInstances"
 [[ "$(can get dbproxies.rds.services.k8s.aws ack-extensions-rds-manager default)" == yes ]] || fail "our manager cannot read ACK's DBProxies (references)"
-[[ "$(can get roles.iam.services.k8s.aws ack-extensions-rds-manager default)" == yes ]] || fail "our manager cannot read ACK's Roles (references)"
-[[ "$(can delete roles.iam.services.k8s.aws ack-extensions-rds-manager default)" == no ]] || fail "our manager may delete ACK's Roles"
-[[ "$(can create dbproxytargets.rds.aws.hfl.dev ack-rds-controller default)" == no ]] || fail "ACK's controller may create our kinds"
+# ACK's iam CRDs are not installed here (no iam-controller), so `kubectl
+# auth can-i` cannot resolve roles.iam.services.k8s.aws through discovery
+# and would ask about a core resource of that literal name instead. A
+# SubjectAccessReview names the group and resource itself.
+sar() { # sar <verb> <group> <resource> <serviceaccount> <namespace>: prints true or false
+  local allowed
+  allowed="$(kubectl create -o jsonpath='{.status.allowed}' -f - <<EOF
+apiVersion: authorization.k8s.io/v1
+kind: SubjectAccessReview
+spec:
+  user: system:serviceaccount:${ACK_NS}:$4
+  groups: [system:serviceaccounts, "system:serviceaccounts:${ACK_NS}", system:authenticated]
+  resourceAttributes: {verb: $1, group: $2, resource: $3, namespace: $5}
+EOF
+)"
+  [[ "${allowed}" == true ]] && echo true || echo false
+}
+[[ "$(sar get iam.services.k8s.aws roles ack-extensions-rds-manager default)" == true ]] || fail "our manager cannot read ACK's Roles (references)"
+[[ "$(sar delete iam.services.k8s.aws roles ack-extensions-rds-manager default)" == false ]] || fail "our manager may delete ACK's Roles"[[ "$(can create dbproxytargets.rds.aws.hfl.dev ack-rds-controller default)" == no ]] || fail "ACK's controller may create our kinds"
 ok "rights: ours manages *.rds.aws.hfl.dev and only reads ACK's rds kinds and Roles; ACK's controller has nothing of ours"
 
 echo "== gap kinds reconcile against moto"
