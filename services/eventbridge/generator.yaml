@@ -2,13 +2,41 @@
 # (eventbridge.aws.hfl.dev).
 #
 # ACK's eventbridge-controller (v1.9.2) ignores Connection and
-# ApiDestination. Connection is generated here from CreateConnection,
+# ApiDestination. ApiDestination is generated from CreateApiDestination,
+# DescribeApiDestination, UpdateApiDestination and DeleteApiDestination,
+# with a reference to Connection. Connection is generated here from CreateConnection,
 # DescribeConnection, UpdateConnection and DeleteConnection; its secrets
 # (a basic-auth password, an API key, an OAuth client secret) are ACK
 # SecretKeyReferences, read from Kubernetes Secrets and never read back.
 # The resources ACK has are ignored, and so is PartnerEventSource (a SaaS
 # partner's, not an application's).
 resources:
+  ApiDestination:
+    exceptions:
+      errors:
+        404:
+          code: ResourceNotFoundException
+    fields:
+      Name:
+        is_primary_key: true
+        is_immutable: true
+      ConnectionARN:
+        references:
+          resource: Connection
+          path: Status.ACKResourceMetadata.ARN
+    hooks:
+      # EventBridge reports a rate limit of 300 per second when the spec
+      # leaves it out; that default is no drift (custom_delta.go).
+      delta_pre_compare:
+        code: customSetDefaults(a, b)
+    # An API destination has no tags.
+    tags:
+      ignore: true
+    synced:
+      when:
+        - path: Status.APIDestinationState
+          in:
+            - ACTIVE
   Connection:
     exceptions:
       errors:
@@ -37,7 +65,6 @@ resources:
             - AUTHORIZED
 ignore:
   resource_names:
-    - ApiDestination
     - Archive
     - Endpoint
     - EventBus

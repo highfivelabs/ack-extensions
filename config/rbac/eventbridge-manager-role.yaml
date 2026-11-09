@@ -25,6 +25,7 @@ rules:
 - apiGroups:
   - eventbridge.aws.hfl.dev
   resources:
+  - apidestinations
   - connections
   verbs:
   - create
@@ -37,6 +38,7 @@ rules:
 - apiGroups:
   - eventbridge.aws.hfl.dev
   resources:
+  - apidestinations/status
   - connections/status
   verbs:
   - get

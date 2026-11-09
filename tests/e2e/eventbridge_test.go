@@ -196,3 +196,164 @@ func TestConnection(t *testing.T) {
 		}
 	})
 }
+
+// ApiDestination: an EventBridge API destination, the HTTP endpoint a rule
+// sends events to through a Connection's credentials. ACK's
+// eventbridge-controller (v1.9.2) ignores it. Its connectionRef names our
+// own Connection.
+func TestApiDestination(t *testing.T) {
+	scheme := runtime.NewScheme()
+	_ = ebv1.AddToScheme(scheme)
+	env := harness.Start(t, "eventbridge", scheme)
+	cloud := eventbridge.NewFromConfig(env.AWS)
+	ctx := context.Background()
+
+	if err := env.Client.Create(ctx, &corev1.Secret{
+		ObjectMeta: metav1.ObjectMeta{Name: "partner-key", Namespace: "default"},
+		StringData: map[string]string{"key": "not-a-real-key"},
+	}); err != nil {
+		t.Fatal(err)
+	}
+	conn := &ebv1.Connection{
+		ObjectMeta: metav1.ObjectMeta{Name: "partner", Namespace: "default"},
+		Spec: ebv1.ConnectionSpec{
+			Name: aws.String("partner"), AuthorizationType: aws.String("API_KEY"),
+			AuthParameters: &ebv1.CreateConnectionAuthRequestParameters{
+				APIKeyAuthParameters: &ebv1.CreateConnectionAPIKeyAuthRequestParameters{
+					APIKeyName:  aws.String("x-api-key"),
+					APIKeyValue: &ackv1alpha1.SecretKeyReference{SecretReference: corev1.SecretReference{Name: "partner-key"}, Key: "key"},
+				},
+			},
+		},
+	}
+	if err := env.Client.Create(ctx, conn); err != nil {
+		t.Fatal(err)
+	}
+
+	synced := func(name string, obj client.Object, conds func() []*ackv1alpha1.Condition) {
+		t.Helper()
+		harness.Eventually(t, 60*time.Second, name+" synced", func() error {
+			if err := env.Client.Get(ctx, client.ObjectKey{Namespace: "default", Name: name}, obj); err != nil {
+				return err
+			}
+			for _, c := range conds() {
+				if c.Type == ackv1alpha1.ConditionTypeResourceSynced && c.Status == corev1.ConditionTrue {
+					return nil
+				}
+			}
+			return fmt.Errorf("not synced: %v", conds())
+		})
+	}
+	gotConn := &ebv1.Connection{}
+	synced("partner", gotConn, func() []*ackv1alpha1.Condition { return gotConn.Status.Conditions })
+	connARN := string(*gotConn.Status.ACKResourceMetadata.ARN)
+
+	dest := &ebv1.APIDestination{
+		ObjectMeta: metav1.ObjectMeta{Name: "orders", Namespace: "default"},
+		Spec: ebv1.APIDestinationSpec{
+			Name:               aws.String("orders"),
+			ConnectionRef:      &ackv1alpha1.AWSResourceReferenceWrapper{From: &ackv1alpha1.AWSResourceReference{Name: aws.String("partner")}},
+			InvocationEndpoint: aws.String("https://partner.example.com/orders"), HTTPMethod: aws.String("POST"),
+			InvocationRateLimitPerSecond: aws.Int64(10),
+		},
+	}
+	gotDest := &ebv1.APIDestination{}
+
+	t.Run("an API destination is made through the referenced connection", func(t *testing.T) {
+		if err := env.Client.Create(ctx, dest); err != nil {
+			t.Fatal(err)
+		}
+		synced("orders", gotDest, func() []*ackv1alpha1.Condition { return gotDest.Status.Conditions })
+		out, err := cloud.DescribeApiDestination(ctx, &eventbridge.DescribeApiDestinationInput{Name: aws.String("orders")})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if aws.ToString(out.ConnectionArn) != connARN || aws.ToString(out.InvocationEndpoint) != "https://partner.example.com/orders" ||
+			out.HttpMethod != ebtypes.ApiDestinationHttpMethodPost || out.ApiDestinationState != ebtypes.ApiDestinationStateActive {
+			t.Fatalf("cloud destination connection %q endpoint %q method %s state %s", aws.ToString(out.ConnectionArn),
+				aws.ToString(out.InvocationEndpoint), out.HttpMethod, out.ApiDestinationState)
+		}
+	})
+
+	t.Run("a changed rate limit is updated", func(t *testing.T) {
+		obj := &ebv1.APIDestination{}
+		if err := env.Client.Get(ctx, client.ObjectKeyFromObject(dest), obj); err != nil {
+			t.Fatal(err)
+		}
+		obj.Spec.InvocationRateLimitPerSecond = aws.Int64(25)
+		if err := env.Client.Update(ctx, obj); err != nil {
+			t.Fatal(err)
+		}
+		harness.Eventually(t, 60*time.Second, "rate limit 25 in the cloud", func() error {
+			out, err := cloud.DescribeApiDestination(ctx, &eventbridge.DescribeApiDestinationInput{Name: aws.String("orders")})
+			if err != nil {
+				return err
+			}
+			if aws.ToInt32(out.InvocationRateLimitPerSecond) != 25 {
+				return fmt.Errorf("rate limit %d", aws.ToInt32(out.InvocationRateLimitPerSecond))
+			}
+			return nil
+		})
+	})
+
+	t.Run("the name cannot change", func(t *testing.T) {
+		obj := &ebv1.APIDestination{}
+		if err := env.Client.Get(ctx, client.ObjectKeyFromObject(dest), obj); err != nil {
+			t.Fatal(err)
+		}
+		obj.Spec.Name = aws.String("renamed")
+		err := env.Client.Update(ctx, obj)
+		if err == nil || !strings.Contains(err.Error(), "immutable") {
+			t.Fatalf("changing name: got %v, want the CRD's immutability refusal", err)
+		}
+	})
+
+	t.Run("deletion-policy retain leaves the destination", func(t *testing.T) {
+		keep := &ebv1.APIDestination{
+			ObjectMeta: metav1.ObjectMeta{
+				Name: "audit", Namespace: "default",
+				Annotations: map[string]string{ackv1alpha1.AnnotationDeletionPolicy: string(ackv1alpha1.DeletionPolicyRetain)},
+			},
+			Spec: ebv1.APIDestinationSpec{
+				Name: aws.String("audit"), ConnectionARN: aws.String(connARN),
+				InvocationEndpoint: aws.String("https://partner.example.com/audit"), HTTPMethod: aws.String("PUT"),
+			},
+		}
+		if err := env.Client.Create(ctx, keep); err != nil {
+			t.Fatal(err)
+		}
+		got := &ebv1.APIDestination{}
+		synced("audit", got, func() []*ackv1alpha1.Condition { return got.Status.Conditions })
+		if err := env.Client.Delete(ctx, keep); err != nil {
+			t.Fatal(err)
+		}
+		harness.Eventually(t, 60*time.Second, "audit gone", func() error {
+			err := env.Client.Get(ctx, client.ObjectKeyFromObject(keep), &ebv1.APIDestination{})
+			if err == nil {
+				return fmt.Errorf("object still present")
+			}
+			return client.IgnoreNotFound(err)
+		})
+		if _, err := cloud.DescribeApiDestination(ctx, &eventbridge.DescribeApiDestinationInput{Name: aws.String("audit")}); err != nil {
+			t.Fatalf("retained destination: %v", err)
+		}
+	})
+
+	t.Run("delete deletes the destination", func(t *testing.T) {
+		if err := env.Client.Delete(ctx, dest); err != nil {
+			t.Fatal(err)
+		}
+		harness.Eventually(t, 60*time.Second, "orders gone", func() error {
+			err := env.Client.Get(ctx, client.ObjectKeyFromObject(dest), &ebv1.APIDestination{})
+			if err == nil {
+				return fmt.Errorf("object still present")
+			}
+			return client.IgnoreNotFound(err)
+		})
+		_, err := cloud.DescribeApiDestination(ctx, &eventbridge.DescribeApiDestinationInput{Name: aws.String("orders")})
+		var nf *ebtypes.ResourceNotFoundException
+		if !errors.As(err, &nf) {
+			t.Fatalf("destination still there, or another error: %v", err)
+		}
+	})
+}

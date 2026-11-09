@@ -41,6 +41,7 @@ import (
 	svctypes "github.com/highfivelabs/ack-extensions/services/eventbridge/apis/v1alpha1"
 	svcresource "github.com/highfivelabs/ack-extensions/services/eventbridge/pkg/resource"
 
+	_ "github.com/highfivelabs/ack-extensions/services/eventbridge/pkg/resource/api_destination"
 	_ "github.com/highfivelabs/ack-extensions/services/eventbridge/pkg/resource/connection"
 
 	"github.com/highfivelabs/ack-extensions/services/eventbridge/pkg/version"
