@@ -12,6 +12,7 @@ resources:
   - bases/ec2.aws.hfl.dev_vpngateways.yaml
   - bases/eventbridge.aws.hfl.dev_connections.yaml
   - bases/iam.aws.hfl.dev_rolepolicyattachments.yaml
+  - bases/iam.aws.hfl.dev_usergroupmemberships.yaml
   - bases/kms.aws.hfl.dev_replicakeys.yaml
   - bases/lambda.aws.hfl.dev_permissions.yaml
   - bases/rds.aws.hfl.dev_dbproxytargets.yaml
