@@ -24,7 +24,11 @@ or credentials are needed, and tests must never use them.
 make tools         # once: the pinned generator, controller-gen, goimports, setup-envtest, moto
 make check         # generated files current, gofmt, vet, SPDX lines, build, unit and end-to-end tests
 make operator-e2e  # the operator on kind, beside ACK's real rds-controller, against moto in the cluster
+make coverage      # regenerate docs/coverage/ and the README's Coverage section (commit the result)
 ```
+
+A new or changed kind changes the coverage numbers: run `make coverage`
+(`make coverage-check` fails if the committed outputs are stale).
 
 Each kind needs an end-to-end test in `tests/e2e` on `pkg/test/harness`
 (a real kube-apiserver, the service's real controller binary, and moto)
