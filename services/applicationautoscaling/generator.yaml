@@ -26,8 +26,10 @@ operations:
 resources:
   ScheduledAction:
     hooks:
-      sdk_read_many_post_build_request:
-        template_path: hooks/scheduled_action/sdk_read_many_post_build_request.go.tpl
+      # The server's default time zone is no drift (custom_delta.go, copied
+      # from ACK applicationautoscaling-controller's ScalableTarget).
+      delta_pre_compare:
+        code: customSetDefaults(a, b)
     fields:
       ScheduledActionName:
         is_primary_key: true

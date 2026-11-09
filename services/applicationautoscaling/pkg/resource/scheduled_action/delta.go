@@ -40,6 +40,7 @@ func newResourceDelta(
 		delta.Add("", a, b)
 		return delta
 	}
+	customSetDefaults(a, b)
 
 	if ackcompare.HasNilDifference(a.ko.Spec.EndTime, b.ko.Spec.EndTime) {
 		delta.Add("Spec.EndTime", a.ko.Spec.EndTime, b.ko.Spec.EndTime)
