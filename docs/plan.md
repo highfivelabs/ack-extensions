@@ -1,7 +1,8 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has five kinds:
+Status, 2026-11-09: the repository has six kinds:
 
+- `autoscaling.aws.hfl.dev` `ScalingPolicy`;
 - `iam.aws.hfl.dev` `RolePolicyAttachment`;
 - `lambda.aws.hfl.dev` `Permission`;
 - `rds.aws.hfl.dev` `OptionGroup`;
@@ -69,7 +70,9 @@ out as an ACK controller repository is:
 Two ways to build a kind:
 
 1. **Generated**, when the AWS API has a Create/Describe/Delete shape the
-   generator recognises (`OptionGroup`). The `generator.yaml` entry and
+   generator recognises (`OptionGroup`), or a Put/Describe/Delete shape
+   mapped to one in `generator.yaml`'s `operations`, as ACK does for its
+   own Put-shaped kinds (`ScalingPolicy`). The `generator.yaml` entry and
    hook templates are ACK's, copied from upstream where they exist, and
    the generated code is regenerated here, never copied.
 2. **Hand-written on ACK's runtime interfaces**, when the API's shape is
@@ -274,6 +277,16 @@ controller to show it can fail:
 - **The event source token.** moto drops `EventSourceToken` from the
   statement, where AWS writes a `lambda:EventSourceToken` condition. Only
   the unit tests read it back.
+- **EC2 Auto Scaling policies.**
+  - moto keys policies by name alone, across groups (AWS keys them by
+    group and name), and `DeletePolicy` ignores the group.
+  - It checks neither that the group exists nor the policy's parameters.
+  - It returns a default cooldown of 300 for a simple scaling policy
+    (AWS returns one only when it was set), never returns `Enabled`, and
+    returns an empty `PredictiveScalingConfiguration` for every policy.
+  - The read treats an empty predictive configuration as none. Server
+    defaults count as no drift (section 6.6). `TestScalingPolicy` shows
+    the object then stays synced across resyncs.
 - **An association's status.** moto marks a new association `ACTIVE` at
   once. On AWS it is `PENDING` first, and `INVALID` when RDS cannot assume
   the role. The rule (synced only when `ACTIVE`) is unit-tested.
@@ -308,10 +321,10 @@ its master (5.2.5 is the pin).
 
 | Rank | Candidate | Upstream (2026-11-09) | moto | Status |
 | --- | --- | --- | --- | --- |
-| 1 | Lambda `Permission` (`AddPermission`/`RemovePermission`) | No PR; `community` issues #3051 and #2659 are open. lambda-controller `v1.19.0`'s `Alias.permissions` adds permissions to an alias only. | yes | next |
+| 1 | Lambda `Permission` (`AddPermission`/`RemovePermission`) | No PR; `community` issues #3051 and #2659 are open. lambda-controller `v1.19.0`'s `Alias.permissions` adds permissions to an alias only. | yes | built: `Permission` |
 | 2 | Secrets Manager rotation on `Secret` | secretsmanager-controller PR #69 | yes | skipped: a field on an existing kind (open question 1) |
 | 3 | RDS role associations | none | adds yes, removes no (section 4.4) | built: `DBRoleAssociation` |
-| 4 | EC2 Auto Scaling `ScalingPolicy` and `ScheduledAction`; Application Auto Scaling `ScheduledAction` | none: autoscaling-controller `v1.5.0` has only `AutoScalingGroup`; applicationautoscaling-controller `v1.9.0` has `ScalableTarget` and `ScalingPolicy` | yes | to build |
+| 4 | EC2 Auto Scaling `ScalingPolicy` and `ScheduledAction`; Application Auto Scaling `ScheduledAction` | none: autoscaling-controller `v1.5.0` has only `AutoScalingGroup`; applicationautoscaling-controller `v1.9.0` has `ScalableTarget` and `ScalingPolicy` | yes | `ScalingPolicy` built; the two `ScheduledAction`s next |
 | 5 | KMS `ReplicaKey` | kms-controller PR #112: open, conflicts with base, not approved, last updated 2026-10-18 | `ReplicateKey` yes, `UpdatePrimaryRegion` no | to build |
 | 6 | Standalone security group rules | none; ec2-controller has rule-sync fixes open (#394, #385) | yes | skipped: open question 7 |
 | 7 | EC2 `VPNGateway` (attachment, route propagation), `CustomerGateway` | ignored in ec2-controller `v1.23.1`'s `generator.yaml` | yes, except `EnableVgwRoutePropagation` | to build |
@@ -522,6 +535,57 @@ there. ACK's `Function` and `Version` manage no policy, so a statement
 on a function or version stands alone. This is the same tug of war as
 open questions 3 and 7, documented here as section 6.1 documents its own.
 
+### 6.6 `autoscaling.aws.hfl.dev` `ScalingPolicy`
+
+An EC2 Auto Scaling group's scaling policy: target tracking, step, simple
+or predictive. ACK's autoscaling-controller `v1.5.0` has only
+`AutoScalingGroup`, and a group without policies does not scale. No pull
+request adds policies.
+
+**Generated** by ACK's generator. `services/autoscaling/generator.yaml`
+maps three operations to the resource, the way ACK's
+applicationautoscaling-controller `v1.9.0` generates its own
+`ScalingPolicy` from a Put operation:
+
+- `PutScalingPolicy` creates and updates;
+- `DescribePolicies` reads;
+- `DeletePolicy` deletes.
+
+Two hook templates are written here:
+
+- one asks `DescribePolicies` for the one policy by name;
+- one reads an empty predictive scaling configuration as none.
+
+The policy name and group are immutable. Every other field is updated by
+putting the policy again.
+
+**Server defaults are no drift.** A field the spec leaves unset takes
+the server's value before comparing. These fields are:
+
+- policy type;
+- enabled;
+- metric aggregation type;
+- cooldown;
+- instance warmup;
+- target tracking's `disableScaleIn`.
+
+This is `custom_delta.go`, copied from ACK's applicationautoscaling-controller
+(`scalable_target/custom_delta.go`), which handles its own defaults the
+same way. ACK's late initialization cannot do this. The server reports
+each of these fields for some policy types only, so the late
+initialization would wait forever for the rest. The first end-to-end run
+failed exactly so: "Late initialization did not complete", and never
+synced. `status.alarms` lists the CloudWatch alarms a
+target-tracking policy creates. Tags do not apply.
+
+**Not built: a reference to ACK's `AutoScalingGroup`.** The generator
+writes a reference to a kind of the same service with ACK's import path,
+`github.com/aws-controllers-k8s/autoscaling-controller/`.
+`hack/generate.sh` rewrites that path to ours, because ACK's templates
+hard-code it for the generated packages. So a generated kind cannot
+reference ACK's kind of its own service. The group is named by
+`autoScalingGroupName`, and section 8 tracks the reference.
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)
@@ -725,7 +789,12 @@ Before it can run on a real cluster:
    second reconcile, after the runtime's requeue delay.
 9. `DBRoleAssociation`'s delete is proven end to end only up to the
    `RemoveRoleFrom...` call (section 4.4, open question 6).
-10. The heavy checks run on a Spot VM (`../offload`), not the laptop. A
+10. A generated kind cannot reference ACK's kind of the same service
+    (`ScalingPolicy` to ACK's `AutoScalingGroup`, section 6.6):
+    `hack/generate.sh` rewrites ACK's import path for the service to
+    ours. It needs the rewrite limited to the packages generated here, or
+    a hand-written references file.
+11. The heavy checks run on a Spot VM (`../offload`), not the laptop. A
     fresh VM has no `third_party/` (gitignored), so the command is
     `make tools && make check && make operator-e2e`.
 
