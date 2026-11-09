@@ -87,6 +87,7 @@ VM through `../offload`:
 - offload uploads the working tree. To start several runs from one clone,
   check out a branch, start the run, and wait about 25 seconds (until the
   upload is done) before checking out the next.
+- `task operator-e2e` fails unless `tests/operator/run.sh` has more than 200 lines and its output ends with `all checks passed` (an empty script once passed vacuously in another repository). Do not truncate or rewrite that script wholesale; check `wc -l` after editing it.
 - `task upstream`/`task tools` need network once; `task coverage` and
   `task coverage:check` are cheap and run on the laptop.
 - If a test times out, rerun it once before calling it a failure. A run can
