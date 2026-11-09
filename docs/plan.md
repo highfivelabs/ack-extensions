@@ -219,7 +219,8 @@ status) and the fake cloud through the real AWS SDK clients.
     (the primary key checked Enabled and untagged after every step)
 --- PASS: TestDeleteNeverReachesThePrimaryRegion,
           TestFindReadsTheReplicaInItsRegion, TestSyncedWhenEnabled,
-          TestTagsAreASet (replica_key unit tests, against a stand-in
+          TestTagsAreASet, TestThePrimaryKeyIsFoundByItsRegion
+          (replica_key unit tests, against a stand-in
           that records each call's signed Region)
 --- PASS: TestPermission
     a service may invoke the function; an account may invoke an alias
@@ -329,6 +330,13 @@ controller to show it can fail:
     that path.
   - A new replica is `Enabled` at once. On AWS it is `Creating` first;
     the readiness rule is unit-tested.
+  - moto's `ReplicateKey` copies the key shallowly, so the replica shares
+    its primary key's `MultiRegionConfiguration`. Describing the replica
+    then writes `REPLICA` into it, and from then on the primary key in its
+    own Region also reports `MultiRegionKeyType: REPLICA`. The first
+    end-to-end run failed on this. The read now checks that the primary
+    key's `PrimaryKey.Region` is the manager's Region, which means the
+    same on AWS.
 - **An association's status.** moto marks a new association `ACTIVE` at
   once. On AWS it is `PENDING` first, and `INVALID` when RDS cannot assume
   the role. The rule (synced only when `ACTIVE`) is unit-tested.

@@ -44,6 +44,9 @@ type call struct{ op, region, keyID string }
 type kmsStandIn struct {
 	mu    sync.Mutex
 	calls []call
+	// primaryType is the MultiRegionKeyType the primary key reports:
+	// PRIMARY on AWS; moto can report REPLICA (docs/plan.md section 4.4).
+	primaryType string
 }
 
 var credentialRegion = regexp.MustCompile(`Credential=[^/]+/[^/]+/([^/]+)/kms/`)
@@ -64,9 +67,13 @@ func (s *kmsStandIn) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	switch op {
 	case "DescribeKey":
 		if region == primaryRegion {
+			typ := s.primaryType
+			if typ == "" {
+				typ = "PRIMARY"
+			}
 			fmt.Fprintf(w, `{"KeyMetadata":{"KeyId":%q,"Arn":%q,"KeyState":"Enabled","Enabled":true,"MultiRegion":true,
-				"MultiRegionConfiguration":{"MultiRegionKeyType":"PRIMARY","PrimaryKey":{"Arn":%q,"Region":%q},
-				"ReplicaKeys":[{"Arn":%q,"Region":%q}]}}}`, keyID, primaryARN, primaryARN, primaryRegion, replicaARN, replicaRegion)
+				"MultiRegionConfiguration":{"MultiRegionKeyType":%q,"PrimaryKey":{"Arn":%q,"Region":%q},
+				"ReplicaKeys":[{"Arn":%q,"Region":%q}]}}}`, keyID, primaryARN, typ, primaryARN, primaryRegion, replicaARN, replicaRegion)
 			return
 		}
 		fmt.Fprintf(w, `{"KeyMetadata":{"KeyId":%q,"Arn":%q,"KeyState":"Enabled","Enabled":true,"MultiRegion":true,
@@ -204,5 +211,21 @@ func TestTagsAreASet(t *testing.T) {
 	rb.ko.Spec.Tags = tagsFromMap(map[string]string{"a": "1"})
 	if d := newResourceDelta(ra, rb); !d.DifferentAt("Spec.Tags") {
 		t.Fatal("a removed tag is no difference")
+	}
+}
+
+// The primary key is the key whose primary is in the manager's Region,
+// whatever MultiRegionKeyType it reports; a key whose primary is
+// elsewhere is refused.
+func TestThePrimaryKeyIsFoundByItsRegion(t *testing.T) {
+	s := &kmsStandIn{primaryType: "REPLICA"}
+	rm := standInManager(t, s)
+	if _, err := rm.sdkFind(context.Background(), &resource{replica()}); err != nil {
+		t.Fatalf("a primary key reported as REPLICA (moto) is not found: %v", err)
+	}
+	rm.awsRegion = "ap-south-1"
+	rm.sdkapi = svcsdk.NewFromConfig(rm.clientcfg, func(o *svcsdk.Options) { o.Region = "ap-south-1" })
+	if _, err := rm.sdkFind(context.Background(), &resource{replica()}); err == nil || !strings.Contains(err.Error(), "not a multi-Region primary key") {
+		t.Fatalf("a key whose primary is in us-west-2, read from ap-south-1: %v, want refused", err)
 	}
 }

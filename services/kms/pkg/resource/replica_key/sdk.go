@@ -120,8 +120,14 @@ func (rm *resourceManager) replicaARN(ctx context.Context, ko *svcapitypes.Repli
 	if err != nil {
 		return "", err
 	}
+	// The key must be a multi-Region key whose primary is in this Region.
+	// That is the primary key itself: a replica of it here would have its
+	// primary elsewhere. (MultiRegionKeyType says the same on AWS; moto
+	// can report a primary key as REPLICA once its replica was described,
+	// docs/plan.md section 4.4.)
 	md := resp.KeyMetadata
-	if md == nil || md.MultiRegionConfiguration == nil || md.MultiRegionConfiguration.MultiRegionKeyType != svcsdktypes.MultiRegionKeyTypePrimary {
+	if md == nil || md.MultiRegionConfiguration == nil || md.MultiRegionConfiguration.PrimaryKey == nil ||
+		aws.ToString(md.MultiRegionConfiguration.PrimaryKey.Region) != string(rm.awsRegion) {
 		return "", ackerr.NewTerminalError(fmt.Errorf("key %s is not a multi-Region primary key in %s", aws.ToString(ko.Spec.KeyID), rm.awsRegion))
 	}
 	for _, r := range md.MultiRegionConfiguration.ReplicaKeys {
