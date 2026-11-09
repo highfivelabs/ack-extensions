@@ -73,7 +73,7 @@ type results struct {
 	total    svcRow
 	outside  []resRow
 	svcIndex map[string]*svcRow
-	priority map[string]int // service to tier, from priority.csv
+	priority map[string]priorityEntry // service to tier and category, from priority.csv
 }
 
 func (m *model) compute() *results {

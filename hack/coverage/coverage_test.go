@@ -234,20 +234,21 @@ func TestLoadPriority(t *testing.T) {
 		}
 	}
 	services := []string{"iam", "s3", "quicksight"}
-	write("service,tier,rationale,source\niam,1,\"a, b\",x\ns3,2,y,z\n")
+	write("service,tier,category,rationale,source\niam,1,platform-foundation,\"a, b\",x\ns3,2,application,y,z\n")
 	got, err := loadPriority(c, services)
-	if err != nil || got["iam"] != 1 || got["s3"] != 2 {
+	if err != nil || got["iam"].tier != 1 || got["s3"].tier != 2 || got["s3"].category != "application" {
 		t.Fatalf("got %v, %v", got, err)
 	}
 	r := &results{priority: got}
-	if r.tierOf("quicksight") != 3 {
+	if r.tierOf("quicksight") != 3 || r.categoryOf("quicksight") != "other" {
 		t.Error("a service missing from the file is tier 3")
 	}
 	for name, bad := range map[string]string{
 		"header":    "service,tier\niam,1\n",
-		"tier":      "service,tier,rationale,source\niam,4,y,z\n",
-		"unknown":   "service,tier,rationale,source\nnope,1,y,z\n",
-		"duplicate": "service,tier,rationale,source\niam,1,y,z\niam,2,y,z\n",
+		"tier":      "service,tier,category,rationale,source\niam,4,application,y,z\n",
+		"category":  "service,tier,category,rationale,source\niam,1,security,y,z\n",
+		"unknown":   "service,tier,category,rationale,source\nnope,1,application,y,z\n",
+		"duplicate": "service,tier,category,rationale,source\niam,1,application,y,z\niam,2,application,y,z\n",
 	} {
 		write(bad)
 		if _, err := loadPriority(c, services); err == nil {
@@ -258,7 +259,7 @@ func TestLoadPriority(t *testing.T) {
 
 func TestTierRows(t *testing.T) {
 	r := &results{
-		priority: map[string]int{"a": 1, "b": 2},
+		priority: map[string]priorityEntry{"a": {1, "platform-foundation"}, "b": {2, "application"}},
 		svcs: []svcRow{
 			{service: "a", resTotal: 2, resOfficial: 1, attrTotal: 10, attrOfficial: 4, attrUncov: 6},
 			{service: "b", resTotal: 1, resOursBeyond: 1, attrTotal: 5, attrOursBeyond: 5},
@@ -271,5 +272,39 @@ func TestTierRows(t *testing.T) {
 	}
 	if !strings.Contains(string(tiersSVG(rows)), "Tier 3: 1 services") {
 		t.Error("tiers svg lacks the tier 3 label")
+	}
+}
+
+func TestFoundationYAML(t *testing.T) {
+	f, err := loadFoundation()
+	if err != nil {
+		t.Fatal(err)
+	}
+	seen := map[string]bool{}
+	for _, it := range f.Queue {
+		if seen[it.ID] {
+			t.Errorf("queue id %s is used twice", it.ID)
+		}
+		seen[it.ID] = true
+		for name, v := range map[string]string{"title": it.Title, "why": it.Why, "kinds": it.Kinds, "upstream": it.Upstream, "moto": it.Moto, "modules": it.Modules, "size": it.Size, "approach": it.Approach, "done": it.Done} {
+			if strings.TrimSpace(v) == "" {
+				t.Errorf("%s: %s is empty", it.ID, name)
+			}
+		}
+		if len(it.Resources) == 0 {
+			t.Errorf("%s has no resources", it.ID)
+		}
+	}
+	for k := range f.Resources {
+		if !strings.Contains(k, "/") {
+			t.Errorf("resource key %q is not service/Resource", k)
+		}
+	}
+}
+
+func TestBullets(t *testing.T) {
+	got := bullets("first\n(1) a\n(2) b\n")
+	if got != "first\n  - (1) a\n  - (2) b" {
+		t.Errorf("got %q", got)
 	}
 }

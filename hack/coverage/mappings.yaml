@@ -175,6 +175,11 @@ attributes:
   iam/Role:
     policies[]: ManagedPolicyArns[]
     inlinePolicies{}: Policies[].PolicyDocument
+  iam/OpenIDConnectProvider:
+    clientIDs[]: ClientIdList[]
+    thumbprints[]: ThumbprintList[]
+  route53/RecordSet:
+    resourceRecords[].value: ResourceRecords[]
   iam/User:
     policies[]: ManagedPolicyArns[]
     inlinePolicies{}: Policies[].PolicyDocument
@@ -223,3 +228,51 @@ oursAttributes:
 
 # Notes for resource rows, "<cfn service>/<Resource>".
 notes: {}
+
+# Terraform resource types (the AWS modules in module-usage.csv) that the
+# generator cannot pair with a CloudFormation resource by name, to the resource
+# they create or configure, or outside-denominator. Used only for the "modules"
+# column of docs/coverage/foundation.md.
+terraform:
+  aws_acm_certificate: [certificatemanager/Certificate]
+  aws_default_network_acl: [ec2/NetworkAcl]
+  aws_default_route_table: [ec2/RouteTable]
+  aws_default_security_group: [ec2/SecurityGroup]
+  aws_default_vpc: [ec2/VPC]
+  aws_ec2_tag: [outside-denominator]
+  aws_ecr_lifecycle_policy: [ecr/Repository]
+  aws_ecr_repository_policy: [ecr/Repository]
+  aws_ecrpublic_repository_policy: [ecr/PublicRepository]
+  aws_eks_access_policy_association: [eks/AccessEntry]
+  aws_iam_account_alias: [outside-denominator]
+  aws_iam_account_password_policy: [outside-denominator]
+  aws_iam_group_membership: [iam/UserToGroupAddition]
+  aws_iam_group_policy_attachment: [iam/Group]
+  aws_iam_openid_connect_provider: [iam/OIDCProvider]
+  aws_iam_policy_attachment: [iam/ManagedPolicy]
+  aws_iam_role_policy_attachment: [iam/Role]
+  aws_iam_user_login_profile: [iam/User]
+  aws_iam_user_policy_attachment: [iam/User]
+  aws_iam_user_ssh_key: [outside-denominator]
+  aws_kms_external_key: [kms/Key]
+  aws_kms_grant: [outside-denominator]
+  aws_kms_replica_external_key: [kms/ReplicaKey]
+  aws_network_acl_rule: [ec2/NetworkAclEntry]
+  aws_ram_resource_share_accepter: [outside-denominator]
+  aws_route53_hosted_zone_dnssec: [route53/DNSSEC]
+  aws_route53_record: [route53/RecordSet]
+  aws_route53_resolver_endpoint: [route53resolver/ResolverEndpoint]
+  aws_route53_resolver_firewall_rule: [route53resolver/FirewallRuleGroup]
+  aws_route53_resolver_rule: [route53resolver/ResolverRule]
+  aws_route53_resolver_rule_association: [route53resolver/ResolverRuleAssociation]
+  aws_route53_vpc_association_authorization: [outside-denominator]
+  aws_route53_zone: [route53/HostedZone]
+  aws_route_table_association: [ec2/SubnetRouteTableAssociation]
+  aws_secretsmanager_secret_policy: [secretsmanager/ResourcePolicy]
+  aws_secretsmanager_secret_rotation: [secretsmanager/RotationSchedule]
+  aws_secretsmanager_secret_version: [secretsmanager/Secret]
+  aws_security_group_rule: [ec2/SecurityGroupIngress, ec2/SecurityGroupEgress]
+  aws_vpc_ipv4_cidr_block_association: [ec2/VPCCidrBlock]
+  aws_vpc_security_group_egress_rule: [ec2/SecurityGroupEgress]
+  aws_vpc_security_group_ingress_rule: [ec2/SecurityGroupIngress]
+  aws_vpn_gateway_attachment: [ec2/VPCGatewayAttachment]

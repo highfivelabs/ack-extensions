@@ -59,7 +59,14 @@ func outputs(c config, m *model, r *results) (map[string][]byte, error) {
 	files[dir+"bars/_total.svg"] = totalSVG(r.total, "ACK")
 	files[dir+"bars/_tiers.svg"] = tiersSVG(r.tierRows())
 	files[dir+"tiers.csv"] = r.tiersCSV()
+	files[dir+"bars/_categories.svg"] = rollupSVG(r.categoryRows(), func(t tierRow) string { return t.label })
+	files[dir+"categories.csv"] = r.categoriesCSV()
 	files[dir+"README.md"] = docsReadme(m, r)
+	fr, err := m.foundationReport(r)
+	if err != nil {
+		return nil, err
+	}
+	files[dir+"foundation.md"] = fr
 
 	readme, err := os.ReadFile(filepath.Join(c.root, "README.md"))
 	if err != nil {
