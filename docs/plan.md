@@ -1,6 +1,6 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has nineteen kinds:
+Status, 2026-11-09: the repository has twenty kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
@@ -8,7 +8,7 @@ Status, 2026-11-09: the repository has nineteen kinds:
   `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
-- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership` and `SSHPublicKey`;
+- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile` and `SSHPublicKey`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
 - `rds.aws.hfl.dev` `OptionGroup`;
@@ -197,6 +197,13 @@ status) and the fake cloud through the real AWS SDK clients.
     leaves the others
 --- PASS: TestManagedIgnoresOtherGroups, TestChanges,
           TestGroupOrderIsNoDrift (membership unit tests)
+--- PASS: TestLoginProfile
+    a login profile is made from a Kubernetes Secret's password and
+    settles (no update across three resyncs); passwordResetRequired is
+    updated; the user cannot change; deletion-policy retain leaves the
+    profile; delete deletes it
+--- PASS: TestDefaultResetIsNoDrift, TestSetResetIsCompared
+          (login profile unit tests)
 --- PASS: TestSSHPublicKey
     a key is uploaded, active, and settles (no update across three
     resyncs); it is deactivated; a reactivation outside Kubernetes is
@@ -446,6 +453,10 @@ controller to show it can fail:
   does not check that the resource exists, and associating a resource
   with a second web ACL adds it there without taking it off the first
   (AWS replaces the association).
+- **IAM login profiles.** moto stores the password, which no IAM API
+  returns, so the test cannot read it back. It ignores
+  `PasswordResetRequired` on create (the update sets it) and does not
+  check the account's password policy.
 - **IAM SSH public keys.** moto does not parse the key body (IAM
   refuses one that is not a valid RSA key of 2048 bits or more), returns
   it as uploaded, and does not refuse a key the user already has.
@@ -1171,6 +1182,29 @@ create, describe and delete of a membership.
 
 **Not proven:** IAM's limit of ten groups per user (not tested), and
 real AWS.
+### 6.19 `iam.aws.hfl.dev` `LoginProfile`
+
+An IAM user's console password: Terraform's `aws_iam_user_login_profile`,
+with the password from a Kubernetes Secret instead of a generated one.
+ACK's iam-controller `v1.11.3` has none; its pull request #147 was closed
+(rechecked 2026-11-09).
+
+**Generated** from `CreateLoginProfile`, `GetLoginProfile`,
+`UpdateLoginProfile` and `DeleteLoginProfile`.
+
+- **Spec:** `userName` (required, immutable), `password` (a
+  `SecretKeyReference`, required) and `passwordResetRequired`.
+- **The password is never read back** (IAM returns none), so it is no
+  drift; the spec's stays. A changed Secret is not pushed until the spec
+  changes, as for `Connection`.
+- **Server default is no drift:** IAM reports `passwordResetRequired`
+  false when the spec leaves it out (`custom_delta.go`).
+- **Not found:** `NoSuchEntity`. No tags: a login profile has none.
+- **No `userRef`.** ACK's `User` is in the same service, and a generated
+  reference to it is the case of section 8, item 10.
+
+**Not proven:** that the password reached IAM (no API returns it), the
+account's password policy refusing a password, and a changed Secret.
 ### 6.20 `iam.aws.hfl.dev` `SSHPublicKey`
 
 An IAM user's SSH public key, for AWS CodeCommit: Terraform's

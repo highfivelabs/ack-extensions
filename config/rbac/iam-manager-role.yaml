@@ -25,6 +25,7 @@ rules:
 - apiGroups:
   - iam.aws.hfl.dev
   resources:
+  - loginprofiles
   - rolepolicyattachments
   - sshpublickeys
   - usergroupmemberships
@@ -39,6 +40,7 @@ rules:
 - apiGroups:
   - iam.aws.hfl.dev
   resources:
+  - loginprofiles/status
   - rolepolicyattachments/status
   - sshpublickeys/status
   - usergroupmemberships/status
