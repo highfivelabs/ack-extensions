@@ -1,13 +1,13 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has fifteen kinds:
+Status, 2026-11-09: the repository has seventeen kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
 - `ec2.aws.hfl.dev` `CustomerGateway`, `VPNGateway`, `Volume` and
   `VolumeAttachment`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
-- `iam.aws.hfl.dev` `RolePolicyAttachment`;
+- `iam.aws.hfl.dev` `RolePolicyAttachment` and `SSHPublicKey`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
 - `rds.aws.hfl.dev` `OptionGroup`;
@@ -185,6 +185,13 @@ status) and the fake cloud through the real AWS SDK clients.
 ### 4.3 Results (`make test`; latest 2026-11-09 on a Spot VM, linux amd64, Go 1.27.3)
 
 ```text
+--- PASS: TestSSHPublicKey
+    a key is uploaded, active, and settles (no update across three
+    resyncs); it is deactivated; a reactivation outside Kubernetes is
+    put back; the body cannot change; deletion-policy retain leaves the
+    key; delete deletes it
+--- PASS: TestStatusDefaultAndBodyAreNoDrift, TestStatusIsCompared
+          (SSH public key unit tests)
 --- PASS: TestRolePolicyAttachment
     create attaches the policy; references resolve to ACK's Role; delete
     detaches the policy; deletion-policy retain keeps the attachment
@@ -403,6 +410,9 @@ controller to show it can fail:
 - **EventBridge API destinations.** moto marks a destination `ACTIVE` at
   once and, when the spec leaves the rate limit out, reports none (AWS
   reports 300 per second). A unit test shows that default is no drift.
+- **IAM SSH public keys.** moto does not parse the key body (IAM
+  refuses one that is not a valid RSA key of 2048 bits or more), returns
+  it as uploaded, and does not refuse a key the user already has.
 - **KMS replica keys.**
   - moto keeps a replica in its own Region's backend, under the primary
     key's key ID, as AWS does.
@@ -471,7 +481,7 @@ its master (5.2.5 is the pin).
 | 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`) | yes | to build |
 | 13 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237: mergeable, active 2026-11-06 | none | skipped: may be close to merging, and moto has none of it |
 | 14 | Route 53 DNSSEC and `KeySigningKey`, VPC association authorization | ignored in route53-controller's `generator.yaml` | none | skipped: moto has none of it |
-| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none | yes | to build |
+| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | `SSHPublicKey` built; the rest under way |
 | 16 | EC2 `PlacementGroup` | ignored in ec2-controller's `generator.yaml` | none | skipped: moto has none of it |
 | 17 | S3 `Object`, the account's public access block | none | yes | to build |
 | 18 | EC2 `KeyPair` | ec2-controller PR #396: both reviews' changes made, main merged in 2026-11-04, mergeable | yes | skipped: close to merging; wait for the release |
@@ -1020,6 +1030,34 @@ ACK's own initialisms do; the AWS name is `ApiDestination`.
 **Not proven:** AWS's default rate limit coming back from a real read
 (moto returns none; the unit test feeds 300 in), and a destination whose
 connection is not yet authorized (moto authorizes at once).
+
+### 6.20 `iam.aws.hfl.dev` `SSHPublicKey`
+
+An IAM user's SSH public key, for AWS CodeCommit: Terraform's
+`aws_iam_user_ssh_key`. ACK's iam-controller `v1.11.3` has none, and no
+pull request adds one (rechecked 2026-11-09).
+
+**Hand-written** on ACK's runtime, on PR #184's skeleton: the key is made
+with `UploadSSHPublicKey`, which the generator does not read as a
+create, and it is known by an ID IAM gives it.
+
+- **Spec:** `userName` or `userRef` (ACK's `User`), and
+  `sshPublicKeyBody`, both immutable; `status`, `Active` (the default) or
+  `Inactive`.
+- **Status:** `sshPublicKeyID` (the key's name in CodeCommit and SSH
+  configuration), `fingerprint`, `uploadDate`.
+- **Read:** `GetSSHPublicKey` by the ID. The body is not compared: it is
+  immutable, and IAM may return it in another form. The status is, so a
+  key reactivated outside Kubernetes is set back.
+- **Update** sets the status (`UpdateSSHPublicKey`). **Delete** deletes
+  the key; a key or user already gone is deleted.
+- **Errors:** a user not there yet is retried; a malformed or duplicate
+  key, or a user at IAM's limit of keys, is terminal.
+- **Synced** once read. IAM has no ARN for a key; the IAM ARN form with
+  the user and key ID stands in, for ACK's metadata only.
+
+**Not proven:** IAM parsing the key (moto does not), a duplicate key
+being refused, and real AWS.
 
 ## 7. The operator: ACK's identity, beside ACK's controller
 
