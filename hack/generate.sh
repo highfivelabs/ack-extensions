@@ -29,7 +29,7 @@ export GOTOOLCHAIN=local
 
 SDK_VERSION="v1.34.0"         # UPSTREAM.md, "aws-sdk-go-v2 models"
 GROUP_SUFFIX="aws.hfl.dev"
-SERVICES=(iam lambda rds)
+SERVICES=(autoscaling iam lambda rds)
 GEN="${ROOT}/bin/ack-generate"
 CONTROLLER_GEN="${ROOT}/bin/controller-gen"
 GOIMPORTS="${ROOT}/bin/goimports"
