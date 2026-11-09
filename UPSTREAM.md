@@ -21,6 +21,7 @@ record of exactly which ACK code it uses, and of every file copied from it.
 | wafv2-controller | `v1.8.1` | `d910e96f94d5b860cffc5dde648e87bafe94689c` | Go module: the API types of ACK's `WebACL`, which `WebACLAssociation` references; the WAFv2 SDK client at its version (`service/wafv2` `v1.55.11`) |
 | lambda-controller | `v1.19.0` | `86905357482d01538cb00ab28d59c6af5c46e6f4` | Go module: the API types of ACK's `Function`, which `Permission` references; the Lambda SDK client at its version (`service/lambda` `v1.88.5`) |
 | iam-controller | `v1.11.3` | `91ed7f353255e54e2c6372b3ce757bd2e7fae4ad` | Go module: the API types of ACK's `Role` and `Policy`, which our kinds reference |
+| EventBridge Scheduler | none | | no ACK controller (`community` issue #2784); the Scheduler SDK client is `service/scheduler` `v1.12.13`, its version in aws-sdk-go-v2 `v1.34.0`, the release of the models below |
 | aws-sdk-go-v2 models | `v1.34.0` | tag | the Smithy model the generator reads (`--aws-sdk-go-version`), the version rds-controller `v1.14.2` was generated from |
 
 The runtime, code generator and controllers move together: ACK releases
@@ -68,6 +69,7 @@ and what changed.
 | `services/ec2/pkg/resource/vpn_gateway/hooks.go`, `services/ec2/templates/hooks/vpn_gateway/*.go.tpl` | ec2-controller `v1.23.1` `pkg/resource/internet_gateway/hooks.go` and `templates/hooks/internet_gateway/` | `9303654c…` | a VPN gateway (`AttachVpnGateway`, `DetachVpnGateway`, `VpcAttachments`); no route tables; a deleted gateway reads as gone |
 | `services/ec2/pkg/resource/volume/hooks.go` | ec2-controller `v1.23.1` `pkg/resource/internet_gateway/hooks.go` | `9303654c…` | an EBS volume: `ModifyVolume` and tags; no attachment or route tables |
 | `services/ec2/pkg/resource/volume/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | an EBS volume's server defaults |
+| `services/scheduler/pkg/resource/schedule_group/hooks.go` | eventbridge-controller `v1.9.2` `pkg/resource/event_bus/hooks.go` | `fd084a0b…` | package; the Scheduler client and its `ResourceArn` fields; the resource policy dropped |
 | `services/lambda/pkg/resource/permission/sdk.go` (the calls and the reading of a policy statement) | lambda-controller `v1.19.0` `pkg/resource/alias/hooks.go` (`addPermission`, `removePermission`, `setPermissions`) | `86905357…` | one statement instead of an alias's set; `encoding/json` instead of `micahhausler/aws-iam-policy`; not-found handling |
 | `services/lambda/pkg/resource/permission/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton, by way of our `db_role_association` copy) | `78eb350e…` | package, kind, API group, Lambda client, ARN format, `IsSynced` (synced once read back), adoption fields |
 | `services/ec2/pkg/resource/volume_attachment/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton) | `78eb350e…` | package, kind, API group, service client, ARN form, adoption fields and the `IsSynced` hook (synced when attached) |
@@ -87,6 +89,7 @@ Written here: `services/rds/apis/v1alpha1/db_proxy_target.go`,
 `services/eventbridge/pkg/resource/connection/{hooks,hooks_test}.go`,
 `services/eventbridge/pkg/resource/api_destination/custom_delta_test.go`,
 `services/eventbridge/templates/hooks/connection/*.go.tpl`,
+`services/scheduler/templates/hooks/schedule_group/*.go.tpl`,
 `services/kms/pkg/resource/replica_key/{delta,references,sdk_test}.go`,
 `services/autoscaling/templates/hooks/scaling_policy/*.go.tpl`,
 `services/autoscaling/templates/hooks/scheduled_action/*.go.tpl`,

@@ -27,6 +27,7 @@ ack-extensions is not affiliated with or endorsed by Amazon Web Services.
 | `kms.aws.hfl.dev/v1alpha1` `ReplicaKey` | A multi-Region KMS key's replica in another Region: created with `ReplicateKey` in the primary key's Region, then read, changed (policy, tags) and deleted in its own Region, never touching the primary key. | Copied from ACK kms-controller pull request #112 (open), with its Region handling corrected: the pull request's read, update and delete act on the primary key |
 | `lambda.aws.hfl.dev/v1alpha1` `Permission` | One statement of a Lambda function's resource-based policy (`AddPermission`), so that S3, an ALB, EventBridge or SNS may invoke the function; removed on delete, and added back if removed outside Kubernetes. ACK has permissions only inside an `Alias`. | New: the calls and policy reading are copied from ACK's `Alias`; no ACK pull request adds the kind |
 | `rds.aws.hfl.dev/v1alpha1` `DBRoleAssociation` | Associates an IAM role with an Aurora cluster or an RDS instance for one feature (`s3Import`, `s3Export`, `Lambda`, `S3_INTEGRATION`), and removes it on delete. ACK's `DBCluster` and `DBInstance` only report associated roles. It becomes synced once RDS reports the association `ACTIVE`. | New: no ACK code or pull request covers it |
+| `scheduler.aws.hfl.dev/v1alpha1` `ScheduleGroup` | An EventBridge Scheduler schedule group, with its tags. ACK has no Scheduler controller; the manager runs beside ACK's EventBridge controller. | Generated, with eventbridge-controller's tag hooks |
 | `wafv2.aws.hfl.dev/v1alpha1` `WebACLAssociation` | A regional web ACL associated with a load balancer, API stage or other resource, by ARN or by reference to ACK's `WebACL`; associated again if removed outside Kubernetes, disassociated on delete. ACK's wafv2-controller has no association. | Hand-written on iam-controller PR #184's skeleton; no ACK pull request adds it |
 
 Each kind can reference ACK's own objects, the way ACK's kinds reference
@@ -85,6 +86,11 @@ role:
   same role.
 - A credentials Secret (`aws.credentials.secretName` in ACK's chart): no
   step; our manager mounts the same Secret.
+
+EventBridge Scheduler has no ACK controller. Its manager runs beside ACK's
+EventBridge controller, as that controller's identity, so that role needs
+`scheduler:*`, and `iam:PassRole` for the roles schedules invoke their
+targets with.
 
 With `--identity=ack`, or the annotation `aws.hfl.dev/identity: ack` on
 ACK's controller Deployment, our manager runs as ACK's ServiceAccount

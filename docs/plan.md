@@ -1,6 +1,6 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has seventeen kinds:
+Status, 2026-11-09: the repository has eighteen kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
@@ -14,6 +14,7 @@ Status, 2026-11-09: the repository has seventeen kinds:
 - `rds.aws.hfl.dev` `OptionGroup`;
 - `rds.aws.hfl.dev` `DBProxyTarget`;
 - `rds.aws.hfl.dev` `DBRoleAssociation`;
+- `scheduler.aws.hfl.dev` `ScheduleGroup`;
 - `wafv2.aws.hfl.dev` `WebACLAssociation`.
 
 There is an operator that runs our managers beside ACK's controllers as
@@ -251,6 +252,14 @@ status) and the fake cloud through the real AWS SDK clients.
     back as no drift (no update across three resyncs); a changed
     parameter is updated; the name cannot change; deletion-policy retain
     leaves the connection; delete deletes it
+--- PASS: TestScheduleGroup
+    a group is made, tagged, and settles (no update across three
+    resyncs); its tags are synced; the name cannot change;
+    deletion-policy retain leaves the group; delete deletes it
+--- PASS: TestOurServices, TestReconcileBeside
+          (the operator runs the scheduler manager beside ACK's
+          EventBridge controller, with its identity, and removes it
+          with that controller)
 --- PASS: TestApiDestination
     an API destination is made through the referenced connection (its
     ARN from our Connection's status); a changed rate limit is updated;
@@ -422,6 +431,9 @@ controller to show it can fail:
   the credentials in a Secrets Manager secret, as EventBridge does, which
   the test reads. It returns `AuthParameters` as given, where AWS omits
   the secrets. The read hook keeps the spec's secrets either way.
+- **EventBridge Scheduler groups.** moto makes a group `ACTIVE` and
+  deletes it at once (AWS goes through `DELETING`, and deletes the
+  group's schedules), and keeps its tags.
 - **EventBridge API destinations.** moto marks a destination `ACTIVE` at
   once and, when the spec leaves the rate limit out, reports none (AWS
   reports 300 per second). A unit test shows that default is no drift.
@@ -492,7 +504,7 @@ its master (5.2.5 is the pin).
 | 7 | EC2 `VPNGateway` (attachment, route propagation), `CustomerGateway` | ignored in ec2-controller `v1.23.1`'s `generator.yaml` | yes, except `EnableVgwRoutePropagation` | built: `CustomerGateway`, `VPNGateway` (attachment); route propagation not built (moto has none of it) |
 | 8 | EBS `Volume`, `VolumeAttachment` | ignored in ec2-controller's `generator.yaml`; `aws-controllers-k8s/ebs-controller` is an empty scaffold for the EBS direct API (no kinds, no release) | yes | built: `Volume`, `VolumeAttachment` |
 | 9 | CloudWatch Logs `MetricFilter`; CloudWatch `CompositeAlarm` | metric filters: cloudwatchlogs-controller PR #61, as a field on ACK's `LogGroup`. `CompositeAlarm`: ignored in cloudwatch-controller `v1.11.0`. | metric filters yes; `PutCompositeAlarm` no | skipped. Metric filters wait on open question 1. `CompositeAlarm`: moto has none of it. |
-| 10 | EventBridge Scheduler `Schedule` and `ScheduleGroup`; EventBridge `Connection` and `ApiDestination` | Scheduler: no controller (`community` issue #2784). `Connection` and `ApiDestination`: ignored in eventbridge-controller `v1.9.2`. | yes | `Connection` and `ApiDestination` built; Scheduler skipped: ACK has no Scheduler controller for our manager to run beside (open question 8) |
+| 10 | EventBridge Scheduler `Schedule` and `ScheduleGroup`; EventBridge `Connection` and `ApiDestination` | Scheduler: no controller (`community` issue #2784). `Connection` and `ApiDestination`: ignored in eventbridge-controller `v1.9.2`. | yes | `Connection` and `ApiDestination` built; Scheduler: `ScheduleGroup` built, beside EventBridge's controller (open question 8, answered); `Schedule` next |
 | 11 | ECR `ReplicationConfiguration`; `RegistryPolicy`, `RegistryScanningConfiguration` | `ReplicationConfiguration`: ecr-controller PR #121, open, conflicts with base, no review, last updated 2026-10-18. The others: none. | yes (one replication rule at most) | built: `ReplicationConfiguration` (PR #121's API; rechecked 2026-11-09: still open, conflicting, no review, head `f6c7d57e`). `RegistryPolicy` and `RegistryScanningConfiguration` next |
 | 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`; no pull request or issue, rechecked 2026-11-09) | yes | built |
 | 13 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237: mergeable, active 2026-11-06 | none | skipped: may be close to merging, and moto has none of it |
@@ -1120,6 +1132,27 @@ being replaced (moto keeps both), the delete leaving such a resource
 alone, that the resource exists (moto does not check), and the
 terminal errors.
 
+### 6.23 `scheduler.aws.hfl.dev` `ScheduleGroup`
+
+An EventBridge Scheduler schedule group. ACK has no Scheduler controller
+(`community` issue #2784). The manager runs beside ACK's EventBridge
+controller with its identity (open question 8, answered by the builder;
+section 8, item 12).
+
+**Generated** from `CreateScheduleGroup`, `GetScheduleGroup` and
+`DeleteScheduleGroup`, in a new service, `services/scheduler`.
+
+- **Tags:** a group has no update of its own; its tags are synced with
+  `TagResource` and `UntagResource` (`customUpdate` and the tag
+  comparison, copied from eventbridge-controller's `EventBus`).
+- **Immutable:** the name. **Not found:** `ResourceNotFoundException`.
+- **The SDK client** is `service/scheduler` `v1.12.13`, the version in
+  the aws-sdk-go-v2 release whose models the generator reads
+  (`v1.34.0`), since no ACK controller pins one.
+
+**Not proven:** the `DELETING` state, and that deleting a group deletes
+its schedules (moto does both at once).
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)
@@ -1158,7 +1191,9 @@ So "the same AWS identity" means three things:
 
 1. **Finds ACK controllers** by the chart's label
    `app.kubernetes.io/name: <service>-chart`, or by the annotation
-   `aws.hfl.dev/ack-service`, for each service we extend (`iam`, `rds`).
+   `aws.hfl.dev/ack-service`, for each service we extend. A service ACK
+   has no controller for runs beside the controller `Beside` names, with
+   its identity: `scheduler` beside `eventbridge` (open question 8).
 2. **Runs our manager in the same namespace.** The manager is
    `ack-extensions-<service>-manager`, and gets:
    - the controller container's **arguments**, minus the three flags that
@@ -1331,6 +1366,13 @@ Before it can run on a real cluster:
 11. The heavy checks run on a Spot VM (`../offload`), not the laptop. A
     fresh VM has no `third_party/` (gitignored), so the command is
     `make tools && make check && make operator-e2e`.
+12. EventBridge Scheduler runs beside ACK's EventBridge controller (open
+    question 8). A cluster with Scheduler kinds therefore needs ACK's
+    EventBridge controller installed, even with no EventBridge kinds, and
+    that controller's role needs `scheduler:*` (and `iam:PassRole` for the
+    roles schedules invoke their targets with). Should ACK ship a
+    Scheduler controller, the manager moves beside it on its own
+    (`pkg/operator`, `ourServices`).
 
 ## 9. Open questions
 
@@ -1395,4 +1437,9 @@ Before it can run on a real cluster:
    - leave such services out until ACK has a controller for them.
 
    Proposed: the first, beside EventBridge's controller, documented as
-   needing `scheduler:*` on that role. Scheduler waits for the answer.
+   needing `scheduler:*` on that role.
+
+   **Answered** (builder, 2026-11-09): "Just build the thing. I trust your
+   judgment." Built as proposed: `pkg/operator` runs the scheduler
+   manager beside ACK's EventBridge controller (`Beside`), copying its
+   identity; section 8, item 12, says what that asks of the role.
