@@ -27,6 +27,7 @@ rules:
   resources:
   - loginprofiles
   - rolepolicyattachments
+  - sshpublickeys
   - usergroupmemberships
   verbs:
   - create
@@ -41,6 +42,7 @@ rules:
   resources:
   - loginprofiles/status
   - rolepolicyattachments/status
+  - sshpublickeys/status
   - usergroupmemberships/status
   verbs:
   - get

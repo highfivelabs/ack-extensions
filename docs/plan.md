@@ -1,6 +1,6 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has nineteen kinds:
+Status, 2026-11-09: the repository has twenty kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
@@ -8,7 +8,7 @@ Status, 2026-11-09: the repository has nineteen kinds:
   `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
-- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership` and `LoginProfile`;
+- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile` and `SSHPublicKey`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
 - `rds.aws.hfl.dev` `OptionGroup`;
@@ -204,6 +204,13 @@ status) and the fake cloud through the real AWS SDK clients.
     profile; delete deletes it
 --- PASS: TestDefaultResetIsNoDrift, TestSetResetIsCompared
           (login profile unit tests)
+--- PASS: TestSSHPublicKey
+    a key is uploaded, active, and settles (no update across three
+    resyncs); it is deactivated; a reactivation outside Kubernetes is
+    put back; the body cannot change; deletion-policy retain leaves the
+    key; delete deletes it
+--- PASS: TestStatusDefaultAndBodyAreNoDrift, TestStatusIsCompared
+          (SSH public key unit tests)
 --- PASS: TestRolePolicyAttachment
     create attaches the policy; references resolve to ACK's Role; delete
     detaches the policy; deletion-policy retain keeps the attachment
@@ -450,6 +457,9 @@ controller to show it can fail:
   returns, so the test cannot read it back. It ignores
   `PasswordResetRequired` on create (the update sets it) and does not
   check the account's password policy.
+- **IAM SSH public keys.** moto does not parse the key body (IAM
+  refuses one that is not a valid RSA key of 2048 bits or more), returns
+  it as uploaded, and does not refuse a key the user already has.
 - **KMS replica keys.**
   - moto keeps a replica in its own Region's backend, under the primary
     key's key ID, as AWS does.
@@ -518,7 +528,7 @@ its master (5.2.5 is the pin).
 | 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`; no pull request or issue, rechecked 2026-11-09) | yes | built |
 | 13 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237: mergeable, active 2026-11-06 | none | skipped: may be close to merging, and moto has none of it |
 | 14 | Route 53 DNSSEC and `KeySigningKey`, VPC association authorization | ignored in route53-controller's `generator.yaml` | none | skipped: moto has none of it |
-| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | `LoginProfile` built; the rest under way |
+| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | `SSHPublicKey` built; the rest under way |
 | 16 | EC2 `PlacementGroup` | ignored in ec2-controller's `generator.yaml` | none | skipped: moto has none of it |
 | 17 | S3 `Object`, the account's public access block | none | yes | to build |
 | 18 | EC2 `KeyPair` | ec2-controller PR #396: both reviews' changes made, main merged in 2026-11-04, mergeable | yes | skipped: close to merging; wait for the release |
@@ -1195,6 +1205,33 @@ ACK's iam-controller `v1.11.3` has none; its pull request #147 was closed
 
 **Not proven:** that the password reached IAM (no API returns it), the
 account's password policy refusing a password, and a changed Secret.
+### 6.20 `iam.aws.hfl.dev` `SSHPublicKey`
+
+An IAM user's SSH public key, for AWS CodeCommit: Terraform's
+`aws_iam_user_ssh_key`. ACK's iam-controller `v1.11.3` has none, and no
+pull request adds one (rechecked 2026-11-09).
+
+**Hand-written** on ACK's runtime, on PR #184's skeleton: the key is made
+with `UploadSSHPublicKey`, which the generator does not read as a
+create, and it is known by an ID IAM gives it.
+
+- **Spec:** `userName` or `userRef` (ACK's `User`), and
+  `sshPublicKeyBody`, both immutable; `status`, `Active` (the default) or
+  `Inactive`.
+- **Status:** `sshPublicKeyID` (the key's name in CodeCommit and SSH
+  configuration), `fingerprint`, `uploadDate`.
+- **Read:** `GetSSHPublicKey` by the ID. The body is not compared: it is
+  immutable, and IAM may return it in another form. The status is, so a
+  key reactivated outside Kubernetes is set back.
+- **Update** sets the status (`UpdateSSHPublicKey`). **Delete** deletes
+  the key; a key or user already gone is deleted.
+- **Errors:** a user not there yet is retried; a malformed or duplicate
+  key, or a user at IAM's limit of keys, is terminal.
+- **Synced** once read. IAM has no ARN for a key; the IAM ARN form with
+  the user and key ID stands in, for ACK's metadata only.
+
+**Not proven:** IAM parsing the key (moto does not), a duplicate key
+being refused, and real AWS.
 
 ## 7. The operator: ACK's identity, beside ACK's controller
 
