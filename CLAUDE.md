@@ -14,6 +14,8 @@ itself lives in its own repository and is never changed from here.
    file copied from upstream.
 4. `CONTRIBUTING.md`: build and test commands, the copy-upstream rule,
    sign-off.
+5. `docs/handoff.md`: how a gap kind is built and checked here, the mistakes
+   already made once, and what is left to build.
 
 ## Where things are
 
