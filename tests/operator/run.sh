@@ -101,10 +101,10 @@ kubectl kustomize config/default \
   | KO_DOCKER_REPO=kind.local KIND_CLUSTER_NAME="${CLUSTER}" ko resolve --platform="linux/${arch}" -f - >"${work}/ours.yaml"
 kubectl apply --server-side -f "${work}/ours.yaml" >/dev/null
 kubectl -n ack-extensions-system rollout status deploy/ack-extensions-operator --timeout=180s >/dev/null
-for crd in rolepolicyattachments.iam.aws.hfl.dev dbproxytargets.rds.aws.hfl.dev optiongroups.rds.aws.hfl.dev; do
+for crd in rolepolicyattachments.iam.aws.hfl.dev dbproxytargets.rds.aws.hfl.dev dbroleassociations.rds.aws.hfl.dev optiongroups.rds.aws.hfl.dev; do
   kubectl get crd "${crd}" >/dev/null || fail "CRD ${crd} missing"
 done
-ok "CRDs installed: rolepolicyattachments.iam, dbproxytargets.rds, optiongroups.rds (*.aws.hfl.dev); operator running"
+ok "CRDs installed: rolepolicyattachments.iam, dbproxytargets.rds, dbroleassociations.rds, optiongroups.rds (*.aws.hfl.dev); operator running"
 
 echo "== identity own: our manager beside ACK's, as ACK's role"
 wait_for 180 "manager ${ACK_NS}/ack-extensions-rds-manager rolled out" \
@@ -128,8 +128,10 @@ can() { kubectl auth can-i "$1" "$2" --as="system:serviceaccount:${ACK_NS}:$3" $
 [[ "$(can create dbproxytargets.rds.aws.hfl.dev ack-extensions-rds-manager default)" == yes ]] || fail "our manager cannot create dbproxytargets"
 [[ "$(can delete dbinstances.rds.services.k8s.aws ack-extensions-rds-manager default)" == no ]] || fail "our manager may delete ACK's DBInstances"
 [[ "$(can get dbproxies.rds.services.k8s.aws ack-extensions-rds-manager default)" == yes ]] || fail "our manager cannot read ACK's DBProxies (references)"
+[[ "$(can get roles.iam.services.k8s.aws ack-extensions-rds-manager default)" == yes ]] || fail "our manager cannot read ACK's Roles (references)"
+[[ "$(can delete roles.iam.services.k8s.aws ack-extensions-rds-manager default)" == no ]] || fail "our manager may delete ACK's Roles"
 [[ "$(can create dbproxytargets.rds.aws.hfl.dev ack-rds-controller default)" == no ]] || fail "ACK's controller may create our kinds"
-ok "rights: ours manages *.rds.aws.hfl.dev and only reads ACK's rds kinds; ACK's controller has nothing of ours"
+ok "rights: ours manages *.rds.aws.hfl.dev and only reads ACK's rds kinds and Roles; ACK's controller has nothing of ours"
 
 echo "== gap kinds reconcile against moto"
 kubectl -n fake-aws port-forward svc/moto 15000:5000 >/dev/null 2>&1 &
@@ -157,10 +159,16 @@ apiVersion: rds.aws.hfl.dev/v1alpha1
 kind: OptionGroup
 metadata: {name: app-mysql, namespace: default}
 spec: {name: app-mysql, description: app options, engineName: mysql, majorEngineVersion: "8.0", options: [{optionName: MARIADB_AUDIT_PLUGIN}]}
+---
+apiVersion: rds.aws.hfl.dev/v1alpha1
+kind: DBRoleAssociation
+metadata: {name: app-db-s3-import, namespace: default}
+spec: {dbInstanceIdentifier: app-db, roleARN: "arn:aws:iam::123456789012:role/app-db-s3", featureName: s3Import}
 YAML
 synced() { [[ "$(kubectl get "$1" -o jsonpath='{.status.conditions[?(@.type=="ACK.ResourceSynced")].status}')" == True ]]; }
 wait_for 120 "DBProxyTarget default/app-db synced through the manager on kind" synced dbproxytarget.rds.aws.hfl.dev/app-db
 wait_for 180 "OptionGroup default/app-mysql synced through the manager on kind" synced optiongroup.rds.aws.hfl.dev/app-mysql
+wait_for 120 "DBRoleAssociation default/app-db-s3-import synced through the manager on kind" synced dbroleassociation.rds.aws.hfl.dev/app-db-s3-import
 "${PY}" -I - <<'PYEOF'
 import boto3
 kw = dict(endpoint_url="http://127.0.0.1:15000", region_name="us-west-2", aws_access_key_id="testing", aws_secret_access_key="testing")
@@ -169,7 +177,9 @@ t = [x["RdsResourceId"] for x in rds.describe_db_proxy_targets(DBProxyName="app-
 o = [x["OptionName"] for x in rds.describe_option_groups(OptionGroupName="app-mysql")["OptionGroupsList"][0]["Options"]]
 assert t == ["app-db"], t
 assert o == ["MARIADB_AUDIT_PLUGIN"], o
-print("ok: in moto: app-proxy targets", t, "; app-mysql options", o)
+r = [(x["RoleArn"].split("/")[-1], x["FeatureName"]) for x in rds.describe_db_instances(DBInstanceIdentifier="app-db")["DBInstances"][0]["AssociatedRoles"]]
+assert r == [("app-db-s3", "s3Import")], r
+print("ok: in moto: app-proxy targets", t, "; app-mysql options", o, "; app-db roles", r)
 PYEOF
 
 echo "== identity ack: share ACK's ServiceAccount"
