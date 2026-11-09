@@ -26,6 +26,7 @@ CLUSTER="${CLUSTER:-ack-extensions-operator}"
 NODE_IMAGE="${NODE_IMAGE:-kindest/node:v1.37.0}"
 ACK_NS=ack-system
 ACK_ROLE="arn:aws:iam::123456789012:role/ack-rds-controller"
+go mod download github.com/aws-controllers-k8s/rds-controller
 ACK_RDS_VERSION="$(go list -m -f '{{.Version}}' github.com/aws-controllers-k8s/rds-controller)"
 ACK_RDS_DIR="$(go list -m -f '{{.Dir}}' github.com/aws-controllers-k8s/rds-controller)"
 ACK_RDS_IMAGE="public.ecr.aws/aws-controllers-k8s/rds-controller:${ACK_RDS_VERSION#v}"
