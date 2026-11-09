@@ -14,6 +14,8 @@ record of exactly which ACK code it uses, and of every file copied from it.
 | autoscaling-controller | `v1.5.0` | `56316c75a5da8fdf8079917a16e540be4e84e986` | not a module here: the EC2 Auto Scaling SDK client is at its version (`service/autoscaling` `v1.64.3`) |
 | kms-controller | `v1.7.0` | `57250fba83d58aeb84a3ec2770cf3e9b45708895` | Go module: the API types of ACK's `Key` (which `ReplicaKey` references), `KeyMetadata` and `Tag`; the KMS SDK client at its version (`service/kms` `v1.37.14`) |
 | ec2-controller | `v1.23.1` | `9303654c2cffad05147e4260105439149f7c81bf` | not a module here (its `pkg/tags` is copied); the EC2 SDK client is at its version (`service/ec2` `v1.290.1`) |
+| ecr-controller | `v1.11.1` | `72590cedeb2a4a92d086175762a97aa2ed2bc979` | not a module here: ACK's ECR kinds are left to it (the generator ignores them); the ECR SDK client is at its version (`service/ecr` `v1.55.0`) |
+| ecr-controller PR #121 | head | `f6c7d57e0b169547ed2300cbba0c65b11691b0eb` | `ReplicationConfiguration`'s API, behaviour and conversions (open, conflicting, no review, 2026-11-09) |
 | eventbridge-controller | `v1.9.2` | `fd084a0bb4d9025f294516d6319b88293be1de8d` | not a module here: the EventBridge SDK client is at its version (`service/eventbridge` `v1.36.7`) |
 | secretsmanager-controller | `v1.8.2` | tag | not a module here: the Secrets Manager SDK client the end-to-end tests read a connection's secret with is at its version (`service/secretsmanager` `v1.34.14`) |
 | lambda-controller | `v1.19.0` | `86905357482d01538cb00ab28d59c6af5c46e6f4` | Go module: the API types of ACK's `Function`, which `Permission` references; the Lambda SDK client at its version (`service/lambda` `v1.88.5`) |
@@ -46,6 +48,9 @@ and what changed.
 | `services/rds/templates/hooks/option_group/*.go.tpl` | rds-controller PR #257 `templates/hooks/option_group/` | `32c3cb23…` | none |
 | `services/rds/pkg/resource/option_group/{hooks,hooks_test}.go` | rds-controller PR #257 `pkg/resource/option_group/` | `32c3cb23…` | import paths |
 | `services/rds/pkg/util/tags.go` | rds-controller PR #257 `pkg/util/tags.go` | `32c3cb23…` | import path (rds-controller `main` has since moved to the runtime's tag helpers, #330) |
+| `services/ecr/apis/v1alpha1/replication_configuration.go` | ecr-controller PR #121 `apis/v1alpha1/replication_configuration.go` | `f6c7d57e…` (PR head) | import path; API group; header (the file is marked generated but was written by hand) |
+| `services/ecr/pkg/resource/replication_configuration/sdk.go` (the behaviour and conversions) | ecr-controller PR #121 `pkg/resource/replication_configuration/manager.go` | `f6c7d57e…` (PR head) | split into our hand-written kinds' sdk functions; debug logging dropped; no rules reads as not found; `spec.registryID` must be the manager's registry; update returns the put configuration |
+| `services/ecr/pkg/resource/replication_configuration/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton) | `78eb350e…` | package, kind and API types |
 | `services/rds/pkg/resource/db_proxy_target/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton) | `78eb350e…` | package, kind, API group, RDS client, ARN format, `IsSynced` (synced when every target is AVAILABLE), adoption fields |
 | `services/autoscaling/generator.yaml` (the `ScalingPolicy` entry's `operations` mapping and its shape) | applicationautoscaling-controller `v1.9.0` `generator.yaml` (`ScalingPolicy` from `PutScalingPolicy`) | `009baef3…` (`v1.9.0`) | EC2 Auto Scaling's operations (`PutScalingPolicy`, `DescribePolicies`, `DeletePolicy`), its fields, and late-initialized server defaults; the hook templates are written here |
 | `services/applicationautoscaling/generator.yaml` (the `ScheduledAction` entry's `operations` mapping) | applicationautoscaling-controller `v1.9.0` `generator.yaml` (`ScalingPolicy` from `PutScalingPolicy`) | `009baef3…` | `PutScheduledAction`, `DescribeScheduledActions`, `DeleteScheduledAction`; the resources ACK has ignored |
@@ -71,6 +76,7 @@ Written here: `services/rds/apis/v1alpha1/db_proxy_target.go`,
 `services/rds/apis/v1alpha1/db_role_association.go`,
 `services/lambda/apis/v1alpha1/permission.go`,
 `services/ec2/templates/hooks/customer_gateway/*.go.tpl`,
+`services/ecr/pkg/resource/replication_configuration/{delta,references,sdk_test}.go`,
 `services/eventbridge/pkg/resource/connection/{hooks,hooks_test}.go`,
 `services/eventbridge/templates/hooks/connection/*.go.tpl`,
 `services/kms/pkg/resource/replica_key/{delta,references,sdk_test}.go`,
