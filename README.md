@@ -97,10 +97,12 @@ own kinds. `docs/plan.md`, section 7, compares the two.
 
 ## Develop
 
+The tasks are in `Taskfile.yml` (run with [Task](https://taskfile.dev); `task` lists them).
+
 ```sh
-make tools         # ACK's generator at the pin, controller-gen, goimports, setup-envtest, moto
-make check         # generated files current, gofmt, vet, SPDX lines, build, tests
-make operator-e2e  # the operator on kind beside ACK's real rds-controller, against moto
+task tools         # ACK's generator at the pin, controller-gen, goimports, setup-envtest, moto
+task check         # generated files current, gofmt, vet, SPDX lines, build, tests
+task operator-e2e  # the operator on kind beside ACK's real rds-controller, against moto
 ```
 
 The tests use moto, a fake AWS, in server mode. Nothing here uses real

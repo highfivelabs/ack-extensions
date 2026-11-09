@@ -90,7 +90,7 @@ func moduleDir(t testing.TB, root, module string) string {
 func Start(t *testing.T, service string, scheme *runtime.Scheme) *Env {
 	t.Helper()
 	if os.Getenv("KUBEBUILDER_ASSETS") == "" {
-		t.Skip("KUBEBUILDER_ASSETS is not set; run through make test")
+		t.Skip("KUBEBUILDER_ASSETS is not set; run through task test")
 	}
 	root := RepoRoot(t)
 

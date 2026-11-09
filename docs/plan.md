@@ -109,7 +109,7 @@ for one controller, for each of our services:
    (`config/crds/bases`) and the managers' RBAC (`config/rbac`);
 5. gofmt and goimports.
 
-`make check` fails if it changes anything committed. Generation is
+`task check` fails if it changes anything committed. Generation is
 deterministic: two runs give identical trees.
 
 **One patch to the generator**, `patches/code-generator/0001`, adds
@@ -132,7 +132,7 @@ with the patch.
   of them to one ACK release:
   1. Update `UPSTREAM.md`'s generator commit and `go.mod`'s runtime and
      controller versions.
-  2. Run `make upstream generate`, then `make check`.
+  2. Run `task upstream generate`, then `task check`.
 
   Keep the AWS SDK modules at the versions ACK's controllers use, so
   shared dependencies are the ones ACK tests with. Adding the EC2 client
@@ -184,7 +184,7 @@ the credentials `testing`/`testing`.
 The tests assert on two sides: the Kubernetes object (conditions,
 status) and the fake cloud through the real AWS SDK clients.
 
-### 4.3 Results (`make test`; latest 2026-11-09 on a Spot VM, linux amd64, Go 1.27.3)
+### 4.3 Results (`task test`; latest 2026-11-09 on a Spot VM, linux amd64, Go 1.27.3)
 
 ```text
 --- PASS: TestUserGroupMembership
@@ -1346,7 +1346,7 @@ and patch; that is ACK's design, not ours.
   binding moved;
 - ACK's controller removed: everything of ours is deleted.
 
-**`tests/operator/run.sh` (`make operator-e2e`) on kind** (kindest/node
+**`tests/operator/run.sh` (`task operator-e2e`) on kind** (kindest/node
 v1.37.0; last run 2026-11-09 on a Spot VM, e2-standard-8, by
 `../offload`), with moto in the cluster and ACK's **real** rds-controller
 `v1.14.2` installed from its own chart, with a credentials Secret and an
@@ -1431,7 +1431,7 @@ Before it can run on a real cluster:
    found (both conflict with their base).
 6. `hack/upstream-pr.sh`, as gaps-gcp has, to follow the PR heads copied
    from.
-7. CI: `make check` on Linux, with the envtest assets and moto cached.
+7. CI: `task check` on Linux, with the envtest assets and moto cached.
 8. The OptionGroup test takes about 50 seconds: options are added on the
    second reconcile, after the runtime's requeue delay.
 9. `DBRoleAssociation`'s delete is proven end to end only up to the
@@ -1443,7 +1443,7 @@ Before it can run on a real cluster:
     a hand-written references file.
 11. The heavy checks run on a Spot VM (`../offload`), not the laptop. A
     fresh VM has no `third_party/` (gitignored), so the command is
-    `make tools && make check && make operator-e2e`.
+    `task tools && task check && task operator-e2e`.
 
 ## 9. Open questions
 
