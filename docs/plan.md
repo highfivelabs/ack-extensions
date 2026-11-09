@@ -630,6 +630,12 @@ Before it can run on a real cluster:
    second reconcile, after the runtime's requeue delay.
 9. `DBRoleAssociation`'s delete is proven end to end only up to the
    `RemoveRoleFrom...` call (section 4.4, open question 6).
+10. `make operator-e2e` has not yet run with `DBRoleAssociation`'s steps
+    (its CRD, the manager reading but not deleting ACK's `Role`s, an
+    association syncing on kind). On 2026-11-08 the laptop's Docker VM
+    was at a load average of about 150. The run's kind API server lost
+    etcd mid-run, and the rerun on a fresh cluster could not finish
+    `kubeadm init`. The output in section 7.4 is from before this kind.
 
 ## 9. Open questions
 
