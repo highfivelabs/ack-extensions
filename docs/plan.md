@@ -1,10 +1,11 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has thirteen kinds:
+Status, 2026-11-09: the repository has fourteen kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
-- `ec2.aws.hfl.dev` `CustomerGateway`, `VPNGateway` and `Volume`;
+- `ec2.aws.hfl.dev` `CustomerGateway`, `VPNGateway`, `Volume` and
+  `VolumeAttachment`;
 - `eventbridge.aws.hfl.dev` `Connection`;
 - `iam.aws.hfl.dev` `RolePolicyAttachment`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
@@ -230,6 +231,13 @@ status) and the fake cloud through the real AWS SDK clients.
     a VPN gateway is made, tagged, and attached to its VPC; it moves to
     another VPC; its ASN cannot change; deletion-policy retain leaves the
     gateway attached; delete detaches and deletes the gateway
+--- PASS: TestVolumeAttachment
+    the referenced volume is attached and settles (no update across
+    three resyncs); the device cannot change; a detach outside
+    Kubernetes is put back; deletion-policy retain leaves the volume
+    attached; delete detaches the volume
+--- PASS: TestAttachmentTo, TestDeviceIsCompared, TestAttachedIsSynced
+          (volume attachment unit tests)
 --- PASS: TestVolume
     a volume is made, tagged, and available; it grows; its zone cannot
     change; EC2's defaults are no drift (no update across three
@@ -376,7 +384,10 @@ controller to show it can fail:
   through `creating`), applies `ModifyVolume` at once (AWS goes through
   `modifying` and `optimizing`), and removes a deleted volume at once.
   It fills in a volume type when the spec leaves it out, which
-  `TestVolume` shows is no drift.
+  `TestVolume` shows is no drift. It attaches and detaches at once (the
+  attach answers `attaching`, the next read `attached`), takes any AMI for
+  the test's instance, and does not refuse a volume already attached
+  elsewhere (AWS answers `VolumeInUse`).
 - **EventBridge connections.** moto marks a connection `AUTHORIZED` at
   once (an OAuth connection is `AUTHORIZING` first on AWS). It stores
   the credentials in a Secrets Manager secret, as EventBridge does, which
@@ -443,7 +454,7 @@ its master (5.2.5 is the pin).
 | 5 | KMS `ReplicaKey` | kms-controller PR #112: open, conflicts with base, not approved; an ACK maintainer's review finds its read, update and delete act on the primary key | `ReplicateKey` yes, `UpdatePrimaryRegion` no | built: `ReplicaKey` |
 | 6 | Standalone security group rules | none; ec2-controller has rule-sync fixes open (#394, #385) | yes | skipped: open question 7 |
 | 7 | EC2 `VPNGateway` (attachment, route propagation), `CustomerGateway` | ignored in ec2-controller `v1.23.1`'s `generator.yaml` | yes, except `EnableVgwRoutePropagation` | built: `CustomerGateway`, `VPNGateway` (attachment); route propagation not built (moto has none of it) |
-| 8 | EBS `Volume`, `VolumeAttachment` | ignored in ec2-controller's `generator.yaml`; `aws-controllers-k8s/ebs-controller` is an empty scaffold for the EBS direct API (no kinds, no release) | yes | `Volume` built; the attachment next |
+| 8 | EBS `Volume`, `VolumeAttachment` | ignored in ec2-controller's `generator.yaml`; `aws-controllers-k8s/ebs-controller` is an empty scaffold for the EBS direct API (no kinds, no release) | yes | built: `Volume`, `VolumeAttachment` |
 | 9 | CloudWatch Logs `MetricFilter`; CloudWatch `CompositeAlarm` | metric filters: cloudwatchlogs-controller PR #61, as a field on ACK's `LogGroup`. `CompositeAlarm`: ignored in cloudwatch-controller `v1.11.0`. | metric filters yes; `PutCompositeAlarm` no | skipped. Metric filters wait on open question 1. `CompositeAlarm`: moto has none of it. |
 | 10 | EventBridge Scheduler `Schedule` and `ScheduleGroup`; EventBridge `Connection` and `ApiDestination` | Scheduler: no controller (`community` issue #2784). `Connection` and `ApiDestination`: ignored in eventbridge-controller `v1.9.2`. | yes | `Connection` built; `ApiDestination` and Scheduler next |
 | 11 | ECR `ReplicationConfiguration`; `RegistryPolicy`, `RegistryScanningConfiguration` | `ReplicationConfiguration`: ecr-controller PR #121, open, conflicts with base, no review, last updated 2026-10-18. The others: none. | yes (one replication rule at most) | `ReplicationConfiguration` written, waits for its turn (branch `agent/ecr-replication-configuration`) |
@@ -937,6 +948,42 @@ regenerates differently.
 **Not proven:** a modification's `modifying` and `optimizing` states,
 and EBS's limit of one modification per six hours. moto applies a
 change at once, and a second change within six hours is refused on AWS.
+
+### 6.14 `ec2.aws.hfl.dev` `VolumeAttachment`
+
+An EBS volume attached to an instance as a device: Terraform's
+`aws_volume_attachment`, whose name the kind keeps. ACK's ec2-controller
+`v1.23.1` has no attachment, and no pull request adds one (checked
+2026-11-09).
+
+**Hand-written** on ACK's runtime, on PR #184's skeleton, as for
+`DBRoleAssociation`: `AttachVolume` and `DetachVolume` are not a create
+and delete the generator reads, and there is no read of an attachment
+but the volume's own (`DescribeVolumes`).
+
+- **Spec:** `volumeID` or `volumeRef` (our `Volume`, its
+  `status.volumeID`), `instanceID` and `deviceName`, all immutable. A
+  volume attaches to an instance once, so the volume and instance find
+  the attachment; the device is read back, and a different one is drift
+  that `sdkUpdate` refuses (terminal).
+- **Status:** `state`, `attachTime`, `deleteOnTermination`. Synced when
+  `attached`. EC2 has no ARN for an attachment; the volume's ARN form
+  with the instance appended stands in, for ACK's metadata only.
+- **Read:** a missing volume, or no attachment to the instance (or a
+  `detached` one), is not found, so a detach outside Kubernetes is
+  attached again.
+- **Delete** detaches; a volume or attachment already gone is detached.
+- **Errors:** a bad parameter is terminal; a volume or instance not there
+  yet, or a volume still attached elsewhere (`VolumeInUse`), is retried.
+- **No `instanceRef`.** ACK's ec2-controller has `Instance`, but a
+  reference to it needs ec2-controller as a module here (section 8,
+  item 10). `instanceID` takes the ID.
+
+**Not proven:** the `attaching` and `detaching` states lasting (moto
+does both at once), `VolumeInUse` (moto does not refuse a second
+attachment), and detaching from a running instance whose file system is
+mounted (AWS may leave it `busy`; Terraform's `force_detach` and
+`stop_instance_before_detaching` are not built).
 
 ## 7. The operator: ACK's identity, beside ACK's controller
 
