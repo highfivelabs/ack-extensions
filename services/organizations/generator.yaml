@@ -26,6 +26,13 @@
 # ListDelegatedAdministrators (read, filtered by the service principal and
 # matched on the account), mapped below. accountRef names ACK's Account,
 # through a type alias of ACK's type (apis/v1alpha1/ack_kinds.go).
+#
+# AccountPlacement is generated from MoveAccount (the create and the
+# update) and ListParents (read, the account's one parent), mapped below:
+# the OU (or root) an account is in, the sidecar community issue #2369
+# asks for. MoveAccount's SourceParentId is the parent read last, set by a
+# hook (hooks.go). There is no delete: an account always has a parent, so
+# deleting the object leaves the account where it is.
 operations:
   AttachPolicy:
     operation_type: Create
@@ -45,11 +52,25 @@ operations:
   ListDelegatedAdministrators:
     operation_type: List
     resource_name: DelegatedAdministrator
+  MoveAccount:
+    operation_type:
+      - Create
+      - Update
+    resource_name: AccountPlacement
+  ListParents:
+    operation_type: List
+    resource_name: AccountPlacement
 ignore:
   # The SDK's Account shape (no field of ours uses it) would clash with the
   # alias of ACK's Account kind (apis/v1alpha1/ack_kinds.go).
   shape_names:
     - Account
+    # ListParents' and ListChildren's elements: no field of ours uses them.
+    - Child
+    - Parent
+  field_paths:
+    # The parent the account is moved from: the one read last (hooks.go).
+    - MoveAccountInput.SourceParentId
   resource_names:
     - Account
     - GovCloudAccount
@@ -159,3 +180,43 @@ resources:
         template_path: hooks/delegated_administrator/sdk_read_many_post_request.go.tpl
       sdk_delete_post_request:
         template_path: hooks/delegated_administrator/sdk_delete_post_request.go.tpl
+  AccountPlacement:
+    tags:
+      ignore: true
+    exceptions:
+      errors:
+        404:
+          code: ChildNotFoundException
+      terminal_codes:
+        - InvalidInputException
+        - ConstraintViolationException
+    renames:
+      operations:
+        MoveAccount:
+          input_fields:
+            DestinationParentId: ParentId
+        ListParents:
+          input_fields:
+            ChildId: AccountId
+          output_fields:
+            Id: ParentId
+    fields:
+      AccountID:
+        is_primary_key: true
+        is_immutable: true
+        references:
+          resource: Account
+          path: Status.AccountID
+      ParentID:
+        references:
+          resource: OrganizationalUnit
+          path: Status.ID
+    hooks:
+      sdk_read_many_pre_build_request:
+        template_path: hooks/account_placement/sdk_read_many_pre_build_request.go.tpl
+      sdk_create_post_build_request:
+        template_path: hooks/account_placement/sdk_create_post_build_request.go.tpl
+      sdk_create_post_set_output:
+        template_path: hooks/account_placement/sdk_create_post_set_output.go.tpl
+      sdk_update_post_build_request:
+        template_path: hooks/account_placement/sdk_update_post_build_request.go.tpl
