@@ -54,6 +54,45 @@ the manager in the operator's namespace as
 environment's role (`pkg/operator/cloudcontrol.go`). Per-service Cloud
 Control managers were the spike's proposal and are not to be built.
 
+**Left of the builder's Cloud Control brief (2026-11-09), for the next
+agent.** PR 1 (`agent/cloudcontrol`) is the core. Still to do:
+
+- **PR 2, types in foundation order**, in reviewable batches
+  (`docs/coverage/foundation.md`; `cloudcontrol/readiness.md` lists the
+  gap types and which make a clean CRD). Each with a moto backend and an
+  e2e test where moto has the service, else "unproven on fake" in the
+  coverage data. Coverage reads our CRDs from `config/crds/bases/` only
+  (`hack/coverage/model.go`, the glob near line 132): add
+  `cloudcontrol/config/crds/*_*.yaml`, a column or flag for the route and
+  for "unproven on fake", then `task coverage`. Kind names can repeat
+  across services; the manager handles it (group-qualified
+  `--cloudcontrol-kinds`, controller-name validation off), but check the
+  coverage matcher does too.
+- **PR 3, the live-test switch**, after the GCP repository's
+  (`config-connector-extensions`: `docs/live-runs.md`, `hack/live/run.sh`,
+  `sweep.sh`, `projects.sh`, `task test-live`, `live-sweep`, `live-list`):
+  a target variable for `cloudcontrol/test/e2e` (fake or real; `task check`
+  forces fake), the real mode refusing to start without an explicit opt-in
+  and an account ID on an allowlist (checked with STS `GetCallerIdentity`),
+  run-ID names and a tag on everything made, assertions on the fake's
+  call log skipped in real mode, the service SDK checks pointed at real
+  AWS. A sweeper can be generic: Cloud Control `ListResources` for each
+  served type, delete what carries the run tag (allowlist checked first).
+  Credentials by federation only: on an offload VM (`offload run --sa`),
+  fetch a Google ID token from the metadata server for an audience, write
+  it to a file, and let the SDK do `AssumeRoleWithWebIdentity`
+  (`AWS_WEB_IDENTITY_TOKEN_FILE`, `AWS_ROLE_ARN`), refreshing the file
+  before the hour. The CloudFormation template for the sandbox account
+  (for the builder to deploy; nothing deployed by an agent): the web
+  identity trust for `accounts.google.com` (check whether IAM needs an
+  OIDC provider resource for Google or takes `accounts.google.com`
+  natively, and which claim each condition key maps to:
+  `accounts.google.com:sub`, `:aud` (azp), `:oaud`), a test role trusting
+  only the offload VM service account's unique ID, its permissions from
+  `task cloudcontrol:iam` plus `cloudformation:ListResources`, and a
+  budget alarm. Never runnable by `task check`; the fake's three guards
+  stay as they are.
+
 ## The loop for one kind
 
 1. **Recheck upstream, read-only.** The ACK controller's latest release, its
