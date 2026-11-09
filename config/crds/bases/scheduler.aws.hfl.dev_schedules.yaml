@@ -1,0 +1,407 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: schedules.scheduler.aws.hfl.dev
+spec:
+  group: scheduler.aws.hfl.dev
+  names:
+    kind: Schedule
+    listKind: ScheduleList
+    plural: schedules
+    singular: schedule
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Schedule is the Schema for the Schedules API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ScheduleSpec defines the desired state of Schedule.
+            properties:
+              actionAfterCompletion:
+                description: |-
+                  Specifies the action that EventBridge Scheduler applies to the schedule after
+                  the schedule completes invoking the target.
+                type: string
+              description:
+                description: The description you specify for the schedule.
+                type: string
+              endDate:
+                description: |-
+                  The date, in UTC, before which the schedule can invoke its target. Depending
+                  on the schedule's recurrence expression, invocations might stop on, or before,
+                  the EndDate you specify.EventBridge Scheduler ignores EndDate for one-time
+                  schedules.
+                format: date-time
+                type: string
+              flexibleTimeWindow:
+                description: |-
+                  Allows you to configure a time window during which EventBridge Scheduler
+                  invokes the schedule.
+                properties:
+                  maximumWindowInMinutes:
+                    format: int64
+                    type: integer
+                  mode:
+                    type: string
+                type: object
+              groupName:
+                description: |-
+                  The name of the schedule group to associate with this schedule. If you omit
+                  this, the default schedule group is used.
+
+                  Regex Pattern: `^[0-9a-zA-Z-_.]+$`
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              groupRef:
+                description: "AWSResourceReferenceWrapper provides a wrapper around
+                  *AWSResourceReference\ntype to provide more user friendly syntax
+                  for references using 'from' field\nEx:\nAPIIDRef:\n\n\tfrom:\n\t
+                  \ name: my-api"
+                properties:
+                  from:
+                    description: |-
+                      AWSResourceReference provides all the values necessary to reference another
+                      k8s resource for finding the identifier(Id/ARN/Name)
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+              kmsKeyARN:
+                description: |-
+                  The Amazon Resource Name (ARN) for the customer managed KMS key that EventBridge
+                  Scheduler will use to encrypt and decrypt your data.
+
+                  Regex Pattern: `^arn:aws(-[a-z]+)?:kms:[a-z0-9\-]+:\d{12}:(key|alias)\/[0-9a-zA-Z-_]*$`
+                type: string
+              name:
+                description: |-
+                  The name of the schedule that you are creating.
+
+                  Regex Pattern: `^[0-9a-zA-Z-_.]+$`
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              scheduleExpression:
+                description: |-
+                  The expression that defines when the schedule runs. The following formats
+                  are supported.
+
+                     * at expression - at(yyyy-mm-ddThh:mm:ss)
+
+                     * rate expression - rate(value unit)
+
+                     * cron expression - cron(fields)
+
+                  You can use at expressions to create one-time schedules that invoke a target
+                  once, at the time and in the time zone, that you specify. You can use rate
+                  and cron expressions to create recurring schedules. Rate-based schedules
+                  are useful when you want to invoke a target at regular intervals, such as
+                  every 15 minutes or every five days. Cron-based schedules are useful when
+                  you want to invoke a target periodically at a specific time, such as at 8:00
+                  am (UTC+0) every 1st day of the month.
+
+                  A cron expression consists of six fields separated by white spaces: (minutes
+                  hours day_of_month month day_of_week year).
+
+                  A rate expression consists of a value as a positive integer, and a unit with
+                  the following options: minute | minutes | hour | hours | day | days
+
+                  For more information and examples, see Schedule types on EventBridge Scheduler
+                  (https://docs.aws.amazon.com/scheduler/latest/UserGuide/schedule-types.html)
+                  in the EventBridge Scheduler User Guide.
+                type: string
+              scheduleExpressionTimezone:
+                description: The timezone in which the scheduling expression is evaluated.
+                type: string
+              startDate:
+                description: |-
+                  The date, in UTC, after which the schedule can begin invoking its target.
+                  Depending on the schedule's recurrence expression, invocations might occur
+                  on, or after, the StartDate you specify.EventBridge Scheduler ignores StartDate
+                  for one-time schedules.
+                format: date-time
+                type: string
+              state:
+                description: Specifies whether the schedule is enabled or disabled.
+                type: string
+              target:
+                description: The schedule's target.
+                properties:
+                  arn:
+                    type: string
+                  deadLetterConfig:
+                    description: |-
+                      An object that contains information about an Amazon SQS queue that EventBridge
+                      Scheduler uses as a dead-letter queue for your schedule. If specified, EventBridge
+                      Scheduler delivers failed events that could not be successfully delivered
+                      to a target to the queue.
+                    properties:
+                      arn:
+                        type: string
+                    type: object
+                  ecsParameters:
+                    description: |-
+                      The templated target type for the Amazon ECS RunTask (https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_RunTask.html)
+                      API operation.
+                    properties:
+                      capacityProviderStrategy:
+                        items:
+                          description: The details of a capacity provider strategy.
+                          properties:
+                            base:
+                              format: int64
+                              type: integer
+                            capacityProvider:
+                              type: string
+                            weight:
+                              format: int64
+                              type: integer
+                          type: object
+                        type: array
+                      enableECSManagedTags:
+                        type: boolean
+                      enableExecuteCommand:
+                        type: boolean
+                      group:
+                        type: string
+                      launchType:
+                        type: string
+                      networkConfiguration:
+                        description: Specifies the network configuration for an ECS
+                          task.
+                        properties:
+                          awsVPCConfiguration:
+                            description: |-
+                              This structure specifies the VPC subnets and security groups for the task,
+                              and whether a public IP address is to be used. This structure is relevant
+                              only for ECS tasks that use the awsvpc network mode.
+                            properties:
+                              assignPublicIP:
+                                type: string
+                              securityGroups:
+                                items:
+                                  type: string
+                                type: array
+                              subnets:
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                        type: object
+                      placementConstraints:
+                        items:
+                          description: An object representing a constraint on task
+                            placement.
+                          properties:
+                            expression:
+                              type: string
+                            type_:
+                              type: string
+                          type: object
+                        type: array
+                      placementStrategy:
+                        items:
+                          description: The task placement strategy for a task or service.
+                          properties:
+                            field:
+                              type: string
+                            type_:
+                              type: string
+                          type: object
+                        type: array
+                      platformVersion:
+                        type: string
+                      propagateTags:
+                        type: string
+                      referenceID:
+                        type: string
+                      tags:
+                        items:
+                          additionalProperties:
+                            type: string
+                          type: object
+                        type: array
+                      taskCount:
+                        format: int64
+                        type: integer
+                      taskDefinitionARN:
+                        type: string
+                    type: object
+                  eventBridgeParameters:
+                    description: |-
+                      The templated target type for the EventBridge PutEvents (https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_PutEvents.html)
+                      API operation.
+                    properties:
+                      detailType:
+                        type: string
+                      source:
+                        type: string
+                    type: object
+                  input:
+                    type: string
+                  kinesisParameters:
+                    description: |-
+                      The templated target type for the Amazon Kinesis PutRecord (kinesis/latest/APIReference/API_PutRecord.html)
+                      API operation.
+                    properties:
+                      partitionKey:
+                        type: string
+                    type: object
+                  retryPolicy:
+                    description: |-
+                      A RetryPolicy object that includes information about the retry policy settings,
+                      including the maximum age of an event, and the maximum number of times EventBridge
+                      Scheduler will try to deliver the event to a target.
+                    properties:
+                      maximumEventAgeInSeconds:
+                        format: int64
+                        type: integer
+                      maximumRetryAttempts:
+                        format: int64
+                        type: integer
+                    type: object
+                  roleARN:
+                    type: string
+                  sageMakerPipelineParameters:
+                    description: |-
+                      The templated target type for the Amazon SageMaker StartPipelineExecution
+                      (https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_StartPipelineExecution.html)
+                      API operation.
+                    properties:
+                      pipelineParameterList:
+                        items:
+                          description: |-
+                            The name and value pair of a parameter to use to start execution of a SageMaker
+                            Model Building Pipeline.
+                          properties:
+                            name:
+                              type: string
+                            value:
+                              type: string
+                          type: object
+                        type: array
+                    type: object
+                  sqsParameters:
+                    description: |-
+                      The templated target type for the Amazon SQS SendMessage (https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_SendMessage.html)
+                      API operation. Contains the message group ID to use when the target is a
+                      FIFO queue. If you specify an Amazon SQS FIFO queue as a target, the queue
+                      must have content-based deduplication enabled. For more information, see
+                      Using the Amazon SQS message deduplication ID (https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/using-messagededuplicationid-property.html)
+                      in the Amazon SQS Developer Guide.
+                    properties:
+                      messageGroupID:
+                        type: string
+                    type: object
+                type: object
+            required:
+            - flexibleTimeWindow
+            - name
+            - scheduleExpression
+            - target
+            type: object
+          status:
+            description: ScheduleStatus defines the observed state of Schedule
+            properties:
+              ackResourceMetadata:
+                description: |-
+                  All CRs managed by ACK have a common `Status.ACKResourceMetadata` member
+                  that is used to contain resource sync state, account ownership,
+                  constructed ARN for the resource
+                properties:
+                  arn:
+                    description: |-
+                      ARN is the Amazon Resource Name for the resource. This is a
+                      globally-unique identifier and is set only by the ACK service controller
+                      once the controller has orchestrated the creation of the resource OR
+                      when it has verified that an "adopted" resource (a resource where the
+                      ARN annotation was set by the Kubernetes user on the CR) exists and
+                      matches the supplied CR's Spec field values.
+                      https://github.com/aws/aws-controllers-k8s/issues/270
+                    type: string
+                  ownerAccountID:
+                    description: |-
+                      OwnerAccountID is the AWS Account ID of the account that owns the
+                      backend AWS service API resource.
+                    type: string
+                  partition:
+                    description: Partition is the AWS partition in which the resource
+                      exists or will exist
+                    type: string
+                  region:
+                    description: Region is the AWS region in which the resource exists
+                      or will exist.
+                    type: string
+                required:
+                - ownerAccountID
+                - region
+                type: object
+              conditions:
+                description: |-
+                  All CRs managed by ACK have a common `Status.Conditions` member that
+                  contains a collection of `ackv1alpha1.Condition` objects that describe
+                  the various terminal states of the CR and its backend AWS service API
+                  resource
+                items:
+                  description: |-
+                    Condition is the common struct used by all CRDs managed by ACK service
+                    controllers to indicate terminal states  of the CR and its backend AWS
+                    service API resource
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A human readable message indicating details about
+                        the transition.
+                      type: string
+                    reason:
+                      description: The reason for the condition's last transition.
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the Condition
+                      type: string
+                  required:
+                  - status
+                  - type
+                  type: object
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

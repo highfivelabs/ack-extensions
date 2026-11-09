@@ -26,6 +26,122 @@ var (
 	_ = ackv1alpha1.AWSAccountID("")
 )
 
+// This structure specifies the VPC subnets and security groups for the task,
+// and whether a public IP address is to be used. This structure is relevant
+// only for ECS tasks that use the awsvpc network mode.
+type AWSVPCConfiguration struct {
+	AssignPublicIP *string   `json:"assignPublicIP,omitempty"`
+	SecurityGroups []*string `json:"securityGroups,omitempty"`
+	Subnets        []*string `json:"subnets,omitempty"`
+}
+
+// The details of a capacity provider strategy.
+type CapacityProviderStrategyItem struct {
+	Base             *int64  `json:"base,omitempty"`
+	CapacityProvider *string `json:"capacityProvider,omitempty"`
+	Weight           *int64  `json:"weight,omitempty"`
+}
+
+// An object that contains information about an Amazon SQS queue that EventBridge
+// Scheduler uses as a dead-letter queue for your schedule. If specified, EventBridge
+// Scheduler delivers failed events that could not be successfully delivered
+// to a target to the queue.
+type DeadLetterConfig struct {
+	ARN *string `json:"arn,omitempty"`
+}
+
+// The templated target type for the Amazon ECS RunTask (https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_RunTask.html)
+// API operation.
+type ECSParameters struct {
+	CapacityProviderStrategy []*CapacityProviderStrategyItem `json:"capacityProviderStrategy,omitempty"`
+	EnableECSManagedTags     *bool                           `json:"enableECSManagedTags,omitempty"`
+	EnableExecuteCommand     *bool                           `json:"enableExecuteCommand,omitempty"`
+	Group                    *string                         `json:"group,omitempty"`
+	LaunchType               *string                         `json:"launchType,omitempty"`
+	// Specifies the network configuration for an ECS task.
+	NetworkConfiguration *NetworkConfiguration  `json:"networkConfiguration,omitempty"`
+	PlacementConstraints []*PlacementConstraint `json:"placementConstraints,omitempty"`
+	PlacementStrategy    []*PlacementStrategy   `json:"placementStrategy,omitempty"`
+	PlatformVersion      *string                `json:"platformVersion,omitempty"`
+	PropagateTags        *string                `json:"propagateTags,omitempty"`
+	ReferenceID          *string                `json:"referenceID,omitempty"`
+	Tags                 []map[string]*string   `json:"tags,omitempty"`
+	TaskCount            *int64                 `json:"taskCount,omitempty"`
+	TaskDefinitionARN    *string                `json:"taskDefinitionARN,omitempty"`
+}
+
+// The templated target type for the EventBridge PutEvents (https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_PutEvents.html)
+// API operation.
+type EventBridgeParameters struct {
+	DetailType *string `json:"detailType,omitempty"`
+	Source     *string `json:"source,omitempty"`
+}
+
+// Allows you to configure a time window during which EventBridge Scheduler
+// invokes the schedule.
+type FlexibleTimeWindow struct {
+	MaximumWindowInMinutes *int64  `json:"maximumWindowInMinutes,omitempty"`
+	Mode                   *string `json:"mode,omitempty"`
+}
+
+// The templated target type for the Amazon Kinesis PutRecord (kinesis/latest/APIReference/API_PutRecord.html)
+// API operation.
+type KinesisParameters struct {
+	PartitionKey *string `json:"partitionKey,omitempty"`
+}
+
+// Specifies the network configuration for an ECS task.
+type NetworkConfiguration struct {
+	// This structure specifies the VPC subnets and security groups for the task,
+	// and whether a public IP address is to be used. This structure is relevant
+	// only for ECS tasks that use the awsvpc network mode.
+	AWSVPCConfiguration *AWSVPCConfiguration `json:"awsVPCConfiguration,omitempty"`
+}
+
+// An object representing a constraint on task placement.
+type PlacementConstraint struct {
+	Expression *string `json:"expression,omitempty"`
+	Type       *string `json:"type_,omitempty"`
+}
+
+// The task placement strategy for a task or service.
+type PlacementStrategy struct {
+	Field *string `json:"field,omitempty"`
+	Type  *string `json:"type_,omitempty"`
+}
+
+// A RetryPolicy object that includes information about the retry policy settings,
+// including the maximum age of an event, and the maximum number of times EventBridge
+// Scheduler will try to deliver the event to a target.
+type RetryPolicy struct {
+	MaximumEventAgeInSeconds *int64 `json:"maximumEventAgeInSeconds,omitempty"`
+	MaximumRetryAttempts     *int64 `json:"maximumRetryAttempts,omitempty"`
+}
+
+// The templated target type for the Amazon SQS SendMessage (https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_SendMessage.html)
+// API operation. Contains the message group ID to use when the target is a
+// FIFO queue. If you specify an Amazon SQS FIFO queue as a target, the queue
+// must have content-based deduplication enabled. For more information, see
+// Using the Amazon SQS message deduplication ID (https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/using-messagededuplicationid-property.html)
+// in the Amazon SQS Developer Guide.
+type SQSParameters struct {
+	MessageGroupID *string `json:"messageGroupID,omitempty"`
+}
+
+// The name and value pair of a parameter to use to start execution of a SageMaker
+// Model Building Pipeline.
+type SageMakerPipelineParameter struct {
+	Name  *string `json:"name,omitempty"`
+	Value *string `json:"value,omitempty"`
+}
+
+// The templated target type for the Amazon SageMaker StartPipelineExecution
+// (https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_StartPipelineExecution.html)
+// API operation.
+type SageMakerPipelineParameters struct {
+	PipelineParameterList []*SageMakerPipelineParameter `json:"pipelineParameterList,omitempty"`
+}
+
 // The details of a schedule group.
 type ScheduleGroupSummary struct {
 	ARN                  *string      `json:"arn,omitempty"`
@@ -37,13 +153,62 @@ type ScheduleGroupSummary struct {
 
 // The details of a schedule.
 type ScheduleSummary struct {
+	ARN                  *string      `json:"arn,omitempty"`
 	CreationDate         *metav1.Time `json:"creationDate,omitempty"`
 	GroupName            *string      `json:"groupName,omitempty"`
 	LastModificationDate *metav1.Time `json:"lastModificationDate,omitempty"`
+	Name                 *string      `json:"name,omitempty"`
+	State                *string      `json:"state,omitempty"`
+	// The details of a target.
+	Target *TargetSummary `json:"target,omitempty"`
 }
 
 // Tag to associate with a schedule group.
 type Tag struct {
 	Key   *string `json:"key,omitempty"`
 	Value *string `json:"value,omitempty"`
+}
+
+// The schedule's target. EventBridge Scheduler supports templated target that
+// invoke common API operations, as well as universal targets that you can customize
+// to invoke over 6,000 API operations across more than 270 services. You can
+// only specify one templated or universal target for a schedule.
+type Target struct {
+	ARN *string `json:"arn,omitempty"`
+	// An object that contains information about an Amazon SQS queue that EventBridge
+	// Scheduler uses as a dead-letter queue for your schedule. If specified, EventBridge
+	// Scheduler delivers failed events that could not be successfully delivered
+	// to a target to the queue.
+	DeadLetterConfig *DeadLetterConfig `json:"deadLetterConfig,omitempty"`
+	// The templated target type for the Amazon ECS RunTask (https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_RunTask.html)
+	// API operation.
+	ECSParameters *ECSParameters `json:"ecsParameters,omitempty"`
+	// The templated target type for the EventBridge PutEvents (https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_PutEvents.html)
+	// API operation.
+	EventBridgeParameters *EventBridgeParameters `json:"eventBridgeParameters,omitempty"`
+	Input                 *string                `json:"input,omitempty"`
+	// The templated target type for the Amazon Kinesis PutRecord (kinesis/latest/APIReference/API_PutRecord.html)
+	// API operation.
+	KinesisParameters *KinesisParameters `json:"kinesisParameters,omitempty"`
+	// A RetryPolicy object that includes information about the retry policy settings,
+	// including the maximum age of an event, and the maximum number of times EventBridge
+	// Scheduler will try to deliver the event to a target.
+	RetryPolicy *RetryPolicy `json:"retryPolicy,omitempty"`
+	RoleARN     *string      `json:"roleARN,omitempty"`
+	// The templated target type for the Amazon SageMaker StartPipelineExecution
+	// (https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_StartPipelineExecution.html)
+	// API operation.
+	SageMakerPipelineParameters *SageMakerPipelineParameters `json:"sageMakerPipelineParameters,omitempty"`
+	// The templated target type for the Amazon SQS SendMessage (https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_SendMessage.html)
+	// API operation. Contains the message group ID to use when the target is a
+	// FIFO queue. If you specify an Amazon SQS FIFO queue as a target, the queue
+	// must have content-based deduplication enabled. For more information, see
+	// Using the Amazon SQS message deduplication ID (https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/using-messagededuplicationid-property.html)
+	// in the Amazon SQS Developer Guide.
+	SQSParameters *SQSParameters `json:"sqsParameters,omitempty"`
+}
+
+// The details of a target.
+type TargetSummary struct {
+	ARN *string `json:"arn,omitempty"`
 }
