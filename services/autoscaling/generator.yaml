@@ -64,6 +64,11 @@ resources:
     hooks:
       sdk_read_many_post_build_request:
         template_path: hooks/scheduled_action/sdk_read_many_post_build_request.go.tpl
+      # A one-time action that ran is completed, not put again (hooks.go).
+      sdk_read_many_post_request:
+        template_path: hooks/scheduled_action/sdk_read_many_post_request.go.tpl
+      sdk_delete_pre_build_request:
+        template_path: hooks/scheduled_action/sdk_delete_pre_build_request.go.tpl
       # The server's next start time of a recurring action is no drift
       # (custom_delta.go).
       delta_pre_compare:
