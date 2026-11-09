@@ -51,6 +51,8 @@ spec:
               value: ko://github.com/highfivelabs/ack-extensions/services/lambda/cmd/controller
             - name: MANAGER_IMAGE_RDS
               value: ko://github.com/highfivelabs/ack-extensions/services/rds/cmd/controller
+            - name: MANAGER_IMAGE_WAFV2
+              value: ko://github.com/highfivelabs/ack-extensions/services/wafv2/cmd/controller
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true

@@ -18,6 +18,7 @@ record of exactly which ACK code it uses, and of every file copied from it.
 | ecr-controller PR #121 | head | `f6c7d57e0b169547ed2300cbba0c65b11691b0eb` | `ReplicationConfiguration`'s API, behaviour and conversions (open, conflicting, no review, 2026-11-09) |
 | eventbridge-controller | `v1.9.2` | `fd084a0bb4d9025f294516d6319b88293be1de8d` | not a module here: the EventBridge SDK client is at its version (`service/eventbridge` `v1.36.7`) |
 | secretsmanager-controller | `v1.8.2` | tag | not a module here: the Secrets Manager SDK client the end-to-end tests read a connection's secret with is at its version (`service/secretsmanager` `v1.34.14`) |
+| wafv2-controller | `v1.8.1` | `d910e96f94d5b860cffc5dde648e87bafe94689c` | Go module: the API types of ACK's `WebACL`, which `WebACLAssociation` references; the WAFv2 SDK client at its version (`service/wafv2` `v1.55.11`) |
 | lambda-controller | `v1.19.0` | `86905357482d01538cb00ab28d59c6af5c46e6f4` | Go module: the API types of ACK's `Function`, which `Permission` references; the Lambda SDK client at its version (`service/lambda` `v1.88.5`) |
 | iam-controller | `v1.11.3` | `91ed7f353255e54e2c6372b3ce757bd2e7fae4ad` | Go module: the API types of ACK's `Role` and `Policy`, which our kinds reference |
 | aws-sdk-go-v2 models | `v1.34.0` | tag | the Smithy model the generator reads (`--aws-sdk-go-version`), the version rds-controller `v1.14.2` was generated from |
@@ -70,6 +71,7 @@ and what changed.
 | `services/lambda/pkg/resource/permission/sdk.go` (the calls and the reading of a policy statement) | lambda-controller `v1.19.0` `pkg/resource/alias/hooks.go` (`addPermission`, `removePermission`, `setPermissions`) | `86905357…` | one statement instead of an alias's set; `encoding/json` instead of `micahhausler/aws-iam-policy`; not-found handling |
 | `services/lambda/pkg/resource/permission/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton, by way of our `db_role_association` copy) | `78eb350e…` | package, kind, API group, Lambda client, ARN format, `IsSynced` (synced once read back), adoption fields |
 | `services/ec2/pkg/resource/volume_attachment/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton) | `78eb350e…` | package, kind, API group, service client, ARN form, adoption fields and the `IsSynced` hook (synced when attached) |
+| `services/wafv2/pkg/resource/web_acl_association/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton) | `78eb350e…` | package, kind, API group, service client, ARN form, adoption fields and the `IsSynced` hook (synced once read) |
 | `services/iam/pkg/resource/user_group_membership/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton) | `78eb350e…` | package, kind, ARN form, adoption fields and the `IsSynced` hook (synced once read) |
 | `services/rds/pkg/resource/db_role_association/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton, by way of our `db_proxy_target` copy) | `78eb350e…` | package, kind, API group, RDS client, ARN format, `IsSynced` (synced when the association is ACTIVE), adoption fields (`roleARN`, `featureName`, the cluster or instance) |
 
@@ -96,6 +98,8 @@ Written here: `services/rds/apis/v1alpha1/db_proxy_target.go`,
 `services/iam/pkg/resource/user_group_membership/{sdk,delta,references,sdk_test}.go`,
 `services/ec2/apis/v1alpha1/volume_attachment.go`,
 `services/ec2/pkg/resource/volume_attachment/{sdk,delta,references,sdk_test}.go`,
+`services/wafv2/apis/v1alpha1/web_acl_association.go`,
+`services/wafv2/pkg/resource/web_acl_association/{sdk,delta,references,sdk_test}.go`,
 `services/*/cmd/controller/handwritten.go`, `pkg/`, `cmd/operator`,
 `tests/`, `hack/`, `config/operator`, `config/fake-aws`.
 

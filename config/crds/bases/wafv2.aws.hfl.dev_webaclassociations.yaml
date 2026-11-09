@@ -1,0 +1,180 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: webaclassociations.wafv2.aws.hfl.dev
+spec:
+  group: wafv2.aws.hfl.dev
+  names:
+    categories:
+    - aws
+    - hfl
+    kind: WebACLAssociation
+    listKind: WebACLAssociationList
+    plural: webaclassociations
+    shortNames:
+    - hflwebaclassociation
+    singular: webaclassociation
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.resourceARN
+      name: RESOURCE
+      type: string
+    - jsonPath: .status.webACLName
+      name: WEBACL
+      type: string
+    - jsonPath: .status.conditions[?(@.type=="ACK.ResourceSynced")].status
+      name: SYNCED
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: WebACLAssociation is the Schema for the WebACLAssociations API.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              WebACLAssociationSpec associates a regional web ACL with one regional
+              resource (AssociateWebACL): an Application Load Balancer, an API Gateway
+              REST API stage, an AppSync GraphQL API, a Cognito user pool, an App
+              Runner service or a Verified Access instance. It is Terraform's
+              aws_wafv2_web_acl_association. A CloudFront distribution names its web
+              ACL in its own configuration instead.
+
+              Exactly one of webACLARN and webACLRef must be set. Both fields are
+              immutable, as in Terraform: a resource has one web ACL, and another
+              association is another object.
+            properties:
+              resourceARN:
+                description: The ARN of the resource the web ACL protects. Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              webACLARN:
+                description: The ARN of the web ACL, of scope REGIONAL. Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              webACLRef:
+                description: |-
+                  An ACK wafv2.services.k8s.aws WebACL whose
+                  status.ackResourceMetadata.arn is the web ACL.
+                properties:
+                  from:
+                    description: |-
+                      AWSResourceReference provides all the values necessary to reference another
+                      k8s resource for finding the identifier(Id/ARN/Name)
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+            required:
+            - resourceARN
+            type: object
+            x-kubernetes-validations:
+            - message: exactly one of webACLARN and webACLRef must be set
+              rule: '[has(self.webACLARN), has(self.webACLRef)].filter(x, x).size()
+                == 1'
+          status:
+            description: WebACLAssociationStatus defines the observed state of WebACLAssociation.
+            properties:
+              ackResourceMetadata:
+                description: |-
+                  ResourceMetadata is common to all custom resources (CRs) managed by an ACK
+                  service controller. It is contained in the CR's `Status` member field and
+                  comprises various status and identifier fields useful to ACK for tracking
+                  state changes between Kubernetes and the backend AWS service API
+                properties:
+                  arn:
+                    description: |-
+                      ARN is the Amazon Resource Name for the resource. This is a
+                      globally-unique identifier and is set only by the ACK service controller
+                      once the controller has orchestrated the creation of the resource OR
+                      when it has verified that an "adopted" resource (a resource where the
+                      ARN annotation was set by the Kubernetes user on the CR) exists and
+                      matches the supplied CR's Spec field values.
+                      https://github.com/aws/aws-controllers-k8s/issues/270
+                    type: string
+                  ownerAccountID:
+                    description: |-
+                      OwnerAccountID is the AWS Account ID of the account that owns the
+                      backend AWS service API resource.
+                    type: string
+                  partition:
+                    description: Partition is the AWS partition in which the resource
+                      exists or will exist
+                    type: string
+                  region:
+                    description: Region is the AWS region in which the resource exists
+                      or will exist.
+                    type: string
+                required:
+                - ownerAccountID
+                - region
+                type: object
+              conditions:
+                items:
+                  description: |-
+                    Condition is the common struct used by all CRDs managed by ACK service
+                    controllers to indicate terminal states  of the CR and its backend AWS
+                    service API resource
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A human readable message indicating details about
+                        the transition.
+                      type: string
+                    reason:
+                      description: The reason for the condition's last transition.
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the Condition
+                      type: string
+                  required:
+                  - status
+                  - type
+                  type: object
+                type: array
+              webACLName:
+                description: The name of the web ACL the resource is associated with.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
