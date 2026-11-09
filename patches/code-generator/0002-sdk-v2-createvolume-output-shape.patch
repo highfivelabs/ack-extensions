@@ -1,0 +1,18 @@
+diff --git a/pkg/api/list_of_shame.go b/pkg/api/list_of_shame.go
+index 5f4cfd7..49d1e4f 100644
+--- a/pkg/api/list_of_shame.go
++++ b/pkg/api/list_of_shame.go
+@@ -121,9 +121,10 @@ var shamelist = persistAPITypes{
+ 		"CreateSnapshot": {
+ 			output: true,
+ 		},
+-		"CreateVolume": {
+-			output: true,
+-		},
++		// ack-extensions patch 0002: CreateVolume's output is CreateVolumeOutput
++		// in aws-sdk-go-v2, which the generated code calls; keeping the v1
++		// SDK's shape name here makes the generator write *ec2.Volume, a type
++		// v2 does not have.
+ 		"DetachVolume": {
+ 			output: true,
+ 		},
