@@ -43,6 +43,7 @@ and what changed.
 | `services/rds/pkg/util/tags.go` | rds-controller PR #257 `pkg/util/tags.go` | `32c3cb23…` | import path (rds-controller `main` has since moved to the runtime's tag helpers, #330) |
 | `services/rds/pkg/resource/db_proxy_target/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton) | `78eb350e…` | package, kind, API group, RDS client, ARN format, `IsSynced` (synced when every target is AVAILABLE), adoption fields |
 | `services/autoscaling/generator.yaml` (the `ScalingPolicy` entry's `operations` mapping and its shape) | applicationautoscaling-controller `v1.9.0` `generator.yaml` (`ScalingPolicy` from `PutScalingPolicy`) | `009baef3…` (`v1.9.0`) | EC2 Auto Scaling's operations (`PutScalingPolicy`, `DescribePolicies`, `DeletePolicy`), its fields, and late-initialized server defaults; the hook templates are written here |
+| `services/autoscaling/pkg/resource/scheduled_action/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; `ScheduledAction`'s server-defaulted fields (start time, time zone) |
 | `services/autoscaling/pkg/resource/scaling_policy/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; `ScalingPolicy`'s server-defaulted fields instead of `SuspendedState` |
 | `services/lambda/pkg/resource/permission/sdk.go` (the calls and the reading of a policy statement) | lambda-controller `v1.19.0` `pkg/resource/alias/hooks.go` (`addPermission`, `removePermission`, `setPermissions`) | `86905357…` | one statement instead of an alias's set; `encoding/json` instead of `micahhausler/aws-iam-policy`; not-found handling |
 | `services/lambda/pkg/resource/permission/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton, by way of our `db_role_association` copy) | `78eb350e…` | package, kind, API group, Lambda client, ARN format, `IsSynced` (synced once read back), adoption fields |
@@ -57,6 +58,7 @@ Written here: `services/rds/apis/v1alpha1/db_proxy_target.go`,
 `services/rds/apis/v1alpha1/db_role_association.go`,
 `services/lambda/apis/v1alpha1/permission.go`,
 `services/autoscaling/templates/hooks/scaling_policy/*.go.tpl`,
+`services/autoscaling/templates/hooks/scheduled_action/*.go.tpl`,
 `services/lambda/pkg/resource/permission/{delta,references,sdk_test}.go`,
 `services/rds/pkg/resource/db_role_association/{sdk,delta,references,sdk_test}.go`,
 `services/*/cmd/controller/handwritten.go`, `pkg/`, `cmd/operator`,
