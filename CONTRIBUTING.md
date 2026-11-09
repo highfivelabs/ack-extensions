@@ -20,11 +20,23 @@ Signed-off-by: Your Name <you@example.com>
 Everything runs against a fake AWS (moto in server mode); no AWS account
 or credentials are needed, and tests must never use them.
 
+The commands are tasks in `Taskfile.yml`, run with
+[Task](https://taskfile.dev) 3.x (`brew install go-task`, or
+`go install github.com/go-task/task/v3/cmd/task@latest`); `task` lists them.
+The tasks any Go repository could use (installing a pinned tool, gofmt
+and generated-output checks, envtest) are in `taskfiles/go.yml`, which
+`taskfiles/README.md` says how to share. Every directory under `services/`
+is a service, so adding one needs no edit to the Taskfile.
+
 ```sh
-make tools         # once: the pinned generator, controller-gen, goimports, setup-envtest, moto
-make check         # generated files current, gofmt, vet, SPDX lines, build, unit and end-to-end tests
-make operator-e2e  # the operator on kind, beside ACK's real rds-controller, against moto in the cluster
+task tools         # once: the pinned generator, controller-gen, goimports, setup-envtest, moto
+task check         # generated files current, gofmt, vet, SPDX lines, build, unit and end-to-end tests
+task operator-e2e  # the operator on kind, beside ACK's real rds-controller, against moto in the cluster
+task coverage      # regenerate docs/coverage/ and the README's Coverage section (commit the result)
 ```
+
+A new or changed kind changes the coverage numbers: run `task coverage`
+(`task coverage:check` fails if the committed outputs are stale).
 
 Each kind needs an end-to-end test in `tests/e2e` on `pkg/test/harness`
 (a real kube-apiserver, the service's real controller binary, and moto)

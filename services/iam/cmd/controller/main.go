@@ -41,6 +41,8 @@ import (
 	svctypes "github.com/highfivelabs/ack-extensions/services/iam/apis/v1alpha1"
 	svcresource "github.com/highfivelabs/ack-extensions/services/iam/pkg/resource"
 
+	_ "github.com/highfivelabs/ack-extensions/services/iam/pkg/resource/login_profile"
+
 	"github.com/highfivelabs/ack-extensions/services/iam/pkg/version"
 )
 

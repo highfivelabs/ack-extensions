@@ -1,6 +1,6 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has twenty kinds:
+Status, 2026-11-09: the repository has twenty-four kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
@@ -8,7 +8,7 @@ Status, 2026-11-09: the repository has twenty kinds:
   `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
-- `iam.aws.hfl.dev` `RolePolicyAttachment` and `UserGroupMembership`;
+- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias` and `AccountPasswordPolicy`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
 - `rds.aws.hfl.dev` `OptionGroup`;
@@ -110,7 +110,7 @@ for one controller, for each of our services:
    (`config/crds/bases`) and the managers' RBAC (`config/rbac`);
 5. gofmt and goimports.
 
-`make check` fails if it changes anything committed. Generation is
+`task check` fails if it changes anything committed. Generation is
 deterministic: two runs give identical trees.
 
 **One patch to the generator**, `patches/code-generator/0001`, adds
@@ -133,7 +133,7 @@ with the patch.
   of them to one ACK release:
   1. Update `UPSTREAM.md`'s generator commit and `go.mod`'s runtime and
      controller versions.
-  2. Run `make upstream generate`, then `make check`.
+  2. Run `task upstream generate`, then `task check`.
 
   Keep the AWS SDK modules at the versions ACK's controllers use, so
   shared dependencies are the ones ACK tests with. Adding the EC2 client
@@ -185,7 +185,7 @@ the credentials `testing`/`testing`.
 The tests assert on two sides: the Kubernetes object (conditions,
 status) and the fake cloud through the real AWS SDK clients.
 
-### 4.3 Results (`make test`; latest 2026-11-09 on a Spot VM, linux amd64, Go 1.27.3)
+### 4.3 Results (`task test`; latest 2026-11-09 on a Spot VM, linux amd64, Go 1.27.3)
 
 ```text
 --- PASS: TestUserGroupMembership
@@ -198,6 +198,33 @@ status) and the fake cloud through the real AWS SDK clients.
     leaves the others
 --- PASS: TestManagedIgnoresOtherGroups, TestChanges,
           TestGroupOrderIsNoDrift (membership unit tests)
+--- PASS: TestLoginProfile
+    a login profile is made from a Kubernetes Secret's password and
+    settles (no update across three resyncs); passwordResetRequired is
+    updated; the user cannot change; deletion-policy retain leaves the
+    profile; delete deletes it
+--- PASS: TestDefaultResetIsNoDrift, TestSetResetIsCompared
+          (login profile unit tests)
+--- PASS: TestSSHPublicKey
+    a key is uploaded, active, and settles (no update across three
+    resyncs); it is deactivated; a reactivation outside Kubernetes is
+    put back; the body cannot change; deletion-policy retain leaves the
+    key; delete deletes it
+--- PASS: TestStatusDefaultAndBodyAreNoDrift, TestStatusIsCompared
+          (SSH public key unit tests)
+--- PASS: TestAccountAlias
+    the alias is set and settles (no update across three resyncs); an
+    alias set outside Kubernetes is put back; the CRD refuses what IAM
+    would; the alias cannot change; deletion-policy retain leaves it;
+    delete deletes it
+--- PASS: TestSameAliasIsNoDrift (account alias unit test)
+--- PASS: TestAccountPasswordPolicy
+    the policy is set, IAM's defaults are no drift, and it settles (no
+    update across three resyncs); a changed length is put; a change
+    outside Kubernetes is put back; the CRD refuses what IAM would;
+    deletion-policy retain leaves the policy; delete deletes it
+--- PASS: TestUnsetFieldsAreNoDrift, TestSetFieldsAreCompared
+          (password policy unit tests)
 --- PASS: TestRolePolicyAttachment
     create attaches the policy; references resolve to ACK's Role; delete
     detaches the policy; deletion-policy retain keeps the attachment
@@ -462,6 +489,19 @@ controller to show it can fail:
   does not check that the resource exists, and associating a resource
   with a second web ACL adds it there without taking it off the first
   (AWS replaces the association).
+- **IAM login profiles.** moto stores the password, which no IAM API
+  returns, so the test cannot read it back. It ignores
+  `PasswordResetRequired` on create (the update sets it) and does not
+  check the account's password policy.
+- **IAM SSH public keys.** moto does not parse the key body (IAM
+  refuses one that is not a valid RSA key of 2048 bits or more), returns
+  it as uploaded, and does not refuse a key the user already has.
+- **IAM account alias.** moto replaces the alias on create, as AWS
+  does, and does not check that another account already has it (AWS
+  answers `EntityAlreadyExists`).
+- **IAM password policy.** moto stores the policy and fills IAM's
+  defaults for fields left out, as AWS does; it checks the lengths and
+  ages IAM limits.
 - **KMS replica keys.**
   - moto keeps a replica in its own Region's backend, under the primary
     key's key ID, as AWS does.
@@ -530,7 +570,7 @@ its master (5.2.5 is the pin).
 | 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`; no pull request or issue, rechecked 2026-11-09) | yes | built |
 | 13 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237: mergeable, active 2026-11-06 | none | skipped: may be close to merging, and moto has none of it |
 | 14 | Route 53 DNSSEC and `KeySigningKey`, VPC association authorization | ignored in route53-controller's `generator.yaml` | none | skipped: moto has none of it |
-| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | `UserGroupMembership` built (non-exclusive, open question 9); `AccessKey` waits on open question 10; the rest next |
+| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | `AccountPasswordPolicy` built; the rest under way |
 | 16 | EC2 `PlacementGroup` | ignored in ec2-controller's `generator.yaml` | none | skipped: moto has none of it |
 | 17 | S3 `Object`, the account's public access block | none | yes | to build |
 | 18 | EC2 `KeyPair` | ec2-controller PR #396: both reviews' changes made, main merged in 2026-11-04, mergeable | yes | skipped: close to merging; wait for the release |
@@ -1184,6 +1224,104 @@ create, describe and delete of a membership.
 
 **Not proven:** IAM's limit of ten groups per user (not tested), and
 real AWS.
+### 6.19 `iam.aws.hfl.dev` `LoginProfile`
+
+An IAM user's console password: Terraform's `aws_iam_user_login_profile`,
+with the password from a Kubernetes Secret instead of a generated one.
+ACK's iam-controller `v1.11.3` has none; its pull request #147 was closed
+(rechecked 2026-11-09).
+
+**Generated** from `CreateLoginProfile`, `GetLoginProfile`,
+`UpdateLoginProfile` and `DeleteLoginProfile`.
+
+- **Spec:** `userName` (required, immutable), `password` (a
+  `SecretKeyReference`, required) and `passwordResetRequired`.
+- **The password is never read back** (IAM returns none), so it is no
+  drift; the spec's stays. A changed Secret is not pushed until the spec
+  changes, as for `Connection`.
+- **Server default is no drift:** IAM reports `passwordResetRequired`
+  false when the spec leaves it out (`custom_delta.go`).
+- **Not found:** `NoSuchEntity`. No tags: a login profile has none.
+- **No `userRef`.** ACK's `User` is in the same service, and a generated
+  reference to it is the case of section 8, item 10.
+
+**Not proven:** that the password reached IAM (no API returns it), the
+account's password policy refusing a password, and a changed Secret.
+### 6.20 `iam.aws.hfl.dev` `SSHPublicKey`
+
+An IAM user's SSH public key, for AWS CodeCommit: Terraform's
+`aws_iam_user_ssh_key`. ACK's iam-controller `v1.11.3` has none, and no
+pull request adds one (rechecked 2026-11-09).
+
+**Hand-written** on ACK's runtime, on PR #184's skeleton: the key is made
+with `UploadSSHPublicKey`, which the generator does not read as a
+create, and it is known by an ID IAM gives it.
+
+- **Spec:** `userName` or `userRef` (ACK's `User`), and
+  `sshPublicKeyBody`, both immutable; `status`, `Active` (the default) or
+  `Inactive`.
+- **Status:** `sshPublicKeyID` (the key's name in CodeCommit and SSH
+  configuration), `fingerprint`, `uploadDate`.
+- **Read:** `GetSSHPublicKey` by the ID. The body is not compared: it is
+  immutable, and IAM may return it in another form. The status is, so a
+  key reactivated outside Kubernetes is set back.
+- **Update** sets the status (`UpdateSSHPublicKey`). **Delete** deletes
+  the key; a key or user already gone is deleted.
+- **Errors:** a user not there yet is retried; a malformed or duplicate
+  key, or a user at IAM's limit of keys, is terminal.
+- **Synced** once read. IAM has no ARN for a key; the IAM ARN form with
+  the user and key ID stands in, for ACK's metadata only.
+
+**Not proven:** IAM parsing the key (moto does not), a duplicate key
+being refused, and real AWS.
+### 6.21 `iam.aws.hfl.dev` `AccountAlias`
+
+The AWS account's alias, the name in its sign-in URL: Terraform's
+`aws_iam_account_alias`. ACK's iam-controller `v1.11.3` has none, and no
+pull request adds one (rechecked 2026-11-09).
+
+**Hand-written** on ACK's runtime, on PR #184's skeleton: an
+account-wide setting (`CreateAccountAlias`, `ListAccountAliases`,
+`DeleteAccountAlias`), not a resource the generator reads.
+
+- **Spec:** `accountAlias`, immutable, with IAM's pattern (except the
+  rule against two hyphens in a row, which a CRD pattern cannot say).
+- **Read:** the account's alias. Another alias, or none, is not this
+  object's: the create that follows sets it back, since a new alias
+  replaces the old. A new object sets the alias even when the account
+  already has it, instead of ACK's "already exists".
+- **Delete** deletes the alias only while it is still this object's.
+- **One per account.** Two objects would set their aliases in turn, as
+  for `ReplicationConfiguration`.
+- **Errors:** an alias another account has (`EntityAlreadyExists`) is
+  terminal.
+
+**Not proven:** an alias another account already has (moto does not
+check), and real AWS.
+### 6.22 `iam.aws.hfl.dev` `AccountPasswordPolicy`
+
+The AWS account's password policy for IAM users: Terraform's
+`aws_iam_account_password_policy`. ACK's iam-controller `v1.11.3` has
+none, and no pull request adds one (rechecked 2026-11-09).
+
+**Hand-written** on ACK's runtime, on PR #184's skeleton: an
+account-wide setting (`UpdateAccountPasswordPolicy`,
+`GetAccountPasswordPolicy`, `DeleteAccountPasswordPolicy`), not a
+resource the generator reads.
+
+- **Spec:** the nine settings, each optional, with IAM's limits in the
+  CRD. A field left out keeps IAM's default and is no drift; IAM reports
+  every field.
+- **Update** puts the whole policy (`UpdateAccountPasswordPolicy`
+  replaces it), also when changed outside Kubernetes.
+- **Delete** deletes the policy, so IAM's defaults apply.
+- **One per account.** An account's existing policy is taken over by a
+  new object (its first read finds nothing, so the create puts the
+  policy, instead of ACK's "already exists"), and two objects would put theirs in turn, as for
+  `AccountAlias`.
+- **Synced** once read; `status.expirePasswords` as IAM reports it.
+
+**Not proven:** real AWS.
 
 ### 6.23 `scheduler.aws.hfl.dev` `ScheduleGroup`
 
@@ -1350,7 +1488,7 @@ and patch; that is ACK's design, not ours.
   binding moved;
 - ACK's controller removed: everything of ours is deleted.
 
-**`tests/operator/run.sh` (`make operator-e2e`) on kind** (kindest/node
+**`tests/operator/run.sh` (`task operator-e2e`) on kind** (kindest/node
 v1.37.0; last run 2026-11-09 on a Spot VM, e2-standard-8, by
 `../offload`), with moto in the cluster and ACK's **real** rds-controller
 `v1.14.2` installed from its own chart, with a credentials Secret and an
@@ -1411,6 +1549,37 @@ What is proven is everything on our side of that:
 - on EKS, the one extra trust-policy entry or association then applies to
   it.
 
+## 3a. The coverage dashboard
+
+How far ACK and this repository reach is measured, not guessed
+(builder's ask, 2026-11-09): `hack/coverage/` reads the CloudFormation
+resource schemas (the denominator: every writable property of every
+resource, per service), every ACK controller's latest released CRDs
+(official) and our `config/crds/bases/` (ours), matches CRD spec paths
+to CloudFormation properties, and writes `docs/coverage/` (CSV per
+service, resource and attribute; an SVG bar per service) and the
+Coverage section of `README.md`. `docs/coverage/README.md` has the
+method, pins, matching rules, known error and spot checks;
+`task coverage` regenerates, `task coverage:check` fails when the
+committed outputs are stale. The CloudFormation zip is committed
+because AWS replaces the file at its URL every hour. The Google Cloud
+and Azure repositories get the same dashboard with the same CSV schema.
+
+- **Tiers.** `docs/coverage/priority.csv` (hand-edited, never written by
+  the generator) puts each service in tier 1 (the ten most-downloaded
+  terraform-aws-modules' services), 2 (any other tracked module's) or 3
+  (the default); the README and `bars/_tiers.svg` roll coverage up by
+  tier, `tiers.csv` has the numbers.
+- **After adding or changing a kind:** run `task coverage` and commit
+  the result; a kind that is a property of a larger CloudFormation
+  resource, or a new rename, is a line in `hack/coverage/mappings.yaml`.
+- **When ACK releases:** `hack/coverage/run.sh --update-pins`, review
+  `docs/coverage/sources.yaml`, commit.
+- **Known limits:** official coverage is under-counted where ACK follows
+  the SDK's shape and CloudFormation its own and nobody has written the
+  alias (about 2% of covered attributes in the spot checks); services
+  ACK covers that CloudFormation lacks are listed, not measured.
+
 ## 8. What is left
 
 Before it can run on a real cluster:
@@ -1435,7 +1604,7 @@ Before it can run on a real cluster:
    found (both conflict with their base).
 6. `hack/upstream-pr.sh`, as gaps-gcp has, to follow the PR heads copied
    from.
-7. CI: `make check` on Linux, with the envtest assets and moto cached.
+7. CI: `task check` on Linux, with the envtest assets and moto cached.
 8. The OptionGroup test takes about 50 seconds: options are added on the
    second reconcile, after the runtime's requeue delay.
 9. `DBRoleAssociation`'s delete is proven end to end only up to the
@@ -1447,7 +1616,7 @@ Before it can run on a real cluster:
     a hand-written references file.
 11. The heavy checks run on a Spot VM (`../offload`), not the laptop. A
     fresh VM has no `third_party/` (gitignored), so the command is
-    `make tools && make check && make operator-e2e`.
+    `task tools && task check && task operator-e2e`.
 12. EventBridge Scheduler runs beside ACK's EventBridge controller (open
     question 8). A cluster with Scheduler kinds therefore needs ACK's
     EventBridge controller installed, even with no EventBridge kinds, and
