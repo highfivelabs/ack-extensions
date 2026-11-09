@@ -1,6 +1,6 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has eighteen kinds:
+Status, 2026-11-09: the repository has nineteen kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
@@ -14,7 +14,7 @@ Status, 2026-11-09: the repository has eighteen kinds:
 - `rds.aws.hfl.dev` `OptionGroup`;
 - `rds.aws.hfl.dev` `DBProxyTarget`;
 - `rds.aws.hfl.dev` `DBRoleAssociation`;
-- `scheduler.aws.hfl.dev` `ScheduleGroup`;
+- `scheduler.aws.hfl.dev` `ScheduleGroup` and `Schedule`;
 - `wafv2.aws.hfl.dev` `WebACLAssociation`.
 
 There is an operator that runs our managers beside ACK's controllers as
@@ -252,6 +252,13 @@ status) and the fake cloud through the real AWS SDK clients.
     back as no drift (no update across three resyncs); a changed
     parameter is updated; the name cannot change; deletion-policy retain
     leaves the connection; delete deletes it
+--- PASS: TestSchedule
+    a schedule is made in the referenced group and settles (no update
+    across three resyncs: Scheduler's defaults are no drift); a changed
+    expression and state are updated; the name cannot change;
+    deletion-policy retain leaves the schedule; delete deletes it
+--- PASS: TestDefaultsAreNoDrift, TestSetStateIsCompared
+          (schedule unit tests)
 --- PASS: TestScheduleGroup
     a group is made, tagged, and settles (no update across three
     resyncs); its tags are synced; the name cannot change;
@@ -434,6 +441,10 @@ controller to show it can fail:
 - **EventBridge Scheduler groups.** moto makes a group `ACTIVE` and
   deletes it at once (AWS goes through `DELETING`, and deletes the
   group's schedules), and keeps its tags.
+- **EventBridge Scheduler schedules.** moto does not check that a
+  schedule's target or role exist, or that the role trusts Scheduler; it
+  fills in the same defaults AWS does (UTC, `ENABLED`, the retry
+  policy). It never runs a schedule.
 - **EventBridge API destinations.** moto marks a destination `ACTIVE` at
   once and, when the spec leaves the rate limit out, reports none (AWS
   reports 300 per second). A unit test shows that default is no drift.
@@ -504,7 +515,7 @@ its master (5.2.5 is the pin).
 | 7 | EC2 `VPNGateway` (attachment, route propagation), `CustomerGateway` | ignored in ec2-controller `v1.23.1`'s `generator.yaml` | yes, except `EnableVgwRoutePropagation` | built: `CustomerGateway`, `VPNGateway` (attachment); route propagation not built (moto has none of it) |
 | 8 | EBS `Volume`, `VolumeAttachment` | ignored in ec2-controller's `generator.yaml`; `aws-controllers-k8s/ebs-controller` is an empty scaffold for the EBS direct API (no kinds, no release) | yes | built: `Volume`, `VolumeAttachment` |
 | 9 | CloudWatch Logs `MetricFilter`; CloudWatch `CompositeAlarm` | metric filters: cloudwatchlogs-controller PR #61, as a field on ACK's `LogGroup`. `CompositeAlarm`: ignored in cloudwatch-controller `v1.11.0`. | metric filters yes; `PutCompositeAlarm` no | skipped. Metric filters wait on open question 1. `CompositeAlarm`: moto has none of it. |
-| 10 | EventBridge Scheduler `Schedule` and `ScheduleGroup`; EventBridge `Connection` and `ApiDestination` | Scheduler: no controller (`community` issue #2784). `Connection` and `ApiDestination`: ignored in eventbridge-controller `v1.9.2`. | yes | `Connection` and `ApiDestination` built; Scheduler: `ScheduleGroup` built, beside EventBridge's controller (open question 8, answered); `Schedule` next |
+| 10 | EventBridge Scheduler `Schedule` and `ScheduleGroup`; EventBridge `Connection` and `ApiDestination` | Scheduler: no controller (`community` issue #2784). `Connection` and `ApiDestination`: ignored in eventbridge-controller `v1.9.2`. | yes | `Connection` and `ApiDestination` built; Scheduler: `ScheduleGroup` and `Schedule` built, beside EventBridge's controller (open question 8, answered) |
 | 11 | ECR `ReplicationConfiguration`; `RegistryPolicy`, `RegistryScanningConfiguration` | `ReplicationConfiguration`: ecr-controller PR #121, open, conflicts with base, no review, last updated 2026-10-18. The others: none. | yes (one replication rule at most) | built: `ReplicationConfiguration` (PR #121's API; rechecked 2026-11-09: still open, conflicting, no review, head `f6c7d57e`). `RegistryPolicy` and `RegistryScanningConfiguration` next |
 | 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`; no pull request or issue, rechecked 2026-11-09) | yes | built |
 | 13 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237: mergeable, active 2026-11-06 | none | skipped: may be close to merging, and moto has none of it |
@@ -1152,6 +1163,33 @@ section 8, item 12).
 
 **Not proven:** the `DELETING` state, and that deleting a group deletes
 its schedules (moto does both at once).
+
+### 6.24 `scheduler.aws.hfl.dev` `Schedule`
+
+An EventBridge Scheduler schedule: a cron, rate or one-time expression
+that invokes a target (an SQS queue, a Lambda function, an ECS task, or
+any AWS API through the universal target) as a role. ACK has no
+Scheduler controller; the manager runs beside ACK's EventBridge
+controller (section 6.23).
+
+**Generated** from `CreateSchedule`, `GetSchedule`, `UpdateSchedule` and
+`DeleteSchedule`.
+
+- **Reference:** `groupRef` names our `ScheduleGroup`; without a group,
+  the schedule is in `default`.
+- **Immutable:** the name and the group.
+- **Update** puts the whole schedule (`UpdateSchedule` replaces it).
+- **Server defaults are no drift:** the group, the time zone (UTC), the
+  state (`ENABLED`), the action after completion and the target's retry
+  policy (`custom_delta.go`).
+- **Not found:** `ResourceNotFoundException`. No tags: a schedule has
+  none.
+- **The role** the schedule invokes its target as must trust
+  `scheduler.amazonaws.com`, and the EventBridge controller's role needs
+  `iam:PassRole` on it (section 8, item 12).
+
+**Not proven:** that the target and role exist and the role is trusted
+(moto checks none of it), a schedule running, and real AWS.
 
 ## 7. The operator: ACK's identity, beside ACK's controller
 
