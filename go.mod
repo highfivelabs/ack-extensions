@@ -4,6 +4,7 @@ go 1.25.0
 
 require (
 	github.com/aws-controllers-k8s/iam-controller v1.11.3
+	github.com/aws-controllers-k8s/kms-controller v1.7.0
 	github.com/aws-controllers-k8s/lambda-controller v1.19.0
 	github.com/aws-controllers-k8s/rds-controller v1.14.2
 	github.com/aws-controllers-k8s/runtime v0.67.0
@@ -12,6 +13,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.64.3
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.290.1
 	github.com/aws/aws-sdk-go-v2/service/iam v1.38.8
+	github.com/aws/aws-sdk-go-v2/service/kms v1.37.14
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.88.5
 	github.com/aws/aws-sdk-go-v2/service/rds v1.93.8
 	github.com/aws/smithy-go v1.28.8
