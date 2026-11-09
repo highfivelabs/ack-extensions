@@ -600,8 +600,11 @@ func TestVolumeAttachment(t *testing.T) {
 			t.Fatal(err)
 		}
 		waitSynced(t, client.ObjectKeyFromObject(att), gotAtt, func() []*ackv1alpha1.Condition { return gotAtt.Status.Conditions })
-		if aws.ToString(gotAtt.Spec.VolumeID) != volumeID || aws.ToString(gotAtt.Status.State) != "attached" {
-			t.Fatalf("spec.volumeID %q (want %q), status.state %q", aws.ToString(gotAtt.Spec.VolumeID), volumeID, aws.ToString(gotAtt.Status.State))
+		// The runtime resolves volumeRef for each reconcile and does not
+		// write the volume ID into the stored spec; the cloud shows which
+		// volume it attached.
+		if aws.ToString(gotAtt.Status.State) != "attached" {
+			t.Fatalf("status.state %q", aws.ToString(gotAtt.Status.State))
 		}
 		dev, err := volumeAttachedTo(ctx, cloud, volumeID, instance)
 		if err != nil || dev != "/dev/sdf" {
