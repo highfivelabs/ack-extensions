@@ -515,3 +515,180 @@ func TestVolume(t *testing.T) {
 		}
 	})
 }
+
+// volumeAttachedTo is the volume's attachment to the instance, "" when
+// there is none, else its device.
+func volumeAttachedTo(ctx context.Context, c *ec2.Client, volume, instance string) (string, error) {
+	v, err := cloudVolume(ctx, c, volume)
+	if err != nil {
+		return "", err
+	}
+	for _, a := range v.Attachments {
+		if aws.ToString(a.InstanceId) == instance && a.State != ec2types.VolumeAttachmentStateDetached {
+			return aws.ToString(a.Device), nil
+		}
+	}
+	return "", nil
+}
+
+// VolumeAttachment: an EBS volume attached to an instance, Terraform's
+// aws_volume_attachment. Written by hand: AttachVolume and DetachVolume
+// are not a create and delete the generator reads.
+func TestVolumeAttachment(t *testing.T) {
+	scheme := runtime.NewScheme()
+	_ = ec2v1.AddToScheme(scheme)
+	env := harness.Start(t, "ec2", scheme)
+	cloud := ec2.NewFromConfig(env.AWS)
+	ctx := context.Background()
+
+	// The instance is a fixture: ACK's ec2-controller has Instance, and a
+	// reference to it is not built here.
+	run, err := cloud.RunInstances(ctx, &ec2.RunInstancesInput{
+		ImageId: aws.String("ami-12c6146b"), InstanceType: ec2types.InstanceTypeT3Micro, MinCount: aws.Int32(1), MaxCount: aws.Int32(1),
+		Placement: &ec2types.Placement{AvailabilityZone: aws.String("us-west-2a")},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	instance := aws.ToString(run.Instances[0].InstanceId)
+
+	waitSynced := func(t *testing.T, key client.ObjectKey, obj client.Object, conds func() []*ackv1alpha1.Condition) {
+		t.Helper()
+		harness.Eventually(t, 60*time.Second, key.Name+" synced", func() error {
+			if err := env.Client.Get(ctx, key, obj); err != nil {
+				return err
+			}
+			if ok, why := synced(conds()); !ok {
+				return fmt.Errorf("not synced: %s", why)
+			}
+			return nil
+		})
+	}
+	gone := func(t *testing.T, obj client.Object) {
+		t.Helper()
+		harness.Eventually(t, 60*time.Second, obj.GetName()+" gone", func() error {
+			err := env.Client.Get(ctx, client.ObjectKeyFromObject(obj), &ec2v1.VolumeAttachment{})
+			if err == nil {
+				return fmt.Errorf("object still present")
+			}
+			return client.IgnoreNotFound(err)
+		})
+	}
+
+	vol := &ec2v1.Volume{
+		ObjectMeta: metav1.ObjectMeta{Name: "data", Namespace: "default"},
+		Spec:       ec2v1.VolumeSpec{AvailabilityZone: aws.String("us-west-2a"), Size: aws.Int64(10)},
+	}
+	if err := env.Client.Create(ctx, vol); err != nil {
+		t.Fatal(err)
+	}
+	gotVol := &ec2v1.Volume{}
+	waitSynced(t, client.ObjectKeyFromObject(vol), gotVol, func() []*ackv1alpha1.Condition { return gotVol.Status.Conditions })
+	volumeID := aws.ToString(gotVol.Status.VolumeID)
+
+	att := &ec2v1.VolumeAttachment{
+		ObjectMeta: metav1.ObjectMeta{Name: "data-on-app", Namespace: "default"},
+		Spec: ec2v1.VolumeAttachmentSpec{
+			VolumeRef:  &ackv1alpha1.AWSResourceReferenceWrapper{From: &ackv1alpha1.AWSResourceReference{Name: aws.String("data")}},
+			InstanceID: aws.String(instance), DeviceName: aws.String("/dev/sdf"),
+		},
+	}
+	gotAtt := &ec2v1.VolumeAttachment{}
+
+	t.Run("the referenced volume is attached and settles", func(t *testing.T) {
+		if err := env.Client.Create(ctx, att); err != nil {
+			t.Fatal(err)
+		}
+		waitSynced(t, client.ObjectKeyFromObject(att), gotAtt, func() []*ackv1alpha1.Condition { return gotAtt.Status.Conditions })
+		if aws.ToString(gotAtt.Spec.VolumeID) != volumeID || aws.ToString(gotAtt.Status.State) != "attached" {
+			t.Fatalf("spec.volumeID %q (want %q), status.state %q", aws.ToString(gotAtt.Spec.VolumeID), volumeID, aws.ToString(gotAtt.Status.State))
+		}
+		dev, err := volumeAttachedTo(ctx, cloud, volumeID, instance)
+		if err != nil || dev != "/dev/sdf" {
+			t.Fatalf("cloud attachment device %q: %v", dev, err)
+		}
+		updates := func() int {
+			n := 0
+			for _, line := range strings.Split(env.Logs(), "\n") {
+				if strings.Contains(line, ">>> rm.sdkUpdate") && strings.Contains(line, `"name": "data-on-app"`) {
+					n++
+				}
+			}
+			return n
+		}
+		before := updates()
+		time.Sleep(15 * time.Second)
+		if n := updates(); n != before {
+			t.Fatalf("updated %d times across resyncs", n-before)
+		}
+	})
+
+	t.Run("the device cannot change", func(t *testing.T) {
+		obj := &ec2v1.VolumeAttachment{}
+		if err := env.Client.Get(ctx, client.ObjectKeyFromObject(att), obj); err != nil {
+			t.Fatal(err)
+		}
+		obj.Spec.DeviceName = aws.String("/dev/sdh")
+		err := env.Client.Update(ctx, obj)
+		if err == nil || !strings.Contains(err.Error(), "immutable") {
+			t.Fatalf("changing deviceName: got %v, want the CRD's immutability refusal", err)
+		}
+	})
+
+	t.Run("a detach outside Kubernetes is put back", func(t *testing.T) {
+		if _, err := cloud.DetachVolume(ctx, &ec2.DetachVolumeInput{VolumeId: aws.String(volumeID), InstanceId: aws.String(instance)}); err != nil {
+			t.Fatal(err)
+		}
+		harness.Eventually(t, 60*time.Second, "re-attached", func() error {
+			dev, err := volumeAttachedTo(ctx, cloud, volumeID, instance)
+			if err != nil {
+				return err
+			}
+			if dev != "/dev/sdf" {
+				return fmt.Errorf("attachment device %q", dev)
+			}
+			return nil
+		})
+	})
+
+	t.Run("deletion-policy retain leaves the volume attached", func(t *testing.T) {
+		logs := &ec2v1.Volume{
+			ObjectMeta: metav1.ObjectMeta{Name: "logs", Namespace: "default"},
+			Spec:       ec2v1.VolumeSpec{AvailabilityZone: aws.String("us-west-2a"), Size: aws.Int64(4)},
+		}
+		if err := env.Client.Create(ctx, logs); err != nil {
+			t.Fatal(err)
+		}
+		gotLogs := &ec2v1.Volume{}
+		waitSynced(t, client.ObjectKeyFromObject(logs), gotLogs, func() []*ackv1alpha1.Condition { return gotLogs.Status.Conditions })
+		keep := &ec2v1.VolumeAttachment{
+			ObjectMeta: metav1.ObjectMeta{
+				Name: "logs-on-app", Namespace: "default",
+				Annotations: map[string]string{ackv1alpha1.AnnotationDeletionPolicy: string(ackv1alpha1.DeletionPolicyRetain)},
+			},
+			Spec: ec2v1.VolumeAttachmentSpec{VolumeID: gotLogs.Status.VolumeID, InstanceID: aws.String(instance), DeviceName: aws.String("/dev/sdg")},
+		}
+		if err := env.Client.Create(ctx, keep); err != nil {
+			t.Fatal(err)
+		}
+		got := &ec2v1.VolumeAttachment{}
+		waitSynced(t, client.ObjectKeyFromObject(keep), got, func() []*ackv1alpha1.Condition { return got.Status.Conditions })
+		if err := env.Client.Delete(ctx, keep); err != nil {
+			t.Fatal(err)
+		}
+		gone(t, keep)
+		if dev, err := volumeAttachedTo(ctx, cloud, aws.ToString(gotLogs.Status.VolumeID), instance); err != nil || dev != "/dev/sdg" {
+			t.Fatalf("retained attachment: device %q, %v", dev, err)
+		}
+	})
+
+	t.Run("delete detaches the volume", func(t *testing.T) {
+		if err := env.Client.Delete(ctx, att); err != nil {
+			t.Fatal(err)
+		}
+		gone(t, att)
+		if dev, err := volumeAttachedTo(ctx, cloud, volumeID, instance); err != nil || dev != "" {
+			t.Fatalf("still attached as %q: %v", dev, err)
+		}
+	})
+}
