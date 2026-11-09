@@ -5,11 +5,35 @@
 # runs beside ACK's EventBridge controller, with its identity (open
 # question 8, answered by the builder: pkg/operator, Beside).
 #
+# Schedule is generated from CreateSchedule, GetSchedule, UpdateSchedule
+# and DeleteSchedule; groupRef names a ScheduleGroup. Scheduler fills in
+# defaults (the time zone, the state, the target's retry policy, the
+# action after completion) that are no drift (custom_delta.go).
+#
 # ScheduleGroup is generated from CreateScheduleGroup, GetScheduleGroup and
 # DeleteScheduleGroup. A group has no update; its tags are synced with
 # TagResource and UntagResource (customUpdate in hooks.go, copied from
 # eventbridge-controller's EventBus).
 resources:
+  Schedule:
+    exceptions:
+      errors:
+        404:
+          code: ResourceNotFoundException
+    fields:
+      Name:
+        is_primary_key: true
+        is_immutable: true
+      GroupName:
+        is_immutable: true
+        references:
+          resource: ScheduleGroup
+          path: Spec.Name
+    hooks:
+      delta_pre_compare:
+        code: customSetDefaults(a, b)
+    tags:
+      ignore: true
   ScheduleGroup:
     exceptions:
       errors:
@@ -30,7 +54,7 @@ resources:
       sdk_read_one_post_set_output:
         template_path: hooks/schedule_group/sdk_read_one_post_set_output.go.tpl
 ignore:
-  resource_names:
-    - Schedule
   field_paths:
     - CreateScheduleGroupInput.ClientToken
+    - CreateScheduleInput.ClientToken
+    - UpdateScheduleInput.ClientToken

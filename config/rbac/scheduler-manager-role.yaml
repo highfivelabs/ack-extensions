@@ -26,6 +26,7 @@ rules:
   - scheduler.aws.hfl.dev
   resources:
   - schedulegroups
+  - schedules
   verbs:
   - create
   - delete
@@ -38,6 +39,7 @@ rules:
   - scheduler.aws.hfl.dev
   resources:
   - schedulegroups/status
+  - schedules/status
   verbs:
   - get
   - patch

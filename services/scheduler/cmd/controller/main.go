@@ -41,6 +41,7 @@ import (
 	svctypes "github.com/highfivelabs/ack-extensions/services/scheduler/apis/v1alpha1"
 	svcresource "github.com/highfivelabs/ack-extensions/services/scheduler/pkg/resource"
 
+	_ "github.com/highfivelabs/ack-extensions/services/scheduler/pkg/resource/schedule"
 	_ "github.com/highfivelabs/ack-extensions/services/scheduler/pkg/resource/schedule_group"
 
 	"github.com/highfivelabs/ack-extensions/services/scheduler/pkg/version"
