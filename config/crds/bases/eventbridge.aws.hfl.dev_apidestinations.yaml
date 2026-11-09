@@ -1,0 +1,195 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: apidestinations.eventbridge.aws.hfl.dev
+spec:
+  group: eventbridge.aws.hfl.dev
+  names:
+    kind: APIDestination
+    listKind: APIDestinationList
+    plural: apidestinations
+    singular: apidestination
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: APIDestination is the Schema for the APIDestinations API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              ApiDestinationSpec defines the desired state of ApiDestination.
+
+              Contains details about an API destination.
+            properties:
+              connectionARN:
+                description: |-
+                  The ARN of the connection to use for the API destination. The destination
+                  endpoint must support the authorization type specified for the connection.
+
+                  Regex Pattern: `^arn:aws([a-z]|\-)*:events:([a-z]|\d|\-)*:([0-9]{12})?:connection\/[\.\-_A-Za-z0-9]+\/[\-A-Za-z0-9]+$`
+                type: string
+              connectionRef:
+                description: "AWSResourceReferenceWrapper provides a wrapper around
+                  *AWSResourceReference\ntype to provide more user friendly syntax
+                  for references using 'from' field\nEx:\nAPIIDRef:\n\n\tfrom:\n\t
+                  \ name: my-api"
+                properties:
+                  from:
+                    description: |-
+                      AWSResourceReference provides all the values necessary to reference another
+                      k8s resource for finding the identifier(Id/ARN/Name)
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+              description:
+                description: |-
+                  A description for the API destination to create.
+
+                  Regex Pattern: `.*`
+                type: string
+              httpMethod:
+                description: The method to use for the request to the HTTP invocation
+                  endpoint.
+                type: string
+              invocationEndpoint:
+                description: |-
+                  The URL to the HTTP invocation endpoint for the API destination.
+
+                  Regex Pattern: `^((%[0-9A-Fa-f]{2}|[-()_.!~*';/?:@\x26=+$,A-Za-z0-9])+)([).!';/?:,])?$`
+                type: string
+              invocationRateLimitPerSecond:
+                description: |-
+                  The maximum number of requests per second to send to the HTTP invocation
+                  endpoint.
+                format: int64
+                type: integer
+              name:
+                description: |-
+                  The name for the API destination to create.
+
+                  Regex Pattern: `^[\.\-_A-Za-z0-9]+$`
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+            required:
+            - httpMethod
+            - invocationEndpoint
+            - name
+            type: object
+          status:
+            description: APIDestinationStatus defines the observed state of APIDestination
+            properties:
+              ackResourceMetadata:
+                description: |-
+                  All CRs managed by ACK have a common `Status.ACKResourceMetadata` member
+                  that is used to contain resource sync state, account ownership,
+                  constructed ARN for the resource
+                properties:
+                  arn:
+                    description: |-
+                      ARN is the Amazon Resource Name for the resource. This is a
+                      globally-unique identifier and is set only by the ACK service controller
+                      once the controller has orchestrated the creation of the resource OR
+                      when it has verified that an "adopted" resource (a resource where the
+                      ARN annotation was set by the Kubernetes user on the CR) exists and
+                      matches the supplied CR's Spec field values.
+                      https://github.com/aws/aws-controllers-k8s/issues/270
+                    type: string
+                  ownerAccountID:
+                    description: |-
+                      OwnerAccountID is the AWS Account ID of the account that owns the
+                      backend AWS service API resource.
+                    type: string
+                  partition:
+                    description: Partition is the AWS partition in which the resource
+                      exists or will exist
+                    type: string
+                  region:
+                    description: Region is the AWS region in which the resource exists
+                      or will exist.
+                    type: string
+                required:
+                - ownerAccountID
+                - region
+                type: object
+              apiDestinationState:
+                description: The state of the API destination that was created by
+                  the request.
+                type: string
+              conditions:
+                description: |-
+                  All CRs managed by ACK have a common `Status.Conditions` member that
+                  contains a collection of `ackv1alpha1.Condition` objects that describe
+                  the various terminal states of the CR and its backend AWS service API
+                  resource
+                items:
+                  description: |-
+                    Condition is the common struct used by all CRDs managed by ACK service
+                    controllers to indicate terminal states  of the CR and its backend AWS
+                    service API resource
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A human readable message indicating details about
+                        the transition.
+                      type: string
+                    reason:
+                      description: The reason for the condition's last transition.
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the Condition
+                      type: string
+                  required:
+                  - status
+                  - type
+                  type: object
+                type: array
+              creationTime:
+                description: A time stamp indicating the time that the API destination
+                  was created.
+                format: date-time
+                type: string
+              lastModifiedTime:
+                description: A time stamp indicating the time that the API destination
+                  was last modified.
+                format: date-time
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
