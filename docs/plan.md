@@ -1,6 +1,6 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has seventeen kinds:
+Status, 2026-11-09: the repository has eighteen kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
@@ -8,7 +8,7 @@ Status, 2026-11-09: the repository has seventeen kinds:
   `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
-- `iam.aws.hfl.dev` `RolePolicyAttachment`;
+- `iam.aws.hfl.dev` `RolePolicyAttachment` and `UserGroupMembership`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
 - `rds.aws.hfl.dev` `OptionGroup`;
@@ -187,6 +187,16 @@ status) and the fake cloud through the real AWS SDK clients.
 ### 4.3 Results (`make test`; latest 2026-11-09 on a Spot VM, linux amd64, Go 1.27.3)
 
 ```text
+--- PASS: TestUserGroupMembership
+    the user is put in the listed groups and a group it was in for
+    another reason is left (no update across three resyncs); a group
+    taken off the list is removed and one added is added; a removal
+    outside Kubernetes is put back; the user cannot change; userRef and
+    groupRefs resolve to ACK's User and Group; deletion-policy retain
+    leaves the user in the groups; delete removes the listed groups and
+    leaves the others
+--- PASS: TestManagedIgnoresOtherGroups, TestChanges,
+          TestGroupOrderIsNoDrift (membership unit tests)
 --- PASS: TestRolePolicyAttachment
     create attaches the policy; references resolve to ACK's Role; delete
     detaches the policy; deletion-policy retain keeps the attachment
@@ -497,7 +507,7 @@ its master (5.2.5 is the pin).
 | 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`; no pull request or issue, rechecked 2026-11-09) | yes | built |
 | 13 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237: mergeable, active 2026-11-06 | none | skipped: may be close to merging, and moto has none of it |
 | 14 | Route 53 DNSSEC and `KeySigningKey`, VPC association authorization | ignored in route53-controller's `generator.yaml` | none | skipped: moto has none of it |
-| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none | yes | to build |
+| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | `UserGroupMembership` built (non-exclusive, open question 9); `AccessKey` waits on open question 10; the rest next |
 | 16 | EC2 `PlacementGroup` | ignored in ec2-controller's `generator.yaml` | none | skipped: moto has none of it |
 | 17 | S3 `Object`, the account's public access block | none | yes | to build |
 | 18 | EC2 `KeyPair` | ec2-controller PR #396: both reviews' changes made, main merged in 2026-11-04, mergeable | yes | skipped: close to merging; wait for the release |
@@ -1119,6 +1129,38 @@ create, describe and delete the generator reads. A new service,
 being replaced (moto keeps both), the delete leaving such a resource
 alone, that the resource exists (moto does not check), and the
 terminal errors.
+### 6.18 `iam.aws.hfl.dev` `UserGroupMembership`
+
+An IAM user's membership of a list of groups: Terraform's
+`aws_iam_user_group_membership`. ACK's iam-controller `v1.11.3` has
+`User` and `Group` but no membership; no pull request adds one
+(rechecked 2026-11-09).
+
+**Not exclusive (assumed; open question 9).** Only the listed groups are
+added or removed. Groups the user is in for any other reason (another
+object, the console, Terraform) are left alone. `status.groups`
+remembers what this object put, so a group taken off the list is
+removed and nothing else is.
+
+**Hand-written** on ACK's runtime, on PR #184's skeleton: IAM has
+`AddUserToGroup`, `RemoveUserFromGroup` and `ListGroupsForUser`, no
+create, describe and delete of a membership.
+
+- **Spec:** `userName` or `userRef` (ACK's `User`, its `spec.name`),
+  immutable; `groups` or `groupRefs` (ACK's `Group`s), which may change.
+- **Read:** the user's groups, kept to those listed or put before. The
+  groups compare as a set. A user that does not exist has no membership;
+  so has one never made whose groups the user is in none of. Once made,
+  a membership with all its groups gone outside Kubernetes is put back.
+- **Delete** takes the user out of the listed and put groups; a user,
+  group or membership already gone is removed.
+- **Errors:** a user or group not there yet is retried; IAM's limit of
+  groups per user (`LimitExceeded`) is terminal.
+- **Synced** once read. IAM has no ARN for a membership; the IAM ARN form
+  with the user appended stands in, for ACK's metadata only.
+
+**Not proven:** IAM's limit of ten groups per user (not tested), and
+real AWS.
 
 ## 7. The operator: ACK's identity, beside ACK's controller
 
@@ -1396,3 +1438,34 @@ Before it can run on a real cluster:
 
    Proposed: the first, beside EventBridge's controller, documented as
    needing `scheduler:*` on that role. Scheduler waits for the answer.
+9. **IAM group membership: exclusive or not** (rank 15). Terraform has
+   both: `aws_iam_group_membership` owns a group's whole list of users,
+   `aws_iam_user_group_membership` adds one user to listed groups and
+   leaves the rest. An exclusive kind removes any member another writer
+   added (a second object, the console, Terraform), and that writer adds
+   it back: the tug of war of questions 3 and 7. `UserGroupMembership`
+   is built non-exclusive, remembering in `status.groups` what it put so
+   a group taken off its list is still removed. Assumed (coordinator,
+   2026-11-09); the builder to confirm. An exclusive group-side kind can
+   be added later beside it.
+10. **IAM `AccessKey`** (rank 15). `CreateAccessKey` returns the secret
+    access key once, and never again. A kind has to put it somewhere,
+    and ACK's runtime has no pattern for writing a secret out (it only
+    reads them, as `SecretKeyReference`). Options:
+    - the controller writes a Kubernetes Secret, named in the spec, in
+      the object's namespace. The manager then needs rights to create
+      and update Secrets, and a lost Secret means rotating the key;
+    - the controller writes to an external secret store (Secrets Manager,
+      through a reference), which adds a second service and its rights
+      to the IAM manager;
+    - leave `AccessKey` out.
+
+    Recommended: leave it out. A static key is a long-lived credential
+    for a user, where the identity in this repository is a workload's
+    role (IRSA or EKS Pod Identity, section 7), and the coordinator
+    reports the builder's direction for identity points the same way.
+    Each of the other options would make this repository a writer of
+    credentials, which nothing else here is. If a package needs one
+    later, the first option is the smallest. `LoginProfile`,
+    `SSHPublicKey`, the account alias and the password policy do not
+    depend on the answer and go ahead.
