@@ -1,29 +1,63 @@
-# Cloud Control: one generic controller for the AWS long tail (spike)
+# Cloud Control: one generic controller for the AWS long tail
 
-Status, 2026-11-09: a spike on branch `agent/cloudcontrol-spike`. The
-builder chose the route for AWS types ACK lacks: "Cloud Control first,
-Upjet as fallback", one generic reconciler of our own over the AWS Cloud
-Control API, with CRDs generated from the CloudFormation registry schemas,
-as Terraform's `awscc` and Pulumi's `aws-native` do. This document is the
-design, what was proven and how, what was not, and the decision the builder
-has to make. Everything was run against a fake: no AWS account was used.
+Status, 2026-11-09: **go, with limits** (the builder). The spike of PR #34
+is productionized on branch `agent/cloudcontrol`: one generic reconciler of
+our own over the AWS Cloud Control API, with CRDs generated from the
+CloudFormation registry schemas, as Terraform's `awscc` and Pulumi's
+`aws-native` do, run per environment (a namespace) as that environment's
+own AWS identity. Everything is proven on a fake: no AWS account has been
+used, and every kind is **untested on real AWS** until it has a real run
+(the live-test switch and the sandbox account's template are a separate
+pull request; the account itself is the builder's).
 
-**In one paragraph.** It works on the fake. One generic resource manager
-(about 1,200 lines) implements ACK's runtime interfaces over unstructured
-objects, so ACK's own runtime drives it: the same finalizer, deletion
-policy, adoption annotations, CARM, conditions (`ACK.ResourceSynced`,
-`Ready`, `ACK.Terminal`, `ACK.Recoverable`, `ACK.Adopted`) and flags as
-every other kind here. A generator turns a type's registry schema into a
-CRD the API server accepts, an embedded schema, and a least-privilege IAM
-policy. Three foundation types ACK lacks
-(`AWS::IAM::SAMLProvider`, `AWS::EC2::TransitGatewayRouteTable`,
-`AWS::GuardDuty::Detector`) were generated with **no per-type Go** and run
-end to end on envtest against a thin Cloud Control fake over moto. Run on
-every type in the pinned schema zip, the generator makes an accepted CRD for
-**all 1,766 provisionable types**, including **251 of the 276 foundation-gap
-types** (the other 25 are not provisionable through Cloud Control at all,
-18 of them WAF Classic). The recommendation is **go, with limits** (the
-end of this document).
+**In one paragraph.** One generic resource manager (about 1,200 lines)
+implements ACK's runtime interfaces over unstructured objects, so ACK's own
+runtime drives it: the same finalizer, deletion policy, adoption
+annotations, conditions (`ACK.ResourceSynced`, `Ready`, `ACK.Terminal`,
+`ACK.Recoverable`, `ACK.Adopted`) and flags as every other kind here. A
+generator turns a type's registry schema into a CRD the API server
+accepts, an embedded schema, and a least-privilege IAM policy. A
+`CloudControlContext` in a namespace (Config Connector's
+`ConfigConnectorContext`, for AWS) makes the operator run a manager for
+that namespace, watching only it, as a ServiceAccount of its own bound by
+EKS Pod Identity to the environment's IAM role. Three foundation types ACK
+lacks (`AWS::IAM::SAMLProvider`, `AWS::EC2::TransitGatewayRouteTable`,
+`AWS::GuardDuty::Detector`) run end to end on envtest against a thin Cloud
+Control fake over moto, with **no per-type Go**. Run on every type in the
+pinned schema zip, the generator makes an accepted CRD for **all 1,766
+provisionable types**, including **251 of the 276 foundation-gap types**.
+
+## The builder's decisions (2026-11-09)
+
+1. **Go, with limits.** "Productionize the generic manager and roll types
+   out in foundation order; each type proven on the fake and marked
+   untested on real AWS until it has a real run. Keep ACK-generated kinds
+   where ACK's generator gives better behaviour; Upjet remains the
+   fallback for types this route can't handle."
+2. **API group:** `<service>.cloudcontrol.aws.hfl.dev`, separate from our
+   ACK-generated `<service>.aws.hfl.dev`, matching a separate Bundt
+   Provider named `hfl.aws-cloudcontrol`.
+3. **Identity**, in the builder's words: "I think it's closer to the one
+   shared cloud control manager, but not exactly. I think the scoping
+   should be at the environment level, so each environment gets an
+   identity attached, and not through Workload Identity but instead
+   through Pod Identity. Important distinction there, Pod Identity is
+   newer. I don't think a per-service manager is the correct thing.
+   Loosely, this follows the KCC model of a GSA and KSA workload identity
+   bound that is enabled within a namespace to run KCC, and really that
+   namespace has a scope that it works within." Built as section 10 says;
+   the spike's per-service managers are gone.
+4. **Write-only fields:** "Secret references only for fields marked as
+   secrets, opt-in per field (many write-only fields aren't secrets)."
+   Built: `secrets` per type in `cloudcontrol/types.yaml` (section 2).
+5. **A sandbox AWS account is coming** for one real run per type; the
+   builder will create it. To prepare for it: a live-test switch like the
+   GCP repository's (`task test-live`, a sweeper, a ledger), never run by
+   `task check` and refusing to run without explicit opt-in and an
+   allowlisted account ID; credentials by federation from the offload
+   VMs' Google service account (`AssumeRoleWithWebIdentity` with a Google
+   ID token), never stored keys; and the CloudFormation template the
+   builder deploys in the account. Nothing deployed by an agent.
 
 ## Contents
 
@@ -36,36 +70,41 @@ end of this document).
 7. What was proven
 8. Readiness: how much of the gap Cloud Control covers
 9. Compared with our ACK-generated `organizations/Policy`
-10. Identity and placement (plan §9, question 12)
+10. Identity and placement: one manager per environment
 11. What did not work, or is not known
-12. Recommendation, phased plan, and the builder's decisions
+12. Decisions taken, and the plan
 
 ## 1. What was built
 
 | Path | What | Written or generated |
 | --- | --- | --- |
-| `cloudcontrol/types.yaml` | the types to serve: one line each (`typeName`) | written, the only per-type input |
+| `cloudcontrol/types.yaml` | the types to serve: one line each (`typeName`), and the write-only properties that are secrets (`secrets`) | written, the only per-type input |
+| `cloudcontrol/apis/v1alpha1` | `CloudControlContext`, which enables Cloud Control in a namespace | written; deepcopy and CRD (`cloudcontrol/config/context/`) by controller-gen |
+| `pkg/operator/cloudcontrol.go` | the operator's part: a manager per context | written |
 | `hack/cloudcontrol-gen/` | the generator; `--survey` runs it on every type in the zip | written once |
 | `cloudcontrol/pkg/cfn/` | reads registry schemas: behaviour lists, pointers, names, conversion, comparison | written once |
 | `cloudcontrol/pkg/crdgen/`, `crdcheck/` | schema to CRD; validation as the API server does it (structural schema, CEL compile and cost) | written once |
-| `cloudcontrol/pkg/iamgen/` | handler permissions to an IAM policy | written once |
+| `cloudcontrol/pkg/iamgen/` | handler permissions to an IAM policy; an environment's role (merged, split to IAM's size limit) and its Pod Identity trust policy | written once |
 | `cloudcontrol/pkg/resource/` | the generic resource manager on ACK's runtime | written once |
 | `cloudcontrol/cmd/manager/` | the manager binary (ACK's generated `main.go`, shape for shape) | written once |
-| `cloudcontrol/config/crds/`, `config/iam/`, `config/rbac/`, `pkg/registry/zz_generated.registry.go`, `pkg/registry/schemas/` | per type: CRD, IAM policy, the manager's ClusterRole, the registry entry, the embedded schema | **generated** |
+| `cloudcontrol/config/crds/`, `config/iam/`, `config/rbac/`, `pkg/registry/zz_generated.registry.go`, `pkg/registry/schemas/` | per type: CRD, IAM policy, the registry entry, the embedded schema; for all, the manager's ClusterRole (namespaced rights, bound per environment) | **generated** |
 | `cloudcontrol/zz_generated.report.md` | what the generator could not map exactly, per type | generated |
 | `cloudcontrol/readiness.csv`, `readiness.md` | every type in the zip: provisioning type, CRD accepted or not, lossy nodes, secrets, sensitive IAM, ACK coverage | generated (`--survey`) |
 | `cloudcontrol/test/fake/` | the Cloud Control fake: a generic server plus one moto backend per type; the guard | test code |
 | `cloudcontrol/test/e2e/` | end to end: envtest, the manager binary, the fake over moto | test code |
 
 Tasks: `task cloudcontrol:generate`, `task cloudcontrol:check` (generated
-files current, vet, SPDX, build, unit and end-to-end tests). `task check`
-also runs them (fmt, the generated-files check, and `go test ./...`).
+files current, vet, SPDX, build, unit and end-to-end tests),
+`task cloudcontrol:iam` (one environment's role, section 5). `task check`
+also runs them (fmt, the generated-files check, and `go test ./...`), and
+`task operator-e2e` runs a context on kind.
 
 The kinds live in `<service>.cloudcontrol.aws.hfl.dev`
-(`SAMLProvider.iam.cloudcontrol.aws.hfl.dev`): a separate suffix so the
-spike cannot clash with a kind built here with ACK's generator (F03 proposes
-an ACK-generated `iam.aws.hfl.dev/SAMLProvider`). The group is a builder
-decision (section 12).
+(`SAMLProvider.iam.cloudcontrol.aws.hfl.dev`), the builder's decision 2:
+the engine is visible in the group, a kind cannot clash with one built
+here with ACK's generator (`<service>.aws.hfl.dev`), and Bundt serves them
+through its own Provider, `hfl.aws-cloudcontrol`. `CloudControlContext` is
+`cloudcontrol.aws.hfl.dev/v1alpha1`.
 
 ## 2. The mapping: schema to CRD
 
@@ -74,8 +113,8 @@ decision (section 12).
 | `properties` | `spec`, lower camel case (`SamlMetadataDocument` to `samlMetadataDocument`, `S3Logs` to `s3Logs`) | a name clash fails generation; none in the 1,766 types |
 | `readOnlyProperties` (top level) | `status.<field>` | nested read-only inside a writable object: dropped from spec, reported |
 | `createOnlyProperties` | CEL on the field: `self == oldSelf`; on its parent: `has(self.f) == has(oldSelf.f)` | the API server refuses the edit; paths inside arrays have no rule (a transition rule there needs a keyed list) and are refused by the reconciler instead |
-| `writeOnlyProperties`, strings | a Secret reference (`{name, namespace, key}`, ACK's `SecretKeyReference`) | resolved by ACK's runtime; a digest in `status.cloudControl.writeOnlyDigest` notices a changed Secret, since Cloud Control never returns the value |
-| `writeOnlyProperties`, other | a plain field, never compared | |
+| `writeOnlyProperties` a type opts in (`secrets` in `types.yaml`: write-only strings only) | a Secret reference (`{name, namespace, key}`, ACK's `SecretKeyReference`) | resolved by ACK's runtime, which refuses a Secret in another namespace unless `--enable-cross-namespace` (the operator never sets it, and the manager's rights end at its namespace anyway); a digest in `status.cloudControl.writeOnlyDigest` notices a changed Secret, since Cloud Control never returns the value |
+| every other `writeOnlyProperties` | a plain field, never compared (the digest notices a change) | opt-in per field, the builder's decision 4: many are not secrets (an IPAM pool's netmask, a GuardDuty member's email, a SAML provider's key ID to remove). The generator refuses an opted-in pointer that is not a write-only string reachable through objects, and the report lists the remaining candidates |
 | `primaryIdentifier` | `status.cloudControl.identifier` (values joined with `\|`), and the read-only parts in status | adoption takes it from ACK's `adoption-fields` annotation |
 | `required` | `required`, minus read-only | |
 | `tagging.tagProperty` | the tag list; ACK's default tags (`services.k8s.aws/*`) added on create, filtered out of spec | |
@@ -165,10 +204,9 @@ The other per-type cost is in the tests: each moto backend in the fake is
 ## 5. IAM from the schemas
 
 Cloud Control runs a type's handlers with the caller's credentials (the
-reconciler passes no `RoleArn`), so the manager's role needs the Cloud
+reconciler passes no `RoleArn`), so the environment's role needs the Cloud
 Control actions it calls and the permissions of the handlers those actions
-run. `iamgen` writes, per type (`cloudcontrol/config/iam/`), and merged for
-the manager (`manager-policy.json`):
+run. `iamgen` writes, per type (`cloudcontrol/config/iam/`):
 
 - one statement with the Cloud Control actions, which IAM names in the
   `cloudformation:` namespace: `CreateResource`, `GetResource`,
@@ -182,6 +220,23 @@ the manager (`manager-policy.json`):
   `iam:CreateServiceLinkedRole`, `iam:Put*`, `iam:Attach*`,
   `kms:CreateGrant`, `kms:Decrypt`, `sts:AssumeRole`) listed as sensitive in
   the report.
+
+**An environment's role** carries the policies of the kinds its context
+enables, nothing more (the builder: "the role's permissions are scoped to
+what that environment manages"):
+
+```sh
+task cloudcontrol:iam NAMESPACE=team-a-prod ACCOUNT=111122223333 \
+  CLUSTER_ARN=arn:aws:eks:us-west-2:111122223333:cluster/platform \
+  KINDS=SAMLProvider.iam,Detector.guardduty OUT=iam/team-a-prod
+```
+
+writes `permissions-<n>.json`, the merged statements split into as few
+documents as IAM's 6,144-character limit on a managed policy allows (one
+for the three types here; a role takes ten managed policies by default),
+and `trust.json`, the role's trust policy for EKS Pod Identity (section
+10). The spike's single `manager-policy.json` for every type is gone: no
+role should hold every type's permissions.
 
 For the three types:
 
@@ -199,9 +254,14 @@ scoping by ARN (`arn:aws:iam::<account>:saml-provider/*`) and conditions
 (`iam:AWSServiceName` for the service-linked role) is a reviewed step after
 generation, which the overlay could carry. Handler permission lists are the
 type owners' and are known to be incomplete for some types; whether they
-suffice can only be checked on real AWS (moto does not enforce IAM). Whether
-Cloud Control's own actions accept resource-level scoping or a
-`cloudformation:TypeName` condition was not checked.
+suffice can only be checked on real AWS (moto does not enforce IAM).
+Whether Cloud Control's own actions accept resource-level scoping or a
+`cloudformation:TypeName` condition was not checked. Attribute-based
+scoping by the session tags (a condition such as
+`aws:ResourceTag/services.k8s.aws/namespace` against
+`aws:PrincipalTag/...`) is possible for the services whose actions take
+resource tags, but whether the tags reach the handlers' calls through
+Cloud Control is not known without real AWS; not generated.
 
 ## 6. The fake, and the guard against real AWS
 
@@ -379,43 +439,121 @@ whole JSON documents.
 | Retirement into ACK | a group move with adoption | the same: adopt by identifier in ACK's group, delete ours with `retain` |
 | Generated share | about 88% per kind | 100% per kind; about 94% overall at the foundation-gap scale |
 
-## 10. Identity and placement (plan §9, question 12)
+## 10. Identity and placement: one manager per environment
 
-There is no ACK controller to run beside for these types, so the operator's
-model (copy an ACK controller's ServiceAccount annotations, flags,
-environment and CARM; `Beside` for EventBridge Scheduler) has nothing to
-copy from. Because the manager is built on ACK's runtime, it takes ACK's
-flags and does ACK's per-resource identity (CARM, team CARM,
-`IAMRoleSelector`) unchanged; what it lacks is a base identity.
+The builder's decision 3 (above, verbatim): identity at the environment
+level, through EKS Pod Identity, loosely Config Connector's namespaced
+mode. Config Connector, read for this: a `ConfigConnectorContext` (named
+`configconnectorcontext.core.cnrm.cloud.google.com`, one per namespace)
+names a Google service account; Config Connector's operator then runs a
+controller manager for that namespace in `cnrm-system`, as a Kubernetes
+ServiceAccount of its own (`cnrm-controller-manager-<namespace>`) bound to
+the Google service account by Workload Identity, watching only that
+namespace. Ours is the same shape on AWS:
 
-| Option | For | Against |
+```yaml
+apiVersion: cloudcontrol.aws.hfl.dev/v1alpha1
+kind: CloudControlContext
+metadata:
+  name: cloudcontrol            # one per namespace; CEL refuses any other name
+  namespace: team-a-prod        # the environment
+spec:
+  roleARN: arn:aws:iam::111122223333:role/team-a-prod-cloudcontrol
+  region: us-west-2
+  kinds: [SAMLProvider.iam, Detector.guardduty]   # optional; empty: every kind
+  deletionPolicy: delete        # optional; or retain
+```
+
+**What the operator makes** (`pkg/operator/cloudcontrol.go`), when its
+`MANAGER_IMAGE_CLOUDCONTROL` is set:
+
+| Where | What | Why |
 | --- | --- | --- |
-| A. Beside an ACK controller, with its identity (as Scheduler is beside EventBridge) | no new identity; the operator's model as is | one process serves many services: which controller? That controller's role then needs every Cloud Control type's permissions |
-| B. **Its own manager per service, installed by the operator from configuration**: ServiceAccount `ack-extensions-cloudcontrol-<service>`, role from configuration (IRSA annotation, or an EKS Pod Identity association made outside), region and endpoint flags, in ACK's namespace so CARM's ConfigMaps are shared, serving only that service's kinds (`--reconcile-resources`) | least privilege per service (the generated policy, merged per service); matches ACK's one controller and role per service and question 5; CARM per namespace works as for ACK, since target roles trust the base role | one IAM role per service to create, as for ACK; the operator needs a small configuration of its own |
-| C. One manager for every Cloud Control type, one role | simplest install | one role with every type's permissions (60 foundation types carry sensitive actions); one failure stops every type |
-| D. A static bundle (kustomize or Helm) outside the operator | no operator change | repeats region, CARM and flags by hand; the drift the operator exists to avoid (plan §7) |
+| the operator's namespace (`ack-extensions-system`) | ServiceAccount `ack-extensions-cloudcontrol-<environment>`, no IRSA annotation | the identity the Pod Identity association names; in the operator's namespace, as Config Connector's are in `cnrm-system`, so nobody who may only create pods in the environment's namespace can run as the role and step around admission policy on the kinds |
+| the operator's namespace | Deployment `ack-extensions-cloudcontrol-<environment>`: the manager, `--watch-namespace=<environment>`, `--aws-region`, `--cloudcontrol-kinds` (group-qualified, since two services can have kinds of the same name), `--deletion-policy`, leader election in the environment | one manager per environment, serving every Cloud Control kind it enables |
+| the environment's namespace, owned by the context | RoleBinding `ack-extensions-cloudcontrol-manager` of that ServiceAccount to the generated ClusterRole | Kubernetes rights in that namespace only: its kinds, its Secrets (references), its leases and events; nothing cluster-wide, nothing in the operator's namespace |
+| the context | a finalizer, and `status`: `podIdentityAssociation` (namespace, ServiceAccount, role), the kinds served, `Ready` when the manager is available | an owner reference cannot cross namespaces; the status says exactly which association to make |
 
-**Recommendation: B.** The operator reads a configuration (a ConfigMap
-`ack-extensions-cloudcontrol` in the operator's namespace, or a field on
-an operator configuration kind later) listing, per service: the role ARN
-(or `podIdentity: true`), the region, and the kinds to serve; it installs
-those CRDs only, a Deployment of the one image with
-`--reconcile-resources` for those kinds, its ServiceAccount, and a
-ClusterRoleBinding to the generated ClusterRole. When ACK's controllers are
-installed in a namespace, it uses that namespace and copies the endpoint,
-CARM and feature-gate flags from any of them, so a cluster configured for
-ACK needs only the role. The generated `manager-policy.json` is merged per
-service for each role. If ACK later ships a controller for the service, the
-kinds retire into it (section 9) and the manager goes.
+With one watch namespace ACK's runtime runs no namespace or CARM cache, so
+the manager needs no cluster-wide read; CARM is off (`--enable-carm=false`):
+the environment's role is the identity. An unknown kind in `spec.kinds`
+leaves whatever runs alone and sets `Ready=False`, `UnknownKinds`. The
+operator holds no AWS credentials and may bind only the manager's
+ClusterRole by name. A fake AWS's endpoint and dummy credentials reach the
+managers only through the operator's own flags
+(`--cloudcontrol-manager-arg`, `--cloudcontrol-manager-env`, for tests and
+kind), never through a context: an environment cannot point its manager at
+another endpoint.
+
+**The EKS Pod Identity association** the environment needs (the operator
+cannot make it: it is an EKS API call, made with AWS credentials):
+
+```sh
+aws eks create-pod-identity-association --cluster-name platform \
+  --namespace ack-extensions-system \
+  --service-account ack-extensions-cloudcontrol-team-a-prod \
+  --role-arn arn:aws:iam::111122223333:role/team-a-prod-cloudcontrol
+```
+
+or ACK's own kind, where ACK's eks-controller runs with rights to make it:
+
+```yaml
+apiVersion: eks.services.k8s.aws/v1alpha1
+kind: PodIdentityAssociation
+metadata: {name: team-a-prod-cloudcontrol, namespace: ack-extensions-system}
+spec:
+  clusterName: platform
+  namespace: ack-extensions-system
+  serviceAccount: ack-extensions-cloudcontrol-team-a-prod
+  roleARN: arn:aws:iam::111122223333:role/team-a-prod-cloudcontrol
+```
+
+The cluster needs the EKS Pod Identity Agent add-on. The role's trust
+policy (`task cloudcontrol:iam` writes it) lets `pods.eks.amazonaws.com`
+`sts:AssumeRole` and `sts:TagSession`, with conditions on Pod Identity's
+**session tags**: `aws:RequestTag/kubernetes-namespace` is the operator's
+namespace and `aws:RequestTag/kubernetes-service-account` is this
+environment's ServiceAccount, plus `aws:SourceAccount` and `aws:SourceArn`
+(the cluster). So an association made by mistake for another
+environment's ServiceAccount, for a pod in the environment's own
+namespace, or in another cluster cannot use the role; and every call the
+manager makes is in CloudTrail with those tags. Pod Identity, not IRSA, as
+the builder decided: no OIDC provider per cluster, no role-ARN annotation
+for anyone with ServiceAccount rights to copy, and a role's trust policy
+that names no cluster's OIDC issuer.
+
+**A cluster that is not EKS** (documented, not built). The Pod Identity
+Agent runs only on EKS (and EKS Hybrid Nodes), so elsewhere the manager
+needs another source of the environment's credentials; the managers use
+the AWS SDK's default chain, so any of these works without code:
+
+- *IRSA-style web identity, self-hosted*: publish the cluster's service
+  account issuer as an IAM OIDC provider, run
+  `amazon-eks-pod-identity-webhook`, and give the role a trust policy on
+  `sub: system:serviceaccount:ack-extensions-system:ack-extensions-cloudcontrol-<environment>`.
+  It would need the ServiceAccount annotation `eks.amazonaws.com/role-arn`,
+  which the operator does not set today (a context field would).
+- *IAM Roles Anywhere*: an X.509 certificate per environment and the
+  credential helper as a sidecar or `credential_process`; the operator
+  would mount the certificate's Secret.
+- *A credentials Secret* (ACK's `aws.credentials.secretName`): a static key
+  per environment. Long-lived keys are what this repository avoids
+  (plan 9, question 10); last resort.
+
+**What kind cannot show** (`task operator-e2e`): the Pod Identity Agent
+exchanging the pod's token for the role's credentials, and AWS honouring
+the trust policy's conditions. Everything on our side of that is proven
+(section 7).
 
 ## 11. What did not work, or is not known
 
-- **Write-only to Secret is not right by default.** Of the 35 foundation-gap
-  types with a write-only string, many are not secrets
+- **Write-only to Secret was not right by default** (the spike made every
+  write-only string a Secret reference). Of the 35 foundation-gap types
+  with a write-only string, many are not secrets
   (`AWS::EC2::VPCCidrBlock`'s IPAM parameters,
   `AWS::SecretsManager::RotationSchedule`'s eleven, `GuardDuty::Member`'s
-  email). Make it opt-in per path in `types.yaml`, with the default a plain
-  write-only field.
+  email). Now opt-in per field (`secrets` in `types.yaml`), the builder's
+  decision 4.
 - **Names.** Lower camel case from PascalCase is mechanical and mostly
   right; `IPv6CidrBlock` becomes `iPv6CidrBlock`. An overlay rename is needed
   for a handful; ACK's own names (`ipv6CIDRBlock`) come from its own rules.
@@ -443,56 +581,43 @@ kinds retire into it (section 9) and the manager goes.
   request tokens live; whether a type the schema says is provisionable is
   served by Cloud Control in every region.
 
-## 12. Recommendation, phased plan, and the builder's decisions
+## 12. Decisions taken, and the plan
 
-**Recommendation: go, with limits.** The generic route works for every
-mechanism the spike set out to prove, with no per-type Go, on ACK's
-runtime, and reaches 251 of the 276 foundation gaps on paper. The limits:
+The builder's decisions are at the top. The limits that come with "go,
+with limits":
 
-1. it is proven on a fake only; nothing is shipped to users until one run
-   per type on a real account has checked the read model against what was
-   sent (section 11);
+1. it is proven on a fake only; every kind is marked untested on real AWS
+   until one run on a real account has checked the read model against
+   what was sent (section 11);
 2. use it for types whose CloudFormation model is what a platform team
-   would write and that need no reference or exclusive/non-exclusive choice;
-   types that do (attachments, memberships, anything ACK's kinds reference)
-   stay on ACK's generator here, as now;
-3. Upjet is not needed for any foundation type: the 25 Cloud Control
-   cannot serve are WAF Classic and types ACK covers inline or that are
-   built here. Keep it as the fallback the builder named, for a type Cloud
-   Control serves badly on real AWS.
+   would write and that need no reference or exclusive/non-exclusive
+   choice; types that do (attachments, memberships, anything ACK's kinds
+   reference), or where ACK's generator gives better behaviour, stay on
+   ACK's generator here, as now;
+3. Upjet stays the fallback for a type Cloud Control serves badly on real
+   AWS or cannot serve.
 
-**Phased plan, if go.**
+**Plan.**
 
-1. Merge this spike as experimental: not installed by the operator, not in
-   the coverage numbers.
-2. One real-AWS run per served type (needs a sandbox account from the
-   builder), recording responses with go-vcr; quirks found go into
-   `types.yaml` as data (a secret path, a server-normalised field, a frozen
-   schema), never as per-type Go.
-3. The overlay: secrets opt-in, renames, references (from `relationshipRef`
-   where a schema has it, otherwise overlay data; ACK's kinds first:
-   `transitGatewayRef` to ACK's `TransitGateway`), removal of fields the
-   spec drops.
-4. Install: option B of section 10 in `pkg/operator`, per service, with
-   selective CRD installation; the coverage dashboard counts Cloud Control
-   kinds as ours.
-5. The foundation queue in batches by service (Identity Center, GuardDuty,
-   Security Hub, Config, Network Manager, Control Tower), each with e2e on
-   moto where moto has the service, and the in-memory backend plus
-   recordings where it does not.
+1. Done (`agent/cloudcontrol`): the generic manager, the CRD and IAM
+   generator, the fake over moto and its three guards, the per-environment
+   identity and `CloudControlContext`, Secret references opt-in, the
+   operator's part, the spike's three types.
+2. Types in foundation order, in reviewable batches, each with a
+   fake-backed test where moto has the service, else marked "unproven on
+   fake" in the coverage data; `task coverage` counts them as ours.
+3. The live-test switch (`task test-live`, a sweeper, the ledger
+   `docs/live-runs.md`) and the CloudFormation template for the sandbox
+   account (credentials by federation from the offload VMs' Google service
+   account, never stored keys); one real run per type once the account
+   exists, recording responses; quirks found go into `types.yaml` as data
+   (a secret path, a server-normalised field, a frozen schema), never as
+   per-type Go.
+4. The overlay: renames, references (from `relationshipRef` where a schema
+   has it, otherwise overlay data; ACK's kinds first: `transitGatewayRef`
+   to ACK's `TransitGateway`), removal of fields the spec drops.
+5. Selective CRD installation (only the kinds some context enables), once
+   the kind count makes installing them all costly.
 6. Currency: the factory's watcher diffs the schemas' behaviour keys; a
    type whose new schema breaks generation is frozen at its last good
    schema, as awscc's bigdiffer does.
-
-**Decisions for the builder.**
-
-1. Go, go with limits (recommended), or fall back to Upjet.
-2. The API group: `<service>.cloudcontrol.aws.hfl.dev` (the spike's: the
-   engine is visible and cannot clash with an ACK-generated kind here), or
-   `<service>.aws.hfl.dev` (one group per service whatever the engine, with
-   a rule that a type is served by one engine only).
-3. Identity and install: option B of section 10 (plan §9, question 12).
-4. Write-only properties: plain by default with Secret references opted in
-   per path (recommended), or Secret references for every write-only string.
-5. A sandbox AWS account for the real-AWS runs of phase 2, or the route
-   stays experimental.

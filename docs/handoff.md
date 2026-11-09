@@ -29,6 +29,31 @@ not repeat them.
 - **Open questions awaiting the builder:** 9 (non-exclusive group
   membership was assumed) and 10 (`AccessKey`). Question 8 is answered.
 
+## Cloud Control types (`docs/cloudcontrol.md`)
+
+The second route, for types ACK has no controller for and whose
+CloudFormation model is what a platform team would write. The builder
+(2026-11-09): go, with limits; foundation order; each type proven on the
+fake and marked untested on real AWS until a real run. Adding a type:
+
+1. Check it is not better as an ACK-generated kind here (references, an
+   exclusive/non-exclusive choice, an attachment) and that
+   `cloudcontrol/readiness.md` says its CRD is accepted.
+2. Add `typeName` to `cloudcontrol/types.yaml`; opt in `secrets` only for
+   write-only strings that are secrets (the generation report lists the
+   candidates); `task cloudcontrol:generate`. No Go per type.
+3. A moto backend in `cloudcontrol/test/fake/moto.go` and an end-to-end
+   test in `cloudcontrol/test/e2e` when moto has the service; otherwise
+   mark it "unproven on fake" (PR 2 adds the column to the coverage data).
+4. `tests/operator/run.sh` checks the CRD list; add the new CRD there.
+5. Never weaken the fake's three guards (`cloudcontrol/test/fake/guard.go`).
+
+The identity is per environment: a `CloudControlContext` per namespace,
+the manager in the operator's namespace as
+`ack-extensions-cloudcontrol-<namespace>`, EKS Pod Identity to the
+environment's role (`pkg/operator/cloudcontrol.go`). Per-service Cloud
+Control managers were the spike's proposal and are not to be built.
+
 ## The loop for one kind
 
 1. **Recheck upstream, read-only.** The ACK controller's latest release, its
