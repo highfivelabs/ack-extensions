@@ -1370,6 +1370,32 @@ What is proven is everything on our side of that:
 - on EKS, the one extra trust-policy entry or association then applies to
   it.
 
+## 3a. The coverage dashboard
+
+How far ACK and this repository reach is measured, not guessed
+(builder's ask, 2026-11-09): `hack/coverage/` reads the CloudFormation
+resource schemas (the denominator: every writable property of every
+resource, per service), every ACK controller's latest released CRDs
+(official) and our `config/crds/bases/` (ours), matches CRD spec paths
+to CloudFormation properties, and writes `docs/coverage/` (CSV per
+service, resource and attribute; an SVG bar per service) and the
+Coverage section of `README.md`. `docs/coverage/README.md` has the
+method, pins, matching rules, known error and spot checks;
+`task coverage` regenerates, `task coverage:check` fails when the
+committed outputs are stale. The CloudFormation zip is committed
+because AWS replaces the file at its URL every hour. The Google Cloud
+and Azure repositories get the same dashboard with the same CSV schema.
+
+- **After adding or changing a kind:** run `task coverage` and commit
+  the result; a kind that is a property of a larger CloudFormation
+  resource, or a new rename, is a line in `hack/coverage/mappings.yaml`.
+- **When ACK releases:** `hack/coverage/run.sh --update-pins`, review
+  `docs/coverage/sources.yaml`, commit.
+- **Known limits:** official coverage is under-counted where ACK follows
+  the SDK's shape and CloudFormation its own and nobody has written the
+  alias (about 2% of covered attributes in the spot checks); services
+  ACK covers that CloudFormation lacks are listed, not measured.
+
 ## 8. What is left
 
 Before it can run on a real cluster:
