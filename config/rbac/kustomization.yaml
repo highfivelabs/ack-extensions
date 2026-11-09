@@ -4,6 +4,7 @@
 # +kubebuilder:rbac markers: hack/generate.sh). The operator binds them.
 resources:
   - autoscaling-manager-role.yaml
+  - ec2-manager-role.yaml
   - iam-manager-role.yaml
   - kms-manager-role.yaml
   - lambda-manager-role.yaml
