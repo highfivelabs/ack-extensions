@@ -6,6 +6,10 @@
 //
 //	go run ./hack/cloudcontrol-gen            # the types in cloudcontrol/types.yaml
 //	go run ./hack/cloudcontrol-gen --survey   # every type in the zip: cloudcontrol/readiness.{csv,md}
+//	go run ./hack/cloudcontrol-gen --iam --namespace team-a-prod --account 111122223333 \
+//	    --cluster-arn arn:aws:eks:us-west-2:111122223333:cluster/platform \
+//	    [--kinds SAMLProvider.iam,Detector.guardduty] --out iam/team-a-prod
+//	                                          # one environment's role: permission policies and trust policy
 //
 // Per type it writes the CRD (cloudcontrol/config/crds), the schema the
 // reconciler embeds and the registry entry (cloudcontrol/pkg/registry), the
@@ -45,19 +49,117 @@ type config struct {
 	GroupSuffix string `json:"groupSuffix"`
 	Version     string `json:"version"`
 	Types       []struct {
-		TypeName string `json:"typeName"`
-		Kind     string `json:"kind"`
+		TypeName string   `json:"typeName"`
+		Kind     string   `json:"kind"`
+		Secrets  []string `json:"secrets"`
 	} `json:"types"`
 }
 
 func main() {
 	root := flag.String("root", ".", "the repository root")
 	survey := flag.Bool("survey", false, "survey every type in the zip instead")
+	iam := flag.Bool("iam", false, "write one environment's IAM role policies instead (--namespace, --account, --cluster-arn, --kinds, --out)")
+	flag.StringVar(&envOpts.namespace, "namespace", "", "--iam: the environment's namespace")
+	flag.StringVar(&envOpts.account, "account", "", "--iam: the AWS account of the cluster")
+	flag.StringVar(&envOpts.clusterARN, "cluster-arn", "", "--iam: the EKS cluster's ARN")
+	flag.StringVar(&envOpts.kinds, "kinds", "", "--iam: the CloudControlContext's kinds, Kind.service, comma-separated; empty: every kind")
+	flag.StringVar(&envOpts.out, "out", "", "--iam: the directory to write to")
 	flag.Parse()
-	if err := run(*root, *survey); err != nil {
+	var err error
+	if *iam {
+		err = runIAM(*root)
+	} else {
+		err = run(*root, *survey)
+	}
+	if err != nil {
 		fmt.Fprintln(os.Stderr, "cloudcontrol-gen:", err)
 		os.Exit(1)
 	}
+}
+
+var envOpts struct{ namespace, account, clusterARN, kinds, out string }
+
+func readConfig(root string) (config, map[string][]byte, error) {
+	var cfg config
+	files, err := readZip(filepath.Join(root, "docs/coverage/inputs/CloudformationSchema.zip"))
+	if err != nil {
+		return cfg, nil, err
+	}
+	cb, err := os.ReadFile(filepath.Join(root, "cloudcontrol/types.yaml"))
+	if err != nil {
+		return cfg, nil, err
+	}
+	err = yaml.Unmarshal(cb, &cfg)
+	return cfg, files, err
+}
+
+// runIAM writes one environment's role: its permission policies (the
+// generated policies of the kinds its CloudControlContext enables, merged
+// and split to IAM's managed policy size) and its trust policy for EKS
+// Pod Identity, scoped by session tags to the namespace and the manager's
+// ServiceAccount.
+func runIAM(root string) error {
+	o := envOpts
+	if o.namespace == "" || o.account == "" || o.clusterARN == "" || o.out == "" {
+		return fmt.Errorf("--iam needs --namespace, --account, --cluster-arn and --out")
+	}
+	cfg, files, err := readConfig(root)
+	if err != nil {
+		return err
+	}
+	want := map[string]bool{}
+	for _, k := range strings.Split(o.kinds, ",") {
+		if k = strings.TrimSpace(k); k != "" {
+			want[k] = true
+		}
+	}
+	var results []iamgen.Result
+	var served []string
+	for _, t := range cfg.Types {
+		s, err := cfn.Parse(files[schemaFile(t.TypeName)])
+		if err != nil {
+			return fmt.Errorf("%s: %w", t.TypeName, err)
+		}
+		kind := t.Kind
+		if kind == "" {
+			kind = s.Resource()
+		}
+		ref := kind + "." + strings.ToLower(s.Service())
+		if len(want) > 0 && !want[ref] {
+			continue
+		}
+		delete(want, ref)
+		served = append(served, ref)
+		results = append(results, iamgen.ForType(s))
+	}
+	if len(want) > 0 {
+		var unknown []string
+		for k := range want {
+			unknown = append(unknown, k)
+		}
+		sort.Strings(unknown)
+		return fmt.Errorf("no such Cloud Control kind: %s", strings.Join(unknown, ", "))
+	}
+	docs, err := iamgen.Environment(results, iamgen.MaxManagedPolicySize)
+	if err != nil {
+		return err
+	}
+	if err := os.MkdirAll(o.out, 0o755); err != nil {
+		return err
+	}
+	for i, d := range docs {
+		b, _ := json.MarshalIndent(d, "", "  ")
+		if err := writeFile(filepath.Join(o.out, fmt.Sprintf("permissions-%d.json", i+1)), append(b, '\n')); err != nil {
+			return err
+		}
+	}
+	tb, _ := json.MarshalIndent(iamgen.TrustPolicy(iamgen.Trust{AccountID: o.account, ClusterARN: o.clusterARN, Namespace: o.namespace}), "", "  ")
+	if err := writeFile(filepath.Join(o.out, "trust.json"), append(tb, '\n')); err != nil {
+		return err
+	}
+	fmt.Printf("%s: %d kinds (%s); %d permission policies and trust.json in %s\n",
+		o.namespace, len(served), strings.Join(served, ", "), len(docs), o.out)
+	return nil
 }
 
 func readZip(path string) (map[string][]byte, error) {
@@ -94,16 +196,8 @@ func schemaFile(typeName string) string {
 func groupOf(s *cfn.Schema, suffix string) string { return strings.ToLower(s.Service()) + "." + suffix }
 
 func run(root string, survey bool) error {
-	files, err := readZip(filepath.Join(root, "docs/coverage/inputs/CloudformationSchema.zip"))
+	cfg, files, err := readConfig(root)
 	if err != nil {
-		return err
-	}
-	cb, err := os.ReadFile(filepath.Join(root, "cloudcontrol/types.yaml"))
-	if err != nil {
-		return err
-	}
-	var cfg config
-	if err := yaml.Unmarshal(cb, &cfg); err != nil {
 		return err
 	}
 	if survey {
@@ -143,6 +237,7 @@ func crdYAML(crd *apiextv1.CustomResourceDefinition) ([]byte, error) {
 
 type generated struct {
 	TypeName, Group, Kind, Plural, File string
+	Secrets                             []string
 	Report                              *crdgen.Report
 	IAM                                 iamgen.Result
 }
@@ -174,7 +269,7 @@ func generate(root string, files map[string][]byte, cfg config) error {
 			kind = s.Resource()
 		}
 		group := groupOf(s, cfg.GroupSuffix)
-		crd, rep, err := crdgen.Generate(s, crdgen.Options{Group: group, Version: cfg.Version, Kind: kind})
+		crd, rep, err := crdgen.Generate(s, crdgen.Options{Group: group, Version: cfg.Version, Kind: kind, Secrets: t.Secrets})
 		if err != nil {
 			return err
 		}
@@ -197,15 +292,7 @@ func generate(root string, files map[string][]byte, cfg config) error {
 		if err := writeFile(filepath.Join(out, "config/iam", base+".json"), append(pj, '\n')); err != nil {
 			return err
 		}
-		gens = append(gens, generated{TypeName: t.TypeName, Group: group, Kind: kind, Plural: crd.Spec.Names.Plural, File: file, Report: rep, IAM: pol})
-	}
-	var results []iamgen.Result
-	for _, g := range gens {
-		results = append(results, g.IAM)
-	}
-	mp, _ := json.MarshalIndent(iamgen.Merge(results), "", "  ")
-	if err := writeFile(filepath.Join(out, "config/iam/manager-policy.json"), append(mp, '\n')); err != nil {
-		return err
+		gens = append(gens, generated{TypeName: t.TypeName, Group: group, Kind: kind, Plural: crd.Spec.Names.Plural, File: file, Secrets: t.Secrets, Report: rep, IAM: pol})
 	}
 	if err := writeRBAC(out, gens); err != nil {
 		return err
@@ -239,13 +326,20 @@ func writeRBAC(out string, gens []generated) error {
 		gnames = append(gnames, g)
 	}
 	sort.Strings(gnames)
+	// The manager's rights, bound in each namespace that enables Cloud
+	// Control by a RoleBinding (pkg/operator), so they hold in that
+	// namespace only: nothing cluster-wide. With one watch namespace ACK's
+	// runtime runs no namespace or CARM cache, so it needs no namespace or
+	// ConfigMap read outside it.
 	role := rbacv1.ClusterRole{
 		TypeMeta:   metav1.TypeMeta{APIVersion: "rbac.authorization.k8s.io/v1", Kind: "ClusterRole"},
 		ObjectMeta: metav1.ObjectMeta{Name: "ack-extensions-cloudcontrol-manager"},
 		Rules: []rbacv1.PolicyRule{
-			// ACK's runtime: Secret references, field exports, CARM's ConfigMaps.
+			// ACK's runtime: Secret references and field exports.
 			{APIGroups: []string{""}, Resources: []string{"configmaps", "secrets"}, Verbs: []string{"get", "list", "patch", "watch"}},
-			{APIGroups: []string{""}, Resources: []string{"namespaces"}, Verbs: []string{"get", "list", "watch"}},
+			// Leader election, and events.
+			{APIGroups: []string{"coordination.k8s.io"}, Resources: []string{"leases"}, Verbs: verbs},
+			{APIGroups: []string{""}, Resources: []string{"events"}, Verbs: []string{"create", "patch"}},
 		},
 	}
 	for _, g := range gnames {
@@ -261,8 +355,8 @@ func writeRBAC(out string, gens []generated) error {
 		)
 	}
 	role.Rules = append(role.Rules,
-		rbacv1.PolicyRule{APIGroups: []string{"services.k8s.aws"}, Resources: []string{"fieldexports", "iamroleselectors"}, Verbs: verbs},
-		rbacv1.PolicyRule{APIGroups: []string{"services.k8s.aws"}, Resources: []string{"fieldexports/status", "iamroleselectors/status"}, Verbs: []string{"get", "patch", "update"}},
+		rbacv1.PolicyRule{APIGroups: []string{"services.k8s.aws"}, Resources: []string{"fieldexports"}, Verbs: verbs},
+		rbacv1.PolicyRule{APIGroups: []string{"services.k8s.aws"}, Resources: []string{"fieldexports/status"}, Verbs: []string{"get", "patch", "update"}},
 	)
 	j, _ := json.Marshal(role)
 	var m map[string]any
@@ -274,7 +368,10 @@ func writeRBAC(out string, gens []generated) error {
 	if err != nil {
 		return err
 	}
-	return writeFile(filepath.Join(out, "config/rbac/role.yaml"), append([]byte("# "+header+"\n---\n"), y...))
+	if err := writeFile(filepath.Join(out, "config/rbac/role.yaml"), append([]byte("# "+header+"\n---\n"), y...)); err != nil {
+		return err
+	}
+	return writeFile(filepath.Join(out, "config/rbac/kustomization.yaml"), []byte("# "+header+"\nresources:\n  - role.yaml\n"))
 }
 
 func writeRegistry(out string, cfg config, gens []generated) error {
@@ -282,8 +379,12 @@ func writeRegistry(out string, cfg config, gens []generated) error {
 	fmt.Fprintf(&b, "// %s\n\n// Copyright 2026 High Five Labs\n// SPDX-License-Identifier: Apache-2.0\n\npackage registry\n\n", header)
 	fmt.Fprintf(&b, "// Types are the kinds served, from cloudcontrol/types.yaml.\nvar Types = []*Type{\n")
 	for _, g := range gens {
-		fmt.Fprintf(&b, "\t{Group: %q, Version: %q, Kind: %q, Plural: %q, TypeName: %q, SchemaFile: %q},\n",
-			g.Group, cfg.Version, g.Kind, g.Plural, g.TypeName, "schemas/"+g.File)
+		secrets := ""
+		if len(g.Secrets) > 0 {
+			secrets = fmt.Sprintf(", Secrets: %#v", g.Secrets)
+		}
+		fmt.Fprintf(&b, "\t{Group: %q, Version: %q, Kind: %q, Plural: %q, TypeName: %q, SchemaFile: %q%s},\n",
+			g.Group, cfg.Version, g.Kind, g.Plural, g.TypeName, "schemas/"+g.File, secrets)
 	}
 	fmt.Fprintf(&b, "}\n")
 	return writeFile(filepath.Join(out, "pkg/registry/zz_generated.registry.go"), b.Bytes())
@@ -308,8 +409,9 @@ func writeReport(out string, gens []generated) error {
 	for _, g := range gens {
 		r := g.Report
 		fmt.Fprintf(&b, "\n## `%s`\n\n", g.TypeName)
-		fmt.Fprintf(&b, "- Secret references (write-only strings): %s\n", list(r.SecretRefs))
+		fmt.Fprintf(&b, "- Secret references (opted in, `secrets` in types.yaml): %s\n", list(r.SecretRefs))
 		fmt.Fprintf(&b, "- Write-only kept as plain fields: %s\n", list(r.PlainWriteOnly))
+		fmt.Fprintf(&b, "- Of those, write-only strings that could be opted in if they are secrets: %s\n", list(r.SecretCandidate))
 		fmt.Fprintf(&b, "- Create-only paths without a CEL rule: %s\n", list(r.CELSkipped))
 		fmt.Fprintf(&b, "- Nodes made `x-kubernetes-preserve-unknown-fields`: %s\n", list(r.Lossy))
 		fmt.Fprintf(&b, "- Read-only properties nested in writable objects (dropped): %s\n", list(r.NestedReadOnly))
@@ -386,7 +488,7 @@ func runSurvey(root string, files map[string][]byte, cfg config) error {
 				} else {
 					r.CRD = "ok"
 				}
-				r.Lossy, r.CELSkipped, r.Secrets, r.PlainWriteOnly = len(rep.Lossy), len(rep.CELSkipped), len(rep.SecretRefs), len(rep.PlainWriteOnly)
+				r.Lossy, r.CELSkipped, r.Secrets, r.PlainWriteOnly = len(rep.Lossy), len(rep.CELSkipped), len(rep.SecretCandidate), len(rep.PlainWriteOnly)
 			}
 			r.Sensitive = len(iamgen.ForType(s).Sensitive)
 		}
@@ -394,7 +496,7 @@ func runSurvey(root string, files map[string][]byte, cfg config) error {
 	}
 	var b bytes.Buffer
 	w := csv.NewWriter(&b)
-	_ = w.Write([]string{"type", "service", "resource", "category", "provisioning", "ack_kinds", "ours_kinds", "crd", "lossy_nodes", "cel_skipped", "secret_refs", "plain_write_only", "sensitive_iam_actions", "has_list_handler"})
+	_ = w.Write([]string{"type", "service", "resource", "category", "provisioning", "ack_kinds", "ours_kinds", "crd", "lossy_nodes", "cel_skipped", "write_only_strings", "write_only", "sensitive_iam_actions", "has_list_handler"})
 	for _, r := range rows {
 		_ = w.Write([]string{r.TypeName, r.Service, r.Resource, r.Category, r.Provisioning, r.ACK, r.Ours, firstLine(r.CRD), fmt.Sprint(r.Lossy), fmt.Sprint(r.CELSkipped), fmt.Sprint(r.Secrets), fmt.Sprint(r.PlainWriteOnly), fmt.Sprint(r.Sensitive), fmt.Sprint(r.HasList)})
 	}
@@ -464,7 +566,7 @@ func surveyMarkdown(rows []row) []byte {
 		a := by[c]
 		fmt.Fprintf(&b, "| %s | %d | %d | %d | %d | %d | %d | %d | %d | %d | %d |\n", c, a.total, a.prov, a.mutable, a.immutable, a.crdOK, a.clean, a.gap, a.gapProv, a.gapOK, a.gapClean)
 	}
-	fmt.Fprintf(&b, "\n## Foundation gaps (platform-foundation and security-adjacent types with no kind)\n\n| Type | Category | Provisioning | CRD | Lossy | CEL skipped | Secret refs | Sensitive IAM |\n| --- | --- | --- | --- | ---: | ---: | ---: | ---: |\n")
+	fmt.Fprintf(&b, "\n## Foundation gaps (platform-foundation and security-adjacent types with no kind)\n\n| Type | Category | Provisioning | CRD | Lossy | CEL skipped | Write-only strings | Sensitive IAM |\n| --- | --- | --- | --- | ---: | ---: | ---: | ---: |\n")
 	for _, r := range gapList {
 		crd := r.CRD
 		if crd != "ok" && crd != "not provisionable" {
