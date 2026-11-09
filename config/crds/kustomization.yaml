@@ -6,6 +6,7 @@ resources:
   - bases/autoscaling.aws.hfl.dev_scalingpolicies.yaml
   - bases/autoscaling.aws.hfl.dev_scheduledactions.yaml
   - bases/iam.aws.hfl.dev_rolepolicyattachments.yaml
+  - bases/kms.aws.hfl.dev_replicakeys.yaml
   - bases/lambda.aws.hfl.dev_permissions.yaml
   - bases/rds.aws.hfl.dev_dbproxytargets.yaml
   - bases/rds.aws.hfl.dev_dbroleassociations.yaml

@@ -1,9 +1,10 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has seven kinds:
+Status, 2026-11-09: the repository has eight kinds:
 
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
 - `iam.aws.hfl.dev` `RolePolicyAttachment`;
+- `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
 - `rds.aws.hfl.dev` `OptionGroup`;
 - `rds.aws.hfl.dev` `DBProxyTarget`;
@@ -82,7 +83,9 @@ Two ways to build a kind:
    - `RegisterDBProxyTargets`/`DeregisterDBProxyTargets` (`DBProxyTarget`);
    - `AddRoleToDBCluster`/`AddRoleToDBInstance` and their
      `RemoveRoleFrom...` (`DBRoleAssociation`);
-   - `AddPermission`/`GetPolicy`/`RemovePermission` (`Permission`).
+   - `AddPermission`/`GetPolicy`/`RemovePermission` (`Permission`);
+   - `ReplicateKey` in one Region and `DescribeKey`/`ScheduleKeyDeletion`
+     in another (`ReplicaKey`).
 
    The files follow the generated layout (descriptor, resource,
    identifiers, manager, manager factory, references, delta, sdk), so the
@@ -211,6 +214,18 @@ status) and the fake cloud through the real AWS SDK clients.
     leaves the action; delete removes the actions
 --- PASS: TestCompletedOneTimeAction, TestDeleteCompletedCallsNothing
           (scheduled_action unit tests, with a fake clock)
+--- PASS: TestReplicaKey
+    a replica is made in its Region (tags put there); a policy is put on
+    the replica only; the replica Region cannot change; references
+    resolve to ACK's Key; deletion-policy retain leaves the replica;
+    delete schedules the replica's deletion, never the primary key's
+    (the primary key checked Enabled and untagged after every step)
+--- PASS: TestDeleteNeverReachesThePrimaryRegion,
+          TestFindReadsTheReplicaInItsRegion, TestSyncedWhenEnabled,
+          TestTagsAreASet, TestThePrimaryKeyIsFoundByItsRegion,
+          TestDeleteRefusesAnARNFromAnotherRegion, TestKeyIDInRegion
+          (replica_key unit tests, against a stand-in
+          that records each call's signed Region)
 --- PASS: TestPermission
     a service may invoke the function; an account may invoke an alias
     (the spec keeps the account ID as written); the CRD refuses no
@@ -239,6 +254,10 @@ controller to show it can fail:
 - With `DBRoleAssociation`'s delete returning before
   `RemoveRoleFromDBCluster`, the delete step failed: "the removal
   attempted and the object kept: not within 1m30s: object not kept".
+- With `ReplicaKey`'s replica-Region client replaced by the manager's
+  own (pull request #112's behaviour), `TestDeleteNeverReachesThePrimaryRegion`
+  failed: "ScheduleKeyDeletion reached the primary key's Region
+  us-west-2".
 - With the completion rule's finalizer check removed,
   `TestCompletedOneTimeAction` failed: "never created by this object (no
   finalizer): completed true, want false".
@@ -311,6 +330,26 @@ controller to show it can fail:
   not delete a one-time action after it runs, and returns no
   `ScheduledActionARN`. `TestScheduledAction` deletes a one-time action
   from moto itself once its start time passes, as AWS would.
+- **KMS replica keys.**
+  - moto keeps a replica in its own Region's backend, under the primary
+    key's key ID, as AWS does.
+  - It applies no `Tags` given to `ReplicateKey`. The read then finds
+    none, and the update that follows puts them; `TestReplicaKey` shows
+    that path.
+  - A new replica is `Enabled` at once. On AWS it is `Creating` first;
+    the readiness rule is unit-tested.
+  - moto's `ReplicateKey` copies the key shallowly, so the replica shares
+    its primary key's `MultiRegionConfiguration`. Describing the replica
+    then writes `REPLICA` into it, and from then on the primary key in its
+    own Region also reports `MultiRegionKeyType: REPLICA`. The first
+    end-to-end run failed on this. The read now checks that the primary
+    key's `PrimaryKey.Region` is the manager's Region, which means the
+    same on AWS.
+  - moto's `ScheduleKeyDeletion` does not resolve a key ARN (a server
+    error, `KeyError`); AWS accepts a key ID or an ARN, and refuses an ARN
+    from another Region. The manager sends the replica's key ID to the
+    replica's Region, after checking that the replica's ARN is in that
+    Region, which stands in for AWS's check.
 - **An association's status.** moto marks a new association `ACTIVE` at
   once. On AWS it is `PENDING` first, and `INVALID` when RDS cannot assume
   the role. The rule (synced only when `ACTIVE`) is unit-tested.
@@ -349,7 +388,7 @@ its master (5.2.5 is the pin).
 | 2 | Secrets Manager rotation on `Secret` | secretsmanager-controller PR #69 | yes | skipped: a field on an existing kind (open question 1) |
 | 3 | RDS role associations | none | adds yes, removes no (section 4.4) | built: `DBRoleAssociation` |
 | 4 | EC2 Auto Scaling `ScalingPolicy` and `ScheduledAction`; Application Auto Scaling `ScheduledAction` | none: autoscaling-controller `v1.5.0` has only `AutoScalingGroup`; applicationautoscaling-controller `v1.9.0` has `ScalableTarget` and `ScalingPolicy` | yes | `ScalingPolicy` and EC2 Auto Scaling `ScheduledAction` built; Application Auto Scaling `ScheduledAction` next |
-| 5 | KMS `ReplicaKey` | kms-controller PR #112: open, conflicts with base, not approved, last updated 2026-10-18 | `ReplicateKey` yes, `UpdatePrimaryRegion` no | to build |
+| 5 | KMS `ReplicaKey` | kms-controller PR #112: open, conflicts with base, not approved; an ACK maintainer's review finds its read, update and delete act on the primary key | `ReplicateKey` yes, `UpdatePrimaryRegion` no | built: `ReplicaKey` |
 | 6 | Standalone security group rules | none; ec2-controller has rule-sync fixes open (#394, #385) | yes | skipped: open question 7 |
 | 7 | EC2 `VPNGateway` (attachment, route propagation), `CustomerGateway` | ignored in ec2-controller `v1.23.1`'s `generator.yaml` | yes, except `EnableVgwRoutePropagation` | to build |
 | 8 | EBS `Volume`, `VolumeAttachment` | ignored in ec2-controller's `generator.yaml`; `aws-controllers-k8s/ebs-controller` exists, with no release | yes | to build |
@@ -649,6 +688,57 @@ saying when it ran, and deleting it calls nothing. An action this object
 never created, a recurring one, or one not yet due is read as before: if
 it is missing, it is put. Changing a completed object's start time to a
 time to come puts it again.
+
+### 6.8 `kms.aws.hfl.dev` `ReplicaKey`
+
+A multi-Region primary KMS key's replica in another Region
+(`ReplicateKey`). kms-controller pull request #112 adds the kind, but it
+is not close to merging. An ACK maintainer's review found that its read,
+update and delete act on the primary key.
+
+The cause is the Region. `ReplicateKey` must be called in the primary
+key's Region, so ACK's runtime gives the resource that Region's client.
+The replica, though, lives in its own Region, and shares its key ID with
+the primary key. The pull request sends `DescribeKey`, `PutKeyPolicy`,
+the tag calls and `ScheduleKeyDeletion` to the primary key's Region by
+key ID, so its delete would schedule the primary key for deletion.
+
+**Written by hand here**, with the pull request's API, `KeyMetadata`
+conversion and policy and tag calls copied, and every call on the
+replica sent to a client for the replica's Region, naming the replica by
+its ARN:
+
+- **Create** is `ReplicateKey`, in the manager's Region, which is the
+  primary key's.
+- **Read** is `DescribeKey` of the primary key, to find the replica in
+  its `MultiRegionConfiguration`. That finds a replica created before its
+  status was saved. Then `DescribeKey`, `GetKeyPolicy` (only when the spec
+  sets a policy) and `ListResourceTags` of the replica, in its Region. A
+  replica pending deletion reads as gone.
+- **Update** puts the policy and the tags (`PutKeyPolicy`, `TagResource`,
+  `UntagResource`) in the replica's Region. The key, the replica Region,
+  the description and `bypassPolicyLockoutSafetyCheck` are immutable. The
+  policy is compared as JSON and the tags as a set.
+- **Delete** is `ScheduleKeyDeletion` of the replica in its Region (its
+  key ID, after checking its ARN is in that Region),
+  with ACK's own `kms.services.k8s.aws/pending-window-in-days` annotation,
+  as ACK's `Key` uses it.
+- **Synced** once the replica is `Enabled`; a new replica is `Creating`
+  until KMS has copied the key material.
+
+**The primary key is never the target.** Two checks hold this:
+
+- `TestDeleteNeverReachesThePrimaryRegion` runs against a stand-in that
+  records the Region each call is signed for. It fails if
+  `ScheduleKeyDeletion`, or any call but the primary key's `DescribeKey`,
+  reaches the primary key's Region. With the pull request's behaviour
+  restored, it fails.
+- `TestReplicaKey` checks against moto that the primary key is `Enabled`
+  and untagged after every step, delete included.
+
+`keyRef` resolves to ACK's `Key` (`status.keyID`). The status's
+`replicaKeyMetadata` and the `tags` use ACK kms-controller's own types, as
+the pull request does.
 
 ## 7. The operator: ACK's identity, beside ACK's controller
 

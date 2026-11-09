@@ -1,0 +1,18 @@
+# Generator configuration for ack-extensions's KMS kinds (kms.aws.hfl.dev).
+#
+# A multi-Region replica key is created by ReplicateKey in the primary
+# key's Region but lives, and is read, changed and deleted, in its own
+# Region. The generator's single regional client cannot model that (an ACK
+# maintainer's review of kms-controller pull request #112 says so), so
+# ReplicaKey is written by hand on ACK's runtime
+# (services/kms/pkg/resource/replica_key), from pull request #112's API and
+# conversions. Every resource the generator can find is ignored: ACK's
+# kms-controller has them, or does not manage them (CustomKeyStore). It
+# generates only the service's scaffolding (the API group, the resource
+# registry, the controller's main).
+ignore:
+  resource_names:
+    - Alias
+    - CustomKeyStore
+    - Grant
+    - Key
