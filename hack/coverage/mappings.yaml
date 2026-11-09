@@ -1,0 +1,225 @@
+# Hand-kept parts of the match (see docs/coverage/README.md, "Matching").
+# Everything not listed here is matched by name by the generator.
+
+# ACK service id (or the service in one of our API groups) -> the
+# CloudFormation service name, lower case, where they differ.
+services:
+  acm: certificatemanager
+  bedrockagent: bedrock
+  bedrockagentcorecontrol: bedrockagentcore
+  cloudwatchlogs: logs
+  cognitoidentityprovider: cognito
+  documentdb: docdb
+  ecrpublic: ecr
+  elasticsearchservice: elasticsearch
+  elbv2: elasticloadbalancingv2
+  eventbridge: events
+  firehose: kinesisfirehose
+  kafka: msk
+  keyspaces: cassandra
+  mq: amazonmq
+  prometheusservice: aps
+  recyclebin: rbin
+  s3control: s3
+  sfn: stepfunctions
+
+# Official kinds whose name differs from the CloudFormation resource's, or
+# that have none. "<ack service id>/<Kind>": "<cfn service>/<Resource>" or
+# outside-denominator.
+resources:
+  apigateway/APIIntegrationResponse: outside-denominator   # a property of AWS::ApiGateway::Method (Integration.IntegrationResponses)
+  apigateway/APIMethodResponse: outside-denominator        # a property of AWS::ApiGateway::Method (MethodResponses)
+  apigateway/Integration: outside-denominator              # a property of AWS::ApiGateway::Method (Integration)
+  bedrock/InferenceProfile: outside-denominator
+  bedrockagentcorecontrol/AgentRuntime: bedrockagentcore/Runtime
+  bedrockagentcorecontrol/AgentRuntimeEndpoint: bedrockagentcore/RuntimeEndpoint
+  bedrockagentcorecontrol/Browser: bedrockagentcore/BrowserCustom
+  bedrockagentcorecontrol/CodeInterpreter: bedrockagentcore/CodeInterpreterCustom
+  cloudwatch/MetricAlarm: cloudwatch/Alarm
+  cloudwatchlogs/DeliveryDestinationPolicy: outside-denominator   # a property of AWS::Logs::DeliveryDestination
+  cognitoidentityprovider/ResourceServer: cognito/UserPoolResourceServer
+  dynamodb/Backup: outside-denominator
+  ec2/ElasticIPAddress: ec2/EIP
+  ec2/ManagedPrefixList: ec2/PrefixList
+  ec2/VPCEndpointServiceConfiguration: ec2/VPCEndpointService
+  ecrpublic/Repository: ecr/PublicRepository
+  elasticache/CacheParameterGroup: elasticache/ParameterGroup
+  elasticache/CacheSubnetGroup: elasticache/SubnetGroup
+  elasticsearchservice/ElasticsearchDomain: elasticsearch/Domain
+  elbv2/Rule: elasticloadbalancingv2/ListenerRule
+  emrcontainers/JobRun: outside-denominator
+  iam/OpenIDConnectProvider: iam/OIDCProvider
+  iam/Policy: iam/ManagedPolicy                            # ACK's Policy is a managed policy
+  kms/Grant: outside-denominator
+  lambda/FunctionURLConfig: lambda/Url
+  lambdamicrovms/Microvm: outside-denominator
+  lambdamicrovms/MicrovmImage: outside-denominator
+  opensearchservice/VPCEndpoint: outside-denominator
+  opensearchservice/VPCEndpointAccess: outside-denominator
+  prometheusservice/AlertManagerDefinition: outside-denominator   # a property of AWS::APS::Workspace
+  prometheusservice/LoggingConfiguration: outside-denominator     # a property of AWS::APS::Workspace
+  rds/DBClusterSnapshot: outside-denominator
+  route53resolver/ResolverQueryLogConfig: route53resolver/ResolverQueryLoggingConfig
+  route53resolver/ResolverQueryLogConfigAssociation: route53resolver/ResolverQueryLoggingConfigAssociation
+  sagemaker/HyperParameterTuningJob: outside-denominator   # one-shot jobs have no CloudFormation resource
+  sagemaker/LabelingJob: outside-denominator
+  sagemaker/PipelineExecution: outside-denominator
+  sagemaker/TrainingJob: outside-denominator
+  sagemaker/TransformJob: outside-denominator
+  sns/PlatformApplication: outside-denominator
+  sns/PlatformEndpoint: outside-denominator
+
+# Our kinds, "<group service>/<Kind>".
+ours:
+  # The scheduled actions of a scalable target: the ScheduledActions property of
+  # AWS::ApplicationAutoScaling::ScalableTarget.
+  applicationautoscaling/ScheduledAction: [applicationautoscaling/ScalableTarget]
+  # A user's console password: the LoginProfile property of AWS::IAM::User.
+  iam/LoginProfile: [iam/User]
+  # A user's groups: the Groups property of AWS::IAM::User.
+  iam/UserGroupMembership: [iam/User]
+  # A role's managed policies: the ManagedPolicyArns property of AWS::IAM::Role.
+  iam/RolePolicyAttachment: [iam/Role]
+  # AWS::RDS::DBProxyTargetGroup registers instances and clusters with a proxy.
+  rds/DBProxyTarget: [rds/DBProxyTargetGroup]
+  # The AssociatedRoles property of AWS::RDS::DBCluster and AWS::RDS::DBInstance.
+  rds/DBRoleAssociation: [rds/DBCluster, rds/DBInstance]
+
+# Our kinds whose coverage is copied from an open ACK pull request.
+fromUpstreamPR:
+  iam/RolePolicyAttachment: iam-controller#184
+  rds/OptionGroup: rds-controller#257
+  kms/ReplicaKey: kms-controller#112
+  ecr/ReplicationConfiguration: ecr-controller#121
+
+# Path-prefix renames, official kinds: CRD spec path -> CloudFormation path.
+attributes:
+  s3/Bucket:
+    acl: AccessControl
+    abac.status: AbacStatus
+    accelerate: AccelerateConfiguration
+    accelerate.status: AccelerateConfiguration.AccelerationStatus
+    analytics[]: AnalyticsConfigurations[]
+    analytics[].filter.prefix: AnalyticsConfigurations[].Prefix
+    analytics[].filter.tag: AnalyticsConfigurations[].TagFilters[]
+    cors.corsRules[]: CorsConfiguration.CorsRules[]
+    cors.corsRules[].exposeHeaders[]: CorsConfiguration.CorsRules[].ExposedHeaders[]
+    cors.corsRules[].maxAgeSeconds: CorsConfiguration.CorsRules[].MaxAge
+    encryption.rules[]: BucketEncryption.ServerSideEncryptionConfiguration[]
+    encryption.rules[].applyServerSideEncryptionByDefault: BucketEncryption.ServerSideEncryptionConfiguration[].ServerSideEncryptionByDefault
+    encryption.rules[].applyServerSideEncryptionByDefault.sseAlgorithm: BucketEncryption.ServerSideEncryptionConfiguration[].ServerSideEncryptionByDefault.SSEAlgorithm
+    intelligentTiering[]: IntelligentTieringConfigurations[]
+    intelligentTiering[].filter.prefix: IntelligentTieringConfigurations[].Prefix
+    intelligentTiering[].filter.tag: IntelligentTieringConfigurations[].TagFilters[]
+    inventory[]: InventoryConfigurations[]
+    inventory[].destination.s3BucketDestination: InventoryConfigurations[].Destination
+    inventory[].destination.s3BucketDestination.bucket: InventoryConfigurations[].Destination.BucketArn
+    inventory[].destination.s3BucketDestination.accountID: InventoryConfigurations[].Destination.BucketAccountId
+    inventory[].filter.prefix: InventoryConfigurations[].Prefix
+    inventory[].isEnabled: InventoryConfigurations[].Enabled
+    inventory[].schedule.frequency: InventoryConfigurations[].ScheduleFrequency
+    lifecycle: LifecycleConfiguration
+    lifecycle.rules[].filter.prefix: LifecycleConfiguration.Rules[].Prefix
+    lifecycle.rules[].filter.objectSizeGreaterThan: LifecycleConfiguration.Rules[].ObjectSizeGreaterThan
+    lifecycle.rules[].filter.objectSizeLessThan: LifecycleConfiguration.Rules[].ObjectSizeLessThan
+    lifecycle.rules[].filter.tag: LifecycleConfiguration.Rules[].TagFilters[]
+    lifecycle.rules[].expiration.days: LifecycleConfiguration.Rules[].ExpirationInDays
+    lifecycle.rules[].expiration.date: LifecycleConfiguration.Rules[].ExpirationDate
+    lifecycle.rules[].transitions[].days: LifecycleConfiguration.Rules[].Transitions[].TransitionInDays
+    lifecycle.rules[].transitions[].date: LifecycleConfiguration.Rules[].Transitions[].TransitionDate
+    lifecycle.rules[].noncurrentVersionTransitions[].noncurrentDays: LifecycleConfiguration.Rules[].NoncurrentVersionTransitions[].TransitionInDays
+    logging.loggingEnabled: LoggingConfiguration
+    logging.loggingEnabled.targetBucket: LoggingConfiguration.DestinationBucketName
+    logging.loggingEnabled.targetPrefix: LoggingConfiguration.LogFilePrefix
+    metrics[]: MetricsConfigurations[]
+    metrics[].filter.prefix: MetricsConfigurations[].Prefix
+    metrics[].filter.tag: MetricsConfigurations[].TagFilters[]
+    notification.lambdaFunctionConfigurations[]: NotificationConfiguration.LambdaConfigurations[]
+    notification.lambdaFunctionConfigurations[].events[]: NotificationConfiguration.LambdaConfigurations[].Event
+    notification.lambdaFunctionConfigurations[].lambdaFunctionARN: NotificationConfiguration.LambdaConfigurations[].Function
+    notification.queueConfigurations[]: NotificationConfiguration.QueueConfigurations[]
+    notification.queueConfigurations[].events[]: NotificationConfiguration.QueueConfigurations[].Event
+    notification.queueConfigurations[].queueARN: NotificationConfiguration.QueueConfigurations[].Queue
+    notification.topicConfigurations[]: NotificationConfiguration.TopicConfigurations[]
+    notification.topicConfigurations[].events[]: NotificationConfiguration.TopicConfigurations[].Event
+    notification.topicConfigurations[].topicARN: NotificationConfiguration.TopicConfigurations[].Topic
+    objectLockEnabled: ObjectLockEnabled
+    objectLockConfiguration: ObjectLockConfiguration
+    replication: ReplicationConfiguration
+    replication.rules[].filter.tag: ReplicationConfiguration.Rules[].Filter.TagFilter
+    replication.rules[].filter.and.tags[]: ReplicationConfiguration.Rules[].Filter.And.TagFilters[]
+    tagging.tagSet[]: Tags[]
+    versioning: VersioningConfiguration
+    website: WebsiteConfiguration
+    website.indexDocument.suffix: WebsiteConfiguration.IndexDocument
+    website.errorDocument.key: WebsiteConfiguration.ErrorDocument
+  ec2/SecurityGroup:
+    ingressRules[]: SecurityGroupIngress[]
+    ingressRules[].ipRanges[].cidrIP: SecurityGroupIngress[].CidrIp
+    ingressRules[].ipRanges[].description: SecurityGroupIngress[].Description
+    ingressRules[].ipv6Ranges[].cidrIPv6: SecurityGroupIngress[].CidrIpv6
+    ingressRules[].prefixListIDs[].prefixListID: SecurityGroupIngress[].SourcePrefixListId
+    ingressRules[].userIDGroupPairs[].groupID: SecurityGroupIngress[].SourceSecurityGroupId
+    ingressRules[].userIDGroupPairs[].groupName: SecurityGroupIngress[].SourceSecurityGroupName
+    ingressRules[].userIDGroupPairs[].userID: SecurityGroupIngress[].SourceSecurityGroupOwnerId
+    egressRules[]: SecurityGroupEgress[]
+    egressRules[].ipRanges[].cidrIP: SecurityGroupEgress[].CidrIp
+    egressRules[].ipRanges[].description: SecurityGroupEgress[].Description
+    egressRules[].ipv6Ranges[].cidrIPv6: SecurityGroupEgress[].CidrIpv6
+    egressRules[].prefixListIDs[].prefixListID: SecurityGroupEgress[].DestinationPrefixListId
+    egressRules[].userIDGroupPairs[].groupID: SecurityGroupEgress[].DestinationSecurityGroupId
+  ec2/VPC:
+    cidrBlocks[]: CidrBlock
+  athena/WorkGroup:
+    configuration: WorkGroupConfiguration
+  iam/Role:
+    policies[]: ManagedPolicyArns[]
+    inlinePolicies{}: Policies[].PolicyDocument
+  iam/User:
+    policies[]: ManagedPolicyArns[]
+    inlinePolicies{}: Policies[].PolicyDocument
+  iam/Group:
+    policies[]: ManagedPolicyArns[]
+    inlinePolicies{}: Policies[].PolicyDocument
+  ecr/Repository:
+    lifecyclePolicy: LifecyclePolicy.LifecyclePolicyText
+    policy: RepositoryPolicyText
+    imageTagMutabilityExclusionFilters[].filter: ImageTagMutabilityExclusionFilters[].ImageTagMutabilityExclusionFilterValue
+  ecr/RepositoryCreationTemplate:
+    imageTagMutabilityExclusionFilters[].filter: ImageTagMutabilityExclusionFilters[].ImageTagMutabilityExclusionFilterValue
+
+# The same for our kinds.
+oursAttributes:
+  applicationautoscaling/ScheduledAction:
+    scheduledActionName: ScheduledActions[].ScheduledActionName
+    schedule: ScheduledActions[].Schedule
+    timezone: ScheduledActions[].Timezone
+    startTime: ScheduledActions[].StartTime
+    endTime: ScheduledActions[].EndTime
+    scalableTargetAction: ScheduledActions[].ScalableTargetAction
+  iam/LoginProfile:
+    password: LoginProfile.Password
+    passwordResetRequired: LoginProfile.PasswordResetRequired
+  iam/UserGroupMembership:
+    groups[]: Groups[]
+  iam/RolePolicyAttachment:
+    policyARN: ManagedPolicyArns[]
+  rds/DBProxyTarget:
+    dbInstanceIdentifier: DBInstanceIdentifiers[]
+    dbClusterIdentifier: DBClusterIdentifiers[]
+  rds/DBRoleAssociation:
+    roleARN: AssociatedRoles[].RoleArn
+    featureName: AssociatedRoles[].FeatureName
+  ec2/VolumeAttachment:
+    deviceName: Device
+  kms/ReplicaKey:
+    keyID: PrimaryKeyArn
+    policy: KeyPolicy
+    tags[].tagKey: Tags[].Key
+    tags[].tagValue: Tags[].Value
+  rds/OptionGroup:
+    name: OptionGroupName
+    description: OptionGroupDescription
+
+# Notes for resource rows, "<cfn service>/<Resource>".
+notes: {}

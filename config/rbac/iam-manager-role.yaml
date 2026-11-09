@@ -25,7 +25,9 @@ rules:
 - apiGroups:
   - iam.aws.hfl.dev
   resources:
+  - loginprofiles
   - rolepolicyattachments
+  - sshpublickeys
   - usergroupmemberships
   verbs:
   - create
@@ -38,7 +40,9 @@ rules:
 - apiGroups:
   - iam.aws.hfl.dev
   resources:
+  - loginprofiles/status
   - rolepolicyattachments/status
+  - sshpublickeys/status
   - usergroupmemberships/status
   verbs:
   - get
