@@ -9,9 +9,9 @@ This directory measures how much of AWS is covered by Kubernetes kinds: by the c
 | | Resources | Attributes |
 | --- | ---: | ---: |
 | In the CloudFormation schemas (the denominator) | 1,875 | 85,773 |
-| Covered by an official ACK kind | 266 | 6,030 (7.0%) |
+| Covered by an official ACK kind | 266 | 6,033 (7.0%) |
 | Covered by ours, beyond official | 15 | 200 (0.2%) |
-| Covered by neither | 1,594 | 79,543 (92.7%) |
+| Covered by neither | 1,594 | 79,540 (92.7%) |
 
 ## Files
 
@@ -21,7 +21,9 @@ This directory measures how much of AWS is covered by Kubernetes kinds: by the c
 | [resources.csv](resources.csv) | resource | `service,resource,attributes_total,official_kinds,attributes_official,ours_kinds,attributes_ours_beyond,attributes_uncovered,ours_from_upstream_pr,notes` |
 | [attributes.csv](attributes.csv) | attribute | `service,resource,attribute,type,required,covered_by,official_path,ours_path` |
 | `bars/<service>.svg`, `bars/_total.svg` | service, and all | stacked bars: official blue, ours beyond official green, uncovered light grey; `_total.svg` shows attributes and resources |
-| [priority.csv](priority.csv) | service | `service,tier,rationale,source`: the tier of each service, **hand-edited input** (see Tiers); a service not in it is tier 3 |
+| [priority.csv](priority.csv) | service | `service,tier,category,rationale,source`: the tier and category of each service, **hand-edited input** (see Tiers); a service not in it is tier 3, category `other` |
+| [foundation.md](foundation.md) | | the ranked **foundation gap report**: the work queue for the kind agents (platform-foundation and security-adjacent resources: what ACK and we cover, what upstream has or is building, moto, size, proposed kinds) |
+| [categories.csv](categories.csv), `bars/_categories.svg` | category | the same columns as `tiers.csv`, for `platform-foundation`, `security-adjacent`, `application`, `other` |
 | [tiers.csv](tiers.csv), `bars/_tiers.svg` | tier | `tier,services,resources_total,resources_official,resources_ours_beyond,resources_uncovered,attributes_total,attributes_official,attributes_ours_beyond,attributes_uncovered,pct_attributes_official,pct_attributes_ours_beyond,pct_attributes_uncovered,pct_resources_official,pct_resources_ours_beyond,pct_resources_uncovered` |
 | [sources.yaml](sources.yaml) | | every pinned input: the schema zip and each ACK controller's release and commit |
 
@@ -36,29 +38,43 @@ In `attributes.csv`, `covered_by` is `official` (an official ACK kind covers it 
 - **ours**: covered by a kind in this repository's CRDs (`config/crds/bases/`, at the commit being measured). A kind whose coverage is copied from an open upstream pull request has `ours_from_upstream_pr=true` (22 of the attributes ours adds beyond official come only from such kinds).
 - **uncovered**: in the CloudFormation schemas, covered by neither.
 
-## Tiers
+## Tiers and categories
 
-Services do not matter equally: `quicksight` alone has more attributes than all of tier 1 together, yet a team moving off Terraform needs `iam`, `s3`, `vpc` and `rds` first. So every service has a **tier**, and the README shows coverage per tier as well as in total.
+Services do not matter equally: `quicksight` alone has more attributes than all of tier 1 together, yet a platform team needs `organizations`, `iam`, VPC networking and `eks` first. So every service has a **category** and a **tier**, and the README shows coverage by both as well as in total.
 
-- **Tier 1**: the services used by the foundational modules people migrate first, the ten most-downloaded terraform-aws-modules (iam, s3-bucket, vpc, eks, kms, lambda, security-group, rds, rds-aurora, acm): `certificatemanager`, `ec2`, `eks`, `iam`, `kms`, `lambda`, `logs`, `rds`, `route53`, `s3`.
-- **Tier 2**: every other service that some tracked module uses (the 40 modules ranked in the catalog, through their submodules): 35 services, the ones in [priority.csv](priority.csv) with tier 2.
-- **Tier 3**: everything else in the CloudFormation schemas (260 services). A service missing from `priority.csv` is tier 3.
+**Categories** (the builder's, 2026-11-09):
+
+- **platform-foundation**: everything up to a managed Kubernetes cluster, which is table stakes for a platform team establishing a target: Organizations (accounts, OUs, SCPs and the other policy types, delegated administrators, organization features), Control Tower, IAM (roles, policies, boundaries, OIDC and SAML providers), IAM Identity Center and the Identity Store, Resource Access Manager, VPC networking and DNS (`ec2` for VPC, subnets, route tables, gateways, Transit Gateway, endpoints, security groups, NACLs and VPN; `route53`, `route53resolver`, `route53profiles`; `networkmanager`, `directconnect`), KMS, CloudTrail, EKS and ECR: `cloudtrail`, `controltower`, `directconnect`, `ec2`, `ecr`, `eks`, `iam`, `identitystore`, `kms`, `networkmanager`, `organizations`, `ram`, `route53`, `route53profiles`, `route53resolver`, `sso`.
+- **security-adjacent**: what security teams need next to it: Config, GuardDuty, Security Hub, Macie, Inspector, Detective, Access Analyzer, Firewall Manager, WAF, Secrets Manager, ACM and private CAs, Audit Manager, Security Lake, Network Firewall: `accessanalyzer`, `acmpca`, `auditmanager`, `certificatemanager`, `config`, `detective`, `fms`, `guardduty`, `inspector`, `inspectorv2`, `macie`, `networkfirewall`, `secretsmanager`, `securityhub`, `securitylake`, `waf`, `wafregional`, `wafv2`.
+- **application**: application primitives (S3, SQS, SNS, Lambda, RDS, DynamoDB, ElastiCache, ECS and so on): the services some tracked Terraform module uses that are in neither category above (33 services; the list is `priority.csv`).
+- **other**: everything else in the CloudFormation schemas (238 services). A service missing from `priority.csv` is tier 3, category `other`.
+
+**Tiers**: tier 1 is the platform-foundation services; tier 2 is the security-adjacent services and the application services some tracked module uses; tier 3 is everything else. (Before 2026-11-09 tier 1 was the services of the ten most-downloaded terraform-aws-modules; the builder's brief replaced that where the two conflict, so `s3`, `lambda`, `rds` and `logs` moved to tier 2. The module-usage ranking stays as each row's rationale.)
+
+| Category | Services | Resources | ACK | Ours beyond | Attributes | ACK | Ours beyond |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| platform-foundation | 16 | 241 | 22.8% | 2.5% | 2,400 | 28.2% | 1.6% |
+| security-adjacent | 18 | 112 | 12.5% | 0.9% | 2,082 | 37.6% | 0.1% |
+| application | 33 | 262 | 40.5% | 3.1% | 4,766 | 48.2% | 3.3% |
+| other | 238 | 1,260 | 7.2% | 0.0% | 76,525 | 3.0% | 0.0% |
 
 | Tier | Services | Resources | ACK | Ours beyond | Attributes | ACK | Ours beyond |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | 10 | 233 | 28.8% | 3.4% | 2,888 | 35.2% | 2.2% |
-| 2 | 35 | 243 | 41.6% | 2.9% | 4,743 | 54.0% | 2.9% |
-| 3 | 260 | 1,399 | 7.0% | 0.0% | 78,142 | 3.1% | 0.0% |
+| 1 | 16 | 241 | 22.8% | 2.5% | 2,400 | 28.2% | 1.6% |
+| 2 | 51 | 374 | 32.1% | 2.4% | 6,848 | 44.9% | 2.4% |
+| 3 | 238 | 1,260 | 7.2% | 0.0% | 76,525 | 3.0% | 0.0% |
 
-**Where it comes from.** `priority.csv` was derived once, by hand, from the usage ranking in `catalog/docs/aws.md` (the High Five Labs catalog repository, commit `b6fdd5342346997fe855357eeee225afb7530e95`, file sha256 `8c2ab34d8e50130e19bfa0619ffc0c9800646d26e8bebac9de347a574a681533`, read 2026-11-09). That document ranks the terraform-aws-modules by Terraform Registry downloads over the last year and lists what each top module and submodule creates. A service is tier 1 if a top-ten module creates it in its main path, tier 2 if any ranked module (or one of its submodules) creates it, and each row's `rationale` and `source` say which module and section of the catalog document. Services are the CloudFormation service names used everywhere else here. The generator **reads** the file and never rewrites it, so the builder can override any tier by editing a row; the generator rejects a tier outside 1 to 3, a duplicate, and a service that is not in the CloudFormation schemas (a typo guard).
+**The foundation gap report.** [foundation.md](foundation.md) ranks every resource of the platform-foundation and security-adjacent categories as a work queue for the kind agents: ACK coverage, ours, what is missing (whole resources first, then the attributes that matter), whether upstream has it or is building it (ACK controller releases, `generator.yaml` ignore lists, open pull requests and `community` issues, all read-only), how many of the 40 tracked terraform-aws-modules need it, whether moto 5.2.5 implements the API (we can only prove kinds against moto), a size estimate and the proposed kinds. Its numbers are regenerated; its research is `hack/coverage/foundation.yaml`.
+
+**Where it comes from.** `priority.csv` is hand-edited input. The module-usage rationale came once, by hand, from the usage ranking in `catalog/docs/aws.md` (the High Five Labs catalog repository, commit `b6fdd5342346997fe855357eeee225afb7530e95`, file sha256 `8c2ab34d8e50130e19bfa0619ffc0c9800646d26e8bebac9de347a574a681533`, read 2026-11-09), which ranks the terraform-aws-modules by Terraform Registry downloads over the last year and lists what each top module and submodule creates. The categories and the tier-1 definition are the builder's brief of 2026-11-09. Services are the CloudFormation service names used everywhere else here. The generator **reads** the file and never rewrites it, so any tier or category can be overridden by editing a row; it rejects a tier outside 1 to 3, an unknown category, a duplicate, and a service that is not in the CloudFormation schemas (a typo guard).
 
 **Limits.**
 
-- Module usage is a proxy for what teams need. Downloads count module fetches, not teams, and the modules ranked are the terraform-aws-modules organisation's only: a service nobody wraps in a public module (an in-house pattern, a vendor module outside the organisation) is tier 3 however important it is to you.
-- A tier is a whole service, but a module uses a few of its resources. `ec2` is tier 1 for the VPC, subnets, security groups and launch templates, and its other resources (it has 126; the modules use perhaps a dozen) ride along; so tier 1's coverage understates how well the *used* resources are covered. The per-resource data is in `resources.csv` for anyone who wants to narrow it.
-- Tiers do not weigh services within a tier, and `iam` (one module on every stack) counts the same as `redshift` (one subnet group).
-- The ranking is a snapshot of 2026-11-09. It is not regenerated; when the catalog changes, edit `priority.csv`.
-- Tier 3 is not 'unimportant': it holds the services nobody has asked for yet, and the bulk of the attribute total.
+- Module usage is a proxy for what teams need, and it does not reach the foundation at all: none of the 40 tracked modules wraps Organizations, Identity Center, Control Tower, CloudTrail, Config, GuardDuty or Security Hub, so for those the builder's brief, not the modules, ranks them. Downloads count module fetches, not teams, and only the terraform-aws-modules organisation's modules are tracked: a service nobody wraps in one of them is tier 3 or `other` however important it is to you.
+- A category is a whole service, but a module (or a platform team) uses a few of its resources. `ec2` is platform-foundation for networking, and its other resources (it has 126; the modules use perhaps a dozen) ride along; so the category's coverage understates how well the *used* resources are covered. [foundation.md](foundation.md) ranks the networking resources of `ec2` ahead of the rest and lists every one.
+- Neither tiers nor categories weigh services within them, and `iam` (one module on every stack) counts the same as `route53profiles`.
+- Coverage counts a resource that ACK or ours covers as fields of another kind (security group rules, route table routes, inline IAM policies) as uncovered, because the CloudFormation schema has a resource of its own for each; [foundation.md](foundation.md) marks those "covered inline" so they are not mistaken for gaps.
+- The research behind [foundation.md](foundation.md) is a snapshot of 2026-11-09 and is not regenerated: re-read upstream before starting an item.
 
 ## Method
 
@@ -71,7 +87,7 @@ Services do not matter equally: `quicksight` alone has more attributes than all 
 | Tier | Rule | Official | Ours |
 | --- | --- | ---: | ---: |
 | `exact` | the same path, names compared lower-cased without punctuation, `[]` and `{}` kept (`DBInstanceClass` and `dbInstanceClass`; ACK's `{quantity, items[]}` wrappers count as the list) | 5,174 | 179 |
-| `alias` | a path-prefix rename written by hand in `mappings.yaml` (`ingressRules[]` is `SecurityGroupIngress[]`) | 142 | 24 |
+| `alias` | a path-prefix rename written by hand in `mappings.yaml` (`ingressRules[]` is `SecurityGroupIngress[]`) | 145 | 24 |
 | `tags-map` | CloudFormation's `Tags[].Key` and `Tags[].Value` against ACK's `tags{}` map | 74 | 0 |
 | `free-form` | the CRD takes a free-form value (`x-kubernetes-preserve-unknown-fields`) above the CloudFormation path, so it covers everything under it | 0 | 0 |
 | `structured` | CloudFormation takes a free-form object where the CRD has a map or declared structure under the same name (WAFv2 `Method` and `{}`, DynamoDB `KeySchema`) | 109 | 0 |
@@ -179,8 +195,8 @@ This repository's own pins (`UPSTREAM.md`) cover only a few of these controllers
 
 ## Known error and caveats
 
-- **Unmapped.** Of the 7,536 spec paths in the 266 official CRDs mapped to a CloudFormation resource, 1,527 matched no CloudFormation property (**unmapped = 1,527**). Some are ACK-only fields (`clientRequestToken`, cross-resource helpers, fields ACK takes from the SDK that CloudFormation lacks); the rest are renames the matcher missed. Ours: 19 of 229 spec paths unmapped. Both are listed per resource as `official_unmapped` and `ours_unmapped` in `resources.csv` and per attribute by `-explain`.
-- **Upper bound on the understatement.** Where ACK covers a property under a name the matcher cannot pair, official coverage is under-counted. A resource's misses cannot exceed the smaller of its unmatched CloudFormation attributes and its unmapped spec paths; summed over every official kind that is **502 attributes (0.6% of the denominator, 8.3% of what is counted as official)**. The real figure is far lower, because most unmapped paths have no CloudFormation counterpart: the spot checks below found about 2% of covered attributes missed.
+- **Unmapped.** Of the 7,536 spec paths in the 266 official CRDs mapped to a CloudFormation resource, 1,524 matched no CloudFormation property (**unmapped = 1,524**). Some are ACK-only fields (`clientRequestToken`, cross-resource helpers, fields ACK takes from the SDK that CloudFormation lacks); the rest are renames the matcher missed. Ours: 19 of 229 spec paths unmapped. Both are listed per resource as `official_unmapped` and `ours_unmapped` in `resources.csv` and per attribute by `-explain`.
+- **Upper bound on the understatement.** Where ACK covers a property under a name the matcher cannot pair, official coverage is under-counted. A resource's misses cannot exceed the smaller of its unmatched CloudFormation attributes and its unmapped spec paths; summed over every official kind that is **499 attributes (0.6% of the denominator, 8.3% of what is counted as official)**. The real figure is far lower, because most unmapped paths have no CloudFormation counterpart: the spot checks below found about 2% of covered attributes missed.
 - **No false credit from the denominator's shape.** An attribute is a leaf, so a resource with a very deep schema weighs more than a flat one. The largest services by attributes are `quicksight` (51,640, 60.2% of the total), `lex` (2,018, 2.4% of the total), `ec2` (1,495, 1.7% of the total), `sagemaker` (1,469, 1.7% of the total), `medialive` (1,115, 1.3% of the total). Percentages by *resource* are in `services.csv` too (`resources_official / resources_total`). A resource with ACK coverage of one field of a hundred still counts as one official resource.
 - **CloudFormation is not the API.** The denominator is CloudFormation's view of each service. Operations CloudFormation does not model (jobs, executions, one-shot actions, data-plane calls) are not in it, and neither is anything an ACK kind covers that CloudFormation lacks; that is why some kinds are outside it (below). A service ACK covers that CloudFormation has no resource for is not penalised, but it is not credited either.
 - **Official is the latest *release*.** ACK `main` is ahead of its releases for many controllers; that work is not counted. Controllers with no release count as nothing.
@@ -273,6 +289,6 @@ hack/coverage/run.sh -explain s3/Bucket
 task coverage                      # the first; `task coverage:check` is the second
 ```
 
-The generator is Go (`hack/coverage/`, run from the root module; `go test ./hack/coverage` has its unit tests). Regeneration reads only the committed zip, `sources.yaml`, `priority.csv`, `hack/coverage/mappings.yaml` and `config/crds/bases/`, plus the pinned ACK CRDs, which it downloads from `raw.githubusercontent.com` at the pinned commits into the git-ignored `.cache/coverage/`. Outputs carry no timestamps; the only dates are the pins' own. `--update-pins` needs the `gh` CLI (read-only calls) and changes the committed zip; review the diff of `sources.yaml` before committing it.
+The generator is Go (`hack/coverage/`, run from the root module; `go test ./hack/coverage` has its unit tests). Regeneration reads only the committed zip, `sources.yaml`, `priority.csv`, `hack/coverage/foundation.yaml`, `hack/coverage/module-usage.csv`, `hack/coverage/mappings.yaml` and `config/crds/bases/`, plus the pinned ACK CRDs, which it downloads from `raw.githubusercontent.com` at the pinned commits into the git-ignored `.cache/coverage/`. Outputs carry no timestamps; the only dates are the pins' own. `--update-pins` needs the `gh` CLI (read-only calls) and changes the committed zip; review the diff of `sources.yaml` before committing it.
 
 To teach the matcher a rename, add a line to `attributes:` (an official kind) or `oursAttributes:` in `mappings.yaml`, a CRD path prefix on the left and the CloudFormation path prefix on the right, then regenerate and read `-explain` for that resource.

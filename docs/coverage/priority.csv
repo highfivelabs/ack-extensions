@@ -1,46 +1,68 @@
-service,tier,rationale,source
-certificatemanager,1,acm (#10),catalog/docs/aws.md s2 rank 10; s3.10
-ec2,1,vpc (#3) and security-group (#7) are ec2 resources; also launch templates for eks node groups,"catalog/docs/aws.md s2 ranks 3, 7; s3.3, s3.7"
-eks,1,eks (#4),catalog/docs/aws.md s2 rank 4; s3.4
-iam,1,"iam (#1) is the top module; role, policy and instance profile are in the main path of eks, lambda, ecs, rds monitoring and every IRSA/pod-identity stack",catalog/docs/aws.md s2 rank 1; s3.1
-kms,1,"kms (#5); the key encrypting eks, rds, s3 and lambda",catalog/docs/aws.md s2 rank 5; s3.5
-lambda,1,lambda (#6),catalog/docs/aws.md s2 rank 6; s3.6
-logs,1,"log groups in the main path of eks, vpc flow logs, lambda and rds (four of the top ten)","catalog/docs/aws.md s3.3, s3.4, s3.6, s3.8"
-rds,1,rds (#8) and rds-aurora (#9),"catalog/docs/aws.md s2 ranks 8, 9; s3.8, s3.9"
-route53,1,acm's DNS validation records (#10) and route53 (#13); used by every public endpoint,"catalog/docs/aws.md s2 ranks 10, 13; s3.10"
-s3,1,s3-bucket (#2); the bucket and its 20 inline configurations,catalog/docs/aws.md s2 rank 2; s3.2
-apigatewayv2,2,apigateway-v2 (#33),catalog/docs/aws.md s2 rank 33
-applicationautoscaling,2,"ecs service (#14), dynamodb-table (#16) and rds-aurora (#9) scaling targets and policies","catalog/docs/aws.md s3.14, s3.16, s3.9"
-aps,2,managed-service-prometheus (#37),catalog/docs/aws.md s2 rank 37
-autoscaling,2,autoscaling (#19); eks self-managed node groups,"catalog/docs/aws.md s2 rank 19; s3.19, s3.4"
-cloudfront,2,cloudfront (#21),catalog/docs/aws.md s2 rank 21; s3.21
-cloudwatch,2,cloudwatch (#18),catalog/docs/aws.md s2 rank 18; s3.18
-codedeploy,2,lambda deploy submodule (no ACK controller),catalog/docs/aws.md s3.6
-dms,2,dms (#39),catalog/docs/aws.md s2 rank 39
-dsql,2,rds-aurora dsql submodule,catalog/docs/aws.md s3.9
-dynamodb,2,dynamodb-table (#16),catalog/docs/aws.md s2 rank 16; s3.16
-ecr,2,ecr (#23); lambda docker-build submodule,"catalog/docs/aws.md s2 rank 23; s3.23, s3.6"
-ecs,2,ecs (#14),catalog/docs/aws.md s2 rank 14; s3.14
-efs,2,efs (#29),catalog/docs/aws.md s2 rank 29
-elasticache,2,elasticache (#25); vpc subnet groups,catalog/docs/aws.md s2 rank 25; s3.25
-elasticloadbalancingv2,2,alb (#15),catalog/docs/aws.md s2 rank 15; s3.15
-events,2,eventbridge (#17); eks karpenter rules,catalog/docs/aws.md s2 rank 17; s3.4
-eventschemas,2,eventbridge (#17) creates a schema discoverer,catalog/docs/aws.md s3.17
-msk,2,msk-kafka-cluster (#36),catalog/docs/aws.md s2 rank 36
-networkfirewall,2,network-firewall (#40),catalog/docs/aws.md s2 rank 40
-opensearchservice,2,opensearch (#35),catalog/docs/aws.md s2 rank 35
-pipes,2,eventbridge (#17) creates pipes,catalog/docs/aws.md s3.17
-ram,2,route53 (#13) resolver firewall RAM share; transit-gateway (#32),catalog/docs/aws.md s3.13
-redshift,2,vpc creates a Redshift subnet group only,catalog/docs/aws.md s3.3
-rolesanywhere,2,eks hybrid-node-role submodule,catalog/docs/aws.md s3.4
-route53resolver,2,route53 (#13) resolver-endpoint submodule,catalog/docs/aws.md s3.13
-s3files,2,s3-bucket file-system submodule,catalog/docs/aws.md s3.2
-s3tables,2,s3-bucket table-bucket submodule,catalog/docs/aws.md s3.2
-s3vectors,2,s3-bucket vectors submodule,catalog/docs/aws.md s3.2
-scheduler,2,eventbridge (#17) creates Scheduler schedules and groups,catalog/docs/aws.md s3.17
-secretsmanager,2,secrets-manager (#20); rds and rds-aurora master secret rotation; datadog-forwarders (#38),"catalog/docs/aws.md s2 rank 20; s3.8, s3.20"
-sns,2,sns (#24); s3-bucket notifications; notify-slack (#34),catalog/docs/aws.md s2 rank 24; s3.2
-sqs,2,sqs (#12); eks karpenter submodule; s3-bucket notifications,"catalog/docs/aws.md s2 rank 12; s3.2, s3.4"
-ssm,2,ssm-parameter (#27),catalog/docs/aws.md s2 rank 27
-stepfunctions,2,step-functions (#28),catalog/docs/aws.md s2 rank 28
-wafv2,2,alb (#15) WAF association,catalog/docs/aws.md s3.15
+service,tier,category,rationale,source
+cloudtrail,1,platform-foundation,"platform-foundation: trails (including organization trails) and event data stores. No tracked terraform-aws-module creates it (module need is 0 here, not unimportant).","builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+controltower,1,platform-foundation,"platform-foundation: landing zone, enabled controls and baselines (where it has APIs). No tracked terraform-aws-module creates it (module need is 0 here, not unimportant).","builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+directconnect,1,platform-foundation,"platform-foundation: dedicated connectivity into the VPC and Transit Gateway. No tracked terraform-aws-module creates it (module need is 0 here, not unimportant).","builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+ec2,1,platform-foundation,"platform-foundation: VPC networking: VPC, subnets, route tables, gateways, Transit Gateway, endpoints, security groups, NACLs, VPN (the instances and volumes ride along). Module usage: vpc (#3) and security-group (#7) are ec2 resources; also launch templates for eks node groups.","builder brief 2026-11-09 (platform-foundation, security-adjacent, application); catalog/docs/aws.md s2 ranks 3, 7; s3.3, s3.7"
+ecr,1,platform-foundation,platform-foundation: the registry a cluster pulls from. Module usage: ecr (#23); lambda docker-build submodule.,"builder brief 2026-11-09 (platform-foundation, security-adjacent, application); catalog/docs/aws.md s2 rank 23; s3.23, s3.6"
+eks,1,platform-foundation,"platform-foundation: the managed Kubernetes cluster: cluster, node groups, Fargate profiles, add-ons, access entries, pod identity. Module usage: eks (#4).","builder brief 2026-11-09 (platform-foundation, security-adjacent, application); catalog/docs/aws.md s2 rank 4; s3.4"
+iam,1,platform-foundation,"platform-foundation: roles, policies, permissions boundaries, OIDC and SAML providers. Module usage: iam (#1) is the top module; role, policy and instance profile are in the main path of eks, lambda, ecs, rds monitoring and every IRSA/pod-identity stack.","builder brief 2026-11-09 (platform-foundation, security-adjacent, application); catalog/docs/aws.md s2 rank 1; s3.1"
+identitystore,1,platform-foundation,"platform-foundation: Identity Center users, groups and memberships. No tracked terraform-aws-module creates it (module need is 0 here, not unimportant).","builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+kms,1,platform-foundation,"platform-foundation: keys and aliases that encrypt everything else. Module usage: kms (#5); the key encrypting eks, rds, s3 and lambda.","builder brief 2026-11-09 (platform-foundation, security-adjacent, application); catalog/docs/aws.md s2 rank 5; s3.5"
+networkmanager,1,platform-foundation,"platform-foundation: Transit Gateway network manager and Cloud WAN. No tracked terraform-aws-module creates it (module need is 0 here, not unimportant).","builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+organizations,1,platform-foundation,"platform-foundation: accounts, OUs, SCPs and the other policy types, delegated administrators, organization features. No tracked terraform-aws-module creates it (module need is 0 here, not unimportant).","builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+ram,1,platform-foundation,"platform-foundation: Resource Access Manager shares, how accounts share subnets and transit gateways. Module usage: route53 (#13) resolver firewall RAM share; transit-gateway (#32).","builder brief 2026-11-09 (platform-foundation, security-adjacent, application); catalog/docs/aws.md s3.13"
+route53,1,platform-foundation,platform-foundation: DNS: hosted zones and records. Module usage: acm's DNS validation records (#10) and route53 (#13); used by every public endpoint.,"builder brief 2026-11-09 (platform-foundation, security-adjacent, application); catalog/docs/aws.md s2 ranks 10, 13; s3.10"
+route53profiles,1,platform-foundation,"platform-foundation: DNS: Route 53 Profiles shared across VPCs and accounts. No tracked terraform-aws-module creates it (module need is 0 here, not unimportant).","builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+route53resolver,1,platform-foundation,"platform-foundation: DNS: resolver endpoints, rules, query logging, DNS Firewall. Module usage: route53 (#13) resolver-endpoint submodule.","builder brief 2026-11-09 (platform-foundation, security-adjacent, application); catalog/docs/aws.md s3.13"
+sso,1,platform-foundation,"platform-foundation: IAM Identity Center: permission sets and account assignments. No tracked terraform-aws-module creates it (module need is 0 here, not unimportant).","builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+accessanalyzer,2,security-adjacent,security-adjacent: external-access analyzers. No tracked terraform-aws-module creates it.,"builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+acmpca,2,security-adjacent,security-adjacent: private certificate authorities. No tracked terraform-aws-module creates it.,"builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+auditmanager,2,security-adjacent,security-adjacent: audit assessments and frameworks. No tracked terraform-aws-module creates it.,"builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+certificatemanager,2,security-adjacent,security-adjacent: certificates. Module usage: acm (#10).,"builder brief 2026-11-09 (platform-foundation, security-adjacent, application); catalog/docs/aws.md s2 rank 10; s3.10"
+config,2,security-adjacent,"security-adjacent: AWS Config recorders, rules, conformance packs and aggregators. No tracked terraform-aws-module creates it.","builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+detective,2,security-adjacent,security-adjacent: security investigation graph. No tracked terraform-aws-module creates it.,"builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+fms,2,security-adjacent,security-adjacent: Firewall Manager policies across the organization. No tracked terraform-aws-module creates it.,"builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+guardduty,2,security-adjacent,security-adjacent: threat detection. No tracked terraform-aws-module creates it.,"builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+inspector,2,security-adjacent,security-adjacent: vulnerability scanning (classic). No tracked terraform-aws-module creates it.,"builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+inspectorv2,2,security-adjacent,security-adjacent: vulnerability scanning. No tracked terraform-aws-module creates it.,"builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+macie,2,security-adjacent,security-adjacent: sensitive-data discovery. No tracked terraform-aws-module creates it.,"builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+networkfirewall,2,security-adjacent,security-adjacent: network firewalls and rule groups. Module usage: network-firewall (#40).,"builder brief 2026-11-09 (platform-foundation, security-adjacent, application); catalog/docs/aws.md s2 rank 40"
+secretsmanager,2,security-adjacent,security-adjacent: secrets. Module usage: secrets-manager (#20); rds and rds-aurora master secret rotation; datadog-forwarders (#38).,"builder brief 2026-11-09 (platform-foundation, security-adjacent, application); catalog/docs/aws.md s2 rank 20; s3.8, s3.20"
+securityhub,2,security-adjacent,security-adjacent: security findings and standards. No tracked terraform-aws-module creates it.,"builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+securitylake,2,security-adjacent,security-adjacent: security data lake. No tracked terraform-aws-module creates it.,"builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+waf,2,security-adjacent,security-adjacent: WAF classic. No tracked terraform-aws-module creates it.,"builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+wafregional,2,security-adjacent,security-adjacent: WAF regional classic. No tracked terraform-aws-module creates it.,"builder brief 2026-11-09 (platform-foundation, security-adjacent, application)"
+wafv2,2,security-adjacent,"security-adjacent: web ACLs, rule groups and IP sets. Module usage: alb (#15) WAF association.","builder brief 2026-11-09 (platform-foundation, security-adjacent, application); catalog/docs/aws.md s3.15"
+apigatewayv2,2,application,application primitive. Module usage: apigateway-v2 (#33).,catalog/docs/aws.md s2 rank 33
+applicationautoscaling,2,application,"application primitive. Module usage: ecs service (#14), dynamodb-table (#16) and rds-aurora (#9) scaling targets and policies.","catalog/docs/aws.md s3.14, s3.16, s3.9"
+aps,2,application,application primitive. Module usage: managed-service-prometheus (#37).,catalog/docs/aws.md s2 rank 37
+autoscaling,2,application,application primitive. Module usage: autoscaling (#19); eks self-managed node groups.,"catalog/docs/aws.md s2 rank 19; s3.19, s3.4"
+cloudfront,2,application,application primitive. Module usage: cloudfront (#21).,catalog/docs/aws.md s2 rank 21; s3.21
+cloudwatch,2,application,application primitive. Module usage: cloudwatch (#18).,catalog/docs/aws.md s2 rank 18; s3.18
+codedeploy,2,application,application primitive. Module usage: lambda deploy submodule (no ACK controller).,catalog/docs/aws.md s3.6
+dms,2,application,application primitive. Module usage: dms (#39).,catalog/docs/aws.md s2 rank 39
+dsql,2,application,application primitive. Module usage: rds-aurora dsql submodule.,catalog/docs/aws.md s3.9
+dynamodb,2,application,application primitive. Module usage: dynamodb-table (#16).,catalog/docs/aws.md s2 rank 16; s3.16
+ecs,2,application,application primitive. Module usage: ecs (#14).,catalog/docs/aws.md s2 rank 14; s3.14
+efs,2,application,application primitive. Module usage: efs (#29).,catalog/docs/aws.md s2 rank 29
+elasticache,2,application,application primitive. Module usage: elasticache (#25); vpc subnet groups.,catalog/docs/aws.md s2 rank 25; s3.25
+elasticloadbalancingv2,2,application,application primitive. Module usage: alb (#15).,catalog/docs/aws.md s2 rank 15; s3.15
+events,2,application,application primitive. Module usage: eventbridge (#17); eks karpenter rules.,catalog/docs/aws.md s2 rank 17; s3.4
+eventschemas,2,application,application primitive. Module usage: eventbridge (#17) creates a schema discoverer.,catalog/docs/aws.md s3.17
+lambda,2,application,application primitive. Module usage: lambda (#6). (tier 1 by module usage before the brief; the brief makes application services tier 2),catalog/docs/aws.md s2 rank 6; s3.6
+logs,2,application,"application primitive. Module usage: log groups in the main path of eks, vpc flow logs, lambda and rds (four of the top ten). (tier 1 by module usage before the brief; the brief makes application services tier 2)","catalog/docs/aws.md s3.3, s3.4, s3.6, s3.8"
+msk,2,application,application primitive. Module usage: msk-kafka-cluster (#36).,catalog/docs/aws.md s2 rank 36
+opensearchservice,2,application,application primitive. Module usage: opensearch (#35).,catalog/docs/aws.md s2 rank 35
+pipes,2,application,application primitive. Module usage: eventbridge (#17) creates pipes.,catalog/docs/aws.md s3.17
+rds,2,application,application primitive. Module usage: rds (#8) and rds-aurora (#9). (tier 1 by module usage before the brief; the brief makes application services tier 2),"catalog/docs/aws.md s2 ranks 8, 9; s3.8, s3.9"
+redshift,2,application,application primitive. Module usage: vpc creates a Redshift subnet group only.,catalog/docs/aws.md s3.3
+rolesanywhere,2,application,application primitive. Module usage: eks hybrid-node-role submodule.,catalog/docs/aws.md s3.4
+s3,2,application,application primitive. Module usage: s3-bucket (#2); the bucket and its 20 inline configurations. (tier 1 by module usage before the brief; the brief makes application services tier 2),catalog/docs/aws.md s2 rank 2; s3.2
+s3files,2,application,application primitive. Module usage: s3-bucket file-system submodule.,catalog/docs/aws.md s3.2
+s3tables,2,application,application primitive. Module usage: s3-bucket table-bucket submodule.,catalog/docs/aws.md s3.2
+s3vectors,2,application,application primitive. Module usage: s3-bucket vectors submodule.,catalog/docs/aws.md s3.2
+scheduler,2,application,application primitive. Module usage: eventbridge (#17) creates Scheduler schedules and groups.,catalog/docs/aws.md s3.17
+sns,2,application,application primitive. Module usage: sns (#24); s3-bucket notifications; notify-slack (#34).,catalog/docs/aws.md s2 rank 24; s3.2
+sqs,2,application,application primitive. Module usage: sqs (#12); eks karpenter submodule; s3-bucket notifications.,"catalog/docs/aws.md s2 rank 12; s3.2, s3.4"
+ssm,2,application,application primitive. Module usage: ssm-parameter (#27).,catalog/docs/aws.md s2 rank 27
+stepfunctions,2,application,application primitive. Module usage: step-functions (#28).,catalog/docs/aws.md s2 rank 28

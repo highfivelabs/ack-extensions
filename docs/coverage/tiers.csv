@@ -1,4 +1,4 @@
 tier,services,resources_total,resources_official,resources_ours_beyond,resources_uncovered,attributes_total,attributes_official,attributes_ours_beyond,attributes_uncovered,pct_attributes_official,pct_attributes_ours_beyond,pct_attributes_uncovered,pct_resources_official,pct_resources_ours_beyond,pct_resources_uncovered
-1,10,233,67,8,158,2888,1016,64,1808,35.2,2.2,62.6,28.8,3.4,67.8
-2,35,243,101,7,135,4743,2561,136,2046,54.0,2.9,43.1,41.6,2.9,55.6
-3,260,1399,98,0,1301,78142,2453,0,75689,3.1,0.0,96.9,7.0,0.0,93.0
+1,16,241,55,6,180,2400,676,39,1685,28.2,1.6,70.2,22.8,2.5,74.7
+2,51,374,120,9,245,6848,3077,161,3610,44.9,2.4,52.7,32.1,2.4,65.5
+3,238,1260,91,0,1169,76525,2280,0,74245,3.0,0.0,97.0,7.2,0.0,92.8

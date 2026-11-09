@@ -909,7 +909,7 @@ iam,Group,5,Group,4,,0,1,false,
 iam,GroupPolicy,3,,0,,0,3,false,
 iam,InstanceProfile,3,InstanceProfile,2,,0,1,false,official_unmapped=3
 iam,ManagedPolicy,7,Policy,4,,0,3,false,official_unmapped=2
-iam,OIDCProvider,5,OpenIDConnectProvider,3,,0,2,false,official_unmapped=2
+iam,OIDCProvider,5,OpenIDConnectProvider,5,,0,0,false,
 iam,Policy,5,,0,,0,5,false,
 iam,Role,11,Role,10,RolePolicyAttachment,0,1,true,ours RolePolicyAttachment covers a property of this resource;ours RolePolicyAttachment copied from iam-controller#184
 iam,RolePolicy,3,,0,,0,3,false,
@@ -1503,7 +1503,7 @@ route53,HealthCheck,20,HealthCheck,20,,0,0,false,official_unmapped=1
 route53,HostedZone,9,HostedZone,7,,0,2,false,official_unmapped=3
 route53,KeySigningKey,4,,0,,0,4,false,
 route53,QueryLoggingConfig,2,,0,,0,2,false,
-route53,RecordSet,21,RecordSet,18,,0,3,false,official_unmapped=1
+route53,RecordSet,21,RecordSet,19,,0,2,false,
 route53,RecordSetGroup,28,,0,,0,28,false,
 route53,TrafficPolicy,3,,0,,0,3,false,
 route53,TrafficPolicyInstance,5,,0,,0,5,false,
