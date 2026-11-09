@@ -1,8 +1,9 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has eight kinds:
+Status, 2026-11-09: the repository has nine kinds:
 
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
+- `ec2.aws.hfl.dev` `CustomerGateway`;
 - `iam.aws.hfl.dev` `RolePolicyAttachment`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
@@ -211,6 +212,10 @@ status) and the fake cloud through the real AWS SDK clients.
     again; a one-time action is put with its start time; the action name
     cannot change; deletion-policy retain leaves the action; delete
     removes the actions
+--- PASS: TestCustomerGateway
+    a customer gateway is made, tagged, and available; its tags change;
+    its address cannot change; deletion-policy retain leaves the gateway;
+    delete deletes the gateway (listed as deleted, the object gone)
 --- PASS: TestReplicaKey
     a replica is made in its Region (tags put there); a policy is put on
     the replica only; the replica Region cannot change; references
@@ -323,6 +328,10 @@ controller to show it can fail:
   given. It does not compute a recurring action's next start time, does
   not delete a one-time action after it runs, and returns no
   `ScheduledActionARN`.
+- **EC2 customer gateways.** moto keeps a deleted gateway listed in
+  state `deleted`, as AWS does, and creates one `available` at once (AWS
+  goes through `pending`). It does not check that the address is
+  public.
 - **KMS replica keys.**
   - moto keeps a replica in its own Region's backend, under the primary
     key's key ID, as AWS does.
@@ -383,7 +392,7 @@ its master (5.2.5 is the pin).
 | 4 | EC2 Auto Scaling `ScalingPolicy` and `ScheduledAction`; Application Auto Scaling `ScheduledAction` | none: autoscaling-controller `v1.5.0` has only `AutoScalingGroup`; applicationautoscaling-controller `v1.9.0` has `ScalableTarget` and `ScalingPolicy` | yes | `ScalingPolicy` and EC2 Auto Scaling `ScheduledAction` built; Application Auto Scaling `ScheduledAction` next |
 | 5 | KMS `ReplicaKey` | kms-controller PR #112: open, conflicts with base, not approved; an ACK maintainer's review finds its read, update and delete act on the primary key | `ReplicateKey` yes, `UpdatePrimaryRegion` no | built: `ReplicaKey` |
 | 6 | Standalone security group rules | none; ec2-controller has rule-sync fixes open (#394, #385) | yes | skipped: open question 7 |
-| 7 | EC2 `VPNGateway` (attachment, route propagation), `CustomerGateway` | ignored in ec2-controller `v1.23.1`'s `generator.yaml` | yes, except `EnableVgwRoutePropagation` | to build |
+| 7 | EC2 `VPNGateway` (attachment, route propagation), `CustomerGateway` | ignored in ec2-controller `v1.23.1`'s `generator.yaml` | yes, except `EnableVgwRoutePropagation` | `CustomerGateway` built; `VPNGateway` next |
 | 8 | EBS `Volume`, `VolumeAttachment` | ignored in ec2-controller's `generator.yaml`; `aws-controllers-k8s/ebs-controller` exists, with no release | yes | to build |
 | 9 | CloudWatch Logs `MetricFilter`; CloudWatch `CompositeAlarm` | metric filters: cloudwatchlogs-controller PR #61, as a field on ACK's `LogGroup`. `CompositeAlarm`: ignored in cloudwatch-controller `v1.11.0`. | metric filters yes; `PutCompositeAlarm` no | skipped. Metric filters wait on open question 1. `CompositeAlarm`: moto has none of it. |
 | 10 | EventBridge Scheduler `Schedule` and `ScheduleGroup`; EventBridge `Connection` and `ApiDestination` | Scheduler: no controller (`community` issue #2784). `Connection` and `ApiDestination`: ignored in eventbridge-controller `v1.9.2`. | yes | to build |
@@ -720,6 +729,31 @@ its ARN:
 `keyRef` resolves to ACK's `Key` (`status.keyID`). The status's
 `replicaKeyMetadata` and the `tags` use ACK kms-controller's own types, as
 the pull request does.
+
+### 6.10 `ec2.aws.hfl.dev` `CustomerGateway`
+
+The on-premises end of a site-to-site VPN: its public address, BGP ASN
+and type (`ipsec.1`), or a certificate. ACK's ec2-controller `v1.23.1`
+ignores it in its `generator.yaml`, and no pull request adds it.
+
+**Generated** from `CreateCustomerGateway`, `DescribeCustomerGateways` and
+`DeleteCustomerGateway`, with ACK ec2-controller's own patterns for an EC2
+resource, copied from its `InternetGateway`:
+
+- tags passed as `TagSpecifications` on create (`hooks.go`);
+- tags synced with `CreateTags` and `DeleteTags` afterwards (its
+  `pkg/tags`, copied with our types);
+- synced when the state is `available`.
+
+A gateway in state `deleted` reads as gone: EC2 keeps it listed for a
+while. Every field but the tags is immutable, because EC2 has no call
+that changes a customer gateway. `BgpAsn` is a number on create but a
+string on output, so the spec keeps the value written
+(`set: ignore: "from"`). The generator also names the type field
+`type_`, which is kept as it is.
+
+`services/ec2/generator.yaml` ignores the other 80 resources the
+generator finds in the EC2 model.
 
 ## 7. The operator: ACK's identity, beside ACK's controller
 

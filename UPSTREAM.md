@@ -12,6 +12,7 @@ record of exactly which ACK code it uses, and of every file copied from it.
 | rds-controller | `v1.14.2` | `ca4f0d529241be52349f6b38478be0cb4b9acb53` | Go module: the API types of ACK's `DBProxy`, `DBInstance` and `DBCluster`, which our kinds reference |
 | autoscaling-controller | `v1.5.0` | `56316c75a5da8fdf8079917a16e540be4e84e986` | not a module here: the EC2 Auto Scaling SDK client is at its version (`service/autoscaling` `v1.64.3`) |
 | kms-controller | `v1.7.0` | `57250fba83d58aeb84a3ec2770cf3e9b45708895` | Go module: the API types of ACK's `Key` (which `ReplicaKey` references), `KeyMetadata` and `Tag`; the KMS SDK client at its version (`service/kms` `v1.37.14`) |
+| ec2-controller | `v1.23.1` | `9303654c2cffad05147e4260105439149f7c81bf` | not a module here (its `pkg/tags` is copied); the EC2 SDK client is at its version (`service/ec2` `v1.290.1`) |
 | lambda-controller | `v1.19.0` | `86905357482d01538cb00ab28d59c6af5c46e6f4` | Go module: the API types of ACK's `Function`, which `Permission` references; the Lambda SDK client at its version (`service/lambda` `v1.88.5`) |
 | iam-controller | `v1.11.3` | `91ed7f353255e54e2c6372b3ce757bd2e7fae4ad` | Go module: the API types of ACK's `Role` and `Policy`, which our kinds reference |
 | aws-sdk-go-v2 models | `v1.34.0` | tag | the Smithy model the generator reads (`--aws-sdk-go-version`), the version rds-controller `v1.14.2` was generated from |
@@ -49,6 +50,8 @@ and what changed.
 | `services/kms/apis/v1alpha1/replica_key.go` | kms-controller PR #112 `apis/v1alpha1/replica_key.go` | `eb4057e4…` (PR head) | written by hand here, so the generator's header is replaced; documentation shortened; ACK's `Tag` and `KeyMetadata`; `keyID`/`keyRef` exactly one, `keyID` immutable |
 | `services/kms/pkg/resource/replica_key/sdk.go`, `keymetadata.go` | kms-controller PR #112 `pkg/resource/replica_key/{hook,policy_hooks,tag_hooks}.go` | `eb4057e4…` | every call on the replica sent to its Region by ARN (the PR sends them to the primary key's Region); the replica found through the primary key; create and delete written here |
 | `services/kms/pkg/resource/replica_key/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton, by way of our `db_role_association` copy) | `78eb350e…` | package, kind, API group, KMS client, ARN, `IsSynced` (synced when `Enabled`), adoption fields |
+| `services/ec2/pkg/tags/{sync,sync_test}.go` | ec2-controller `v1.23.1` `pkg/tags/` | `9303654c…` | our `ec2.aws.hfl.dev` API types |
+| `services/ec2/pkg/resource/customer_gateway/hooks.go` | ec2-controller `v1.23.1` `pkg/resource/internet_gateway/hooks.go` (`customUpdateInternetGateway`, `updateTagSpecificationsInCreateRequest`) | `9303654c…` | a customer gateway: tags only, no VPC attachment or route tables |
 | `services/lambda/pkg/resource/permission/sdk.go` (the calls and the reading of a policy statement) | lambda-controller `v1.19.0` `pkg/resource/alias/hooks.go` (`addPermission`, `removePermission`, `setPermissions`) | `86905357…` | one statement instead of an alias's set; `encoding/json` instead of `micahhausler/aws-iam-policy`; not-found handling |
 | `services/lambda/pkg/resource/permission/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton, by way of our `db_role_association` copy) | `78eb350e…` | package, kind, API group, Lambda client, ARN format, `IsSynced` (synced once read back), adoption fields |
 | `services/rds/pkg/resource/db_role_association/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton, by way of our `db_proxy_target` copy) | `78eb350e…` | package, kind, API group, RDS client, ARN format, `IsSynced` (synced when the association is ACTIVE), adoption fields (`roleARN`, `featureName`, the cluster or instance) |
@@ -61,6 +64,7 @@ Written here: `services/rds/apis/v1alpha1/db_proxy_target.go`,
 `services/rds/pkg/resource/db_proxy_target/{sdk,delta,references,sdk_test}.go`,
 `services/rds/apis/v1alpha1/db_role_association.go`,
 `services/lambda/apis/v1alpha1/permission.go`,
+`services/ec2/templates/hooks/customer_gateway/*.go.tpl`,
 `services/kms/pkg/resource/replica_key/{delta,references,sdk_test}.go`,
 `services/autoscaling/templates/hooks/scaling_policy/*.go.tpl`,
 `services/autoscaling/templates/hooks/scheduled_action/*.go.tpl`,
