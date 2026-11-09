@@ -1156,6 +1156,8 @@ section 8, item 12).
 - **Tags:** a group has no update of its own; its tags are synced with
   `TagResource` and `UntagResource` (`customUpdate` and the tag
   comparison, copied from eventbridge-controller's `EventBus`).
+  ACK's runtime adds its `services.k8s.aws/` tags, as for ACK's own
+  kinds.
 - **Immutable:** the name. **Not found:** `ResourceNotFoundException`.
 - **The SDK client** is `service/scheduler` `v1.12.13`, the version in
   the aws-sdk-go-v2 release whose models the generator reads
