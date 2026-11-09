@@ -5,7 +5,7 @@
 # Deployments and ServiceAccounts, and makes, beside each, a manager
 # Deployment, a ServiceAccount (identity "own"), a leader-election Role and
 # RoleBinding, and a ClusterRoleBinding to the manager's ClusterRole. It
-# may bind only our two manager ClusterRoles (RBAC "bind" by name).
+# may bind only our manager ClusterRoles (RBAC "bind" by name).
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -29,7 +29,7 @@ rules:
   - apiGroups: ["rbac.authorization.k8s.io"]
     resources: ["clusterroles"]
     verbs: ["bind"]
-    resourceNames: ["ack-extensions-iam-manager", "ack-extensions-rds-manager"]
+    resourceNames: ["ack-extensions-iam-manager", "ack-extensions-lambda-manager", "ack-extensions-rds-manager"]
   # The rules of the leader-election Role it makes for each manager:
   # Kubernetes lets a Role be made only by someone who holds its rules.
   - apiGroups: ["coordination.k8s.io"]

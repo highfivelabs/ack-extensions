@@ -35,6 +35,8 @@ spec:
           env:
             - name: MANAGER_IMAGE_IAM
               value: ko://github.com/highfivelabs/ack-extensions/services/iam/cmd/controller
+            - name: MANAGER_IMAGE_LAMBDA
+              value: ko://github.com/highfivelabs/ack-extensions/services/lambda/cmd/controller
             - name: MANAGER_IMAGE_RDS
               value: ko://github.com/highfivelabs/ack-extensions/services/rds/cmd/controller
           securityContext:

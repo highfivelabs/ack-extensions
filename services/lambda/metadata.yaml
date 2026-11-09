@@ -1,0 +1,8 @@
+service:
+  full_name: "AWS Lambda"
+  short_name: "Lambda"
+  link: "https://aws.amazon.com/lambda/"
+  documentation: "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html"
+api_versions:
+  - api_version: v1alpha1
+    status: available
