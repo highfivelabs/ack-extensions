@@ -1,6 +1,6 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has twenty-five kinds:
+Status, 2026-11-09: the repository has twenty-six kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
@@ -11,7 +11,7 @@ Status, 2026-11-09: the repository has twenty-five kinds:
 - `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias` and `AccountPasswordPolicy`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
-- `organizations.aws.hfl.dev` `Policy`;
+- `organizations.aws.hfl.dev` `Policy` and `PolicyAttachment`;
 - `rds.aws.hfl.dev` `OptionGroup`;
 - `rds.aws.hfl.dev` `DBProxyTarget`;
 - `rds.aws.hfl.dev` `DBRoleAssociation`;
@@ -537,6 +537,13 @@ controller to show it can fail:
     `PolicyNotFoundException` for an unknown id.
   - It needs an organization first (`CreateOrganization`); the test
     makes one with the SDK.
+  - It accepts a second `AttachPolicy` of the same policy to the same
+    target and a second `DetachPolicy` (AWS answers
+    `DuplicatePolicyAttachmentException` and `PolicyNotAttachedException`),
+    does not check that the policy type is enabled on the root, and lets
+    the last SCP be detached. It answers `OrganizationalUnitNotFoundException`
+    for an unknown OU, and attaches `FullAWSAccess` to the root when the
+    organization is made, as AWS does.
 - **An association's status.** moto marks a new association `ACTIVE` at
   once. On AWS it is `PENDING` first, and `INVALID` when RDS cannot assume
   the role. The rule (synced only when `ACTIVE`) is unit-tested.
@@ -1445,6 +1452,52 @@ settled); `DECLARATIVE_POLICY_EC2` and `CHATBOT_POLICY` (moto answers
 an empty document); that a policy type must be enabled on the root before
 a policy of that type can be attached; real AWS.
 
+### 6.26 `organizations.aws.hfl.dev` `PolicyAttachment`
+
+One Organizations policy attached to one target: the root, an OU or an
+account. F01's second kind. Upstream rechecked 2026-11-09: as in section
+6.25 (no release, no pull request; community #2884 still only proposes it).
+
+**Generated**, from operations the generator does not find by itself,
+mapped in `generator.yaml` as ACK maps its own Put-shaped kinds:
+`AttachPolicy` is the create, `DetachPolicy` the delete, and
+`ListTargetsForPolicy` the read, matched on `targetID` (`list_operation:
+match_fields`). Roughly 90% of the new Go is generated; written here are
+two hook templates (paging and an idempotent detach, `hooks.go`, about 60
+lines), the alias that lets the generated references read ACK's kind, and
+the scheme registration.
+
+- **References:** `policyRef` names our `Policy` (its `status.id`);
+  `targetRef` names ACK's `OrganizationalUnit` (`organizations.services.k8s.aws`,
+  its `status.id`). ACK's generator writes a reference to a kind of the
+  same service as a type of this package, so
+  `apis/v1alpha1/ack_kinds.go` aliases ACK's type (the problem section 8,
+  item 10 describes, solved by an alias rather than a rewrite). An account
+  or the root is given by `targetID`; one field can reference one kind,
+  and ACK's `Account` is not referenced yet.
+- **Non-exclusive:** it attaches its policy and detaches only that one.
+  The target's other policies (`FullAWSAccess` on the root, policies from
+  other objects, the console) are left alone. CloudFormation's
+  `Policy.TargetIds` is the exclusive form and is not built.
+- **Immutable:** the policy and the target. **Read:** `ListTargetsForPolicy`,
+  every page (Organizations returns at most 20). **Not found:**
+  `PolicyNotFoundException`. **Delete** treats `PolicyNotAttachedException`
+  and a gone policy, account, OU or target as done. **Terminal:**
+  `InvalidInputException`, `PolicyTypeNotEnabledException` (enable the
+  type on the root first: `Organization`, next).
+- **`status.ackResourceMetadata.arn`** is the target's ARN (the generator
+  sets it from the listed target).
+- **Two objects for one attachment** fight: deleting one detaches it and
+  the other attaches it again on its next resync (the test shows this).
+
+**Not proven on moto:** that AWS refuses a second attach
+(`DuplicatePolicyAttachmentException`; moto accepts it) and a second detach
+(`PolicyNotAttachedException`; moto accepts it), so the idempotent detach
+is unit-tested; that a policy type must be enabled on the root before a
+policy of that type is attached (moto does not check); that the last SCP
+cannot be detached from a target (AWS refuses, `ConstraintViolationException`);
+real AWS.
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)
@@ -1695,7 +1748,9 @@ Before it can run on a real cluster:
     (`ScalingPolicy` to ACK's `AutoScalingGroup`, section 6.6):
     `hack/generate.sh` rewrites ACK's import path for the service to
     ours. It needs the rewrite limited to the packages generated here, or
-    a hand-written references file.
+    a hand-written references file. `PolicyAttachment` (section 6.26)
+    does it with a type alias of ACK's kind in our API package instead;
+    `ScalingPolicy` could do the same.
 11. The heavy checks run on a Spot VM (`../offload`), not the laptop. A
     fresh VM has no `third_party/` (gitignored), so the command is
     `task tools && task check && task operator-e2e`.

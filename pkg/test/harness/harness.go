@@ -105,6 +105,7 @@ func Start(t *testing.T, service string, scheme *runtime.Scheme) *Env {
 		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/iam-controller"), "config", "crd", "bases"),
 		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/kms-controller"), "config", "crd", "bases"),
 		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/lambda-controller"), "config", "crd", "bases"),
+		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/organizations-controller"), "config", "crd", "bases"),
 		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/rds-controller"), "config", "crd", "bases"),
 		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/wafv2-controller"), "config", "crd", "bases"),
 	}

@@ -42,6 +42,7 @@ import (
 	svcresource "github.com/highfivelabs/ack-extensions/services/organizations/pkg/resource"
 
 	_ "github.com/highfivelabs/ack-extensions/services/organizations/pkg/resource/policy"
+	_ "github.com/highfivelabs/ack-extensions/services/organizations/pkg/resource/policy_attachment"
 
 	"github.com/highfivelabs/ack-extensions/services/organizations/pkg/version"
 )

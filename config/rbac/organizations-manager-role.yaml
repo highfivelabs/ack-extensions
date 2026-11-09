@@ -26,6 +26,7 @@ rules:
   - organizations.aws.hfl.dev
   resources:
   - policies
+  - policyattachments
   verbs:
   - create
   - delete
@@ -38,10 +39,19 @@ rules:
   - organizations.aws.hfl.dev
   resources:
   - policies/status
+  - policyattachments/status
   verbs:
   - get
   - patch
   - update
+- apiGroups:
+  - organizations.services.k8s.aws
+  resources:
+  - organizationalunits
+  - organizationalunits/status
+  verbs:
+  - get
+  - list
 - apiGroups:
   - services.k8s.aws
   resources:

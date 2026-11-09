@@ -6,6 +6,8 @@ github.com/aws-controllers-k8s/kms-controller v1.7.0 h1:67IWraDnvzMtHle51jpB8qOE
 github.com/aws-controllers-k8s/kms-controller v1.7.0/go.mod h1:/+vVlOTbA28G/CmQDlqfpV3s+XIV7Ug4q29DkhPgtgY=
 github.com/aws-controllers-k8s/lambda-controller v1.19.0 h1:RCJUmkAbEtxdVMyXTYr7xsX+yzJgK7NgXzvgw4ZX5N8=
 github.com/aws-controllers-k8s/lambda-controller v1.19.0/go.mod h1:rSHFa14C9s9GKsmd//BKQ9haqcuKmRk+l4rlZBClu0I=
+github.com/aws-controllers-k8s/organizations-controller v1.7.0 h1:OsWfQxMrxVZEzVm96Uao9sM33MsR0DFoxnQbbxEZtRo=
+github.com/aws-controllers-k8s/organizations-controller v1.7.0/go.mod h1:S+JkLfucL+4ndvCkFiwISRDENe6rxemZx/K3VzThfDM=
 github.com/aws-controllers-k8s/rds-controller v1.14.2 h1:xIL94lmaM/uAXLvaolwQslzUxAU/TkwtLRpGirb8Goo=
 github.com/aws-controllers-k8s/rds-controller v1.14.2/go.mod h1:TM3xR3a/ro9RnIP3DjjyqX6OSvnfzhjOAnnXMHn/aY0=
 github.com/aws-controllers-k8s/runtime v0.67.0 h1:hTpLXwiLz+CAw6kLJHUizhppgqZ/x8B6Gkftv8B1i0c=

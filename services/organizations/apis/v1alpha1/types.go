@@ -31,6 +31,7 @@ var (
 // directly attached to the account.
 type EffectivePolicy struct {
 	PolicyContent *string `json:"policyContent,omitempty"`
+	TargetID      *string `json:"targetID,omitempty"`
 }
 
 // Contains information about a policy, but does not include the content. To
@@ -42,6 +43,15 @@ type PolicySummary struct {
 	ID          *string `json:"id,omitempty"`
 	Name        *string `json:"name,omitempty"`
 	Type        *string `json:"type_,omitempty"`
+}
+
+// Contains information about a root, OU, or account that a policy is attached
+// to.
+type PolicyTargetSummary struct {
+	ARN      *string `json:"arn,omitempty"`
+	Name     *string `json:"name,omitempty"`
+	TargetID *string `json:"targetID,omitempty"`
+	Type     *string `json:"type_,omitempty"`
 }
 
 // Contains information about a policy type and its status in the associated

@@ -22,6 +22,7 @@ resources:
   - bases/kms.aws.hfl.dev_replicakeys.yaml
   - bases/lambda.aws.hfl.dev_permissions.yaml
   - bases/organizations.aws.hfl.dev_policies.yaml
+  - bases/organizations.aws.hfl.dev_policyattachments.yaml
   - bases/rds.aws.hfl.dev_dbproxytargets.yaml
   - bases/rds.aws.hfl.dev_dbroleassociations.yaml
   - bases/rds.aws.hfl.dev_optiongroups.yaml
