@@ -26,7 +26,9 @@ rules:
   - iam.aws.hfl.dev
   resources:
   - accountpasswordpolicies
+  - loginprofiles
   - rolepolicyattachments
+  - usergroupmemberships
   verbs:
   - create
   - delete
@@ -39,7 +41,9 @@ rules:
   - iam.aws.hfl.dev
   resources:
   - accountpasswordpolicies/status
+  - loginprofiles/status
   - rolepolicyattachments/status
+  - usergroupmemberships/status
   verbs:
   - get
   - patch
@@ -47,8 +51,10 @@ rules:
 - apiGroups:
   - iam.services.k8s.aws
   resources:
+  - groups
   - policies
   - roles
+  - users
   verbs:
   - get
   - list

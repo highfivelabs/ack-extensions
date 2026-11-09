@@ -1,0 +1,210 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: usergroupmemberships.iam.aws.hfl.dev
+spec:
+  group: iam.aws.hfl.dev
+  names:
+    categories:
+    - aws
+    - hfl
+    kind: UserGroupMembership
+    listKind: UserGroupMembershipList
+    plural: usergroupmemberships
+    shortNames:
+    - hflusergroupmembership
+    singular: usergroupmembership
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.userName
+      name: USER
+      type: string
+    - jsonPath: .status.groups
+      name: GROUPS
+      type: string
+    - jsonPath: .status.conditions[?(@.type=="ACK.ResourceSynced")].status
+      name: SYNCED
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: UserGroupMembership is the Schema for the UserGroupMemberships
+          API.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              UserGroupMembershipSpec puts one IAM user in a list of groups
+              (AddUserToGroup) and takes it out of them (RemoveUserFromGroup). It is
+              Terraform's aws_iam_user_group_membership.
+
+              It is not exclusive: only the listed groups are added or removed. Groups
+              the user is in for any other reason (another object, the console) are
+              left alone, so two writers do not undo each other. A group taken off the
+              list is removed; status.groups remembers what was put.
+
+              Exactly one of userName and userRef must be set, and exactly one of
+              groups and groupRefs.
+            properties:
+              groupRefs:
+                description: ACK iam.services.k8s.aws Groups whose spec.name are the
+                  groups.
+                items:
+                  description: "AWSResourceReferenceWrapper provides a wrapper around
+                    *AWSResourceReference\ntype to provide more user friendly syntax
+                    for references using 'from' field\nEx:\nAPIIDRef:\n\n\tfrom:\n\t
+                    \ name: my-api"
+                  properties:
+                    from:
+                      description: |-
+                        AWSResourceReference provides all the values necessary to reference another
+                        k8s resource for finding the identifier(Id/ARN/Name)
+                      properties:
+                        name:
+                          type: string
+                        namespace:
+                          type: string
+                      type: object
+                  type: object
+                minItems: 1
+                type: array
+              groups:
+                description: The names of the groups to put the user in.
+                items:
+                  type: string
+                minItems: 1
+                type: array
+              userName:
+                description: The name of the IAM user. Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              userRef:
+                description: An ACK iam.services.k8s.aws User whose spec.name is the
+                  user.
+                properties:
+                  from:
+                    description: |-
+                      AWSResourceReference provides all the values necessary to reference another
+                      k8s resource for finding the identifier(Id/ARN/Name)
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+            type: object
+            x-kubernetes-validations:
+            - message: exactly one of userName and userRef must be set
+              rule: '[has(self.userName), has(self.userRef)].filter(x, x).size() ==
+                1'
+            - message: exactly one of groups and groupRefs must be set
+              rule: '[has(self.groups), has(self.groupRefs)].filter(x, x).size() ==
+                1'
+          status:
+            description: |-
+              UserGroupMembershipStatus defines the observed state of
+              UserGroupMembership.
+            properties:
+              ackResourceMetadata:
+                description: |-
+                  ResourceMetadata is common to all custom resources (CRs) managed by an ACK
+                  service controller. It is contained in the CR's `Status` member field and
+                  comprises various status and identifier fields useful to ACK for tracking
+                  state changes between Kubernetes and the backend AWS service API
+                properties:
+                  arn:
+                    description: |-
+                      ARN is the Amazon Resource Name for the resource. This is a
+                      globally-unique identifier and is set only by the ACK service controller
+                      once the controller has orchestrated the creation of the resource OR
+                      when it has verified that an "adopted" resource (a resource where the
+                      ARN annotation was set by the Kubernetes user on the CR) exists and
+                      matches the supplied CR's Spec field values.
+                      https://github.com/aws/aws-controllers-k8s/issues/270
+                    type: string
+                  ownerAccountID:
+                    description: |-
+                      OwnerAccountID is the AWS Account ID of the account that owns the
+                      backend AWS service API resource.
+                    type: string
+                  partition:
+                    description: Partition is the AWS partition in which the resource
+                      exists or will exist
+                    type: string
+                  region:
+                    description: Region is the AWS region in which the resource exists
+                      or will exist.
+                    type: string
+                required:
+                - ownerAccountID
+                - region
+                type: object
+              conditions:
+                items:
+                  description: |-
+                    Condition is the common struct used by all CRDs managed by ACK service
+                    controllers to indicate terminal states  of the CR and its backend AWS
+                    service API resource
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A human readable message indicating details about
+                        the transition.
+                      type: string
+                    reason:
+                      description: The reason for the condition's last transition.
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the Condition
+                      type: string
+                  required:
+                  - status
+                  - type
+                  type: object
+                type: array
+              groups:
+                description: |-
+                  The groups this object last put the user in: a group taken off
+                  spec.groups is removed only if it is here.
+                items:
+                  type: string
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

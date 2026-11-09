@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="22" viewBox="0 0 300 22" role="img" aria-label="events: official 59.2%, ours beyond official 28.5%, uncovered 12.3% of 130 attributes">
+<title>events: official 59.2%, ours beyond official 28.5%, uncovered 12.3% of 130 attributes</title>
+<rect x="0" y="0" width="300" height="22" rx="3" fill="#d0d7de"/>
+<rect x="0" y="0" width="177.6" height="22" fill="#2f81f7"/>
+<text x="88.8" y="12" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">59.2%</text>
+<rect x="177.6" y="0" width="85.4" height="22" fill="#2da44e"/>
+<text x="220.3" y="12" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">28.5%</text>
+<rect x="263" y="0" width="37" height="22" fill="#d0d7de"/>
+<rect x="0.5" y="0.5" width="299" height="21" rx="3" fill="none" stroke="#8c959f"/>
+</svg>

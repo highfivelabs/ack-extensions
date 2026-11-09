@@ -9,7 +9,7 @@ set -o errexit -o nounset -o pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${ROOT}"
 GO_LICENSES="${ROOT}/bin/go-licenses"
-[[ -x "${GO_LICENSES}" ]] || { echo "bin/go-licenses is missing; run make tools" >&2; exit 1; }
+[[ -x "${GO_LICENSES}" ]] || { echo "bin/go-licenses is missing; run task tools" >&2; exit 1; }
 out=docs/third-party-licenses.csv
 report="$("${GO_LICENSES}" report ./services/iam/cmd/controller ./services/rds/cmd/controller ./cmd/operator 2>/dev/null)"
 {

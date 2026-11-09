@@ -4,7 +4,7 @@
 #
 # Fetch ACK's code generator at the commit pinned in UPSTREAM.md into
 # third_party/code-generator, apply patches/code-generator/ in order, and
-# build bin/ack-generate. Only `make generate` needs it: the runtime and
+# build bin/ack-generate. Only `task generate` needs it: the runtime and
 # the service controllers come in as ordinary Go modules (go.mod).
 #
 #   hack/upstream.sh          fetch if missing, reset to the pin, apply patches, build
