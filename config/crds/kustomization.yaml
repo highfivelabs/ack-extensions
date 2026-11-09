@@ -3,6 +3,7 @@
 # Our CRDs (generated: hack/generate.sh). ACK's own CRDs (services.k8s.aws
 # and the service controllers') come with ACK's charts.
 resources:
+  - bases/applicationautoscaling.aws.hfl.dev_scheduledactions.yaml
   - bases/autoscaling.aws.hfl.dev_scalingpolicies.yaml
   - bases/autoscaling.aws.hfl.dev_scheduledactions.yaml
   - bases/iam.aws.hfl.dev_rolepolicyattachments.yaml
