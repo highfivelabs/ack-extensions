@@ -10,6 +10,10 @@
 # partner's, not an application's).
 resources:
   Connection:
+    exceptions:
+      errors:
+        404:
+          code: ResourceNotFoundException
     fields:
       Name:
         is_primary_key: true
