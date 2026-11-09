@@ -12,6 +12,9 @@ import (
 	// RolePolicyAttachment has no Create/Delete pair in IAM's model, so it
 	// is not generated; registering its package adds its manager factory.
 	_ "github.com/highfivelabs/ack-extensions/services/iam/pkg/resource/role_policy_attachment"
+	// AccountAlias is CreateAccountAlias and ListAccountAliases, an
+	// account-wide setting the generator does not read as a resource.
+	_ "github.com/highfivelabs/ack-extensions/services/iam/pkg/resource/account_alias"
 )
 
 func init() {
