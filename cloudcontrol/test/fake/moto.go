@@ -165,9 +165,11 @@ func (b *SAMLProvider) Delete(ctx context.Context, arn string) error {
 // ---- AWS::EC2::TransitGatewayRouteTable on moto's EC2 ----
 
 // TransitGatewayRouteTable is the route table backend; moto implements all
-// of it. moto keeps a deleted table with state "deleted", as AWS shows one
-// for a while; the read treats it as gone, as the CloudFormation handler
-// does.
+// of it but one check: it makes a table for a gateway that does not exist,
+// where AWS answers InvalidTransitGatewayID.NotFound, so the backend looks
+// the gateway up first. moto keeps a deleted table with state "deleted", as
+// AWS shows one for a while; the read treats it as gone, as the
+// CloudFormation handler does.
 type TransitGatewayRouteTable struct{ EC2 *ec2.Client }
 
 // NewTransitGatewayRouteTable makes the backend.
@@ -193,14 +195,22 @@ func sortedKeys(m map[string]string) []string {
 }
 
 func (b *TransitGatewayRouteTable) Create(ctx context.Context, m map[string]any) (string, error) {
+	gw := str(m, "TransitGatewayId")
+	gws, err := b.EC2.DescribeTransitGateways(ctx, &ec2.DescribeTransitGatewaysInput{TransitGatewayIds: []string{gw}})
+	if err == nil && len(gws.TransitGateways) == 0 {
+		err = fmt.Errorf("InvalidTransitGatewayID.NotFound: Transit Gateway %s was deleted or does not exist", gw)
+	}
+	if err != nil {
+		// The real handler's code for a missing gateway is not known; the
+		// request cannot succeed as written, so InvalidRequest.
+		return "", InvalidRequest("%v", err)
+	}
 	in := &ec2.CreateTransitGatewayRouteTableInput{TransitGatewayId: aws.String(str(m, "TransitGatewayId"))}
 	if tags := tagsOf(m["Tags"]); len(tags) > 0 {
 		in.TagSpecifications = []ec2types.TagSpecification{{ResourceType: ec2types.ResourceTypeTransitGatewayRouteTable, Tags: ec2Tags(tags)}}
 	}
 	out, err := b.EC2.CreateTransitGatewayRouteTable(ctx, in)
 	if err != nil {
-		// The real handler's code for a missing gateway is not known; the
-		// request cannot succeed as written, so InvalidRequest.
 		return "", InvalidRequest("%v", err)
 	}
 	return aws.ToString(out.TransitGatewayRouteTable.TransitGatewayRouteTableId), nil
