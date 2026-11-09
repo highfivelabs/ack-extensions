@@ -8,17 +8,20 @@ require (
 	github.com/aws-controllers-k8s/lambda-controller v1.19.0
 	github.com/aws-controllers-k8s/rds-controller v1.14.2
 	github.com/aws-controllers-k8s/runtime v0.67.0
+	github.com/aws-controllers-k8s/wafv2-controller v1.8.1
 	github.com/aws/aws-sdk-go-v2 v1.41.5
 	github.com/aws/aws-sdk-go-v2/credentials v1.17.47
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.34.10
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.64.3
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.290.1
+	github.com/aws/aws-sdk-go-v2/service/ecr v1.55.0
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.36.7
 	github.com/aws/aws-sdk-go-v2/service/iam v1.38.8
 	github.com/aws/aws-sdk-go-v2/service/kms v1.37.14
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.88.5
 	github.com/aws/aws-sdk-go-v2/service/rds v1.93.8
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.34.14
+	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.55.11
 	github.com/aws/smithy-go v1.28.8
 	github.com/go-logr/logr v1.4.3
 	github.com/spf13/pflag v1.0.9
