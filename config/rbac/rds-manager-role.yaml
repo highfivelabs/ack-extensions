@@ -23,9 +23,18 @@ rules:
   - list
   - watch
 - apiGroups:
+  - iam.services.k8s.aws
+  resources:
+  - roles
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - rds.aws.hfl.dev
   resources:
   - dbproxytargets
+  - dbroleassociations
   - optiongroups
   verbs:
   - create
@@ -39,6 +48,7 @@ rules:
   - rds.aws.hfl.dev
   resources:
   - dbproxytargets/status
+  - dbroleassociations/status
   - optiongroups/status
   verbs:
   - get

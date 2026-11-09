@@ -5,4 +5,5 @@
 resources:
   - bases/iam.aws.hfl.dev_rolepolicyattachments.yaml
   - bases/rds.aws.hfl.dev_dbproxytargets.yaml
+  - bases/rds.aws.hfl.dev_dbroleassociations.yaml
   - bases/rds.aws.hfl.dev_optiongroups.yaml
