@@ -102,10 +102,10 @@ kubectl kustomize config/default \
   | KO_DOCKER_REPO=kind.local KIND_CLUSTER_NAME="${CLUSTER}" ko resolve --platform="linux/${arch}" -f - >"${work}/ours.yaml"
 kubectl apply --server-side -f "${work}/ours.yaml" >/dev/null
 kubectl -n ack-extensions-system rollout status deploy/ack-extensions-operator --timeout=180s >/dev/null
-for crd in scheduledactions.applicationautoscaling.aws.hfl.dev scalingpolicies.autoscaling.aws.hfl.dev scheduledactions.autoscaling.aws.hfl.dev rolepolicyattachments.iam.aws.hfl.dev replicakeys.kms.aws.hfl.dev permissions.lambda.aws.hfl.dev dbproxytargets.rds.aws.hfl.dev dbroleassociations.rds.aws.hfl.dev optiongroups.rds.aws.hfl.dev; do
+for crd in scheduledactions.applicationautoscaling.aws.hfl.dev scalingpolicies.autoscaling.aws.hfl.dev scheduledactions.autoscaling.aws.hfl.dev customergateways.ec2.aws.hfl.dev rolepolicyattachments.iam.aws.hfl.dev replicakeys.kms.aws.hfl.dev permissions.lambda.aws.hfl.dev dbproxytargets.rds.aws.hfl.dev dbroleassociations.rds.aws.hfl.dev optiongroups.rds.aws.hfl.dev; do
   kubectl get crd "${crd}" >/dev/null || fail "CRD ${crd} missing"
 done
-ok "CRDs installed: scheduledactions.applicationautoscaling, scalingpolicies.autoscaling, scheduledactions.autoscaling, rolepolicyattachments.iam, replicakeys.kms, permissions.lambda, dbproxytargets.rds, dbroleassociations.rds, optiongroups.rds (*.aws.hfl.dev); operator running"
+ok "CRDs installed: scheduledactions.applicationautoscaling, scalingpolicies.autoscaling, scheduledactions.autoscaling, customergateways.ec2, rolepolicyattachments.iam, replicakeys.kms, permissions.lambda, dbproxytargets.rds, dbroleassociations.rds, optiongroups.rds (*.aws.hfl.dev); operator running"
 
 echo "== identity own: our manager beside ACK's, as ACK's role"
 wait_for 180 "manager ${ACK_NS}/ack-extensions-rds-manager rolled out" \
@@ -122,10 +122,10 @@ ack_region="$(kubectl -n "${ACK_NS}" get deploy "${ACK_DEPLOY}" -o jsonpath='{.s
 our_region="$(kubectl -n "${ACK_NS}" get deploy ack-extensions-rds-manager -o jsonpath='{.spec.template.spec.containers[0].env[?(@.name=="AWS_REGION")].value}')"
 [[ "${ack_region}" == "${our_region}" ]] || fail "region: ACK ${ack_region}, ours ${our_region}"
 ok "same credentials Secret (${our_secret}), region (${our_region}) and endpoint as ACK's controller"
-for svc in applicationautoscaling autoscaling iam kms lambda; do
+for svc in applicationautoscaling autoscaling ec2 iam kms lambda; do
   kubectl get deploy -A -l "aws.hfl.dev/service=${svc}" -o name | grep -q . && fail "a ${svc} manager without an ACK ${svc} controller"
 done
-ok "no applicationautoscaling, autoscaling, iam, kms or lambda manager: none of their ACK controllers is installed"
+ok "no applicationautoscaling, autoscaling, ec2, iam, kms or lambda manager: none of their ACK controllers is installed"
 
 can() { kubectl auth can-i "$1" "$2" --as="system:serviceaccount:${ACK_NS}:$3" ${4:+-n "$4"} 2>/dev/null; }
 [[ "$(can create dbproxytargets.rds.aws.hfl.dev ack-extensions-rds-manager default)" == yes ]] || fail "our manager cannot create dbproxytargets"
