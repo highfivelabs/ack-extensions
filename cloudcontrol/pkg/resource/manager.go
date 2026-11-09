@@ -495,7 +495,12 @@ func (m *manager) ResolveReferences(_ context.Context, _ client.Reader, res ackt
 	return res, false, nil
 }
 
-func (m *manager) ClearResolvedReferences(res acktypes.AWSResource) acktypes.AWSResource { return res }
+// ClearResolvedReferences returns a copy, as ACK's generated managers do:
+// the runtime patches the object it gets back and writes the API server's
+// answer into it, which must not overwrite the caller's observed state.
+func (m *manager) ClearResolvedReferences(res acktypes.AWSResource) acktypes.AWSResource {
+	return res.DeepCopy()
+}
 
 // onError and onSuccess set ACK.Terminal and ACK.Recoverable as ACK's
 // generated managers do.
