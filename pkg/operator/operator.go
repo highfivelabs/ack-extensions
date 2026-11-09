@@ -8,7 +8,7 @@
 //     (app.kubernetes.io/name: <service>-chart), or by the annotation
 //     aws.hfl.dev/ack-service on a Deployment that was installed some other
 //     way.
-//   - For each one whose service we extend (applicationautoscaling, autoscaling, ec2, ecr, eventbridge, iam, kms, lambda, rds, wafv2), it runs our manager,
+//   - For each one whose service we extend (applicationautoscaling, autoscaling, ec2, ecr, eventbridge, iam, kms, lambda, organizations, rds, wafv2), it runs our manager,
 //     and beside EventBridge's also the manager of a service ACK has no
 //     controller for (scheduler; Beside),
 //     in the same namespace with the controller's own arguments and
@@ -58,7 +58,7 @@ const (
 	// LabelManagedBy marks what the operator made.
 	LabelManagedBy = "app.kubernetes.io/managed-by"
 	managedBy      = Name + "-operator"
-	// LabelService is our service (applicationautoscaling, autoscaling, ec2, ecr, eventbridge, iam, kms, lambda, rds, scheduler, wafv2).
+	// LabelService is our service (applicationautoscaling, autoscaling, ec2, ecr, eventbridge, iam, kms, lambda, organizations, rds, scheduler, wafv2).
 	LabelService = "aws.hfl.dev/service"
 	// LabelSource is the ACK controller Deployment, namespace.name.
 	LabelSource = "aws.hfl.dev/source"

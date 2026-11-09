@@ -50,6 +50,8 @@ github.com/aws/aws-sdk-go-v2/service/kms v1.37.14 h1:IvhYu4W4wKMqN6DqtuVD7obkFfl
 github.com/aws/aws-sdk-go-v2/service/kms v1.37.14/go.mod h1:yqUt1GZH4uf7HUNT2Kd7qk6P+Vi5z+C5+NjNSNRO1L4=
 github.com/aws/aws-sdk-go-v2/service/lambda v1.88.5 h1:HWN7xwaV7Zwrn3Jlauio4u4aTMFgRzG2fblHWQeir/k=
 github.com/aws/aws-sdk-go-v2/service/lambda v1.88.5/go.mod h1:6HBXRyFFqOw+ALkJ6YGHfrr20/YXYv6X9pcZErXRvCA=
+github.com/aws/aws-sdk-go-v2/service/organizations v1.37.4 h1:tnZdzF6NRpkixgjgpI4jZQWbS0SADjybU1oWxMH47iE=
+github.com/aws/aws-sdk-go-v2/service/organizations v1.37.4/go.mod h1:+cn2w8QsHagJJeNGw6GnC+PtffLpF0cEMPoEX2noWWU=
 github.com/aws/aws-sdk-go-v2/service/rds v1.93.8 h1:arPMUy5db44S/YN1AIPIDHGkD6zd1Ov00JWY+Z2YDL4=
 github.com/aws/aws-sdk-go-v2/service/rds v1.93.8/go.mod h1:y3BbL7G7qwMzJsSV1LH90Y/n91PukXPy3TqGg1VVESE=
 github.com/aws/aws-sdk-go-v2/service/scheduler v1.12.13 h1:aOIMXa/GJEGOKKPsqPUa4Gye4Vs76yjHJVAcz+0iReA=

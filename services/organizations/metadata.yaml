@@ -1,0 +1,8 @@
+service:
+  full_name: "AWS Organizations"
+  short_name: "Organizations"
+  link: "https://aws.amazon.com/organizations/"
+  documentation: "https://docs.aws.amazon.com/organizations/latest/APIReference/Welcome.html"
+api_versions:
+  - api_version: v1alpha1
+    status: available

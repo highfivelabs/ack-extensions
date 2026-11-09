@@ -1,6 +1,6 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has twenty-four kinds:
+Status, 2026-11-09: the repository has twenty-five kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
@@ -11,6 +11,7 @@ Status, 2026-11-09: the repository has twenty-four kinds:
 - `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias` and `AccountPasswordPolicy`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
+- `organizations.aws.hfl.dev` `Policy`;
 - `rds.aws.hfl.dev` `OptionGroup`;
 - `rds.aws.hfl.dev` `DBProxyTarget`;
 - `rds.aws.hfl.dev` `DBRoleAssociation`;
@@ -522,6 +523,20 @@ controller to show it can fail:
     from another Region. The manager sends the replica's key ID to the
     replica's Region, after checking that the replica's ARN is in that
     Region, which stands in for AWS's check.
+- **Organizations policies.**
+  - moto stores any text as a policy's content, whatever its type, and
+    returns it re-serialised (`json.dumps`: a space after each colon and
+    comma), where AWS returns the text as given. It creates a policy of
+    type `TAG_POLICY`, `AISERVICES_OPT_OUT_POLICY` and
+    `RESOURCE_CONTROL_POLICY`, answers `InvalidInputException` for
+    `DECLARATIVE_POLICY_EC2` and `CHATBOT_POLICY`, and a server error for
+    a `BACKUP_POLICY` with an empty document.
+  - It refuses a second policy with the same name
+    (`DuplicatePolicyException`), as AWS does, keeps tags and
+    `UpdatePolicy`'s name, description and content, and answers
+    `PolicyNotFoundException` for an unknown id.
+  - It needs an organization first (`CreateOrganization`); the test
+    makes one with the SDK.
 - **An association's status.** moto marks a new association `ACTIVE` at
   once. On AWS it is `PENDING` first, and `INVALID` when RDS cannot assume
   the role. The rule (synced only when `ACTIVE`) is unit-tested.
@@ -1373,6 +1388,63 @@ controller (section 6.23).
 **Not proven:** that the target and role exist and the role is trusted
 (moto checks none of it), a schedule running, and real AWS.
 
+### 6.25 `organizations.aws.hfl.dev` `Policy`
+
+An AWS Organizations policy: a service control policy, resource control
+policy, tag policy, backup policy or AI services opt-out policy. This is
+the first item of `docs/coverage/foundation.md` (F01), the builder's first
+ask: declare an SCP. ACK's organizations-controller `v1.7.0` has `Account`
+and `OrganizationalUnit` and ignores `Policy`, `Organization` and
+`GovCloudAccount`. Rechecked read-only on 2026-11-09: no release after
+`v1.7.0` (2026-10-23), no open pull request (the two OU-reference pull
+requests, #71 and #76, are closed), community #2884 (`Policy`,
+`PolicyAttachment`, `DelegatedAdministrator`, opened 2026-05-11) has no
+pull request, and #2369 (`MoveAccount`) is open. So the kinds are built
+here; recheck #2884 before each of the next ones.
+
+**Generated** from `CreatePolicy`, `DescribePolicy`, `UpdatePolicy` and
+`DeletePolicy`, in a new service, `services/organizations`; every
+resource ACK has is ignored in its `generator.yaml`. The SDK client is
+`service/organizations` `v1.37.4`, the version in the organizations-controller
+`v1.7.0` `go.mod`.
+
+- **The response wraps the policy** in a `PolicySummary` (id, ARN, name,
+  description, type) beside the `content`, so the generator cannot read
+  the identifier or the spec's name, description and type back. The
+  identifier is a field made `from` `Policy.PolicySummary.Id`, and
+  the hooks (`hooks.go`) set the id, the ARN and the spec fields from the
+  summary on create and read. `status.policySummary` keeps the whole
+  summary, including `awsManaged`.
+- **The document** is compared as JSON (`custom_delta.go`), so key order
+  and white space are no drift. Statement order, and a string against a
+  one-element list, are drift: AWS keeps the text as given, and the
+  comparison does not normalise IAM's two spellings.
+- **Tags** are read with `ListTagsForResource` and synced with
+  `TagResource` and `UntagResource` (copied from eventbridge-controller's
+  `EventBus`); a change of tags alone does not call `UpdatePolicy`.
+- **Immutable:** the type. The name, description and document update with
+  `UpdatePolicy`. **Not found:** `PolicyNotFoundException`. **Terminal:**
+  `InvalidInputException`, `MalformedPolicyDocumentException`,
+  `DuplicatePolicyException`.
+- **Which account.** Organizations calls are made in the management
+  account, or a delegated administrator's, by the identity the manager
+  shares with ACK's organizations-controller (section 7). Nothing in the
+  kind names an account. See open question 11.
+- **An AWS-managed policy** (`FullAWSAccess`) cannot be updated or
+  deleted; adopting one is read-only, and deleting the object with
+  `deletion-policy: retain` leaves it. Not tried (moto has none).
+- **Deleting a policy that is attached** fails with `PolicyInUseException`
+  until `PolicyAttachment` (next) or the console detaches it.
+
+**Not proven on moto:** that AWS refuses a malformed document or one that
+breaks the type's rules (moto stores any text); that AWS keeps the text as
+given (moto re-serialises the JSON with its own white space; the tests
+compare documents, and the JSON comparison is what keeps the object
+settled); `DECLARATIVE_POLICY_EC2` and `CHATBOT_POLICY` (moto answers
+`InvalidInputException`); `BACKUP_POLICY` (moto answers a server error to
+an empty document); that a policy type must be enabled on the root before
+a policy of that type can be attached; real AWS.
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)
@@ -1735,3 +1807,30 @@ Before it can run on a real cluster:
     later, the first option is the smallest. `LoginProfile`,
     `SSHPublicKey`, the account alias and the password policy do not
     depend on the answer and go ahead.
+11. **Which account an Organizations kind acts in** (F01 and the kinds
+    after it: Identity Center, Control Tower, the security services'
+    organization settings). Organization-level APIs run in the
+    organization's management account, and some in a delegated
+    administrator's account (Identity Center, and policies once a
+    delegation policy allows it). Our manager runs with the identity of
+    ACK's controller for the same service, as every manager here does
+    (section 7), and ACK's own `Account` and `OrganizationalUnit` act in
+    the same account. Nothing in a kind names an account. Options:
+    - the manager acts in whatever account its identity is, and a
+      platform team installs the Organizations managers with the
+      management account's role (or the delegated administrator's) and
+      keeps them out of workload clusters;
+    - a per-object account field, which ACK's CARM already gives:
+      annotate the namespace with `services.k8s.aws/owner-account-id`
+      and map it to a role in the management account;
+    - refuse to start unless the account is the organization's
+      management account (checked with `DescribeOrganization`), which
+      would also refuse a delegated administrator.
+
+    Recommended: the first, with the second where one cluster serves
+    several accounts, and document that these kinds must not run with a
+    workload account's role. The cluster holding them holds the
+    organization's guardrails (an SCP can lock out every account), so the
+    namespace they live in needs the tightest RBAC; that is a note in the
+    README, not a code check. The builder to confirm. Not blocking the
+    kinds.

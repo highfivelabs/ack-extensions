@@ -49,6 +49,8 @@ spec:
               value: ko://github.com/highfivelabs/ack-extensions/services/kms/cmd/controller
             - name: MANAGER_IMAGE_LAMBDA
               value: ko://github.com/highfivelabs/ack-extensions/services/lambda/cmd/controller
+            - name: MANAGER_IMAGE_ORGANIZATIONS
+              value: ko://github.com/highfivelabs/ack-extensions/services/organizations/cmd/controller
             - name: MANAGER_IMAGE_RDS
               value: ko://github.com/highfivelabs/ack-extensions/services/rds/cmd/controller
             - name: MANAGER_IMAGE_SCHEDULER

@@ -11,6 +11,7 @@ resources:
   - iam-manager-role.yaml
   - kms-manager-role.yaml
   - lambda-manager-role.yaml
+  - organizations-manager-role.yaml
   - rds-manager-role.yaml
   - scheduler-manager-role.yaml
   - wafv2-manager-role.yaml
