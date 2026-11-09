@@ -37,6 +37,8 @@ spec:
               value: ko://github.com/highfivelabs/ack-extensions/services/applicationautoscaling/cmd/controller
             - name: MANAGER_IMAGE_AUTOSCALING
               value: ko://github.com/highfivelabs/ack-extensions/services/autoscaling/cmd/controller
+            - name: MANAGER_IMAGE_EVENTBRIDGE
+              value: ko://github.com/highfivelabs/ack-extensions/services/eventbridge/cmd/controller
             - name: MANAGER_IMAGE_IAM
               value: ko://github.com/highfivelabs/ack-extensions/services/iam/cmd/controller
             - name: MANAGER_IMAGE_KMS

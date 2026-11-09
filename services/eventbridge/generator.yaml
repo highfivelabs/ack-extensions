@@ -1,0 +1,40 @@
+# Generator configuration for ack-extensions's EventBridge kinds
+# (eventbridge.aws.hfl.dev).
+#
+# ACK's eventbridge-controller (v1.9.2) ignores Connection and
+# ApiDestination. Connection is generated here from CreateConnection,
+# DescribeConnection, UpdateConnection and DeleteConnection; its secrets
+# (a basic-auth password, an API key, an OAuth client secret) are ACK
+# SecretKeyReferences, read from Kubernetes Secrets and never read back.
+# The resources ACK has are ignored, and so is PartnerEventSource (a SaaS
+# partner's, not an application's).
+resources:
+  Connection:
+    fields:
+      Name:
+        is_primary_key: true
+        is_immutable: true
+      AuthParameters.BasicAuthParameters.Password:
+        is_secret: true
+      AuthParameters.ApiKeyAuthParameters.ApiKeyValue:
+        is_secret: true
+      AuthParameters.OAuthParameters.ClientParameters.ClientSecret:
+        is_secret: true
+    hooks:
+      sdk_read_one_post_set_output:
+        template_path: hooks/connection/sdk_read_one_post_set_output.go.tpl
+    # A connection has no tags.
+    tags:
+      ignore: true
+    synced:
+      when:
+        - path: Status.ConnectionState
+          in:
+            - AUTHORIZED
+ignore:
+  resource_names:
+    - ApiDestination
+    - Archive
+    - Endpoint
+    - EventBus
+    - PartnerEventSource
