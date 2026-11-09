@@ -119,10 +119,11 @@ tasks:
       - task: upstream-check
       - task: upstream:yaml-check
       - task: go:fmt-check
-        vars: {DIRS: services pkg cmd tests}
+        vars: {DIRS: services pkg cmd tests cloudcontrol hack/cloudcontrol-gen}
       - task: generate
       - task: go:committed
         vars: {PATHS: services config, WHAT: generated files}
+      - task: cloudcontrol:generated
       # ACK's generated code fails vet's composites check (unkeyed fields in
       # metav1.Time and acktypes.VersionInfo literals), as ACK's own
       # controllers do; every other analyzer runs.
@@ -130,6 +131,38 @@ tasks:
       - hack/check-spdx.sh
       - task: build
       - task: test
+
+  cloudcontrol:generate:
+    desc: Regenerate the Cloud Control kinds (CRDs, embedded schemas, registry, IAM policies, RBAC, report) from cloudcontrol/types.yaml and the schema zip; and the readiness survey of every type.
+    cmds:
+      - go run ./hack/cloudcontrol-gen
+      - go run ./hack/cloudcontrol-gen --survey
+
+  cloudcontrol:generated:
+    desc: Fail if the committed Cloud Control outputs differ from a regeneration.
+    cmds:
+      - task: cloudcontrol:generate
+      - task: go:committed
+        vars: {PATHS: cloudcontrol, WHAT: generated Cloud Control files}
+
+  cloudcontrol:test:
+    desc: The Cloud Control spike's unit tests and its end-to-end tests (envtest, the manager's real binary, the fake Cloud Control over moto).
+    cmds:
+      - task: setup-envtest
+      - hack/moto.sh
+      - task: go:test-envtest
+        vars: {ENVTEST_K8S_VERSION: '{{.ENVTEST_K8S_VERSION}}', PKGS: ./cloudcontrol/... ./hack/cloudcontrol-gen/..., TIMEOUT: 20m}
+
+  cloudcontrol:check:
+    desc: Everything the Cloud Control spike needs before a commit (generated files current, vet, build, tests).
+    cmds:
+      - task: go:fmt-check
+        vars: {DIRS: cloudcontrol hack/cloudcontrol-gen}
+      - task: cloudcontrol:generated
+      - go vet ./cloudcontrol/... ./hack/cloudcontrol-gen/...
+      - hack/check-spdx.sh
+      - go build -o "{{.BIN}}/cloudcontrol-manager" ./cloudcontrol/cmd/manager
+      - task: cloudcontrol:test
 
   licenses:
     desc: Write docs/third-party-licenses.csv; fail on a licence outside the accepted set.

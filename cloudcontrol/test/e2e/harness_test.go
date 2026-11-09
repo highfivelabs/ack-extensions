@@ -1,0 +1,380 @@
+// Copyright 2026 High Five Labs
+// SPDX-License-Identifier: Apache-2.0
+
+// Package e2e runs the generic Cloud Control manager the way it runs in a
+// cluster: envtest's real kube-apiserver with the generated CRDs and ACK's
+// core CRDs, the manager's real binary started with ACK's chart flags, and
+// the fake Cloud Control (cloudcontrol/test/fake) doing the work in moto.
+// Nothing here may reach AWS (fake/guard.go says how that is enforced).
+package e2e
+
+import (
+	"bytes"
+	"context"
+	"fmt"
+	"net"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
+	"sync"
+	"testing"
+	"time"
+
+	ackv1alpha1 "github.com/aws-controllers-k8s/runtime/apis/core/v1alpha1"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	corev1 "k8s.io/api/core/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
+	"k8s.io/client-go/rest"
+	"k8s.io/client-go/tools/clientcmd"
+	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/envtest"
+
+	"github.com/highfivelabs/ack-extensions/cloudcontrol/pkg/registry"
+	"github.com/highfivelabs/ack-extensions/cloudcontrol/test/fake"
+)
+
+const region = "us-west-2"
+
+type env struct {
+	c      client.Client
+	cc     *fake.Server
+	ccURL  string
+	moto   aws.Config
+	logs   *syncBuffer
+	ctx    context.Context
+	schema *runtime.Scheme
+}
+
+func repoRoot(t *testing.T) string {
+	wd, _ := os.Getwd()
+	for dir := wd; ; dir = filepath.Dir(dir) {
+		if _, err := os.Stat(filepath.Join(dir, "go.mod")); err == nil {
+			return dir
+		}
+		if dir == filepath.Dir(dir) {
+			t.Fatalf("no go.mod above %s", wd)
+		}
+	}
+}
+
+func freePort(t *testing.T) int {
+	l, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer l.Close()
+	return l.Addr().(*net.TCPAddr).Port
+}
+
+type syncBuffer struct {
+	mu sync.Mutex
+	b  bytes.Buffer
+}
+
+func (s *syncBuffer) Write(p []byte) (int, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.b.Write(p)
+}
+
+func (s *syncBuffer) String() string {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.b.String()
+}
+
+func startMoto(t *testing.T, root string) string {
+	if u := os.Getenv("MOTO_URL"); u != "" {
+		return u
+	}
+	server := filepath.Join(root, ".cache", "moto-venv", "bin", "moto_server")
+	if _, err := os.Stat(server); err != nil {
+		t.Fatalf("%s is missing; run hack/moto.sh (or set MOTO_URL)", server)
+	}
+	port := freePort(t)
+	var out syncBuffer
+	cmd := exec.Command(server, "-H", "127.0.0.1", "-p", fmt.Sprint(port))
+	cmd.Stdout, cmd.Stderr = &out, &out
+	cmd.Env = fake.ChildEnv("PATH=" + os.Getenv("PATH"))
+	if err := cmd.Start(); err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = cmd.Process.Kill(); _, _ = cmd.Process.Wait() })
+	url := fmt.Sprintf("http://127.0.0.1:%d", port)
+	hc := fake.HTTPClient()
+	for deadline := time.Now().Add(30 * time.Second); time.Now().Before(deadline); time.Sleep(200 * time.Millisecond) {
+		if resp, err := hc.Get(url + "/moto-api/"); err == nil {
+			resp.Body.Close()
+			return url
+		}
+	}
+	t.Fatalf("moto did not start on %s:\n%s", url, out.String())
+	return ""
+}
+
+var (
+	buildOnce sync.Once
+	binPath   string
+	buildErr  error
+)
+
+func buildManager(t *testing.T, root string) string {
+	buildOnce.Do(func() {
+		dir, err := os.MkdirTemp("", "cloudcontrol-manager")
+		if err != nil {
+			buildErr = err
+			return
+		}
+		binPath = filepath.Join(dir, "manager")
+		cmd := exec.Command("go", "build", "-o", binPath, "./cloudcontrol/cmd/manager")
+		cmd.Dir = root
+		if out, err := cmd.CombinedOutput(); err != nil {
+			buildErr = fmt.Errorf("go build: %v\n%s", err, out)
+		}
+	})
+	if buildErr != nil {
+		t.Fatal(buildErr)
+	}
+	return binPath
+}
+
+func writeKubeconfig(t *testing.T, cfg *rest.Config) string {
+	kc := clientcmdapi.NewConfig()
+	kc.Clusters["envtest"] = &clientcmdapi.Cluster{Server: cfg.Host, CertificateAuthorityData: cfg.CAData}
+	kc.AuthInfos["envtest"] = &clientcmdapi.AuthInfo{ClientCertificateData: cfg.CertData, ClientKeyData: cfg.KeyData, Token: cfg.BearerToken}
+	kc.Contexts["envtest"] = &clientcmdapi.Context{Cluster: "envtest", AuthInfo: "envtest"}
+	kc.CurrentContext = "envtest"
+	path := filepath.Join(t.TempDir(), "kubeconfig")
+	if err := clientcmd.WriteToFile(*kc, path); err != nil {
+		t.Fatal(err)
+	}
+	return path
+}
+
+func moduleDir(t *testing.T, root, module string) string {
+	cmd := exec.Command("go", "list", "-m", "-f", "{{.Dir}}", module)
+	cmd.Dir = root
+	out, err := cmd.Output()
+	if err != nil {
+		t.Fatalf("go list -m %s: %v", module, err)
+	}
+	return strings.TrimSpace(string(out))
+}
+
+// start brings up moto, the fake Cloud Control over it, envtest and the
+// manager. It refuses to start unless both endpoints are local.
+func start(t *testing.T) *env {
+	t.Helper()
+	if os.Getenv("KUBEBUILDER_ASSETS") == "" {
+		t.Skip("KUBEBUILDER_ASSETS is not set; run through task cloudcontrol:test")
+	}
+	root := repoRoot(t)
+	motoURL := startMoto(t, root)
+	if err := fake.LocalOnly(motoURL); err != nil {
+		t.Fatal(err)
+	}
+	motoCfg, err := fake.AWSConfig(motoURL, region)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cc := fake.New()
+	for _, ty := range registry.Types {
+		var b fake.Backend
+		switch ty.TypeName {
+		case "AWS::IAM::SAMLProvider":
+			b = fake.NewSAMLProvider(motoCfg)
+		case "AWS::EC2::TransitGatewayRouteTable":
+			b = fake.NewTransitGatewayRouteTable(motoCfg)
+		case "AWS::GuardDuty::Detector":
+			b = fake.NewDetector(motoCfg)
+		default:
+			t.Fatalf("no fake backend for %s", ty.TypeName)
+		}
+		cc.Register(ty.Schema(), b)
+	}
+	ccURL := cc.Start()
+	t.Cleanup(cc.Close)
+	if err := fake.LocalOnly(ccURL); err != nil {
+		t.Fatal(err)
+	}
+
+	crdDir := filepath.Join(root, "cloudcontrol", "config", "crds")
+	files, _ := filepath.Glob(filepath.Join(crdDir, "*_*.yaml"))
+	paths := append(files, filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/runtime"), "config", "crd", "bases"))
+	te := &envtest.Environment{CRDDirectoryPaths: paths, ErrorIfCRDPathMissing: true}
+	cfg, err := te.Start()
+	if err != nil {
+		t.Fatalf("envtest: %v", err)
+	}
+	t.Cleanup(func() { _ = te.Stop() })
+	sch := runtime.NewScheme()
+	_ = clientgoscheme.AddToScheme(sch)
+	c, err := client.New(cfg, client.Options{Scheme: sch})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	bin := buildManager(t, root)
+	logs := &syncBuffer{}
+	ctx, cancel := context.WithCancel(context.Background())
+	cmd := exec.CommandContext(ctx, bin,
+		"--aws-region", region,
+		"--aws-endpoint-url", ccURL,
+		"--aws-identity-endpoint-url", motoURL,
+		"--allow-unsafe-aws-endpoint-urls",
+		"--log-level", "debug",
+		"--enable-development-logging",
+		"--deletion-policy", "delete",
+		"--reconcile-default-resync-seconds", "5",
+		"--metrics-addr", fmt.Sprintf("127.0.0.1:%d", freePort(t)),
+		"--healthz-addr", fmt.Sprintf("127.0.0.1:%d", freePort(t)),
+		"--enable-carm=false",
+	)
+	cmd.Env = fake.ChildEnv(
+		"KUBECONFIG="+writeKubeconfig(t, cfg),
+		"HOME="+t.TempDir(),
+		"PATH="+os.Getenv("PATH"),
+		"ACK_SYSTEM_NAMESPACE=default",
+	)
+	cmd.Stdout, cmd.Stderr = logs, logs
+	if err := cmd.Start(); err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() {
+		cancel()
+		_ = cmd.Wait()
+		if t.Failed() {
+			t.Logf("manager output:\n%s", logs.String())
+			for _, c := range cc.Calls() {
+				t.Logf("cloud control call: %s %s %s %s", c.Action, c.TypeName, c.Identifier, c.Body)
+			}
+		}
+	})
+	return &env{c: c, cc: cc, ccURL: ccURL, moto: motoCfg, logs: logs, ctx: context.Background(), schema: sch}
+}
+
+// ---- object helpers ----
+
+func gvk(kind string) schema.GroupVersionKind {
+	for _, t := range registry.Types {
+		if t.Kind == kind {
+			return t.GVK()
+		}
+	}
+	panic("no kind " + kind)
+}
+
+func obj(kind, name string, spec map[string]any) *unstructured.Unstructured {
+	u := &unstructured.Unstructured{Object: map[string]any{"spec": spec}}
+	u.SetGroupVersionKind(gvk(kind))
+	u.SetNamespace("default")
+	u.SetName(name)
+	return u
+}
+
+func (e *env) get(t *testing.T, u *unstructured.Unstructured) *unstructured.Unstructured {
+	t.Helper()
+	out := &unstructured.Unstructured{}
+	out.SetGroupVersionKind(u.GroupVersionKind())
+	if err := e.c.Get(e.ctx, client.ObjectKeyFromObject(u), out); err != nil {
+		t.Fatalf("get %s: %v", u.GetName(), err)
+	}
+	return out
+}
+
+func eventually(t *testing.T, timeout time.Duration, what string, f func() error) {
+	t.Helper()
+	var last error
+	for deadline := time.Now().Add(timeout); time.Now().Before(deadline); time.Sleep(250 * time.Millisecond) {
+		if last = f(); last == nil {
+			return
+		}
+	}
+	t.Fatalf("%s: not within %s: %v", what, timeout, last)
+}
+
+func condition(u *unstructured.Unstructured, typ ackv1alpha1.ConditionType) (string, string) {
+	cs, _, _ := unstructured.NestedSlice(u.Object, "status", "conditions")
+	for _, c := range cs {
+		m, _ := c.(map[string]any)
+		if m["type"] == string(typ) {
+			s, _ := m["status"].(string)
+			msg, _ := m["message"].(string)
+			return s, msg
+		}
+	}
+	return "", ""
+}
+
+func (e *env) waitSynced(t *testing.T, u *unstructured.Unstructured) *unstructured.Unstructured {
+	t.Helper()
+	var got *unstructured.Unstructured
+	eventually(t, 90*time.Second, u.GetName()+" synced and ready", func() error {
+		got = e.get(t, u)
+		if s, msg := condition(got, ackv1alpha1.ConditionTypeTerminal); s == "True" {
+			t.Fatalf("%s is terminal: %s", u.GetName(), msg)
+		}
+		s, msg := condition(got, ackv1alpha1.ConditionTypeResourceSynced)
+		r, _ := condition(got, ackv1alpha1.ConditionTypeReady)
+		if s != "True" || r != "True" {
+			return fmt.Errorf("synced=%q ready=%q: %s", s, r, msg)
+		}
+		return nil
+	})
+	return got
+}
+
+// update reads the object, changes it and writes it, again on a conflict
+// (the manager writes the same object).
+func (e *env) update(t *testing.T, u *unstructured.Unstructured, change func(*unstructured.Unstructured)) error {
+	t.Helper()
+	var err error
+	for i := 0; i < 20; i++ {
+		cur := e.get(t, u)
+		change(cur)
+		if err = e.c.Update(e.ctx, cur); err == nil || !apierrors.IsConflict(err) {
+			return err
+		}
+		time.Sleep(200 * time.Millisecond)
+	}
+	return err
+}
+
+func (e *env) waitGone(t *testing.T, u *unstructured.Unstructured) {
+	t.Helper()
+	eventually(t, 90*time.Second, u.GetName()+" deleted", func() error {
+		cur := &unstructured.Unstructured{}
+		cur.SetGroupVersionKind(u.GroupVersionKind())
+		err := e.c.Get(e.ctx, client.ObjectKeyFromObject(u), cur)
+		if apierrors.IsNotFound(err) {
+			return nil
+		}
+		return fmt.Errorf("still there (err %v)", err)
+	})
+}
+
+func (e *env) calls(action, typeName string) []fake.Call {
+	var out []fake.Call
+	for _, c := range e.cc.Calls() {
+		if c.Action == action && (typeName == "" || c.TypeName == typeName) {
+			out = append(out, c)
+		}
+	}
+	return out
+}
+
+func secret(name string, data map[string]string) *corev1.Secret {
+	s := &corev1.Secret{ObjectMeta: metav1.ObjectMeta{Name: name, Namespace: "default"}, Type: corev1.SecretTypeOpaque, Data: map[string][]byte{}}
+	for k, v := range data {
+		s.Data[k] = []byte(v)
+	}
+	return s
+}

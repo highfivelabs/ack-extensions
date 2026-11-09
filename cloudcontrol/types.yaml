@@ -1,0 +1,21 @@
+# Copyright 2026 High Five Labs
+# SPDX-License-Identifier: Apache-2.0
+#
+# The CloudFormation types served as Kubernetes kinds through AWS Cloud
+# Control API (docs/cloudcontrol.md). This list is the only per-type input:
+# hack/cloudcontrol-gen reads each type's registry schema from the pinned
+# zip (docs/coverage/inputs/CloudformationSchema.zip) and generates the CRD,
+# the embedded schema, the registry entry, the IAM policy and the RBAC.
+#
+# The group is <service, lower case>.<groupSuffix>; the kind is the
+# resource's name. A type ACK serves, or that ACK's generator could build
+# here, does not belong in this list (docs/cloudcontrol.md, "Which route").
+groupSuffix: cloudcontrol.aws.hfl.dev
+version: v1alpha1
+types:
+  # F03: IAM SAML providers. ACK's iam-controller ignores SAMLProvider.
+  - typeName: AWS::IAM::SAMLProvider
+  # F04: Transit Gateway route tables. ACK's ec2-controller ignores them.
+  - typeName: AWS::EC2::TransitGatewayRouteTable
+  # F15: GuardDuty's detector. ACK has no GuardDuty controller.
+  - typeName: AWS::GuardDuty::Detector
