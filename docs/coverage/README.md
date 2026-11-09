@@ -244,9 +244,9 @@ hack/coverage/run.sh               # regenerate everything under docs/coverage/ 
 hack/coverage/run.sh --check       # fail if the committed outputs differ from a regeneration from the pinned inputs
 hack/coverage/run.sh --update-pins # move the pins to the latest ACK releases and the current CloudFormation zip, then regenerate
 hack/coverage/run.sh -explain s3/Bucket
-make coverage                      # the first; `make coverage-check` is the second
+task coverage                      # the first; `task coverage:check` is the second
 ```
 
-The generator is Go (`hack/coverage/`, run from the root module; `go test ./hack/coverage` has its unit tests). Regeneration reads only the committed zip, `sources.yaml`, `hack/coverage/mappings.yaml` and `config/crds/bases/`, plus the pinned ACK CRDs, which it downloads from `raw.githubusercontent.com` at the pinned commits into the git-ignored `.cache/coverage/`. Outputs carry no timestamps; the only dates are the pins' own. `--update-pins` needs the `gh` CLI (read-only calls) and changes the committed zip; review the diff of `sources.yaml` before committing it. There is no `task coverage` yet: the Taskfile is not on `main`, so wire it to `hack/coverage/run.sh` when it lands.
+The generator is Go (`hack/coverage/`, run from the root module; `go test ./hack/coverage` has its unit tests). Regeneration reads only the committed zip, `sources.yaml`, `hack/coverage/mappings.yaml` and `config/crds/bases/`, plus the pinned ACK CRDs, which it downloads from `raw.githubusercontent.com` at the pinned commits into the git-ignored `.cache/coverage/`. Outputs carry no timestamps; the only dates are the pins' own. `--update-pins` needs the `gh` CLI (read-only calls) and changes the committed zip; review the diff of `sources.yaml` before committing it.
 
 To teach the matcher a rename, add a line to `attributes:` (an official kind) or `oursAttributes:` in `mappings.yaml`, a CRD path prefix on the left and the CloudFormation path prefix on the right, then regenerate and read `-explain` for that resource.

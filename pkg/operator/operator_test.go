@@ -99,7 +99,7 @@ func TestManagerArgs(t *testing.T) {
 func startEnv(t *testing.T) client.Client {
 	t.Helper()
 	if os.Getenv("KUBEBUILDER_ASSETS") == "" {
-		t.Skip("KUBEBUILDER_ASSETS is not set; run through make test")
+		t.Skip("KUBEBUILDER_ASSETS is not set; run through task test")
 	}
 	te := &envtest.Environment{}
 	cfg, err := te.Start()

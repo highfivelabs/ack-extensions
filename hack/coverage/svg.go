@@ -32,27 +32,27 @@ func barSVG(title string, s svcRow) []byte {
 	var b strings.Builder
 	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" role="img" aria-label="%s">`+"\n", barWidth, barHeight, barWidth, barHeight, html.EscapeString(title))
 	fmt.Fprintf(&b, "<title>%s</title>\n", html.EscapeString(title))
-	segments(&b, s, 0, 0, barWidth, barHeight, 12)
+	segments(&b, s.attrOfficial, s.attrOursBeyond, s.attrUncov, 0, 0, barWidth, barHeight, 12)
 	b.WriteString("</svg>\n")
 	return []byte(b.String())
 }
 
 // segments draws the three parts of the bar at (x, y), w by h.
-func segments(b *strings.Builder, s svcRow, x, y, w, h, fontPx int) {
+func segments(b *strings.Builder, official, ours, none, x, y, w, h, fontPx int) {
 	type part struct {
 		n    int
 		fill string
 		text string
 	}
 	parts := []part{
-		{s.attrOfficial, colOfficial, colTextOn},
-		{s.attrOursBeyond, colOurs, colTextOn},
-		{s.attrUncov, colNone, colTextDark},
+		{official, colOfficial, colTextOn},
+		{ours, colOurs, colTextOn},
+		{none, colNone, colTextDark},
 	}
 	fmt.Fprintf(b, `<rect x="%d" y="%d" width="%d" height="%d" rx="3" fill="%s"/>`+"\n", x, y, w, h, colNone)
 	// Widths in tenths of a pixel, so the parts add up to the bar.
 	acc := 0
-	total := s.attrTotal
+	total := official + ours + none
 	cum := 0
 	for i, p := range parts {
 		if total == 0 || p.n == 0 {
@@ -88,25 +88,40 @@ func barTitle(name string, s svcRow) string {
 		name, pct1(s.attrOfficial, s.attrTotal), pct1(s.attrOursBeyond, s.attrTotal), pct1(s.attrUncov, s.attrTotal), s.attrTotal)
 }
 
-// totalSVG is the large total bar with a legend, on its own white card so
-// the legend reads on a dark page too.
+// totalSVG is the total card: two bars, attributes and resources (a few very
+// large resources dominate the attribute count), with a legend, on its own
+// white card so the legend reads on a dark page too.
 func totalSVG(s svcRow, officialName string) []byte {
-	const w, h, pad = 640, 30, 10
+	const w, h, pad, labelH = 640, 26, 10, 18
+	height := pad + 2*(labelH+h+8) + 22 + pad - 8
 	var b strings.Builder
-	title := html.EscapeString(barTitle("All services", s))
-	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" role="img" aria-label="%s">`+"\n", w+2*pad, h+2*pad+26, w+2*pad, h+2*pad+26, title)
+	title := html.EscapeString(barTitle("All services", s) + "; resources: " + fmt.Sprintf("official %s%%, ours beyond official %s%%, uncovered %s%% of %d",
+		pct1(s.resOfficial, s.resTotal), pct1(s.resOursBeyond, s.resTotal), pct1(s.resTotal-s.resOfficial-s.resOursBeyond, s.resTotal), s.resTotal))
+	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" role="img" aria-label="%s">`+"\n", w+2*pad, height, w+2*pad, height, title)
 	fmt.Fprintf(&b, "<title>%s</title>\n", title)
-	fmt.Fprintf(&b, `<rect x="0.5" y="0.5" width="%d" height="%d" rx="6" fill="#ffffff" stroke="#d0d7de"/>`+"\n", w+2*pad-1, h+2*pad+25)
-	segments(&b, s, pad, pad, w, h, 14)
+	fmt.Fprintf(&b, `<rect x="0.5" y="0.5" width="%d" height="%d" rx="6" fill="#ffffff" stroke="#d0d7de"/>`+"\n", w+2*pad-1, height-1)
+	rows := []struct {
+		label                string
+		official, ours, none int
+	}{
+		{fmt.Sprintf("Attributes (%s)", commas(s.attrTotal)), s.attrOfficial, s.attrOursBeyond, s.attrUncov},
+		{fmt.Sprintf("Resources (%s)", commas(s.resTotal)), s.resOfficial, s.resOursBeyond, s.resTotal - s.resOfficial - s.resOursBeyond},
+	}
+	y := pad
+	for _, r := range rows {
+		fmt.Fprintf(&b, `<text x="%d" y="%d" font-family="%s" font-size="12" font-weight="600" fill="%s" dominant-baseline="central">%s</text>`+"\n", pad, y+labelH/2, fontFamily, colTextDark, html.EscapeString(r.label))
+		segments(&b, r.official, r.ours, r.none, pad, y+labelH, w, h, 13)
+		y += labelH + h + 8
+	}
 	items := []struct{ fill, text string }{
-		{colOfficial, fmt.Sprintf("%s %s%%", officialName, pct1(s.attrOfficial, s.attrTotal))},
-		{colOurs, fmt.Sprintf("ours beyond %s %s%%", officialName, pct1(s.attrOursBeyond, s.attrTotal))},
-		{colNone, fmt.Sprintf("uncovered %s%%", pct1(s.attrUncov, s.attrTotal))},
+		{colOfficial, officialName},
+		{colOurs, "ours beyond " + officialName},
+		{colNone, "uncovered"},
 	}
 	x := pad
 	for _, it := range items {
-		fmt.Fprintf(&b, `<rect x="%d.5" y="%d.5" width="11" height="11" rx="2" fill="%s" stroke="%s"/>`+"\n", x, h+pad+9, it.fill, colBorder)
-		fmt.Fprintf(&b, `<text x="%d" y="%d" font-family="%s" font-size="12" fill="%s" dominant-baseline="central">%s</text>`+"\n", x+17, h+pad+15, fontFamily, colTextDark, html.EscapeString(it.text))
+		fmt.Fprintf(&b, `<rect x="%d.5" y="%d.5" width="11" height="11" rx="2" fill="%s" stroke="%s"/>`+"\n", x, y+1, it.fill, colBorder)
+		fmt.Fprintf(&b, `<text x="%d" y="%d" font-family="%s" font-size="12" fill="%s" dominant-baseline="central">%s</text>`+"\n", x+17, y+7, fontFamily, colTextDark, html.EscapeString(it.text))
 		x += 17 + 7*len(it.text) + 18
 	}
 	b.WriteString("</svg>\n")
