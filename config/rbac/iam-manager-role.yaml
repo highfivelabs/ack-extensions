@@ -26,6 +26,7 @@ rules:
   - iam.aws.hfl.dev
   resources:
   - rolepolicyattachments
+  - sshpublickeys
   verbs:
   - create
   - delete
@@ -38,6 +39,7 @@ rules:
   - iam.aws.hfl.dev
   resources:
   - rolepolicyattachments/status
+  - sshpublickeys/status
   verbs:
   - get
   - patch
@@ -47,6 +49,7 @@ rules:
   resources:
   - policies
   - roles
+  - users
   verbs:
   - get
   - list

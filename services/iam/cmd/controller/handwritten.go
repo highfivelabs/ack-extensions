@@ -12,6 +12,9 @@ import (
 	// RolePolicyAttachment has no Create/Delete pair in IAM's model, so it
 	// is not generated; registering its package adds its manager factory.
 	_ "github.com/highfivelabs/ack-extensions/services/iam/pkg/resource/role_policy_attachment"
+	// SSHPublicKey is UploadSSHPublicKey, which the generator does not read
+	// as a create.
+	_ "github.com/highfivelabs/ack-extensions/services/iam/pkg/resource/ssh_public_key"
 )
 
 func init() {
