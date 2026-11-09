@@ -24,7 +24,8 @@ import (
 	schedv1 "github.com/highfivelabs/ack-extensions/services/scheduler/apis/v1alpha1"
 )
 
-// groupTags is a schedule group's tags in the cloud, as sorted k=v pairs.
+// groupTags is a schedule group's tags in the cloud, as sorted k=v pairs,
+// without the services.k8s.aws/ tags ACK's runtime adds to every resource.
 func groupTags(ctx context.Context, c *scheduler.Client, arn string) (string, error) {
 	out, err := c.ListTagsForResource(ctx, &scheduler.ListTagsForResourceInput{ResourceArn: aws.String(arn)})
 	if err != nil {
@@ -32,6 +33,9 @@ func groupTags(ctx context.Context, c *scheduler.Client, arn string) (string, er
 	}
 	var kv []string
 	for _, t := range out.Tags {
+		if strings.HasPrefix(aws.ToString(t.Key), "services.k8s.aws/") {
+			continue
+		}
 		kv = append(kv, aws.ToString(t.Key)+"="+aws.ToString(t.Value))
 	}
 	sort.Strings(kv)
