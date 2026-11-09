@@ -14,12 +14,15 @@ ack-extensions is not affiliated with or endorsed by Amazon Web Services.
 | `iam.aws.hfl.dev/v1alpha1` `RolePolicyAttachment` | Attaches one managed policy to one IAM role, and detaches it on delete. It is for a role ACK does not manage (made by another team, by Terraform, or by EKS for a node group). | Copied from ACK iam-controller pull request #184 (open) |
 | `rds.aws.hfl.dev/v1alpha1` `OptionGroup` | An RDS option group (MySQL, MariaDB, SQL Server and Oracle options such as the audit plugin), with its options added and removed through `ModifyOptionGroup`. | Generated from ACK rds-controller pull request #257 (open) |
 | `rds.aws.hfl.dev/v1alpha1` `DBProxyTarget` | Registers an RDS instance or an Aurora cluster with an RDS Proxy. ACK's `DBProxy` makes a proxy but never registers what it fronts, so without this the proxy accepts no connections. It becomes synced once RDS Proxy reports every target `AVAILABLE`. | New: no ACK code or pull request covers it |
+| `rds.aws.hfl.dev/v1alpha1` `DBRoleAssociation` | Associates an IAM role with an Aurora cluster or an RDS instance for one feature (`s3Import`, `s3Export`, `Lambda`, `S3_INTEGRATION`), and removes it on delete. ACK's `DBCluster` and `DBInstance` only report associated roles. It becomes synced once RDS reports the association `ACTIVE`. | New: no ACK code or pull request covers it |
 
 Each kind can reference ACK's own objects, the way ACK's kinds reference
 each other: `RolePolicyAttachment.spec.roleRef` names an
 `iam.services.k8s.aws` `Role`, and `DBProxyTarget.spec.dbProxyRef`,
 `dbInstanceRef` and `dbClusterRef` name ACK's `DBProxy`, `DBInstance` and
-`DBCluster`.
+`DBCluster`; `DBRoleAssociation.spec.dbClusterRef`, `dbInstanceRef` and
+`roleRef` name ACK's `DBCluster`, `DBInstance` and `iam.services.k8s.aws`
+`Role`.
 
 ACK's annotations mean what they mean in ACK, because the reconciler is
 ACK's runtime: `services.k8s.aws/deletion-policy: retain`,

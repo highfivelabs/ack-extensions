@@ -55,10 +55,19 @@ build:
 
 # Unit tests, the operator against envtest, and every kind end to end:
 # envtest's kube-apiserver, the service's real controller binary, moto.
+# The envtest tests skip without KUBEBUILDER_ASSETS (so a bare `go test`
+# still runs the unit tests); here the assets must be found, or the target
+# fails rather than pass with the end-to-end tests skipped. The download
+# is retried: GitHub's release downloads sometimes answer 5xx.
 test: $(BIN)/setup-envtest
 	hack/moto.sh
-	KUBEBUILDER_ASSETS="$$($(BIN)/setup-envtest use $(ENVTEST_K8S_VERSION) --bin-dir $(BIN)/envtest -p path)" \
-		go test ./... -count=1
+	@assets=""; for i in 1 2 3 4 5; do \
+		assets="$$($(BIN)/setup-envtest use $(ENVTEST_K8S_VERSION) --bin-dir $(BIN)/envtest -p path)" && [ -n "$$assets" ] && break; \
+		assets=""; echo "setup-envtest failed (attempt $$i); retrying"; sleep $$((i * 10)); \
+	done; \
+	[ -n "$$assets" ] || { echo "no envtest assets for $(ENVTEST_K8S_VERSION): refusing to run with the end-to-end tests skipped"; exit 1; }; \
+	echo "KUBEBUILDER_ASSETS=$$assets go test ./... -count=1"; \
+	KUBEBUILDER_ASSETS="$$assets" go test ./... -count=1
 
 # Everything that must hold before a commit.
 check: upstream-check
