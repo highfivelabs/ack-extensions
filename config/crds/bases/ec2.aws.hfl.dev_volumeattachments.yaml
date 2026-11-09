@@ -1,0 +1,201 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: volumeattachments.ec2.aws.hfl.dev
+spec:
+  group: ec2.aws.hfl.dev
+  names:
+    categories:
+    - aws
+    - hfl
+    kind: VolumeAttachment
+    listKind: VolumeAttachmentList
+    plural: volumeattachments
+    shortNames:
+    - hflvolumeattachment
+    singular: volumeattachment
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.volumeID
+      name: VOLUME
+      type: string
+    - jsonPath: .spec.instanceID
+      name: INSTANCE
+      type: string
+    - jsonPath: .spec.deviceName
+      name: DEVICE
+      type: string
+    - jsonPath: .status.state
+      name: STATE
+      type: string
+    - jsonPath: .status.conditions[?(@.type=="ACK.ResourceSynced")].status
+      name: SYNCED
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: VolumeAttachment is the Schema for the VolumeAttachments API.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              VolumeAttachmentSpec attaches one EBS volume to one EC2 instance, as a
+              device (AttachVolume), and detaches it on delete (DetachVolume). It is
+              Terraform's aws_volume_attachment.
+
+              Exactly one of volumeID and volumeRef must be set. Every field is
+              immutable: an attachment is identified by its volume, instance and
+              device.
+            properties:
+              deviceName:
+                description: |-
+                  The device name the instance sees, for example /dev/sdf or
+                  /dev/xvdf. Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              instanceID:
+                description: |-
+                  The ID of the EC2 instance, in the volume's Availability Zone.
+                  Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              volumeID:
+                description: The ID of the EBS volume. Immutable.
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              volumeRef:
+                description: An ec2.aws.hfl.dev Volume whose status.volumeID is the
+                  volume.
+                properties:
+                  from:
+                    description: |-
+                      AWSResourceReference provides all the values necessary to reference another
+                      k8s resource for finding the identifier(Id/ARN/Name)
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+            required:
+            - deviceName
+            - instanceID
+            type: object
+            x-kubernetes-validations:
+            - message: exactly one of volumeID and volumeRef must be set
+              rule: '[has(self.volumeID), has(self.volumeRef)].filter(x, x).size()
+                == 1'
+          status:
+            description: VolumeAttachmentStatus defines the observed state of VolumeAttachment.
+            properties:
+              ackResourceMetadata:
+                description: |-
+                  ResourceMetadata is common to all custom resources (CRs) managed by an ACK
+                  service controller. It is contained in the CR's `Status` member field and
+                  comprises various status and identifier fields useful to ACK for tracking
+                  state changes between Kubernetes and the backend AWS service API
+                properties:
+                  arn:
+                    description: |-
+                      ARN is the Amazon Resource Name for the resource. This is a
+                      globally-unique identifier and is set only by the ACK service controller
+                      once the controller has orchestrated the creation of the resource OR
+                      when it has verified that an "adopted" resource (a resource where the
+                      ARN annotation was set by the Kubernetes user on the CR) exists and
+                      matches the supplied CR's Spec field values.
+                      https://github.com/aws/aws-controllers-k8s/issues/270
+                    type: string
+                  ownerAccountID:
+                    description: |-
+                      OwnerAccountID is the AWS Account ID of the account that owns the
+                      backend AWS service API resource.
+                    type: string
+                  partition:
+                    description: Partition is the AWS partition in which the resource
+                      exists or will exist
+                    type: string
+                  region:
+                    description: Region is the AWS region in which the resource exists
+                      or will exist.
+                    type: string
+                required:
+                - ownerAccountID
+                - region
+                type: object
+              attachTime:
+                description: When the volume was attached.
+                format: date-time
+                type: string
+              conditions:
+                items:
+                  description: |-
+                    Condition is the common struct used by all CRDs managed by ACK service
+                    controllers to indicate terminal states  of the CR and its backend AWS
+                    service API resource
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A human readable message indicating details about
+                        the transition.
+                      type: string
+                    reason:
+                      description: The reason for the condition's last transition.
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the Condition
+                      type: string
+                  required:
+                  - status
+                  - type
+                  type: object
+                type: array
+              deleteOnTermination:
+                description: Whether EC2 deletes the volume when the instance terminates.
+                type: boolean
+              state:
+                description: 'EC2''s state of the attachment: attaching, attached,
+                  detaching or busy.'
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
