@@ -1,11 +1,12 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has fifteen kinds:
+Status, 2026-11-09: the repository has sixteen kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
 - `ec2.aws.hfl.dev` `CustomerGateway`, `VPNGateway`, `Volume` and
   `VolumeAttachment`;
+- `ecr.aws.hfl.dev` `ReplicationConfiguration`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
 - `iam.aws.hfl.dev` `RolePolicyAttachment`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
@@ -256,6 +257,15 @@ status) and the fake cloud through the real AWS SDK clients.
     destination; delete deletes it
 --- PASS: TestDefaultRateLimitIsNoDrift, TestSetRateLimitIsCompared
           (API destination unit tests)
+--- PASS: TestReplicationConfiguration
+    create puts the rules; a changed rule is put again; a rule changed
+    outside Kubernetes is put back; the CRD refuses what ECR would (a
+    filter type ECR does not have, a registry that is not an account
+    ID); another account's registry is refused, and the registry is
+    unchanged; delete puts no rules; deletion-policy retain leaves them
+--- PASS: TestRoundTrip, TestDeltaNoFiltersIsNoFilters,
+          TestNilConfigurationIsNoRules, TestRegistryMismatch
+          (replication configuration unit tests)
 --- PASS: TestKeepSecretsIsNoDrift, TestKeepSecretsKeepsOtherDrift
           (connection unit tests)
 --- PASS: TestReplicaKey
@@ -395,6 +405,10 @@ controller to show it can fail:
   attach answers `attaching`, the next read `attached`), takes any AMI for
   the test's instance, and does not refuse a volume already attached
   elsewhere (AWS answers `VolumeInUse`).
+- **ECR replication.** moto accepts one replication rule at most ("This
+  feature is disabled" for more; AWS allows ten), and does not check that
+  a destination account lets this one replicate into it (on AWS, its
+  registry policy must). It never replicates images.
 - **EventBridge connections.** moto marks a connection `AUTHORIZED` at
   once (an OAuth connection is `AUTHORIZING` first on AWS). It stores
   the credentials in a Secrets Manager secret, as EventBridge does, which
@@ -467,7 +481,7 @@ its master (5.2.5 is the pin).
 | 8 | EBS `Volume`, `VolumeAttachment` | ignored in ec2-controller's `generator.yaml`; `aws-controllers-k8s/ebs-controller` is an empty scaffold for the EBS direct API (no kinds, no release) | yes | built: `Volume`, `VolumeAttachment` |
 | 9 | CloudWatch Logs `MetricFilter`; CloudWatch `CompositeAlarm` | metric filters: cloudwatchlogs-controller PR #61, as a field on ACK's `LogGroup`. `CompositeAlarm`: ignored in cloudwatch-controller `v1.11.0`. | metric filters yes; `PutCompositeAlarm` no | skipped. Metric filters wait on open question 1. `CompositeAlarm`: moto has none of it. |
 | 10 | EventBridge Scheduler `Schedule` and `ScheduleGroup`; EventBridge `Connection` and `ApiDestination` | Scheduler: no controller (`community` issue #2784). `Connection` and `ApiDestination`: ignored in eventbridge-controller `v1.9.2`. | yes | `Connection` and `ApiDestination` built; Scheduler skipped: ACK has no Scheduler controller for our manager to run beside (open question 8) |
-| 11 | ECR `ReplicationConfiguration`; `RegistryPolicy`, `RegistryScanningConfiguration` | `ReplicationConfiguration`: ecr-controller PR #121, open, conflicts with base, no review, last updated 2026-10-18. The others: none. | yes (one replication rule at most) | `ReplicationConfiguration` written, waits for its turn (branch `agent/ecr-replication-configuration`) |
+| 11 | ECR `ReplicationConfiguration`; `RegistryPolicy`, `RegistryScanningConfiguration` | `ReplicationConfiguration`: ecr-controller PR #121, open, conflicts with base, no review, last updated 2026-10-18. The others: none. | yes (one replication rule at most) | built: `ReplicationConfiguration` (PR #121's API; rechecked 2026-11-09: still open, conflicting, no review, head `f6c7d57e`). `RegistryPolicy` and `RegistryScanningConfiguration` next |
 | 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`) | yes | to build |
 | 13 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237: mergeable, active 2026-11-06 | none | skipped: may be close to merging, and moto has none of it |
 | 14 | Route 53 DNSSEC and `KeySigningKey`, VPC association authorization | ignored in route53-controller's `generator.yaml` | none | skipped: moto has none of it |
@@ -1020,6 +1034,39 @@ ACK's own initialisms do; the AWS name is `ApiDestination`.
 **Not proven:** AWS's default rate limit coming back from a real read
 (moto returns none; the unit test feeds 300 in), and a destination whose
 connection is not yet authorized (moto authorizes at once).
+
+### 6.16 `ecr.aws.hfl.dev` `ReplicationConfiguration`
+
+An ECR registry's replication rules: which repositories (by prefix) are
+copied to which Regions and accounts. ACK's ecr-controller `v1.11.1` has
+no replication. ecr-controller pull request #121 adds this kind; it is
+open, conflicts with its base and has no review (rechecked 2026-11-09,
+head `f6c7d57e`, last updated 2026-10-18).
+
+**Hand-written** on ACK's runtime: the API has no create, describe or
+delete of its own, only `PutReplicationConfiguration` (the whole set) and
+`DescribeRegistry`.
+
+- **From PR #121:** the API type, the behaviour and the conversions. Its
+  files are marked generated, but were written by hand; here they carry a
+  modified-by note instead. Its debug logging is dropped.
+- **The skeleton** is PR #184's, as for our other hand-written kinds.
+- **Read:** a registry with no rules reads as not found, so the runtime
+  creates the configuration, and owns it.
+- **Update** puts the whole set again, also when it was changed outside
+  Kubernetes.
+- **Delete** puts no rules.
+- **The registry:** `PutReplicationConfiguration` takes no registry, so it
+  acts on the manager's own. `spec.registryID`, if set, must be that
+  registry, and anything else is refused (a terminal condition) before
+  anything is put.
+- **One per registry.** Two objects for the same registry would put their
+  rules in turn; nothing stops that yet, as with ACK's other
+  account-wide settings.
+
+**Not proven:** more than one rule (moto allows one), a destination
+account's registry policy (moto does not check it), and replication
+itself.
 
 ## 7. The operator: ACK's identity, beside ACK's controller
 
