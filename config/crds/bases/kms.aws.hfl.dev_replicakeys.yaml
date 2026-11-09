@@ -1,0 +1,311 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: replicakeys.kms.aws.hfl.dev
+spec:
+  group: kms.aws.hfl.dev
+  names:
+    categories:
+    - aws
+    - hfl
+    kind: ReplicaKey
+    listKind: ReplicaKeyList
+    plural: replicakeys
+    shortNames:
+    - hflreplicakey
+    singular: replicakey
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.replicaRegion
+      name: REPLICA-REGION
+      type: string
+    - jsonPath: .status.replicaKeyMetadata.keyState
+      name: STATE
+      type: string
+    - jsonPath: .status.conditions[?(@.type=="ACK.ResourceSynced")].status
+      name: SYNCED
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ReplicaKey is the Schema for the ReplicaKeys API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              ReplicaKeySpec defines the desired state of ReplicaKey: a replica, in
+              another Region, of a multi-Region primary KMS key (ReplicateKey).
+            properties:
+              bypassPolicyLockoutSafetyCheck:
+                description: |-
+                  Skips ("bypasses") the key policy lockout safety check. The default value
+                  is false. Setting it to true increases the risk that the KMS key becomes
+                  unmanageable.
+                type: boolean
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              description:
+                description: |-
+                  A description of the replica key. The description is not a shared
+                  property of multi-Region keys; KMS does not synchronize it.
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              keyID:
+                description: |-
+                  The key ID or key ARN of the multi-Region primary key to replicate,
+                  for example mrk-1234abcd12ab34cd56ef1234567890ab. The primary key is in
+                  the Region this object's manager acts in.
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              keyRef:
+                description: An ACK kms.services.k8s.aws Key whose status.keyID is
+                  the primary key.
+                properties:
+                  from:
+                    description: |-
+                      AWSResourceReference provides all the values necessary to reference another
+                      k8s resource for finding the identifier(Id/ARN/Name)
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+              policy:
+                description: |-
+                  The replica's key policy. Without one, KMS attaches the default key
+                  policy. The key policy is not a shared property of multi-Region keys.
+
+                  Regex Pattern: `^[\u0009\u000A\u000D -ÿ]+$`
+                type: string
+              replicaRegion:
+                description: |-
+                  The Region of the replica key, such as us-east-1. It must differ from
+                  the primary key's Region and from its other replicas'.
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              tags:
+                description: |-
+                  The replica's tags. Tags are not a shared property of multi-Region
+                  keys.
+                items:
+                  description: |-
+                    A key-value pair. A tag consists of a tag key and a tag value. Tag keys and
+                    tag values are both required, but tag values can be empty (null) strings.
+
+                    Do not include confidential or sensitive information in this field. This
+                    field may be displayed in plaintext in CloudTrail logs and other output.
+
+                    For information about the rules that apply to tag keys and tag values, see
+                    User-Defined Tag Restrictions (https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/allocation-tag-restrictions.html)
+                    in the Amazon Web Services Billing and Cost Management User Guide.
+                  properties:
+                    tagKey:
+                      type: string
+                    tagValue:
+                      type: string
+                  type: object
+                type: array
+            required:
+            - replicaRegion
+            type: object
+            x-kubernetes-validations:
+            - message: exactly one of keyID and keyRef must be set
+              rule: '[has(self.keyID), has(self.keyRef)].filter(x, x).size() == 1'
+          status:
+            description: ReplicaKeyStatus defines the observed state of ReplicaKey
+            properties:
+              ackResourceMetadata:
+                description: |-
+                  All CRs managed by ACK have a common `Status.ACKResourceMetadata` member
+                  that is used to contain resource sync state, account ownership,
+                  constructed ARN for the resource
+                properties:
+                  arn:
+                    description: |-
+                      ARN is the Amazon Resource Name for the resource. This is a
+                      globally-unique identifier and is set only by the ACK service controller
+                      once the controller has orchestrated the creation of the resource OR
+                      when it has verified that an "adopted" resource (a resource where the
+                      ARN annotation was set by the Kubernetes user on the CR) exists and
+                      matches the supplied CR's Spec field values.
+                      https://github.com/aws/aws-controllers-k8s/issues/270
+                    type: string
+                  ownerAccountID:
+                    description: |-
+                      OwnerAccountID is the AWS Account ID of the account that owns the
+                      backend AWS service API resource.
+                    type: string
+                  partition:
+                    description: Partition is the AWS partition in which the resource
+                      exists or will exist
+                    type: string
+                  region:
+                    description: Region is the AWS region in which the resource exists
+                      or will exist.
+                    type: string
+                required:
+                - ownerAccountID
+                - region
+                type: object
+              conditions:
+                description: |-
+                  All CRs managed by ACK have a common `Status.Conditions` member that
+                  contains a collection of `ackv1alpha1.Condition` objects that describe
+                  the various terminal states of the CR and its backend AWS service API
+                  resource
+                items:
+                  description: |-
+                    Condition is the common struct used by all CRDs managed by ACK service
+                    controllers to indicate terminal states  of the CR and its backend AWS
+                    service API resource
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A human readable message indicating details about
+                        the transition.
+                      type: string
+                    reason:
+                      description: The reason for the condition's last transition.
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the Condition
+                      type: string
+                  required:
+                  - status
+                  - type
+                  type: object
+                type: array
+              replicaKeyMetadata:
+                description: |-
+                  Displays details about the new replica key, read in its own Region,
+                  including its Amazon Resource Name (key ARN) and Key states of KMS keys
+                  (https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html).
+                properties:
+                  arn:
+                    type: string
+                  awsAccountID:
+                    type: string
+                  cloudHsmClusterID:
+                    type: string
+                  creationDate:
+                    format: date-time
+                    type: string
+                  customKeyStoreID:
+                    type: string
+                  deletionDate:
+                    format: date-time
+                    type: string
+                  description:
+                    type: string
+                  enabled:
+                    type: boolean
+                  encryptionAlgorithms:
+                    items:
+                      type: string
+                    type: array
+                  expirationModel:
+                    type: string
+                  keyID:
+                    type: string
+                  keyManager:
+                    type: string
+                  keySpec:
+                    type: string
+                  keyState:
+                    type: string
+                  keyUsage:
+                    type: string
+                  macAlgorithms:
+                    items:
+                      type: string
+                    type: array
+                  multiRegion:
+                    type: boolean
+                  multiRegionConfiguration:
+                    description: |-
+                      Describes the configuration of this multi-Region key. This field appears
+                      only when the KMS key is a primary or replica of a multi-Region key.
+
+                      For more information about any listed KMS key, use the DescribeKey operation.
+                    properties:
+                      multiRegionKeyType:
+                        type: string
+                      primaryKey:
+                        description: Describes the primary or replica key in a multi-Region
+                          key.
+                        properties:
+                          arn:
+                            type: string
+                          region:
+                            type: string
+                        type: object
+                      replicaKeys:
+                        items:
+                          description: Describes the primary or replica key in a multi-Region
+                            key.
+                          properties:
+                            arn:
+                              type: string
+                            region:
+                              type: string
+                          type: object
+                        type: array
+                    type: object
+                  origin:
+                    type: string
+                  pendingDeletionWindowInDays:
+                    format: int64
+                    type: integer
+                  signingAlgorithms:
+                    items:
+                      type: string
+                    type: array
+                  validTo:
+                    format: date-time
+                    type: string
+                type: object
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
