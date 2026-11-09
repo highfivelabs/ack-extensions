@@ -268,8 +268,8 @@ func cloudScheduledAction(ctx context.Context, c *autoscaling.Client, group, nam
 // (autoscaling-controller v1.5.0) has none.
 //
 // moto stores an action as given. AWS computes the next start time of a
-// recurring action and deletes a one-time action after it runs; neither
-// can be seen here.
+// recurring action, which cannot be seen here, and deletes a one-time
+// action after it runs, which the test does itself.
 func TestScheduledAction(t *testing.T) {
 	scheme := runtime.NewScheme()
 	_ = asv1.AddToScheme(scheme)
@@ -375,6 +375,54 @@ func TestScheduledAction(t *testing.T) {
 		if a.StartTime == nil || !a.StartTime.Equal(once.Spec.StartTime.Time) {
 			t.Fatalf("cloud start time %v, want %v", a.StartTime, once.Spec.StartTime.Time)
 		}
+	})
+
+	t.Run("a one-time action that ran is completed, not put again", func(t *testing.T) {
+		soon := &asv1.ScheduledAction{
+			ObjectMeta: metav1.ObjectMeta{Name: "web-soon", Namespace: "default"},
+			Spec: asv1.ScheduledActionSpec{
+				AutoScalingGroupName: aws.String("web"), ScheduledActionName: aws.String("web-soon"),
+				StartTime:       &metav1.Time{Time: time.Now().Add(20 * time.Second).UTC().Truncate(time.Second)},
+				DesiredCapacity: aws.Int64(1),
+			},
+		}
+		if err := env.Client.Create(ctx, soon); err != nil {
+			t.Fatal(err)
+		}
+		waitSynced(t, soon)
+		// Play EC2 Auto Scaling's part, which moto does not: once the
+		// start time has passed, the action ran and is deleted.
+		time.Sleep(time.Until(soon.Spec.StartTime.Time) + time.Second)
+		if _, err := cloud.DeleteScheduledAction(ctx, &autoscaling.DeleteScheduledActionInput{
+			AutoScalingGroupName: aws.String("web"), ScheduledActionName: aws.String("web-soon"),
+		}); err != nil {
+			t.Fatal(err)
+		}
+		harness.Eventually(t, 60*time.Second, "Completed and synced", func() error {
+			got := get(t, soon)
+			done := false
+			for _, c := range got.Status.Conditions {
+				if c.Type == "Completed" && c.Status == "True" {
+					done = true
+				}
+			}
+			if !done {
+				return fmt.Errorf("no Completed condition: %v", got.Status.Conditions)
+			}
+			if ok, why := synced(got.Status.Conditions); !ok {
+				return fmt.Errorf("not synced: %s", why)
+			}
+			return nil
+		})
+		// Across resyncs it stays completed: it is not put again.
+		time.Sleep(12 * time.Second)
+		if a, err := cloudScheduledAction(ctx, cloud, "web", "web-soon"); err != nil || a != nil {
+			t.Fatalf("the completed action was put again (%v)", err)
+		}
+		if err := env.Client.Delete(ctx, soon); err != nil {
+			t.Fatal(err)
+		}
+		gone(t, soon)
 	})
 
 	t.Run("the action name cannot change", func(t *testing.T) {
