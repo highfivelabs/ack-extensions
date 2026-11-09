@@ -5,8 +5,10 @@
 # without scaling policies does not scale. ScalingPolicy is generated the
 # way ACK's applicationautoscaling-controller (v1.9.0) generates its own
 # ScalingPolicy from a Put operation: PutScalingPolicy creates and updates,
-# DescribePolicies reads and DeletePolicy deletes. The resources ACK has
-# are ignored.
+# DescribePolicies reads and DeletePolicy deletes. ScheduledAction is
+# generated the same way, from PutScheduledUpdateGroupAction,
+# DescribeScheduledActions and DeleteScheduledAction. The resources ACK
+# has are ignored.
 sdk_names:
   model_name: auto-scaling
 operations:
@@ -23,6 +25,19 @@ operations:
     operation_type:
       - Delete
     resource_name: ScalingPolicy
+  PutScheduledUpdateGroupAction:
+    operation_type:
+      - Create
+      - Update
+    resource_name: ScheduledAction
+  DescribeScheduledActions:
+    operation_type:
+      - ReadMany
+    resource_name: ScheduledAction
+  DeleteScheduledAction:
+    operation_type:
+      - Delete
+    resource_name: ScheduledAction
 resources:
   ScalingPolicy:
     hooks:
@@ -45,7 +60,30 @@ resources:
         is_arn: true
     tags:
       ignore: true
+  ScheduledAction:
+    hooks:
+      sdk_read_many_post_build_request:
+        template_path: hooks/scheduled_action/sdk_read_many_post_build_request.go.tpl
+      # The server's next start time of a recurring action is no drift
+      # (custom_delta.go).
+      delta_pre_compare:
+        code: customSetDefaults(a, b)
+    fields:
+      ScheduledActionName:
+        is_primary_key: true
+        is_immutable: true
+      AutoScalingGroupName:
+        is_required: true
+        is_immutable: true
+      ScheduledActionARN:
+        is_arn: true
+    tags:
+      ignore: true
 ignore:
+  field_paths:
+    # Deprecated: StartTime replaces it (EC2 Auto Scaling API reference).
+    - PutScheduledUpdateGroupActionInput.Time
+    - ScheduledUpdateGroupAction.Time
   resource_names:
     - AutoScalingGroup
     - LaunchConfiguration

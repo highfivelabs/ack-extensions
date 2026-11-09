@@ -30,13 +30,15 @@ var (
 // a change to your Auto Scaling group, such as changing its size or replacing
 // an instance.
 type Activity struct {
-	ActivityID           *string `json:"activityID,omitempty"`
-	AutoScalingGroupARN  *string `json:"autoScalingGroupARN,omitempty"`
-	AutoScalingGroupName *string `json:"autoScalingGroupName,omitempty"`
-	Cause                *string `json:"cause,omitempty"`
-	Description          *string `json:"description,omitempty"`
-	Details              *string `json:"details,omitempty"`
-	StatusMessage        *string `json:"statusMessage,omitempty"`
+	ActivityID           *string      `json:"activityID,omitempty"`
+	AutoScalingGroupARN  *string      `json:"autoScalingGroupARN,omitempty"`
+	AutoScalingGroupName *string      `json:"autoScalingGroupName,omitempty"`
+	Cause                *string      `json:"cause,omitempty"`
+	Description          *string      `json:"description,omitempty"`
+	Details              *string      `json:"details,omitempty"`
+	EndTime              *metav1.Time `json:"endTime,omitempty"`
+	StartTime            *metav1.Time `json:"startTime,omitempty"`
+	StatusMessage        *string      `json:"statusMessage,omitempty"`
 }
 
 // Describes a policy adjustment type.
@@ -123,15 +125,19 @@ type Filter struct {
 
 // Describes an Auto Scaling group.
 type Group struct {
-	AutoScalingGroupARN     *string `json:"autoScalingGroupARN,omitempty"`
-	AutoScalingGroupName    *string `json:"autoScalingGroupName,omitempty"`
-	DefaultCooldown         *int64  `json:"defaultCooldown,omitempty"`
-	DesiredCapacityType     *string `json:"desiredCapacityType,omitempty"`
-	HealthCheckType         *string `json:"healthCheckType,omitempty"`
-	LaunchConfigurationName *string `json:"launchConfigurationName,omitempty"`
-	PlacementGroup          *string `json:"placementGroup,omitempty"`
-	ServiceLinkedRoleARN    *string `json:"serviceLinkedRoleARN,omitempty"`
-	Status                  *string `json:"status,omitempty"`
+	AutoScalingGroupARN     *string      `json:"autoScalingGroupARN,omitempty"`
+	AutoScalingGroupName    *string      `json:"autoScalingGroupName,omitempty"`
+	CreatedTime             *metav1.Time `json:"createdTime,omitempty"`
+	DefaultCooldown         *int64       `json:"defaultCooldown,omitempty"`
+	DesiredCapacity         *int64       `json:"desiredCapacity,omitempty"`
+	DesiredCapacityType     *string      `json:"desiredCapacityType,omitempty"`
+	HealthCheckType         *string      `json:"healthCheckType,omitempty"`
+	LaunchConfigurationName *string      `json:"launchConfigurationName,omitempty"`
+	MaxSize                 *int64       `json:"maxSize,omitempty"`
+	MinSize                 *int64       `json:"minSize,omitempty"`
+	PlacementGroup          *string      `json:"placementGroup,omitempty"`
+	ServiceLinkedRoleARN    *string      `json:"serviceLinkedRoleARN,omitempty"`
+	Status                  *string      `json:"status,omitempty"`
 }
 
 // Describes an EC2 instance.
@@ -156,9 +162,11 @@ type InstanceDetails struct {
 
 // Describes an instance refresh for an Auto Scaling group.
 type InstanceRefresh struct {
-	AutoScalingGroupName *string `json:"autoScalingGroupName,omitempty"`
-	InstanceRefreshID    *string `json:"instanceRefreshID,omitempty"`
-	StatusReason         *string `json:"statusReason,omitempty"`
+	AutoScalingGroupName *string      `json:"autoScalingGroupName,omitempty"`
+	EndTime              *metav1.Time `json:"endTime,omitempty"`
+	InstanceRefreshID    *string      `json:"instanceRefreshID,omitempty"`
+	StartTime            *metav1.Time `json:"startTime,omitempty"`
+	StatusReason         *string      `json:"statusReason,omitempty"`
 }
 
 // Use this structure to specify the distribution of On-Demand Instances and
@@ -171,15 +179,16 @@ type InstancesDistribution struct {
 
 // Describes a launch configuration.
 type LaunchConfiguration struct {
-	ClassicLinkVPCID        *string `json:"classicLinkVPCID,omitempty"`
-	ImageID                 *string `json:"imageID,omitempty"`
-	InstanceType            *string `json:"instanceType,omitempty"`
-	KernelID                *string `json:"kernelID,omitempty"`
-	KeyName                 *string `json:"keyName,omitempty"`
-	LaunchConfigurationARN  *string `json:"launchConfigurationARN,omitempty"`
-	LaunchConfigurationName *string `json:"launchConfigurationName,omitempty"`
-	PlacementTenancy        *string `json:"placementTenancy,omitempty"`
-	RAMDiskID               *string `json:"ramDiskID,omitempty"`
+	ClassicLinkVPCID        *string      `json:"classicLinkVPCID,omitempty"`
+	CreatedTime             *metav1.Time `json:"createdTime,omitempty"`
+	ImageID                 *string      `json:"imageID,omitempty"`
+	InstanceType            *string      `json:"instanceType,omitempty"`
+	KernelID                *string      `json:"kernelID,omitempty"`
+	KeyName                 *string      `json:"keyName,omitempty"`
+	LaunchConfigurationARN  *string      `json:"launchConfigurationARN,omitempty"`
+	LaunchConfigurationName *string      `json:"launchConfigurationName,omitempty"`
+	PlacementTenancy        *string      `json:"placementTenancy,omitempty"`
+	RAMDiskID               *string      `json:"ramDiskID,omitempty"`
 }
 
 // Use this structure to let Amazon EC2 Auto Scaling do the following when the
@@ -486,7 +495,8 @@ type ProcessType struct {
 
 // Details about an instance refresh rollback.
 type RollbackDetails struct {
-	RollbackReason *string `json:"rollbackReason,omitempty"`
+	RollbackReason    *string      `json:"rollbackReason,omitempty"`
+	RollbackStartTime *metav1.Time `json:"rollbackStartTime,omitempty"`
 }
 
 // Describes a scaling policy.
@@ -515,20 +525,30 @@ type ScalingPolicy_SDK struct {
 
 // Describes a scheduled scaling action.
 type ScheduledUpdateGroupAction struct {
-	AutoScalingGroupName *string `json:"autoScalingGroupName,omitempty"`
-	Recurrence           *string `json:"recurrence,omitempty"`
-	ScheduledActionARN   *string `json:"scheduledActionARN,omitempty"`
-	ScheduledActionName  *string `json:"scheduledActionName,omitempty"`
-	TimeZone             *string `json:"timeZone,omitempty"`
+	AutoScalingGroupName *string      `json:"autoScalingGroupName,omitempty"`
+	DesiredCapacity      *int64       `json:"desiredCapacity,omitempty"`
+	EndTime              *metav1.Time `json:"endTime,omitempty"`
+	MaxSize              *int64       `json:"maxSize,omitempty"`
+	MinSize              *int64       `json:"minSize,omitempty"`
+	Recurrence           *string      `json:"recurrence,omitempty"`
+	ScheduledActionARN   *string      `json:"scheduledActionARN,omitempty"`
+	ScheduledActionName  *string      `json:"scheduledActionName,omitempty"`
+	StartTime            *metav1.Time `json:"startTime,omitempty"`
+	TimeZone             *string      `json:"timeZone,omitempty"`
 }
 
 // Describes information used for one or more scheduled scaling action updates
 // in a BatchPutScheduledUpdateGroupAction (https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_BatchPutScheduledUpdateGroupAction.html)
 // operation.
 type ScheduledUpdateGroupActionRequest struct {
-	Recurrence          *string `json:"recurrence,omitempty"`
-	ScheduledActionName *string `json:"scheduledActionName,omitempty"`
-	TimeZone            *string `json:"timeZone,omitempty"`
+	DesiredCapacity     *int64       `json:"desiredCapacity,omitempty"`
+	EndTime             *metav1.Time `json:"endTime,omitempty"`
+	MaxSize             *int64       `json:"maxSize,omitempty"`
+	MinSize             *int64       `json:"minSize,omitempty"`
+	Recurrence          *string      `json:"recurrence,omitempty"`
+	ScheduledActionName *string      `json:"scheduledActionName,omitempty"`
+	StartTime           *metav1.Time `json:"startTime,omitempty"`
+	TimeZone            *string      `json:"timeZone,omitempty"`
 }
 
 // Describes information used to create a step adjustment for a step scaling
