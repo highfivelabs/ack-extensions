@@ -1,6 +1,7 @@
 # Generator configuration for ack-extensions's EC2 kinds (ec2.aws.hfl.dev).
 #
-# ACK's ec2-controller (v1.23.1) ignores CustomerGateway and VpnGateway.
+# ACK's ec2-controller (v1.23.1) ignores CustomerGateway, VpnGateway and
+# Volume.
 # They are generated
 # here with that controller's own patterns for an EC2 resource: tags
 # passed as TagSpecifications on create and synced with CreateTags and
@@ -91,6 +92,49 @@ resources:
         - path: Status.State
           in:
             - available
+  Volume:
+    exceptions:
+      errors:
+        404:
+          code: InvalidVolume.NotFound
+    fields:
+      Tags:
+        from:
+          operation: CreateTags
+          path: Tags
+      VolumeID:
+        print:
+          name: ID
+      AvailabilityZone:
+        is_immutable: true
+      SnapshotID:
+        is_immutable: true
+      Encrypted:
+        is_immutable: true
+      KMSKeyID:
+        is_immutable: true
+      OutpostARN:
+        is_immutable: true
+    hooks:
+      sdk_create_post_build_request:
+        template_path: hooks/volume/sdk_create_post_build_request.go.tpl
+      sdk_read_many_post_set_output:
+        template_path: hooks/volume/sdk_read_many_post_set_output.go.tpl
+      # EC2's defaults (type, IOPS, throughput, multi-attach, encryption)
+      # are no drift (custom_delta.go, as ACK applicationautoscaling-
+      # controller's ScalableTarget does).
+      delta_pre_compare:
+        code: customSetDefaults(a, b)
+    # ModifyVolume changes the size, type, IOPS, throughput and
+    # multi-attach; tags are synced as for the gateways.
+    update_operation:
+      custom_method_name: customUpdateVolume
+    synced:
+      when:
+        - path: Status.State
+          in:
+            - available
+            - in-use
 ignore:
   field_paths:
     # Deprecated: IpAddress replaces it (EC2 API reference).
@@ -100,6 +144,15 @@ ignore:
     - CreateCustomerGatewayInput.TagSpecifications
     - CreateVpnGatewayInput.DryRun
     - CreateVpnGatewayInput.TagSpecifications
+    - CreateVolumeInput.DryRun
+    - CreateVolumeInput.ClientToken
+    - CreateVolumeInput.TagSpecifications
+    - CreateVolumeInput.Operator
+    # The attachments are the VolumeAttachment kind's to report; ignoring
+    # them also keeps the generator from emitting a VolumeAttachment type
+    # that would clash with that kind.
+    - Volume.Attachments
+    - CreateVolumeOutput.Attachments
   resource_names:
     - CapacityReservation
     - CapacityReservationBySplitting
@@ -171,7 +224,6 @@ ignore:
     - VerifiedAccessGroup
     - VerifiedAccessInstance
     - VerifiedAccessTrustProvider
-    - Volume
     - Vpc
     - VpcBlockPublicAccessExclusion
     - VpcEndpoint
