@@ -26,6 +26,7 @@ rules:
   - ec2.aws.hfl.dev
   resources:
   - customergateways
+  - vpngateways
   verbs:
   - create
   - delete
@@ -38,6 +39,7 @@ rules:
   - ec2.aws.hfl.dev
   resources:
   - customergateways/status
+  - vpngateways/status
   verbs:
   - get
   - patch
