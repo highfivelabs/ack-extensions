@@ -17,6 +17,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/client-go/tools/record"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 )
@@ -332,4 +333,144 @@ func TestReconcileBeside(t *testing.T) {
 	if len(left.Items) != 0 {
 		t.Fatalf("%d managers left after ACK's EventBridge controller went", len(left.Items))
 	}
+}
+
+func TestAccountLevelBeside(t *testing.T) {
+	for _, c := range []struct {
+		service string
+		in      map[string]bool
+		want    []string
+	}{
+		{"organizations", map[string]bool{"organizations": true}, nil},
+		{"organizations", map[string]bool{"organizations": true, "rds": true, "s3": true}, []string{"rds", "s3"}},
+		// An account-level controller beside the organizations-controller is
+		// not itself refused.
+		{"rds", map[string]bool{"organizations": true, "rds": true}, nil},
+	} {
+		if got := AccountLevelBeside(c.service, c.in); !reflect.DeepEqual(got, c.want) {
+			t.Errorf("%s among %v: %v, want %v", c.service, c.in, got, c.want)
+		}
+	}
+}
+
+// An organization-scoped ACK controller gets our manager only while it is
+// the only ACK controller in its namespace (docs/plan.md, section 7.5).
+func TestReconcileOrganizationScoped(t *testing.T) {
+	c := startEnv(t)
+	ctx := context.Background()
+	const orgNS = "ack-organizations-system"
+	if err := c.Create(ctx, &corev1.Namespace{ObjectMeta: metav1.ObjectMeta{Name: orgNS}}); err != nil {
+		t.Fatal(err)
+	}
+	rec := record.NewFakeRecorder(100)
+	r := &Reconciler{Client: c, Recorder: rec, Options: Options{
+		Images:   map[string]string{"organizations": "example.test/organizations-manager:dev", "rds": "example.test/rds-manager:dev"},
+		Identity: IdentityOwn,
+	}}
+	pass := func(t *testing.T) {
+		t.Helper()
+		if _, err := r.Reconcile(ctx, allKey); err != nil {
+			t.Fatal(err)
+		}
+	}
+	in := func(d *appsv1.Deployment, sa *corev1.ServiceAccount) (*appsv1.Deployment, *corev1.ServiceAccount) {
+		d.Namespace, sa.Namespace = orgNS, orgNS
+		return d, sa
+	}
+	exists := func(t *testing.T, svc string) bool {
+		t.Helper()
+		var d appsv1.Deployment
+		err := c.Get(ctx, types.NamespacedName{Namespace: orgNS, Name: "ack-extensions-" + svc + "-manager"}, &d)
+		if apierrors.IsNotFound(err) {
+			return false
+		}
+		if err != nil {
+			t.Fatal(err)
+		}
+		return d.DeletionTimestamp.IsZero()
+	}
+	drain := func() []string {
+		var out []string
+		for {
+			select {
+			case e := <-rec.Events:
+				out = append(out, e)
+			default:
+				return out
+			}
+		}
+	}
+	orgDep, orgSA := in(ackController("organizations"))
+	rdsDep, rdsSA := in(ackController("rds"))
+	s3Dep, s3SA := in(ackController("s3"))
+	for _, o := range []client.Object{orgSA, orgDep} {
+		if err := c.Create(ctx, o); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	t.Run("alone in its namespace: our manager runs", func(t *testing.T) {
+		pass(t)
+		if !exists(t, "organizations") {
+			t.Fatal("no organizations manager")
+		}
+		if ev := drain(); len(ev) != 0 {
+			t.Fatalf("events %v", ev)
+		}
+	})
+
+	t.Run("beside an account-level controller: refused, and ours removed", func(t *testing.T) {
+		for _, o := range []client.Object{rdsSA, rdsDep} {
+			if err := c.Create(ctx, o); err != nil {
+				t.Fatal(err)
+			}
+		}
+		pass(t)
+		if exists(t, "organizations") {
+			t.Fatal("the organizations manager still runs beside ACK's rds controller")
+		}
+		var sa corev1.ServiceAccount
+		if err := c.Get(ctx, types.NamespacedName{Namespace: orgNS, Name: "ack-extensions-organizations-manager"}, &sa); !apierrors.IsNotFound(err) && sa.DeletionTimestamp.IsZero() {
+			t.Fatalf("our organizations ServiceAccount is left: %v", err)
+		}
+		if !exists(t, "rds") {
+			t.Fatal("the account-level rds manager should still run")
+		}
+		ev := drain()
+		if len(ev) != 1 || !strings.HasPrefix(ev[0], "Warning "+ReasonSharedNamespace+" ") ||
+			!strings.Contains(ev[0], "account-level rds controller") || !strings.Contains(ev[0], "section 7.5") {
+			t.Fatalf("events %v", ev)
+		}
+	})
+
+	t.Run("an ACK controller we do not extend counts too", func(t *testing.T) {
+		if err := c.Delete(ctx, rdsDep); err != nil {
+			t.Fatal(err)
+		}
+		for _, o := range []client.Object{s3SA, s3Dep} {
+			if err := c.Create(ctx, o); err != nil {
+				t.Fatal(err)
+			}
+		}
+		pass(t)
+		if exists(t, "organizations") {
+			t.Fatal("the organizations manager runs beside ACK's s3 controller")
+		}
+		if ev := drain(); len(ev) != 1 || !strings.Contains(ev[0], "account-level s3 controller") {
+			t.Fatalf("events %v", ev)
+		}
+	})
+
+	t.Run("alone again: our manager is back", func(t *testing.T) {
+		if err := c.Delete(ctx, s3Dep); err != nil {
+			t.Fatal(err)
+		}
+		pass(t)
+		if !exists(t, "organizations") {
+			t.Fatal("no organizations manager after the account-level controllers left")
+		}
+		if ev := drain(); len(ev) != 0 {
+			t.Fatalf("events %v", ev)
+		}
+	})
 }
