@@ -14,6 +14,8 @@ record of exactly which ACK code it uses, and of every file copied from it.
 | autoscaling-controller | `v1.5.0` | `56316c75a5da8fdf8079917a16e540be4e84e986` | not a module here: the EC2 Auto Scaling SDK client is at its version (`service/autoscaling` `v1.64.3`) |
 | kms-controller | `v1.7.0` | `57250fba83d58aeb84a3ec2770cf3e9b45708895` | Go module: the API types of ACK's `Key` (which `ReplicaKey` references), `KeyMetadata` and `Tag`; the KMS SDK client at its version (`service/kms` `v1.37.14`) |
 | ec2-controller | `v1.23.1` | `9303654c2cffad05147e4260105439149f7c81bf` | not a module here (its `pkg/tags` is copied); the EC2 SDK client is at its version (`service/ec2` `v1.290.1`) |
+| eventbridge-controller | `v1.9.2` | `fd084a0bb4d9025f294516d6319b88293be1de8d` | not a module here: the EventBridge SDK client is at its version (`service/eventbridge` `v1.36.7`) |
+| secretsmanager-controller | `v1.8.2` | tag | not a module here: the Secrets Manager SDK client the end-to-end tests read a connection's secret with is at its version (`service/secretsmanager` `v1.34.14`) |
 | lambda-controller | `v1.19.0` | `86905357482d01538cb00ab28d59c6af5c46e6f4` | Go module: the API types of ACK's `Function`, which `Permission` references; the Lambda SDK client at its version (`service/lambda` `v1.88.5`) |
 | iam-controller | `v1.11.3` | `91ed7f353255e54e2c6372b3ce757bd2e7fae4ad` | Go module: the API types of ACK's `Role` and `Policy`, which our kinds reference |
 | aws-sdk-go-v2 models | `v1.34.0` | tag | the Smithy model the generator reads (`--aws-sdk-go-version`), the version rds-controller `v1.14.2` was generated from |
@@ -69,6 +71,8 @@ Written here: `services/rds/apis/v1alpha1/db_proxy_target.go`,
 `services/rds/apis/v1alpha1/db_role_association.go`,
 `services/lambda/apis/v1alpha1/permission.go`,
 `services/ec2/templates/hooks/customer_gateway/*.go.tpl`,
+`services/eventbridge/pkg/resource/connection/{hooks,hooks_test}.go`,
+`services/eventbridge/templates/hooks/connection/*.go.tpl`,
 `services/kms/pkg/resource/replica_key/{delta,references,sdk_test}.go`,
 `services/autoscaling/templates/hooks/scaling_policy/*.go.tpl`,
 `services/autoscaling/templates/hooks/scheduled_action/*.go.tpl`,
