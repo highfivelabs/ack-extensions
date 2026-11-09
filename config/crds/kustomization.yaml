@@ -15,6 +15,7 @@ resources:
   - bases/eventbridge.aws.hfl.dev_connections.yaml
   - bases/iam.aws.hfl.dev_loginprofiles.yaml
   - bases/iam.aws.hfl.dev_accountaliases.yaml
+  - bases/iam.aws.hfl.dev_accountpasswordpolicies.yaml
   - bases/iam.aws.hfl.dev_rolepolicyattachments.yaml
   - bases/iam.aws.hfl.dev_usergroupmemberships.yaml
   - bases/iam.aws.hfl.dev_sshpublickeys.yaml

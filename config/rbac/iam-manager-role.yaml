@@ -26,6 +26,7 @@ rules:
   - iam.aws.hfl.dev
   resources:
   - accountaliases
+  - accountpasswordpolicies
   - loginprofiles
   - rolepolicyattachments
   - sshpublickeys
@@ -42,6 +43,7 @@ rules:
   - iam.aws.hfl.dev
   resources:
   - accountaliases/status
+  - accountpasswordpolicies/status
   - loginprofiles/status
   - rolepolicyattachments/status
   - sshpublickeys/status
