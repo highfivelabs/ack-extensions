@@ -183,3 +183,165 @@ func TestScheduleGroup(t *testing.T) {
 		}
 	})
 }
+
+// Schedule: an EventBridge Scheduler schedule, in a group our
+// ScheduleGroup makes.
+func TestSchedule(t *testing.T) {
+	scheme := runtime.NewScheme()
+	_ = schedv1.AddToScheme(scheme)
+	env := harness.Start(t, "scheduler", scheme)
+	cloud := scheduler.NewFromConfig(env.AWS)
+	ctx := context.Background()
+
+	// moto does not check that the target or role exist.
+	const queue = "arn:aws:sqs:us-west-2:123456789012:jobs"
+	const role = "arn:aws:iam::123456789012:role/scheduler-sqs"
+
+	waitSynced := func(t *testing.T, key client.ObjectKey, obj client.Object, conds func() []*ackv1alpha1.Condition) {
+		t.Helper()
+		harness.Eventually(t, 60*time.Second, key.Name+" synced", func() error {
+			if err := env.Client.Get(ctx, key, obj); err != nil {
+				return err
+			}
+			if ok, why := synced(conds()); !ok {
+				return fmt.Errorf("not synced: %s", why)
+			}
+			return nil
+		})
+	}
+	gone := func(t *testing.T, obj client.Object) {
+		t.Helper()
+		harness.Eventually(t, 60*time.Second, obj.GetName()+" gone", func() error {
+			err := env.Client.Get(ctx, client.ObjectKeyFromObject(obj), &schedv1.Schedule{})
+			if err == nil {
+				return fmt.Errorf("object still present")
+			}
+			return client.IgnoreNotFound(err)
+		})
+	}
+	cloudSchedule := func(group, name string) (*scheduler.GetScheduleOutput, error) {
+		return cloud.GetSchedule(ctx, &scheduler.GetScheduleInput{GroupName: aws.String(group), Name: aws.String(name)})
+	}
+
+	group := &schedv1.ScheduleGroup{
+		ObjectMeta: metav1.ObjectMeta{Name: "exports", Namespace: "default"},
+		Spec:       schedv1.ScheduleGroupSpec{Name: aws.String("exports")},
+	}
+	if err := env.Client.Create(ctx, group); err != nil {
+		t.Fatal(err)
+	}
+	gotGroup := &schedv1.ScheduleGroup{}
+	waitSynced(t, client.ObjectKeyFromObject(group), gotGroup, func() []*ackv1alpha1.Condition { return gotGroup.Status.Conditions })
+
+	nightly := &schedv1.Schedule{
+		ObjectMeta: metav1.ObjectMeta{Name: "nightly-export", Namespace: "default"},
+		Spec: schedv1.ScheduleSpec{
+			Name:               aws.String("nightly-export"),
+			GroupRef:           &ackv1alpha1.AWSResourceReferenceWrapper{From: &ackv1alpha1.AWSResourceReference{Name: aws.String("exports")}},
+			ScheduleExpression: aws.String("cron(0 2 * * ? *)"),
+			FlexibleTimeWindow: &schedv1.FlexibleTimeWindow{Mode: aws.String("OFF")},
+			Target:             &schedv1.Target{ARN: aws.String(queue), RoleARN: aws.String(role), Input: aws.String(`{"job":"export"}`)},
+		},
+	}
+	got := &schedv1.Schedule{}
+
+	t.Run("a schedule is made in the referenced group and settles", func(t *testing.T) {
+		if err := env.Client.Create(ctx, nightly); err != nil {
+			t.Fatal(err)
+		}
+		waitSynced(t, client.ObjectKeyFromObject(nightly), got, func() []*ackv1alpha1.Condition { return got.Status.Conditions })
+		out, err := cloudSchedule("exports", "nightly-export")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if aws.ToString(out.ScheduleExpression) != "cron(0 2 * * ? *)" || aws.ToString(out.Target.Arn) != queue || out.State != schedtypes.ScheduleStateEnabled {
+			t.Fatalf("cloud schedule expression %q target %q state %s", aws.ToString(out.ScheduleExpression), aws.ToString(out.Target.Arn), out.State)
+		}
+		updates := func() int {
+			n := 0
+			for _, line := range strings.Split(env.Logs(), "\n") {
+				if strings.Contains(line, ">>> rm.sdkUpdate") && strings.Contains(line, `"name": "nightly-export"`) {
+					n++
+				}
+			}
+			return n
+		}
+		before := updates()
+		time.Sleep(15 * time.Second)
+		if n := updates(); n != before {
+			t.Fatalf("updated %d times across resyncs: Scheduler's defaults read as drift", n-before)
+		}
+	})
+
+	t.Run("a changed expression and state are updated", func(t *testing.T) {
+		harness.Eventually(t, 30*time.Second, "spec updated", func() error {
+			o := &schedv1.Schedule{}
+			if err := env.Client.Get(ctx, client.ObjectKeyFromObject(nightly), o); err != nil {
+				return err
+			}
+			o.Spec.ScheduleExpression = aws.String("cron(30 3 * * ? *)")
+			o.Spec.State = aws.String("DISABLED")
+			return env.Client.Update(ctx, o)
+		})
+		harness.Eventually(t, 60*time.Second, "updated in the cloud", func() error {
+			out, err := cloudSchedule("exports", "nightly-export")
+			if err != nil {
+				return err
+			}
+			if aws.ToString(out.ScheduleExpression) != "cron(30 3 * * ? *)" || out.State != schedtypes.ScheduleStateDisabled {
+				return fmt.Errorf("expression %q state %s", aws.ToString(out.ScheduleExpression), out.State)
+			}
+			return nil
+		})
+	})
+
+	t.Run("the name cannot change", func(t *testing.T) {
+		o := &schedv1.Schedule{}
+		if err := env.Client.Get(ctx, client.ObjectKeyFromObject(nightly), o); err != nil {
+			t.Fatal(err)
+		}
+		o.Spec.Name = aws.String("weekly-export")
+		err := env.Client.Update(ctx, o)
+		if err == nil || !strings.Contains(err.Error(), "immutable") {
+			t.Fatalf("changing name: got %v, want the CRD's immutability refusal", err)
+		}
+	})
+
+	t.Run("deletion-policy retain leaves the schedule", func(t *testing.T) {
+		keep := &schedv1.Schedule{
+			ObjectMeta: metav1.ObjectMeta{
+				Name: "hourly-ping", Namespace: "default",
+				Annotations: map[string]string{ackv1alpha1.AnnotationDeletionPolicy: string(ackv1alpha1.DeletionPolicyRetain)},
+			},
+			Spec: schedv1.ScheduleSpec{
+				Name: aws.String("hourly-ping"), ScheduleExpression: aws.String("rate(1 hour)"),
+				FlexibleTimeWindow: &schedv1.FlexibleTimeWindow{Mode: aws.String("OFF")},
+				Target:             &schedv1.Target{ARN: aws.String(queue), RoleARN: aws.String(role)},
+			},
+		}
+		if err := env.Client.Create(ctx, keep); err != nil {
+			t.Fatal(err)
+		}
+		k := &schedv1.Schedule{}
+		waitSynced(t, client.ObjectKeyFromObject(keep), k, func() []*ackv1alpha1.Condition { return k.Status.Conditions })
+		if err := env.Client.Delete(ctx, keep); err != nil {
+			t.Fatal(err)
+		}
+		gone(t, keep)
+		if _, err := cloudSchedule("default", "hourly-ping"); err != nil {
+			t.Fatalf("retained schedule: %v", err)
+		}
+	})
+
+	t.Run("delete deletes the schedule", func(t *testing.T) {
+		if err := env.Client.Delete(ctx, nightly); err != nil {
+			t.Fatal(err)
+		}
+		gone(t, nightly)
+		_, err := cloudSchedule("exports", "nightly-export")
+		var nf *schedtypes.ResourceNotFoundException
+		if !errors.As(err, &nf) {
+			t.Fatalf("schedule still there, or another error: %v", err)
+		}
+	})
+}
