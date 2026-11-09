@@ -133,14 +133,16 @@ func TestConnection(t *testing.T) {
 	})
 
 	t.Run("a changed parameter is updated", func(t *testing.T) {
-		obj := &ebv1.Connection{}
-		if err := env.Client.Get(ctx, client.ObjectKeyFromObject(partner), obj); err != nil {
-			t.Fatal(err)
-		}
-		obj.Spec.AuthParameters.InvocationHTTPParameters.HeaderParameters[0].Value = aws.String("platform")
-		if err := env.Client.Update(ctx, obj); err != nil {
-			t.Fatal(err)
-		}
+		// The controller writes the object too: read and update again until
+		// the update is not a conflict.
+		harness.Eventually(t, 30*time.Second, "spec updated", func() error {
+			obj := &ebv1.Connection{}
+			if err := env.Client.Get(ctx, client.ObjectKeyFromObject(partner), obj); err != nil {
+				return err
+			}
+			obj.Spec.AuthParameters.InvocationHTTPParameters.HeaderParameters[0].Value = aws.String("platform")
+			return env.Client.Update(ctx, obj)
+		})
 		harness.Eventually(t, 60*time.Second, "new header in the cloud", func() error {
 			out, err := cloud.DescribeConnection(ctx, &eventbridge.DescribeConnectionInput{Name: aws.String("partner")})
 			if err != nil {
