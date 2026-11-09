@@ -37,6 +37,7 @@ type model struct {
 	unmappedOurs      int
 	howOfficial       map[string]int
 	howOurs           map[string]int
+	priority          map[string]int
 	cfnReadOnly       int
 	cfnCut            int
 }
@@ -91,6 +92,10 @@ func build(c config) (*model, error) {
 		m.services = append(m.services, s)
 	}
 	sort.Strings(m.services)
+
+	if m.priority, err = loadPriority(c, m.services); err != nil {
+		return nil, err
+	}
 
 	// Official. Fetch the pinned CRDs first, in parallel; they are cached.
 	if err := prefetch(c, src); err != nil {
@@ -244,4 +249,15 @@ func prefetch(c config, src *sources) error {
 	default:
 		return nil
 	}
+}
+
+// cfnResourcesIn counts the CloudFormation resources of a service.
+func (m *model) cfnResourcesIn(service string) int {
+	n := 0
+	for _, k := range m.cfnKeys {
+		if m.cfn[k].Service == service {
+			n++
+		}
+	}
+	return n
 }
