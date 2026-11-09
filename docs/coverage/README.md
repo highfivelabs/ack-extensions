@@ -194,7 +194,7 @@ This repository's own pins (`UPSTREAM.md`) cover only a few of these controllers
 Kinds with no CloudFormation resource get a row in `resources.csv` with `notes=outside-denominator` and zero attributes, and are in none of the percentages.
 
 - **Official (22):** `apigateway/APIIntegrationResponse`, `apigateway/APIMethodResponse`, `apigateway/Integration`, `bedrock/InferenceProfile`, `cloudwatchlogs/DeliveryDestinationPolicy`, `dynamodb/Backup`, `emrcontainers/JobRun`, `kms/Grant`, `lambdamicrovms/Microvm`, `lambdamicrovms/MicrovmImage`, `opensearchservice/VPCEndpoint`, `opensearchservice/VPCEndpointAccess`, `prometheusservice/AlertManagerDefinition`, `prometheusservice/LoggingConfiguration`, `rds/DBClusterSnapshot`, `sagemaker/HyperParameterTuningJob`, `sagemaker/LabelingJob`, `sagemaker/PipelineExecution`, `sagemaker/TrainingJob`, `sagemaker/TransformJob`, `sns/PlatformApplication`, `sns/PlatformEndpoint`.
-- **Ours (0):** none. Six of our kinds are not CloudFormation resources of their own but properties of a larger one (point 4 of the Method); they are measured as those properties.
+- **Ours (1):** `iam/SSHPublicKey`.
 
 **Services missing from the CloudFormation schemas.** `lambdamicrovms`. The plan was to fall back to the Create* input shapes in botocore or aws-sdk-go-v2's `api-models` for such a service; that fallback is not built, because only 1 service (a few kinds, all brand new) needs it. Its kinds are listed above as outside the denominator rather than being measured against a model, so they are neither credited nor penalised.
 
