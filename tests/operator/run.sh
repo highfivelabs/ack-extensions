@@ -149,7 +149,8 @@ EOF
   [[ "${allowed}" == true ]] && echo true || echo false
 }
 [[ "$(sar get iam.services.k8s.aws roles ack-extensions-rds-manager default)" == true ]] || fail "our manager cannot read ACK's Roles (references)"
-[[ "$(sar delete iam.services.k8s.aws roles ack-extensions-rds-manager default)" == false ]] || fail "our manager may delete ACK's Roles"[[ "$(can create dbproxytargets.rds.aws.hfl.dev ack-rds-controller default)" == no ]] || fail "ACK's controller may create our kinds"
+[[ "$(sar delete iam.services.k8s.aws roles ack-extensions-rds-manager default)" == false ]] || fail "our manager may delete ACK's Roles"
+[[ "$(can create dbproxytargets.rds.aws.hfl.dev ack-rds-controller default)" == no ]] || fail "ACK's controller may create our kinds"
 ok "rights: ours manages *.rds.aws.hfl.dev and only reads ACK's rds kinds and Roles; ACK's controller has nothing of ours"
 
 echo "== gap kinds reconcile against moto"
