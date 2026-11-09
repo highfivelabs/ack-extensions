@@ -3,6 +3,11 @@
 ack-extensions builds on AWS Controllers for Kubernetes (ACK). This file is the
 record of exactly which ACK code it uses, and of every file copied from it.
 
+`upstream.yaml` says the same as this file's tables in machine-readable
+form (pins, pull requests, patches, copied files), for tools such as the
+factory's daily watch. Change both together; `task upstream:yaml-check`
+(part of `task check`) fails when they disagree.
+
 ## Pins
 
 | Project | Version | Commit | How it is used |

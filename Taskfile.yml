@@ -83,6 +83,12 @@ tasks:
     cmds:
       - hack/upstream.sh --check
 
+  "upstream:yaml-check":
+    desc: Fail if upstream.yaml (UPSTREAM.md, machine-readable) and UPSTREAM.md disagree; needs no upstream checkout.
+    dir: hack/upstream-yaml
+    cmds:
+      - go run . ../..
+
   generate:
     desc: Regenerate the CRDs, API types, controllers and roles.
     cmds:
@@ -111,6 +117,7 @@ tasks:
     desc: Generated files current, gofmt, vet, SPDX lines, build, tests.
     cmds:
       - task: upstream-check
+      - task: upstream:yaml-check
       - task: go:fmt-check
         vars: {DIRS: services pkg cmd tests}
       - task: generate
