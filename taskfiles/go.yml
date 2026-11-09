@@ -42,7 +42,9 @@ tasks:
   # go test with envtest's assets found, or fail rather than pass with the
   # envtest tests skipped. The download is retried: GitHub's release
   # downloads sometimes answer 5xx. Vars: BIN (holding setup-envtest),
-  # ENVTEST_K8S_VERSION, PKGS (default ./...).
+  # ENVTEST_K8S_VERSION, PKGS (default ./...), TIMEOUT (default 30m: go test's
+  # own 10m stops a package whose tests run one after another, as tests/e2e's
+  # now do, a few minutes short of finishing).
   test-envtest:
     cmds:
       - |
@@ -52,5 +54,5 @@ tasks:
           assets=""; echo "setup-envtest failed (attempt $i); retrying"; sleep $((i * 10))
         done
         [ -n "$assets" ] || { echo "no envtest assets for {{.ENVTEST_K8S_VERSION}}: refusing to run with the end-to-end tests skipped"; exit 1; }
-        echo "KUBEBUILDER_ASSETS=$assets go test {{.PKGS | default "./..."}} -count=1"
-        KUBEBUILDER_ASSETS="$assets" go test {{.PKGS | default "./..."}} -count=1
+        echo "KUBEBUILDER_ASSETS=$assets go test {{.PKGS | default "./..."}} -count=1 -timeout {{.TIMEOUT | default "30m"}}"
+        KUBEBUILDER_ASSETS="$assets" go test {{.PKGS | default "./..."}} -count=1 -timeout {{.TIMEOUT | default "30m"}}
