@@ -345,3 +345,173 @@ func TestVpnGateway(t *testing.T) {
 		}
 	})
 }
+
+func cloudVolume(ctx context.Context, c *ec2.Client, id string) (*ec2types.Volume, error) {
+	out, err := c.DescribeVolumes(ctx, &ec2.DescribeVolumesInput{VolumeIds: []string{id}})
+	if err != nil {
+		return nil, err
+	}
+	if len(out.Volumes) != 1 {
+		return nil, fmt.Errorf("%d volumes with ID %s", len(out.Volumes), id)
+	}
+	return &out.Volumes[0], nil
+}
+
+// Volume: an EBS volume. ACK's ec2-controller (v1.23.1) ignores it.
+func TestVolume(t *testing.T) {
+	scheme := runtime.NewScheme()
+	_ = ec2v1.AddToScheme(scheme)
+	env := harness.Start(t, "ec2", scheme)
+	cloud := ec2.NewFromConfig(env.AWS)
+	ctx := context.Background()
+
+	get := func(t *testing.T, obj *ec2v1.Volume) *ec2v1.Volume {
+		t.Helper()
+		got := &ec2v1.Volume{}
+		if err := env.Client.Get(ctx, client.ObjectKeyFromObject(obj), got); err != nil {
+			t.Fatal(err)
+		}
+		return got
+	}
+	waitSynced := func(t *testing.T, obj *ec2v1.Volume) *ec2v1.Volume {
+		t.Helper()
+		got := &ec2v1.Volume{}
+		harness.Eventually(t, 60*time.Second, obj.Name+" synced", func() error {
+			if err := env.Client.Get(ctx, client.ObjectKeyFromObject(obj), got); err != nil {
+				return err
+			}
+			if ok, why := synced(got.Status.Conditions); !ok {
+				return fmt.Errorf("not synced: %s", why)
+			}
+			return nil
+		})
+		return got
+	}
+	gone := func(t *testing.T, obj client.Object) {
+		t.Helper()
+		harness.Eventually(t, 60*time.Second, obj.GetName()+" gone", func() error {
+			err := env.Client.Get(ctx, client.ObjectKeyFromObject(obj), &ec2v1.Volume{})
+			if err == nil {
+				return fmt.Errorf("object still present")
+			}
+			return client.IgnoreNotFound(err)
+		})
+	}
+
+	data := &ec2v1.Volume{
+		ObjectMeta: metav1.ObjectMeta{Name: "data", Namespace: "default"},
+		Spec: ec2v1.VolumeSpec{
+			AvailabilityZone: aws.String("us-west-2a"), Size: aws.Int64(20), VolumeType: aws.String("gp3"),
+			Tags: []*ec2v1.Tag{{Key: aws.String("app"), Value: aws.String("db")}},
+		},
+	}
+	var id string
+
+	t.Run("a volume is made, tagged, and available", func(t *testing.T) {
+		if err := env.Client.Create(ctx, data); err != nil {
+			t.Fatal(err)
+		}
+		got := waitSynced(t, data)
+		id = aws.ToString(got.Status.VolumeID)
+		if !strings.HasPrefix(id, "vol-") || aws.ToString(got.Status.State) != "available" {
+			t.Fatalf("status id %q state %q", id, aws.ToString(got.Status.State))
+		}
+		v, err := cloudVolume(ctx, cloud, id)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if aws.ToInt32(v.Size) != 20 || v.VolumeType != ec2types.VolumeTypeGp3 || aws.ToString(v.AvailabilityZone) != "us-west-2a" || ec2TagMap(v.Tags)["app"] != "db" {
+			t.Fatalf("cloud volume size %d type %s zone %s tags %v", aws.ToInt32(v.Size), v.VolumeType, aws.ToString(v.AvailabilityZone), ec2TagMap(v.Tags))
+		}
+	})
+
+	t.Run("it grows", func(t *testing.T) {
+		obj := get(t, data)
+		obj.Spec.Size = aws.Int64(30)
+		if err := env.Client.Update(ctx, obj); err != nil {
+			t.Fatal(err)
+		}
+		harness.Eventually(t, 60*time.Second, "size 30 in the cloud", func() error {
+			v, err := cloudVolume(ctx, cloud, id)
+			if err != nil {
+				return err
+			}
+			if aws.ToInt32(v.Size) != 30 {
+				return fmt.Errorf("size %d", aws.ToInt32(v.Size))
+			}
+			return nil
+		})
+		waitSynced(t, data)
+	})
+
+	t.Run("its zone cannot change", func(t *testing.T) {
+		obj := get(t, data)
+		obj.Spec.AvailabilityZone = aws.String("us-west-2b")
+		err := env.Client.Update(ctx, obj)
+		if err == nil || !strings.Contains(err.Error(), "immutable") {
+			t.Fatalf("changing availabilityZone: got %v, want the CRD's immutability refusal", err)
+		}
+	})
+
+	t.Run("EC2's defaults are no drift", func(t *testing.T) {
+		// Only a size: EC2 fills in the type, encryption and the rest.
+		small := &ec2v1.Volume{
+			ObjectMeta: metav1.ObjectMeta{Name: "small", Namespace: "default"},
+			Spec:       ec2v1.VolumeSpec{AvailabilityZone: aws.String("us-west-2a"), Size: aws.Int64(8)},
+		}
+		if err := env.Client.Create(ctx, small); err != nil {
+			t.Fatal(err)
+		}
+		waitSynced(t, small)
+		updates := func() int {
+			n := 0
+			for _, line := range strings.Split(env.Logs(), "\n") {
+				if strings.Contains(line, ">>> rm.sdkUpdate") && strings.Contains(line, `"name": "small"`) {
+					n++
+				}
+			}
+			return n
+		}
+		before := updates()
+		time.Sleep(15 * time.Second)
+		if n := updates(); n != before {
+			t.Fatalf("updated %d times across resyncs: EC2's defaults read as drift", n-before)
+		}
+		if err := env.Client.Delete(ctx, small); err != nil {
+			t.Fatal(err)
+		}
+		gone(t, small)
+	})
+
+	t.Run("deletion-policy retain leaves the volume", func(t *testing.T) {
+		keep := &ec2v1.Volume{
+			ObjectMeta: metav1.ObjectMeta{
+				Name: "kept-volume", Namespace: "default",
+				Annotations: map[string]string{ackv1alpha1.AnnotationDeletionPolicy: string(ackv1alpha1.DeletionPolicyRetain)},
+			},
+			Spec: ec2v1.VolumeSpec{AvailabilityZone: aws.String("us-west-2a"), Size: aws.Int64(4)},
+		}
+		if err := env.Client.Create(ctx, keep); err != nil {
+			t.Fatal(err)
+		}
+		got := waitSynced(t, keep)
+		if err := env.Client.Delete(ctx, keep); err != nil {
+			t.Fatal(err)
+		}
+		gone(t, keep)
+		if _, err := cloudVolume(ctx, cloud, aws.ToString(got.Status.VolumeID)); err != nil {
+			t.Fatalf("retained volume: %v", err)
+		}
+	})
+
+	t.Run("delete deletes the volume", func(t *testing.T) {
+		if err := env.Client.Delete(ctx, data); err != nil {
+			t.Fatal(err)
+		}
+		gone(t, data)
+		_, err := cloudVolume(ctx, cloud, id)
+		if err == nil || !strings.Contains(err.Error(), "InvalidVolume.NotFound") {
+			t.Fatalf("volume still there, or another error: %v", err)
+		}
+	})
+}
