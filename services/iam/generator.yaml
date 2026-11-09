@@ -7,13 +7,38 @@
 # request #184 writes it. Every resource the generator can find is ignored:
 # it generates only the service's scaffolding (the API group, the resource
 # registry, the controller's main).
+#
+# LoginProfile (a user's console password) is generated from
+# CreateLoginProfile, GetLoginProfile, UpdateLoginProfile and
+# DeleteLoginProfile; the password comes from a Kubernetes Secret.
+resources:
+  LoginProfile:
+    exceptions:
+      errors:
+        404:
+          code: NoSuchEntity
+    fields:
+      UserName:
+        is_primary_key: true
+        is_immutable: true
+        is_required: true
+      Password:
+        is_secret: true
+        is_required: true
+    hooks:
+      # IAM reports passwordResetRequired false when the spec leaves it
+      # out; that default is no drift (custom_delta.go).
+      delta_pre_compare:
+        code: customSetDefaults(a, b)
+    # A login profile has no tags.
+    tags:
+      ignore: true
 ignore:
   resource_names:
     - AccessKey
     - AccountAlias
     - Group
     - InstanceProfile
-    - LoginProfile
     - OpenIDConnectProvider
     - Policy
     - PolicyVersion

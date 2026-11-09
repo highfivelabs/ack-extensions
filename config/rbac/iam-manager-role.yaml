@@ -25,6 +25,7 @@ rules:
 - apiGroups:
   - iam.aws.hfl.dev
   resources:
+  - loginprofiles
   - rolepolicyattachments
   verbs:
   - create
@@ -37,6 +38,7 @@ rules:
 - apiGroups:
   - iam.aws.hfl.dev
   resources:
+  - loginprofiles/status
   - rolepolicyattachments/status
   verbs:
   - get
