@@ -52,6 +52,8 @@ github.com/aws/aws-sdk-go-v2/service/lambda v1.88.5 h1:HWN7xwaV7Zwrn3Jlauio4u4aT
 github.com/aws/aws-sdk-go-v2/service/lambda v1.88.5/go.mod h1:6HBXRyFFqOw+ALkJ6YGHfrr20/YXYv6X9pcZErXRvCA=
 github.com/aws/aws-sdk-go-v2/service/rds v1.93.8 h1:arPMUy5db44S/YN1AIPIDHGkD6zd1Ov00JWY+Z2YDL4=
 github.com/aws/aws-sdk-go-v2/service/rds v1.93.8/go.mod h1:y3BbL7G7qwMzJsSV1LH90Y/n91PukXPy3TqGg1VVESE=
+github.com/aws/aws-sdk-go-v2/service/scheduler v1.12.13 h1:aOIMXa/GJEGOKKPsqPUa4Gye4Vs76yjHJVAcz+0iReA=
+github.com/aws/aws-sdk-go-v2/service/scheduler v1.12.13/go.mod h1:VaeCexw0fXsqluwZ9t1Od9NlVXr4K6lEhgYfeE3s0TU=
 github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.34.14 h1:rhT0h8cSV5ZNZWy67Eqe3OQTFGRu9xwgyFsuGeIXmGQ=
 github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.34.14/go.mod h1:CLEjbx0xH3ptihCb1l0XlrqoGfWD9xU0na47/s7fR/s=
 github.com/aws/aws-sdk-go-v2/service/sso v1.24.7 h1:rLnYAfXQ3YAccocshIH5mzNNwZBkBo+bP6EhIxak6Hw=

@@ -8,7 +8,9 @@
 //     (app.kubernetes.io/name: <service>-chart), or by the annotation
 //     aws.hfl.dev/ack-service on a Deployment that was installed some other
 //     way.
-//   - For each one whose service we extend (applicationautoscaling, autoscaling, ec2, ecr, eventbridge, iam, kms, lambda, rds, wafv2), it runs our manager
+//   - For each one whose service we extend (applicationautoscaling, autoscaling, ec2, ecr, eventbridge, iam, kms, lambda, rds, wafv2), it runs our manager,
+//     and beside EventBridge's also the manager of a service ACK has no
+//     controller for (scheduler; Beside),
 //     in the same namespace with the controller's own arguments and
 //     environment (region, endpoint, watch namespace and selectors, CARM,
 //     feature gates, deletion policy, credentials file), so the
@@ -56,7 +58,7 @@ const (
 	// LabelManagedBy marks what the operator made.
 	LabelManagedBy = "app.kubernetes.io/managed-by"
 	managedBy      = Name + "-operator"
-	// LabelService is our service (applicationautoscaling, autoscaling, ec2, ecr, eventbridge, iam, kms, lambda, rds, wafv2).
+	// LabelService is our service (applicationautoscaling, autoscaling, ec2, ecr, eventbridge, iam, kms, lambda, rds, scheduler, wafv2).
 	LabelService = "aws.hfl.dev/service"
 	// LabelSource is the ACK controller Deployment, namespace.name.
 	LabelSource = "aws.hfl.dev/source"
@@ -99,6 +101,30 @@ func (r *Reconciler) SetupWithManager(mgr ctrl.Manager) error {
 		Watches(&corev1.ServiceAccount{}, all).
 		Watches(&rbacv1.ClusterRoleBinding{}, all).
 		Complete(r)
+}
+
+// Beside maps a service ACK has no controller for to the ACK service whose
+// controller its manager runs beside, taking that controller's identity
+// (docs/plan.md, open question 8: the builder, 2026-11-09, "Just build
+// the thing. I trust your judgment."). That controller's role then needs
+// the service's rights too (README, "AWS identity").
+var Beside = map[string]string{"scheduler": "eventbridge"}
+
+// ourServices are the services whose managers run beside an ACK
+// controller of service ack: its own, if we extend it, and those Beside
+// names it, if we have their images.
+func (r *Reconciler) ourServices(ack string) []string {
+	var out []string
+	if _, ok := r.Options.Images[ack]; ok {
+		out = append(out, ack)
+	}
+	for svc, host := range Beside {
+		if _, ok := r.Options.Images[svc]; ok && host == ack {
+			out = append(out, svc)
+		}
+	}
+	sort.Strings(out)
+	return out
 }
 
 // ManagerRole is the ClusterRole of a service's manager
@@ -345,7 +371,8 @@ func (r *Reconciler) Reconcile(ctx context.Context, _ reconcile.Request) (reconc
 		if service == "" {
 			continue
 		}
-		if _, ours := r.Options.Images[service]; !ours {
+		ours := r.ourServices(service)
+		if len(ours) == 0 {
 			continue
 		}
 		if !src.DeletionTimestamp.IsZero() {
@@ -361,13 +388,15 @@ func (r *Reconciler) Reconcile(ctx context.Context, _ reconcile.Request) (reconc
 			lg.Info("waiting for ACK's ServiceAccount", "deployment", src.Namespace+"/"+src.Name, "serviceAccount", saName, "err", err.Error())
 			continue
 		}
-		objs, err := r.Plan(src, service, &ackSA)
-		if err != nil {
-			errs = append(errs, err.Error())
-			continue
-		}
-		for _, o := range objs {
-			want.add(kindOf(o), o)
+		for _, svc := range ours {
+			objs, err := r.Plan(src, svc, &ackSA)
+			if err != nil {
+				errs = append(errs, err.Error())
+				continue
+			}
+			for _, o := range objs {
+				want.add(kindOf(o), o)
+			}
 		}
 	}
 	for _, o := range want.objs {
