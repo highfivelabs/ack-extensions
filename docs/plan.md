@@ -1834,3 +1834,28 @@ Before it can run on a real cluster:
     namespace they live in needs the tightest RBAC; that is a note in the
     README, not a code check. The builder to confirm. Not blocking the
     kinds.
+12. **Identity of the Cloud Control manager** (the spike in
+    `docs/cloudcontrol.md`, branch `agent/cloudcontrol-spike`). The generic
+    Cloud Control manager serves types ACK has no controller for, so the
+    operator has no ACK controller to run it beside and copy the identity
+    from (section 7; `Beside` answered the same question for one service in
+    question 8). The manager is built on ACK's runtime, so CARM, team CARM
+    and `IAMRoleSelector` work unchanged once it has a base identity.
+    Options (`docs/cloudcontrol.md` section 10 has the table):
+    - beside an ACK controller with its identity, as Scheduler is beside
+      EventBridge: but one process serves many services, and that role
+      would need every Cloud Control type's permissions;
+    - **its own manager per AWS service**, installed by the operator from a
+      small configuration (role ARN or Pod Identity, region, the kinds to
+      serve): ServiceAccount `ack-extensions-cloudcontrol-<service>`, one
+      image with `--reconcile-resources` for that service's kinds, only
+      those CRDs installed, in ACK's namespace so CARM's ConfigMaps are
+      shared, its role from the generated IAM policy merged per service;
+    - one manager and one role for every Cloud Control type;
+    - a static bundle outside the operator.
+
+    Recommended: the second, which keeps ACK's one controller and one role
+    per service (question 5) and least privilege per service. The builder
+    to decide, with the other Cloud Control decisions in
+    `docs/cloudcontrol.md` section 12 (go or not, the API group, the
+    default for write-only properties, a sandbox account for real-AWS runs).
