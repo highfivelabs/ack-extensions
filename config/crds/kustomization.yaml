@@ -16,3 +16,4 @@ resources:
   - bases/rds.aws.hfl.dev_dbproxytargets.yaml
   - bases/rds.aws.hfl.dev_dbroleassociations.yaml
   - bases/rds.aws.hfl.dev_optiongroups.yaml
+  - bases/wafv2.aws.hfl.dev_webaclassociations.yaml
