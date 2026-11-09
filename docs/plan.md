@@ -1,10 +1,11 @@
 # ack-extensions plan
 
-Status, 2026-11-08: the repository exists locally with three kinds:
+Status, 2026-11-08: the repository has four kinds:
 
 - `iam.aws.hfl.dev` `RolePolicyAttachment`;
 - `rds.aws.hfl.dev` `OptionGroup`;
-- `rds.aws.hfl.dev` `DBProxyTarget`.
+- `rds.aws.hfl.dev` `DBProxyTarget`;
+- `rds.aws.hfl.dev` `DBRoleAssociation`.
 
 There is an operator that runs our managers beside ACK's controllers as
 the same AWS identity, and tests against a fake AWS (moto), in Go and on
@@ -74,7 +75,9 @@ Two ways to build a kind:
    not one the generator reads:
    - `AttachRolePolicy`/`DetachRolePolicy` (`RolePolicyAttachment`, as
      upstream PR #184 does);
-   - `RegisterDBProxyTargets`/`DeregisterDBProxyTargets` (`DBProxyTarget`).
+   - `RegisterDBProxyTargets`/`DeregisterDBProxyTargets` (`DBProxyTarget`);
+   - `AddRoleToDBCluster`/`AddRoleToDBInstance` and their
+     `RemoveRoleFrom...` (`DBRoleAssociation`).
 
    The files follow the generated layout (descriptor, resource,
    identifiers, manager, manager factory, references, delta, sdk), so the
@@ -140,7 +143,7 @@ with the patch.
 
 | Option | Verdict |
 | --- | --- |
-| **moto** (`getmoto/moto`, Apache-2.0), server mode | **Chosen.** Real HTTP endpoints for IAM, RDS (option groups, proxies, proxy targets), EC2 and STS, in-memory, started per test on a free port. Pinned at `5.2.5`: the pip package in `hack/moto-requirements.txt` for the Go tests, and the `motoserver/moto:5.2.5` image by digest for kind. |
+| **moto** (`getmoto/moto`, Apache-2.0), server mode | **Chosen.** Real HTTP endpoints for IAM, RDS (option groups, proxies, proxy targets, role associations except their removal), EC2 and STS, in-memory, started per test on a free port. Pinned at `5.2.5`: the pip package in `hack/moto-requirements.txt` for the Go tests, and the `motoserver/moto:5.2.5` image by digest for kind. |
 | LocalStack | Rejected. The community repository is archived (2026-03), and the unified image needs a LocalStack account under its EULA, free only for non-commercial use. That is not something an open-source project's tests can depend on. |
 | ACK's own approach | Not hermetic: end-to-end tests run against real AWS accounts in ACK's Prow. |
 | Recorded HTTP (go-vcr) | Kept for later: recordings need a real AWS account to record once, and they do not exercise the controller's reads after its writes the way a stateful fake does. |
@@ -182,6 +185,18 @@ status) and the fake cloud through the real AWS SDK clients.
     references resolve to ACK's DBProxy and DBInstance; delete deregisters
 --- PASS: TestAllTargetsAvailable, TestRegisteredExactlyOne,
           TestSyncedFollowsTargetHealth (db_proxy_target unit tests)
+--- PASS: TestDBRoleAssociation
+    a role is associated with a cluster and synced; a role is associated
+    with an instance; the CRD refuses an instance without a feature, both
+    a cluster and an instance, and no role; the role cannot change;
+    references resolve to ACK's DBCluster and Role; deletion-policy
+    retain leaves the role associated; delete calls
+    RemoveRoleFromDBCluster and keeps the object while it fails (moto
+    does not implement it, section 4.4)
+--- PASS: TestAssociatedExactlyOne, TestMatchingRoleAndFeature,
+          TestSyncedFollowsAssociationStatus, TestDeleteRemovesTheRole
+          (db_role_association unit tests; the last against a stand-in
+          for RDS's RemoveRoleFrom... responses)
 --- PASS: the OptionGroup hook tests copied from PR #257
 --- PASS: TestManagerArgs, TestReconcile (the operator against envtest)
 ```
@@ -194,6 +209,12 @@ controller to show it can fail:
 - With `DBProxyTarget`'s readiness rule replaced by `true`,
   `TestSyncedFollowsTargetHealth` failed: "IsSynced with a REGISTERING
   target".
+- With `DBRoleAssociation`'s delete returning before
+  `RemoveRoleFromDBCluster`, the delete step failed: "the removal
+  attempted and the object kept: not within 1m30s: object not kept".
+- With its readiness rule replaced by `true`,
+  `TestSyncedFollowsAssociationStatus` failed: "IsSynced with status
+  "PENDING" = true, want false".
 
 ### 4.4 What moto does differently from AWS
 
@@ -214,6 +235,25 @@ controller to show it can fail:
   case, as AWS stores them.
 - **IAM.** moto does not enforce it by default, so the tests prove which
   identity a pod presents, not that AWS would authorise it.
+- **Removing a role from a cluster or instance.** moto 5.2.5 implements
+  `AddRoleToDBCluster` and `AddRoleToDBInstance`, but not
+  `RemoveRoleFromDBCluster` or `RemoveRoleFromDBInstance`: it answers
+  both with a bare HTTP 500. They are unchecked in moto's
+  `IMPLEMENTATION_COVERAGE.md` on its master (2026-11-08), so a newer
+  moto would not help. `TestDBRoleAssociation` shows that deleting the
+  object calls `RemoveRoleFromDBCluster` and keeps the object while the
+  call fails. That a successful removal, or an association already gone
+  (`DBClusterRoleNotFound`, `DBInstanceRoleNotFound`, or the database
+  gone), releases the object is unit-tested
+  (`db_role_association/sdk_test.go`) against a stand-in serving the
+  responses RDS documents, not against a fake with state.
+- **An association's status.** moto marks a new association `ACTIVE` at
+  once. On AWS it is `PENDING` first, and `INVALID` when RDS cannot assume
+  the role. The rule (synced only when `ACTIVE`) is unit-tested.
+- **Role ARNs and features.** moto checks neither that the role exists
+  nor that the engine supports the feature (AWS does both). It refuses a
+  second association with the same role or the same feature, as AWS
+  does.
 
 ## 5. Candidates, ranked
 
@@ -223,6 +263,30 @@ which has 80 or so controller repositories, and against the gap scan
 470 with an ACK kind; read as data, unverified). Ranked by how likely a
 typical application stack (a database, its secrets and access, a
 workload's IAM, DNS, a registry) is to block on it.
+
+**Rechecked 2026-11-08** (read-only `gh`, and `git fetch` of
+rds-controller), before building `DBRoleAssociation`:
+
+- rds-controller: latest release `v1.14.2` (2026-11-03), and `main` has
+  nothing after it. Its open pull requests are #335 (tags-only updates),
+  #293 (`DBInstanceParameterGroupName` on `DBCluster`) and #257
+  (`OptionGroup`). Searching its code, issues and pull requests, and
+  `community`'s issues, for `AddRoleToDBCluster`, `AddRoleToDBInstance`
+  and associated roles finds nothing. `DBCluster` and `DBInstance` carry
+  `associatedRoles` in their status only.
+- The pull requests in table (a): ssm-controller #85, ecr-controller
+  #121, secretsmanager-controller #69, acm-controller #104 and
+  iam-controller #184 are open and conflict with their base.
+  elasticache-controller #237 (`GlobalReplicationGroup`) is open,
+  mergeable and was updated on 2026-11-06, so it may be close to merging:
+  wait for it.
+- Secrets Manager resource policy: no secretsmanager-controller or
+  `community` issue or pull request.
+
+Why `DBRoleAssociation` came next: this table's ranks 3 to 5 wait on open
+question 1 or would change ACK's own `Role`; rank 6 is marked "not an
+application-stack need", the measure this ranking uses; rank 7 may be
+close to merging. Table (b) marked RDS role associations "next", first.
 
 ### (a) Upstream code exists, not released
 
@@ -234,7 +298,7 @@ workload's IAM, DNS, a registry) is to block on it.
 | 4 | `Role` additive policy mode | iam-controller PR #184, second commit | lets an ACK `Role` and a `RolePolicyAttachment` share a role (section 6.1) | not built: changes ACK's own `Role` |
 | 5 | ACM import from a Kubernetes TLS Secret | acm-controller PR #104 | bring-your-own certificates | not built: field (open question 1) |
 | 6 | SSM `Association` | ssm-controller PR #85 | agent configuration on instances | not built: not an application-stack need |
-| 7 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237 | cross-region caches | not built |
+| 7 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237 (mergeable, active 2026-11-06) | cross-region caches | not built: may be close to merging |
 | 8 | ECR `ReplicationConfiguration` | ecr-controller PR #121 | an account-wide singleton | not built |
 | 9 | CloudWatch Logs metric filters, EC2 `KeyPair`, KMS replica keys | PRs #61, #396, #112 | | not built |
 
@@ -243,7 +307,7 @@ workload's IAM, DNS, a registry) is to block on it.
 | Candidate | Why | Done |
 | --- | --- | --- |
 | `DBProxyTarget` (`RegisterDBProxyTargets`) | ACK's `DBProxy` cannot be used without it: a proxy with no target accepts no connections. No ACK code or issue covers it (code search, 2026-11-07). | built |
-| RDS role associations (`AddRoleToDBCluster`/`AddRoleToDBInstance`) | Aurora's S3 import and export, and Lambda calls. moto supports them. | next |
+| RDS role associations (`AddRoleToDBCluster`/`AddRoleToDBInstance`) | Aurora's S3 import and export, and Lambda calls; RDS for PostgreSQL's S3 import and export; SQL Server's and Oracle's S3 integration. No ACK code, issue or pull request (2026-11-08). moto supports adding them, not removing them (section 4.4). | built: `DBRoleAssociation` |
 | Secrets Manager resource policy (`PutResourcePolicy`) | cross-account access to a secret | next |
 | Route 53 DNSSEC and key-signing keys, S3 access grants, RDS event subscriptions | ignored in ACK's generator configurations | later |
 
@@ -317,6 +381,59 @@ immutable.
 RDS has no ARN for a target, so `status.ackResourceMetadata.arn` is the
 target group's ARN form with the resource appended. It is an identifier,
 never sent to AWS.
+
+### 6.4 `rds.aws.hfl.dev` `DBRoleAssociation`
+
+New: no ACK code, issue or pull request covers it (section 5). ACK's
+`DBCluster` and `DBInstance` report `status.associatedRoles` but cannot
+add one, so Aurora cannot read from or write to S3 or call Lambda, and
+RDS for PostgreSQL, SQL Server and Oracle cannot use their S3
+integrations, without a step outside Kubernetes. Hand-written, with the
+skeleton copied from PR #184 as `DBProxyTarget`'s is.
+
+One kind covers both databases, as `DBProxyTarget` does, because the two
+APIs take the same three things. The spec names:
+
+- exactly one cluster or instance (`dbClusterIdentifier`,
+  `dbInstanceIdentifier`, or a reference to ACK's `DBCluster` or
+  `DBInstance`);
+- exactly one role (`roleARN`, or `roleRef` to ACK's
+  `iam.services.k8s.aws` `Role`, read from its
+  `status.ackResourceMetadata.arn`);
+- the feature (`featureName`: `s3Import`, `s3Export`, `Lambda`,
+  `S3_INTEGRATION`, ...), which RDS requires for an instance and Aurora
+  MySQL leaves out for a cluster.
+
+CEL rules in the CRD enforce both "exactly one" rules and the instance's
+feature, and every field is immutable.
+
+- **Create** is `AddRoleToDBCluster` or `AddRoleToDBInstance`.
+- **Read** is `DescribeDBClusters` or `DescribeDBInstances`, keeping the
+  entry of `AssociatedRoles` with this role and this feature: RDS
+  identifies an association by both, since one role may serve two
+  features of one database. A database that does not exist has no
+  association.
+- **Delete** is `RemoveRoleFromDBCluster` or `RemoveRoleFromDBInstance`.
+  An association or database already gone counts as deleted.
+- **Status** carries RDS's state, `PENDING`, `ACTIVE` or `INVALID`.
+- **Synced only when `ACTIVE`.** `INVALID` (RDS cannot assume the role)
+  is not terminal: fixing the role's trust policy can mend it, and the
+  runtime requeues.
+- **Terminal faults:** an association that already exists for this
+  database with another role or feature, and the per-database role
+  quota.
+
+RDS has no ARN for an association, so `status.ackResourceMetadata.arn` is
+the database's ARN form with the role and feature appended. It is an
+identifier, never sent to AWS.
+
+**It does not fight ACK.** ACK's `DBCluster` and `DBInstance` read
+`AssociatedRoles` into status and never call `RemoveRoleFrom...`
+(rds-controller `v1.14.2`), so unlike `RolePolicyAttachment` beside an
+ACK `Role` (section 6.1), there is no tug of war. If ACK later adds
+`associatedRoles` to `DBCluster`'s spec as the whole set, that changes,
+and retiring this kind would mean moving each association into that
+field rather than adopting a kind.
 
 ## 7. The operator: ACK's identity, beside ACK's controller
 
@@ -497,7 +614,11 @@ Before it can run on a real cluster:
    AWS:
    - proxy target health over time;
    - option group behaviour with real option settings;
-   - `TrackedClusterId` for cluster members.
+   - `TrackedClusterId` for cluster members;
+   - role associations: how long `PENDING` lasts, when `INVALID` appears
+     and whether it mends once the role's trust policy is fixed, and the
+     real responses and faults of `RemoveRoleFromDBCluster` and
+     `RemoveRoleFromDBInstance`, which moto lacks (section 4.4).
 4. CRD labels marking a gap kind and naming the upstream kind it
    anticipates, as gaps-gcp does.
 5. Offer patch 0001 upstream; comment on PRs #184 and #257 with what we
@@ -507,6 +628,8 @@ Before it can run on a real cluster:
 7. CI: `make check` on Linux, with the envtest assets and moto cached.
 8. The OptionGroup test takes about 50 seconds: options are added on the
    second reconcile, after the runtime's requeue delay.
+9. `DBRoleAssociation`'s delete is proven end to end only up to the
+   `RemoveRoleFrom...` call (section 4.4, open question 6).
 
 ## 9. Open questions
 
@@ -531,3 +654,15 @@ Before it can run on a real cluster:
    rights, one AWS grant per role); `ack` needs no AWS step. Keep `own`?
 5. **One manager per ACK controller** (per service, per namespace). That
    follows ACK's model, and with the operator it is automatic. Confirm.
+6. **moto lacks `RemoveRoleFromDBCluster` and `RemoveRoleFromDBInstance`**
+   (section 4.4), so `DBRoleAssociation`'s delete is proven against a
+   stand-in, not a fake with state. Options:
+   - leave it (the stand-in unit test, and the end-to-end test up to the
+     call);
+   - carry a patch to moto here, applied by `hack/moto.sh` and in the
+     kind image, which means building our own moto image;
+   - contribute the two operations to moto (getmoto/moto, Apache-2.0)
+     and move the pin when it ships.
+
+   Proposed: contribute them to moto, and leave it until then. It does
+   not change the kind.
