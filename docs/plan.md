@@ -1,6 +1,6 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has sixteen kinds:
+Status, 2026-11-09: the repository has seventeen kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
@@ -13,7 +13,8 @@ Status, 2026-11-09: the repository has sixteen kinds:
 - `lambda.aws.hfl.dev` `Permission`;
 - `rds.aws.hfl.dev` `OptionGroup`;
 - `rds.aws.hfl.dev` `DBProxyTarget`;
-- `rds.aws.hfl.dev` `DBRoleAssociation`.
+- `rds.aws.hfl.dev` `DBRoleAssociation`;
+- `wafv2.aws.hfl.dev` `WebACLAssociation`.
 
 There is an operator that runs our managers beside ACK's controllers as
 the same AWS identity, and tests against a fake AWS (moto), in Go and on
@@ -268,6 +269,13 @@ status) and the fake cloud through the real AWS SDK clients.
           (replication configuration unit tests)
 --- PASS: TestKeepSecretsIsNoDrift, TestKeepSecretsKeepsOtherDrift
           (connection unit tests)
+--- PASS: TestWebACLAssociation
+    the referenced web ACL (ACK's WebACL, its ARN from status) is
+    associated and settles (no update across three resyncs); the
+    resource cannot change; a disassociation outside Kubernetes is put
+    back; deletion-policy retain leaves the association; delete
+    disassociates
+--- PASS: TestOtherWebACLIsDrift (web ACL association unit test)
 --- PASS: TestReplicaKey
     a replica is made in its Region (tags put there); a policy is put on
     the replica only; the replica Region cannot change; references
@@ -417,6 +425,10 @@ controller to show it can fail:
 - **EventBridge API destinations.** moto marks a destination `ACTIVE` at
   once and, when the spec leaves the rate limit out, reports none (AWS
   reports 300 per second). A unit test shows that default is no drift.
+- **WAFv2 associations.** moto keeps a web ACL's list of resources. It
+  does not check that the resource exists, and associating a resource
+  with a second web ACL adds it there without taking it off the first
+  (AWS replaces the association).
 - **KMS replica keys.**
   - moto keeps a replica in its own Region's backend, under the primary
     key's key ID, as AWS does.
@@ -482,7 +494,7 @@ its master (5.2.5 is the pin).
 | 9 | CloudWatch Logs `MetricFilter`; CloudWatch `CompositeAlarm` | metric filters: cloudwatchlogs-controller PR #61, as a field on ACK's `LogGroup`. `CompositeAlarm`: ignored in cloudwatch-controller `v1.11.0`. | metric filters yes; `PutCompositeAlarm` no | skipped. Metric filters wait on open question 1. `CompositeAlarm`: moto has none of it. |
 | 10 | EventBridge Scheduler `Schedule` and `ScheduleGroup`; EventBridge `Connection` and `ApiDestination` | Scheduler: no controller (`community` issue #2784). `Connection` and `ApiDestination`: ignored in eventbridge-controller `v1.9.2`. | yes | `Connection` and `ApiDestination` built; Scheduler skipped: ACK has no Scheduler controller for our manager to run beside (open question 8) |
 | 11 | ECR `ReplicationConfiguration`; `RegistryPolicy`, `RegistryScanningConfiguration` | `ReplicationConfiguration`: ecr-controller PR #121, open, conflicts with base, no review, last updated 2026-10-18. The others: none. | yes (one replication rule at most) | built: `ReplicationConfiguration` (PR #121's API; rechecked 2026-11-09: still open, conflicting, no review, head `f6c7d57e`). `RegistryPolicy` and `RegistryScanningConfiguration` next |
-| 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`) | yes | to build |
+| 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`; no pull request or issue, rechecked 2026-11-09) | yes | built |
 | 13 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237: mergeable, active 2026-11-06 | none | skipped: may be close to merging, and moto has none of it |
 | 14 | Route 53 DNSSEC and `KeySigningKey`, VPC association authorization | ignored in route53-controller's `generator.yaml` | none | skipped: moto has none of it |
 | 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none | yes | to build |
@@ -1067,6 +1079,46 @@ delete of its own, only `PutReplicationConfiguration` (the whole set) and
 **Not proven:** more than one rule (moto allows one), a destination
 account's registry policy (moto does not check it), and replication
 itself.
+
+### 6.17 `wafv2.aws.hfl.dev` `WebACLAssociation`
+
+A regional web ACL associated with a resource it protects: an
+Application Load Balancer, an API Gateway REST API stage, an AppSync API,
+a Cognito user pool, an App Runner service or a Verified Access instance.
+It is Terraform's `aws_wafv2_web_acl_association`. ACK's wafv2-controller
+`v1.8.1` has `WebACL`, `RuleGroup` and `IPSet`, and no association; no
+pull request or issue adds one (rechecked 2026-11-09). A CloudFront
+distribution names its web ACL in its own configuration instead.
+
+**Hand-written** on ACK's runtime, on PR #184's skeleton:
+`AssociateWebACL`, `GetWebACLForResource` and `DisassociateWebACL` are no
+create, describe and delete the generator reads. A new service,
+`services/wafv2`, where the generator ignores every resource it finds.
+
+- **Spec:** `resourceARN`, and `webACLARN` or `webACLRef` (ACK's own
+  `WebACL`, its `status.ackResourceMetadata.arn`; wafv2-controller
+  `v1.8.1` is a Go module here for its API types). Both are immutable,
+  as in Terraform.
+- **Read:** `GetWebACLForResource`. No web ACL, or no resource, is not
+  found, so a disassociation outside Kubernetes is associated again.
+  Another web ACL put on the resource outside Kubernetes is drift, and
+  the update associates the spec's again (`AssociateWebACL` replaces).
+- **Delete** disassociates only if the resource still has the spec's
+  web ACL; one since given another web ACL is left alone.
+- **Synced** once read: an association has no pending state.
+  `status.webACLName` names the web ACL. WAFv2 has no ARN for an
+  association; a WAFv2 ARN form with the resource's ARN appended stands
+  in, for ACK's metadata only.
+- **Errors:** a resource or web ACL not there yet is retried; a bad
+  parameter or operation (a `CLOUDFRONT` web ACL, a resource WAFv2 cannot
+  protect) is terminal.
+- **No `resourceRef`.** The resources live in other ACK controllers
+  (elbv2, apigateway, cognito); `resourceARN` takes the ARN.
+
+**Not proven:** another web ACL put on the resource outside Kubernetes
+being replaced (moto keeps both), the delete leaving such a resource
+alone, that the resource exists (moto does not check), and the
+terminal errors.
 
 ## 7. The operator: ACK's identity, beside ACK's controller
 
