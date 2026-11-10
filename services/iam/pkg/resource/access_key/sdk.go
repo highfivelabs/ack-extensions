@@ -64,7 +64,9 @@ func (rm *resourceManager) sdkFind(
 	}()
 	// Until this object has made its key, the read finds nothing and the
 	// create makes one. A status that lost the key's ID takes it back from
-	// the Secret the object owns (hooks.go).
+	// the Secret the object owns (hooks.go), on a copy: the desired object
+	// is the base of the runtime's status patch, and an ID set on it would
+	// never be written back.
 	if r.ko.Status.AccessKeyID == nil {
 		id, err := rm.keyIDFromSecret(ctx, r.ko)
 		if err != nil {
@@ -73,6 +75,7 @@ func (rm *resourceManager) sdkFind(
 		if id == "" {
 			return nil, ackerr.NotFound
 		}
+		r = &resource{ko: r.ko.DeepCopy()}
 		r.ko.Status.AccessKeyID = &id
 	}
 
