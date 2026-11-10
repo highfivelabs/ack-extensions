@@ -26,6 +26,15 @@
 #             (cloudcontrol/test/e2e).
 groupSuffix: cloudcontrol.aws.hfl.dev
 version: v1alpha1
+# What the end-to-end tests do themselves on a live run, beside the kinds'
+# own handler permissions: fixtures they make and the checks they read.
+# Goes into the sandbox account's template (config/live, docs/live-runs.md).
+liveTestActions:
+  - ec2:CreateTransitGateway
+  - ec2:DeleteTransitGateway
+  - ec2:DescribeTransitGateways
+  - ec2:CreateTags
+  - sso:ListInstances
 types:
   # F03: IAM SAML providers. ACK's iam-controller ignores SAMLProvider.
   - typeName: AWS::IAM::SAMLProvider
