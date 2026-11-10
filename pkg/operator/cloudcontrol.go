@@ -85,12 +85,11 @@ type ContextReconciler struct {
 	Namespace string
 	// Image is the manager's image.
 	Image string
-	// ExtraArgs and ExtraEnv are added to every manager. They exist for a
-	// fake AWS (an endpoint and dummy credentials in tests and on kind),
-	// set from the operator's flags by the platform team, never from a
-	// context: an environment cannot point its manager elsewhere.
-	ExtraArgs []string
-	ExtraEnv  []corev1.EnvVar
+	// FakeAWS, for tests and kind only, points every manager at a fake AWS
+	// (every endpoint, fake credentials, a dead proxy), set from the
+	// operator's flag, never from a context: an environment cannot point
+	// its manager elsewhere.
+	FakeAWS *FakeAWS
 }
 
 func (r *ContextReconciler) systemNamespace() string {
@@ -173,7 +172,7 @@ func (r *ContextReconciler) ManagerArgs(cc *ccv1alpha1.CloudControlContext, kind
 	if len(kinds) > 0 {
 		args = append(args, "--cloudcontrol-kinds="+strings.Join(kinds, ","))
 	}
-	return append(args, r.ExtraArgs...)
+	return args
 }
 
 // PlanContext is what should exist for a context: the RoleBinding in its
@@ -183,11 +182,11 @@ func (r *ContextReconciler) PlanContext(cc *ccv1alpha1.CloudControlContext, kind
 	name := ccv1alpha1.ManagerName(env)
 	lbl := ccLabels(env)
 	podLabels := map[string]string{LabelComponent: componentCC, LabelEnvironment: env}
-	vars := append([]corev1.EnvVar{
+	vars := []corev1.EnvVar{
 		// ACK's runtime looks for its own ConfigMaps (CARM, off here) in
 		// this namespace.
 		{Name: "ACK_SYSTEM_NAMESPACE", Value: env},
-	}, r.ExtraEnv...)
+	}
 	return []client.Object{
 		&rbacv1.RoleBinding{
 			ObjectMeta: metav1.ObjectMeta{Name: CloudControlManager, Namespace: env, Labels: lbl, OwnerReferences: ccOwner(cc)},
@@ -306,6 +305,13 @@ func (r *ContextReconciler) Reconcile(ctx context.Context, req reconcile.Request
 	}
 	var errs []string
 	for _, o := range r.PlanContext(&cc, kinds) {
+		if d, ok := o.(*appsv1.Deployment); ok {
+			if err := r.FakeAWS.Fake(&d.Spec.Template.Spec.Containers[0]); err != nil {
+				// Refused: nothing that could reach real AWS is made.
+				errs = append(errs, fmt.Sprintf("Deployment %s/%s: %v", d.Namespace, d.Name, err))
+				continue
+			}
+		}
 		if err := applyObject(ctx, r.Client, o); err != nil {
 			errs = append(errs, fmt.Sprintf("%s %s/%s: %v", kindOf(o), o.GetNamespace(), o.GetName(), err))
 		}

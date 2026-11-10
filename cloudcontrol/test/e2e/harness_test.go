@@ -46,6 +46,7 @@ import (
 	ccv1alpha1 "github.com/highfivelabs/ack-extensions/cloudcontrol/apis/v1alpha1"
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/pkg/registry"
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/test/fake"
+	"github.com/highfivelabs/ack-extensions/pkg/fakeaws"
 	"github.com/highfivelabs/ack-extensions/pkg/operator"
 )
 
@@ -58,15 +59,60 @@ const (
 	otherNS = "team-b"
 )
 
-type env struct {
-	c      client.Client
-	cc     *fake.Server
-	ccURL  string
-	moto   aws.Config
-	logs   *syncBuffer
-	ctx    context.Context
-	schema *runtime.Scheme
+// callLog is what the tests read of Cloud Control: the fake, or on a live
+// run the recorder in front of real Cloud Control (live_test.go).
+type callLog interface {
+	Calls() []fake.Call
+	WriteOnly(typeName, identifier string) map[string]any
 }
+
+type env struct {
+	c     client.Client
+	cc    callLog
+	ccURL string
+	// moto is the SDK configuration the tests check the services with:
+	// moto's, or on a live run the real account's.
+	moto    aws.Config
+	account string
+	live    bool
+	logs    *syncBuffer
+	ctx     context.Context
+	schema  *runtime.Scheme
+}
+
+// Target is where the end-to-end tests run, CLOUDCONTROL_E2E_TARGET:
+// "fake" (the default, and what task check sets) or "real", which only a
+// binary built with -tags live (task test-live, docs/live-runs.md) can
+// start; built without it, startReal is nil and "real" fails.
+func target(t *testing.T) string {
+	switch v := os.Getenv("CLOUDCONTROL_E2E_TARGET"); v {
+	case "", "fake":
+		return "fake"
+	case "real":
+		if startReal == nil {
+			t.Fatal("CLOUDCONTROL_E2E_TARGET=real: this test binary was built without -tags live; run task test-live (docs/live-runs.md)")
+		}
+		return "real"
+	default:
+		t.Fatalf("CLOUDCONTROL_E2E_TARGET=%q: fake or real", v)
+		return ""
+	}
+}
+
+// liveRun is what a live run's starter gives the harness: the recorder in
+// front of real Cloud Control (a loopback URL, so the manager still runs
+// under pkg/fakeaws), the real account's SDK configuration for the tests'
+// own checks, and the manager's extra flags (the run's tag).
+type liveRun struct {
+	cc        callLog
+	url       string
+	cfg       aws.Config
+	account   string
+	extraArgs []string
+}
+
+// startReal is set by live_test.go, compiled only with -tags live.
+var startReal func(t *testing.T) liveRun
 
 func repoRoot(t *testing.T) string {
 	wd, _ := os.Getwd()
@@ -118,7 +164,7 @@ func startMoto(t *testing.T, root string) string {
 	var out syncBuffer
 	cmd := exec.Command(server, "-H", "127.0.0.1", "-p", fmt.Sprint(port))
 	cmd.Stdout, cmd.Stderr = &out, &out
-	cmd.Env = fake.ChildEnv("PATH=" + os.Getenv("PATH"))
+	cmd.Env = fakeaws.Isolated("PATH=" + os.Getenv("PATH"))
 	if err := cmd.Start(); err != nil {
 		t.Fatal(err)
 	}
@@ -184,14 +230,10 @@ func moduleDir(t *testing.T, root, module string) string {
 	return strings.TrimSpace(string(out))
 }
 
-// start brings up moto, the fake Cloud Control over it, envtest and the
-// manager. It refuses to start unless both endpoints are local.
-func start(t *testing.T) *env {
+// startFake brings up moto and the fake Cloud Control over it: the fake's
+// URL is the manager's one endpoint.
+func startFake(t *testing.T, root string) (*fake.Server, string, aws.Config) {
 	t.Helper()
-	if os.Getenv("KUBEBUILDER_ASSETS") == "" {
-		t.Skip("KUBEBUILDER_ASSETS is not set; run through task cloudcontrol:test")
-	}
-	root := repoRoot(t)
 	motoURL := startMoto(t, root)
 	if err := fake.LocalOnly(motoURL); err != nil {
 		t.Fatal(err)
@@ -211,14 +253,54 @@ func start(t *testing.T) *env {
 			b = fake.NewTransitGatewayRouteTable(motoCfg)
 		case "AWS::GuardDuty::Detector":
 			b = fake.NewDetector(motoCfg)
+		case "AWS::SSO::PermissionSet":
+			b = fake.NewPermissionSet(motoCfg)
+		case "AWS::SSO::Assignment":
+			b = fake.NewAssignment(motoCfg)
 		default:
-			t.Fatalf("no fake backend for %s", ty.TypeName)
+			if ty.Unproven != "" {
+				// Marked in types.yaml: moto lacks the API.
+				continue
+			}
+			t.Fatalf("no fake backend for %s (or mark it unproven in cloudcontrol/types.yaml)", ty.TypeName)
 		}
 		cc.Register(ty.Schema(), b)
 	}
+	// The fake passes everything that is not Cloud Control (STS) to moto,
+	// so its URL is the manager's one endpoint.
+	if err := cc.Upstream(motoURL); err != nil {
+		t.Fatal(err)
+	}
 	ccURL := cc.Start()
 	t.Cleanup(cc.Close)
-	if err := fake.LocalOnly(ccURL); err != nil {
+
+	return cc, ccURL, motoCfg
+}
+
+// start brings up moto, the fake Cloud Control over it, envtest and the
+// manager. It refuses to start unless both endpoints are local.
+func start(t *testing.T) *env {
+	t.Helper()
+	if os.Getenv("KUBEBUILDER_ASSETS") == "" {
+		t.Skip("KUBEBUILDER_ASSETS is not set; run through task cloudcontrol:test")
+	}
+	root := repoRoot(t)
+	var (
+		cc        callLog
+		ccURL     string
+		motoCfg   aws.Config
+		account   = "123456789012" // moto's
+		extraArgs []string
+	)
+	live := target(t) == "real"
+	if live {
+		r := startReal(t)
+		cc, ccURL, motoCfg, account, extraArgs = r.cc, r.url, r.cfg, r.account, r.extraArgs
+	} else {
+		cc, ccURL, motoCfg = startFake(t, root)
+	}
+	endpoint, err := fakeaws.Parse(ccURL, fakeaws.Loopback)
+	if err != nil {
 		t.Fatal(err)
 	}
 
@@ -259,7 +341,7 @@ func start(t *testing.T) *env {
 	}
 	cctx := &ccv1alpha1.CloudControlContext{
 		ObjectMeta: metav1.ObjectMeta{Name: ccv1alpha1.ContextName, Namespace: envNS, UID: "00000000-0000-0000-0000-000000000001"},
-		Spec:       ccv1alpha1.CloudControlContextSpec{RoleARN: "arn:aws:iam::123456789012:role/team-a", Region: region},
+		Spec:       ccv1alpha1.CloudControlContextSpec{RoleARN: "arn:aws:iam::" + account + ":role/team-a", Region: region},
 	}
 	var kinds []string
 	for _, ty := range registry.Types {
@@ -292,12 +374,10 @@ func start(t *testing.T) *env {
 	bin := buildManager(t, root)
 	logs := &syncBuffer{}
 	ctx, cancel := context.WithCancel(ctx)
-	// The operator's arguments, then the test's: the fake's endpoints, and
-	// local ports (a later flag wins).
+	// The operator's arguments, then the test's: local ports (a later flag
+	// wins); fakeaws.Command adds the one endpoint's flags and environment
+	// and refuses to start anything that could reach real AWS.
 	args := append(append([]string{}, managerArgs...),
-		"--aws-endpoint-url", ccURL,
-		"--aws-identity-endpoint-url", motoURL,
-		"--allow-unsafe-aws-endpoint-urls",
 		"--log-level", "debug",
 		"--enable-development-logging",
 		"--deletion-policy", "delete",
@@ -305,13 +385,17 @@ func start(t *testing.T) *env {
 		"--metrics-addr", fmt.Sprintf("127.0.0.1:%d", freePort(t)),
 		"--healthz-addr", fmt.Sprintf("127.0.0.1:%d", freePort(t)),
 	)
-	cmd := exec.CommandContext(ctx, bin, args...)
-	cmd.Env = fake.ChildEnv(
+	args = append(args, extraArgs...)
+	cmd, err := fakeaws.Command(ctx, endpoint, bin, args,
 		"KUBECONFIG="+writeKubeconfig(t, user.Config()),
 		"HOME="+t.TempDir(),
 		"PATH="+os.Getenv("PATH"),
 		"ACK_SYSTEM_NAMESPACE="+envNS,
 	)
+	if err != nil {
+		cancel()
+		t.Fatal(err)
+	}
 	cmd.Stdout, cmd.Stderr = logs, logs
 	if err := cmd.Start(); err != nil {
 		t.Fatal(err)
@@ -326,7 +410,7 @@ func start(t *testing.T) *env {
 			}
 		}
 	})
-	return &env{c: c, cc: cc, ccURL: ccURL, moto: motoCfg, logs: logs, ctx: context.Background(), schema: sch}
+	return &env{c: c, cc: cc, ccURL: ccURL, moto: motoCfg, account: account, live: live, logs: logs, ctx: context.Background(), schema: sch}
 }
 
 // ---- object helpers ----

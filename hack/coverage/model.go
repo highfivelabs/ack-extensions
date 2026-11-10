@@ -16,6 +16,15 @@ func readFile(p string) ([]byte, error) { return os.ReadFile(p) }
 
 const oursGroupSuffix = ".aws.hfl.dev"
 
+// Cloud Control kinds (cloudcontrol/config/crds, docs/cloudcontrol.md) name
+// their CloudFormation type, and the reason they are unproven on the fake if
+// they are, in these annotations (cloudcontrol/pkg/crdgen).
+const (
+	ccGroupSuffix        = ".cloudcontrol.aws.hfl.dev"
+	ccTypeNameAnnotation = "cloudcontrol.aws.hfl.dev/type-name"
+	ccUnprovenAnnotation = "cloudcontrol.aws.hfl.dev/unproven-on-fake"
+)
+
 // model is everything the outputs are written from.
 type model struct {
 	src  *sources
@@ -167,6 +176,36 @@ func build(c config) (*model, error) {
 			}
 			m.addMatch(cv, maps.OursAttributes[key], m.ours, m.howOurs, &m.unmappedOurs)
 		}
+	}
+
+	// Ours, through Cloud Control: the CRD names its CloudFormation type,
+	// so the resource is exact.
+	ccFiles, err := filepath.Glob(filepath.Join(c.root, "cloudcontrol", "config", "crds", "*_*.yaml"))
+	if err != nil {
+		return nil, err
+	}
+	sort.Strings(ccFiles)
+	for _, f := range ccFiles {
+		b, err := readFile(f)
+		if err != nil {
+			return nil, err
+		}
+		crd, err := parseCRD(b)
+		if err != nil {
+			return nil, fmt.Errorf("%s: %w", f, err)
+		}
+		tn := crd.Annotations[ccTypeNameAnnotation]
+		parts := strings.Split(tn, "::")
+		if len(parts) != 3 || parts[0] != "AWS" {
+			return nil, fmt.Errorf("%s: annotation %s is %q, not a CloudFormation type", f, ccTypeNameAnnotation, tn)
+		}
+		key := strings.ToLower(parts[1]) + "/" + parts[2]
+		if _, ok := m.cfn[key]; !ok {
+			return nil, fmt.Errorf("%s: %s is not a CloudFormation resource in the pinned schemas", f, tn)
+		}
+		cv := &cov{Kind: crd.Kind, Svc: strings.TrimSuffix(crd.Group, ccGroupSuffix), CRD: crd, Resource: key,
+			CloudControl: true, Unproven: crd.Annotations[ccUnprovenAnnotation]}
+		m.addMatch(cv, nil, m.ours, m.howOurs, &m.unmappedOurs)
 	}
 	return m, nil
 }

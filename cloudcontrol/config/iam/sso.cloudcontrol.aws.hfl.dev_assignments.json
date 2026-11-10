@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSSOAssignment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSOAssignmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:AttachRolePolicy",
+        "iam:CreateRole",
+        "iam:CreateSAMLProvider",
+        "iam:GetSAMLProvider",
+        "iam:ListRolePolicies",
+        "iam:PutRolePolicy",
+        "iam:UpdateSAMLProvider",
+        "sso:CreateAccountAssignment",
+        "sso:DescribeAccountAssignmentCreationStatus",
+        "sso:ListAccountAssignments"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSOAssignmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetSAMLProvider",
+        "iam:ListRolePolicies",
+        "sso:ListAccountAssignments"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSOAssignmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetSAMLProvider",
+        "iam:ListRolePolicies",
+        "sso:DeleteAccountAssignment",
+        "sso:DescribeAccountAssignmentDeletionStatus",
+        "sso:ListAccountAssignments"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

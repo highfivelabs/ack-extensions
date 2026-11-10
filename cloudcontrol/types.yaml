@@ -19,9 +19,22 @@
 #             pointers: each becomes a Kubernetes Secret reference. Opt-in
 #             per field (the builder, 2026-11-09); every other write-only
 #             property is a plain field. The generation report lists the
-#             candidates.
+#             candidates;
+#   unproven  why the kind has no end-to-end test on the fake (moto lacks
+#             the service's API); the coverage data reports it. Every other
+#             type has a moto backend (cloudcontrol/test/fake) and a test
+#             (cloudcontrol/test/e2e).
 groupSuffix: cloudcontrol.aws.hfl.dev
 version: v1alpha1
+# What the end-to-end tests do themselves on a live run, beside the kinds'
+# own handler permissions: fixtures they make and the checks they read.
+# Goes into the sandbox account's template (config/live, docs/live-runs.md).
+liveTestActions:
+  - ec2:CreateTransitGateway
+  - ec2:DeleteTransitGateway
+  - ec2:DescribeTransitGateways
+  - ec2:CreateTags
+  - sso:ListInstances
 types:
   # F03: IAM SAML providers. ACK's iam-controller ignores SAMLProvider.
   - typeName: AWS::IAM::SAMLProvider
@@ -32,3 +45,10 @@ types:
   - typeName: AWS::EC2::TransitGatewayRouteTable
   # F15: GuardDuty's detector. ACK has no GuardDuty controller.
   - typeName: AWS::GuardDuty::Detector
+  # F02: IAM Identity Center. ACK has no controller (ssoadmin-controller is
+  # an empty repository). An Instance is not a kind: an organization has
+  # one, made by enabling Identity Center; its ARN is a field.
+  - typeName: AWS::SSO::PermissionSet
+  - typeName: AWS::SSO::Assignment
+  - typeName: AWS::SSO::InstanceAccessControlAttributeConfiguration
+    unproven: "moto 5.2.5 has no Create/Describe/Update/DeleteInstanceAccessControlAttributeConfiguration"
