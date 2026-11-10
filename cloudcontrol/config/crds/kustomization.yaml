@@ -10,3 +10,13 @@ resources:
   - ec2.cloudcontrol.aws.hfl.dev_transitgatewayroutetableassociations.yaml
   - ec2.cloudcontrol.aws.hfl.dev_transitgatewayroutetablepropagations.yaml
   - ec2.cloudcontrol.aws.hfl.dev_transitgatewaypeeringattachments.yaml
+  - route53.cloudcontrol.aws.hfl.dev_queryloggingconfigs.yaml
+  - route53.cloudcontrol.aws.hfl.dev_dnssecs.yaml
+  - route53.cloudcontrol.aws.hfl.dev_keysigningkeys.yaml
+  - route53.cloudcontrol.aws.hfl.dev_cidrcollections.yaml
+  - route53resolver.cloudcontrol.aws.hfl.dev_resolverdnssecconfigs.yaml
+  - route53resolver.cloudcontrol.aws.hfl.dev_resolverconfigs.yaml
+  - route53resolver.cloudcontrol.aws.hfl.dev_firewalldomainlists.yaml
+  - route53resolver.cloudcontrol.aws.hfl.dev_firewallrulegroups.yaml
+  - route53resolver.cloudcontrol.aws.hfl.dev_firewallrulegroupassociations.yaml
+  - route53resolver.cloudcontrol.aws.hfl.dev_firewallconfigs.yaml

@@ -514,6 +514,39 @@ CloudFormation type has), so a peering made here stays
 `transitGatewayRef` and the attachment to ACK's kinds) wait for the
 overlay (section 12, item 4); today the IDs are written out.
 
+**Batch 4: F08 and F09, DNS** (`TestDNS`). Ten types; ACK's
+route53-controller v1.8.0 (`HealthCheck`, `HostedZone`, `RecordSet`) and
+route53resolver-controller v1.11.0 (endpoints, rules, query log
+configurations and their associations) have none of them, and no open
+pull request for them (rechecked 2026-11-09). Two are proven on moto
+(`cloudcontrol/test/fake/moto_dns.go`): `AWS::Route53::QueryLoggingConfig`
+(a public hosted zone's query logs to a log group) and
+`AWS::Route53Resolver::ResolverDNSSECConfig` (a VPC's DNSSEC
+validation). The fixture (a hosted zone, a log group, a VPC) is made with
+the SDKs. The query logging configuration gets its ARN as identifier and
+its ID in status and is in Route 53's `GetQueryLoggingConfig`; the DNSSEC
+configuration gets its `rdsc-` ID and `ENABLED`; resyncs of both make no
+update; a create-only change to each is refused (both are `IMMUTABLE`);
+deleting the first removes it, deleting the second turns validation off
+(`DISABLED`), which reads as gone. moto differs from AWS in two ways the
+backends make up for: Route 53 has no ARN for a query logging
+configuration (CloudFormation's handler makes
+`arn:aws:route53:::queryloggingconfig/<id>`; so does the backend), and
+moto enables validation for a VPC that does not exist (the backend looks
+the VPC up first, as the handler's `ec2:DescribeVpcs` permission
+suggests). **Unproven on the fake** (moto 5.2.5 has none of their API):
+`AWS::Route53::DNSSEC` (deleting it disables signing: remove the zone's
+DS record at the parent first, or the zone stops resolving for
+validating resolvers), `AWS::Route53::KeySigningKey`,
+`AWS::Route53::CidrCollection`, `AWS::Route53Resolver::ResolverConfig`,
+and the four DNS Firewall types (`FirewallDomainList`,
+`FirewallRuleGroup` with its rules as a field, `FirewallRuleGroupAssociation`,
+`FirewallConfig`). Left out: `TrafficPolicy` and `TrafficPolicyInstance`
+(traffic flow, low priority in `docs/coverage/foundation.md`) and a hosted
+zone's second VPC (no CloudFormation type: a field of
+`AWS::Route53::HostedZone`, ACK's). References (`hostedZoneRef`,
+`vpcRef`, a KMS key's ARN for the key-signing key) wait for the overlay.
+
 **Not shown by the fake** (section 11): anything about real AWS.
 
 `task check` (the whole repository) is reported in the pull request.
@@ -776,7 +809,8 @@ with limits":
    fake-backed test where moto has the service, else marked "unproven on
    fake" in the coverage data; `task coverage` counts them as ours. Done:
    the coverage change, batch 1 (F02, three Identity Center types) and
-   batch 2 (F04, four Transit Gateway routing types).
+   batch 2 (F04, four Transit Gateway routing types) and batch 4 (F08,
+   F09: ten DNS types, two proven on moto).
    Next: the rest of F03 to F18 by `docs/coverage/foundation.md`.
 3. The live-test switch (`task test-live`, a sweeper, the ledger
    `docs/live-runs.md`) and the CloudFormation template for the sandbox
