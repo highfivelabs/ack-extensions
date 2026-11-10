@@ -13,6 +13,8 @@ operations:
     output_wrapper_field_path: CustomerGateway
   CreateVpnGateway:
     output_wrapper_field_path: VpnGateway
+  CreateNetworkInterfacePermission:
+    output_wrapper_field_path: InterfacePermission
 resources:
   CustomerGateway:
     fields:
@@ -92,6 +94,39 @@ resources:
         - path: Status.State
           in:
             - available
+  # Another account's (or an AWS service's) permission to attach to, or
+  # request-manage, one of this account's network interfaces. Every field is
+  # immutable; there is no update call. moto has none of the API.
+  NetworkInterfacePermission:
+    exceptions:
+      errors:
+        404:
+          code: InvalidPermissionID.NotFound
+    fields:
+      NetworkInterfacePermissionID:
+        is_primary_key: true
+        print:
+          name: ID
+      NetworkInterfaceID:
+        is_required: true
+        is_immutable: true
+      Permission:
+        is_required: true
+        is_immutable: true
+      AWSAccountID:
+        is_immutable: true
+      AWSService:
+        is_immutable: true
+    hooks:
+      sdk_read_many_post_set_output:
+        template_path: hooks/network_interface_permission/sdk_read_many_post_set_output.go.tpl
+    synced:
+      when:
+        - path: Status.PermissionState.State
+          in:
+            - granted
+    tags:
+      ignore: true
   Volume:
     exceptions:
       errors:
@@ -148,6 +183,7 @@ ignore:
     - CreateVolumeInput.ClientToken
     - CreateVolumeInput.TagSpecifications
     - CreateVolumeInput.Operator
+    - CreateNetworkInterfacePermissionInput.DryRun
     # The attachments are the VolumeAttachment kind's to report; ignoring
     # them also keeps the generator from emitting a VolumeAttachment type
     # that would clash with that kind.
@@ -191,7 +227,6 @@ ignore:
     - NetworkInsightsAccessScope
     - NetworkInsightsPath
     - NetworkInterface
-    - NetworkInterfacePermission
     - PlacementGroup
     - PublicIpv4Pool
     - ReplaceRootVolumeTask

@@ -616,7 +616,7 @@ AWS::EC2::NetworkInsightsAnalysis,ec2,NetworkInsightsAnalysis,platform-foundatio
 AWS::EC2::NetworkInsightsPath,ec2,NetworkInsightsPath,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::EC2::NetworkInterface,ec2,NetworkInterface,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,1,0,true
 AWS::EC2::NetworkInterfaceAttachment,ec2,NetworkInterfaceAttachment,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::EC2::NetworkInterfacePermission,ec2,NetworkInterfacePermission,platform-foundation,NON_PROVISIONABLE,,,not provisionable,0,0,0,0,0,false
+AWS::EC2::NetworkInterfacePermission,ec2,NetworkInterfacePermission,platform-foundation,NON_PROVISIONABLE,,NetworkInterfacePermission,not provisionable,0,0,0,0,0,false
 AWS::EC2::NetworkPerformanceMetricSubscription,ec2,NetworkPerformanceMetricSubscription,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
 AWS::EC2::PlacementGroup,ec2,PlacementGroup,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
 AWS::EC2::PrefixList,ec2,PrefixList,platform-foundation,FULLY_MUTABLE,ManagedPrefixList,,ok,0,0,0,0,0,true
