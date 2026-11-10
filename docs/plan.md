@@ -1,6 +1,6 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has twenty-seven kinds:
+Status, 2026-11-09: the repository has twenty-eight kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
@@ -11,7 +11,8 @@ Status, 2026-11-09: the repository has twenty-seven kinds:
 - `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias` and `AccountPasswordPolicy`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
-- `organizations.aws.hfl.dev` `DelegatedAdministrator`, `Policy` and `PolicyAttachment`;
+- `organizations.aws.hfl.dev` `DelegatedAdministrator`, `Organization`, `Policy` and
+  `PolicyAttachment`;
 - `rds.aws.hfl.dev` `OptionGroup`;
 - `rds.aws.hfl.dev` `DBProxyTarget`;
 - `rds.aws.hfl.dev` `DBRoleAssociation`;
@@ -551,6 +552,22 @@ controller to show it can fail:
     (`InvalidInputException`, including `sso.amazonaws.com`), as AWS does
     for the first three. It does not require trusted access for the
     service, and takes more than one administrator for a service.
+  - Organizations (probed 2026-11-09): `DescribeOrganization` answers
+    `AWSOrganizationsNotInUseException` with no organization, and
+    `CreateOrganization` a second time `AlreadyInOrganizationException`,
+    as AWS does. A new organization's root has no policy type enabled
+    (`ListRoots`), while `DescribeOrganization`'s deprecated
+    `AvailablePolicyTypes` says SCPs are. `EnablePolicyType` twice answers
+    `PolicyTypeAlreadyEnabledException`, `DisablePolicyType` of a type not
+    enabled `PolicyTypeNotEnabledException`, as AWS does; moto enables
+    SCPs and trusted access on a consolidated-billing organization, which
+    AWS refuses, and never reports a `PENDING_ENABLE` status.
+    `EnableAWSServiceAccess` and `DisableAWSServiceAccess` are idempotent;
+    moto refuses a principal it does not know (`InvalidInputException`)
+    and accepts `sso.amazonaws.com`. `DeleteOrganization` deletes an
+    organization with no member accounts and refuses one with members
+    (`OrganizationNotEmptyException`), as AWS does. `EnableAllFeatures`
+    is not implemented.
 - **An association's status.** moto marks a new association `ACTIVE` at
   once. On AWS it is `PENDING` first, and `INVALID` when RDS cannot assume
   the role. The rule (synced only when `ACTIVE`) is unit-tested.
@@ -1535,12 +1552,97 @@ idempotent deregister, `hooks.go`), the alias of ACK's `Account`
 - **Trusted access first:** AWS requires the service's trusted access
   (`EnableAWSServiceAccess`) before most services accept a delegated
   administrator; that is `Organization.awsServiceAccessPrincipals`
-  (next). moto does not require it.
+  (6.28). moto does not require it.
 
 **Not proven on moto:** that trusted access must be enabled first; each
 service's own limit on administrators (moto takes several for GuardDuty;
 AWS takes one); the principals moto does not know (it refuses
 `sso.amazonaws.com`, which AWS accepts); real AWS.
+
+### 6.28 `organizations.aws.hfl.dev` `Organization`
+
+The account's organization: its feature set, the policy types enabled on
+its root, and the AWS services given trusted access. F01's fourth kind.
+Upstream rechecked 2026-11-09: organizations-controller `v1.7.0` ignores
+`Organization` in its `generator.yaml`; no pull request or issue proposes
+it (community #2884 covers policies and delegated administrators only).
+
+**Generated**, from `CreateOrganization` (the create) and
+`DescribeOrganization` (the read). About 83% of the new Go is generated;
+written here are `hooks.go` (the adoption, the two lists' read and sync,
+the update, the set comparison: about 280 lines), four short hook
+templates, and the admission policy.
+
+- **Adopted, or made.** `DescribeOrganization` takes no input: it finds
+  the account's organization. As for the other account-wide singletons
+  (`docs/handoff.md`), an object's read finds nothing until it has an ARN
+  in its status, so the runtime calls the create, and the create adopts
+  the existing organization (its lists synced to the spec) and calls
+  `CreateOrganization` only when the account has none. Two objects adopt
+  the same organization and fight over the lists; make one.
+- **Never deleted** (the builder, question 12): `DeleteOrganization` is
+  ignored in `generator.yaml`, so the controller has no code that calls it
+  and deleting the object, whatever its deletion policy, only stops
+  managing the organization. The policy types and trusted access stay as
+  they are. As well, `config/admission/retain-only.yaml`, a
+  ValidatingAdmissionPolicy (CEL in the API server, Kubernetes 1.30 or
+  later, no webhook server) installed with `config/default`, refuses an
+  Organization without ACK's annotation
+  `services.k8s.aws/deletion-policy: retain` (the key and value the
+  runtime reads, `apis/core/v1alpha1/annotations.go` at `v0.67.0`) and any
+  update that changes or removes it, so the object says what deleting it
+  does. Objects being deleted are not checked, so one made before the
+  policy can still be deleted. A MutatingAdmissionPolicy could set the
+  annotation itself, but it is not GA on Kubernetes 1.35 (envtest's here)
+  or the older versions EKS supports, so it is required, and the message
+  says how. The policy lists retain-only kinds by resource: a later kind
+  that cannot be deleted (an account's closure, root-level settings) joins
+  by adding its resource there.
+- **`featureSet`** (`ALL` or `CONSOLIDATED_BILLING`) is immutable (CEL
+  `self == oldSelf`). Unset, it takes the organization's (late
+  initialization); set to something else on adoption, the object is
+  terminal (`EnableAllFeatures` is a handshake every member account
+  accepts; not done from Kubernetes).
+- **`enabledPolicyTypes`** (the root's: `EnablePolicyType`,
+  `DisablePolicyType`, read with `ListRoots`; `PENDING_ENABLE` counts as
+  enabled) and **`awsServiceAccessPrincipals`** (`EnableAWSServiceAccess`,
+  `DisableAWSServiceAccess`, read with
+  `ListAWSServiceAccessForOrganization`) are each the whole list,
+  compared as sets: what is missing is enabled, what is not listed is
+  disabled, and changes outside Kubernetes are put back. An unset or empty
+  list is left alone (an empty list cannot be told from an unset one once
+  it has been through the API types), so the last entry cannot be
+  disabled from here. **Disabling is destructive:** disabling a policy
+  type detaches every policy of that type in the organization, and
+  disabling trusted access stops that service's organization features.
+  Assumed exclusive (likely, and the list is the organization's own
+  setting, which one object owns); the builder to confirm.
+- **Status:** `id`, `rootID` (for a `PolicyAttachment` to the root), the
+  management account's ID, ARN and email; `ackResourceMetadata.arn` is
+  the organization's ARN. **Terminal:** `InvalidInputException` (an
+  unknown principal or type), `ConstraintViolationException`,
+  `AccessDeniedForDependencyException`,
+  `PolicyTypeNotAvailableForOrganizationException` (a policy type on a
+  consolidated-billing organization).
+
+**Proven on moto** (`TestOrganizationsOrganization`): with no
+organization one is made, with SCPs and GuardDuty's trusted access; an
+object with `deletion-policy: delete`, made before the admission policy,
+is deleted and the organization stays (moto deletes an empty organization,
+so a `DeleteOrganization` would have shown); with the policy installed,
+an object without the annotation, or with `delete`, is refused; an
+existing organization is adopted, its feature set late-initialized, and
+it settles; a changed or removed annotation and a changed feature set are
+refused; a policy type disabled and a principal enabled outside
+Kubernetes are put back; entries taken off the lists are disabled; delete
+leaves the organization and its settings. The admission policy is also
+checked on kind (`tests/operator/run.sh`).
+
+**Not proven on moto:** that AWS refuses SCPs and trusted access on a
+consolidated-billing organization (moto allows both);
+`PENDING_ENABLE`/`PENDING_DISABLE` (unit-tested); that disabling a
+policy type detaches its policies; a delegated administrator's account
+(its rights differ); real AWS.
 
 ## 7. The operator: ACK's identity, beside ACK's controller
 
@@ -1741,6 +1843,42 @@ What is proven is everything on our side of that:
 - on EKS, the one extra trust-policy entry or association then applies to
   it.
 
+### 7.5 An organization-scoped identity (open question 11, answered)
+
+The Organizations kinds act on the whole organization, so they get an
+identity scoped to it, and nothing else does:
+
+- **The install.** ACK's organizations-controller (which our operator
+  finds by its chart label) installed alone in a namespace kept for
+  organization-level objects, `ack-organizations-system` by convention,
+  with a role in the management account (or a delegated administrator's
+  account), `ack-organizations-controller`. The operator then runs
+  `ack-extensions-organizations-manager` there, with that role (section
+  7.2), and no other namespace gets an Organizations manager. Account-level
+  ACK controllers (iam, rds, ...) run in their own namespaces with
+  account-level roles that hold no `organizations:*` permission. Today
+  this is a convention the operator follows by construction (a manager
+  only ever takes the identity of the ACK controller beside it); the
+  operator does not yet refuse an Organizations controller that shares a
+  namespace with account-level ones (`docs/handoff.md`, next steps).
+- **Least privilege, per kind** (all `Resource: "*"` unless narrowed; the
+  runtime also calls `sts:GetCallerIdentity`):
+
+  | Kind | Actions |
+  | --- | --- |
+  | `Policy` | `organizations:CreatePolicy`, `DescribePolicy`, `UpdatePolicy`, `DeletePolicy`, `ListTagsForResource`, `TagResource`, `UntagResource` |
+  | `PolicyAttachment` | `organizations:AttachPolicy`, `DetachPolicy`, `ListTargetsForPolicy` |
+  | `DelegatedAdministrator` | `organizations:RegisterDelegatedAdministrator`, `DeregisterDelegatedAdministrator`, `ListDelegatedAdministrators` |
+  | `Organization` | `organizations:DescribeOrganization`, `ListRoots`, `EnablePolicyType`, `DisablePolicyType`, `EnableAWSServiceAccess`, `DisableAWSServiceAccess`, `ListAWSServiceAccessForOrganization`; and `organizations:CreateOrganization` with `iam:CreateServiceLinkedRole` only if the object is to make the organization |
+
+  The role should also deny `organizations:DeleteOrganization` and
+  `organizations:LeaveOrganization` explicitly: no kind calls them.
+  `Policy`'s actions can be narrowed with the `organizations:PolicyType`
+  condition key to the types in use.
+- **Out of scope here:** granting a workload account's team more access
+  across accounts. That is an access request to the owning team, in
+  Bundt.
+
 ## 3a. The coverage dashboard
 
 How far ACK and this repository reach is measured, not guessed
@@ -1908,6 +2046,9 @@ Before it can run on a real cluster:
    a group taken off its list is still removed. Assumed (coordinator,
    2026-11-09); the builder to confirm. An exclusive group-side kind can
    be added later beside it.
+
+   **Answered** (builder, 2026-11-09): group membership stays
+   non-exclusive, as built.
 10. **IAM `AccessKey`** (rank 15). `CreateAccessKey` returns the secret
     access key once, and never again. A kind has to put it somewhere,
     and ACK's runtime has no pattern for writing a secret out (it only
@@ -1929,6 +2070,15 @@ Before it can run on a real cluster:
     later, the first option is the smallest. `LoginProfile`,
     `SSHPublicKey`, the account alias and the password policy do not
     depend on the answer and go ahead.
+
+    **Answered** (builder, 2026-11-09): build it, writing a Kubernetes
+    Secret. The secret key, returned only by the create, goes into a
+    Secret in the object's namespace, named by a spec field with a default,
+    owned by the `AccessKey` object; it is never overwritten on a resync,
+    never logged, and never put in status or events. Rotation is a new
+    `AccessKey`, never a change to one. Deleting the object deletes the key
+    and its Secret. Queued after F01 (`docs/handoff.md`), with tests that
+    the secret value appears in no log and no status.
 11. **Which account an Organizations kind acts in** (F01 and the kinds
     after it: Identity Center, Control Tower, the security services'
     organization settings). Organization-level APIs run in the
@@ -1956,3 +2106,39 @@ Before it can run on a real cluster:
     namespace they live in needs the tightest RBAC; that is a note in the
     README, not a code check. The builder to confirm. Not blocking the
     kinds.
+
+    **Answered** (builder, 2026-11-09): "The scope of permissions attached
+    to any given identity in a namespace should be commensurate with what
+    it's trying to manage. So, if it's organization-level things, it should
+    be org-level constrained. If the identity manages a GCP project it
+    shouldn't have org-level roles. The principal and its permission scopes
+    should align to what it operates against. That means cross-project or
+    cross-account role grants or resource builds are trickier but not
+    impossible. We just need a careful way for the identities to be managed
+    and to request more access when needed from that owner team."
+
+    So the Organizations kinds get an organization-scoped identity of their
+    own (the management account's, or a delegated administrator's), in a
+    namespace that holds only organization-level objects, and no
+    account-level manager ever holds an Organizations permission. Section
+    7.5 names that install and gives each kind's least-privilege IAM
+    policy. Cross-account access (a workload team asking the organization
+    team for more) is Bundt's feature, an access request to the owning
+    team, and out of scope for this repository.
+12. **What deleting an `Organization` does** (F01). `DeleteOrganization`
+    works only on an organization with no member accounts and cannot be
+    undone. Recommended: deleting the object never deletes the
+    organization, it only stops managing it.
+
+    **Answered** (builder, 2026-11-09): "this organization isn't a
+    deletable thing, so we should not treat it as such. And maybe that
+    means we force the annotation to be abandoned, just because that will
+    reflect the operational reality of it anyway. And just make that
+    immutable. I don't know what enforces that. A webhook, a schema, both."
+    Built (section 6.28): the controller has no `DeleteOrganization` call
+    at all (the guarantee), and a ValidatingAdmissionPolicy requires
+    `services.k8s.aws/deletion-policy: retain` on every Organization and
+    refuses its change or removal. A CRD's own CEL cannot see
+    `metadata.annotations`, and the repository has no webhook server, so
+    the policy is CEL in the API server. The policy's list of retain-only
+    kinds is where later undeletable kinds join.
