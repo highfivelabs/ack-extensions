@@ -748,8 +748,9 @@ with limits":
 3. The live-test switch (`task test-live`, a sweeper, the ledger
    `docs/live-runs.md`) and the CloudFormation template for the sandbox
    account (credentials by federation from the offload VMs' Google service
-   account, never stored keys); one real run per type once the account
-   exists, recording responses; quirks found go into `types.yaml` as data
+   account, never stored keys). Built (`docs/live-runs.md`; nothing
+   deployed, no live run: the account does not exist); next, one real run
+   per type once the account exists, recording responses; quirks found go into `types.yaml` as data
    (a secret path, a server-normalised field, a frozen schema), never as
    per-type Go.
 4. The overlay: renames, references (from `relationshipRef` where a schema

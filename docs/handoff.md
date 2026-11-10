@@ -85,6 +85,12 @@ agent.** PR 1 (`agent/cloudcontrol`) is the core. Still to do:
   across services; the manager handles it (group-qualified
   `--cloudcontrol-kinds`, controller-name validation off), but check the
   coverage matcher does too.
+- **PR 3, the live-test switch.** Built in `agent/cloudcontrol-live`
+  (`docs/live-runs.md`): `task test-live`, the sweeper, the ledger, the
+  sandbox account's template (generated into `cloudcontrol/config/live/`).
+  Next, once the builder has deployed the template and added the account
+  to `hack/live/accounts.txt`: one live run per type, fixing the fixtures
+  `docs/live-runs.md` lists, and a ledger row each. The original brief:
 - **PR 3, the live-test switch**, after the GCP repository's
   (`config-connector-extensions`: `docs/live-runs.md`, `hack/live/run.sh`,
   `sweep.sh`, `projects.sh`, `task test-live`, `live-sweep`, `live-list`):
