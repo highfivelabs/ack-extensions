@@ -482,7 +482,7 @@ from moto. `AWS::SSO::InstanceAccessControlAttributeConfiguration` is
 reports; the e2e harness refuses a type with neither a backend nor that
 mark. Results: the pull request.
 
-**Batch 3: F04, Transit Gateway routing** (`TestTransitGatewayRouting`).
+**Batch 2: F04, Transit Gateway routing** (`TestTransitGatewayRouting`).
 `AWS::EC2::TransitGatewayRouteTableAssociation`,
 `AWS::EC2::TransitGatewayRouteTablePropagation`,
 `AWS::EC2::TransitGatewayRoute` and
@@ -776,7 +776,7 @@ with limits":
    fake-backed test where moto has the service, else marked "unproven on
    fake" in the coverage data; `task coverage` counts them as ours. Done:
    the coverage change, batch 1 (F02, three Identity Center types) and
-   batch 3 (F04, four Transit Gateway routing types).
+   batch 2 (F04, four Transit Gateway routing types).
    Next: the rest of F03 to F18 by `docs/coverage/foundation.md`.
 3. The live-test switch (`task test-live`, a sweeper, the ledger
    `docs/live-runs.md`) and the CloudFormation template for the sandbox

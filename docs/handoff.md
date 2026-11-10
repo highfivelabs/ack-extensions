@@ -70,10 +70,24 @@ agent.** PR 1 (`agent/cloudcontrol`) is the core. Still to do:
   configuration unproven). After `task cloudcontrol:generate`, run
   `task coverage` and the survey (`go run ./hack/cloudcontrol-gen
   --survey`) twice: each reads the other's output. **Next batches**, in
-  foundation order, recheck ACK first: F03's `VirtualMFADevice` (moto has
-  it), F04's Transit Gateway route, association, propagation and peering
-  (batch 3, done: `TestTransitGatewayRouting`), F07 Control Tower (no emulator:
+  foundation order, recheck ACK first: F04's Transit Gateway route,
+  association, propagation and peering (batch 2, done:
+  `TestTransitGatewayRouting`), F07 Control Tower (no emulator:
   unproven), F08/F09 Route 53 and its Resolver firewall, F14 to F18.
+  **F03 `VirtualMFADevice` is not for this route** (the builder,
+  2026-11-09, closing PR #44): Cloud Control never returns the seed or QR
+  code, so a device made through it cannot be enrolled. It is to be built
+  as a kind that writes the seed to a Kubernetes Secret (never logged),
+  like `AccessKey` (PR #40); PR #44's moto notes still hold (moto takes any
+  two six-digit codes in `EnableMFADevice`; it has no MFA device tags).
+  **Left for the ACK kinds agent, not this route:** two foundation gaps
+  Cloud Control cannot serve (non-provisionable) and ACK's generator here
+  can (`docs/cloudcontrol.md` section 8, the table of the 25):
+  `ec2.aws.hfl.dev/NetworkInterfacePermission` (a plain
+  create/describe/delete; moto has none of it, so unproven on fake) and
+  `VPNGatewayRoutePropagation` (an attach pair,
+  `EnableVgwRoutePropagation`/`DisableVgwRoutePropagation` read from
+  `DescribeRouteTables`, the `PolicyAttachment` pattern).
   **F05 `VPNConnection` is not for this route** (step 1 above):
   `docs/coverage/foundation.md` F05 proposes it ACK-generated in
   `services/ec2/`, with references to our `CustomerGateway` and
