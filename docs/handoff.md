@@ -74,7 +74,9 @@ agent.** PR 1 (`agent/cloudcontrol`) is the core. Still to do:
   foundation order, recheck ACK first: F04's Transit Gateway route,
   association, propagation and peering (batch 2, done:
   `TestTransitGatewayRouting`), F07 Control Tower (batch 3: `EnabledControl` and
-  `EnabledBaseline`, unproven; `LandingZone` waits for plan question 15), F08/F09 Route 53 and its Resolver firewall, F14 to F18.
+  `EnabledBaseline`, unproven; `LandingZone` waits for plan question 15), F08/F09 Route 53 and its Resolver firewall, F14 to F18 (F17 is batch 8:
+  `ResourcePolicy` on moto; `RotationSchedule` waits for ACK's pull
+  request #69).
   **F03 `VirtualMFADevice` is not for this route** (the builder,
   2026-11-09, closing PR #44): Cloud Control never returns the seed or QR
   code, so a device made through it cannot be enrolled. It is to be built

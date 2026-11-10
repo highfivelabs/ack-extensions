@@ -547,6 +547,26 @@ the reconciler polls the request without holding a worker.
 the landing zone (plan section 9, question 15). ACK has no Control Tower
 controller, issue or pull request.
 
+**Batch 8: F17, Secrets Manager's resource policy.** ACK's
+secretsmanager-controller (v1.8.2, 2026-11-02) serves `Secret` and not its
+policy, with no pull request for one; rotation waits for its pull request
+#69 (`docs/coverage/foundation.md` F17), so `RotationSchedule` is not
+served. `AWS::SecretsManager::ResourcePolicy` (identified by the secret's
+ARN; the policy is `string` or `object` in the schema, so free-form and
+compared whole) runs on moto: `TestSecretResourcePolicy` makes a secret
+through moto's own API, puts a policy on it, checks resyncs make no update,
+changes the principal (one replace of `/ResourcePolicy`), puts back a
+policy changed in Secrets Manager, refuses a new `secretId` (create-only),
+and deletes the policy, leaving the secret. moto does not implement
+`BlockPublicPolicy` (accepted, not checked). What the backend takes the
+read handler to return, `SecretId` as the ARN and the policy as an object,
+is not known for real AWS: a `secretId` written as a name may read back as
+the ARN, a create-only difference the reconciler would call terminal, so
+the test names the secret by ARN and the live run must check a name. A
+`secretRef` to ACK's `Secret` waits for the overlay (section 12, item 4).
+The test's own secret needs `secretsmanager:CreateSecret` and
+`DeleteSecret` on a live run (`liveTestActions`).
+
 **Not shown by the fake** (section 11): anything about real AWS.
 
 `task check` (the whole repository) is reported in the pull request.
@@ -810,7 +830,8 @@ with limits":
    fake" in the coverage data; `task coverage` counts them as ours. Done:
    the coverage change, batch 1 (F02, three Identity Center types) and
    batch 2 (F04, four Transit Gateway routing types) and
-   batch 3 (F07, two Control Tower types, unproven on the fake).
+   batch 3 (F07, two Control Tower types, unproven on the fake), and
+   batch 8 (F17, Secrets Manager's `ResourcePolicy`, proven on moto).
    Next: the rest of F03 to F18 by `docs/coverage/foundation.md`.
 3. The live-test switch (`task test-live`, a sweeper, the ledger
    `docs/live-runs.md`) and the CloudFormation template for the sandbox

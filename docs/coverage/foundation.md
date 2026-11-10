@@ -13,7 +13,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | Category | Services | Resources | ACK | Ours beyond | None | Attributes | ACK | Ours beyond | Uncovered |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | platform-foundation | 16 | 241 | 55 (22.8%) | 24 (10.0%) | 162 | 2,400 | 28.2% | 6.5% | 65.4% |
-| security-adjacent | 18 | 112 | 14 (12.5%) | 2 (1.8%) | 96 | 2,082 | 37.6% | 0.6% | 61.8% |
+| security-adjacent | 18 | 112 | 14 (12.5%) | 3 (2.7%) | 95 | 2,082 | 37.6% | 0.8% | 61.7% |
 | application | 33 | 262 | 106 (40.5%) | 9 (3.4%) | 147 | 4,766 | 48.2% | 4.2% | 47.6% |
 | other | 238 | 1260 | 91 (7.2%) | 0 (0.0%) | 1169 | 76,525 | 3.0% | 0.0% | 97.0% |
 
@@ -45,7 +45,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | 1 | `config` | 11 | 0 | 0 | 11 | 0.0% / 0.0% / 100.0% | none |
 | 2 | `guardduty` | 11 | 0 | 1 | 10 | 0.0% / 12.4% / 87.6% | none |
 | 3 | `securityhub` | 17 | 0 | 0 | 17 | 0.0% / 0.0% / 100.0% | none |
-| 4 | `secretsmanager` | 4 | 1 | 0 | 3 | 17.8% / 0.0% / 82.2% | `secretsmanager-controller` v1.8.2 |
+| 4 | `secretsmanager` | 4 | 1 | 1 | 2 | 17.8% / 6.7% / 75.6% | `secretsmanager-controller` v1.8.2 |
 | 5 | `wafv2` | 6 | 3 | 1 | 2 | 82.6% / 0.3% / 17.0% | `wafv2-controller` v1.8.1 |
 | 6 | `certificatemanager` | 5 | 4 | 0 | 1 | 88.2% / 0.0% / 11.8% | `acm-controller` v1.11.0 |
 | 7 | `accessanalyzer` | 2 | 0 | 0 | 2 | 0.0% / 0.0% / 100.0% | none |
@@ -83,7 +83,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 | [F14](#f14) | Config: recorder, delivery channel, rules, aggregators, organization rules and conformance packs | security-adjacent | 11 | 0 / 0 / 118 | L (new service, eleven resources); S each after the first | Good for the first six: `PutConfigRule`, `PutConfigurationRecorder`, `PutDeliveryChannel`,... |
 | [F15](#f15) | GuardDuty: detector, filters, IP and threat intel sets, members | security-adjacent | 8 | 0 / 11 / 58 | L (new service) | Partial: `CreateDetector`, `UpdateDetector`, `CreateFilter`, `EnableOrganizationAdminAccou... |
 | [F16](#f16) | Security Hub: hub, standards, organization configuration, aggregator, automation rules | security-adjacent | 9 | 0 / 0 / 141 | L (new service; `AutomationRule` has 105 attributes and `Insight` 238) | Partial: `EnableSecurityHub`, `EnableOrganizationAdminAccount`, `UpdateOrganizationConfigu... |
-| [F17](#f17) | Secrets Manager: resource policy and rotation (wait for ACK on rotation) | security-adjacent | 4 | 8 / 0 / 37 | S | Good: `CreateSecret`, `RotateSecret`, `PutResourcePolicy` are implemented (21 of 23 operat... |
+| [F17](#f17) | Secrets Manager: resource policy and rotation (wait for ACK on rotation) | security-adjacent | 4 | 8 / 3 / 34 | S | Good: `CreateSecret`, `RotateSecret`, `PutResourcePolicy` are implemented (21 of 23 operat... |
 | [F18](#f18) | Access Analyzer, Macie, Inspector, Detective, Firewall Manager, Audit Manager, Security Lake | security-adjacent | 9 | 0 / 0 / 224 | L each for a new service | Macie, Inspector2: partial |
 
 ### F01 AWS Organizations: SCPs and the other policy types, attachment, delegated administrators, organization features, account placement
@@ -294,7 +294,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F17 Secrets Manager: resource policy and rotation (wait for ACK on rotation)
 
-- **Resources:** `secretsmanager/ResourcePolicy`, `secretsmanager/RotationSchedule`, `secretsmanager/Secret`, `secretsmanager/SecretTargetAttachment`. Today ACK covers 8, ours 0, nothing covers 37 of 45 attributes.
+- **Resources:** `secretsmanager/ResourcePolicy`, `secretsmanager/RotationSchedule`, `secretsmanager/Secret`, `secretsmanager/SecretTargetAttachment`. Today ACK covers 8, ours 3, nothing covers 34 of 45 attributes.
 - **Why first:** Secrets are the security team's first ask after keys; ACK covers `Secret` (8 of 19 attributes). Rotation and a resource policy are the gaps; the catalog ranks them 2nd and 'next'.
 - **Proposed kinds:** `secretsmanager.aws.hfl.dev/ResourcePolicy`, hand-written put/delete (`PutResourcePolicy`/`DeleteResourcePolicy`, `BlockPublicPolicy`). Rotation: wait for ACK PR #69 (open since 2026-06-26).
 - **Upstream:** ACK PR #69 rotation management on `Secret`; PR #68 `secretString` updates.
@@ -788,9 +788,9 @@ One section per service in queue order; inside a service, resources that still n
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
 | `RotationSchedule` | none | - | whole resource (20 attrs) | ACK PR #69 (open since 2026-06-26): wait | 3 | yes: `RotateSecret` is implemented | M | none: wait for ACK PR #69 | [F17](#f17) |
-| `ResourcePolicy` | none | - | whole resource (3 attrs) | controller exists; resource not in it | 1 | yes: `PutResourcePolicy` is implemented | S | `secretsmanager.aws.hfl.dev/ResourcePolicy`, hand-written (`PutResourcePolicy`/`DeleteResourcePolicy`), F17 | [F17](#f17) |
 | `Secret` | `Secret` v1.8.2: 8/19 | - | 11 of 19 attrs: `GenerateSecretString.* (a generated password)`, `Type` and 9 more | kind released; the rest is not in it | 1 | service-level only: moto `secretsmanager`: 21 of 23 operations, including `CreateSecret`, `RotateSecret`, `Put... | M | the fields upstream (ACK PR #69 is rotation) | [F17](#f17) |
 | `SecretTargetAttachment` | none | - | whole resource (3 attrs) | controller exists; resource not in it | 0 | service-level only: moto `secretsmanager`: 21 of 23 operations, including `CreateSecret`, `RotateSecret`, `Put... | S | `secretsmanager.aws.hfl.dev/SecretTargetAttachment`; low priority (writes the target's connection details into the secret) | [F17](#f17) |
+| `ResourcePolicy` | none | `ResourcePolicy (Cloud Control)`: +3 | none | controller exists; resource not in it | 1 | yes: `PutResourcePolicy` is implemented | - | `secretsmanager.aws.hfl.dev/ResourcePolicy`, hand-written (`PutResourcePolicy`/`DeleteResourcePolicy`), F17 | [F17](#f17) |
 ### security-adjacent: `wafv2`
 
 - **ACK controller:** `wafv2-controller` v1.8.1: `IPSet`, `RuleGroup`, `WebACL`

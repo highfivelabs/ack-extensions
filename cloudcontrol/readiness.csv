@@ -1612,7 +1612,7 @@ AWS::SCN::Dataset,scn,Dataset,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::SCN::Instance,scn,Instance,other,FULLY_MUTABLE,,,ok,0,0,0,0,2,true
 AWS::SCN::Namespace,scn,Namespace,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::SDB::Domain,sdb,Domain,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::SecretsManager::ResourcePolicy,secretsmanager,ResourcePolicy,security-adjacent,FULLY_MUTABLE,,,ok,1,0,0,1,0,true
+AWS::SecretsManager::ResourcePolicy,secretsmanager,ResourcePolicy,security-adjacent,FULLY_MUTABLE,,ResourcePolicy (Cloud Control),ok,1,0,0,1,0,true
 AWS::SecretsManager::RotationSchedule,secretsmanager,RotationSchedule,security-adjacent,FULLY_MUTABLE,,,ok,0,0,11,13,1,true
 AWS::SecretsManager::Secret,secretsmanager,Secret,security-adjacent,FULLY_MUTABLE,Secret,,ok,0,0,1,2,0,true
 AWS::SecretsManager::SecretTargetAttachment,secretsmanager,SecretTargetAttachment,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true

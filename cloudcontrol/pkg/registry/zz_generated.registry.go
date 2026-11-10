@@ -19,4 +19,5 @@ var Types = []*Type{
 	{Group: "ec2.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "TransitGatewayPeeringAttachment", Plural: "transitgatewaypeeringattachments", TypeName: "AWS::EC2::TransitGatewayPeeringAttachment", SchemaFile: "schemas/aws-ec2-transitgatewaypeeringattachment.json"},
 	{Group: "controltower.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "EnabledControl", Plural: "enabledcontrols", TypeName: "AWS::ControlTower::EnabledControl", SchemaFile: "schemas/aws-controltower-enabledcontrol.json", Unproven: "moto 5.2.5 has no controltower, and no other emulator exists"},
 	{Group: "controltower.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "EnabledBaseline", Plural: "enabledbaselines", TypeName: "AWS::ControlTower::EnabledBaseline", SchemaFile: "schemas/aws-controltower-enabledbaseline.json", Unproven: "moto 5.2.5 has no controltower, and no other emulator exists"},
+	{Group: "secretsmanager.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "ResourcePolicy", Plural: "resourcepolicies", TypeName: "AWS::SecretsManager::ResourcePolicy", SchemaFile: "schemas/aws-secretsmanager-resourcepolicy.json"},
 }

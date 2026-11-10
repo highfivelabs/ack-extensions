@@ -532,6 +532,29 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ControlTowerEnabledBaselineDelete
+        - Action:
+          - secretsmanager:GetResourcePolicy
+          - secretsmanager:PutResourcePolicy
+          Effect: Allow
+          Resource: '*'
+          Sid: SecretsManagerResourcePolicyCreate
+        - Action:
+          - secretsmanager:GetResourcePolicy
+          Effect: Allow
+          Resource: '*'
+          Sid: SecretsManagerResourcePolicyRead
+        - Action:
+          - secretsmanager:GetResourcePolicy
+          - secretsmanager:PutResourcePolicy
+          Effect: Allow
+          Resource: '*'
+          Sid: SecretsManagerResourcePolicyUpdate
+        - Action:
+          - secretsmanager:DeleteResourcePolicy
+          - secretsmanager:GetResourcePolicy
+          Effect: Allow
+          Resource: '*'
+          Sid: SecretsManagerResourcePolicyDelete
         Version: "2012-10-17"
     Type: AWS::IAM::ManagedPolicy
   LiveTestRole:

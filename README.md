@@ -16,7 +16,7 @@ How much of AWS the official ACK controllers cover, and how much more this repos
 
 `quicksight` alone is 51,640 of the 85,773 attributes, so the attribute bar mostly describes it; the resource bar counts a resource as covered if ACK has a kind for it, however few of its fields.
 
-Of 85,773 attributes in 1875 resources across 305 services, ACK covers 6,033 (7.0%) and ours adds 370 more (0.4%), 22 of them copied from open upstream pull requests. By resource, ACK has a released kind for 266 of 1,875 (14.2%) and ours adds 35 more (1.9%).
+Of 85,773 attributes in 1875 resources across 305 services, ACK covers 6,033 (7.0%) and ours adds 373 more (0.4%), 22 of them copied from open upstream pull requests. By resource, ACK has a released kind for 266 of 1,875 (14.2%) and ours adds 36 more (1.9%).
 
 Not every service matters equally. Each service has a **category**: *platform-foundation* (what a platform team needs to stand up a target, up to a managed Kubernetes cluster: Organizations and Control Tower, IAM and Identity Center, VPC networking and DNS, KMS, CloudTrail, RAM, EKS and ECR), *security-adjacent* (Config, GuardDuty, Security Hub, WAF, Secrets Manager, ACM, ...), *application* (S3, SQS, Lambda, RDS, DynamoDB, ...) or *other*. Tier 1 is platform-foundation, tier 2 is security-adjacent plus the application services some tracked Terraform module uses, tier 3 is everything else ([how and why](docs/coverage/README.md#tiers); the hand-editable list is [priority.csv](docs/coverage/priority.csv)). In each bar pair the upper bar is attributes and the lower is resources.
 
@@ -25,7 +25,7 @@ Not every service matters equally. Each service has a **category**: *platform-fo
 | Category | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) |
 | --- | ---: | ---: | ---: |
 | platform-foundation | 16 | 22.8% / 10.0% | 28.2% / 6.5% |
-| security-adjacent | 18 | 12.5% / 1.8% | 37.6% / 0.6% |
+| security-adjacent | 18 | 12.5% / 2.7% | 37.6% / 0.8% |
 | application | 33 | 40.5% / 3.4% | 48.2% / 4.2% |
 | other | 238 | 7.2% / 0.0% | 3.0% / 0.0% |
 
@@ -36,7 +36,7 @@ The ranked work queue for the foundation and security categories, resource by re
 | Tier | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) |
 | --- | ---: | ---: | ---: |
 | 1 | 16 | 22.8% / 10.0% | 28.2% / 6.5% |
-| 2 | 51 | 32.1% / 2.9% | 44.9% / 3.1% |
+| 2 | 51 | 32.1% / 3.2% | 44.9% / 3.2% |
 | 3 | 238 | 7.2% / 0.0% | 3.0% / 0.0% |
 
 | Tier | Category | Service | Coverage | Official | Ours beyond | Uncovered |
@@ -94,7 +94,7 @@ The ranked work queue for the foundation and security categories, resource by re
 | 2 | application | `stepfunctions` | ![stepfunctions](docs/coverage/bars/stepfunctions.svg) | 45.9% | 0.0% | 54.1% |
 | 2 | application | `s3vectors` | ![s3vectors](docs/coverage/bars/s3vectors.svg) | 78.9% | 0.0% | 21.1% |
 | 2 | security-adjacent | `guardduty` | ![guardduty](docs/coverage/bars/guardduty.svg) | 0.0% | 12.4% | 87.6% |
-| 2 | security-adjacent | `secretsmanager` | ![secretsmanager](docs/coverage/bars/secretsmanager.svg) | 17.8% | 0.0% | 82.2% |
+| 2 | security-adjacent | `secretsmanager` | ![secretsmanager](docs/coverage/bars/secretsmanager.svg) | 17.8% | 6.7% | 75.6% |
 | 2 | application | `aps` | ![aps](docs/coverage/bars/aps.svg) | 13.2% | 0.0% | 86.8% |
 | 2 | application | `dsql` | ![dsql](docs/coverage/bars/dsql.svg) | 85.7% | 0.0% | 14.3% |
 | 3 | other | `sagemaker` | ![sagemaker](docs/coverage/bars/sagemaker.svg) | 49.9% | 0.0% | 50.1% |
@@ -202,6 +202,7 @@ each has had a real run.
 | `ec2.cloudcontrol.aws.hfl.dev/v1alpha1` `TransitGatewayPeeringAttachment` | `AWS::EC2::TransitGatewayPeeringAttachment`; the requester's side: the peer accepts it outside the kind |
 | `controltower.cloudcontrol.aws.hfl.dev/v1alpha1` `EnabledControl` | `AWS::ControlTower::EnabledControl` (a control on an OU); **unproven on the fake** (no emulator has Control Tower) |
 | `controltower.cloudcontrol.aws.hfl.dev/v1alpha1` `EnabledBaseline` | `AWS::ControlTower::EnabledBaseline` (a baseline on an OU or account); **unproven on the fake** |
+| `secretsmanager.cloudcontrol.aws.hfl.dev/v1alpha1` `ResourcePolicy` | `AWS::SecretsManager::ResourcePolicy` (a secret's resource policy; the secret by ARN) |
 
 They run per environment: a `CloudControlContext` named `cloudcontrol` in
 a namespace makes the operator run a manager for that namespace, watching

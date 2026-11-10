@@ -55,6 +55,8 @@ liveTestActions:
   - ec2:GetTransitGatewayRouteTableAssociations
   - ec2:GetTransitGatewayRouteTablePropagations
   - ec2:DescribeTransitGatewayPeeringAttachments
+  - secretsmanager:CreateSecret
+  - secretsmanager:DeleteSecret
 types:
   # F03: IAM SAML providers. ACK's iam-controller ignores SAMLProvider.
   - typeName: AWS::IAM::SAMLProvider
@@ -89,3 +91,9 @@ types:
     unproven: "moto 5.2.5 has no controltower, and no other emulator exists"
   - typeName: AWS::ControlTower::EnabledBaseline
     unproven: "moto 5.2.5 has no controltower, and no other emulator exists"
+  # F17: Secrets Manager's resource policy on a secret. ACK's
+  # secretsmanager-controller v1.8.2 serves Secret and not its policy (no
+  # pull request); rotation waits for its pull request #69. The secret is
+  # named by ARN or name (secretId); a reference to ACK's Secret waits for
+  # the overlay.
+  - typeName: AWS::SecretsManager::ResourcePolicy

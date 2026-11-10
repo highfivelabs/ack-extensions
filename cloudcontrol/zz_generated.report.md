@@ -18,6 +18,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::EC2::TransitGatewayPeeringAttachment` | `TransitGatewayPeeringAttachment.ec2.cloudcontrol.aws.hfl.dev` | 5 | 4 | 8 | 0 | 0 | 0 |
 | `AWS::ControlTower::EnabledControl` | `EnabledControl.controltower.cloudcontrol.aws.hfl.dev` | 4 | 0 | 4 | 0 | 1 | 2 |
 | `AWS::ControlTower::EnabledBaseline` | `EnabledBaseline.controltower.cloudcontrol.aws.hfl.dev` | 5 | 1 | 4 | 0 | 1 | 4 |
+| `AWS::SecretsManager::ResourcePolicy` | `ResourcePolicy.secretsmanager.cloudcontrol.aws.hfl.dev` | 3 | 1 | 2 | 0 | 1 | 0 |
 
 ## `AWS::IAM::SAMLProvider`
 
@@ -162,3 +163,15 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - IAM actions (36): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `controltower:DisableBaseline`, `controltower:EnableBaseline`, `controltower:GetBaselineOperation`, `controltower:GetEnabledBaseline`, `controltower:ListEnabledBaselines`, `controltower:ListTagsForResource`, `controltower:TagResource`, `controltower:UntagResource`, `controltower:UpdateEnabledBaseline`, `organizations:AttachPolicy`, `organizations:CreateOrganization`, `organizations:CreateOrganizationalUnit`, `organizations:CreatePolicy`, `organizations:DeletePolicy`, `organizations:DetachPolicy`, `organizations:EnableAWSServiceAccess`, `organizations:EnablePolicyType`, `organizations:ListRoots`, `organizations:UpdatePolicy`, `servicecatalog:AssociatePrincipalWithPortfolio`, `servicecatalog:AssociateProductWithPortfolio`, `servicecatalog:CreatePortfolio`, `servicecatalog:CreateProduct`, `servicecatalog:CreateProvisioningArtifact`, `servicecatalog:DeleteProvisioningArtifact`, `servicecatalog:ListPortfolios`, `servicecatalog:ListPrincipalsForPortfolio`, `servicecatalog:ListProvisioningArtifacts`, `servicecatalog:SearchProductsAsAdmin`, `servicecatalog:UpdatePortfolio`, `servicecatalog:UpdateProvisioningArtifact`
 - Sensitive IAM actions: none
 - Left out (list handler only): none
+
+## `AWS::SecretsManager::ResourcePolicy`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/BlockPublicPolicy`
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: `/properties/ResourcePolicy (several types string|object)`
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (8): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `secretsmanager:DeleteResourcePolicy`, `secretsmanager:GetResourcePolicy`, `secretsmanager:PutResourcePolicy`
+- Sensitive IAM actions: none
+- Left out (list handler only): `secretsmanager:ListSecrets`
