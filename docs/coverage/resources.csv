@@ -449,8 +449,8 @@ connect,Vocabulary,6,,0,,0,6,false,
 connect,Workspace,50,,0,,0,50,false,
 connectcampaigns,Campaign,14,,0,,0,14,false,
 connectcampaignsv2,Campaign,70,,0,,0,70,false,
-controltower,EnabledBaseline,7,,0,,0,7,false,
-controltower,EnabledControl,6,,0,,0,6,false,
+controltower,EnabledBaseline,7,,0,EnabledBaseline (Cloud Control),7,0,false,"ours EnabledBaseline (Cloud Control) unproven on fake: moto 5.2.5 has no controltower, and no other emulator exists"
+controltower,EnabledControl,6,,0,EnabledControl (Cloud Control),6,0,false,"ours EnabledControl (Cloud Control) unproven on fake: moto 5.2.5 has no controltower, and no other emulator exists"
 controltower,LandingZone,5,,0,,0,5,false,
 cur,ReportDefinition,14,,0,,0,14,false,
 customerprofiles,CalculatedAttributeDefinition,23,,0,,0,23,false,
