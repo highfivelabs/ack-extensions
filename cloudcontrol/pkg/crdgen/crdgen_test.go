@@ -79,3 +79,18 @@ func TestGeneratedCRDs(t *testing.T) {
 		}
 	}
 }
+
+// A never-deleted type's CRD says so in an annotation; others carry none.
+func TestNeverDeleteAnnotation(t *testing.T) {
+	ty := registry.ByTypeName("AWS::GuardDuty::Detector")
+	for _, never := range []bool{false, true} {
+		crd, _, err := crdgen.Generate(ty.Schema(), crdgen.Options{Group: ty.Group, Version: ty.Version, Kind: ty.Kind, NeverDelete: never})
+		if err != nil {
+			t.Fatal(err)
+		}
+		v, ok := crd.Annotations[crdgen.AnnotationNeverDelete]
+		if ok != never || (never && v != "true") {
+			t.Errorf("neverDelete=%v: annotation %q (present %v)", never, v, ok)
+		}
+	}
+}
