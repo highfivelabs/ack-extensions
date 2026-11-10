@@ -12,7 +12,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 
 | Category | Services | Resources | ACK | Ours beyond | None | Attributes | ACK | Ours beyond | Uncovered |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 16 | 241 | 55 (22.8%) | 15 (6.2%) | 171 | 2,400 | 28.2% | 4.0% | 67.8% |
+| platform-foundation | 16 | 241 | 55 (22.8%) | 19 (7.9%) | 167 | 2,400 | 28.2% | 4.6% | 67.3% |
 | security-adjacent | 18 | 112 | 14 (12.5%) | 2 (1.8%) | 96 | 2,082 | 37.6% | 0.6% | 61.8% |
 | application | 33 | 262 | 106 (40.5%) | 9 (3.4%) | 147 | 4,766 | 48.2% | 4.2% | 47.6% |
 | other | 238 | 1260 | 91 (7.2%) | 0 (0.0%) | 1169 | 76,525 | 3.0% | 0.0% | 97.0% |
@@ -24,7 +24,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | 1 | `organizations` | 5 | 2 | 2 | 1 | 42.9% / 33.3% / 23.8% | `organizations-controller` v1.7.0 |
 | 2 | `sso` | 6 | 0 | 3 | 3 | 0.0% / 61.0% / 39.0% | none |
 | 3 | `iam` | 16 | 7 | 1 | 8 | 41.2% / 14.1% / 44.7% | `iam-controller` v1.11.3 |
-| 4 | `ec2` | 126 | 20 | 5 | 101 | 22.7% / 2.0% / 75.3% | `ec2-controller` v1.23.1 |
+| 4 | `ec2` | 126 | 20 | 9 | 97 | 22.7% / 2.9% / 74.3% | `ec2-controller` v1.23.1 |
 | 5 | `controltower` | 3 | 0 | 2 | 1 | 0.0% / 72.2% / 27.8% | none |
 | 6 | `route53` | 11 | 3 | 0 | 8 | 47.9% / 0.0% / 52.1% | `route53-controller` v1.8.0 |
 | 7 | `route53resolver` | 12 | 5 | 0 | 7 | 35.1% / 0.0% / 64.9% | `route53resolver-controller` v1.11.0 |
@@ -70,7 +70,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 | [F01](#f01) | AWS Organizations: SCPs and the other policy types, attachment, delegated administrators, organization features, account placement | platform-foundation | 4 | 5 / 7 / 5 | M (Policy), M (PolicyAttachment), S (DelegatedAdministrator), M (Organization), S (AccountPlacement); plus one for the new `services/organizations/` manager | Good: `CreateOrganization`, `CreateAccount`, `CreateOrganizationalUnit`, `CreatePolicy`/`U... |
 | [F02](#f02) | IAM Identity Center: permission sets and account assignments | platform-foundation | 4 | 0 / 25 / 3 | L (PermissionSet: six APIs behind one kind), M (Assignment: async), S (attribute config); plus one for the new `services/ssoadmin/` manager | Mostly good: `CreatePermissionSet`/`DescribePermissionSet`/`UpdatePermissionSet`, `AttachM... |
 | [F03](#f03) | IAM: SAML providers (and the access-key question) | platform-foundation | 6 | 9 / 9 / 18 | S (SAMLProvider), M (AccessKey if wanted) | Good: `CreateSAMLProvider`, `CreateAccessKey`, `CreateVirtualMFADevice` are implemented |
-| [F04](#f04) | EC2 networking: Transit Gateway route tables, associations, propagation, routes and peering | platform-foundation | 7 | 20 / 3 / 20 | M, M | Good: `CreateTransitGateway`, `CreateTransitGatewayVpcAttachment`, `CreateTransitGatewayRo... |
+| [F04](#f04) | EC2 networking: Transit Gateway route tables, associations, propagation, routes and peering | platform-foundation | 7 | 20 / 17 / 6 | M, M | Good: `CreateTransitGateway`, `CreateTransitGatewayVpcAttachment`, `CreateTransitGatewayRo... |
 | [F05](#f05) | EC2 networking: site-to-site VPN connections and route propagation | platform-foundation | 5 | 0 / 12 / 47 | L (VPNConnection), S (propagation) | Partial: `CreateVpnConnection`, `CreateVpnGateway`, `AttachVpnGateway`, `CreateCustomerGat... |
 | [F06](#f06) | EC2 networking: smaller VPC kinds (network interfaces, block public access, placement groups, CIDR reservations) | platform-foundation | 6 | 0 / 0 / 42 | M (NetworkInterface), S each for the rest | Partial: `CreateNetworkInterface` is implemented |
 | [F07](#f07) | Control Tower: landing zone, enabled controls, enabled baselines | platform-foundation | 3 | 0 / 13 / 5 | L each, and no emulator | None: moto 5 |
@@ -137,7 +137,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F04 EC2 networking: Transit Gateway route tables, associations, propagation, routes and peering
 
-- **Resources:** `ec2/TransitGatewayRouteTable`, `ec2/TransitGatewayRouteTableAssociation`, `ec2/TransitGatewayRouteTablePropagation`, `ec2/TransitGatewayRoute`, `ec2/TransitGatewayPeeringAttachment`, `ec2/TransitGateway`, `ec2/TransitGatewayVpcAttachment`. Today ACK covers 20, ours 3, nothing covers 20 of 43 attributes.
+- **Resources:** `ec2/TransitGatewayRouteTable`, `ec2/TransitGatewayRouteTableAssociation`, `ec2/TransitGatewayRouteTablePropagation`, `ec2/TransitGatewayRoute`, `ec2/TransitGatewayPeeringAttachment`, `ec2/TransitGateway`, `ec2/TransitGatewayVpcAttachment`. Today ACK covers 20, ours 17, nothing covers 6 of 43 attributes.
 - **Why first:** A Transit Gateway is how a platform team joins VPCs and accounts. ACK has `TransitGateway` and the VPC attachment only; without route tables a gateway routes everything through its default table. Its generator also ignores `ModifyTransitGateway`, so a gateway's options cannot change after create.
 - **Proposed kinds:** In `ec2.aws.hfl.dev`: `TransitGatewayRouteTable`, generated from `CreateTransitGatewayRouteTable`/`DescribeTransitGatewayRouteTables`/`DeleteTransitGatewayRouteTable`, with `associations[]` (attachment refs, `AssociateTransitGatewayRouteTable`), `propagations[]` (`EnableTransitGatewayRouteTablePropagation`) and `routes[]` (`CreateTransitGatewayRoute`, static or blackhole) as fields, the way ACK's `RouteTable` carries routes (see its route handling in ec2-controller `pkg/resource/route_table/hooks.go`). `TransitGatewayPeeringAttachment`, generated, with the peer account's accept step as a field.
   - Then ask ACK for `ModifyTransitGateway`: four `TransitGateway` attributes are uncovered (`AssociationDefaultRouteTableId` and `PropagationDefaultRouteTableId`, which only make sense once route tables are kinds, `EncryptionSupport` and `SecurityGroupReferencingSupport`).
@@ -390,7 +390,6 @@ One section per service in queue order; inside a service, resources that still n
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
 | `TransitGateway` | `TransitGateway` v1.23.1: 11/15 | - | 4 of 15 attrs: `AssociationDefaultRouteTableId`, `EncryptionSupport`, `PropagationDefaultRouteTableId`, `SecurityGroupReferencingSupport` | kind released; the rest is not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | S | the missing fields: upstream PR or our copy (plan section 9, question 1) | [F04](#f04) |
 | `TransitGatewayVpcAttachment` | `TransitGatewayVPCAttachment` v1.23.1: 9/11 | - | 2 of 11 attrs: `AddSubnetIds[]`, `RemoveSubnetIds[]` | kind released; the rest is not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | S | the missing fields: upstream PR or our copy (plan section 9, question 1) | [F04](#f04) |
-| `TransitGatewayPeeringAttachment` | none | - | whole resource (6 attrs) | ignored in ACK's generator.yaml | 0 | yes: `CreateTransitGatewayPeeringAttachment` is implemented | M | `ec2.aws.hfl.dev/TransitGatewayPeeringAttachment`, generated (create, accept in the peer account, delete), F04 | [F04](#f04) |
 | `VPNGatewayRoutePropagation` | none | - | whole resource (2 attrs) | controller exists; resource not in it | 2 | no: `EnableVgwRoutePropagation` is not in moto | S | a field of `RouteTable` upstream (`propagatingVGWs`) or a sidecar kind; F05 | [F05](#f05) |
 | `VPNConnection` | none | - | whole resource (43 attrs) | ignored in ACK's generator.yaml | 1 | partly: `CreateVpnConnection` yes, `CreateVpnConnectionRoute` no | L | `ec2.aws.hfl.dev/VPNConnection`, generated (`CreateVpnConnection` with tunnel options), static routes as a field, F05 | [F05](#f05) |
 | `SecurityGroupVpcAssociation` | none | - | whole resource (2 attrs) | controller exists; resource not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/SecurityGroupVpcAssociation`, generated | [F06](#f06) |
@@ -434,9 +433,9 @@ One section per service in queue order; inside a service, resources that still n
 | `NetworkAclEntry` | none | - | 11 attrs, covered inline: ACK `NetworkACL.spec.entries[]` | ignored in ACK's generator.yaml | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline) |  |
 | `RouteTable` | `RouteTable` v1.23.1: 3/3 | - | none | released | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | none (covered) |  |
 | `SubnetRouteTableAssociation` | none | - | 2 attrs, covered inline: ACK `Subnet.spec.routeTables[]` and `routeTableRefs` | controller exists; resource not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline) |  |
-| `TransitGatewayRoute` | none | - | 4 attrs, covered inline: to be a field of `TransitGatewayRouteTable.spec.routes[]` (F04) | ignored in ACK's generator.yaml | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | a field of the `TransitGatewayRouteTable` kind | [F04](#f04) |
-| `TransitGatewayRouteTableAssociation` | none | - | 2 attrs, covered inline: to be a field of `TransitGatewayRouteTable.spec.associations[]` (F04) | controller exists; resource not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | a field of the `TransitGatewayRouteTable` kind | [F04](#f04) |
-| `TransitGatewayRouteTablePropagation` | none | - | 2 attrs, covered inline: to be a field of `TransitGatewayRouteTable.spec.propagations[]` (F04) | controller exists; resource not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | a field of the `TransitGatewayRouteTable` kind | [F04](#f04) |
+| `TransitGatewayRoute` | none | `TransitGatewayRoute (Cloud Control)`: +4 | none | ignored in ACK's generator.yaml | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | a field of the `TransitGatewayRouteTable` kind | [F04](#f04) |
+| `TransitGatewayRouteTableAssociation` | none | `TransitGatewayRouteTableAssociation (Cloud Control)`: +2 | none | controller exists; resource not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | a field of the `TransitGatewayRouteTable` kind | [F04](#f04) |
+| `TransitGatewayRouteTablePropagation` | none | `TransitGatewayRouteTablePropagation (Cloud Control)`: +2 | none | controller exists; resource not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | a field of the `TransitGatewayRouteTable` kind | [F04](#f04) |
 | `VPCCidrBlock` | none | - | 10 attrs, covered inline: ACK `VPC.spec.cidrBlocks[]` | ignored in ACK's generator.yaml | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline) |  |
 | `VPCDHCPOptionsAssociation` | none | - | 2 attrs, covered inline: ACK `DHCPOptions.spec.vpc[]` | controller exists; resource not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline) |  |
 | `VPNConnectionRoute` | none | - | 2 attrs, covered inline: to be a field of `VPNConnection.spec.staticRoutes[]` (F05) | ignored in ACK's generator.yaml | 1 | no: `CreateVpnConnectionRoute` is not in moto | - | a field of the `VPNConnection` kind | [F05](#f05) |
@@ -445,6 +444,7 @@ One section per service in queue order; inside a service, resources that still n
 | `PrefixList` | `ManagedPrefixList` v1.23.1: 7/7 | - | none | released | 0 | service-level only: moto `ec2`: 232 of 809 operations | - | none (covered) |  |
 | `SubnetNetworkAclAssociation` | none | - | 2 attrs, covered inline: ACK `NetworkACL.spec.associations[]` | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline) |  |
 | `VPCEndpointServicePermissions` | none | - | 2 attrs, covered inline: ACK `VPCEndpointServiceConfiguration.spec.allowedPrincipals` | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline) |  |
+| `TransitGatewayPeeringAttachment` | none | `TransitGatewayPeeringAttachment (Cloud Control)`: +6 | none | ignored in ACK's generator.yaml | 0 | yes: `CreateTransitGatewayPeeringAttachment` is implemented | - | `ec2.aws.hfl.dev/TransitGatewayPeeringAttachment`, generated (create, accept in the peer account, delete), F04 | [F04](#f04) |
 ### platform-foundation: `controltower`
 
 - **ACK controller:** none: no ACK repository for Control Tower

@@ -482,6 +482,38 @@ from moto. `AWS::SSO::InstanceAccessControlAttributeConfiguration` is
 reports; the e2e harness refuses a type with neither a backend nor that
 mark. Results: the pull request.
 
+**Batch 2: F04, Transit Gateway routing** (`TestTransitGatewayRouting`).
+`AWS::EC2::TransitGatewayRouteTableAssociation`,
+`AWS::EC2::TransitGatewayRouteTablePropagation`,
+`AWS::EC2::TransitGatewayRoute` and
+`AWS::EC2::TransitGatewayPeeringAttachment` on moto's EC2
+(`cloudcontrol/test/fake/moto_tgw.go`); ACK's ec2-controller v1.23.1 has
+`TransitGateway` and `TransitGatewayVPCAttachment` and none of these, and
+no open pull request for them. The fixture (two gateways, a VPC attached to
+the first, a route table) is made with the EC2 SDK. The attachment is
+associated with the table and propagates to it, each with the identifier
+`<table>|<attachment>` and in EC2's `GetTransitGatewayRouteTable*`; a
+static route to the attachment and a blackhole route are in EC2's
+`SearchTransitGatewayRoutes` (`<table>|<cidr>`); a peering request to the
+second gateway gets its attachment ID and `pendingAcceptance` in status and
+the spec's tags plus ACK's, and a tag change is one `replace /Tags`;
+resyncs of the five make no update; a create-only change to each is
+refused; each delete removes it from EC2. The three links and the route are
+`IMMUTABLE` (no update handler). moto differs from AWS in four ways the
+backend makes up for: it associates twice and makes a static route twice
+where AWS refuses the second (the backend answers `AlreadyExists`); it
+drops a static route's attachment from `SearchTransitGatewayRoutes` (the
+backend keeps it); it fails `DeleteTransitGatewayRoute` of a route that is
+gone with an internal error (the backends read first); and it keeps a
+deleted peering attachment in state `deleted` (read as gone). **What the
+kinds do not do:** the peering kind is the requester's side only; the peer
+accepts it (`AcceptTransitGatewayPeeringAttachment`, which no
+CloudFormation type has), so a peering made here stays
+`pendingAcceptance` until someone does. The references
+(`transitGatewayRouteTableRef` to our `TransitGatewayRouteTable`,
+`transitGatewayRef` and the attachment to ACK's kinds) wait for the
+overlay (section 12, item 4); today the IDs are written out.
+
 **Batch 3: F07, Control Tower controls and baselines.**
 `AWS::ControlTower::EnabledControl` (a control on an OU, its identifier
 `<target>|<control>`) and `AWS::ControlTower::EnabledBaseline` (a baseline
@@ -760,6 +792,7 @@ with limits":
    fake-backed test where moto has the service, else marked "unproven on
    fake" in the coverage data; `task coverage` counts them as ours. Done:
    the coverage change, batch 1 (F02, three Identity Center types) and
+   batch 2 (F04, four Transit Gateway routing types) and
    batch 3 (F07, two Control Tower types, unproven on the fake).
    Next: the rest of F03 to F18 by `docs/coverage/foundation.md`.
 3. The live-test switch (`task test-live`, a sweeper, the ledger
