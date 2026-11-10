@@ -72,8 +72,8 @@ agent.** PR 1 (`agent/cloudcontrol`) is the core. Still to do:
   --survey`) twice: each reads the other's output. **Next batches**, in
   foundation order, recheck ACK first: F04's Transit Gateway route,
   association, propagation and peering (batch 2, done:
-  `TestTransitGatewayRouting`), F07 Control Tower (no emulator:
-  unproven), F08/F09 Route 53 and its Resolver firewall (batch 4: `TestDNS`; two of ten proven on moto, the DNS Firewall, DNSSEC signing, key-signing key, CIDR collection and resolver configuration types unproven), F14 to F18.
+  `TestTransitGatewayRouting`), F07 Control Tower (batch 3: `EnabledControl` and
+  `EnabledBaseline`, unproven; `LandingZone` waits for plan question 15), F08/F09 Route 53 and its Resolver firewall (batch 4: `TestDNS`; two of ten proven on moto, the DNS Firewall, DNSSEC signing, key-signing key, CIDR collection and resolver configuration types unproven), F14 to F18.
   **F03 `VirtualMFADevice` is not for this route** (the builder,
   2026-11-09, closing PR #44): Cloud Control never returns the seed or QR
   code, so a device made through it cannot be enrolled. It is to be built

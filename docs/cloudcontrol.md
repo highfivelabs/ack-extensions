@@ -169,6 +169,23 @@ reconciler does the rest. Nothing in it names a type.
 - **Delete.** `DeleteResource`; in progress, the token is recorded and the
   next pass finishes it; `NotFound` is done. `deletion-policy: retain` is
   ACK's runtime's, unchanged.
+- **Never delete.** A type marked `neverDelete: true` in
+  `cloudcontrol/types.yaml` (default false) is never deleted: deleting
+  its object removes the object and keeps the resource, as
+  `deletion-policy: retain` does, but for every object of the type,
+  whatever its annotations, including one made before any admission
+  policy. It is for a resource whose delete cannot be undone (a landing
+  zone, plan section 9 question 15). The generator carries it three ways:
+  `Delete` makes no call (`TestNeverDelete`); the type's IAM policy has
+  neither `cloudformation:DeleteResource` nor its delete handler's
+  actions, and an environment's merged policy drops `DeleteResource`
+  when none of its types may be deleted (`TestNeverDeletePolicy`); the
+  CRD carries `cloudcontrol.aws.hfl.dev/never-delete: "true"`. It is the
+  Cloud Control route's counterpart of a retain-only ACK-generated kind
+  (no delete call, `docs/handoff.md`); a type can add the retain-only
+  admission policy (`config/admission/retain-only.yaml`) too, so a
+  delete without `deletion-policy: retain` is refused rather than
+  quietly keeping the resource. No type served sets it yet.
 - **Adoption.** ACK's `adoption-policy: adopt` (or `adopt-or-create`) with
   `adoption-fields` naming the primary identifier by field
   (`{"transitGatewayRouteTableId": "tgw-rtb-..."}`) or `{"identifier": ...}`;
@@ -514,6 +531,22 @@ CloudFormation type has), so a peering made here stays
 `transitGatewayRef` and the attachment to ACK's kinds) wait for the
 overlay (section 12, item 4); today the IDs are written out.
 
+**Batch 3: F07, Control Tower controls and baselines.**
+`AWS::ControlTower::EnabledControl` (a control on an OU, its identifier
+`<target>|<control>`) and `AWS::ControlTower::EnabledBaseline` (a baseline
+on an OU or account, identified by its own ARN) are **unproven on the
+fake**: moto 5.2.5 has no Control Tower and no other emulator does, so both
+are generated, accepted by envtest's API server with the other CRDs, and
+marked `unproven` in `types.yaml`; there is no e2e test. Each parameter's
+`Value` is free-form (`oneOf` without a type), so it is
+`x-kubernetes-preserve-unknown-fields` and compared as JSON. The create
+handlers' permissions reach into Organizations, Service Catalog and IAM
+(`config/iam/`), and `EnabledControl`'s create may take up to 720 minutes;
+the reconciler polls the request without holding a worker.
+`AWS::ControlTower::LandingZone` is held back: deleting one decommissions
+the landing zone (plan section 9, question 15). ACK has no Control Tower
+controller, issue or pull request.
+
 **Batch 4: F08 and F09, DNS** (`TestDNS`). Ten types; ACK's
 route53-controller v1.8.0 (`HealthCheck`, `HostedZone`, `RecordSet`) and
 route53resolver-controller v1.11.0 (endpoints, rules, query log
@@ -809,8 +842,9 @@ with limits":
    fake-backed test where moto has the service, else marked "unproven on
    fake" in the coverage data; `task coverage` counts them as ours. Done:
    the coverage change, batch 1 (F02, three Identity Center types) and
-   batch 2 (F04, four Transit Gateway routing types) and batch 4 (F08,
-   F09: ten DNS types, two proven on moto).
+   batch 2 (F04, four Transit Gateway routing types), batch 3 (F07, two
+   Control Tower types, unproven on the fake) and batch 4 (F08, F09: ten
+   DNS types, two proven on moto).
    Next: the rest of F03 to F18 by `docs/coverage/foundation.md`.
 3. The live-test switch (`task test-live`, a sweeper, the ledger
    `docs/live-runs.md`) and the CloudFormation template for the sandbox
