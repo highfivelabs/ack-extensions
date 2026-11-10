@@ -16,7 +16,7 @@ How much of AWS the official ACK controllers cover, and how much more this repos
 
 `quicksight` alone is 51,640 of the 85,773 attributes, so the attribute bar mostly describes it; the resource bar counts a resource as covered if ACK has a kind for it, however few of its fields.
 
-Of 85,773 attributes in 1875 resources across 305 services, ACK covers 6,033 (7.0%) and ours adds 312 more (0.4%), 22 of them copied from open upstream pull requests. By resource, ACK has a released kind for 266 of 1,875 (14.2%) and ours adds 28 more (1.5%).
+Of 85,773 attributes in 1875 resources across 305 services, ACK covers 6,033 (7.0%) and ours adds 349 more (0.4%), 22 of them copied from open upstream pull requests. By resource, ACK has a released kind for 266 of 1,875 (14.2%) and ours adds 29 more (1.5%).
 
 Not every service matters equally. Each service has a **category**: *platform-foundation* (what a platform team needs to stand up a target, up to a managed Kubernetes cluster: Organizations and Control Tower, IAM and Identity Center, VPC networking and DNS, KMS, CloudTrail, RAM, EKS and ECR), *security-adjacent* (Config, GuardDuty, Security Hub, WAF, Secrets Manager, ACM, ...), *application* (S3, SQS, Lambda, RDS, DynamoDB, ...) or *other*. Tier 1 is platform-foundation, tier 2 is security-adjacent plus the application services some tracked Terraform module uses, tier 3 is everything else ([how and why](docs/coverage/README.md#tiers); the hand-editable list is [priority.csv](docs/coverage/priority.csv)). In each bar pair the upper bar is attributes and the lower is resources.
 
@@ -24,7 +24,7 @@ Not every service matters equally. Each service has a **category**: *platform-fo
 
 | Category | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) |
 | --- | ---: | ---: | ---: |
-| platform-foundation | 16 | 22.8% / 7.1% | 28.2% / 4.0% |
+| platform-foundation | 16 | 22.8% / 7.5% | 28.2% / 5.6% |
 | security-adjacent | 18 | 12.5% / 1.8% | 37.6% / 0.6% |
 | application | 33 | 40.5% / 3.4% | 48.2% / 4.2% |
 | other | 238 | 7.2% / 0.0% | 3.0% / 0.0% |
@@ -35,13 +35,13 @@ The ranked work queue for the foundation and security categories, resource by re
 
 | Tier | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) |
 | --- | ---: | ---: | ---: |
-| 1 | 16 | 22.8% / 7.1% | 28.2% / 4.0% |
+| 1 | 16 | 22.8% / 7.5% | 28.2% / 5.6% |
 | 2 | 51 | 32.1% / 2.9% | 44.9% / 3.1% |
 | 3 | 238 | 7.2% / 0.0% | 3.0% / 0.0% |
 
 | Tier | Category | Service | Coverage | Official | Ours beyond | Uncovered |
 | ---: | --- | --- | --- | ---: | ---: | ---: |
-| 1 | platform-foundation | `ec2` | ![ec2](docs/coverage/bars/ec2.svg) | 22.7% | 2.9% | 74.3% |
+| 1 | platform-foundation | `ec2` | ![ec2](docs/coverage/bars/ec2.svg) | 22.7% | 5.4% | 71.8% |
 | 1 | platform-foundation | `eks` | ![eks](docs/coverage/bars/eks.svg) | 82.5% | 0.0% | 17.5% |
 | 1 | platform-foundation | `iam` | ![iam](docs/coverage/bars/iam.svg) | 41.2% | 14.1% | 44.7% |
 | 1 | platform-foundation | `route53` | ![route53](docs/coverage/bars/route53.svg) | 47.9% | 0.0% | 52.1% |
@@ -139,6 +139,7 @@ Services are sorted by tier, then by attributes covered, and every tier 1 servic
 | `autoscaling.aws.hfl.dev/v1alpha1` `ScheduledAction` | A scheduled change of an EC2 Auto Scaling group's capacity, once or on a recurrence, put with `PutScheduledUpdateGroupAction`. ACK's `AutoScalingGroup` has none. | Generated, as `ScalingPolicy`; no ACK pull request adds it |
 | `ec2.aws.hfl.dev/v1alpha1` `CustomerGateway` | The on-premises end of a site-to-site VPN (address, BGP ASN, type), with tags. ACK's ec2-controller ignores it. | Generated, with ACK ec2-controller's own tag patterns copied from its `InternetGateway`; no ACK pull request adds it |
 | `ec2.aws.hfl.dev/v1alpha1` `VPNGateway` | The AWS end of a site-to-site VPN, attached to a VPC (moved when `spec.vpc` changes, detached before delete), with tags. ACK's ec2-controller ignores it. | Generated, with the VPC attachment and tag hooks of ACK ec2-controller's `InternetGateway` copied; no ACK pull request adds it |
+| `ec2.aws.hfl.dev/v1alpha1` `VPNConnection` | A site-to-site VPN connection between a `CustomerGateway` and a `VPNGateway` (by reference or ID) or a transit gateway (by ID), its tunnels' pre-shared keys from Secrets and never in the object, a log or an event; tags, static routes, the connection's CIDRs and each tunnel's options change in place. ACK's ec2-controller ignores it (community #1868). | Generated (`CreateVpnConnection`, `DescribeVpnConnections`, `DeleteVpnConnection`), with the tag hooks of ACK ec2-controller's `InternetGateway` copied; updates, static routes and the options' read by hand |
 | `ec2.aws.hfl.dev/v1alpha1` `Volume` | An EBS volume: created, grown or changed in type, IOPS and throughput with `ModifyVolume`, tagged, and deleted. ACK's ec2-controller ignores it. | Generated (with generator patch 0002), with ACK ec2-controller's tag patterns; no ACK pull request adds it |
 | `ec2.aws.hfl.dev/v1alpha1` `VolumeAttachment` | An EBS volume attached to an instance as a device, by ID or by reference to our `Volume`; detached on delete and attached again if detached outside Kubernetes. ACK's ec2-controller has no attachment. | Hand-written on iam-controller PR #184's skeleton; no ACK pull request adds it |
 | `eventbridge.aws.hfl.dev/v1alpha1` `APIDestination` | An EventBridge API destination: the endpoint, method and rate limit a rule sends events to, through a `Connection` it references. ACK's eventbridge-controller ignores it. | Generated; no ACK pull request adds it |

@@ -691,7 +691,7 @@ ec2,VPCEndpointServicePermissions,2,,0,,0,2,false,
 ec2,VPCGatewayAttachment,3,,0,,0,3,false,
 ec2,VPCPeeringConnection,8,VPCPeeringConnection,6,,0,2,false,official_unmapped=7
 ec2,VPNConcentrator,4,,0,,0,4,false,
-ec2,VPNConnection,43,,0,,0,43,false,
+ec2,VPNConnection,43,,0,VPNConnection,37,6,false,ours_unmapped=1
 ec2,VPNConnectionRoute,2,,0,,0,2,false,
 ec2,VPNGateway,4,,0,VPNGateway,4,0,false,ours_unmapped=2
 ec2,VPNGatewayRoutePropagation,2,,0,,0,2,false,

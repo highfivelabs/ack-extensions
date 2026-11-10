@@ -695,6 +695,7 @@ type CloudWatchLogOptions struct {
 // Options for sending VPN tunnel logs to CloudWatch.
 type CloudWatchLogOptionsSpecification struct {
 	LogEnabled      *bool   `json:"logEnabled,omitempty"`
+	LogGroupARN     *string `json:"logGroupARN,omitempty"`
 	LogOutputFormat *string `json:"logOutputFormat,omitempty"`
 }
 
@@ -2884,17 +2885,27 @@ type ModifyTransitGatewayOptions struct {
 
 // The Amazon Web Services Site-to-Site VPN tunnel options to modify.
 type ModifyVPNTunnelOptionsSpecification struct {
-	DPDTimeoutAction             *string `json:"dpdTimeoutAction,omitempty"`
-	DPDTimeoutSeconds            *int64  `json:"dpdTimeoutSeconds,omitempty"`
-	EnableTunnelLifecycleControl *bool   `json:"enableTunnelLifecycleControl,omitempty"`
-	Phase1LifetimeSeconds        *int64  `json:"phase1LifetimeSeconds,omitempty"`
-	Phase2LifetimeSeconds        *int64  `json:"phase2LifetimeSeconds,omitempty"`
-	RekeyFuzzPercentage          *int64  `json:"rekeyFuzzPercentage,omitempty"`
-	RekeyMarginTimeSeconds       *int64  `json:"rekeyMarginTimeSeconds,omitempty"`
-	ReplayWindowSize             *int64  `json:"replayWindowSize,omitempty"`
-	StartupAction                *string `json:"startupAction,omitempty"`
-	TunnelInsideCIDR             *string `json:"tunnelInsideCIDR,omitempty"`
-	TunnelInsideIPv6CIDR         *string `json:"tunnelInsideIPv6CIDR,omitempty"`
+	DPDTimeoutAction             *string                        `json:"dpdTimeoutAction,omitempty"`
+	DPDTimeoutSeconds            *int64                         `json:"dpdTimeoutSeconds,omitempty"`
+	EnableTunnelLifecycleControl *bool                          `json:"enableTunnelLifecycleControl,omitempty"`
+	IKEVersions                  []*IKEVersionsRequestListValue `json:"iKEVersions,omitempty"`
+	// Options for logging VPN tunnel activity.
+	LogOptions                 *VPNTunnelLogOptionsSpecification             `json:"logOptions,omitempty"`
+	Phase1DHGroupNumbers       []*Phase1DHGroupNumbersRequestListValue       `json:"phase1DHGroupNumbers,omitempty"`
+	Phase1EncryptionAlgorithms []*Phase1EncryptionAlgorithmsRequestListValue `json:"phase1EncryptionAlgorithms,omitempty"`
+	Phase1IntegrityAlgorithms  []*Phase1IntegrityAlgorithmsRequestListValue  `json:"phase1IntegrityAlgorithms,omitempty"`
+	Phase1LifetimeSeconds      *int64                                        `json:"phase1LifetimeSeconds,omitempty"`
+	Phase2DHGroupNumbers       []*Phase2DHGroupNumbersRequestListValue       `json:"phase2DHGroupNumbers,omitempty"`
+	Phase2EncryptionAlgorithms []*Phase2EncryptionAlgorithmsRequestListValue `json:"phase2EncryptionAlgorithms,omitempty"`
+	Phase2IntegrityAlgorithms  []*Phase2IntegrityAlgorithmsRequestListValue  `json:"phase2IntegrityAlgorithms,omitempty"`
+	Phase2LifetimeSeconds      *int64                                        `json:"phase2LifetimeSeconds,omitempty"`
+	PreSharedKey               *string                                       `json:"preSharedKey,omitempty"`
+	RekeyFuzzPercentage        *int64                                        `json:"rekeyFuzzPercentage,omitempty"`
+	RekeyMarginTimeSeconds     *int64                                        `json:"rekeyMarginTimeSeconds,omitempty"`
+	ReplayWindowSize           *int64                                        `json:"replayWindowSize,omitempty"`
+	StartupAction              *string                                       `json:"startupAction,omitempty"`
+	TunnelInsideCIDR           *string                                       `json:"tunnelInsideCIDR,omitempty"`
+	TunnelInsideIPv6CIDR       *string                                       `json:"tunnelInsideIPv6CIDR,omitempty"`
 }
 
 // The RDS options for a Verified Access endpoint.
@@ -4499,7 +4510,8 @@ type TransitGateway struct {
 // Describes an association between a resource attachment and a transit gateway
 // route table.
 type TransitGatewayAssociation struct {
-	ResourceID *string `json:"resourceID,omitempty"`
+	ResourceID                 *string `json:"resourceID,omitempty"`
+	TransitGatewayAttachmentID *string `json:"transitGatewayAttachmentID,omitempty"`
 }
 
 // Describes an attachment between a resource and a transit gateway.
@@ -4533,14 +4545,18 @@ type TransitGatewayAttachmentPropagation struct {
 
 // Describes a transit gateway Connect attachment.
 type TransitGatewayConnect struct {
-	CreationTime *metav1.Time `json:"creationTime,omitempty"`
-	Tags         []*Tag       `json:"tags,omitempty"`
+	CreationTime                        *metav1.Time `json:"creationTime,omitempty"`
+	Tags                                []*Tag       `json:"tags,omitempty"`
+	TransitGatewayAttachmentID          *string      `json:"transitGatewayAttachmentID,omitempty"`
+	TransitGatewayID                    *string      `json:"transitGatewayID,omitempty"`
+	TransportTransitGatewayAttachmentID *string      `json:"transportTransitGatewayAttachmentID,omitempty"`
 }
 
 // Describes a transit gateway Connect peer.
 type TransitGatewayConnectPeer struct {
-	CreationTime *metav1.Time `json:"creationTime,omitempty"`
-	Tags         []*Tag       `json:"tags,omitempty"`
+	CreationTime               *metav1.Time `json:"creationTime,omitempty"`
+	Tags                       []*Tag       `json:"tags,omitempty"`
+	TransitGatewayAttachmentID *string      `json:"transitGatewayAttachmentID,omitempty"`
 }
 
 // Describes the Connect peer details.
@@ -4652,13 +4668,15 @@ type TransitGatewayPolicyRuleMetaData struct {
 
 // Describes a transit gateway policy table.
 type TransitGatewayPolicyTable struct {
-	CreationTime *metav1.Time `json:"creationTime,omitempty"`
-	Tags         []*Tag       `json:"tags,omitempty"`
+	CreationTime     *metav1.Time `json:"creationTime,omitempty"`
+	Tags             []*Tag       `json:"tags,omitempty"`
+	TransitGatewayID *string      `json:"transitGatewayID,omitempty"`
 }
 
 // Describes a transit gateway policy table association.
 type TransitGatewayPolicyTableAssociation struct {
-	ResourceID *string `json:"resourceID,omitempty"`
+	ResourceID                 *string `json:"resourceID,omitempty"`
+	TransitGatewayAttachmentID *string `json:"transitGatewayAttachmentID,omitempty"`
 }
 
 // Describes a transit gateway policy table entry
@@ -4668,7 +4686,8 @@ type TransitGatewayPolicyTableEntry struct {
 
 // Describes a transit gateway prefix list attachment.
 type TransitGatewayPrefixListAttachment struct {
-	ResourceID *string `json:"resourceID,omitempty"`
+	ResourceID                 *string `json:"resourceID,omitempty"`
+	TransitGatewayAttachmentID *string `json:"transitGatewayAttachmentID,omitempty"`
 }
 
 // Describes a prefix list reference.
@@ -4680,6 +4699,7 @@ type TransitGatewayPrefixListReference struct {
 // Describes route propagation.
 type TransitGatewayPropagation struct {
 	ResourceID                 *string `json:"resourceID,omitempty"`
+	TransitGatewayAttachmentID *string `json:"transitGatewayAttachmentID,omitempty"`
 	TransitGatewayRouteTableID *string `json:"transitGatewayRouteTableID,omitempty"`
 }
 
@@ -4711,10 +4731,13 @@ type TransitGatewayRouteTable struct {
 
 // Describes a transit gateway route table announcement.
 type TransitGatewayRouteTableAnnouncement struct {
-	CoreNetworkID     *string      `json:"coreNetworkID,omitempty"`
-	CreationTime      *metav1.Time `json:"creationTime,omitempty"`
-	PeerCoreNetworkID *string      `json:"peerCoreNetworkID,omitempty"`
-	Tags              []*Tag       `json:"tags,omitempty"`
+	CoreNetworkID        *string      `json:"coreNetworkID,omitempty"`
+	CreationTime         *metav1.Time `json:"creationTime,omitempty"`
+	PeerCoreNetworkID    *string      `json:"peerCoreNetworkID,omitempty"`
+	PeerTransitGatewayID *string      `json:"peerTransitGatewayID,omitempty"`
+	PeeringAttachmentID  *string      `json:"peeringAttachmentID,omitempty"`
+	Tags                 []*Tag       `json:"tags,omitempty"`
+	TransitGatewayID     *string      `json:"transitGatewayID,omitempty"`
 }
 
 // Describes an association between a route table and a resource attachment.
@@ -4763,18 +4786,28 @@ type TrunkInterfaceAssociation struct {
 
 // The VPN tunnel options.
 type TunnelOption struct {
-	DPDTimeoutAction             *string `json:"dpdTimeoutAction,omitempty"`
-	DPDTimeoutSeconds            *int64  `json:"dpdTimeoutSeconds,omitempty"`
-	EnableTunnelLifecycleControl *bool   `json:"enableTunnelLifecycleControl,omitempty"`
-	OutsideIPAddress             *string `json:"outsideIPAddress,omitempty"`
-	Phase1LifetimeSeconds        *int64  `json:"phase1LifetimeSeconds,omitempty"`
-	Phase2LifetimeSeconds        *int64  `json:"phase2LifetimeSeconds,omitempty"`
-	RekeyFuzzPercentage          *int64  `json:"rekeyFuzzPercentage,omitempty"`
-	RekeyMarginTimeSeconds       *int64  `json:"rekeyMarginTimeSeconds,omitempty"`
-	ReplayWindowSize             *int64  `json:"replayWindowSize,omitempty"`
-	StartupAction                *string `json:"startupAction,omitempty"`
-	TunnelInsideCIDR             *string `json:"tunnelInsideCIDR,omitempty"`
-	TunnelInsideIPv6CIDR         *string `json:"tunnelInsideIPv6CIDR,omitempty"`
+	DPDTimeoutAction             *string                 `json:"dpdTimeoutAction,omitempty"`
+	DPDTimeoutSeconds            *int64                  `json:"dpdTimeoutSeconds,omitempty"`
+	EnableTunnelLifecycleControl *bool                   `json:"enableTunnelLifecycleControl,omitempty"`
+	IkeVersions                  []*IKEVersionsListValue `json:"ikeVersions,omitempty"`
+	// Options for logging VPN tunnel activity.
+	LogOptions                 *VPNTunnelLogOptions                   `json:"logOptions,omitempty"`
+	OutsideIPAddress           *string                                `json:"outsideIPAddress,omitempty"`
+	Phase1DHGroupNumbers       []*Phase1DHGroupNumbersListValue       `json:"phase1DHGroupNumbers,omitempty"`
+	Phase1EncryptionAlgorithms []*Phase1EncryptionAlgorithmsListValue `json:"phase1EncryptionAlgorithms,omitempty"`
+	Phase1IntegrityAlgorithms  []*Phase1IntegrityAlgorithmsListValue  `json:"phase1IntegrityAlgorithms,omitempty"`
+	Phase1LifetimeSeconds      *int64                                 `json:"phase1LifetimeSeconds,omitempty"`
+	Phase2DHGroupNumbers       []*Phase2DHGroupNumbersListValue       `json:"phase2DHGroupNumbers,omitempty"`
+	Phase2EncryptionAlgorithms []*Phase2EncryptionAlgorithmsListValue `json:"phase2EncryptionAlgorithms,omitempty"`
+	Phase2IntegrityAlgorithms  []*Phase2IntegrityAlgorithmsListValue  `json:"phase2IntegrityAlgorithms,omitempty"`
+	Phase2LifetimeSeconds      *int64                                 `json:"phase2LifetimeSeconds,omitempty"`
+	PreSharedKey               *string                                `json:"preSharedKey,omitempty"`
+	RekeyFuzzPercentage        *int64                                 `json:"rekeyFuzzPercentage,omitempty"`
+	RekeyMarginTimeSeconds     *int64                                 `json:"rekeyMarginTimeSeconds,omitempty"`
+	ReplayWindowSize           *int64                                 `json:"replayWindowSize,omitempty"`
+	StartupAction              *string                                `json:"startupAction,omitempty"`
+	TunnelInsideCIDR           *string                                `json:"tunnelInsideCIDR,omitempty"`
+	TunnelInsideIPv6CIDR       *string                                `json:"tunnelInsideIPv6CIDR,omitempty"`
 }
 
 // Describes the burstable performance instance whose credit option for CPU
@@ -4847,6 +4880,7 @@ type VGWTelemetry struct {
 	CertificateARN     *string      `json:"certificateARN,omitempty"`
 	LastStatusChange   *metav1.Time `json:"lastStatusChange,omitempty"`
 	OutsideIPAddress   *string      `json:"outsideIPAddress,omitempty"`
+	Status             *string      `json:"status,omitempty"`
 	StatusMessage      *string      `json:"statusMessage,omitempty"`
 }
 
@@ -4986,20 +5020,6 @@ type VPCPeeringConnectionVPCInfo struct {
 	VPCID     *string `json:"vpcID,omitempty"`
 }
 
-// Describes a VPN connection.
-type VPNConnection struct {
-	Category                 *string `json:"category,omitempty"`
-	CoreNetworkARN           *string `json:"coreNetworkARN,omitempty"`
-	CoreNetworkAttachmentARN *string `json:"coreNetworkAttachmentARN,omitempty"`
-	CustomerGatewayID        *string `json:"customerGatewayID,omitempty"`
-	State                    *string `json:"state,omitempty"`
-	Tags                     []*Tag  `json:"tags,omitempty"`
-	TransitGatewayID         *string `json:"transitGatewayID,omitempty"`
-	Type                     *string `json:"type_,omitempty"`
-	VPNConnectionID          *string `json:"vpnConnectionID,omitempty"`
-	VPNGatewayID             *string `json:"vpnGatewayID,omitempty"`
-}
-
 // List of customer gateway devices that have a sample configuration file available
 // for use. You can also see the list of device types with sample configuration
 // files available under Your customer gateway device (https://docs.aws.amazon.com/vpn/latest/s2svpn/your-cgw.html)
@@ -5013,25 +5033,49 @@ type VPNConnectionDeviceType struct {
 
 // Describes VPN connection options.
 type VPNConnectionOptions struct {
-	EnableAcceleration                  *bool   `json:"enableAcceleration,omitempty"`
-	LocalIPv4NetworkCIDR                *string `json:"localIPv4NetworkCIDR,omitempty"`
-	LocalIPv6NetworkCIDR                *string `json:"localIPv6NetworkCIDR,omitempty"`
-	OutsideIPAddressType                *string `json:"outsideIPAddressType,omitempty"`
-	RemoteIPv4NetworkCIDR               *string `json:"remoteIPv4NetworkCIDR,omitempty"`
-	RemoteIPv6NetworkCIDR               *string `json:"remoteIPv6NetworkCIDR,omitempty"`
-	StaticRoutesOnly                    *bool   `json:"staticRoutesOnly,omitempty"`
-	TransportTransitGatewayAttachmentID *string `json:"transportTransitGatewayAttachmentID,omitempty"`
+	EnableAcceleration                  *bool           `json:"enableAcceleration,omitempty"`
+	LocalIPv4NetworkCIDR                *string         `json:"localIPv4NetworkCIDR,omitempty"`
+	LocalIPv6NetworkCIDR                *string         `json:"localIPv6NetworkCIDR,omitempty"`
+	OutsideIPAddressType                *string         `json:"outsideIPAddressType,omitempty"`
+	RemoteIPv4NetworkCIDR               *string         `json:"remoteIPv4NetworkCIDR,omitempty"`
+	RemoteIPv6NetworkCIDR               *string         `json:"remoteIPv6NetworkCIDR,omitempty"`
+	StaticRoutesOnly                    *bool           `json:"staticRoutesOnly,omitempty"`
+	TransportTransitGatewayAttachmentID *string         `json:"transportTransitGatewayAttachmentID,omitempty"`
+	TunnelInsideIPVersion               *string         `json:"tunnelInsideIPVersion,omitempty"`
+	TunnelOptions                       []*TunnelOption `json:"tunnelOptions,omitempty"`
 }
 
 // Describes VPN connection options.
 type VPNConnectionOptionsSpecification struct {
-	EnableAcceleration    *bool   `json:"enableAcceleration,omitempty"`
-	LocalIPv4NetworkCIDR  *string `json:"localIPv4NetworkCIDR,omitempty"`
-	LocalIPv6NetworkCIDR  *string `json:"localIPv6NetworkCIDR,omitempty"`
-	OutsideIPAddressType  *string `json:"outsideIPAddressType,omitempty"`
-	RemoteIPv4NetworkCIDR *string `json:"remoteIPv4NetworkCIDR,omitempty"`
-	RemoteIPv6NetworkCIDR *string `json:"remoteIPv6NetworkCIDR,omitempty"`
-	StaticRoutesOnly      *bool   `json:"staticRoutesOnly,omitempty"`
+	EnableAcceleration                  *bool                            `json:"enableAcceleration,omitempty"`
+	LocalIPv4NetworkCIDR                *string                          `json:"localIPv4NetworkCIDR,omitempty"`
+	LocalIPv6NetworkCIDR                *string                          `json:"localIPv6NetworkCIDR,omitempty"`
+	OutsideIPAddressType                *string                          `json:"outsideIPAddressType,omitempty"`
+	RemoteIPv4NetworkCIDR               *string                          `json:"remoteIPv4NetworkCIDR,omitempty"`
+	RemoteIPv6NetworkCIDR               *string                          `json:"remoteIPv6NetworkCIDR,omitempty"`
+	StaticRoutesOnly                    *bool                            `json:"staticRoutesOnly,omitempty"`
+	TransportTransitGatewayAttachmentID *string                          `json:"transportTransitGatewayAttachmentID,omitempty"`
+	TunnelInsideIPVersion               *string                          `json:"tunnelInsideIPVersion,omitempty"`
+	TunnelOptions                       []*VPNTunnelOptionsSpecification `json:"tunnelOptions,omitempty"`
+}
+
+// Describes a VPN connection.
+type VPNConnection_SDK struct {
+	Category                 *string `json:"category,omitempty"`
+	CoreNetworkARN           *string `json:"coreNetworkARN,omitempty"`
+	CoreNetworkAttachmentARN *string `json:"coreNetworkAttachmentARN,omitempty"`
+	CustomerGatewayID        *string `json:"customerGatewayID,omitempty"`
+	GatewayAssociationState  *string `json:"gatewayAssociationState,omitempty"`
+	// Describes VPN connection options.
+	Options          *VPNConnectionOptions `json:"options,omitempty"`
+	Routes           []*VPNStaticRoute     `json:"routes,omitempty"`
+	State            *string               `json:"state,omitempty"`
+	Tags             []*Tag                `json:"tags,omitempty"`
+	TransitGatewayID *string               `json:"transitGatewayID,omitempty"`
+	Type             *string               `json:"type_,omitempty"`
+	VGWTelemetry     []*VGWTelemetry       `json:"vgwTelemetry,omitempty"`
+	VPNConnectionID  *string               `json:"vpnConnectionID,omitempty"`
+	VPNGatewayID     *string               `json:"vpnGatewayID,omitempty"`
 }
 
 // Describes a virtual private gateway.
@@ -5048,22 +5092,45 @@ type VPNGateway_SDK struct {
 // Describes a static route for a VPN connection.
 type VPNStaticRoute struct {
 	DestinationCIDRBlock *string `json:"destinationCIDRBlock,omitempty"`
+	Source               *string `json:"source,omitempty"`
 	State                *string `json:"state,omitempty"`
+}
+
+// Options for logging VPN tunnel activity.
+type VPNTunnelLogOptions struct {
+	// Options for sending VPN tunnel logs to CloudWatch.
+	CloudWatchLogOptions *CloudWatchLogOptions `json:"cloudWatchLogOptions,omitempty"`
+}
+
+// Options for logging VPN tunnel activity.
+type VPNTunnelLogOptionsSpecification struct {
+	// Options for sending VPN tunnel logs to CloudWatch.
+	CloudWatchLogOptions *CloudWatchLogOptionsSpecification `json:"cloudWatchLogOptions,omitempty"`
 }
 
 // The tunnel options for a single VPN tunnel.
 type VPNTunnelOptionsSpecification struct {
-	DPDTimeoutAction             *string `json:"dpdTimeoutAction,omitempty"`
-	DPDTimeoutSeconds            *int64  `json:"dpdTimeoutSeconds,omitempty"`
-	EnableTunnelLifecycleControl *bool   `json:"enableTunnelLifecycleControl,omitempty"`
-	Phase1LifetimeSeconds        *int64  `json:"phase1LifetimeSeconds,omitempty"`
-	Phase2LifetimeSeconds        *int64  `json:"phase2LifetimeSeconds,omitempty"`
-	RekeyFuzzPercentage          *int64  `json:"rekeyFuzzPercentage,omitempty"`
-	RekeyMarginTimeSeconds       *int64  `json:"rekeyMarginTimeSeconds,omitempty"`
-	ReplayWindowSize             *int64  `json:"replayWindowSize,omitempty"`
-	StartupAction                *string `json:"startupAction,omitempty"`
-	TunnelInsideCIDR             *string `json:"tunnelInsideCIDR,omitempty"`
-	TunnelInsideIPv6CIDR         *string `json:"tunnelInsideIPv6CIDR,omitempty"`
+	DPDTimeoutAction             *string                        `json:"dpdTimeoutAction,omitempty"`
+	DPDTimeoutSeconds            *int64                         `json:"dpdTimeoutSeconds,omitempty"`
+	EnableTunnelLifecycleControl *bool                          `json:"enableTunnelLifecycleControl,omitempty"`
+	IKEVersions                  []*IKEVersionsRequestListValue `json:"iKEVersions,omitempty"`
+	// Options for logging VPN tunnel activity.
+	LogOptions                 *VPNTunnelLogOptionsSpecification             `json:"logOptions,omitempty"`
+	Phase1DHGroupNumbers       []*Phase1DHGroupNumbersRequestListValue       `json:"phase1DHGroupNumbers,omitempty"`
+	Phase1EncryptionAlgorithms []*Phase1EncryptionAlgorithmsRequestListValue `json:"phase1EncryptionAlgorithms,omitempty"`
+	Phase1IntegrityAlgorithms  []*Phase1IntegrityAlgorithmsRequestListValue  `json:"phase1IntegrityAlgorithms,omitempty"`
+	Phase1LifetimeSeconds      *int64                                        `json:"phase1LifetimeSeconds,omitempty"`
+	Phase2DHGroupNumbers       []*Phase2DHGroupNumbersRequestListValue       `json:"phase2DHGroupNumbers,omitempty"`
+	Phase2EncryptionAlgorithms []*Phase2EncryptionAlgorithmsRequestListValue `json:"phase2EncryptionAlgorithms,omitempty"`
+	Phase2IntegrityAlgorithms  []*Phase2IntegrityAlgorithmsRequestListValue  `json:"phase2IntegrityAlgorithms,omitempty"`
+	Phase2LifetimeSeconds      *int64                                        `json:"phase2LifetimeSeconds,omitempty"`
+	PreSharedKey               *ackv1alpha1.SecretKeyReference               `json:"preSharedKey,omitempty"`
+	RekeyFuzzPercentage        *int64                                        `json:"rekeyFuzzPercentage,omitempty"`
+	RekeyMarginTimeSeconds     *int64                                        `json:"rekeyMarginTimeSeconds,omitempty"`
+	ReplayWindowSize           *int64                                        `json:"replayWindowSize,omitempty"`
+	StartupAction              *string                                       `json:"startupAction,omitempty"`
+	TunnelInsideCIDR           *string                                       `json:"tunnelInsideCIDR,omitempty"`
+	TunnelInsideIPv6CIDR       *string                                       `json:"tunnelInsideIPv6CIDR,omitempty"`
 }
 
 // The error code and error message that is returned for a parameter or parameter

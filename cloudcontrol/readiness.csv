@@ -684,7 +684,7 @@ AWS::EC2::VPCEndpointServicePermissions,ec2,VPCEndpointServicePermissions,platfo
 AWS::EC2::VPCGatewayAttachment,ec2,VPCGatewayAttachment,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::EC2::VPCPeeringConnection,ec2,VPCPeeringConnection,platform-foundation,FULLY_MUTABLE,VPCPeeringConnection,,ok,0,0,2,2,1,true
 AWS::EC2::VPNConcentrator,ec2,VPNConcentrator,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::EC2::VPNConnection,ec2,VPNConnection,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,2,0,true
+AWS::EC2::VPNConnection,ec2,VPNConnection,platform-foundation,FULLY_MUTABLE,,VPNConnection,ok,0,0,1,2,0,true
 AWS::EC2::VPNConnectionRoute,ec2,VPNConnectionRoute,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
 AWS::EC2::VPNGateway,ec2,VPNGateway,platform-foundation,FULLY_MUTABLE,,VPNGateway,ok,0,0,0,0,0,true
 AWS::EC2::VPNGatewayRoutePropagation,ec2,VPNGatewayRoutePropagation,platform-foundation,NON_PROVISIONABLE,,,not provisionable,0,0,0,0,0,false
