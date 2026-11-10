@@ -39,6 +39,11 @@ type Type struct {
 	// Unproven, when set, says why the kind has no end-to-end test on the
 	// fake (cloudcontrol/types.yaml); empty: it has one.
 	Unproven string
+	// NeverDelete, when set, keeps the resource in AWS when its object is
+	// deleted: the reconciler never calls DeleteResource for the type
+	// (cloudcontrol/types.yaml, for a resource whose delete cannot be
+	// undone).
+	NeverDelete bool
 
 	once    sync.Once
 	schema  *cfn.Schema
