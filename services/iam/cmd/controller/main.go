@@ -43,6 +43,7 @@ import (
 
 	_ "github.com/highfivelabs/ack-extensions/services/iam/pkg/resource/access_key"
 	_ "github.com/highfivelabs/ack-extensions/services/iam/pkg/resource/login_profile"
+	_ "github.com/highfivelabs/ack-extensions/services/iam/pkg/resource/virtual_mfa_device"
 
 	"github.com/highfivelabs/ack-extensions/services/iam/pkg/version"
 )

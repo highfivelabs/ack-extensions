@@ -42,6 +42,7 @@ rules:
   - rolepolicyattachments
   - sshpublickeys
   - usergroupmemberships
+  - virtualmfadevices
   verbs:
   - create
   - delete
@@ -60,6 +61,7 @@ rules:
   - rolepolicyattachments/status
   - sshpublickeys/status
   - usergroupmemberships/status
+  - virtualmfadevices/status
   verbs:
   - get
   - patch

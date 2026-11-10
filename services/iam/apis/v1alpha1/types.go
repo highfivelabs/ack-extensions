@@ -88,6 +88,7 @@ type EntityDetails struct {
 // This data type is an element of the EntityDetails object.
 type EntityInfo struct {
 	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
 }
 
 // Contains information about an IAM group entity.
@@ -101,6 +102,7 @@ type EntityInfo struct {
 //   - ListGroups
 type Group struct {
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
+	Path       *string      `json:"path,omitempty"`
 }
 
 // Contains information about an IAM group, including all of the group's policies.
@@ -109,6 +111,7 @@ type Group struct {
 // operation.
 type GroupDetail struct {
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
+	Path       *string      `json:"path,omitempty"`
 }
 
 // Contains information about an instance profile.
@@ -124,6 +127,7 @@ type GroupDetail struct {
 //   - ListInstanceProfilesForRole
 type InstanceProfile struct {
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
+	Path       *string      `json:"path,omitempty"`
 }
 
 // Contains the user name and password create date for a user.
@@ -140,8 +144,9 @@ type LoginProfile_SDK struct {
 //
 // This data type is used as a response element in the ListMFADevices operation.
 type MFADevice struct {
-	EnableDate *metav1.Time `json:"enableDate,omitempty"`
-	UserName   *string      `json:"userName,omitempty"`
+	EnableDate   *metav1.Time `json:"enableDate,omitempty"`
+	SerialNumber *string      `json:"serialNumber,omitempty"`
+	UserName     *string      `json:"userName,omitempty"`
 }
 
 // Contains information about a managed policy, including the policy's ARN,
@@ -230,6 +235,7 @@ type PolicyVersion struct {
 // element in several API operations that interact with roles.
 type Role struct {
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
+	Path       *string      `json:"path,omitempty"`
 }
 
 // Contains information about an IAM role, including all of the role's policies.
@@ -238,6 +244,7 @@ type Role struct {
 // operation.
 type RoleDetail struct {
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
+	Path       *string      `json:"path,omitempty"`
 }
 
 // Contains information about the last time that an IAM role was used. This
@@ -276,6 +283,7 @@ type SSHPublicKeyMetadata struct {
 // and ListServerCertificates operations.
 type ServerCertificateMetadata struct {
 	Expiration *metav1.Time `json:"expiration,omitempty"`
+	Path       *string      `json:"path,omitempty"`
 	UploadDate *metav1.Time `json:"uploadDate,omitempty"`
 }
 
@@ -327,10 +335,12 @@ type TrackedActionLastAccessed struct {
 // operation.
 type UserDetail struct {
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
+	Path       *string      `json:"path,omitempty"`
 	UserName   *string      `json:"userName,omitempty"`
 }
 
 // Contains information about a virtual MFA device.
-type VirtualMFADevice struct {
-	EnableDate *metav1.Time `json:"enableDate,omitempty"`
+type VirtualMFADevice_SDK struct {
+	EnableDate   *metav1.Time `json:"enableDate,omitempty"`
+	SerialNumber *string      `json:"serialNumber,omitempty"`
 }
