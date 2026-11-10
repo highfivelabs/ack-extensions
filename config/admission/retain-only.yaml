@@ -3,9 +3,11 @@
 #
 # Retain-only kinds: AWS things that are not deleted from Kubernetes (an
 # organization; an account's place in it, since an account always has a
-# parent; later, an account's closure, root-level settings). Their
-# controllers have no delete call (the generator ignores it), so deleting
-# the object only stops managing the thing. This policy makes the object
+# parent; Control Tower's landing zone; later, an account's closure,
+# root-level settings). Their controllers have no delete call (the
+# generator ignores it; a Cloud Control type is marked neverDelete in
+# cloudcontrol/types.yaml), so deleting the object only stops managing the
+# thing. This policy makes the object
 # say so: it refuses one that does not carry ACK's annotation
 # services.k8s.aws/deletion-policy: retain, and any update that removes or
 # changes it. A kind joins by adding its resource to resourceRules.
@@ -29,6 +31,10 @@ spec:
         apiVersions: ["*"]
         operations: [CREATE, UPDATE]
         resources: [organizations, accountplacements]
+      - apiGroups: [controltower.cloudcontrol.aws.hfl.dev]
+        apiVersions: ["*"]
+        operations: [CREATE, UPDATE]
+        resources: [landingzones]
   matchConditions:
     - name: not-being-deleted
       expression: "!has(object.metadata.deletionTimestamp)"

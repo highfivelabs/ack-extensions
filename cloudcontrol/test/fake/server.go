@@ -143,6 +143,14 @@ func (s *Server) Register(schema *cfn.Schema, b Backend) {
 	s.backends[schema.TypeName] = b
 }
 
+// Backend is the backend serving a type, or nil: for a test that checks a
+// test double's state, as others check moto's through the SDK.
+func (s *Server) Backend(typeName string) Backend {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.backends[typeName]
+}
+
 // Upstream passes every request that is not a Cloud Control call to
 // endpoint (moto), which must be on loopback, through the guarded client.
 func (s *Server) Upstream(endpoint string) error {

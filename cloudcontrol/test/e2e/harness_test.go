@@ -52,6 +52,9 @@ import (
 
 const region = "us-west-2"
 
+// motoAccount is the account moto answers as.
+const motoAccount = "123456789012"
+
 // envNS is the environment the manager serves; otherNS is a namespace it
 // must leave alone.
 const (
@@ -265,6 +268,9 @@ func startFake(t *testing.T, root string) (*fake.Server, string, aws.Config) {
 			b = fake.NewTransitGatewayRouteTablePropagation(motoCfg)
 		case "AWS::EC2::TransitGatewayPeeringAttachment":
 			b = fake.NewTransitGatewayPeeringAttachment(motoCfg)
+		case "AWS::ControlTower::LandingZone":
+			// No emulator has Control Tower: a test double of ours.
+			b = fake.NewLandingZone(motoAccount, region)
 		default:
 			if ty.Unproven != "" {
 				// Marked in types.yaml: moto lacks the API.
@@ -297,7 +303,7 @@ func start(t *testing.T) *env {
 		cc        callLog
 		ccURL     string
 		motoCfg   aws.Config
-		account   = "123456789012" // moto's
+		account   = motoAccount
 		extraArgs []string
 	)
 	live := target(t) == "real"

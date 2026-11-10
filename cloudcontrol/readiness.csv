@@ -445,7 +445,7 @@ AWS::ConnectCampaigns::Campaign,connectcampaigns,Campaign,other,FULLY_MUTABLE,,,
 AWS::ConnectCampaignsV2::Campaign,connectcampaignsv2,Campaign,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::ControlTower::EnabledBaseline,controltower,EnabledBaseline,platform-foundation,FULLY_MUTABLE,,EnabledBaseline (Cloud Control),ok,1,0,0,0,0,true
 AWS::ControlTower::EnabledControl,controltower,EnabledControl,platform-foundation,FULLY_MUTABLE,,EnabledControl (Cloud Control),ok,1,0,0,0,0,true
-AWS::ControlTower::LandingZone,controltower,LandingZone,platform-foundation,FULLY_MUTABLE,,,ok,1,0,0,0,1,true
+AWS::ControlTower::LandingZone,controltower,LandingZone,platform-foundation,FULLY_MUTABLE,,LandingZone (Cloud Control),ok,1,0,0,0,1,true
 AWS::CUR::ReportDefinition,cur,ReportDefinition,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::CustomerProfiles::CalculatedAttributeDefinition,customerprofiles,CalculatedAttributeDefinition,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::CustomerProfiles::Domain,customerprofiles,Domain,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true

@@ -16,7 +16,7 @@ How much of AWS the official ACK controllers cover, and how much more this repos
 
 `quicksight` alone is 51,640 of the 85,773 attributes, so the attribute bar mostly describes it; the resource bar counts a resource as covered if ACK has a kind for it, however few of its fields.
 
-Of 85,773 attributes in 1875 resources across 305 services, ACK covers 6,033 (7.0%) and ours adds 370 more (0.4%), 22 of them copied from open upstream pull requests. By resource, ACK has a released kind for 266 of 1,875 (14.2%) and ours adds 35 more (1.9%).
+Of 85,773 attributes in 1875 resources across 305 services, ACK covers 6,033 (7.0%) and ours adds 375 more (0.4%), 22 of them copied from open upstream pull requests. By resource, ACK has a released kind for 266 of 1,875 (14.2%) and ours adds 36 more (1.9%).
 
 Not every service matters equally. Each service has a **category**: *platform-foundation* (what a platform team needs to stand up a target, up to a managed Kubernetes cluster: Organizations and Control Tower, IAM and Identity Center, VPC networking and DNS, KMS, CloudTrail, RAM, EKS and ECR), *security-adjacent* (Config, GuardDuty, Security Hub, WAF, Secrets Manager, ACM, ...), *application* (S3, SQS, Lambda, RDS, DynamoDB, ...) or *other*. Tier 1 is platform-foundation, tier 2 is security-adjacent plus the application services some tracked Terraform module uses, tier 3 is everything else ([how and why](docs/coverage/README.md#tiers); the hand-editable list is [priority.csv](docs/coverage/priority.csv)). In each bar pair the upper bar is attributes and the lower is resources.
 
@@ -24,7 +24,7 @@ Not every service matters equally. Each service has a **category**: *platform-fo
 
 | Category | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) |
 | --- | ---: | ---: | ---: |
-| platform-foundation | 16 | 22.8% / 10.0% | 28.2% / 6.5% |
+| platform-foundation | 16 | 22.8% / 10.4% | 28.2% / 6.7% |
 | security-adjacent | 18 | 12.5% / 1.8% | 37.6% / 0.6% |
 | application | 33 | 40.5% / 3.4% | 48.2% / 4.2% |
 | other | 238 | 7.2% / 0.0% | 3.0% / 0.0% |
@@ -35,7 +35,7 @@ The ranked work queue for the foundation and security categories, resource by re
 
 | Tier | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) |
 | --- | ---: | ---: | ---: |
-| 1 | 16 | 22.8% / 10.0% | 28.2% / 6.5% |
+| 1 | 16 | 22.8% / 10.4% | 28.2% / 6.7% |
 | 2 | 51 | 32.1% / 2.9% | 44.9% / 3.1% |
 | 3 | 238 | 7.2% / 0.0% | 3.0% / 0.0% |
 
@@ -49,9 +49,9 @@ The ranked work queue for the foundation and security categories, resource by re
 | 1 | platform-foundation | `cloudtrail` | ![cloudtrail](docs/coverage/bars/cloudtrail.svg) | 37.3% | 0.0% | 62.7% |
 | 1 | platform-foundation | `route53resolver` | ![route53resolver](docs/coverage/bars/route53resolver.svg) | 35.1% | 0.0% | 64.9% |
 | 1 | platform-foundation | `sso` | ![sso](docs/coverage/bars/sso.svg) | 0.0% | 61.0% | 39.0% |
+| 1 | platform-foundation | `controltower` | ![controltower](docs/coverage/bars/controltower.svg) | 0.0% | 100.0% | 0.0% |
 | 1 | platform-foundation | `kms` | ![kms](docs/coverage/bars/kms.svg) | 54.5% | 22.7% | 22.7% |
 | 1 | platform-foundation | `organizations` | ![organizations](docs/coverage/bars/organizations.svg) | 42.9% | 38.1% | 19.0% |
-| 1 | platform-foundation | `controltower` | ![controltower](docs/coverage/bars/controltower.svg) | 0.0% | 72.2% | 27.8% |
 | 1 | platform-foundation | `ram` | ![ram](docs/coverage/bars/ram.svg) | 54.2% | 0.0% | 45.8% |
 | 1 | platform-foundation | `directconnect` | ![directconnect](docs/coverage/bars/directconnect.svg) | 0.0% | 0.0% | 100.0% |
 | 1 | platform-foundation | `identitystore` | ![identitystore](docs/coverage/bars/identitystore.svg) | 0.0% | 0.0% | 100.0% |
@@ -202,6 +202,7 @@ each has had a real run.
 | `ec2.cloudcontrol.aws.hfl.dev/v1alpha1` `TransitGatewayPeeringAttachment` | `AWS::EC2::TransitGatewayPeeringAttachment`; the requester's side: the peer accepts it outside the kind |
 | `controltower.cloudcontrol.aws.hfl.dev/v1alpha1` `EnabledControl` | `AWS::ControlTower::EnabledControl` (a control on an OU); **unproven on the fake** (no emulator has Control Tower) |
 | `controltower.cloudcontrol.aws.hfl.dev/v1alpha1` `EnabledBaseline` | `AWS::ControlTower::EnabledBaseline` (a baseline on an OU or account); **unproven on the fake** |
+| `controltower.cloudcontrol.aws.hfl.dev/v1alpha1` `LandingZone` | `AWS::ControlTower::LandingZone`; **never deleted** (deleting the object keeps the landing zone) and retain-only (every object carries `services.k8s.aws/deletion-policy: retain`); proven on a test double of ours, since no emulator has Control Tower |
 
 They run per environment: a `CloudControlContext` named `cloudcontrol` in
 a namespace makes the operator run a manager for that namespace, watching

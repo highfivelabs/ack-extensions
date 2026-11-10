@@ -39,6 +39,7 @@ rules:
   resources:
   - enabledbaselines
   - enabledcontrols
+  - landingzones
   verbs:
   - create
   - delete
@@ -52,6 +53,7 @@ rules:
   resources:
   - enabledbaselines/status
   - enabledcontrols/status
+  - landingzones/status
   verbs:
   - get
   - patch

@@ -2734,6 +2734,15 @@ Before it can run on a real cluster:
     until the builder answers; `EnabledControl` and `EnabledBaseline` (a
     control or baseline on an OU, which a delete only disables) are served
     without it, unproven on the fake (no emulator has Control Tower).
+
+    **Answered** (builder, 2026-11-10): the first, retain-only like
+    `Organization`, with `neverDelete` and the retain-only admission
+    policy; and for the fake, a test double or recordings for Control
+    Tower. Built (`docs/cloudcontrol.md` section 7, batch 3):
+    `neverDelete: true` in `cloudcontrol/types.yaml`, `landingzones` in
+    `config/admission/retain-only.yaml`, an in-memory test double in
+    `cloudcontrol/test/fake/controltower.go` and `TestLandingZone`. A
+    never-deleted type is left out of the live-test role and never swept.
 16. **A reference from `VPNConnection` to ACK's `TransitGateway`** (F05,
     section 6.32). The connection's other end is our `VPNGateway` or a
     transit gateway, which ACK's ec2-controller manages. A
