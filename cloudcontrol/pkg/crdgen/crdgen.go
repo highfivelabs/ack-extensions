@@ -44,6 +44,10 @@ const AnnotationTypeName = "cloudcontrol.aws.hfl.dev/type-name"
 // (no moto backend: moto lacks the service's API).
 const AnnotationUnproven = "cloudcontrol.aws.hfl.dev/unproven-on-fake"
 
+// AnnotationNeverDelete on a CRD says deleting one of its objects never
+// deletes the resource in AWS (neverDelete in cloudcontrol/types.yaml).
+const AnnotationNeverDelete = "cloudcontrol.aws.hfl.dev/never-delete"
+
 // Reserved status fields; a read-only property with one of these names is
 // an error the overlay must resolve.
 var reservedStatus = map[string]bool{
@@ -59,6 +63,8 @@ type Options struct {
 	// becomes the AnnotationUnproven annotation, which the coverage data
 	// reports.
 	Unproven string
+	// NeverDelete becomes the AnnotationNeverDelete annotation.
+	NeverDelete bool
 }
 
 // Report is what the generation could not map exactly.
@@ -147,6 +153,9 @@ func Generate(s *cfn.Schema, o Options) (*apiextv1.CustomResourceDefinition, *Re
 	annotations := map[string]string{AnnotationTypeName: s.TypeName}
 	if o.Unproven != "" {
 		annotations[AnnotationUnproven] = o.Unproven
+	}
+	if o.NeverDelete {
+		annotations[AnnotationNeverDelete] = "true"
 	}
 	crd := &apiextv1.CustomResourceDefinition{
 		TypeMeta: metav1.TypeMeta{APIVersion: "apiextensions.k8s.io/v1", Kind: "CustomResourceDefinition"},
