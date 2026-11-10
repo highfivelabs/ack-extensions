@@ -1609,7 +1609,13 @@ So "the same AWS identity" means three things:
    `app.kubernetes.io/managed-by: ack-extensions-operator` and is deleted
    when ACK's controller goes. Namespaced objects also carry an owner
    reference to ACK's Deployment.
-7. **The operator holds no AWS credentials.** It may bind only our two
+7. **An organization-scoped controller runs alone** (section 7.5).
+   Beside ACK's organizations-controller, the operator runs our manager
+   only while no other ACK controller (one we extend or not) shares its
+   namespace; otherwise it runs none, removes one it ran, and records a
+   Warning event, `SharedNamespace`, on that controller's Deployment.
+   The account-level managers in that namespace are not affected.
+8. **The operator holds no AWS credentials.** It may bind only our two
    manager ClusterRoles (RBAC `bind` by name). It does create
    ServiceAccounts carrying a role ARN, copied only from ACK's
    ServiceAccount in the same namespace. Kubernetes RBAC cannot narrow
