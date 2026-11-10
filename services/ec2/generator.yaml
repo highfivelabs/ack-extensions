@@ -13,6 +13,8 @@ operations:
     output_wrapper_field_path: CustomerGateway
   CreateVpnGateway:
     output_wrapper_field_path: VpnGateway
+  CreateVpnConnection:
+    output_wrapper_field_path: VpnConnection
   CreateNetworkInterfacePermission:
     output_wrapper_field_path: InterfacePermission
 resources:
@@ -89,6 +91,68 @@ resources:
         template_path: hooks/vpn_gateway/sdk_delete_pre_build_request.go.tpl
     update_operation:
       custom_method_name: customUpdateVpnGateway
+    synced:
+      when:
+        - path: Status.State
+          in:
+            - available
+  # A site-to-site VPN connection between our CustomerGateway and our
+  # VPNGateway (or a transit gateway, by ID). The tunnels' pre-shared keys
+  # come from Secrets; the options are what the spec says (EC2 returns them
+  # in another shape, and with the keys in them, so the read never copies
+  # them back); the device configuration EC2 returns holds the keys and is
+  # never kept. Updates: tags, static routes and tunnel options
+  # (hooks.go); everything else is immutable.
+  VpnConnection:
+    exceptions:
+      errors:
+        404:
+          code: InvalidVpnConnectionID.NotFound
+    fields:
+      Tags:
+        from:
+          operation: CreateTags
+          path: Tags
+      VPNConnectionID:
+        print:
+          name: ID
+      CustomerGatewayID:
+        is_required: true
+        is_immutable: true
+        references:
+          resource: CustomerGateway
+          path: Status.CustomerGatewayID
+      VPNGatewayID:
+        is_immutable: true
+        references:
+          resource: VPNGateway
+          path: Status.VPNGatewayID
+      TransitGatewayID:
+        is_immutable: true
+      Type:
+        is_required: true
+        is_immutable: true
+      Options:
+        set:
+          - ignore: "from"
+      Options.TunnelOptions.PreSharedKey:
+        is_secret: true
+      # Static routes (CreateVpnConnectionRoute, DeleteVpnConnectionRoute),
+      # for a connection with options.staticRoutesOnly; read back from the
+      # connection's routes (hooks.go).
+      StaticRoutes:
+        type: "[]*string"
+    hooks:
+      sdk_create_post_build_request:
+        template_path: hooks/vpn_connection/sdk_create_post_build_request.go.tpl
+      sdk_create_post_set_output:
+        template_path: hooks/vpn_connection/sdk_create_post_set_output.go.tpl
+      sdk_read_many_post_request:
+        template_path: hooks/vpn_connection/sdk_read_many_post_request.go.tpl
+      sdk_read_many_post_set_output:
+        template_path: hooks/vpn_connection/sdk_read_many_post_set_output.go.tpl
+    update_operation:
+      custom_method_name: customUpdateVpnConnection
     synced:
       when:
         - path: Status.State
@@ -189,6 +253,10 @@ ignore:
     # that would clash with that kind.
     - Volume.Attachments
     - CreateVolumeOutput.Attachments
+    - CreateVpnConnectionInput.DryRun
+    - CreateVpnConnectionInput.TagSpecifications
+    # Holds the tunnels' pre-shared keys in clear: never kept in the object.
+    - CreateVpnConnectionOutput.VpnConnection.CustomerGatewayConfiguration
   resource_names:
     - CapacityReservation
     - CapacityReservationBySplitting
@@ -265,5 +333,4 @@ ignore:
     - VpcEndpointConnectionNotification
     - VpcEndpointServiceConfiguration
     - VpcPeeringConnection
-    - VpnConnection
     - VpnConnectionRoute

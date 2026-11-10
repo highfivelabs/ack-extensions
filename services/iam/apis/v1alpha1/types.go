@@ -37,20 +37,6 @@ type AccessDetail struct {
 	LastAuthenticatedTime *metav1.Time `json:"lastAuthenticatedTime,omitempty"`
 }
 
-// Contains information about an Amazon Web Services access key.
-//
-// This data type is used as a response element in the CreateAccessKey and ListAccessKeys
-// operations.
-//
-// The SecretAccessKey value is returned only in response to CreateAccessKey.
-// You can get a secret access key only when you first create an access key;
-// you cannot recover the secret access key later. If you lose a secret access
-// key, you must create a new access key.
-type AccessKey struct {
-	CreateDate *metav1.Time `json:"createDate,omitempty"`
-	UserName   *string      `json:"userName,omitempty"`
-}
-
 // Contains information about the last time an Amazon Web Services access key
 // was used since IAM began tracking this information on April 22, 2015.
 //
@@ -65,8 +51,26 @@ type AccessKeyLastUsed struct {
 //
 // This data type is used as a response element in the ListAccessKeys operation.
 type AccessKeyMetadata struct {
-	CreateDate *metav1.Time `json:"createDate,omitempty"`
-	UserName   *string      `json:"userName,omitempty"`
+	AccessKeyID *string      `json:"accessKeyID,omitempty"`
+	CreateDate  *metav1.Time `json:"createDate,omitempty"`
+	Status      *string      `json:"status,omitempty"`
+	UserName    *string      `json:"userName,omitempty"`
+}
+
+// Contains information about an Amazon Web Services access key.
+//
+// This data type is used as a response element in the CreateAccessKey and ListAccessKeys
+// operations.
+//
+// The SecretAccessKey value is returned only in response to CreateAccessKey.
+// You can get a secret access key only when you first create an access key;
+// you cannot recover the secret access key later. If you lose a secret access
+// key, you must create a new access key.
+type AccessKey_SDK struct {
+	AccessKeyID *string      `json:"accessKeyID,omitempty"`
+	CreateDate  *metav1.Time `json:"createDate,omitempty"`
+	Status      *string      `json:"status,omitempty"`
+	UserName    *string      `json:"userName,omitempty"`
 }
 
 // An object that contains details about when the IAM entities (users or roles)
@@ -84,6 +88,7 @@ type EntityDetails struct {
 // This data type is an element of the EntityDetails object.
 type EntityInfo struct {
 	Name *string `json:"name,omitempty"`
+	Path *string `json:"path,omitempty"`
 }
 
 // Contains information about an IAM group entity.
@@ -97,6 +102,7 @@ type EntityInfo struct {
 //   - ListGroups
 type Group struct {
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
+	Path       *string      `json:"path,omitempty"`
 }
 
 // Contains information about an IAM group, including all of the group's policies.
@@ -105,6 +111,7 @@ type Group struct {
 // operation.
 type GroupDetail struct {
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
+	Path       *string      `json:"path,omitempty"`
 }
 
 // Contains information about an instance profile.
@@ -120,6 +127,7 @@ type GroupDetail struct {
 //   - ListInstanceProfilesForRole
 type InstanceProfile struct {
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
+	Path       *string      `json:"path,omitempty"`
 }
 
 // Contains the user name and password create date for a user.
@@ -136,8 +144,9 @@ type LoginProfile_SDK struct {
 //
 // This data type is used as a response element in the ListMFADevices operation.
 type MFADevice struct {
-	EnableDate *metav1.Time `json:"enableDate,omitempty"`
-	UserName   *string      `json:"userName,omitempty"`
+	EnableDate   *metav1.Time `json:"enableDate,omitempty"`
+	SerialNumber *string      `json:"serialNumber,omitempty"`
+	UserName     *string      `json:"userName,omitempty"`
 }
 
 // Contains information about a managed policy, including the policy's ARN,
@@ -226,6 +235,7 @@ type PolicyVersion struct {
 // element in several API operations that interact with roles.
 type Role struct {
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
+	Path       *string      `json:"path,omitempty"`
 }
 
 // Contains information about an IAM role, including all of the role's policies.
@@ -234,6 +244,7 @@ type Role struct {
 // operation.
 type RoleDetail struct {
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
+	Path       *string      `json:"path,omitempty"`
 }
 
 // Contains information about the last time that an IAM role was used. This
@@ -260,6 +271,7 @@ type SAMLProviderListEntry struct {
 //
 // This data type is used as a response element in the ListSSHPublicKeys operation.
 type SSHPublicKeyMetadata struct {
+	Status     *string      `json:"status,omitempty"`
 	UploadDate *metav1.Time `json:"uploadDate,omitempty"`
 	UserName   *string      `json:"userName,omitempty"`
 }
@@ -271,6 +283,7 @@ type SSHPublicKeyMetadata struct {
 // and ListServerCertificates operations.
 type ServerCertificateMetadata struct {
 	Expiration *metav1.Time `json:"expiration,omitempty"`
+	Path       *string      `json:"path,omitempty"`
 	UploadDate *metav1.Time `json:"uploadDate,omitempty"`
 }
 
@@ -285,12 +298,14 @@ type ServiceLastAccessed struct {
 // Contains the details of a service-specific credential.
 type ServiceSpecificCredential struct {
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
+	Status     *string      `json:"status,omitempty"`
 	UserName   *string      `json:"userName,omitempty"`
 }
 
 // Contains additional details about a service-specific credential.
 type ServiceSpecificCredentialMetadata struct {
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
+	Status     *string      `json:"status,omitempty"`
 	UserName   *string      `json:"userName,omitempty"`
 }
 
@@ -299,6 +314,7 @@ type ServiceSpecificCredentialMetadata struct {
 // This data type is used as a response element in the UploadSigningCertificate
 // and ListSigningCertificates operations.
 type SigningCertificate struct {
+	Status     *string      `json:"status,omitempty"`
 	UploadDate *metav1.Time `json:"uploadDate,omitempty"`
 	UserName   *string      `json:"userName,omitempty"`
 }
@@ -312,21 +328,6 @@ type TrackedActionLastAccessed struct {
 	LastAccessedTime *metav1.Time `json:"lastAccessedTime,omitempty"`
 }
 
-// Contains information about an IAM user entity.
-//
-// This data type is used as a response element in the following operations:
-//
-//   - CreateUser
-//
-//   - GetUser
-//
-//   - ListUsers
-type User struct {
-	CreateDate       *metav1.Time `json:"createDate,omitempty"`
-	PasswordLastUsed *metav1.Time `json:"passwordLastUsed,omitempty"`
-	UserName         *string      `json:"userName,omitempty"`
-}
-
 // Contains information about an IAM user, including all the user's policies
 // and all the IAM groups the user is in.
 //
@@ -334,10 +335,12 @@ type User struct {
 // operation.
 type UserDetail struct {
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
+	Path       *string      `json:"path,omitempty"`
 	UserName   *string      `json:"userName,omitempty"`
 }
 
 // Contains information about a virtual MFA device.
-type VirtualMFADevice struct {
-	EnableDate *metav1.Time `json:"enableDate,omitempty"`
+type VirtualMFADevice_SDK struct {
+	EnableDate   *metav1.Time `json:"enableDate,omitempty"`
+	SerialNumber *string      `json:"serialNumber,omitempty"`
 }

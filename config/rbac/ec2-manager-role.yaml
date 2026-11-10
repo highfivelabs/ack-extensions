@@ -29,6 +29,7 @@ rules:
   - networkinterfacepermissions
   - volumeattachments
   - volumes
+  - vpnconnections
   - vpngateways
   verbs:
   - create
@@ -45,6 +46,7 @@ rules:
   - networkinterfacepermissions/status
   - volumeattachments/status
   - volumes/status
+  - vpnconnections/status
   - vpngateways/status
   verbs:
   - get
