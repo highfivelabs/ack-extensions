@@ -212,8 +212,16 @@ func start(t *testing.T) *env {
 			b = fake.NewTransitGatewayRouteTable(motoCfg)
 		case "AWS::GuardDuty::Detector":
 			b = fake.NewDetector(motoCfg)
+		case "AWS::SSO::PermissionSet":
+			b = fake.NewPermissionSet(motoCfg)
+		case "AWS::SSO::Assignment":
+			b = fake.NewAssignment(motoCfg)
 		default:
-			t.Fatalf("no fake backend for %s", ty.TypeName)
+			if ty.Unproven != "" {
+				// Marked in types.yaml: moto lacks the API.
+				continue
+			}
+			t.Fatalf("no fake backend for %s (or mark it unproven in cloudcontrol/types.yaml)", ty.TypeName)
 		}
 		cc.Register(ty.Schema(), b)
 	}

@@ -26,6 +26,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/rds v1.93.8
 	github.com/aws/aws-sdk-go-v2/service/scheduler v1.12.13
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.34.14
+	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.37.6
+	github.com/aws/aws-sdk-go-v2/service/sts v1.33.2
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.55.11
 	github.com/aws/smithy-go v1.28.8
 	github.com/evanphx/json-patch/v5 v5.9.11
@@ -37,6 +39,7 @@ require (
 	k8s.io/apiextensions-apiserver v0.35.0
 	k8s.io/apimachinery v0.35.0
 	k8s.io/client-go v0.35.0
+	k8s.io/utils v0.0.0-20251002143259-bc988d571ff4
 	sigs.k8s.io/controller-runtime v0.23.0
 	sigs.k8s.io/yaml v1.6.0
 )
@@ -55,7 +58,6 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.13.21 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.24.7 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.28.6 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sts v1.33.2 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/blang/semver/v4 v4.0.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
@@ -129,7 +131,6 @@ require (
 	k8s.io/component-base v0.35.0 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20250910181357-589584f1c912 // indirect
-	k8s.io/utils v0.0.0-20251002143259-bc988d571ff4 // indirect
 	sigs.k8s.io/apiserver-network-proxy/konnectivity-client v0.31.2 // indirect
 	sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
