@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // The operator: runs our managers beside ACK's service controllers, as
-// the same AWS identity, and a Cloud Control manager in each namespace
+// the same AWS identity; one manager per controller for each namespace
+// that has an ACKContext, and a Cloud Control manager for each namespace
 // that has a CloudControlContext, as that namespace's own identity
 // (pkg/operator).
 package main
@@ -17,11 +18,13 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/client-go/discovery"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 
+	corev1alpha1 "github.com/highfivelabs/ack-extensions/apis/core/v1alpha1"
 	ccv1alpha1 "github.com/highfivelabs/ack-extensions/cloudcontrol/apis/v1alpha1"
 	"github.com/highfivelabs/ack-extensions/pkg/operator"
 )
@@ -100,7 +103,9 @@ func main() {
 	_ = corev1.AddToScheme(scheme)
 	_ = rbacv1.AddToScheme(scheme)
 	_ = ccv1alpha1.AddToScheme(scheme)
-	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
+	_ = corev1alpha1.AddToScheme(scheme)
+	cfg := ctrl.GetConfigOrDie()
+	mgr, err := ctrl.NewManager(cfg, ctrl.Options{
 		Scheme:                 scheme,
 		Metrics:                metricsserver.Options{BindAddress: metrics},
 		HealthProbeBindAddress: probes,
@@ -117,6 +122,22 @@ func main() {
 	}
 	if err := r.SetupWithManager(mgr); err != nil {
 		setup.Error(err, "controller")
+		os.Exit(1)
+	}
+	// ACKContext: one manager per controller per environment, in the
+	// operator's namespace (POD_NAMESPACE, from the downward API in
+	// config/operator), each service's kinds read from the API server.
+	dc, err := discovery.NewDiscoveryClientForConfig(cfg)
+	if err != nil {
+		setup.Error(err, "discovery")
+		os.Exit(1)
+	}
+	ack := &operator.ACKContextReconciler{
+		Client: mgr.GetClient(), Namespace: os.Getenv("POD_NAMESPACE"), Images: imgs,
+		Kinds: operator.DiscoveryKinds(dc), FakeAWS: fake,
+	}
+	if err := ack.SetupWithManager(mgr); err != nil {
+		setup.Error(err, "ackcontext controller")
 		os.Exit(1)
 	}
 	// Cloud Control: on when its manager image is given.

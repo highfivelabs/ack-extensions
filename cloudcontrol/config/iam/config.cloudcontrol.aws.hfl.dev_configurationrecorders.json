@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConfigConfigurationRecorder",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigConfigurationRecorderCreate",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeConfigurationRecorders",
+        "config:PutConfigurationRecorder",
+        "config:StartConfigurationRecorder",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigConfigurationRecorderRead",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeConfigurationRecorders",
+        "config:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigConfigurationRecorderUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeConfigurationRecorders",
+        "config:PutConfigurationRecorder",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigConfigurationRecorderDelete",
+      "Effect": "Allow",
+      "Action": [
+        "config:DeleteConfigurationRecorder"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

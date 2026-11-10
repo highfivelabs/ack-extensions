@@ -5,6 +5,8 @@
 # --identity: "own" (default; one more AWS grant per role) or "ack" (share
 # ACK's ServiceAccount). An ACK controller's Deployment can override it
 # with the annotation aws.hfl.dev/identity.
+# An ACKContext in a namespace runs one manager per controller it lists,
+# for that namespace (docs/plan.md, section 7.6).
 # MANAGER_IMAGE_CLOUDCONTROL turns Cloud Control on: a manager in each
 # namespace with a CloudControlContext (docs/cloudcontrol.md).
 apiVersion: apps/v1

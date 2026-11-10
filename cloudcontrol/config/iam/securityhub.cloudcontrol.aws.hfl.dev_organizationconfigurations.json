@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityHubOrganizationConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubOrganizationConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "organizations:DescribeOrganization",
+        "securityhub:DescribeOrganizationConfiguration",
+        "securityhub:UpdateOrganizationConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubOrganizationConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:DescribeOrganizationConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubOrganizationConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "organizations:DescribeOrganization",
+        "securityhub:DescribeOrganizationConfiguration",
+        "securityhub:UpdateOrganizationConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubOrganizationConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "organizations:DescribeOrganization",
+        "securityhub:DescribeOrganizationConfiguration",
+        "securityhub:ListFindingAggregators",
+        "securityhub:UpdateOrganizationConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

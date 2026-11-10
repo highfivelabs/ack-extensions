@@ -391,17 +391,17 @@ AWS::Comprehend::EntityRecognizer,comprehend,EntityRecognizer,other,FULLY_MUTABL
 AWS::Comprehend::EntityRecognizerEndpoint,comprehend,EntityRecognizerEndpoint,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::Comprehend::Flywheel,comprehend,Flywheel,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::ComputeOptimizer::AutomationRule,computeoptimizer,AutomationRule,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::Config::AggregationAuthorization,config,AggregationAuthorization,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::Config::ConfigRule,config,ConfigRule,security-adjacent,FULLY_MUTABLE,,,ok,1,0,1,1,0,true
-AWS::Config::ConfigurationAggregator,config,ConfigurationAggregator,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::Config::ConfigurationRecorder,config,ConfigurationRecorder,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,1,1,true
-AWS::Config::ConformancePack,config,ConformancePack,security-adjacent,FULLY_MUTABLE,,,ok,0,0,2,3,2,true
-AWS::Config::Connector,config,Connector,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::Config::DeliveryChannel,config,DeliveryChannel,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::Config::OrganizationConfigRule,config,OrganizationConfigRule,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::Config::OrganizationConformancePack,config,OrganizationConformancePack,security-adjacent,FULLY_MUTABLE,,,ok,0,0,2,2,2,true
-AWS::Config::RemediationConfiguration,config,RemediationConfiguration,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,2,true
-AWS::Config::StoredQuery,config,StoredQuery,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::Config::AggregationAuthorization,config,AggregationAuthorization,security-adjacent,FULLY_MUTABLE,,AggregationAuthorization (Cloud Control),ok,0,0,0,0,0,true
+AWS::Config::ConfigRule,config,ConfigRule,security-adjacent,FULLY_MUTABLE,,ConfigRule (Cloud Control),ok,1,0,1,1,0,true
+AWS::Config::ConfigurationAggregator,config,ConfigurationAggregator,security-adjacent,FULLY_MUTABLE,,ConfigurationAggregator (Cloud Control),ok,0,0,0,0,1,true
+AWS::Config::ConfigurationRecorder,config,ConfigurationRecorder,security-adjacent,FULLY_MUTABLE,,ConfigurationRecorder (Cloud Control),ok,0,0,0,1,1,true
+AWS::Config::ConformancePack,config,ConformancePack,security-adjacent,FULLY_MUTABLE,,ConformancePack (Cloud Control),ok,0,0,2,3,2,true
+AWS::Config::Connector,config,Connector,security-adjacent,FULLY_MUTABLE,,Connector (Cloud Control),ok,0,0,0,0,1,true
+AWS::Config::DeliveryChannel,config,DeliveryChannel,security-adjacent,FULLY_MUTABLE,,DeliveryChannel (Cloud Control),ok,0,0,0,0,0,true
+AWS::Config::OrganizationConfigRule,config,OrganizationConfigRule,security-adjacent,FULLY_MUTABLE,,OrganizationConfigRule (Cloud Control),ok,0,0,0,0,1,true
+AWS::Config::OrganizationConformancePack,config,OrganizationConformancePack,security-adjacent,FULLY_MUTABLE,,OrganizationConformancePack (Cloud Control),ok,0,0,2,2,2,true
+AWS::Config::RemediationConfiguration,config,RemediationConfiguration,security-adjacent,FULLY_MUTABLE,,RemediationConfiguration (Cloud Control),ok,0,0,0,0,2,true
+AWS::Config::StoredQuery,config,StoredQuery,security-adjacent,FULLY_MUTABLE,,StoredQuery (Cloud Control),ok,0,0,0,0,0,true
 AWS::Connect::AgentStatus,connect,AgentStatus,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::Connect::ApprovedOrigin,connect,ApprovedOrigin,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::Connect::ContactFlow,connect,ContactFlow,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
@@ -881,14 +881,14 @@ AWS::GroundStation::DataflowEndpointGroupV2,groundstation,DataflowEndpointGroupV
 AWS::GroundStation::MissionProfile,groundstation,MissionProfile,other,FULLY_MUTABLE,,,ok,0,0,0,0,2,true
 AWS::GuardDuty::CustomDetectionRuleAssociation,guardduty,CustomDetectionRuleAssociation,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::GuardDuty::Detector,guardduty,Detector,security-adjacent,FULLY_MUTABLE,,Detector (Cloud Control),ok,0,0,0,0,1,true
-AWS::GuardDuty::Filter,guardduty,Filter,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::GuardDuty::IPSet,guardduty,IPSet,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,1,1,true
-AWS::GuardDuty::MalwareProtectionPlan,guardduty,MalwareProtectionPlan,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::GuardDuty::Master,guardduty,Master,security-adjacent,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::GuardDuty::Member,guardduty,Member,security-adjacent,FULLY_MUTABLE,,,ok,0,0,1,2,0,true
-AWS::GuardDuty::PublishingDestination,guardduty,PublishingDestination,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::GuardDuty::Filter,guardduty,Filter,security-adjacent,FULLY_MUTABLE,,Filter (Cloud Control),ok,0,0,0,0,0,true
+AWS::GuardDuty::IPSet,guardduty,IPSet,security-adjacent,FULLY_MUTABLE,,IPSet (Cloud Control),ok,0,0,0,1,1,true
+AWS::GuardDuty::MalwareProtectionPlan,guardduty,MalwareProtectionPlan,security-adjacent,FULLY_MUTABLE,,MalwareProtectionPlan (Cloud Control),ok,0,0,0,0,1,true
+AWS::GuardDuty::Master,guardduty,Master,security-adjacent,IMMUTABLE,,Master (Cloud Control),ok,0,0,0,0,0,true
+AWS::GuardDuty::Member,guardduty,Member,security-adjacent,FULLY_MUTABLE,,Member (Cloud Control),ok,0,0,1,2,0,true
+AWS::GuardDuty::PublishingDestination,guardduty,PublishingDestination,security-adjacent,FULLY_MUTABLE,,PublishingDestination (Cloud Control),ok,0,0,0,0,0,true
 AWS::GuardDuty::ThreatEntitySet,guardduty,ThreatEntitySet,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
-AWS::GuardDuty::ThreatIntelSet,guardduty,ThreatIntelSet,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,1,1,true
+AWS::GuardDuty::ThreatIntelSet,guardduty,ThreatIntelSet,security-adjacent,FULLY_MUTABLE,,ThreatIntelSet (Cloud Control),ok,0,0,0,1,1,true
 AWS::GuardDuty::TrustedEntitySet,guardduty,TrustedEntitySet,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
 AWS::HealthAgent::Domain,healthagent,Domain,other,FULLY_MUTABLE,,,ok,0,0,0,0,2,true
 AWS::HealthImaging::Datastore,healthimaging,Datastore,other,IMMUTABLE,,,ok,0,0,0,0,2,true
@@ -1478,13 +1478,13 @@ AWS::RoboMaker::SimulationApplicationVersion,robomaker,SimulationApplicationVers
 AWS::RolesAnywhere::CRL,rolesanywhere,CRL,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::RolesAnywhere::Profile,rolesanywhere,Profile,application,FULLY_MUTABLE,,,ok,0,0,0,1,1,true
 AWS::RolesAnywhere::TrustAnchor,rolesanywhere,TrustAnchor,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::Route53::CidrCollection,route53,CidrCollection,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::Route53::CidrCollection,route53,CidrCollection,platform-foundation,FULLY_MUTABLE,,CidrCollection (Cloud Control),ok,0,0,0,0,0,true
 AWS::Route53::DelegationSet,route53,DelegationSet,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::Route53::DNSSEC,route53,DNSSEC,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,1,true
+AWS::Route53::DNSSEC,route53,DNSSEC,platform-foundation,IMMUTABLE,,DNSSEC (Cloud Control),ok,0,0,0,0,1,true
 AWS::Route53::HealthCheck,route53,HealthCheck,platform-foundation,FULLY_MUTABLE,HealthCheck,,ok,0,0,0,0,0,true
 AWS::Route53::HostedZone,route53,HostedZone,platform-foundation,FULLY_MUTABLE,HostedZone,,ok,0,0,0,0,0,true
-AWS::Route53::KeySigningKey,route53,KeySigningKey,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::Route53::QueryLoggingConfig,route53,QueryLoggingConfig,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
+AWS::Route53::KeySigningKey,route53,KeySigningKey,platform-foundation,FULLY_MUTABLE,,KeySigningKey (Cloud Control),ok,0,0,0,0,1,true
+AWS::Route53::QueryLoggingConfig,route53,QueryLoggingConfig,platform-foundation,IMMUTABLE,,QueryLoggingConfig (Cloud Control),ok,0,0,0,0,0,true
 AWS::Route53::RecordSet,route53,RecordSet,platform-foundation,FULLY_MUTABLE,RecordSet,,ok,0,0,2,2,0,true
 AWS::Route53::RecordSetGroup,route53,RecordSetGroup,platform-foundation,NON_PROVISIONABLE,,,not provisionable,0,0,0,0,0,false
 AWS::Route53::TrafficPolicy,route53,TrafficPolicy,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
@@ -1507,13 +1507,13 @@ AWS::Route53RecoveryReadiness::Cell,route53recoveryreadiness,Cell,other,FULLY_MU
 AWS::Route53RecoveryReadiness::ReadinessCheck,route53recoveryreadiness,ReadinessCheck,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::Route53RecoveryReadiness::RecoveryGroup,route53recoveryreadiness,RecoveryGroup,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::Route53RecoveryReadiness::ResourceSet,route53recoveryreadiness,ResourceSet,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::Route53Resolver::FirewallConfig,route53resolver,FirewallConfig,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::Route53Resolver::FirewallDomainList,route53resolver,FirewallDomainList,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,2,0,true
-AWS::Route53Resolver::FirewallRuleGroup,route53resolver,FirewallRuleGroup,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::Route53Resolver::FirewallRuleGroupAssociation,route53resolver,FirewallRuleGroupAssociation,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::Route53Resolver::FirewallConfig,route53resolver,FirewallConfig,platform-foundation,FULLY_MUTABLE,,FirewallConfig (Cloud Control),ok,0,0,0,0,0,true
+AWS::Route53Resolver::FirewallDomainList,route53resolver,FirewallDomainList,platform-foundation,FULLY_MUTABLE,,FirewallDomainList (Cloud Control),ok,0,0,1,2,0,true
+AWS::Route53Resolver::FirewallRuleGroup,route53resolver,FirewallRuleGroup,platform-foundation,FULLY_MUTABLE,,FirewallRuleGroup (Cloud Control),ok,0,0,0,0,0,true
+AWS::Route53Resolver::FirewallRuleGroupAssociation,route53resolver,FirewallRuleGroupAssociation,platform-foundation,FULLY_MUTABLE,,FirewallRuleGroupAssociation (Cloud Control),ok,0,0,0,0,0,true
 AWS::Route53Resolver::OutpostResolver,route53resolver,OutpostResolver,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::Route53Resolver::ResolverConfig,route53resolver,ResolverConfig,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::Route53Resolver::ResolverDNSSECConfig,route53resolver,ResolverDNSSECConfig,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
+AWS::Route53Resolver::ResolverConfig,route53resolver,ResolverConfig,platform-foundation,IMMUTABLE,,ResolverConfig (Cloud Control),ok,0,0,0,0,0,true
+AWS::Route53Resolver::ResolverDNSSECConfig,route53resolver,ResolverDNSSECConfig,platform-foundation,IMMUTABLE,,ResolverDNSSECConfig (Cloud Control),ok,0,0,0,0,0,true
 AWS::Route53Resolver::ResolverEndpoint,route53resolver,ResolverEndpoint,platform-foundation,FULLY_MUTABLE,ResolverEndpoint,,ok,0,0,0,0,0,true
 AWS::Route53Resolver::ResolverQueryLoggingConfig,route53resolver,ResolverQueryLoggingConfig,platform-foundation,IMMUTABLE,ResolverQueryLogConfig,,ok,0,0,0,0,1,true
 AWS::Route53Resolver::ResolverQueryLoggingConfigAssociation,route53resolver,ResolverQueryLoggingConfigAssociation,platform-foundation,IMMUTABLE,ResolverQueryLogConfigAssociation,,ok,0,0,0,0,0,true
@@ -1624,23 +1624,23 @@ AWS::SecurityAgent::Pentest,securityagent,Pentest,other,FULLY_MUTABLE,,,ok,0,0,0
 AWS::SecurityAgent::PrivateConnection,securityagent,PrivateConnection,other,FULLY_MUTABLE,,,ok,0,0,1,2,1,true
 AWS::SecurityAgent::SecurityRequirementPack,securityagent,SecurityRequirementPack,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::SecurityAgent::TargetDomain,securityagent,TargetDomain,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::SecurityHub::ActionTarget,securityhub,ActionTarget,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::SecurityHub::ActionTarget,securityhub,ActionTarget,security-adjacent,FULLY_MUTABLE,,ActionTarget (Cloud Control),ok,0,0,0,0,0,true
 AWS::SecurityHub::AggregatorV2,securityhub,AggregatorV2,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::SecurityHub::AutomationRule,securityhub,AutomationRule,security-adjacent,FULLY_MUTABLE,,,ok,2,0,0,0,0,true
+AWS::SecurityHub::AutomationRule,securityhub,AutomationRule,security-adjacent,FULLY_MUTABLE,,AutomationRule (Cloud Control),ok,2,0,0,0,0,true
 AWS::SecurityHub::AutomationRuleV2,securityhub,AutomationRuleV2,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::SecurityHub::ConfigurationPolicy,securityhub,ConfigurationPolicy,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::SecurityHub::ConfigurationPolicy,securityhub,ConfigurationPolicy,security-adjacent,FULLY_MUTABLE,,ConfigurationPolicy (Cloud Control),ok,0,0,0,0,0,true
 AWS::SecurityHub::Connector,securityhub,Connector,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::SecurityHub::ConnectorV2,securityhub,ConnectorV2,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::SecurityHub::DelegatedAdmin,securityhub,DelegatedAdmin,security-adjacent,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::SecurityHub::FindingAggregator,securityhub,FindingAggregator,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::SecurityHub::Hub,securityhub,Hub,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
+AWS::SecurityHub::DelegatedAdmin,securityhub,DelegatedAdmin,security-adjacent,IMMUTABLE,,DelegatedAdmin (Cloud Control),ok,0,0,0,0,0,true
+AWS::SecurityHub::FindingAggregator,securityhub,FindingAggregator,security-adjacent,FULLY_MUTABLE,,FindingAggregator (Cloud Control),ok,0,0,0,0,0,true
+AWS::SecurityHub::Hub,securityhub,Hub,security-adjacent,FULLY_MUTABLE,,Hub (Cloud Control),ok,0,0,0,1,0,true
 AWS::SecurityHub::HubV2,securityhub,HubV2,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::SecurityHub::Insight,securityhub,Insight,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::SecurityHub::OrganizationConfiguration,securityhub,OrganizationConfiguration,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::SecurityHub::PolicyAssociation,securityhub,PolicyAssociation,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::SecurityHub::OrganizationConfiguration,securityhub,OrganizationConfiguration,security-adjacent,FULLY_MUTABLE,,OrganizationConfiguration (Cloud Control),ok,0,0,0,0,0,true
+AWS::SecurityHub::PolicyAssociation,securityhub,PolicyAssociation,security-adjacent,FULLY_MUTABLE,,PolicyAssociation (Cloud Control),ok,0,0,0,0,0,true
 AWS::SecurityHub::ProductSubscription,securityhub,ProductSubscription,security-adjacent,IMMUTABLE,,,ok,0,0,0,0,0,true
 AWS::SecurityHub::SecurityControl,securityhub,SecurityControl,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::SecurityHub::Standard,securityhub,Standard,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::SecurityHub::Standard,securityhub,Standard,security-adjacent,FULLY_MUTABLE,,Standard (Cloud Control),ok,0,0,0,0,0,true
 AWS::SecurityLake::AwsLogSource,securitylake,AwsLogSource,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,2,true
 AWS::SecurityLake::DataLake,securitylake,DataLake,security-adjacent,FULLY_MUTABLE,,,ok,0,0,1,1,4,true
 AWS::SecurityLake::Subscriber,securitylake,Subscriber,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,2,true

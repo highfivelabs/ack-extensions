@@ -256,6 +256,12 @@ func startFake(t *testing.T, root string) (*fake.Server, string, aws.Config) {
 			b = fake.NewTransitGatewayRouteTable(motoCfg)
 		case "AWS::GuardDuty::Detector":
 			b = fake.NewDetector(motoCfg)
+		case "AWS::GuardDuty::Filter":
+			b = fake.NewFilter(motoCfg)
+		case "AWS::SecurityHub::Hub":
+			b = fake.NewHub(motoCfg)
+		case "AWS::SecurityHub::OrganizationConfiguration":
+			b = fake.NewOrganizationConfiguration(motoCfg, motoAccount, region)
 		case "AWS::SSO::PermissionSet":
 			b = fake.NewPermissionSet(motoCfg)
 		case "AWS::SSO::Assignment":
@@ -271,6 +277,22 @@ func startFake(t *testing.T, root string) (*fake.Server, string, aws.Config) {
 		case "AWS::ControlTower::LandingZone":
 			// No emulator has Control Tower: a test double of ours.
 			b = fake.NewLandingZone(motoAccount, region)
+		case "AWS::Route53::QueryLoggingConfig":
+			b = fake.NewQueryLoggingConfig(motoCfg)
+		case "AWS::Route53Resolver::ResolverDNSSECConfig":
+			b = fake.NewResolverDNSSECConfig(motoCfg)
+		case "AWS::Config::ConfigurationRecorder":
+			b = fake.NewConfigurationRecorder(motoCfg)
+		case "AWS::Config::DeliveryChannel":
+			b = fake.NewDeliveryChannel(motoCfg)
+		case "AWS::Config::ConfigRule":
+			b = fake.NewConfigRule(motoCfg)
+		case "AWS::Config::ConfigurationAggregator":
+			b = fake.NewConfigurationAggregator(motoCfg)
+		case "AWS::Config::AggregationAuthorization":
+			b = fake.NewAggregationAuthorization(motoCfg)
+		case "AWS::Config::OrganizationConformancePack":
+			b = fake.NewOrganizationConformancePack(motoCfg)
 		default:
 			if ty.Unproven != "" {
 				// Marked in types.yaml: moto lacks the API.

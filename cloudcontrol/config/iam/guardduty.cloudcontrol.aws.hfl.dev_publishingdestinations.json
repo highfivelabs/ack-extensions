@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGuardDutyPublishingDestination",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyPublishingDestinationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:CreatePublishingDestination",
+        "guardduty:DescribePublishingDestination",
+        "guardduty:ListTagsForResource",
+        "guardduty:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyPublishingDestinationRead",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:DescribePublishingDestination",
+        "guardduty:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyPublishingDestinationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:DescribePublishingDestination",
+        "guardduty:ListTagsForResource",
+        "guardduty:TagResource",
+        "guardduty:UntagResource",
+        "guardduty:UpdatePublishingDestination"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyPublishingDestinationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:DeletePublishingDestination",
+        "guardduty:DescribePublishingDestination"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
