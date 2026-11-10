@@ -70,7 +70,7 @@ func TestSAMLProvider(t *testing.T) {
 		t.Fatal(err)
 	}
 	got := e.waitSynced(t, u)
-	arn := "arn:aws:iam::123456789012:saml-provider/corp-idp"
+	arn := "arn:aws:iam::" + e.account + ":saml-provider/corp-idp"
 	if s, _, _ := unstructured.NestedString(got.Object, "status", "arn"); s != arn {
 		t.Errorf("status.arn = %q, want %q", s, arn)
 	}
@@ -187,6 +187,11 @@ func TestTransitGatewayRouteTable(t *testing.T) {
 		t.Fatal(err)
 	}
 	tgwID := aws.ToString(tgw.TransitGateway.TransitGatewayId)
+	// The fixture goes at the end (on a live run it is billed hourly); the
+	// route tables on it are deleted by the test before.
+	t.Cleanup(func() {
+		_, _ = ec.DeleteTransitGateway(e.ctx, &ec2.DeleteTransitGatewayInput{TransitGatewayId: aws.String(tgwID)})
+	})
 
 	u := obj("TransitGatewayRouteTable", "hub-spokes", map[string]any{
 		"transitGatewayId": tgwID,

@@ -196,6 +196,25 @@ func exception(code, format string, a ...any) *apiError {
 	return &apiError{http.StatusBadRequest, code, fmt.Sprintf(format, a...)}
 }
 
+// ParseCall is the Call a Cloud Control request (its X-Amz-Target and
+// JSON body) records; the live recorder (-tags live) records the same.
+func ParseCall(target string, body []byte) Call {
+	var in map[string]any
+	_ = json.Unmarshal(body, &in)
+	str := func(k string) string { v, _ := in[k].(string); return v }
+	action := strings.TrimPrefix(target, "CloudApiService.")
+	call := Call{Action: action, TypeName: str("TypeName"), Identifier: str("Identifier"), ClientToken: str("ClientToken")}
+	switch action {
+	case "CreateResource":
+		call.Body = str("DesiredState")
+	case "UpdateResource":
+		call.Body = str("PatchDocument")
+	case "GetResourceRequestStatus":
+		call.Identifier = str("RequestToken")
+	}
+	return call
+}
+
 func (s *Server) serve(w http.ResponseWriter, r *http.Request) {
 	target := r.Header.Get("X-Amz-Target")
 	if !strings.HasPrefix(target, "CloudApiService.") && s.upstream != nil {
@@ -209,16 +228,7 @@ func (s *Server) serve(w http.ResponseWriter, r *http.Request) {
 	str := func(k string) string { v, _ := in[k].(string); return v }
 
 	s.mu.Lock()
-	call := Call{Action: action, TypeName: str("TypeName"), Identifier: str("Identifier"), ClientToken: str("ClientToken")}
-	switch action {
-	case "CreateResource":
-		call.Body = str("DesiredState")
-	case "UpdateResource":
-		call.Body = str("PatchDocument")
-	case "GetResourceRequestStatus":
-		call.Identifier = str("RequestToken")
-	}
-	s.calls = append(s.calls, call)
+	s.calls = append(s.calls, ParseCall(target, body))
 	s.mu.Unlock()
 
 	ctx := r.Context()
