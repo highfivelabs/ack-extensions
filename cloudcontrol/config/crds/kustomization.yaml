@@ -12,3 +12,10 @@ resources:
   - ec2.cloudcontrol.aws.hfl.dev_transitgatewaypeeringattachments.yaml
   - controltower.cloudcontrol.aws.hfl.dev_enabledcontrols.yaml
   - controltower.cloudcontrol.aws.hfl.dev_enabledbaselines.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_filters.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_ipsets.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_threatintelsets.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_members.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_publishingdestinations.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_malwareprotectionplans.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_masters.yaml

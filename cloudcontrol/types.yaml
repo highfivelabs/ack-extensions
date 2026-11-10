@@ -89,3 +89,20 @@ types:
     unproven: "moto 5.2.5 has no controltower, and no other emulator exists"
   - typeName: AWS::ControlTower::EnabledBaseline
     unproven: "moto 5.2.5 has no controltower, and no other emulator exists"
+  # F15: GuardDuty beside the detector. ACK has no GuardDuty controller
+  # (community issue #2916, no pull request). moto 5.2.5 has filters; it
+  # has none of the IP and threat intel sets, members, publishing
+  # destinations, malware protection plans or invitations.
+  - typeName: AWS::GuardDuty::Filter
+  - typeName: AWS::GuardDuty::IPSet
+    unproven: "moto 5.2.5 has no Create/Get/Update/DeleteIPSet"
+  - typeName: AWS::GuardDuty::ThreatIntelSet
+    unproven: "moto 5.2.5 has no Create/Get/Update/DeleteThreatIntelSet"
+  - typeName: AWS::GuardDuty::Member
+    unproven: "moto 5.2.5 has no Create/Get/DeleteMembers or InviteMembers"
+  - typeName: AWS::GuardDuty::PublishingDestination
+    unproven: "moto 5.2.5 has no Create/Describe/Update/DeletePublishingDestination"
+  - typeName: AWS::GuardDuty::MalwareProtectionPlan
+    unproven: "moto 5.2.5 has no Create/Get/Update/DeleteMalwareProtectionPlan"
+  - typeName: AWS::GuardDuty::Master
+    unproven: "moto 5.2.5 has no AcceptAdministratorInvitation or DisassociateFromAdministratorAccount"

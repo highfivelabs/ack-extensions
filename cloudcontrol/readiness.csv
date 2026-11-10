@@ -881,14 +881,14 @@ AWS::GroundStation::DataflowEndpointGroupV2,groundstation,DataflowEndpointGroupV
 AWS::GroundStation::MissionProfile,groundstation,MissionProfile,other,FULLY_MUTABLE,,,ok,0,0,0,0,2,true
 AWS::GuardDuty::CustomDetectionRuleAssociation,guardduty,CustomDetectionRuleAssociation,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::GuardDuty::Detector,guardduty,Detector,security-adjacent,FULLY_MUTABLE,,Detector (Cloud Control),ok,0,0,0,0,1,true
-AWS::GuardDuty::Filter,guardduty,Filter,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::GuardDuty::IPSet,guardduty,IPSet,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,1,1,true
-AWS::GuardDuty::MalwareProtectionPlan,guardduty,MalwareProtectionPlan,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::GuardDuty::Master,guardduty,Master,security-adjacent,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::GuardDuty::Member,guardduty,Member,security-adjacent,FULLY_MUTABLE,,,ok,0,0,1,2,0,true
-AWS::GuardDuty::PublishingDestination,guardduty,PublishingDestination,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::GuardDuty::Filter,guardduty,Filter,security-adjacent,FULLY_MUTABLE,,Filter (Cloud Control),ok,0,0,0,0,0,true
+AWS::GuardDuty::IPSet,guardduty,IPSet,security-adjacent,FULLY_MUTABLE,,IPSet (Cloud Control),ok,0,0,0,1,1,true
+AWS::GuardDuty::MalwareProtectionPlan,guardduty,MalwareProtectionPlan,security-adjacent,FULLY_MUTABLE,,MalwareProtectionPlan (Cloud Control),ok,0,0,0,0,1,true
+AWS::GuardDuty::Master,guardduty,Master,security-adjacent,IMMUTABLE,,Master (Cloud Control),ok,0,0,0,0,0,true
+AWS::GuardDuty::Member,guardduty,Member,security-adjacent,FULLY_MUTABLE,,Member (Cloud Control),ok,0,0,1,2,0,true
+AWS::GuardDuty::PublishingDestination,guardduty,PublishingDestination,security-adjacent,FULLY_MUTABLE,,PublishingDestination (Cloud Control),ok,0,0,0,0,0,true
 AWS::GuardDuty::ThreatEntitySet,guardduty,ThreatEntitySet,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
-AWS::GuardDuty::ThreatIntelSet,guardduty,ThreatIntelSet,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,1,1,true
+AWS::GuardDuty::ThreatIntelSet,guardduty,ThreatIntelSet,security-adjacent,FULLY_MUTABLE,,ThreatIntelSet (Cloud Control),ok,0,0,0,1,1,true
 AWS::GuardDuty::TrustedEntitySet,guardduty,TrustedEntitySet,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
 AWS::HealthAgent::Domain,healthagent,Domain,other,FULLY_MUTABLE,,,ok,0,0,0,0,2,true
 AWS::HealthImaging::Datastore,healthimaging,Datastore,other,IMMUTABLE,,,ok,0,0,0,0,2,true

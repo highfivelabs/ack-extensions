@@ -88,6 +88,13 @@ rules:
   - guardduty.cloudcontrol.aws.hfl.dev
   resources:
   - detectors
+  - filters
+  - ipsets
+  - malwareprotectionplans
+  - masters
+  - members
+  - publishingdestinations
+  - threatintelsets
   verbs:
   - create
   - delete
@@ -100,6 +107,13 @@ rules:
   - guardduty.cloudcontrol.aws.hfl.dev
   resources:
   - detectors/status
+  - filters/status
+  - ipsets/status
+  - malwareprotectionplans/status
+  - masters/status
+  - members/status
+  - publishingdestinations/status
+  - threatintelsets/status
   verbs:
   - get
   - patch

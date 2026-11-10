@@ -253,6 +253,8 @@ func startFake(t *testing.T, root string) (*fake.Server, string, aws.Config) {
 			b = fake.NewTransitGatewayRouteTable(motoCfg)
 		case "AWS::GuardDuty::Detector":
 			b = fake.NewDetector(motoCfg)
+		case "AWS::GuardDuty::Filter":
+			b = fake.NewFilter(motoCfg)
 		case "AWS::SSO::PermissionSet":
 			b = fake.NewPermissionSet(motoCfg)
 		case "AWS::SSO::Assignment":
