@@ -233,12 +233,25 @@ func TestIAMAccessKey(t *testing.T) {
 		}
 	})
 
-	t.Run("the user and the Secret's name cannot change", func(t *testing.T) {
-		got := get(t, byRef)
-		got.Spec.SecretName = aws.String("elsewhere")
-		if err := env.Client.Update(ctx, got); err == nil || !strings.Contains(err.Error(), "immutable") {
-			t.Fatalf("secretName changed: %v", err)
-		}
+	t.Run("the Secret's name, defaulted into the spec, cannot change", func(t *testing.T) {
+		harness.Eventually(t, 30*time.Second, "spec.secretName defaulted", func() error {
+			if n := aws.ToString(get(t, byRef).Spec.SecretName); n != "ci-deploy" {
+				return fmt.Errorf("spec.secretName %q", n)
+			}
+			return nil
+		})
+		harness.Eventually(t, 30*time.Second, "the CRD's immutability refusal", func() error {
+			got := get(t, byRef)
+			got.Spec.SecretName = aws.String("elsewhere")
+			err := env.Client.Update(ctx, got)
+			if err == nil {
+				t.Fatal("secretName changed")
+			}
+			if !strings.Contains(err.Error(), "immutable") {
+				return err
+			}
+			return nil
+		})
 	})
 
 	foreign := &corev1.Secret{

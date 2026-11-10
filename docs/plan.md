@@ -1668,7 +1668,10 @@ refuses every change.
 
 - **Spec:** `userName` or `userRef` (ACK's `User`, its `spec.name`,
   through a type alias in `apis/v1alpha1/ack_kinds.go`), and
-  `secretName`, both immutable. **Status:** `accessKeyID`, `createDate`,
+  `secretName`, both immutable. The create writes the default Secret
+  name into `spec.secretName`: the CRD's rule (`self == oldSelf`) does not
+  stop a field being set from unset, which would lose track of the
+  Secret (the first `task check` run showed it). **Status:** `accessKeyID`, `createDate`,
   `status` (`Active`; the key's status is not managed).
 - **The secret, once, into a Secret.** `CreateAccessKeyOutput`'s
   `SecretAccessKey` is ignored by the generator, so no generated code
@@ -1708,7 +1711,8 @@ refuses every change.
 reference, its Secret holding the ID in status and a 40-character
 secret, owned by the object and immutable; no second create and the
 Secret not written again across resyncs; a status cleared of the ID takes
-it back from the Secret with no second key; `secretName` cannot change; a
+it back from the Secret with no second key; the default written into
+`spec.secretName`, which then cannot change; a
 Secret not the object's is left untouched and no key is made; a key
 deleted outside Kubernetes is not made again over its Secret; delete
 removes the key and the Secret; the secret is in no manager log line, in

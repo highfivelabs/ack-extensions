@@ -36,7 +36,7 @@ resources:
           path: Spec.Name
       SecretName:
         # The Secret the key is written to, in the object's namespace; the
-        # object's name when unset.
+        # object's name when unset, written here by the create.
         type: string
         is_immutable: true
       AccessKeyId:
@@ -52,6 +52,8 @@ resources:
         template_path: hooks/access_key/sdk_create_pre_build_request.go.tpl
       sdk_create_post_request:
         template_path: hooks/access_key/sdk_create_post_request.go.tpl
+      sdk_create_post_set_output:
+        template_path: hooks/access_key/sdk_create_post_set_output.go.tpl
       sdk_delete_post_request:
         template_path: hooks/access_key/sdk_delete_post_request.go.tpl
     tags:

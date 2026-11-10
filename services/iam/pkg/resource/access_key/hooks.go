@@ -68,6 +68,10 @@ func kubeClient() (client.Client, error) {
 }
 
 // secretName is the spec's, or the object's name when the spec has none.
+// The create writes it into the spec (sdk_create_post_set_output), where
+// the CRD keeps it from changing: a field set from unset would pass the
+// CRD's rule (self == oldSelf), and the key's Secret would be lost track
+// of. Removing it changes nothing, since the default is the same name.
 func secretName(ko *svcapitypes.AccessKey) string {
 	if ko.Spec.SecretName != nil && *ko.Spec.SecretName != "" {
 		return *ko.Spec.SecretName
