@@ -72,8 +72,16 @@ agent.** PR 1 (`agent/cloudcontrol`) is the core. Still to do:
   --survey`) twice: each reads the other's output. **Next batches**, in
   foundation order, recheck ACK first: F03's `VirtualMFADevice` (moto has
   it), F04's Transit Gateway route, association, propagation and peering
-  (batch 3, done: `TestTransitGatewayRouting`), F05 `VPNConnection`, F07 Control Tower (no emulator:
+  (batch 3, done: `TestTransitGatewayRouting`), F07 Control Tower (no emulator:
   unproven), F08/F09 Route 53 and its Resolver firewall, F14 to F18.
+  **F05 `VPNConnection` is not for this route** (step 1 above):
+  `docs/coverage/foundation.md` F05 proposes it ACK-generated in
+  `services/ec2/`, with references to our `CustomerGateway` and
+  `VPNGateway` (or ACK's `TransitGateway`) and the tunnels' pre-shared keys
+  from Secrets, which the generator gives and this route does not yet (no
+  references before the overlay). `VPNConnectionRoute` could come here,
+  but moto has no `CreateVpnConnectionRoute` (unproven on fake), so it is
+  better made beside the connection. Both for the ACK kinds agent.
   The original brief for it:
 - **PR 2, types in foundation order**, in reviewable batches
   (`docs/coverage/foundation.md`; `cloudcontrol/readiness.md` lists the
