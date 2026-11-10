@@ -12,3 +12,12 @@ resources:
   - ec2.cloudcontrol.aws.hfl.dev_transitgatewaypeeringattachments.yaml
   - controltower.cloudcontrol.aws.hfl.dev_enabledcontrols.yaml
   - controltower.cloudcontrol.aws.hfl.dev_enabledbaselines.yaml
+  - securityhub.cloudcontrol.aws.hfl.dev_hubs.yaml
+  - securityhub.cloudcontrol.aws.hfl.dev_organizationconfigurations.yaml
+  - securityhub.cloudcontrol.aws.hfl.dev_delegatedadmins.yaml
+  - securityhub.cloudcontrol.aws.hfl.dev_standards.yaml
+  - securityhub.cloudcontrol.aws.hfl.dev_findingaggregators.yaml
+  - securityhub.cloudcontrol.aws.hfl.dev_configurationpolicies.yaml
+  - securityhub.cloudcontrol.aws.hfl.dev_policyassociations.yaml
+  - securityhub.cloudcontrol.aws.hfl.dev_automationrules.yaml
+  - securityhub.cloudcontrol.aws.hfl.dev_actiontargets.yaml

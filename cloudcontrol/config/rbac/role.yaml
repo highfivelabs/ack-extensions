@@ -125,6 +125,42 @@ rules:
   - patch
   - update
 - apiGroups:
+  - securityhub.cloudcontrol.aws.hfl.dev
+  resources:
+  - actiontargets
+  - automationrules
+  - configurationpolicies
+  - delegatedadmins
+  - findingaggregators
+  - hubs
+  - organizationconfigurations
+  - policyassociations
+  - standards
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - securityhub.cloudcontrol.aws.hfl.dev
+  resources:
+  - actiontargets/status
+  - automationrules/status
+  - configurationpolicies/status
+  - delegatedadmins/status
+  - findingaggregators/status
+  - hubs/status
+  - organizationconfigurations/status
+  - policyassociations/status
+  - standards/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - sso.cloudcontrol.aws.hfl.dev
   resources:
   - assignments

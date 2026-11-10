@@ -7,10 +7,10 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | Category | Types | Provisionable | FULLY_MUTABLE | IMMUTABLE | CRD accepted | Clean | Gap types | Gap, provisionable | Gap, CRD accepted | Gap, clean |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 162 | 158 | 158 | 155 |
-| security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 96 | 78 | 78 | 75 |
+| security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 87 | 69 | 69 | 67 |
 | application | 262 | 250 | 232 | 18 | 250 | 230 | 147 | 136 | 136 | 128 |
 | other | 1260 | 1188 | 1084 | 104 | 1188 | 1137 | 1169 | 1101 | 1101 | 1059 |
-| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1574 | 1473 | 1473 | 1417 |
+| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1565 | 1464 | 1464 | 1409 |
 
 ## Foundation gaps (platform-foundation and security-adjacent types with no kind)
 
@@ -230,23 +230,14 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::SecretsManager::ResourcePolicy` | security-adjacent | FULLY_MUTABLE | ok | 1 | 0 | 0 | 0 |
 | `AWS::SecretsManager::RotationSchedule` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 11 | 1 |
 | `AWS::SecretsManager::SecretTargetAttachment` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::ActionTarget` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::SecurityHub::AggregatorV2` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::AutomationRule` | security-adjacent | FULLY_MUTABLE | ok | 2 | 0 | 0 | 0 |
 | `AWS::SecurityHub::AutomationRuleV2` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::ConfigurationPolicy` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::SecurityHub::Connector` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::SecurityHub::ConnectorV2` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::SecurityHub::DelegatedAdmin` | security-adjacent | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::FindingAggregator` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::Hub` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::SecurityHub::HubV2` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::SecurityHub::Insight` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::OrganizationConfiguration` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::PolicyAssociation` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::SecurityHub::ProductSubscription` | security-adjacent | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::SecurityHub::SecurityControl` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::Standard` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::SecurityLake::AwsLogSource` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 2 |
 | `AWS::SecurityLake::DataLake` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 1 | 4 |
 | `AWS::SecurityLake::Subscriber` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 2 |

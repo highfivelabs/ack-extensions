@@ -13,7 +13,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | Category | Services | Resources | ACK | Ours beyond | None | Attributes | ACK | Ours beyond | Uncovered |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | platform-foundation | 16 | 241 | 55 (22.8%) | 24 (10.0%) | 162 | 2,400 | 28.2% | 6.5% | 65.4% |
-| security-adjacent | 18 | 112 | 14 (12.5%) | 2 (1.8%) | 96 | 2,082 | 37.6% | 0.6% | 61.8% |
+| security-adjacent | 18 | 112 | 14 (12.5%) | 11 (9.8%) | 87 | 2,082 | 37.6% | 7.4% | 55.0% |
 | application | 33 | 262 | 106 (40.5%) | 9 (3.4%) | 147 | 4,766 | 48.2% | 4.2% | 47.6% |
 | other | 238 | 1260 | 91 (7.2%) | 0 (0.0%) | 1169 | 76,525 | 3.0% | 0.0% | 97.0% |
 
@@ -44,7 +44,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | ---: | --- | ---: | ---: | ---: | ---: | --- | --- |
 | 1 | `config` | 11 | 0 | 0 | 11 | 0.0% / 0.0% / 100.0% | none |
 | 2 | `guardduty` | 11 | 0 | 1 | 10 | 0.0% / 12.4% / 87.6% | none |
-| 3 | `securityhub` | 17 | 0 | 0 | 17 | 0.0% / 0.0% / 100.0% | none |
+| 3 | `securityhub` | 17 | 0 | 9 | 8 | 0.0% / 31.7% / 68.3% | none |
 | 4 | `secretsmanager` | 4 | 1 | 0 | 3 | 17.8% / 0.0% / 82.2% | `secretsmanager-controller` v1.8.2 |
 | 5 | `wafv2` | 6 | 3 | 1 | 2 | 82.6% / 0.3% / 17.0% | `wafv2-controller` v1.8.1 |
 | 6 | `certificatemanager` | 5 | 4 | 0 | 1 | 88.2% / 0.0% / 11.8% | `acm-controller` v1.11.0 |
@@ -82,7 +82,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 | [F13](#f13) | Network Manager (Cloud WAN) and Direct Connect (wait for ACK on the first) | platform-foundation | 6 | 0 / 0 / 48 | wait; M for the gateway | Network Manager: `CreateGlobalNetwork`, `CreateCoreNetwork`, `CreateSite` are implemented ... |
 | [F14](#f14) | Config: recorder, delivery channel, rules, aggregators, organization rules and conformance packs | security-adjacent | 11 | 0 / 0 / 118 | L (new service, eleven resources); S each after the first | Good for the first six: `PutConfigRule`, `PutConfigurationRecorder`, `PutDeliveryChannel`,... |
 | [F15](#f15) | GuardDuty: detector, filters, IP and threat intel sets, members | security-adjacent | 8 | 0 / 11 / 58 | L (new service) | Partial: `CreateDetector`, `UpdateDetector`, `CreateFilter`, `EnableOrganizationAdminAccou... |
-| [F16](#f16) | Security Hub: hub, standards, organization configuration, aggregator, automation rules | security-adjacent | 9 | 0 / 0 / 141 | L (new service; `AutomationRule` has 105 attributes and `Insight` 238) | Partial: `EnableSecurityHub`, `EnableOrganizationAdminAccount`, `UpdateOrganizationConfigu... |
+| [F16](#f16) | Security Hub: hub, standards, organization configuration, aggregator, automation rules | security-adjacent | 9 | 0 / 141 / 0 | L (new service; `AutomationRule` has 105 attributes and `Insight` 238) | Partial: `EnableSecurityHub`, `EnableOrganizationAdminAccount`, `UpdateOrganizationConfigu... |
 | [F17](#f17) | Secrets Manager: resource policy and rotation (wait for ACK on rotation) | security-adjacent | 4 | 8 / 0 / 37 | S | Good: `CreateSecret`, `RotateSecret`, `PutResourcePolicy` are implemented (21 of 23 operat... |
 | [F18](#f18) | Access Analyzer, Macie, Inspector, Detective, Firewall Manager, Audit Manager, Security Lake | security-adjacent | 9 | 0 / 0 / 224 | L each for a new service | Macie, Inspector2: partial |
 
@@ -282,7 +282,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F16 Security Hub: hub, standards, organization configuration, aggregator, automation rules
 
-- **Resources:** `securityhub/Hub`, `securityhub/OrganizationConfiguration`, `securityhub/DelegatedAdmin`, `securityhub/Standard`, `securityhub/FindingAggregator`, `securityhub/ConfigurationPolicy`, `securityhub/PolicyAssociation`, `securityhub/AutomationRule`, `securityhub/ActionTarget`. Today ACK covers 0, ours 0, nothing covers 141 of 141 attributes.
+- **Resources:** `securityhub/Hub`, `securityhub/OrganizationConfiguration`, `securityhub/DelegatedAdmin`, `securityhub/Standard`, `securityhub/FindingAggregator`, `securityhub/ConfigurationPolicy`, `securityhub/PolicyAssociation`, `securityhub/AutomationRule`, `securityhub/ActionTarget`. Today ACK covers 0, ours 141, nothing covers 0 of 141 attributes.
 - **Why first:** The findings aggregator of a multi-account security setup. No controller, no issue.
 - **Proposed kinds:** A new service `securityhub.aws.hfl.dev`: `Hub`, `DelegatedAdmin`, `OrganizationConfiguration` first; standards and automation rules after.
 - **Upstream:** No controller, issue or PR.
@@ -762,15 +762,6 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `ActionTarget` | none | - | whole resource (3 attrs) | no released controller | 0 | no: `CreateActionTarget` is not in moto | S | `securityhub.aws.hfl.dev/ActionTarget`, in a new service manager | [F16](#f16) |
-| `DelegatedAdmin` | none | - | whole resource (1 attr) | no released controller | 0 | yes: `EnableOrganizationAdminAccount` is implemented | S | `securityhub.aws.hfl.dev/DelegatedAdmin`, in a new service manager | [F16](#f16) |
-| `FindingAggregator` | none | - | whole resource (2 attrs) | no released controller | 0 | no: `CreateFindingAggregator` is not in moto | S | `securityhub.aws.hfl.dev/FindingAggregator`, in a new service manager | [F16](#f16) |
-| `Hub` | none | - | whole resource (4 attrs) | no released controller | 0 | yes: `EnableSecurityHub` is implemented | S | `securityhub.aws.hfl.dev/Hub`, in a new service manager | [F16](#f16) |
-| `OrganizationConfiguration` | none | - | whole resource (3 attrs) | no released controller | 0 | yes: `UpdateOrganizationConfiguration` is implemented | S | `securityhub.aws.hfl.dev/OrganizationConfiguration`, in a new service manager | [F16](#f16) |
-| `PolicyAssociation` | none | - | whole resource (3 attrs) | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | S | `securityhub.aws.hfl.dev/PolicyAssociation`, in a new service manager | [F16](#f16) |
-| `Standard` | none | - | whole resource (3 attrs) | no released controller | 0 | no: `BatchEnableStandards` is not in moto | S | `securityhub.aws.hfl.dev/Standard`, in a new service manager | [F16](#f16) |
-| `ConfigurationPolicy` | none | - | whole resource (17 attrs) | no released controller | 0 | no: `CreateConfigurationPolicy` is not in moto | M | `securityhub.aws.hfl.dev/ConfigurationPolicy`, in a new service manager | [F16](#f16) |
-| `AutomationRule` | none | - | whole resource (105 attrs) | no released controller | 0 | no: `CreateAutomationRule` is not in moto | L | `securityhub.aws.hfl.dev/AutomationRule`, in a new service manager | [F16](#f16) |
 | `AggregatorV2` | none | - | whole resource (3 attrs) | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | S | `securityhub.aws.hfl.dev/AggregatorV2`, in a new service manager |  |
 | `Connector` | none | - | whole resource (7 attrs) | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | S | `securityhub.aws.hfl.dev/Connector`, in a new service manager |  |
 | `ConnectorV2` | none | - | whole resource (11 attrs) | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | S | `securityhub.aws.hfl.dev/ConnectorV2`, in a new service manager |  |
@@ -779,6 +770,15 @@ One section per service in queue order; inside a service, resources that still n
 | `SecurityControl` | none | - | whole resource (12 attrs) | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | S | `securityhub.aws.hfl.dev/SecurityControl`, in a new service manager |  |
 | `AutomationRuleV2` | none | - | whole resource (30 attrs) | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | M | `securityhub.aws.hfl.dev/AutomationRuleV2`, in a new service manager |  |
 | `Insight` | none | - | whole resource (238 attrs) | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | L | `securityhub.aws.hfl.dev/Insight`, in a new service manager |  |
+| `ActionTarget` | none | `ActionTarget (Cloud Control)`: +3 | none | no released controller | 0 | no: `CreateActionTarget` is not in moto | - | none (covered) | [F16](#f16) |
+| `DelegatedAdmin` | none | `DelegatedAdmin (Cloud Control)`: +1 | none | no released controller | 0 | yes: `EnableOrganizationAdminAccount` is implemented | - | none (covered) | [F16](#f16) |
+| `FindingAggregator` | none | `FindingAggregator (Cloud Control)`: +2 | none | no released controller | 0 | no: `CreateFindingAggregator` is not in moto | - | none (covered) | [F16](#f16) |
+| `Hub` | none | `Hub (Cloud Control)`: +4 | none | no released controller | 0 | yes: `EnableSecurityHub` is implemented | - | none (covered) | [F16](#f16) |
+| `OrganizationConfiguration` | none | `OrganizationConfiguration (Cloud Control)`: +3 | none | no released controller | 0 | yes: `UpdateOrganizationConfiguration` is implemented | - | none (covered) | [F16](#f16) |
+| `PolicyAssociation` | none | `PolicyAssociation (Cloud Control)`: +3 | none | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | - | none (covered) | [F16](#f16) |
+| `Standard` | none | `Standard (Cloud Control)`: +3 | none | no released controller | 0 | no: `BatchEnableStandards` is not in moto | - | none (covered) | [F16](#f16) |
+| `ConfigurationPolicy` | none | `ConfigurationPolicy (Cloud Control)`: +17 | none | no released controller | 0 | no: `CreateConfigurationPolicy` is not in moto | - | none (covered) | [F16](#f16) |
+| `AutomationRule` | none | `AutomationRule (Cloud Control)`: +105 | none | no released controller | 0 | no: `CreateAutomationRule` is not in moto | - | none (covered) | [F16](#f16) |
 ### security-adjacent: `secretsmanager`
 
 - **ACK controller:** `secretsmanager-controller` v1.8.2: `Secret`
