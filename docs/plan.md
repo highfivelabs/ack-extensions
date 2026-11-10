@@ -20,8 +20,10 @@ Status, 2026-11-09: the repository has twenty-nine kinds:
 - `scheduler.aws.hfl.dev` `ScheduleGroup` and `Schedule`;
 - `wafv2.aws.hfl.dev` `WebACLAssociation`.
 
-There is an operator that runs our managers beside ACK's controllers as
-the same AWS identity, and tests against a fake AWS (moto), in Go and on
+There is an operator that runs our managers per environment (one per
+controller in each namespace with an `ACKContext`, as that environment's
+own role through EKS Pod Identity; section 7.6) or beside ACK's
+controllers as the same AWS identity, and tests against a fake AWS (moto), in Go and on
 kind (section 8). Beside them, a generic Cloud Control route
 (`docs/cloudcontrol.md`): kinds generated from CloudFormation registry
 schemas in `<service>.cloudcontrol.aws.hfl.dev` (three so far:
@@ -2362,6 +2364,175 @@ identity scoped to it, and nothing else does:
   across accounts. That is an access request to the owning team, in
   Bundt.
 
+### 7.6 Per environment: `ACKContext` (open question 5, answered)
+
+The builder (2026-11-10): "ACK's per-controller managers should follow the
+same environment-scoped Pod Identity model" as Cloud Control
+(`docs/cloudcontrol.md` section 10), and confirmed one manager per
+controller per namespace. So an environment (a namespace) enables the
+ACK-generated managers it uses, and each runs as the environment's role:
+
+```yaml
+apiVersion: core.aws.hfl.dev/v1alpha1
+kind: ACKContext
+metadata: {name: ack, namespace: team-a-prod}   # one per namespace; CEL refuses any other name
+spec:
+  roleARN: arn:aws:iam::111122223333:role/team-a-prod-ack
+  region: us-west-2
+  controllers:
+    - service: rds
+      kinds: [OptionGroup, DBProxyTarget]   # optional; empty: every kind of the service
+    - service: scheduler
+  deletionPolicy: delete                    # optional; or retain
+```
+
+**A sibling kind, not a wider `CloudControlContext`.** The two options
+were (a) widen `CloudControlContext` into one context per environment for
+both routes, or (b) a sibling kind. (b) is built, because:
+
+- the routes are separate products: separate Bundt providers
+  (`hfl.aws-cloudcontrol` beside the ACK one), separate API groups,
+  separately switched on in the operator (Cloud Control only when its
+  image is given). A `CloudControlContext` that enables ACK managers
+  would name one route after the other, and couple their versions;
+- the controllers differ in shape: Cloud Control is one manager for a list
+  of `Kind.service`; ACK is one manager per service, each with its own
+  kinds, its own ClusterRole and its own ServiceAccount;
+- each route's role stays small. One role holding both routes' policies
+  would meet IAM's ten managed policies per role sooner, and a team that
+  uses only one route never holds the other's permissions. An
+  environment may still use one role for both: name the same `roleARN`
+  in both contexts, and generate both policies onto it;
+- what is shared is code, not API: the plan of ServiceAccount,
+  Deployment and RoleBinding, the finalizer and status shape
+  (`pkg/operator/ackcontext.go` beside `cloudcontrol.go`), and the trust
+  policy and the policy split (`cloudcontrol/pkg/iamgen`'s
+  `PodIdentityTrust` and `Split`, used by both).
+
+The group is `core.aws.hfl.dev`, as Config Connector's context is in
+`core.cnrm.cloud.google.com`: not a service, so no `<service>.aws.hfl.dev`
+fits (open question 17 asks the builder to confirm the name).
+
+**What the operator makes** (`pkg/operator/ackcontext.go`), for each
+controller a context lists:
+
+| Where | What | Why |
+| --- | --- | --- |
+| the operator's namespace | ServiceAccount `ack-extensions-<service>-<environment>`, no IRSA annotation | the identity the Pod Identity association names; out of the environment's namespace, so nobody who may only create pods there can run as the role |
+| the operator's namespace | Deployment `ack-extensions-<service>-<environment>`: the service's manager, `--watch-namespace=<environment>`, `--aws-region`, `--deletion-policy`, `--enable-carm=false`, `--reconcile-resources` when the context names kinds, leader election in the environment | one manager per controller per environment |
+| the environment's namespace, owned by the context | RoleBinding `ack-extensions-<service>-environment` to the service's manager ClusterRole (`config/rbac`), and a leader-election Role and RoleBinding | Kubernetes rights in that namespace only: its kinds, the ACK kinds it references, its Secrets, its leases and events; nothing cluster-wide, nothing in another namespace |
+| the context | a finalizer, and `status`: `managers`, `podIdentityAssociations` (one per manager), `refused`, `Ready` | an owner reference cannot cross namespaces; the status says exactly which associations to make |
+
+A service's kinds are read from the API server (the CRDs served in
+`<service>.aws.hfl.dev`), so a kind added later needs no operator change.
+With one watch namespace ACK's runtime runs no namespace or CARM cache;
+CARM is off: the environment's role is the identity. A reference to an
+object in another namespace fails on RBAC, which is the scoping wanted.
+
+**Refused, with the reason in `status.refused`** (the other controllers of
+the context still run; `Ready` is `False`, `ControllersRefused`):
+
+- `OrganizationScoped`: `organizations`. Its kinds keep the
+  organization-scoped install of section 7.5, beside ACK's
+  organizations-controller alone in its namespace; no environment gets
+  an Organizations manager.
+- `UnknownService`: no manager image for the service, no kinds of it
+  installed, or `cloudcontrol` (a `CloudControlContext`'s).
+- `UnknownKinds`: a kind the service does not serve. A manager already
+  running is left alone until the context is fixed, as Cloud Control does.
+- `NamespaceClaimed`: our manager of the same service already runs
+  beside an ACK controller that watches this namespace (its
+  `--watch-namespace` empty, unreadable, or naming it). Two managers would
+  reconcile the same objects as two identities. Narrow ACK's
+  `watchNamespace`, or leave the service out of the context. The beside
+  manager is not touched: it was there first and serves other namespaces.
+
+Two contexts cannot claim one namespace: the name is fixed (`ack`), so a
+second is refused by the API server. A `CloudControlContext` in the same
+namespace is no conflict: it serves other kinds.
+
+**The role.** One per environment by default, every manager of the
+context associated to it:
+
+```sh
+task ack:iam CONTEXT=team-a-prod-ack.yaml ACCOUNT=111122223333 \
+  CLUSTER_ARN=arn:aws:eks:us-west-2:111122223333:cluster/platform OUT=iam/team-a-prod-ack
+aws eks create-pod-identity-association --cluster-name platform \
+  --namespace ack-extensions-system --service-account ack-extensions-rds-team-a-prod \
+  --role-arn arn:aws:iam::111122223333:role/team-a-prod-ack     # and one per other manager
+```
+
+`permissions-<n>.json` are the actions of the kinds enabled, split into
+as few managed policies as IAM's size limit allows (every account-level
+kind here together fits in one); `trust.json` lets `pods.eks.amazonaws.com` assume
+the role only for the cluster named, and only when Pod Identity's session
+tags name the operator's namespace and one of the context's managers'
+ServiceAccounts (`aws:RequestTag/kubernetes-service-account` as a list).
+
+**Where the permissions come from** (`pkg/ackiam`). ACK's generator
+writes no IAM policy (each ACK controller ships a curated
+`config/iam/recommended-inline-policy`), but the code it generates names
+every AWS operation it calls. So the Cloud Control generator's approach
+is reused on the code: each kind's package and the service's own packages
+it imports (ec2's `tags`) are scanned for calls on the SDK client
+(`rm.sdkapi.<Operation>`, a `client.<Operation>` for another region,
+`svcsdk.New<Operation>Paginator`), each name is kept only if the SDK
+has that operation, and the IAM action is the operation in the service's
+IAM namespace (`events` for eventbridge, `application-autoscaling`), plus
+`sts:GetCallerIdentity` for the runtime. A kind added later is covered
+without a change here. What a call needs beyond its own action is not in
+the code, so it is curated per kind (`ackiam.Curated`), from AWS's
+documentation and unchecked on real AWS:
+
+| Kind | Curated |
+| --- | --- |
+| `DBRoleAssociation.rds`, `Schedule.scheduler` | `iam:PassRole` |
+| `Connection.eventbridge` | `secretsmanager:CreateSecret`, `DescribeSecret`, `UpdateSecret`, `PutSecretValue`, `DeleteSecret` (EventBridge keeps the connection's credentials in a secret it makes as the caller) |
+| `ReplicaKey.kms` | `kms:CreateKey` (in the replica's region) |
+| `ReplicationConfiguration.ecr` | `iam:CreateServiceLinkedRole` |
+| `WebACLAssociation.wafv2` | the protected resource's action: `elasticloadbalancing:SetWebAcl`, `apigateway:SetWebACL`, `appsync:SetWebACL`, `cognito-idp:AssociateWebACL` and the rest |
+
+`task ack:iam LIST=1` prints every kind's actions; the Organizations
+kinds' match section 7.5's hand-written table. The generated actions
+are what the code calls; whether AWS asks for more on some call (a
+condition, a dependent action) shows only on real AWS (section 8).
+
+**The beside mode stays**, for the Organizations kinds (section 7.5) and
+for clusters that install ACK the classic way. For an account-level
+service an environment should use one or the other, not both: the
+`NamespaceClaimed` refusal holds that line.
+
+**Proven** (`TestACKContext` and `TestWatchNamespaces` against envtest;
+`TestScan` for the permissions; `tests/operator/run.sh` on kind):
+
+- a manager per controller per namespace: two environments with a
+  scheduler controller each get `ack-extensions-scheduler-env-a` and
+  `-env-b` in the operator's namespace, each its own ServiceAccount with no
+  IRSA annotation, `--watch-namespace` its environment,
+  `--reconcile-resources` the kinds named, and the association it needs in
+  status;
+- watch scoping: rights in the environment only (SubjectAccessReviews:
+  its kinds there, nothing in another environment or the operator's
+  namespace, no namespace list); a `ScheduleGroup` in env-a syncs against
+  moto through env-a's manager, one in env-c (no context) is never touched
+  and never reaches moto;
+- the refusals: a second context in a namespace (not named `ack`) by the
+  API server; `rds` in env-a while ACK's real rds-controller watches every
+  namespace with our rds manager beside it (`NamespaceClaimed`; in envtest
+  it comes back once ACK's `watchNamespace` names another namespace);
+  `organizations` (`OrganizationScoped`); unknown services and kinds;
+- a controller taken out of a context, and the context deleted: its
+  managers, ServiceAccounts and bindings go; another environment's stay.
+
+**Not proven, and not possible on kind:** EKS Pod Identity itself (the
+agent exchanging the pod's token for the role's credentials) and AWS
+honouring the trust policy's conditions, as for Cloud Control.
+
+**Not built:** running ACK's own controllers per environment (open
+question 18). Today ACK's kinds in an environment are reconciled by
+ACK's controller wherever it is installed, as its identity; only our
+kinds follow the environment's role.
+
 ## 3a. The coverage dashboard
 
 How far ACK and this repository reach is measured, not guessed
@@ -2482,6 +2653,51 @@ Before it can run on a real cluster:
    here, or a separate project that speaks SQL (connection details from
    ACK's `DBInstance`, credentials from Secrets Manager)? Proposed: out of
    scope for this repository.
+
+   **Answered** (builder, 2026-11-10): "RDS database users and roles are
+   not necessarily out of scope; if those exist in the API we should
+   include them." Checked 2026-11-10 (read-only):
+   - **The RDS API** (aws-sdk-go-v2 `service/rds` v1.93.8, every
+     operation): nothing makes, changes or lists a database user or role.
+     They live inside the engine (`CREATE USER`, `CREATE ROLE`, `GRANT`
+     in SQL). What the API has: the master user (`masterUsername`,
+     `manageMasterUserPassword` on ACK's `DBInstance` and `DBCluster`);
+     IAM database authentication (`enableIAMDatabaseAuthentication` on
+     the same kinds; connecting then needs `rds-db:connect` on
+     `arn:aws:rds-db:<region>:<account>:dbuser:<resource-id>/<user>` in an
+     IAM policy, which ACK's iam `Policy` writes, while the user itself is
+     still made in SQL with `GRANT rds_iam`); a proxy's per-user secrets
+     (ACK's `DBProxy` `auth`); and `CreateTenantDatabase` (RDS for Oracle
+     multitenant: a tenant database with its own master user), which
+     neither ACK nor CloudFormation has.
+   - **IAM**: no database user; only the `rds-db:connect` action.
+   - **CloudFormation** (the registry schemas pinned in
+     `docs/coverage/inputs`): no `AWS::RDS` user or role type, and no
+     tenant database. ElastiCache and MemoryDB do have users in their
+     APIs (`AWS::ElastiCache::User`, `AWS::MemoryDB::User`; ACK's
+     elasticache-controller serves `User` and `UserGroup`), but not RDS.
+   - **ACK**: rds-controller `v1.14.2` (the latest release) and `master`
+     serve no user kind, and no open pull request adds one; community
+     issue #1793 ("Ability to create RDS DB users", 2023) was closed by
+     the maintainers as data plane: "There is no AWS API for creating DB
+     users."
+   - **One AWS API reaches into the engine**: the RDS Data API
+     (`rds-data` `ExecuteStatement`), for Aurora PostgreSQL and MySQL
+     clusters with the HTTP endpoint on (`EnableHttpEndpoint`),
+     authenticated by a Secrets Manager secret. A kind could run
+     `CREATE ROLE` and `GRANT` through it and read them back from the
+     catalog. It is SQL through an API: engine-specific, Aurora only (not
+     RDS for PostgreSQL or MySQL instances), and moto's `rds-data` returns
+     canned results, so it could not be proven on the fake.
+
+   So nothing for users and roles is buildable from the RDS, IAM or
+   CloudFormation APIs. Buildable from the API, and adjacent:
+   `rds.aws.hfl.dev` `TenantDatabase` (ACK's generator; moto has none, so
+   unproven on the fake), added to section 5's candidates when a package
+   needs it. Recommended for users: IAM database authentication as the
+   path (ACK's field, an IAM policy with `rds-db:connect`, one `GRANT
+   rds_iam` per user at bootstrap); a Data API kind for Aurora roles only
+   if the builder wants SQL spoken here (open, not built).
 3. **`RolePolicyAttachment` on a role an ACK `Role` manages** loses the
    tug of war with ACK's `Role` (section 6.1). Options:
    - document it (done);
@@ -2492,8 +2708,25 @@ Before it can run on a real cluster:
    Proposed: refuse such a `roleRef` until upstream ships the mode.
 4. **Identity default.** `own` is the default (narrower Kubernetes
    rights, one AWS grant per role); `ack` needs no AWS step. Keep `own`?
+
+   **Answered** by question 5's answer (builder, 2026-11-10): for the
+   account-level kinds the identity is now the environment's, per
+   manager: each runs as its own ServiceAccount, bound by EKS Pod
+   Identity to the environment's role (section 7.6). Beside ACK's
+   controller (the Organizations kinds, and clusters that install ACK the
+   classic way), `own` stays the default.
 5. **One manager per ACK controller** (per service, per namespace). That
    follows ACK's model, and with the operator it is automatic. Confirm.
+
+   **Answered** (builder, 2026-11-10): "ACK's per-controller managers
+   should follow the same environment-scoped Pod Identity model" as
+   Cloud Control, and one manager per controller per namespace is
+   confirmed. Built (section 7.6): an `ACKContext` per namespace lists
+   the controllers; the operator runs one manager per controller, in its
+   own namespace as `ack-extensions-<service>-<namespace>`, watching only
+   that namespace, its IAM policy generated from the kinds enabled
+   (`task ack:iam`). The Organizations kinds keep their own install
+   (section 7.5).
 6. **moto lacks `RemoveRoleFromDBCluster` and `RemoveRoleFromDBInstance`**
    (section 4.4), so `DBRoleAssociation`'s delete is proven against a
    stand-in, not a fake with state. Options:
@@ -2750,3 +2983,30 @@ Before it can run on a real cluster:
     Organizations references. Built meanwhile: the plain ID.
     `VPNGatewayRoutePropagation`'s `routeTableRef` (PR #50) waits on the
     same answer.
+17. **The name of the per-environment context for the ACK-generated
+    kinds** (section 7.6). Built as `core.aws.hfl.dev/v1alpha1`
+    `ACKContext`, one per namespace, named `ack`: a sibling of
+    `CloudControlContext`, in a group that is not a service's, as Config
+    Connector's context is in `core.cnrm.cloud.google.com`. Names and API
+    groups are the builder's. Recommended: keep it; a rename now costs a
+    CRD and the docs, later it costs every environment's object.
+18. **ACK's own controllers per environment.** An `ACKContext` runs our
+    managers per environment; ACK's own controllers (its `DBInstance`,
+    `Role`, `VPC`) still run wherever ACK's chart put them, cluster-wide
+    as their own role. So an environment's AWS surface is on two
+    identities: its role for our kinds, ACK's for ACK's. Options:
+    - the operator also runs ACK's controller per context entry
+      (`ack-<service>-controller-<namespace>`, ACK's image at the version
+      UPSTREAM.md pins, ACK's ClusterRole bound in the namespace), so one
+      context is the environment's whole ACK surface on one role, with
+      ACK's recommended policy added to `task ack:iam`. The operator would
+      then deploy upstream images and their RBAC: a new upstream
+      dependency of the install;
+    - Bundt installs ACK's chart per environment itself (`watchNamespace`
+      the environment, an association for its ServiceAccount), and the
+      operator only refuses an overlap, as it does for ours;
+    - leave ACK's controllers cluster-wide.
+
+    Recommended: the first, as the next change, so an environment has one
+    role and one place that says what it runs. Not built until the
+    builder answers.

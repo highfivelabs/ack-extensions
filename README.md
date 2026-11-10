@@ -3,7 +3,9 @@
 Kubernetes kinds for AWS that [AWS Controllers for Kubernetes](https://github.com/aws-controllers-k8s)
 (ACK) does not have yet. They are built the way ACK builds its own
 controllers, with ACK's code generator and runtime, and they run beside
-ACK's controllers as the same AWS identity.
+ACK's controllers: per environment (a namespace with an `ACKContext`), as
+that environment's own AWS identity, or beside ACK's controller as the
+same identity.
 
 ack-extensions is not affiliated with or endorsed by Amazon Web Services.
 
@@ -229,7 +231,7 @@ context's `status.podIdentityAssociation` names the association to make.
 | --- | --- | --- |
 | API groups | `<service>.services.k8s.aws` | `<service>.aws.hfl.dev` |
 | Example | `rds.services.k8s.aws` `DBProxy` | `rds.aws.hfl.dev` `DBProxyTarget` |
-| Process | one controller per service (`ack-rds-controller`) | one manager per service (`ack-extensions-rds-manager`), beside ACK's |
+| Process | one controller per service (`ack-rds-controller`) | one manager per controller per environment (`ACKContext`), as the environment's own role; or one per service beside ACK's (`ack-extensions-rds-manager`) |
 | Code | ACK's generator and runtime | ACK's generator (with one patch) and runtime, as Go modules |
 | Cloud Control kinds | none | `<service>.cloudcontrol.aws.hfl.dev`, one generic manager per environment (`CloudControlContext`), as the environment's own role |
 
@@ -238,20 +240,59 @@ moves from our group to ACK's when ACK ships it.
 
 ## Install
 
-ack-extensions needs ACK's controller for the same service installed
-first: the operator runs our manager beside it, with its settings.
-
 ```sh
 kubectl kustomize config/default | KO_DOCKER_REPO=<registry> ko resolve -f - | kubectl apply --server-side -f -
 ```
 
-This installs our CRDs, each manager's ClusterRole, and the operator in
-`ack-extensions-system`. For each ACK controller the operator finds (by
-its chart's label, `app.kubernetes.io/name: <service>-chart`), it runs our
-manager in the same namespace with the controller's own arguments,
-environment and credentials.
+This installs our CRDs, each manager's ClusterRole, `ACKContext`, and the
+operator in `ack-extensions-system`. The operator then runs our managers
+two ways.
 
-### AWS identity
+### Per environment: `ACKContext` (the default for account-level kinds)
+
+An environment is a namespace. An `ACKContext` named `ack` in it lists
+the controllers (services) the environment uses; for each, the operator
+runs one manager, in `ack-extensions-system`, as the ServiceAccount
+`ack-extensions-<service>-<namespace>`, watching only that namespace and
+holding Kubernetes rights only there. One EKS Pod Identity association
+per manager binds it to the environment's IAM role (the builder,
+2026-11-10: the same environment-scoped Pod Identity model as Cloud
+Control, one manager per controller per namespace):
+
+```yaml
+apiVersion: core.aws.hfl.dev/v1alpha1
+kind: ACKContext
+metadata: {name: ack, namespace: team-a-prod}   # one per namespace; any other name is refused
+spec:
+  roleARN: arn:aws:iam::111122223333:role/team-a-prod-ack
+  region: us-west-2
+  controllers:
+    - service: rds
+      kinds: [OptionGroup, DBProxyTarget]   # optional; empty: every kind of the service
+    - service: scheduler
+```
+
+`status.podIdentityAssociations` names the associations to make, and
+`task ack:iam CONTEXT=<that file> ACCOUNT=<id> CLUSTER_ARN=<arn> OUT=<dir>`
+writes the role's permission policies (the actions of the kinds enabled,
+read from the generated code, plus a few curated ones such as
+`iam:PassRole`) and its trust policy (only these managers'
+ServiceAccounts, by Pod Identity's session tags). The operator refuses,
+in `status.refused`, `organizations` (it keeps its own install, below),
+an unknown service or kind, and a service whose kinds in that namespace
+are already served by our manager beside an ACK controller that watches
+it. `docs/plan.md`, section 7.6, has the details.
+
+### Beside ACK's controller
+
+For each ACK controller the operator finds (by its chart's label,
+`app.kubernetes.io/name: <service>-chart`), it runs our manager in the
+same namespace with the controller's own arguments, environment and
+credentials, as the same identity. The Organizations kinds always run
+this way (below); for account-level kinds, narrow ACK's controller's
+`watchNamespace` to keep it off the namespaces that have an `ACKContext`.
+
+### AWS identity, beside ACK's controller
 
 By default (`--identity=own`) our manager runs as its own ServiceAccount,
 `ack-extensions-<service>-manager`, which carries the ACK ServiceAccount's
@@ -295,7 +336,8 @@ The tasks are in `Taskfile.yml` (run with [Task](https://taskfile.dev); `task` l
 ```sh
 task tools         # ACK's generator at the pin, controller-gen, goimports, setup-envtest, moto
 task check         # generated files current, gofmt, vet, SPDX lines, build, tests
-task operator-e2e  # the operator on kind beside ACK's real rds-controller, against moto
+task operator-e2e  # the operator on kind beside ACK's real rds-controller and per environment, against moto
+task ack:iam LIST=1  # every ACK-generated kind's IAM actions
 ```
 
 The tests use moto, a fake AWS, in server mode. Nothing here uses real

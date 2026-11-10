@@ -742,6 +742,11 @@ the AWS SDK's default chain, so any of these works without code:
   per environment. Long-lived keys are what this repository avoids
   (plan 9, question 10); last resort.
 
+**The ACK-generated kinds follow the same model** (the builder,
+2026-11-10): an `ACKContext` per namespace, one manager per controller,
+in the operator's namespace (`docs/plan.md` section 7.6). The two
+contexts are siblings; both use `iamgen`'s trust policy and policy split.
+
 **What kind cannot show** (`task operator-e2e`): the Pod Identity Agent
 exchanging the pod's token for the role's credentials, and AWS honouring
 the trust policy's conditions. Everything on our side of that is proven
