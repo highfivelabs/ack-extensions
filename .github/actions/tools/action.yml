@@ -48,11 +48,14 @@ runs:
         set -euo pipefail
         dir="${HOME}/ci-tools/bin"
         mkdir -p "${dir}"
-        export GOBIN="${dir}" GOTOOLCHAIN=local
-        go install github.com/go-task/task/v3/cmd/task@v3.54.0
-        go install sigs.k8s.io/kind@v0.33.0
-        go install github.com/google/ko@v0.19.1
-        go install github.com/google/go-containerregistry/cmd/crane@v0.22.1
+        # Release binaries, not `go install`: task v3.54.0 needs a newer Go
+        # than go.mod's, and the binaries do not depend on it.
+        gh_dl=https://github.com
+        curl -sfL "${gh_dl}/go-task/task/releases/download/v3.54.0/task_linux_amd64.tar.gz" | tar -xz -C "${dir}" task
+        curl -sfLo "${dir}/kind" "${gh_dl}/kubernetes-sigs/kind/releases/download/v0.33.0/kind-linux-amd64"
+        chmod +x "${dir}/kind"
+        curl -sfL "${gh_dl}/ko-build/ko/releases/download/v0.19.1/ko_0.19.1_Linux_x86_64.tar.gz" | tar -xz -C "${dir}" ko
+        curl -sfL "${gh_dl}/google/go-containerregistry/releases/download/v0.22.1/go-containerregistry_Linux_x86_64.tar.gz" | tar -xz -C "${dir}" crane
         curl -sfLo "${dir}/kubectl" https://dl.k8s.io/release/v1.37.2/bin/linux/amd64/kubectl
         chmod +x "${dir}/kubectl"
         curl -sfL https://get.helm.sh/helm-v3.22.1-linux-amd64.tar.gz | tar -xz -C "${dir}" --strip-components=1 linux-amd64/helm
