@@ -109,7 +109,12 @@ func main() {
 		setup.Error(err, "manager")
 		os.Exit(1)
 	}
-	r := &operator.Reconciler{Client: mgr.GetClient(), Options: operator.Options{Images: imgs, Identity: identity, FakeAWS: fake}}
+	r := &operator.Reconciler{
+		Client:  mgr.GetClient(),
+		Options: operator.Options{Images: imgs, Identity: identity, FakeAWS: fake},
+		// Core events, which the operator may already create (config/operator/rbac.yaml).
+		Recorder: mgr.GetEventRecorderFor(operator.Name + "-operator"), //nolint:staticcheck
+	}
 	if err := r.SetupWithManager(mgr); err != nil {
 		setup.Error(err, "controller")
 		os.Exit(1)
