@@ -463,6 +463,25 @@ the adoption's metadata patch overwrite the observed spec, so an adopted
 object's spec was not filled. The first run of the route-table test failed
 on that; the second passed.
 
+**Types in foundation order, batch 1: F02, IAM Identity Center**
+(`TestIdentityCenter`). `AWS::SSO::PermissionSet` and `AWS::SSO::Assignment`
+on moto's `sso-admin`; their backend keeps tags and the permissions
+boundary, which moto lacks (`cloudcontrol/test/fake/moto_sso.go`). A
+permission set with a managed policy, an inline policy (a free-form
+document) and a tag is made in moto's default instance; its identifier is
+`InstanceArn|PermissionSetArn`; resyncs of the unchanged set make no
+update; a second managed policy is one `replace /ManagedPolicies` and
+moto has both; a new name is refused by the API server (create-only). An
+assignment of it to a group in an account gets the six-part identifier and
+is in moto's `ListAccountAssignments`; a new account is refused
+(create-only; the type has no update handler); deleting each removes it
+from moto. `AWS::SSO::InstanceAccessControlAttributeConfiguration` is
+**unproven on the fake**: moto 5.2.5 has none of its API. It is marked
+`unproven` in `types.yaml`, which the generator writes into the CRD
+(`cloudcontrol.aws.hfl.dev/unproven-on-fake`) and the coverage data
+reports; the e2e harness refuses a type with neither a backend nor that
+mark. Results: the pull request.
+
 **Not shown by the fake** (section 11): anything about real AWS.
 
 `task check` (the whole repository) is reported in the pull request.
@@ -507,6 +526,34 @@ deprecated service), `AWS::IAM::Policy`, `AWS::IAM::AccessKey`,
 `AWS::Route53::RecordSetGroup`. Several are already covered inline by ACK
 (inline policies, NACL entries, record sets) or by kinds here; the rest
 are the fallback's (ACK's generator first, Upjet only if that fails).
+
+**The 25 this route cannot serve, and what could** (2026-11-09, for the
+builder's question whether any fallback, such as community Crossplane
+providers as a third-party Provider, is needed):
+
+| Type | Why not Cloud Control | What fills it | Fallback needed? |
+| --- | --- | --- | --- |
+| 7 `AWS::WAF::*` (ByteMatchSet, IPSet, Rule, SizeConstraintSet, SqlInjectionMatchSet, WebACL, XssMatchSet) | non-provisionable (no handlers): WAF Classic, a deprecated service | nothing: WAF v2 replaces it, served by ACK's `wafv2-controller` (and our `WebACLAssociation`) | no |
+| 11 `AWS::WAFRegional::*` (the seven above for regional, plus GeoMatchSet, RateBasedRule, RegexPatternSet, WebACLAssociation) | the same: WAF Classic regional | the same: WAF v2 | no |
+| `AWS::IAM::Policy` (an inline policy) | non-provisionable | ACK inline: `Role`, `User` and `Group` `.spec.inlinePolicies` | no |
+| `AWS::EC2::NetworkAclEntry` | non-provisionable | ACK inline: `NetworkACL.spec.entries` | no |
+| `AWS::Route53::RecordSetGroup` | non-provisionable (a CloudFormation batching construct) | ACK's `RecordSet`, one object per record | no |
+| `AWS::IAM::UserToGroupAddition` | non-provisionable | ours: `iam.aws.hfl.dev/UserGroupMembership` (non-exclusive, user side; the coverage mapping counts it under the group-membership resource) | no |
+| `AWS::IAM::AccessKey` | non-provisionable (the secret is returned once) | hand-written on ACK's runtime (`LoginProfile` pattern plus a Secret write-back), if the builder wants long-lived keys at all (plan §9 question 10 recommends not) | no |
+| `AWS::EC2::NetworkInterfacePermission` | non-provisionable | ACK's generator here: `CreateNetworkInterfacePermission`, `DescribeNetworkInterfacePermissions`, `DeleteNetworkInterfacePermission` are a plain create/read/delete; moto 5.2.5 has none of them, so unproven on fake | no |
+| `AWS::EC2::VPNGatewayRoutePropagation` | non-provisionable | ACK's generator here as an attach pair (`EnableVgwRoutePropagation`/`DisableVgwRoutePropagation`, read from `DescribeRouteTables`), the `PolicyAttachment` pattern, or a field on a route table; moto has neither call | no |
+
+So every one of the 25 is deprecated, already covered inline by ACK or by
+a kind here, or a small kind ACK's generator (or one hand-written kind) can
+make in this repository. **No third-party Provider is needed to cover the
+foundation.** What is not known is whether the 251 provisionable types
+behave on real AWS (section 11); a type whose handler misbehaves there is
+the case for a per-type fallback (ACK's generator first, Upjet after), and
+only a live run can say which, if any.
+
+The survey now counts Cloud Control kinds as ours, so its gap columns
+shrink as types are served; the 276 and 251 above are from before any
+was counted.
 
 The ten not clean have one free-form node each (`PermissionSet`'s inline
 policy, Control Tower's `Manifest` and `Parameters`, resource policies as
@@ -695,7 +742,9 @@ with limits":
    operator's part, the spike's three types.
 2. Types in foundation order, in reviewable batches, each with a
    fake-backed test where moto has the service, else marked "unproven on
-   fake" in the coverage data; `task coverage` counts them as ours.
+   fake" in the coverage data; `task coverage` counts them as ours. Done:
+   the coverage change and batch 1 (F02, three Identity Center types).
+   Next: the rest of F03 to F18 by `docs/coverage/foundation.md`.
 3. The live-test switch (`task test-live`, a sweeper, the ledger
    `docs/live-runs.md`) and the CloudFormation template for the sandbox
    account (credentials by federation from the offload VMs' Google service

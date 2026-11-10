@@ -191,6 +191,9 @@ each has had a real run.
 | `iam.cloudcontrol.aws.hfl.dev/v1alpha1` `SAMLProvider` | `AWS::IAM::SAMLProvider` (the private key from a Secret) |
 | `ec2.cloudcontrol.aws.hfl.dev/v1alpha1` `TransitGatewayRouteTable` | `AWS::EC2::TransitGatewayRouteTable` |
 | `guardduty.cloudcontrol.aws.hfl.dev/v1alpha1` `Detector` | `AWS::GuardDuty::Detector` |
+| `sso.cloudcontrol.aws.hfl.dev/v1alpha1` `PermissionSet` | `AWS::SSO::PermissionSet` (Identity Center) |
+| `sso.cloudcontrol.aws.hfl.dev/v1alpha1` `Assignment` | `AWS::SSO::Assignment` (a permission set for a user or group in an account) |
+| `sso.cloudcontrol.aws.hfl.dev/v1alpha1` `InstanceAccessControlAttributeConfiguration` | `AWS::SSO::InstanceAccessControlAttributeConfiguration`; **unproven on the fake** (moto has none of its API) |
 
 They run per environment: a `CloudControlContext` named `cloudcontrol` in
 a namespace makes the operator run a manager for that namespace, watching
