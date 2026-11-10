@@ -1,0 +1,6 @@
+# Copyright 2026 High Five Labs
+# SPDX-License-Identifier: Apache-2.0
+# ACKContext: enables the ACK-generated managers in a namespace (generated
+# by controller-gen from apis/core; task generate).
+resources:
+  - core.aws.hfl.dev_ackcontexts.yaml
