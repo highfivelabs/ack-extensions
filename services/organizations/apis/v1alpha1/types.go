@@ -88,7 +88,10 @@ type Handshake struct {
 // accounts that are centrally managed together using consolidated billing,
 // organized hierarchically with organizational units (OUs), and controlled
 // with policies .
-type Organization struct {
+type Organization_SDK struct {
+	ARN                *string `json:"arn,omitempty"`
+	FeatureSet         *string `json:"featureSet,omitempty"`
+	ID                 *string `json:"id,omitempty"`
 	MasterAccountARN   *string `json:"masterAccountARN,omitempty"`
 	MasterAccountEmail *string `json:"masterAccountEmail,omitempty"`
 	MasterAccountID    *string `json:"masterAccountID,omitempty"`

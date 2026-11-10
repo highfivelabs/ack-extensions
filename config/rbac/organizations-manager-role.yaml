@@ -26,6 +26,7 @@ rules:
   - organizations.aws.hfl.dev
   resources:
   - delegatedadministrators
+  - organizations
   - policies
   - policyattachments
   verbs:
@@ -40,6 +41,7 @@ rules:
   - organizations.aws.hfl.dev
   resources:
   - delegatedadministrators/status
+  - organizations/status
   - policies/status
   - policyattachments/status
   verbs:

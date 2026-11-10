@@ -1306,7 +1306,7 @@ AWS::OpenSearchServerless::VpcEndpoint,opensearchserverless,VpcEndpoint,other,FU
 AWS::OpenSearchService::Application,opensearchservice,Application,application,FULLY_MUTABLE,,,ok,2,0,1,1,1,true
 AWS::OpenSearchService::Domain,opensearchservice,Domain,application,FULLY_MUTABLE,Domain,,ok,0,0,3,5,0,false
 AWS::Organizations::Account,organizations,Account,platform-foundation,FULLY_MUTABLE,Account,,ok,0,0,1,1,0,true
-AWS::Organizations::Organization,organizations,Organization,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
+AWS::Organizations::Organization,organizations,Organization,platform-foundation,FULLY_MUTABLE,,Organization,ok,0,0,0,0,1,true
 AWS::Organizations::OrganizationalUnit,organizations,OrganizationalUnit,platform-foundation,FULLY_MUTABLE,OrganizationalUnit,,ok,0,0,0,0,0,true
 AWS::Organizations::Policy,organizations,Policy,platform-foundation,FULLY_MUTABLE,,Policy,ok,1,0,0,0,0,true
 AWS::Organizations::ResourcePolicy,organizations,ResourcePolicy,platform-foundation,FULLY_MUTABLE,,,ok,1,0,0,0,0,true

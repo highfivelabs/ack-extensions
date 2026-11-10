@@ -143,10 +143,37 @@ kubectl -n ack-extensions-system patch deploy ack-extensions-operator --type=jso
   {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--fake-aws-endpoint='"${FAKE_AWS}"'"}
 ]' >/dev/null
 kubectl -n ack-extensions-system rollout status deploy/ack-extensions-operator --timeout=180s >/dev/null
-for crd in scheduledactions.applicationautoscaling.aws.hfl.dev scalingpolicies.autoscaling.aws.hfl.dev scheduledactions.autoscaling.aws.hfl.dev customergateways.ec2.aws.hfl.dev volumeattachments.ec2.aws.hfl.dev volumes.ec2.aws.hfl.dev vpngateways.ec2.aws.hfl.dev replicationconfigurations.ecr.aws.hfl.dev apidestinations.eventbridge.aws.hfl.dev connections.eventbridge.aws.hfl.dev rolepolicyattachments.iam.aws.hfl.dev accountpasswordpolicies.iam.aws.hfl.dev accountaliases.iam.aws.hfl.dev sshpublickeys.iam.aws.hfl.dev loginprofiles.iam.aws.hfl.dev usergroupmemberships.iam.aws.hfl.dev replicakeys.kms.aws.hfl.dev permissions.lambda.aws.hfl.dev delegatedadministrators.organizations.aws.hfl.dev policies.organizations.aws.hfl.dev policyattachments.organizations.aws.hfl.dev dbproxytargets.rds.aws.hfl.dev dbroleassociations.rds.aws.hfl.dev optiongroups.rds.aws.hfl.dev schedulegroups.scheduler.aws.hfl.dev schedules.scheduler.aws.hfl.dev webaclassociations.wafv2.aws.hfl.dev cloudcontrolcontexts.cloudcontrol.aws.hfl.dev samlproviders.iam.cloudcontrol.aws.hfl.dev transitgatewayroutetables.ec2.cloudcontrol.aws.hfl.dev detectors.guardduty.cloudcontrol.aws.hfl.dev permissionsets.sso.cloudcontrol.aws.hfl.dev assignments.sso.cloudcontrol.aws.hfl.dev instanceaccesscontrolattributeconfigurations.sso.cloudcontrol.aws.hfl.dev; do
+for crd in scheduledactions.applicationautoscaling.aws.hfl.dev scalingpolicies.autoscaling.aws.hfl.dev scheduledactions.autoscaling.aws.hfl.dev customergateways.ec2.aws.hfl.dev volumeattachments.ec2.aws.hfl.dev volumes.ec2.aws.hfl.dev vpngateways.ec2.aws.hfl.dev replicationconfigurations.ecr.aws.hfl.dev apidestinations.eventbridge.aws.hfl.dev connections.eventbridge.aws.hfl.dev rolepolicyattachments.iam.aws.hfl.dev accountpasswordpolicies.iam.aws.hfl.dev accountaliases.iam.aws.hfl.dev sshpublickeys.iam.aws.hfl.dev loginprofiles.iam.aws.hfl.dev usergroupmemberships.iam.aws.hfl.dev replicakeys.kms.aws.hfl.dev permissions.lambda.aws.hfl.dev delegatedadministrators.organizations.aws.hfl.dev organizations.organizations.aws.hfl.dev policies.organizations.aws.hfl.dev policyattachments.organizations.aws.hfl.dev dbproxytargets.rds.aws.hfl.dev dbroleassociations.rds.aws.hfl.dev optiongroups.rds.aws.hfl.dev schedulegroups.scheduler.aws.hfl.dev schedules.scheduler.aws.hfl.dev webaclassociations.wafv2.aws.hfl.dev cloudcontrolcontexts.cloudcontrol.aws.hfl.dev samlproviders.iam.cloudcontrol.aws.hfl.dev transitgatewayroutetables.ec2.cloudcontrol.aws.hfl.dev detectors.guardduty.cloudcontrol.aws.hfl.dev permissionsets.sso.cloudcontrol.aws.hfl.dev assignments.sso.cloudcontrol.aws.hfl.dev instanceaccesscontrolattributeconfigurations.sso.cloudcontrol.aws.hfl.dev; do
   kubectl get crd "${crd}" >/dev/null || fail "CRD ${crd} missing"
 done
-ok "CRDs installed: scheduledactions.applicationautoscaling, scalingpolicies.autoscaling, scheduledactions.autoscaling, customergateways.ec2, volumeattachments.ec2, volumes.ec2, vpngateways.ec2, replicationconfigurations.ecr, apidestinations.eventbridge, connections.eventbridge, rolepolicyattachments.iam, accountpasswordpolicies.iam, accountaliases.iam, sshpublickeys.iam, loginprofiles.iam, usergroupmemberships.iam, replicakeys.kms, permissions.lambda, delegatedadministrators.organizations, policies.organizations, policyattachments.organizations, dbproxytargets.rds, dbroleassociations.rds, optiongroups.rds, schedulegroups.scheduler, schedules.scheduler, webaclassociations.wafv2 (*.aws.hfl.dev); cloudcontrolcontexts.cloudcontrol, samlproviders.iam, transitgatewayroutetables.ec2, detectors.guardduty, permissionsets.sso, assignments.sso, instanceaccesscontrolattributeconfigurations.sso (*.cloudcontrol.aws.hfl.dev); operator running"
+ok "CRDs installed: scheduledactions.applicationautoscaling, scalingpolicies.autoscaling, scheduledactions.autoscaling, customergateways.ec2, volumeattachments.ec2, volumes.ec2, vpngateways.ec2, replicationconfigurations.ecr, apidestinations.eventbridge, connections.eventbridge, rolepolicyattachments.iam, accountpasswordpolicies.iam, accountaliases.iam, sshpublickeys.iam, loginprofiles.iam, usergroupmemberships.iam, replicakeys.kms, permissions.lambda, delegatedadministrators.organizations, organizations.organizations, policies.organizations, policyattachments.organizations, dbproxytargets.rds, dbroleassociations.rds, optiongroups.rds, schedulegroups.scheduler, schedules.scheduler, webaclassociations.wafv2 (*.aws.hfl.dev); cloudcontrolcontexts.cloudcontrol, samlproviders.iam, transitgatewayroutetables.ec2, detectors.guardduty, permissionsets.sso, assignments.sso, instanceaccesscontrolattributeconfigurations.sso (*.cloudcontrol.aws.hfl.dev); operator running"
+
+echo "== retain-only kinds: config/admission's ValidatingAdmissionPolicy"
+# An Organization is never deleted from Kubernetes (the controller has no
+# DeleteOrganization); the policy makes every one say so with ACK's
+# deletion-policy annotation. No organizations manager runs here, so the
+# objects get no finalizer and nothing reconciles them.
+org_json() { printf '{"apiVersion":"organizations.aws.hfl.dev/v1alpha1","kind":"Organization","metadata":{"name":"org","namespace":"default"%s},"spec":{"featureSet":"ALL"}}' "$1"; }
+org_json "" >"${work}/org-bare.json"
+org_json ',"annotations":{"services.k8s.aws/deletion-policy":"delete"}' >"${work}/org-delete.json"
+org_json ',"annotations":{"services.k8s.aws/deletion-policy":"retain"}' >"${work}/org-retain.json"
+refused() { # refused <what> <command...>: the command fails with the policy's message
+  local what="$1" out
+  shift
+  if out="$("$@" 2>&1)"; then fail "${what}: accepted"; fi
+  [[ "${out}" == *"must carry the annotation services.k8s.aws/deletion-policy: retain"* ]] || fail "${what}: ${out}"
+  ok "${what}: refused by ack-extensions-retain-only"
+}
+policy_in_force() { ! kubectl apply --dry-run=server -f "${work}/org-bare.json"; }
+wait_for 60 "the retain-only policy is in force" policy_in_force
+refused "an Organization without the annotation" kubectl apply --dry-run=server -f "${work}/org-bare.json"
+refused "an Organization with deletion-policy delete" kubectl apply --dry-run=server -f "${work}/org-delete.json"
+kubectl apply -f "${work}/org-retain.json" >/dev/null || fail "an Organization with deletion-policy retain was refused"
+ok "an Organization with deletion-policy retain is accepted"
+refused "the annotation changed to delete" kubectl -n default annotate organizations.organizations.aws.hfl.dev org services.k8s.aws/deletion-policy=delete --overwrite
+refused "the annotation removed" kubectl -n default annotate organizations.organizations.aws.hfl.dev org services.k8s.aws/deletion-policy-
+kubectl delete -f "${work}/org-retain.json" --wait=true >/dev/null || fail "the Organization could not be deleted"
+ok "the Organization object deleted (only the object: the controller has no DeleteOrganization)"
 
 echo "== identity own: our manager beside ACK's, as ACK's role"
 wait_for 180 "manager ${ACK_NS}/ack-extensions-rds-manager rolled out" \
@@ -191,7 +218,8 @@ EOF
   [[ "${allowed}" == true ]] && echo true || echo false
 }
 [[ "$(sar get iam.services.k8s.aws roles ack-extensions-rds-manager default)" == true ]] || fail "our manager cannot read ACK's Roles (references)"
-[[ "$(sar delete iam.services.k8s.aws roles ack-extensions-rds-manager default)" == false ]] || fail "our manager may delete ACK's Roles"[[ "$(can create dbproxytargets.rds.aws.hfl.dev ack-rds-controller default)" == no ]] || fail "ACK's controller may create our kinds"
+[[ "$(sar delete iam.services.k8s.aws roles ack-extensions-rds-manager default)" == false ]] || fail "our manager may delete ACK's Roles"
+[[ "$(can create dbproxytargets.rds.aws.hfl.dev ack-rds-controller default)" == no ]] || fail "ACK's controller may create our kinds"
 ok "rights: ours manages *.rds.aws.hfl.dev and only reads ACK's rds kinds and Roles; ACK's controller has nothing of ours"
 
 echo "== gap kinds reconcile against moto"
