@@ -2273,3 +2273,11 @@ Before it can run on a real cluster:
        builder creates it); the live-test switch and the account's
        CloudFormation template are prepared, credentials by federation
        from the offload VMs' Google service account, never stored keys.
+14. **IAM `VirtualMFADevice`** (F03). **Decided** (builder, 2026-11-09):
+    built here on ACK's generator (hand-written if it must be), not on
+    Cloud Control, since Cloud Control never returns the seed (the Cloud
+    Control `VirtualMFADevice`, PR #44, is closed). `CreateVirtualMFADevice`
+    returns the Base32 seed (and a QR code PNG) once; the create writes the
+    seed, and optionally the PNG, into a Kubernetes Secret owned by the
+    object, never logged and never written over: the same pattern as
+    `AccessKey` (6.30). Queued after `AccessKey` (`docs/handoff.md`).
