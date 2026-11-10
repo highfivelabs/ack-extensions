@@ -595,10 +595,54 @@ func (in *OrganizationStatus) DeepCopyInto(out *OrganizationStatus) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.OwnedAWSServiceAccessPrincipals != nil {
+		in, out := &in.OwnedAWSServiceAccessPrincipals, &out.OwnedAWSServiceAccessPrincipals
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.OwnedEnabledPolicyTypes != nil {
+		in, out := &in.OwnedEnabledPolicyTypes, &out.OwnedEnabledPolicyTypes
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.RootID != nil {
 		in, out := &in.RootID, &out.RootID
 		*out = new(string)
 		**out = **in
+	}
+	if in.UnmanagedAWSServiceAccessPrincipals != nil {
+		in, out := &in.UnmanagedAWSServiceAccessPrincipals, &out.UnmanagedAWSServiceAccessPrincipals
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.UnmanagedEnabledPolicyTypes != nil {
+		in, out := &in.UnmanagedEnabledPolicyTypes, &out.UnmanagedEnabledPolicyTypes
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
 	}
 }
 

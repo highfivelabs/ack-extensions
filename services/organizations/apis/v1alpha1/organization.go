@@ -94,7 +94,15 @@ type OrganizationStatus struct {
 	// +kubebuilder:validation:Optional
 	MasterAccountID *string `json:"masterAccountID,omitempty"`
 	// +kubebuilder:validation:Optional
+	OwnedAWSServiceAccessPrincipals []*string `json:"ownedAWSServiceAccessPrincipals,omitempty"`
+	// +kubebuilder:validation:Optional
+	OwnedEnabledPolicyTypes []*string `json:"ownedEnabledPolicyTypes,omitempty"`
+	// +kubebuilder:validation:Optional
 	RootID *string `json:"rootID,omitempty"`
+	// +kubebuilder:validation:Optional
+	UnmanagedAWSServiceAccessPrincipals []*string `json:"unmanagedAWSServiceAccessPrincipals,omitempty"`
+	// +kubebuilder:validation:Optional
+	UnmanagedEnabledPolicyTypes []*string `json:"unmanagedEnabledPolicyTypes,omitempty"`
 }
 
 // Organization is the Schema for the Organizations API

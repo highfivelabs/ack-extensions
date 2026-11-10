@@ -8,6 +8,12 @@ package organization
 // their own calls and no field in DescribeOrganization, and the update,
 // which has no UpdateOrganization.
 //
+// Both lists are additive (the builder, A3, 2026-11-10): an entry enabled
+// outside Kubernetes is kept, never disabled, and reported in
+// status.unmanaged<List> so Bundt can offer to import it. The object
+// disables only what it owns, status.owned<List>: the entries it listed
+// and found or enabled. listPlan is the rule; docs/plan.md section 6.28.
+//
 // There is no delete here, and none in sdk.go: DeleteOrganization is
 // ignored in generator.yaml, so deleting the object only stops managing
 // the organization, whatever its deletion policy (docs/plan.md section 9,
@@ -33,8 +39,10 @@ import (
 )
 
 // setResourceAdditionalFields reads what DescribeOrganization does not
-// return: the root's ID, and, for each list the spec manages (an unset or
-// empty list is left alone), what is enabled now.
+// return: the root's ID and, for each list, what is enabled now. The
+// spec's list becomes what is enabled of the entries it lists or owns,
+// so the comparison sees what to enable and what to disable and never
+// what someone else enabled; that goes to the unmanaged status list.
 func (rm *resourceManager) setResourceAdditionalFields(
 	ctx context.Context,
 	ko *svcapitypes.Organization,
@@ -48,15 +56,19 @@ func (rm *resourceManager) setResourceAdditionalFields(
 		return err
 	}
 	ko.Status.RootID = root.Id
-	if len(ko.Spec.EnabledPolicyTypes) > 0 {
-		ko.Spec.EnabledPolicyTypes = enabledPolicyTypes(root)
+	types := planList(ko.Spec.EnabledPolicyTypes, ko.Status.OwnedEnabledPolicyTypes, enabledPolicyTypes(root))
+	ko.Spec.EnabledPolicyTypes = types.read
+	ko.Status.OwnedEnabledPolicyTypes = types.owned
+	ko.Status.UnmanagedEnabledPolicyTypes = types.unmanaged
+
+	current, err := rm.getServiceAccess(ctx)
+	if err != nil {
+		return err
 	}
-	if len(ko.Spec.AWSServiceAccessPrincipals) > 0 {
-		ko.Spec.AWSServiceAccessPrincipals, err = rm.getServiceAccess(ctx)
-		if err != nil {
-			return err
-		}
-	}
+	access := planList(ko.Spec.AWSServiceAccessPrincipals, ko.Status.OwnedAWSServiceAccessPrincipals, current)
+	ko.Spec.AWSServiceAccessPrincipals = access.read
+	ko.Status.OwnedAWSServiceAccessPrincipals = access.owned
+	ko.Status.UnmanagedAWSServiceAccessPrincipals = access.unmanaged
 	return nil
 }
 
@@ -100,7 +112,8 @@ func (rm *resourceManager) adoptExisting(
 }
 
 // customPreCompare compares the two lists as sets, and only when the spec
-// manages them.
+// lists something. The read has already left out what the object does not
+// own (setResourceAdditionalFields).
 func customPreCompare(
 	delta *ackcompare.Delta,
 	a *resource,
@@ -140,12 +153,17 @@ func (rm *resourceManager) customUpdateOrganization(
 	}
 	updated = rm.concreteResource(desired.DeepCopy())
 	updated.SetStatus(latest)
+	updated.ko.Status.OwnedEnabledPolicyTypes = desired.ko.Status.OwnedEnabledPolicyTypes
+	updated.ko.Status.UnmanagedEnabledPolicyTypes = desired.ko.Status.UnmanagedEnabledPolicyTypes
+	updated.ko.Status.OwnedAWSServiceAccessPrincipals = desired.ko.Status.OwnedAWSServiceAccessPrincipals
+	updated.ko.Status.UnmanagedAWSServiceAccessPrincipals = desired.ko.Status.UnmanagedAWSServiceAccessPrincipals
 	return updated, nil
 }
 
-// syncSettings makes the root's enabled policy types and the trusted
-// service access what the spec says, for each list the spec manages: it
-// enables what is missing and disables what is not listed.
+// syncSettings enables, for each list the spec has entries in, what it
+// lists and is not enabled, and disables what the object owns and no
+// longer lists. Nothing it does not own is disabled. It leaves the owned
+// and unmanaged status lists as they are after the calls.
 func (rm *resourceManager) syncSettings(
 	ctx context.Context,
 	ko *svcapitypes.Organization,
@@ -154,51 +172,117 @@ func (rm *resourceManager) syncSettings(
 	exit := rlog.Trace("rm.syncSettings")
 	defer func() { exit(err) }()
 
-	if len(ko.Spec.EnabledPolicyTypes) > 0 {
-		root, err := rm.getRoot(ctx)
+	root, err := rm.getRoot(ctx)
+	if err != nil {
+		return err
+	}
+	ko.Status.RootID = root.Id
+	types := planList(ko.Spec.EnabledPolicyTypes, ko.Status.OwnedEnabledPolicyTypes, enabledPolicyTypes(root))
+	for _, t := range types.enable {
+		_, err = rm.sdkapi.EnablePolicyType(ctx, &svcsdk.EnablePolicyTypeInput{RootId: root.Id, PolicyType: svcsdktypes.PolicyType(t)})
+		rm.metrics.RecordAPICall("UPDATE", "EnablePolicyType", err)
+		if err != nil && !isAWSError(err, "PolicyTypeAlreadyEnabledException") {
+			return err
+		}
+	}
+	for _, t := range types.disable {
+		_, err = rm.sdkapi.DisablePolicyType(ctx, &svcsdk.DisablePolicyTypeInput{RootId: root.Id, PolicyType: svcsdktypes.PolicyType(t)})
+		rm.metrics.RecordAPICall("UPDATE", "DisablePolicyType", err)
+		if err != nil && !isAWSError(err, "PolicyTypeNotEnabledException") {
+			return err
+		}
+	}
+	ko.Status.OwnedEnabledPolicyTypes = types.synced
+	ko.Status.UnmanagedEnabledPolicyTypes = types.unmanaged
+
+	current, err := rm.getServiceAccess(ctx)
+	if err != nil {
+		return err
+	}
+	access := planList(ko.Spec.AWSServiceAccessPrincipals, ko.Status.OwnedAWSServiceAccessPrincipals, current)
+	for _, p := range access.enable {
+		_, err = rm.sdkapi.EnableAWSServiceAccess(ctx, &svcsdk.EnableAWSServiceAccessInput{ServicePrincipal: aws.String(p)})
+		rm.metrics.RecordAPICall("UPDATE", "EnableAWSServiceAccess", err)
 		if err != nil {
 			return err
 		}
-		ko.Status.RootID = root.Id
-		enable, disable := setDifference(ko.Spec.EnabledPolicyTypes, enabledPolicyTypes(root))
-		for _, t := range enable {
-			_, err = rm.sdkapi.EnablePolicyType(ctx, &svcsdk.EnablePolicyTypeInput{RootId: root.Id, PolicyType: svcsdktypes.PolicyType(t)})
-			rm.metrics.RecordAPICall("UPDATE", "EnablePolicyType", err)
-			if err != nil && !isAWSError(err, "PolicyTypeAlreadyEnabledException") {
-				return err
-			}
-		}
-		for _, t := range disable {
-			_, err = rm.sdkapi.DisablePolicyType(ctx, &svcsdk.DisablePolicyTypeInput{RootId: root.Id, PolicyType: svcsdktypes.PolicyType(t)})
-			rm.metrics.RecordAPICall("UPDATE", "DisablePolicyType", err)
-			if err != nil && !isAWSError(err, "PolicyTypeNotEnabledException") {
-				return err
-			}
-		}
 	}
-	if len(ko.Spec.AWSServiceAccessPrincipals) > 0 {
-		current, err := rm.getServiceAccess(ctx)
+	for _, p := range access.disable {
+		_, err = rm.sdkapi.DisableAWSServiceAccess(ctx, &svcsdk.DisableAWSServiceAccessInput{ServicePrincipal: aws.String(p)})
+		rm.metrics.RecordAPICall("UPDATE", "DisableAWSServiceAccess", err)
 		if err != nil {
 			return err
 		}
-		enable, disable := setDifference(ko.Spec.AWSServiceAccessPrincipals, current)
-		for _, p := range enable {
-			_, err = rm.sdkapi.EnableAWSServiceAccess(ctx, &svcsdk.EnableAWSServiceAccessInput{ServicePrincipal: aws.String(p)})
-			rm.metrics.RecordAPICall("UPDATE", "EnableAWSServiceAccess", err)
-			if err != nil {
-				return err
-			}
-		}
-		for _, p := range disable {
-			_, err = rm.sdkapi.DisableAWSServiceAccess(ctx, &svcsdk.DisableAWSServiceAccessInput{ServicePrincipal: aws.String(p)})
-			rm.metrics.RecordAPICall("UPDATE", "DisableAWSServiceAccess", err)
-			if err != nil {
-				return err
-			}
-		}
 	}
+	ko.Status.OwnedAWSServiceAccessPrincipals = access.synced
+	ko.Status.UnmanagedAWSServiceAccessPrincipals = access.unmanaged
 	return nil
 }
+
+// plan is what one additive list needs, from the spec's entries (listed),
+// the entries the object owns (status) and what is enabled in AWS.
+type plan struct {
+	// enable is what is listed and not enabled; disable is what is owned,
+	// no longer listed, and still enabled.
+	enable, disable []string
+	// read is the spec's list as read: what is enabled of the listed and
+	// owned entries. owned is the status as read: the listed and owned
+	// entries that are enabled. synced is the status once enable and
+	// disable have run: the listed entries.
+	read, owned, synced []*string
+	// unmanaged is enabled, not listed and not owned: kept, and reported
+	// for import.
+	unmanaged []*string
+}
+
+// planList is the additive rule for one list. An unset or empty spec list
+// manages nothing (an empty list cannot be told from an unset one once it
+// has been through the API types): nothing is enabled or disabled, the
+// object owns nothing, and everything enabled is unmanaged. Otherwise
+// listing an entry that is already enabled takes it on, so taking it off
+// the list later disables it.
+func planList(listed, owned, enabled []*string) plan {
+	l, o, e := toSet(listed), toSet(owned), toSet(enabled)
+	if len(l) == 0 {
+		return plan{unmanaged: sorted(e, nil)}
+	}
+	return plan{
+		enable:    keys(sorted(l, func(s string) bool { return !e[s] })),
+		disable:   keys(sorted(o, func(s string) bool { return !l[s] && e[s] })),
+		read:      sorted(e, func(s string) bool { return l[s] || o[s] }),
+		owned:     sorted(e, func(s string) bool { return l[s] || o[s] }),
+		synced:    sorted(l, nil),
+		unmanaged: sorted(e, func(s string) bool { return !l[s] && !o[s] }),
+	}
+}
+
+func toSet(ss []*string) map[string]bool {
+	m := map[string]bool{}
+	for _, s := range ss {
+		if s != nil {
+			m[*s] = true
+		}
+	}
+	return m
+}
+
+// sorted is the set's members that keep accepts (all of them for nil),
+// sorted; nil when there are none, so an empty status list is left out.
+func sorted(set map[string]bool, keep func(string) bool) []*string {
+	var out []string
+	for s := range set {
+		if keep == nil || keep(s) {
+			out = append(out, s)
+		}
+	}
+	if len(out) == 0 {
+		return nil
+	}
+	sort.Strings(out)
+	return aws.StringSlice(out)
+}
+
+func keys(ss []*string) []string { return aws.ToStringSlice(ss) }
 
 // getRoot is the organization's root (an organization has one).
 func (rm *resourceManager) getRoot(ctx context.Context) (*svcsdktypes.Root, error) {
