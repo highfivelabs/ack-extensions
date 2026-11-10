@@ -1711,6 +1711,23 @@ as its port (`enableServiceLinks: false` in `config/fake-aws`). An image
 known only by digest loads into kind under a placeholder name, so the
 script checks the tag's digest and loads by tag.
 
+**The organization-scoped guard** (`TestReconcileOrganizationScoped`
+against envtest; `tests/operator/run.sh` on kind, 2026-11-09, with ACK's
+real organizations-controller `v1.7.0` from its own chart): beside ACK's
+rds-controller in `ack-system` it gets no manager and a `SharedNamespace`
+Warning event, and the rds manager keeps running; moved alone into
+`ack-organizations-system` (no role annotation, as for Pod Identity) it
+gets one, whose ServiceAccount carries no IRSA annotation, and a `Policy`
+syncs through it against moto. In envtest, ACK's s3 controller (one we
+do not extend) also counts, and the manager comes back once the
+namespace is the controller's alone. On the way, the `aws.hfl.dev/source`
+label (the ACK Deployment's `namespace.name`) passed a label value's 63
+characters for a controller in `ack-organizations-system`, and every
+object was refused; past 63 it is now the start and a hash. And two
+checks of `run.sh` had been joined on one line, so the check that ACK's
+controller holds none of our kinds' rights had not run since it was
+written; it runs again, and passes.
+
 **Not proven, and not possible on kind:**
 
 - IRSA and EKS Pod Identity themselves: the webhook and agent exchanging
