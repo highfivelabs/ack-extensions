@@ -920,7 +920,7 @@ iam,SSHPublicKey,0,,0,SSHPublicKey,0,0,false,outside-denominator;ours_crd_attrib
 iam,User,11,User,7,LoginProfile;UserGroupMembership,3,1,false,ours LoginProfile covers a property of this resource;ours UserGroupMembership covers a property of this resource
 iam,UserPolicy,3,,0,,0,3,false,
 iam,UserToGroupAddition,2,,0,,0,2,false,
-iam,VirtualMFADevice,5,,0,,0,5,false,
+iam,VirtualMFADevice,5,,0,VirtualMFADevice (Cloud Control),5,0,false,
 identitystore,Group,3,,0,,0,3,false,
 identitystore,GroupMembership,3,,0,,0,3,false,
 identitystore,User,39,,0,,0,39,false,

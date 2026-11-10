@@ -16584,11 +16584,11 @@ iam,UserPolicy,PolicyName,string,true,none,,
 iam,UserPolicy,UserName,string,true,none,,
 iam,UserToGroupAddition,GroupName,string,true,none,,
 iam,UserToGroupAddition,Users[],string,true,none,,
-iam,VirtualMFADevice,Path,string,false,none,,
-iam,VirtualMFADevice,Tags[].Key,string,false,none,,
-iam,VirtualMFADevice,Tags[].Value,string,false,none,,
-iam,VirtualMFADevice,Users[],string,true,none,,
-iam,VirtualMFADevice,VirtualMfaDeviceName,string,false,none,,
+iam,VirtualMFADevice,Path,string,false,ours,,spec.path
+iam,VirtualMFADevice,Tags[].Key,string,false,ours,,spec.tags[].key
+iam,VirtualMFADevice,Tags[].Value,string,false,ours,,spec.tags[].value
+iam,VirtualMFADevice,Users[],string,true,ours,,spec.users[]
+iam,VirtualMFADevice,VirtualMfaDeviceName,string,false,ours,,spec.virtualMfaDeviceName
 identitystore,Group,Description,string,false,none,,
 identitystore,Group,DisplayName,string,true,none,,
 identitystore,Group,IdentityStoreId,string,true,none,,
