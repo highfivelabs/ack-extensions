@@ -24,6 +24,11 @@
 #      Identity binds it, which kind cannot show), with rights in the
 #      environment's namespace only; it takes up that namespace's objects
 #      and leaves another namespace's alone; it goes with the context.
+#   7. ACKContext: one manager per controller per environment, in the
+#      operator's namespace as the environment's own ServiceAccount, watching
+#      only that namespace; two contexts cannot claim one namespace; a
+#      controller already served there beside ACK's controller, and the
+#      organization-scoped one, are refused.
 #
 # Needs docker, kind, kubectl, helm, ko, crane, and hack/moto.sh (boto3
 # for the fixtures). Nothing touches real AWS.
@@ -154,10 +159,10 @@ kubectl -n ack-extensions-system patch deploy ack-extensions-operator --type=jso
   {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--fake-aws-endpoint='"${FAKE_AWS}"'"}
 ]' >/dev/null
 kubectl -n ack-extensions-system rollout status deploy/ack-extensions-operator --timeout=180s >/dev/null
-for crd in scheduledactions.applicationautoscaling.aws.hfl.dev scalingpolicies.autoscaling.aws.hfl.dev scheduledactions.autoscaling.aws.hfl.dev customergateways.ec2.aws.hfl.dev volumeattachments.ec2.aws.hfl.dev volumes.ec2.aws.hfl.dev vpngateways.ec2.aws.hfl.dev replicationconfigurations.ecr.aws.hfl.dev apidestinations.eventbridge.aws.hfl.dev connections.eventbridge.aws.hfl.dev rolepolicyattachments.iam.aws.hfl.dev accountpasswordpolicies.iam.aws.hfl.dev accountaliases.iam.aws.hfl.dev sshpublickeys.iam.aws.hfl.dev loginprofiles.iam.aws.hfl.dev usergroupmemberships.iam.aws.hfl.dev replicakeys.kms.aws.hfl.dev permissions.lambda.aws.hfl.dev delegatedadministrators.organizations.aws.hfl.dev organizations.organizations.aws.hfl.dev policies.organizations.aws.hfl.dev policyattachments.organizations.aws.hfl.dev dbproxytargets.rds.aws.hfl.dev dbroleassociations.rds.aws.hfl.dev optiongroups.rds.aws.hfl.dev schedulegroups.scheduler.aws.hfl.dev schedules.scheduler.aws.hfl.dev webaclassociations.wafv2.aws.hfl.dev accountplacements.organizations.aws.hfl.dev accesskeys.iam.aws.hfl.dev virtualmfadevices.iam.aws.hfl.dev vpnconnections.ec2.aws.hfl.dev networkinterfacepermissions.ec2.aws.hfl.dev vpngatewayroutepropagations.ec2.aws.hfl.dev cloudcontrolcontexts.cloudcontrol.aws.hfl.dev samlproviders.iam.cloudcontrol.aws.hfl.dev transitgatewayroutetables.ec2.cloudcontrol.aws.hfl.dev detectors.guardduty.cloudcontrol.aws.hfl.dev permissionsets.sso.cloudcontrol.aws.hfl.dev assignments.sso.cloudcontrol.aws.hfl.dev instanceaccesscontrolattributeconfigurations.sso.cloudcontrol.aws.hfl.dev transitgatewayroutes.ec2.cloudcontrol.aws.hfl.dev transitgatewayroutetableassociations.ec2.cloudcontrol.aws.hfl.dev transitgatewayroutetablepropagations.ec2.cloudcontrol.aws.hfl.dev transitgatewaypeeringattachments.ec2.cloudcontrol.aws.hfl.dev enabledcontrols.controltower.cloudcontrol.aws.hfl.dev enabledbaselines.controltower.cloudcontrol.aws.hfl.dev hubs.securityhub.cloudcontrol.aws.hfl.dev organizationconfigurations.securityhub.cloudcontrol.aws.hfl.dev delegatedadmins.securityhub.cloudcontrol.aws.hfl.dev standards.securityhub.cloudcontrol.aws.hfl.dev findingaggregators.securityhub.cloudcontrol.aws.hfl.dev configurationpolicies.securityhub.cloudcontrol.aws.hfl.dev policyassociations.securityhub.cloudcontrol.aws.hfl.dev automationrules.securityhub.cloudcontrol.aws.hfl.dev actiontargets.securityhub.cloudcontrol.aws.hfl.dev; do
+for crd in scheduledactions.applicationautoscaling.aws.hfl.dev scalingpolicies.autoscaling.aws.hfl.dev scheduledactions.autoscaling.aws.hfl.dev customergateways.ec2.aws.hfl.dev volumeattachments.ec2.aws.hfl.dev volumes.ec2.aws.hfl.dev vpngateways.ec2.aws.hfl.dev replicationconfigurations.ecr.aws.hfl.dev apidestinations.eventbridge.aws.hfl.dev connections.eventbridge.aws.hfl.dev rolepolicyattachments.iam.aws.hfl.dev accountpasswordpolicies.iam.aws.hfl.dev accountaliases.iam.aws.hfl.dev sshpublickeys.iam.aws.hfl.dev loginprofiles.iam.aws.hfl.dev usergroupmemberships.iam.aws.hfl.dev replicakeys.kms.aws.hfl.dev permissions.lambda.aws.hfl.dev delegatedadministrators.organizations.aws.hfl.dev organizations.organizations.aws.hfl.dev policies.organizations.aws.hfl.dev policyattachments.organizations.aws.hfl.dev dbproxytargets.rds.aws.hfl.dev dbroleassociations.rds.aws.hfl.dev optiongroups.rds.aws.hfl.dev schedulegroups.scheduler.aws.hfl.dev schedules.scheduler.aws.hfl.dev webaclassociations.wafv2.aws.hfl.dev accountplacements.organizations.aws.hfl.dev accesskeys.iam.aws.hfl.dev virtualmfadevices.iam.aws.hfl.dev vpnconnections.ec2.aws.hfl.dev networkinterfacepermissions.ec2.aws.hfl.dev vpngatewayroutepropagations.ec2.aws.hfl.dev cloudcontrolcontexts.cloudcontrol.aws.hfl.dev samlproviders.iam.cloudcontrol.aws.hfl.dev transitgatewayroutetables.ec2.cloudcontrol.aws.hfl.dev detectors.guardduty.cloudcontrol.aws.hfl.dev permissionsets.sso.cloudcontrol.aws.hfl.dev assignments.sso.cloudcontrol.aws.hfl.dev instanceaccesscontrolattributeconfigurations.sso.cloudcontrol.aws.hfl.dev transitgatewayroutes.ec2.cloudcontrol.aws.hfl.dev transitgatewayroutetableassociations.ec2.cloudcontrol.aws.hfl.dev transitgatewayroutetablepropagations.ec2.cloudcontrol.aws.hfl.dev transitgatewaypeeringattachments.ec2.cloudcontrol.aws.hfl.dev enabledcontrols.controltower.cloudcontrol.aws.hfl.dev enabledbaselines.controltower.cloudcontrol.aws.hfl.dev queryloggingconfigs.route53.cloudcontrol.aws.hfl.dev dnssecs.route53.cloudcontrol.aws.hfl.dev keysigningkeys.route53.cloudcontrol.aws.hfl.dev cidrcollections.route53.cloudcontrol.aws.hfl.dev resolverdnssecconfigs.route53resolver.cloudcontrol.aws.hfl.dev resolverconfigs.route53resolver.cloudcontrol.aws.hfl.dev firewalldomainlists.route53resolver.cloudcontrol.aws.hfl.dev firewallrulegroups.route53resolver.cloudcontrol.aws.hfl.dev firewallrulegroupassociations.route53resolver.cloudcontrol.aws.hfl.dev firewallconfigs.route53resolver.cloudcontrol.aws.hfl.dev configurationrecorders.config.cloudcontrol.aws.hfl.dev deliverychannels.config.cloudcontrol.aws.hfl.dev configrules.config.cloudcontrol.aws.hfl.dev configurationaggregators.config.cloudcontrol.aws.hfl.dev aggregationauthorizations.config.cloudcontrol.aws.hfl.dev organizationconformancepacks.config.cloudcontrol.aws.hfl.dev organizationconfigrules.config.cloudcontrol.aws.hfl.dev conformancepacks.config.cloudcontrol.aws.hfl.dev remediationconfigurations.config.cloudcontrol.aws.hfl.dev storedqueries.config.cloudcontrol.aws.hfl.dev connectors.config.cloudcontrol.aws.hfl.dev filters.guardduty.cloudcontrol.aws.hfl.dev ipsets.guardduty.cloudcontrol.aws.hfl.dev threatintelsets.guardduty.cloudcontrol.aws.hfl.dev members.guardduty.cloudcontrol.aws.hfl.dev publishingdestinations.guardduty.cloudcontrol.aws.hfl.dev malwareprotectionplans.guardduty.cloudcontrol.aws.hfl.dev masters.guardduty.cloudcontrol.aws.hfl.dev hubs.securityhub.cloudcontrol.aws.hfl.dev organizationconfigurations.securityhub.cloudcontrol.aws.hfl.dev delegatedadmins.securityhub.cloudcontrol.aws.hfl.dev standards.securityhub.cloudcontrol.aws.hfl.dev findingaggregators.securityhub.cloudcontrol.aws.hfl.dev configurationpolicies.securityhub.cloudcontrol.aws.hfl.dev policyassociations.securityhub.cloudcontrol.aws.hfl.dev automationrules.securityhub.cloudcontrol.aws.hfl.dev actiontargets.securityhub.cloudcontrol.aws.hfl.dev; do
   kubectl get crd "${crd}" >/dev/null || fail "CRD ${crd} missing"
 done
-ok "CRDs installed: scheduledactions.applicationautoscaling, scalingpolicies.autoscaling, scheduledactions.autoscaling, customergateways.ec2, volumeattachments.ec2, volumes.ec2, vpngateways.ec2, replicationconfigurations.ecr, apidestinations.eventbridge, connections.eventbridge, rolepolicyattachments.iam, accountpasswordpolicies.iam, accountaliases.iam, sshpublickeys.iam, loginprofiles.iam, usergroupmemberships.iam, replicakeys.kms, permissions.lambda, delegatedadministrators.organizations, organizations.organizations, policies.organizations, policyattachments.organizations, dbproxytargets.rds, dbroleassociations.rds, optiongroups.rds, schedulegroups.scheduler, schedules.scheduler, webaclassociations.wafv2, accountplacements.organizations, accesskeys.iam, virtualmfadevices.iam, vpnconnections.ec2, networkinterfacepermissions.ec2, vpngatewayroutepropagations.ec2 (*.aws.hfl.dev); cloudcontrolcontexts.cloudcontrol, samlproviders.iam, transitgatewayroutetables.ec2, detectors.guardduty, permissionsets.sso, assignments.sso, instanceaccesscontrolattributeconfigurations.sso, transitgatewayroutes.ec2, transitgatewayroutetableassociations.ec2, transitgatewayroutetablepropagations.ec2, transitgatewaypeeringattachments.ec2, enabledcontrols.controltower, enabledbaselines.controltower, hubs.securityhub, organizationconfigurations.securityhub, delegatedadmins.securityhub, standards.securityhub, findingaggregators.securityhub, configurationpolicies.securityhub, policyassociations.securityhub, automationrules.securityhub, actiontargets.securityhub (*.cloudcontrol.aws.hfl.dev); operator running"
+ok "CRDs installed: scheduledactions.applicationautoscaling, scalingpolicies.autoscaling, scheduledactions.autoscaling, customergateways.ec2, volumeattachments.ec2, volumes.ec2, vpngateways.ec2, replicationconfigurations.ecr, apidestinations.eventbridge, connections.eventbridge, rolepolicyattachments.iam, accountpasswordpolicies.iam, accountaliases.iam, sshpublickeys.iam, loginprofiles.iam, usergroupmemberships.iam, replicakeys.kms, permissions.lambda, delegatedadministrators.organizations, organizations.organizations, policies.organizations, policyattachments.organizations, dbproxytargets.rds, dbroleassociations.rds, optiongroups.rds, schedulegroups.scheduler, schedules.scheduler, webaclassociations.wafv2, accountplacements.organizations, accesskeys.iam, virtualmfadevices.iam, vpnconnections.ec2, networkinterfacepermissions.ec2, vpngatewayroutepropagations.ec2 (*.aws.hfl.dev); cloudcontrolcontexts.cloudcontrol, samlproviders.iam, transitgatewayroutetables.ec2, detectors.guardduty, permissionsets.sso, assignments.sso, instanceaccesscontrolattributeconfigurations.sso, transitgatewayroutes.ec2, transitgatewayroutetableassociations.ec2, transitgatewayroutetablepropagations.ec2, transitgatewaypeeringattachments.ec2, enabledcontrols.controltower, enabledbaselines.controltower, queryloggingconfigs.route53, dnssecs.route53, keysigningkeys.route53, cidrcollections.route53, resolverdnssecconfigs.route53resolver, resolverconfigs.route53resolver, firewalldomainlists.route53resolver, firewallrulegroups.route53resolver, firewallrulegroupassociations.route53resolver, firewallconfigs.route53resolver, configurationrecorders.config, deliverychannels.config, configrules.config, configurationaggregators.config, aggregationauthorizations.config, organizationconformancepacks.config, organizationconfigrules.config, conformancepacks.config, remediationconfigurations.config, storedqueries.config, connectors.config, filters.guardduty, ipsets.guardduty, threatintelsets.guardduty, members.guardduty, publishingdestinations.guardduty, malwareprotectionplans.guardduty, masters.guardduty, hubs.securityhub, organizationconfigurations.securityhub, delegatedadmins.securityhub, standards.securityhub, findingaggregators.securityhub, configurationpolicies.securityhub, policyassociations.securityhub, automationrules.securityhub, actiontargets.securityhub (*.cloudcontrol.aws.hfl.dev); operator running"
 
 echo "== retain-only kinds: config/admission's ValidatingAdmissionPolicy"
 # An Organization is never deleted from Kubernetes (the controller has no
@@ -470,5 +475,133 @@ for n in team-a team-b; do
   kubectl -n "${n}" patch detectors.guardduty.cloudcontrol.aws.hfl.dev account-detector --type=merge -p '{"metadata":{"finalizers":null}}' >/dev/null
   kubectl -n "${n}" delete detectors.guardduty.cloudcontrol.aws.hfl.dev account-detector --wait=false >/dev/null 2>&1 || true
 done
+
+echo "== ACKContext: one manager per controller per environment, as that environment's identity (docs/plan.md 7.6)"
+# env-a and env-b have contexts, env-c none. ACK's rds-controller in
+# ack-system still watches every namespace with our rds manager beside it,
+# and ACK's organizations-controller runs alone in its own namespace.
+for n in env-a env-b env-c; do kubectl create namespace "${n}" --dry-run=client -o yaml | kubectl apply -f - >/dev/null; done
+kubectl get deploy -A -l aws.hfl.dev/component=ack -o name | grep -q . && fail "an environment manager without an ACKContext"
+if kubectl apply -f - >/dev/null 2>"${work}/ack-name.err" <<YAML
+apiVersion: core.aws.hfl.dev/v1alpha1
+kind: ACKContext
+metadata: {name: second, namespace: env-a}
+spec: {roleARN: "arn:aws:iam::123456789012:role/env-a-ack", region: us-west-2, controllers: [{service: scheduler}]}
+YAML
+then fail "a second ACKContext in env-a (not named ack) was accepted"; fi
+grep -q "must be named ack" "${work}/ack-name.err" || fail "unexpected refusal: $(cat "${work}/ack-name.err")"
+ok "two contexts cannot claim one namespace: a context not named ack is refused"
+cat <<YAML | kubectl apply -f - >/dev/null
+apiVersion: core.aws.hfl.dev/v1alpha1
+kind: ACKContext
+metadata: {name: ack, namespace: env-a}
+spec:
+  roleARN: "arn:aws:iam::123456789012:role/env-a-ack"
+  region: us-west-2
+  controllers:
+    - {service: scheduler, kinds: [ScheduleGroup]}
+    - {service: rds}
+    - {service: organizations}
+---
+apiVersion: core.aws.hfl.dev/v1alpha1
+kind: ACKContext
+metadata: {name: ack, namespace: env-b}
+spec:
+  roleARN: "arn:aws:iam::123456789012:role/env-b-ack"
+  region: us-west-2
+  controllers: [{service: scheduler, kinds: [ScheduleGroup]}]
+YAML
+ack_debug() {
+  echo "-- contexts"; kubectl get ackcontexts -A -o yaml || true
+  echo "-- managers"; kubectl -n "${OP_NS}" get deploy,pod -l aws.hfl.dev/component=ack -o wide || true
+  kubectl -n "${OP_NS}" logs -l aws.hfl.dev/component=ack --tail=40 --all-containers --prefix || true
+  echo "-- operator"; kubectl -n "${OP_NS}" logs deploy/ack-extensions-operator --tail=40 || true
+}
+ack_wait() { # ack_wait <seconds> <description> <command...>, with the debug dump on failure
+  local t="$1" what="$2"; shift 2
+  local end=$((SECONDS + t))
+  until "$@" >/dev/null 2>&1; do
+    [[ ${SECONDS} -ge ${end} ]] && { ack_debug; fail "${what} (not within ${t}s)"; }
+    sleep 2
+  done
+  ok "${what}"
+}
+ack_ready() { [[ "$(kubectl -n "$1" get ackcontext ack -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')" == True ]]; }
+ack_wait 240 "ACKContext env-b/ack Ready: its scheduler manager rolled out" ack_ready env-b
+ack_wait 180 "env-a's scheduler manager ${OP_NS}/ack-extensions-scheduler-env-a rolled out" \
+  kubectl -n "${OP_NS}" rollout status deploy/ack-extensions-scheduler-env-a --timeout=5s
+for n in env-a env-b; do
+  sa="ack-extensions-scheduler-${n}"
+  pod_sa="$(kubectl -n "${OP_NS}" get pod -l "aws.hfl.dev/component=ack,aws.hfl.dev/environment=${n},aws.hfl.dev/service=scheduler" -o jsonpath='{.items[0].spec.serviceAccountName}')"
+  [[ "${pod_sa}" == "${sa}" ]] || fail "${n}'s scheduler manager runs as ${pod_sa}"
+  kubectl -n "${OP_NS}" get sa "${sa}" -o jsonpath='{.metadata.annotations}' | grep -q 'eks.amazonaws.com' && fail "an IRSA annotation on ${sa}: the identity is EKS Pod Identity"
+  kubectl get pod -n "${n}" -o name | grep -q . && fail "a pod in ${n}: the managers belong in ${OP_NS}"
+  args="$(kubectl -n "${OP_NS}" get deploy "${sa}" -o jsonpath='{.spec.template.spec.containers[0].args}')"
+  for a in "--watch-namespace=${n}" --aws-region=us-west-2 --reconcile-resources=ScheduleGroup --enable-carm=false; do
+    grep -q -- "${a}" <<<"${args}" || fail "${sa} args lack ${a}: ${args}"
+  done
+  pia="$(kubectl -n "${n}" get ackcontext ack -o jsonpath='{range .status.podIdentityAssociations[*]}{.namespace}/{.serviceAccount} -> {.roleARN}{"\n"}{end}')"
+  [[ "${pia}" == "${OP_NS}/${sa} -> arn:aws:iam::123456789012:role/${n}-ack" ]] || fail "${n} status.podIdentityAssociations: ${pia}"
+done
+ok "a manager per namespace: ${OP_NS}/ack-extensions-scheduler-env-a and -env-b, each as its own ServiceAccount (no IRSA annotation), each watching only its environment; the associations they need are in status"
+verify_no_real_aws
+refusal() { kubectl -n env-a get ackcontext ack -o jsonpath="{.status.refused[?(@.service==\"$1\")].reason}"; }
+ack_wait 60 "env-a's rds refused: NamespaceClaimed (our rds manager beside ACK's rds-controller in ${ACK_NS} watches every namespace)" \
+  bash -c "[[ \$(kubectl -n env-a get ackcontext ack -o jsonpath='{.status.refused[?(@.service==\"rds\")].reason}') == NamespaceClaimed ]]"
+[[ "$(refusal organizations)" == OrganizationScoped ]] || fail "env-a's organizations not refused as OrganizationScoped: $(refusal organizations)"
+ok "env-a's organizations refused: OrganizationScoped (it keeps its own install in ${ORG_NS})"
+kubectl -n "${OP_NS}" get deploy ack-extensions-rds-env-a ack-extensions-organizations-env-a >/dev/null 2>&1 && fail "a refused manager runs for env-a"
+[[ "$(kubectl -n env-a get ackcontext ack -o jsonpath='{.status.conditions[?(@.type=="Ready")].reason}')" == ControllersRefused ]] || fail "env-a Ready's reason is not ControllersRefused"
+kubectl -n "${ACK_NS}" rollout status deploy/ack-extensions-rds-manager --timeout=30s >/dev/null || fail "the rds manager beside ACK's controller stopped"
+ok "no rds or organizations manager for env-a; the beside rds manager and env-a's scheduler manager still run"
+asar() { # asar <serviceaccount> <verb> <group> <resource> <namespace>: may that manager?
+  local allowed
+  allowed="$(kubectl create -o jsonpath='{.status.allowed}' -f - <<SAR
+apiVersion: authorization.k8s.io/v1
+kind: SubjectAccessReview
+spec:
+  user: system:serviceaccount:${OP_NS}:$1
+  groups: [system:serviceaccounts, "system:serviceaccounts:${OP_NS}", system:authenticated]
+  resourceAttributes: {verb: $2, group: "$3", resource: $4, namespace: "$5"}
+SAR
+)"
+  [[ "${allowed}" == true ]] && echo true || echo false
+}
+A_SA=ack-extensions-scheduler-env-a
+[[ "$(asar "${A_SA}" create scheduler.aws.hfl.dev schedulegroups env-a)" == true ]] || fail "env-a's manager cannot create ScheduleGroups in env-a"
+for n in env-b env-c "${OP_NS}"; do
+  [[ "$(asar "${A_SA}" create scheduler.aws.hfl.dev schedulegroups "${n}")" == false ]] || fail "env-a's manager may create ScheduleGroups in ${n}"
+  [[ "$(asar "${A_SA}" get "" secrets "${n}")" == false ]] || fail "env-a's manager may read ${n}'s Secrets"
+done
+[[ "$(asar "${A_SA}" list "" namespaces "")" == false ]] || fail "env-a's manager may list namespaces"
+ok "rights: env-a's manager manages ScheduleGroups in env-a only; nothing in env-b, env-c or ${OP_NS}, nothing cluster-wide"
+for n in env-a env-c; do
+  cat <<YAML | kubectl apply -f - >/dev/null
+apiVersion: scheduler.aws.hfl.dev/v1alpha1
+kind: ScheduleGroup
+metadata: {name: ${n}-group, namespace: ${n}}
+spec: {name: ${n}-group}
+YAML
+done
+ack_wait 120 "ScheduleGroup env-a/env-a-group synced through env-a's manager" synced_in env-a schedulegroup.scheduler.aws.hfl.dev/env-a-group
+sleep 15
+[[ -z "$(kubectl -n env-c get schedulegroup.scheduler.aws.hfl.dev env-c-group -o jsonpath='{.metadata.finalizers}{.status}')" ]] || fail "env-c's ScheduleGroup was touched without a context in env-c"
+ok "watch scoping: env-c's ScheduleGroup left alone (no context there, and no manager watches it)"
+fake_py - <<'PYEOF'
+import boto3
+kw = dict(endpoint_url="http://127.0.0.1:15000", region_name="us-west-2", aws_access_key_id="testing", aws_secret_access_key="testing")
+names = [g["Name"] for g in boto3.client("scheduler", **kw).list_schedule_groups()["ScheduleGroups"]]
+assert "env-a-group" in names and "env-c-group" not in names, names
+print("ok: in moto: schedule groups", names)
+PYEOF
+kubectl -n env-b delete ackcontext ack >/dev/null
+b_gone() { ! kubectl -n "${OP_NS}" get deploy ack-extensions-scheduler-env-b >/dev/null 2>&1 && ! kubectl -n "${OP_NS}" get sa ack-extensions-scheduler-env-b >/dev/null 2>&1 && ! kubectl -n env-b get ackcontext ack >/dev/null 2>&1; }
+ack_wait 120 "env-b's context deleted: its manager and ServiceAccount go with it" b_gone
+kubectl -n "${OP_NS}" rollout status deploy/ack-extensions-scheduler-env-a --timeout=30s >/dev/null || fail "env-a's manager went with env-b's context"
+ok "env-a's manager still runs"
+kubectl -n env-a delete schedulegroup.scheduler.aws.hfl.dev env-a-group --wait=true --timeout=120s >/dev/null || fail "env-a's ScheduleGroup was not deleted through its manager"
+kubectl -n env-c delete schedulegroup.scheduler.aws.hfl.dev env-c-group --wait=false >/dev/null
+kubectl -n env-a delete ackcontext ack --wait=true --timeout=120s >/dev/null || fail "env-a's context was not deleted"
+ok "env-a's ScheduleGroup deleted through its manager, then its context"
 
 echo "all checks passed (cluster ${CLUSTER} left running; kind delete cluster --name ${CLUSTER})"

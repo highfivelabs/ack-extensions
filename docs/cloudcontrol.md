@@ -547,6 +547,83 @@ the reconciler polls the request without holding a worker.
 the landing zone (plan section 9, question 15). ACK has no Control Tower
 controller, issue or pull request.
 
+**Batch 4: F08 and F09, DNS** (`TestDNS`). Ten types; ACK's
+route53-controller v1.8.0 (`HealthCheck`, `HostedZone`, `RecordSet`) and
+route53resolver-controller v1.11.0 (endpoints, rules, query log
+configurations and their associations) have none of them, and no open
+pull request for them (rechecked 2026-11-09). Two are proven on moto
+(`cloudcontrol/test/fake/moto_dns.go`): `AWS::Route53::QueryLoggingConfig`
+(a public hosted zone's query logs to a log group) and
+`AWS::Route53Resolver::ResolverDNSSECConfig` (a VPC's DNSSEC
+validation). The fixture (a hosted zone, a log group in us-east-1, where Route 53
+requires it and moto checks it, and a VPC) is made with the SDKs. The query logging configuration gets its ARN as identifier and
+its ID in status and is in Route 53's `GetQueryLoggingConfig`; the DNSSEC
+configuration gets its `rdsc-` ID and `ENABLED`; resyncs of both make no
+update; a create-only change to each is refused (both are `IMMUTABLE`);
+deleting the first removes it, deleting the second turns validation off
+(`DISABLED`), which reads as gone. moto differs from AWS in two ways the
+backends make up for: Route 53 has no ARN for a query logging
+configuration (CloudFormation's handler makes
+`arn:aws:route53:::queryloggingconfig/<id>`; so does the backend), and
+moto enables validation for a VPC that does not exist (the backend looks
+the VPC up first, as the handler's `ec2:DescribeVpcs` permission
+suggests). **Unproven on the fake** (moto 5.2.5 has none of their API):
+`AWS::Route53::DNSSEC` (deleting it disables signing: remove the zone's
+DS record at the parent first, or the zone stops resolving for
+validating resolvers), `AWS::Route53::KeySigningKey`,
+`AWS::Route53::CidrCollection`, `AWS::Route53Resolver::ResolverConfig`,
+and the four DNS Firewall types (`FirewallDomainList`,
+`FirewallRuleGroup` with its rules as a field, `FirewallRuleGroupAssociation`,
+`FirewallConfig`). Left out: `TrafficPolicy` and `TrafficPolicyInstance`
+(traffic flow, low priority in `docs/coverage/foundation.md`) and a hosted
+zone's second VPC (no CloudFormation type: a field of
+`AWS::Route53::HostedZone`, ACK's). References (`hostedZoneRef`,
+`vpcRef`, a KMS key's ARN for the key-signing key) wait for the overlay.
+
+**Batch 5: F14, AWS Config** (`TestConfig`). Eleven types; ACK has no
+Config controller and no pull request (community issue 2445 asks for one;
+rechecked 2026-11-09). Six are proven on moto
+(`cloudcontrol/test/fake/moto_config.go`): the region's
+`ConfigurationRecorder` (identifier its name, `default`), its
+`DeliveryChannel`, a managed `ConfigRule` (its `InputParameters` an
+object), a `ConfigurationAggregator` and an `AggregationAuthorization`
+(identifier `<account>|<region>`), both tagged, and an
+`OrganizationConformancePack`. The fixtures (the recorder's IAM role, the
+channel's S3 bucket) are made with the SDKs. Each gets its identifier and
+read-only fields in status; resyncs make no update; the channel's
+frequency, the rule's description, a tag on the aggregator and the pack's
+excluded accounts change in moto; a new rule name is refused (create-only);
+deleting each removes it. AWS cannot start a recorder before it has a
+channel, and a channel needs the recorder first, so the fake starts the
+recorder when its channel is made ("CloudFormation starts the recorder as
+soon as the delivery channel is available", the AWS::Config
+documentation); the real handlers' order is to be checked on the first
+live run. AWS keeps the last channel while a recorder runs, so delete the
+recorder first. moto differs from AWS in ways the backends make up for:
+it drops a recorder's `RecordingMode` and a rule's `EvaluationModes`, and
+has no tags for an organization conformance pack; the backends keep them.
+**Unproven on the fake** (moto 5.2.5 has none of their API):
+`OrganizationConfigRule`, `ConformancePack`, `RemediationConfiguration`,
+`StoredQuery`, `Connector`.
+
+**Batch 6: F15, GuardDuty beside the detector.** ACK has no GuardDuty
+controller (community issue #2916, no pull request). `AWS::GuardDuty::Filter`
+(identified `<detector>|<name>`) runs on moto: `TestGuardDutyFilter` makes a
+detector and a filter whose criteria are a map of conditions keyed by
+finding field (`patternProperties`, served as a map with the user's keys),
+checks that resyncs of an unchanged filter make no update, changes the
+action and a criterion (replaces of `/Action` and `/FindingCriteria`), puts
+back a description changed in GuardDuty, refuses a new name (create-only)
+and deletes both. moto has no filter tags, so the backend keeps them, and
+it overwrites a filter of the same name where GuardDuty refuses one, so the
+backend checks first; the SDK pinned here has no `Matches`/`NotMatches`
+conditions, so those two are not proven. `IPSet`, `ThreatIntelSet`,
+`Member`, `PublishingDestination`, `MalwareProtectionPlan` and `Master` are
+**unproven on the fake**: moto 5.2.5 has none of their API. Left out of the
+batch: `ThreatEntitySet` and `TrustedEntitySet` (GuardDuty's newer
+replacements of the two sets) and `CustomDetectionRuleAssociation`, which
+`docs/coverage/foundation.md` F15 does not list.
+
 **Batch 7: F16, Security Hub.** ACK has no Security Hub controller, issue
 or pull request. Two types run on moto, in `TestSecurityHub`:
 `AWS::SecurityHub::Hub` (identified by its ARN, `hub/default`; its tags are
@@ -768,6 +845,11 @@ the AWS SDK's default chain, so any of these works without code:
   per environment. Long-lived keys are what this repository avoids
   (plan 9, question 10); last resort.
 
+**The ACK-generated kinds follow the same model** (the builder,
+2026-11-10): an `ACKContext` per namespace, one manager per controller,
+in the operator's namespace (`docs/plan.md` section 7.6). The two
+contexts are siblings; both use `iamgen`'s trust policy and policy split.
+
 **What kind cannot show** (`task operator-e2e`): the Pod Identity Agent
 exchanging the pod's token for the role's credentials, and AWS honouring
 the trust policy's conditions. Everything on our side of that is proven
@@ -835,9 +917,11 @@ with limits":
    fake-backed test where moto has the service, else marked "unproven on
    fake" in the coverage data; `task coverage` counts them as ours. Done:
    the coverage change, batch 1 (F02, three Identity Center types) and
-   batch 2 (F04, four Transit Gateway routing types) and
-   batch 3 (F07, two Control Tower types, unproven on the fake), and
-   batch 7 (F16, nine Security Hub types, `Hub` and
+   batch 2 (F04, four Transit Gateway routing types), batch 3 (F07, two
+   Control Tower types, unproven on the fake), batch 4 (F08, F09: ten DNS
+   types, two proven on moto), batch 5 (F14, eleven Config types, six
+   proven on moto), batch 6 (F15, seven GuardDuty types, `Filter`
+   proven on moto) and batch 7 (F16, nine Security Hub types, `Hub` and
    `OrganizationConfiguration` proven on moto).
    Next: the rest of F03 to F18 by `docs/coverage/foundation.md`.
 3. The live-test switch (`task test-live`, a sweeper, the ledger

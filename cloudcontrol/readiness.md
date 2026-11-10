@@ -6,11 +6,11 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 
 | Category | Types | Provisionable | FULLY_MUTABLE | IMMUTABLE | CRD accepted | Clean | Gap types | Gap, provisionable | Gap, CRD accepted | Gap, clean |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 162 | 158 | 158 | 155 |
-| security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 87 | 69 | 69 | 67 |
+| platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 152 | 148 | 148 | 145 |
+| security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 69 | 51 | 51 | 50 |
 | application | 262 | 250 | 232 | 18 | 250 | 230 | 147 | 136 | 136 | 128 |
 | other | 1260 | 1188 | 1084 | 104 | 1188 | 1137 | 1169 | 1101 | 1101 | 1059 |
-| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1565 | 1464 | 1464 | 1409 |
+| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1537 | 1436 | 1436 | 1382 |
 
 ## Foundation gaps (platform-foundation and security-adjacent types with no kind)
 
@@ -25,17 +25,6 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::CloudTrail::Channel` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::CloudTrail::Dashboard` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::CloudTrail::ResourcePolicy` | platform-foundation | FULLY_MUTABLE | ok | 1 | 0 | 0 | 0 |
-| `AWS::Config::AggregationAuthorization` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Config::ConfigRule` | security-adjacent | FULLY_MUTABLE | ok | 1 | 0 | 1 | 0 |
-| `AWS::Config::ConfigurationAggregator` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::Config::ConfigurationRecorder` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::Config::ConformancePack` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 2 | 2 |
-| `AWS::Config::Connector` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::Config::DeliveryChannel` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Config::OrganizationConfigRule` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::Config::OrganizationConformancePack` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 2 | 2 |
-| `AWS::Config::RemediationConfiguration` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 2 |
-| `AWS::Config::StoredQuery` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::ControlTower::LandingZone` | platform-foundation | FULLY_MUTABLE | ok | 1 | 0 | 0 | 1 |
 | `AWS::Detective::Graph` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Detective::MemberInvitation` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
@@ -153,14 +142,7 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::FMS::ProtocolsList` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::FMS::ResourceSet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::GuardDuty::CustomDetectionRuleAssociation` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::GuardDuty::Filter` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::GuardDuty::IPSet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::GuardDuty::MalwareProtectionPlan` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::GuardDuty::Master` | security-adjacent | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::GuardDuty::Member` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
-| `AWS::GuardDuty::PublishingDestination` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::GuardDuty::ThreatEntitySet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::GuardDuty::ThreatIntelSet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::GuardDuty::TrustedEntitySet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::IAM::GroupPolicy` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::IAM::Policy` | platform-foundation | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
@@ -209,24 +191,14 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::RAM::PrincipalAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::RAM::ResourceAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::RAM::SourceAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53::CidrCollection` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Route53::DelegationSet` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53::DNSSEC` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::Route53::KeySigningKey` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::Route53::QueryLoggingConfig` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Route53::RecordSetGroup` | platform-foundation | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
 | `AWS::Route53::TrafficPolicy` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Route53::TrafficPolicyInstance` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Route53Profiles::Profile` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Route53Profiles::ProfileAssociation` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
 | `AWS::Route53Profiles::ProfileResourceAssociation` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53Resolver::FirewallConfig` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53Resolver::FirewallDomainList` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
-| `AWS::Route53Resolver::FirewallRuleGroup` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53Resolver::FirewallRuleGroupAssociation` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Route53Resolver::OutpostResolver` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53Resolver::ResolverConfig` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53Resolver::ResolverDNSSECConfig` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::SecretsManager::ResourcePolicy` | security-adjacent | FULLY_MUTABLE | ok | 1 | 0 | 0 | 0 |
 | `AWS::SecretsManager::RotationSchedule` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 11 | 1 |
 | `AWS::SecretsManager::SecretTargetAttachment` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |

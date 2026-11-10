@@ -12,6 +12,34 @@ resources:
   - ec2.cloudcontrol.aws.hfl.dev_transitgatewaypeeringattachments.yaml
   - controltower.cloudcontrol.aws.hfl.dev_enabledcontrols.yaml
   - controltower.cloudcontrol.aws.hfl.dev_enabledbaselines.yaml
+  - route53.cloudcontrol.aws.hfl.dev_queryloggingconfigs.yaml
+  - route53.cloudcontrol.aws.hfl.dev_dnssecs.yaml
+  - route53.cloudcontrol.aws.hfl.dev_keysigningkeys.yaml
+  - route53.cloudcontrol.aws.hfl.dev_cidrcollections.yaml
+  - route53resolver.cloudcontrol.aws.hfl.dev_resolverdnssecconfigs.yaml
+  - route53resolver.cloudcontrol.aws.hfl.dev_resolverconfigs.yaml
+  - route53resolver.cloudcontrol.aws.hfl.dev_firewalldomainlists.yaml
+  - route53resolver.cloudcontrol.aws.hfl.dev_firewallrulegroups.yaml
+  - route53resolver.cloudcontrol.aws.hfl.dev_firewallrulegroupassociations.yaml
+  - route53resolver.cloudcontrol.aws.hfl.dev_firewallconfigs.yaml
+  - config.cloudcontrol.aws.hfl.dev_configurationrecorders.yaml
+  - config.cloudcontrol.aws.hfl.dev_deliverychannels.yaml
+  - config.cloudcontrol.aws.hfl.dev_configrules.yaml
+  - config.cloudcontrol.aws.hfl.dev_configurationaggregators.yaml
+  - config.cloudcontrol.aws.hfl.dev_aggregationauthorizations.yaml
+  - config.cloudcontrol.aws.hfl.dev_organizationconformancepacks.yaml
+  - config.cloudcontrol.aws.hfl.dev_organizationconfigrules.yaml
+  - config.cloudcontrol.aws.hfl.dev_conformancepacks.yaml
+  - config.cloudcontrol.aws.hfl.dev_remediationconfigurations.yaml
+  - config.cloudcontrol.aws.hfl.dev_storedqueries.yaml
+  - config.cloudcontrol.aws.hfl.dev_connectors.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_filters.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_ipsets.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_threatintelsets.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_members.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_publishingdestinations.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_malwareprotectionplans.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_masters.yaml
   - securityhub.cloudcontrol.aws.hfl.dev_hubs.yaml
   - securityhub.cloudcontrol.aws.hfl.dev_organizationconfigurations.yaml
   - securityhub.cloudcontrol.aws.hfl.dev_delegatedadmins.yaml

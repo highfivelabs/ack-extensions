@@ -7,6 +7,7 @@
 //	hack/coverage/run.sh               regenerate docs/coverage/ and the README section
 //	hack/coverage/run.sh --check       fail if the committed outputs differ from a regeneration
 //	hack/coverage/run.sh --update-pins re-resolve the pinned inputs (network, gh) into sources.yaml
+//	hack/coverage/run.sh -terraform-pin COMMIT  pin the catalog's Terraform estimate at COMMIT
 //
 // See docs/coverage/README.md for the method.
 package main
@@ -22,6 +23,7 @@ func main() {
 	root := flag.String("root", ".", "repository root")
 	check := flag.Bool("check", false, "fail if the committed outputs differ from a regeneration from the pinned inputs")
 	update := flag.Bool("update-pins", false, "resolve the latest ACK releases and the CloudFormation schema zip, write docs/coverage/sources.yaml, then regenerate")
+	tfPin := flag.String("terraform-pin", "", "copy docs/terraform/ack-extensions/ of the catalog repository at this commit (a local checkout: $CATALOG_DIR, default ../catalog) into docs/coverage/inputs/terraform/, pin it in sources.yaml, then regenerate")
 	explainRes := flag.String("explain", "", "print how one resource (service/Name, e.g. rds/DBInstance) was matched, and exit")
 	flag.Parse()
 
@@ -38,6 +40,11 @@ func main() {
 
 	if *update {
 		if err := updatePins(cfg); err != nil {
+			fatal(err)
+		}
+	}
+	if *tfPin != "" {
+		if err := pinTerraform(cfg, *tfPin); err != nil {
 			fatal(err)
 		}
 	}

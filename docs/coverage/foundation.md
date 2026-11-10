@@ -12,8 +12,8 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 
 | Category | Services | Resources | ACK | Ours beyond | None | Attributes | ACK | Ours beyond | Uncovered |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 16 | 241 | 55 (22.8%) | 24 (10.0%) | 162 | 2,400 | 28.2% | 6.5% | 65.4% |
-| security-adjacent | 18 | 112 | 14 (12.5%) | 11 (9.8%) | 87 | 2,082 | 37.6% | 7.4% | 55.0% |
+| platform-foundation | 16 | 241 | 55 (22.8%) | 34 (14.1%) | 152 | 2,400 | 28.2% | 8.3% | 63.5% |
+| security-adjacent | 18 | 112 | 14 (12.5%) | 29 (25.9%) | 69 | 2,082 | 37.6% | 15.9% | 46.6% |
 | application | 33 | 262 | 106 (40.5%) | 9 (3.4%) | 147 | 4,766 | 48.2% | 4.2% | 47.6% |
 | other | 238 | 1260 | 91 (7.2%) | 0 (0.0%) | 1169 | 76,525 | 3.0% | 0.0% | 97.0% |
 
@@ -26,8 +26,8 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | 3 | `iam` | 16 | 7 | 3 | 6 | 41.2% / 17.6% / 41.2% | `iam-controller` v1.11.3 |
 | 4 | `ec2` | 126 | 20 | 12 | 94 | 22.7% / 5.7% / 71.6% | `ec2-controller` v1.23.1 |
 | 5 | `controltower` | 3 | 0 | 2 | 1 | 0.0% / 72.2% / 27.8% | none |
-| 6 | `route53` | 11 | 3 | 0 | 8 | 47.9% / 0.0% / 52.1% | `route53-controller` v1.8.0 |
-| 7 | `route53resolver` | 12 | 5 | 0 | 7 | 35.1% / 0.0% / 64.9% | `route53resolver-controller` v1.11.0 |
+| 6 | `route53` | 11 | 3 | 4 | 4 | 47.9% / 10.4% / 41.7% | `route53-controller` v1.8.0 |
+| 7 | `route53resolver` | 12 | 5 | 6 | 1 | 35.1% / 44.2% / 20.8% | `route53resolver-controller` v1.11.0 |
 | 8 | `ram` | 6 | 2 | 0 | 4 | 54.2% / 0.0% / 45.8% | `ram-controller` v1.7.0 |
 | 9 | `kms` | 3 | 2 | 1 | 0 | 54.5% / 22.7% / 22.7% | `kms-controller` v1.7.0 |
 | 10 | `cloudtrail` | 5 | 2 | 0 | 3 | 37.3% / 0.0% / 62.7% | `cloudtrail-controller` v1.9.1 |
@@ -42,8 +42,8 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 
 | # | Service | Resources | ACK | Ours beyond | None | Attributes ACK / ours / uncovered | ACK controller (latest release) |
 | ---: | --- | ---: | ---: | ---: | ---: | --- | --- |
-| 1 | `config` | 11 | 0 | 0 | 11 | 0.0% / 0.0% / 100.0% | none |
-| 2 | `guardduty` | 11 | 0 | 1 | 10 | 0.0% / 12.4% / 87.6% | none |
+| 1 | `config` | 11 | 0 | 11 | 0 | 0.0% / 100.0% / 0.0% | none |
+| 2 | `guardduty` | 11 | 0 | 8 | 3 | 0.0% / 77.5% / 22.5% | none |
 | 3 | `securityhub` | 17 | 0 | 9 | 8 | 0.0% / 31.7% / 68.3% | none |
 | 4 | `secretsmanager` | 4 | 1 | 0 | 3 | 17.8% / 0.0% / 82.2% | `secretsmanager-controller` v1.8.2 |
 | 5 | `wafv2` | 6 | 3 | 1 | 2 | 82.6% / 0.3% / 17.0% | `wafv2-controller` v1.8.1 |
@@ -74,14 +74,14 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 | [F05](#f05) | EC2 networking: site-to-site VPN connections and route propagation | platform-foundation | 5 | 0 / 50 / 9 | L (VPNConnection), S (propagation) | Partial: `CreateVpnConnection`, `CreateVpnGateway`, `AttachVpnGateway`, `CreateCustomerGat... |
 | [F06](#f06) | EC2 networking: smaller VPC kinds (network interfaces, block public access, placement groups, CIDR reservations) | platform-foundation | 6 | 0 / 0 / 42 | M (NetworkInterface), S each for the rest | Partial: `CreateNetworkInterface` is implemented |
 | [F07](#f07) | Control Tower: landing zone, enabled controls, enabled baselines | platform-foundation | 3 | 0 / 13 / 5 | L each, and no emulator | None: moto 5 |
-| [F08](#f08) | Route 53: DNSSEC and key-signing keys, query logging, CIDR collections, second-VPC association | platform-foundation | 7 | 7 / 0 / 20 | S each | Partial: `CreateHostedZone`, `ChangeResourceRecordSets`, `CreateQueryLoggingConfig`, `Asso... |
-| [F09](#f09) | Route 53 Resolver: DNS Firewall, resolver endpoint settings, resolver configuration | platform-foundation | 8 | 18 / 0 / 44 | M, L, S | No for the Firewall kinds (`CreateFirewallRuleGroup`, `CreateFirewallDomainList`, `CreateF... |
+| [F08](#f08) | Route 53: DNSSEC and key-signing keys, query logging, CIDR collections, second-VPC association | platform-foundation | 7 | 7 / 10 / 10 | S each | Partial: `CreateHostedZone`, `ChangeResourceRecordSets`, `CreateQueryLoggingConfig`, `Asso... |
+| [F09](#f09) | Route 53 Resolver: DNS Firewall, resolver endpoint settings, resolver configuration | platform-foundation | 8 | 18 / 34 / 10 | M, L, S | No for the Firewall kinds (`CreateFirewallRuleGroup`, `CreateFirewallDomainList`, `CreateF... |
 | [F10](#f10) | CloudTrail: start logging and select events on a Trail (and organization trails) | platform-foundation | 5 | 28 / 0 / 47 | M | Good for the first three: `StartLogging`, `StopLogging`, `PutEventSelectors`, `GetEventSel... |
 | [F11](#f11) | ECR: registry policy, registry scanning, replication (ours), signing | platform-foundation | 6 | 3 / 4 / 15 | S, S | Good: `PutRegistryPolicy`, `PutRegistryScanningConfiguration`, `PutReplicationConfiguratio... |
 | [F12](#f12) | Identity Store: users, groups and group memberships of the Identity Center directory | platform-foundation | 3 | 0 / 0 / 45 | M (User), S, S | Good: `CreateUser`, `CreateGroup`, `CreateGroupMembership`, `DescribeUser`, `ListUsers`, `... |
 | [F13](#f13) | Network Manager (Cloud WAN) and Direct Connect (wait for ACK on the first) | platform-foundation | 6 | 0 / 0 / 48 | wait; M for the gateway | Network Manager: `CreateGlobalNetwork`, `CreateCoreNetwork`, `CreateSite` are implemented ... |
-| [F14](#f14) | Config: recorder, delivery channel, rules, aggregators, organization rules and conformance packs | security-adjacent | 11 | 0 / 0 / 118 | L (new service, eleven resources); S each after the first | Good for the first six: `PutConfigRule`, `PutConfigurationRecorder`, `PutDeliveryChannel`,... |
-| [F15](#f15) | GuardDuty: detector, filters, IP and threat intel sets, members | security-adjacent | 8 | 0 / 11 / 58 | L (new service) | Partial: `CreateDetector`, `UpdateDetector`, `CreateFilter`, `EnableOrganizationAdminAccou... |
+| [F14](#f14) | Config: recorder, delivery channel, rules, aggregators, organization rules and conformance packs | security-adjacent | 11 | 0 / 118 / 0 | L (new service, eleven resources); S each after the first | Good for the first six: `PutConfigRule`, `PutConfigurationRecorder`, `PutDeliveryChannel`,... |
+| [F15](#f15) | GuardDuty: detector, filters, IP and threat intel sets, members | security-adjacent | 8 | 0 / 69 / 0 | L (new service) | Partial: `CreateDetector`, `UpdateDetector`, `CreateFilter`, `EnableOrganizationAdminAccou... |
 | [F16](#f16) | Security Hub: hub, standards, organization configuration, aggregator, automation rules | security-adjacent | 9 | 0 / 141 / 0 | L (new service; `AutomationRule` has 105 attributes and `Insight` 238) | Partial: `EnableSecurityHub`, `EnableOrganizationAdminAccount`, `UpdateOrganizationConfigu... |
 | [F17](#f17) | Secrets Manager: resource policy and rotation (wait for ACK on rotation) | security-adjacent | 4 | 8 / 0 / 37 | S | Good: `CreateSecret`, `RotateSecret`, `PutResourcePolicy` are implemented (21 of 23 operat... |
 | [F18](#f18) | Access Analyzer, Macie, Inspector, Detective, Firewall Manager, Audit Manager, Security Lake | security-adjacent | 9 | 0 / 0 / 224 | L each for a new service | Macie, Inspector2: partial |
@@ -186,7 +186,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F08 Route 53: DNSSEC and key-signing keys, query logging, CIDR collections, second-VPC association
 
-- **Resources:** `route53/DNSSEC`, `route53/KeySigningKey`, `route53/QueryLoggingConfig`, `route53/HostedZone`, `route53/CidrCollection`, `route53/TrafficPolicy`, `route53/TrafficPolicyInstance`. Today ACK covers 7, ours 0, nothing covers 20 of 27 attributes.
+- **Resources:** `route53/DNSSEC`, `route53/KeySigningKey`, `route53/QueryLoggingConfig`, `route53/HostedZone`, `route53/CidrCollection`, `route53/TrafficPolicy`, `route53/TrafficPolicyInstance`. Today ACK covers 7, ours 10, nothing covers 10 of 27 attributes.
 - **Why first:** ACK covers hosted zones, records and health checks. DNSSEC signing, query logging and attaching a private zone to more than one VPC (ACK's `HostedZone.vpc` is one VPC) are the platform and security teams' DNS gaps.
 - **Proposed kinds:** `route53.aws.hfl.dev/KeySigningKey` (generated, needs a KMS key reference), `DNSSEC` (hand-written: `EnableHostedZoneDNSSEC`/`DisableHostedZoneDNSSEC`), `QueryLoggingConfig` (generated), `VPCAssociation` (hand-written sidecar by `hostedZoneRef`: `AssociateVPCWithHostedZone`, `DisassociateVPCFromHostedZone`, plus the cross-account authorization calls).
 - **Upstream:** route53-controller v1.8.0 ignores `KeySigningKey`, `QueryLoggingConfig`, `VPCAssociationAuthorization`, `CidrCollection`, `ReusableDelegationSet`, `TrafficPolicy*`. The three open PRs (#134, #121, #120) are comparison fixes.
@@ -198,7 +198,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F09 Route 53 Resolver: DNS Firewall, resolver endpoint settings, resolver configuration
 
-- **Resources:** `route53resolver/FirewallDomainList`, `route53resolver/FirewallRuleGroup`, `route53resolver/FirewallRuleGroupAssociation`, `route53resolver/FirewallConfig`, `route53resolver/ResolverEndpoint`, `route53resolver/ResolverConfig`, `route53resolver/ResolverDNSSECConfig`, `route53resolver/ResolverRule`. Today ACK covers 18, ours 0, nothing covers 44 of 62 attributes.
+- **Resources:** `route53resolver/FirewallDomainList`, `route53resolver/FirewallRuleGroup`, `route53resolver/FirewallRuleGroupAssociation`, `route53resolver/FirewallConfig`, `route53resolver/ResolverEndpoint`, `route53resolver/ResolverConfig`, `route53resolver/ResolverDNSSECConfig`, `route53resolver/ResolverRule`. Today ACK covers 18, ours 34, nothing covers 10 of 62 attributes.
 - **Why first:** DNS Firewall is a security team's egress control for DNS; the resolver endpoint's protocols and IPv6 settings are what ACK's generator ignores.
 - **Proposed kinds:** `FirewallDomainList`, `FirewallRuleGroup` (rules as a field), `FirewallRuleGroupAssociation`, all generated; `FirewallConfig` and `ResolverConfig`, hand-written per-VPC singletons; the `ResolverEndpoint` fields (`protocols`, `preferredInstanceType`, `ipv6InternetAccessEnabled`) upstream.
 - **Upstream:** route53resolver-controller v1.11.0 ignores `FirewallDomainList`, `FirewallRule`, `FirewallRuleGroup`, `OutpostResolver`, and the endpoint fields named above. PRs #90 and #89 are fixes.
@@ -258,7 +258,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F14 Config: recorder, delivery channel, rules, aggregators, organization rules and conformance packs
 
-- **Resources:** `config/ConfigurationRecorder`, `config/DeliveryChannel`, `config/ConfigRule`, `config/ConfigurationAggregator`, `config/AggregationAuthorization`, `config/OrganizationConformancePack`, `config/OrganizationConfigRule`, `config/ConformancePack`, `config/RemediationConfiguration`, `config/StoredQuery`, `config/Connector`. Today ACK covers 0, ours 0, nothing covers 118 of 118 attributes.
+- **Resources:** `config/ConfigurationRecorder`, `config/DeliveryChannel`, `config/ConfigRule`, `config/ConfigurationAggregator`, `config/AggregationAuthorization`, `config/OrganizationConformancePack`, `config/OrganizationConfigRule`, `config/ConformancePack`, `config/RemediationConfiguration`, `config/StoredQuery`, `config/Connector`. Today ACK covers 0, ours 118, nothing covers 0 of 118 attributes.
 - **Why first:** The compliance record: what a security team turns on in every account. No ACK controller; community #2445 (open since 2025-04-29, seven comments) asks for `ConfigRule`, `OrganizationConfigRule` and `OrganizationConformancePack`.
 - **Proposed kinds:** A new service `config.aws.hfl.dev`: `ConfigurationRecorder` (and its start, `StartConfigurationRecorder`) and `DeliveryChannel` first (Config does nothing without them), then `ConfigRule`, `ConfigurationAggregator`, `AggregationAuthorization`, `OrganizationConformancePack`; all are put/describe/delete shapes, so mostly generated with `operation_type` mappings like our `ScalingPolicy`.
 - **Upstream:** No controller, no pull request. Community #2445 only.
@@ -270,7 +270,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F15 GuardDuty: detector, filters, IP and threat intel sets, members
 
-- **Resources:** `guardduty/Detector`, `guardduty/Filter`, `guardduty/IPSet`, `guardduty/ThreatIntelSet`, `guardduty/Member`, `guardduty/PublishingDestination`, `guardduty/MalwareProtectionPlan`, `guardduty/Master`. Today ACK covers 0, ours 11, nothing covers 58 of 69 attributes.
+- **Resources:** `guardduty/Detector`, `guardduty/Filter`, `guardduty/IPSet`, `guardduty/ThreatIntelSet`, `guardduty/Member`, `guardduty/PublishingDestination`, `guardduty/MalwareProtectionPlan`, `guardduty/Master`. Today ACK covers 0, ours 69, nothing covers 0 of 69 attributes.
 - **Why first:** Threat detection every security team enables in every account. Community #2916 (open since 2026-06-14) asks for a controller; no PR.
 - **Proposed kinds:** A new service `guardduty.aws.hfl.dev`: `Detector` (generated; features as a field), `Filter`, `IPSet`, `ThreatIntelSet`, `Member`, `PublishingDestination`, `MalwareProtectionPlan`.
 - **Upstream:** No controller or PR. Community #2916.
@@ -466,15 +466,15 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `DNSSEC` | none | - | whole resource (1 attr) | controller exists; resource not in it | 1 | no: `EnableHostedZoneDNSSEC` is not in moto | S | `route53.aws.hfl.dev/DNSSEC`, hand-written (`EnableHostedZoneDNSSEC`/`DisableHostedZoneDNSSEC`), F08 | [F08](#f08) |
 | `HostedZone` | `HostedZone` v1.8.0: 7/9 | - | 2 of 9 attrs: `VPCs[] (ACK `vpc`: one VPC only)`, `HostedZoneFeatures.EnableAcceleratedRecovery`, `QueryLoggingConfig` | kind released; the rest is not in it | 1 | service-level only: moto `route53`: 30 of 71 operations: hosted zones, record sets, health checks, query loggi... | S | the fields upstream; a second VPC is `VPCAssociation` (F08) | [F08](#f08) |
-| `KeySigningKey` | none | - | whole resource (4 attrs) | ignored in ACK's generator.yaml | 1 | no: `CreateKeySigningKey` is not in moto | S | `route53.aws.hfl.dev/KeySigningKey`, generated (`CreateKeySigningKey`), F08 | [F08](#f08) |
-| `CidrCollection` | none | - | whole resource (3 attrs) | ignored in ACK's generator.yaml | 0 | no: not in moto's route53 | S | `route53.aws.hfl.dev/CidrCollection`; low priority | [F08](#f08) |
-| `QueryLoggingConfig` | none | - | whole resource (2 attrs) | ignored in ACK's generator.yaml | 0 | yes: `CreateQueryLoggingConfig` is implemented | S | `route53.aws.hfl.dev/QueryLoggingConfig`, generated (`CreateQueryLoggingConfig`), F08 | [F08](#f08) |
 | `TrafficPolicy` | none | - | whole resource (3 attrs) | ignored in ACK's generator.yaml | 0 | service-level only: moto `route53`: 30 of 71 operations: hosted zones, record sets, health checks, query loggi... | S | `route53.aws.hfl.dev/TrafficPolicy`; low priority (traffic flow) | [F08](#f08) |
 | `TrafficPolicyInstance` | none | - | whole resource (5 attrs) | ignored in ACK's generator.yaml | 0 | service-level only: moto `route53`: 30 of 71 operations: hosted zones, record sets, health checks, query loggi... | S | `route53.aws.hfl.dev/TrafficPolicyInstance`; low priority | [F08](#f08) |
 | `RecordSet` | `RecordSet` v1.8.0: 19/21 | - | 2 of 21 attrs: `Comment`, `HostedZoneName` | kind released; the rest is not in it | 4 | service-level only: moto `route53`: 30 of 71 operations: hosted zones, record sets, health checks, query loggi... | M | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
 | `DelegationSet` | none | - | no writable properties in CloudFormation | controller exists; resource not in it | 1 | service-level only: moto `route53`: 30 of 71 operations: hosted zones, record sets, health checks, query loggi... | - | - |  |
+| `DNSSEC` | none | `DNSSEC (Cloud Control)`: +1 | none | controller exists; resource not in it | 1 | no: `EnableHostedZoneDNSSEC` is not in moto | - | `route53.aws.hfl.dev/DNSSEC`, hand-written (`EnableHostedZoneDNSSEC`/`DisableHostedZoneDNSSEC`), F08 | [F08](#f08) |
+| `KeySigningKey` | none | `KeySigningKey (Cloud Control)`: +4 | none | ignored in ACK's generator.yaml | 1 | no: `CreateKeySigningKey` is not in moto | - | `route53.aws.hfl.dev/KeySigningKey`, generated (`CreateKeySigningKey`), F08 | [F08](#f08) |
+| `CidrCollection` | none | `CidrCollection (Cloud Control)`: +3 | none | ignored in ACK's generator.yaml | 0 | no: not in moto's route53 | - | `route53.aws.hfl.dev/CidrCollection`; low priority | [F08](#f08) |
+| `QueryLoggingConfig` | none | `QueryLoggingConfig (Cloud Control)`: +2 | none | ignored in ACK's generator.yaml | 0 | yes: `CreateQueryLoggingConfig` is implemented | - | `route53.aws.hfl.dev/QueryLoggingConfig`, generated (`CreateQueryLoggingConfig`), F08 | [F08](#f08) |
 | `HealthCheck` | `HealthCheck` v1.8.0: 20/20 | - | none | released | 0 | service-level only: moto `route53`: 30 of 71 operations: hosted zones, record sets, health checks, query loggi... | - | none (covered) |  |
 | `RecordSetGroup` | none | - | 28 attrs, covered inline: ACK `RecordSet` (one record per object; CloudFormation's group is a list of them) | controller exists; resource not in it | 0 | service-level only: moto `route53`: 30 of 71 operations: hosted zones, record sets, health checks, query loggi... | - | none (a chart writes one `RecordSet` per record) |  |
 ### platform-foundation: `route53resolver`
@@ -486,16 +486,16 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `FirewallDomainList` | none | - | whole resource (5 attrs) | ignored in ACK's generator.yaml | 1 | service-level only: moto `route53resolver`: 28 of 72 operations: endpoints, rules, rule associations, query lo... | S | `route53resolver.aws.hfl.dev/FirewallDomainList`, generated, F09 | [F09](#f09) |
 | `ResolverRule` | `ResolverRule` v1.11.0: 9/12 | - | 3 of 12 attrs: `DelegationRecord`, `TargetIps[].Protocol`, `TargetIps[].ServerNameIndication` | kind released; the rest is not in it | 1 | service-level only: moto `route53resolver`: 28 of 72 operations: endpoints, rules, rule associations, query lo... | S | the missing fields: upstream PR or our copy (plan section 9, question 1) | [F09](#f09) |
-| `FirewallRuleGroup` | none | - | whole resource (17 attrs) | ignored in ACK's generator.yaml | 1 | service-level only: moto `route53resolver`: 28 of 72 operations: endpoints, rules, rule associations, query lo... | M | `route53resolver.aws.hfl.dev/FirewallRuleGroup`, generated, with rules as a field (CloudFormation does), F09 | [F09](#f09) |
 | `ResolverEndpoint` | `ResolverEndpoint` v1.11.0: 9/16 | - | 7 of 16 attrs: `Protocols[]`, `PreferredInstanceType`, `OutpostArn`, `Dns64Enabled`, `Ipv6InternetAccessEnabled` and 2 more | ACK ignores `Protocols`, `PreferredInstanceType` and `OutpostArn` in generator.yaml | 1 | service-level only: moto `route53resolver`: 28 of 72 operations: endpoints, rules, rule associations, query lo... | M | the missing fields: upstream PR or our copy (plan section 9, question 1) | [F09](#f09) |
-| `FirewallConfig` | none | - | whole resource (2 attrs) | controller exists; resource not in it | 0 | service-level only: moto `route53resolver`: 28 of 72 operations: endpoints, rules, rule associations, query lo... | S | `route53resolver.aws.hfl.dev/FirewallConfig`, hand-written per-VPC setting; F09 | [F09](#f09) |
-| `FirewallRuleGroupAssociation` | none | - | whole resource (7 attrs) | controller exists; resource not in it | 0 | service-level only: moto `route53resolver`: 28 of 72 operations: endpoints, rules, rule associations, query lo... | S | `route53resolver.aws.hfl.dev/FirewallRuleGroupAssociation`, generated, F09 | [F09](#f09) |
-| `ResolverConfig` | none | - | whole resource (2 attrs) | controller exists; resource not in it | 0 | service-level only: moto `route53resolver`: 28 of 72 operations: endpoints, rules, rule associations, query lo... | S | `route53resolver.aws.hfl.dev/ResolverConfig`, generated | [F09](#f09) |
-| `ResolverDNSSECConfig` | none | - | whole resource (1 attr) | controller exists; resource not in it | 0 | service-level only: moto `route53resolver`: 28 of 72 operations: endpoints, rules, rule associations, query lo... | S | `route53resolver.aws.hfl.dev/ResolverDNSSECConfig`, generated | [F09](#f09) |
 | `OutpostResolver` | none | - | whole resource (6 attrs) | ignored in ACK's generator.yaml | 0 | service-level only: moto `route53resolver`: 28 of 72 operations: endpoints, rules, rule associations, query lo... | S | `route53resolver.aws.hfl.dev/OutpostResolver`, generated |  |
+| `FirewallDomainList` | none | `FirewallDomainList (Cloud Control)`: +5 | none | ignored in ACK's generator.yaml | 1 | service-level only: moto `route53resolver`: 28 of 72 operations: endpoints, rules, rule associations, query lo... | - | `route53resolver.aws.hfl.dev/FirewallDomainList`, generated, F09 | [F09](#f09) |
 | `ResolverRuleAssociation` | `ResolverRuleAssociation` v1.11.0: 3/3 | - | none | released | 1 | service-level only: moto `route53resolver`: 28 of 72 operations: endpoints, rules, rule associations, query lo... | - | none (covered) |  |
+| `FirewallRuleGroup` | none | `FirewallRuleGroup (Cloud Control)`: +17 | none | ignored in ACK's generator.yaml | 1 | service-level only: moto `route53resolver`: 28 of 72 operations: endpoints, rules, rule associations, query lo... | - | `route53resolver.aws.hfl.dev/FirewallRuleGroup`, generated, with rules as a field (CloudFormation does), F09 | [F09](#f09) |
+| `FirewallConfig` | none | `FirewallConfig (Cloud Control)`: +2 | none | controller exists; resource not in it | 0 | service-level only: moto `route53resolver`: 28 of 72 operations: endpoints, rules, rule associations, query lo... | - | `route53resolver.aws.hfl.dev/FirewallConfig`, hand-written per-VPC setting; F09 | [F09](#f09) |
+| `FirewallRuleGroupAssociation` | none | `FirewallRuleGroupAssociation (Cloud Control)`: +7 | none | controller exists; resource not in it | 0 | service-level only: moto `route53resolver`: 28 of 72 operations: endpoints, rules, rule associations, query lo... | - | `route53resolver.aws.hfl.dev/FirewallRuleGroupAssociation`, generated, F09 | [F09](#f09) |
+| `ResolverConfig` | none | `ResolverConfig (Cloud Control)`: +2 | none | controller exists; resource not in it | 0 | service-level only: moto `route53resolver`: 28 of 72 operations: endpoints, rules, rule associations, query lo... | - | none (covered) | [F09](#f09) |
+| `ResolverDNSSECConfig` | none | `ResolverDNSSECConfig (Cloud Control)`: +1 | none | controller exists; resource not in it | 0 | service-level only: moto `route53resolver`: 28 of 72 operations: endpoints, rules, rule associations, query lo... | - | none (covered) | [F09](#f09) |
 | `ResolverQueryLoggingConfig` | `ResolverQueryLogConfig` v1.11.0: 4/4 | - | none | released | 0 | service-level only: moto `route53resolver`: 28 of 72 operations: endpoints, rules, rule associations, query lo... | - | none (covered) |  |
 | `ResolverQueryLoggingConfigAssociation` | `ResolverQueryLogConfigAssociation` v1.11.0: 2/2 | - | none | released | 0 | service-level only: moto `route53resolver`: 28 of 72 operations: endpoints, rules, rule associations, query lo... | - | none (covered) |  |
 ### platform-foundation: `ram`
@@ -722,17 +722,17 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `AggregationAuthorization` | none | - | whole resource (4 attrs) | no released controller | 0 | yes: `PutAggregationAuthorization` | S | `config.aws.hfl.dev/AggregationAuthorization`, in a new service manager | [F14](#f14) |
-| `ConfigurationAggregator` | none | - | whole resource (9 attrs) | no released controller | 0 | yes: `PutConfigurationAggregator` | S | `config.aws.hfl.dev/ConfigurationAggregator`, in a new service manager | [F14](#f14) |
-| `ConfigurationRecorder` | none | - | whole resource (12 attrs) | no released controller | 0 | yes: `PutConfigurationRecorder`, `StartConfigurationRecorder` | S | `config.aws.hfl.dev/ConfigurationRecorder`, in a new service manager | [F14](#f14) |
-| `ConformancePack` | none | - | whole resource (11 attrs) | no released controller | 0 | no: `PutConformancePack` is not in moto | S | `config.aws.hfl.dev/ConformancePack`, in a new service manager | [F14](#f14) |
-| `Connector` | none | - | whole resource (4 attrs) | no released controller | 0 | service-level only: moto `config`: 38 of 102 operations: `PutConfigRule`, `PutConfigurationRecorder`, `PutDeli... | S | `config.aws.hfl.dev/Connector`, in a new service manager | [F14](#f14) |
-| `DeliveryChannel` | none | - | whole resource (6 attrs) | no released controller | 0 | yes: `PutDeliveryChannel` | S | `config.aws.hfl.dev/DeliveryChannel`, in a new service manager | [F14](#f14) |
-| `OrganizationConformancePack` | none | - | whole resource (10 attrs) | no released controller | 0 | yes: `PutOrganizationConformancePack` | S | `config.aws.hfl.dev/OrganizationConformancePack`, in a new service manager | [F14](#f14) |
-| `RemediationConfiguration` | none | - | whole resource (11 attrs) | no released controller | 0 | no: `PutRemediationConfigurations` is not in moto | S | `config.aws.hfl.dev/RemediationConfiguration`, in a new service manager | [F14](#f14) |
-| `StoredQuery` | none | - | whole resource (5 attrs) | no released controller | 0 | no: `PutStoredQuery` is not in moto | S | `config.aws.hfl.dev/StoredQuery`, in a new service manager | [F14](#f14) |
-| `ConfigRule` | none | - | whole resource (17 attrs) | no released controller | 0 | yes: `PutConfigRule` | M | `config.aws.hfl.dev/ConfigRule`, in a new service manager | [F14](#f14) |
-| `OrganizationConfigRule` | none | - | whole resource (29 attrs) | no released controller | 0 | no: `PutOrganizationConfigRule` is not in moto | M | `config.aws.hfl.dev/OrganizationConfigRule`, in a new service manager | [F14](#f14) |
+| `AggregationAuthorization` | none | `AggregationAuthorization (Cloud Control)`: +4 | none | no released controller | 0 | yes: `PutAggregationAuthorization` | - | none (covered) | [F14](#f14) |
+| `ConfigurationAggregator` | none | `ConfigurationAggregator (Cloud Control)`: +9 | none | no released controller | 0 | yes: `PutConfigurationAggregator` | - | none (covered) | [F14](#f14) |
+| `ConfigurationRecorder` | none | `ConfigurationRecorder (Cloud Control)`: +12 | none | no released controller | 0 | yes: `PutConfigurationRecorder`, `StartConfigurationRecorder` | - | none (covered) | [F14](#f14) |
+| `ConformancePack` | none | `ConformancePack (Cloud Control)`: +11 | none | no released controller | 0 | no: `PutConformancePack` is not in moto | - | none (covered) | [F14](#f14) |
+| `Connector` | none | `Connector (Cloud Control)`: +4 | none | no released controller | 0 | service-level only: moto `config`: 38 of 102 operations: `PutConfigRule`, `PutConfigurationRecorder`, `PutDeli... | - | none (covered) | [F14](#f14) |
+| `DeliveryChannel` | none | `DeliveryChannel (Cloud Control)`: +6 | none | no released controller | 0 | yes: `PutDeliveryChannel` | - | none (covered) | [F14](#f14) |
+| `OrganizationConformancePack` | none | `OrganizationConformancePack (Cloud Control)`: +10 | none | no released controller | 0 | yes: `PutOrganizationConformancePack` | - | none (covered) | [F14](#f14) |
+| `RemediationConfiguration` | none | `RemediationConfiguration (Cloud Control)`: +11 | none | no released controller | 0 | no: `PutRemediationConfigurations` is not in moto | - | none (covered) | [F14](#f14) |
+| `StoredQuery` | none | `StoredQuery (Cloud Control)`: +5 | none | no released controller | 0 | no: `PutStoredQuery` is not in moto | - | none (covered) | [F14](#f14) |
+| `ConfigRule` | none | `ConfigRule (Cloud Control)`: +17 | none | no released controller | 0 | yes: `PutConfigRule` | - | none (covered) | [F14](#f14) |
+| `OrganizationConfigRule` | none | `OrganizationConfigRule (Cloud Control)`: +29 | none | no released controller | 0 | no: `PutOrganizationConfigRule` is not in moto | - | none (covered) | [F14](#f14) |
 ### security-adjacent: `guardduty`
 
 - **ACK controller:** none
@@ -742,17 +742,17 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `IPSet` | none | - | whole resource (8 attrs) | no released controller | 0 | no: `CreateIPSet` is not in moto | S | `guardduty.aws.hfl.dev/IPSet`, in a new service manager | [F15](#f15) |
-| `MalwareProtectionPlan` | none | - | whole resource (6 attrs) | no released controller | 0 | no: `CreateMalwareProtectionPlan` is not in moto | S | `guardduty.aws.hfl.dev/MalwareProtectionPlan`, in a new service manager | [F15](#f15) |
-| `Master` | none | - | whole resource (3 attrs) | no released controller | 0 | service-level only: moto `guardduty`: 12 of 102 operations: `CreateDetector`, `UpdateDetector`, `CreateFilter`... | S | `guardduty.aws.hfl.dev/Master`, in a new service manager | [F15](#f15) |
-| `Member` | none | - | whole resource (6 attrs) | no released controller | 0 | no: `CreateMembers` is not in moto | S | `guardduty.aws.hfl.dev/Member`, in a new service manager | [F15](#f15) |
-| `PublishingDestination` | none | - | whole resource (6 attrs) | no released controller | 0 | no: `CreatePublishingDestination` is not in moto | S | `guardduty.aws.hfl.dev/PublishingDestination`, in a new service manager | [F15](#f15) |
-| `ThreatIntelSet` | none | - | whole resource (8 attrs) | no released controller | 0 | no: `CreateThreatIntelSet` is not in moto | S | `guardduty.aws.hfl.dev/ThreatIntelSet`, in a new service manager | [F15](#f15) |
-| `Filter` | none | - | whole resource (21 attrs) | no released controller | 0 | yes: `CreateFilter` | M | `guardduty.aws.hfl.dev/Filter`, in a new service manager | [F15](#f15) |
 | `CustomDetectionRuleAssociation` | none | - | whole resource (4 attrs) | no released controller | 0 | service-level only: moto `guardduty`: 12 of 102 operations: `CreateDetector`, `UpdateDetector`, `CreateFilter`... | S | `guardduty.aws.hfl.dev/CustomDetectionRuleAssociation`, in a new service manager |  |
 | `ThreatEntitySet` | none | - | whole resource (8 attrs) | no released controller | 0 | service-level only: moto `guardduty`: 12 of 102 operations: `CreateDetector`, `UpdateDetector`, `CreateFilter`... | S | `guardduty.aws.hfl.dev/ThreatEntitySet`, in a new service manager |  |
 | `TrustedEntitySet` | none | - | whole resource (8 attrs) | no released controller | 0 | service-level only: moto `guardduty`: 12 of 102 operations: `CreateDetector`, `UpdateDetector`, `CreateFilter`... | S | `guardduty.aws.hfl.dev/TrustedEntitySet`, in a new service manager |  |
 | `Detector` | none | `Detector (Cloud Control)`: +11 | none | no released controller | 0 | yes: `CreateDetector`, `UpdateDetector` | - | none (covered) | [F15](#f15) |
+| `IPSet` | none | `IPSet (Cloud Control)`: +8 | none | no released controller | 0 | no: `CreateIPSet` is not in moto | - | none (covered) | [F15](#f15) |
+| `MalwareProtectionPlan` | none | `MalwareProtectionPlan (Cloud Control)`: +6 | none | no released controller | 0 | no: `CreateMalwareProtectionPlan` is not in moto | - | none (covered) | [F15](#f15) |
+| `Master` | none | `Master (Cloud Control)`: +3 | none | no released controller | 0 | service-level only: moto `guardduty`: 12 of 102 operations: `CreateDetector`, `UpdateDetector`, `CreateFilter`... | - | none (covered) | [F15](#f15) |
+| `Member` | none | `Member (Cloud Control)`: +6 | none | no released controller | 0 | no: `CreateMembers` is not in moto | - | none (covered) | [F15](#f15) |
+| `PublishingDestination` | none | `PublishingDestination (Cloud Control)`: +6 | none | no released controller | 0 | no: `CreatePublishingDestination` is not in moto | - | none (covered) | [F15](#f15) |
+| `ThreatIntelSet` | none | `ThreatIntelSet (Cloud Control)`: +8 | none | no released controller | 0 | no: `CreateThreatIntelSet` is not in moto | - | none (covered) | [F15](#f15) |
+| `Filter` | none | `Filter (Cloud Control)`: +21 | none | no released controller | 0 | yes: `CreateFilter` | - | none (covered) | [F15](#f15) |
 ### security-adjacent: `securityhub`
 
 - **ACK controller:** none

@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConfigConfigurationAggregator",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigConfigurationAggregatorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeConfigurationAggregators",
+        "config:PutConfigurationAggregator",
+        "config:TagResource",
+        "iam:PassRole",
+        "organizations:EnableAWSServiceAccess",
+        "organizations:ListDelegatedAdministrators"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigConfigurationAggregatorRead",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeConfigurationAggregators",
+        "config:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigConfigurationAggregatorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeConfigurationAggregators",
+        "config:ListTagsForResource",
+        "config:PutConfigurationAggregator",
+        "config:TagResource",
+        "config:UntagResource",
+        "iam:PassRole",
+        "organizations:EnableAWSServiceAccess",
+        "organizations:ListDelegatedAdministrators"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigConfigurationAggregatorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "config:DeleteConfigurationAggregator",
+        "config:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

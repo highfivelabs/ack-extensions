@@ -1,26 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="660" height="138" viewBox="0 0 660 138" role="img" aria-label="All services: official 7.0%, ours beyond official 0.6%, uncovered 92.4% of 85773 attributes; resources: official 14.2%, ours beyond official 2.3%, uncovered 83.5% of 1875">
-<title>All services: official 7.0%, ours beyond official 0.6%, uncovered 92.4% of 85773 attributes; resources: official 14.2%, ours beyond official 2.3%, uncovered 83.5% of 1875</title>
-<rect x="0.5" y="0.5" width="659" height="137" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="660" height="212" viewBox="0 0 660 212" role="img" aria-label="All services: official 7.0%, ours beyond official 0.9%, uncovered 92.1% of 85773 attributes; Terraform aws provider (estimate): 64.4% of 85773 attributes, at least 48.8%; resources: official 14.2%, ours beyond official 3.8%, uncovered 82.0% of 1875">
+<title>All services: official 7.0%, ours beyond official 0.9%, uncovered 92.1% of 85773 attributes; Terraform aws provider (estimate): 64.4% of 85773 attributes, at least 48.8%; resources: official 14.2%, ours beyond official 3.8%, uncovered 82.0% of 1875</title>
+<rect x="0.5" y="0.5" width="659" height="211" rx="6" fill="#ffffff" stroke="#d0d7de"/>
 <text x="10" y="19" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" dominant-baseline="central">Attributes (85,773)</text>
 <rect x="10" y="28" width="640" height="26" rx="3" fill="#d0d7de"/>
 <rect x="10" y="28" width="45" height="26" fill="#2f81f7"/>
 <text x="32.5" y="42" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">7.0%</text>
-<rect x="55" y="28" width="3.8" height="26" fill="#2da44e"/>
-<rect x="58.8" y="28" width="591.2" height="26" fill="#d0d7de"/>
-<text x="354.4" y="42" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">92.4%</text>
+<rect x="55" y="28" width="5.4" height="26" fill="#2da44e"/>
+<rect x="60.4" y="28" width="589.6" height="26" fill="#d0d7de"/>
+<text x="355.2" y="42" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">92.1%</text>
 <rect x="10.5" y="28.5" width="639" height="25" rx="3" fill="none" stroke="#8c959f"/>
 <text x="10" y="71" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" dominant-baseline="central">Resources (1,875)</text>
 <rect x="10" y="80" width="640" height="26" rx="3" fill="#d0d7de"/>
 <rect x="10" y="80" width="90.7" height="26" fill="#2f81f7"/>
 <text x="55.3" y="94" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">14.2%</text>
-<rect x="100.7" y="80" width="15.1" height="26" fill="#2da44e"/>
-<rect x="115.8" y="80" width="534.2" height="26" fill="#d0d7de"/>
-<text x="382.9" y="94" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">83.5%</text>
+<rect x="100.7" y="80" width="24.6" height="26" fill="#2da44e"/>
+<rect x="125.3" y="80" width="524.7" height="26" fill="#d0d7de"/>
+<text x="387.6" y="94" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">82.0%</text>
 <rect x="10.5" y="80.5" width="639" height="25" rx="3" fill="none" stroke="#8c959f"/>
-<rect x="10.5" y="115.5" width="11" height="11" rx="2" fill="#2f81f7" stroke="#8c959f"/>
-<text x="27" y="121" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#1f2328" dominant-baseline="central">ACK</text>
-<rect x="66.5" y="115.5" width="11" height="11" rx="2" fill="#2da44e" stroke="#8c959f"/>
-<text x="83" y="121" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#1f2328" dominant-baseline="central">ours beyond ACK</text>
-<rect x="206.5" y="115.5" width="11" height="11" rx="2" fill="#d0d7de" stroke="#8c959f"/>
-<text x="223" y="121" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#1f2328" dominant-baseline="central">uncovered</text>
+<text x="10" y="123" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" dominant-baseline="central">Terraform aws provider, attributes (85,773): an estimate, not a measure of a controller</text>
+<rect x="10" y="132" width="640" height="26" rx="3" fill="#d0d7de"/>
+<rect x="10" y="132" width="412.4" height="26" fill="#7b42bc"/>
+<rect x="321.3" y="132" width="2" height="26" fill="#1f2328"/>
+<text x="216.2" y="146" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">~64.4%</text>
+<rect x="10.5" y="132.5" width="639" height="25" rx="3" fill="none" stroke="#8c959f"/>
+<rect x="10.5" y="167.5" width="11" height="11" rx="2" fill="#2f81f7" stroke="#8c959f"/>
+<text x="27" y="173" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#1f2328" dominant-baseline="central">ACK</text>
+<rect x="66.5" y="167.5" width="11" height="11" rx="2" fill="#2da44e" stroke="#8c959f"/>
+<text x="83" y="173" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#1f2328" dominant-baseline="central">ours beyond ACK</text>
+<rect x="206.5" y="167.5" width="11" height="11" rx="2" fill="#d0d7de" stroke="#8c959f"/>
+<text x="223" y="173" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#1f2328" dominant-baseline="central">uncovered</text>
+<rect x="10.5" y="189.5" width="11" height="11" rx="2" fill="#7b42bc" stroke="#8c959f"/>
+<text x="27" y="195" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#1f2328" dominant-baseline="central">Terraform aws, estimate (tick: strict floor)</text>
 </svg>
