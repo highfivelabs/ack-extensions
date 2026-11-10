@@ -1,0 +1,71 @@
+# Copyright 2026 High Five Labs
+# SPDX-License-Identifier: Apache-2.0
+#
+# On a v* tag: build the operator and every manager image with ko, the way
+# tests/operator/run.sh builds them (config/default's ko:// references),
+# push them to the High Five Labs OCI registry tagged with the git tag, and
+# keep the resolved install manifest as the run's `install` artifact.
+#
+# The registry is written through Workload Identity Federation as
+# factory-offload@hfl-dev-514205; no key is stored here. It runs only when
+# the repository variable RELEASE_ENABLED is "true", which is set once the
+# WIF provider admits this repository (the PR that added this file says
+# what to change).
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  images:
+    if: vars.RELEASE_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      REGISTRY: us-central1-docker.pkg.dev
+      KO_DOCKER_REPO: us-central1-docker.pkg.dev/hfl-dev-514205/hfl-oci/ack-extensions
+      TAG: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/tools
+      - id: auth
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+        with:
+          workload_identity_provider: projects/361760340954/locations/global/workloadIdentityPools/github/providers/factory
+          service_account: factory-offload@hfl-dev-514205.iam.gserviceaccount.com
+          token_format: access_token
+      - name: Log ko in to the registry
+        env:
+          TOKEN: ${{ steps.auth.outputs.access_token }}
+        run: printf '%s' "${TOKEN}" | ko login "${REGISTRY}" --username oauth2accesstoken --password-stdin
+      - name: Build and push the images
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          # --preserve-import-paths: every manager's main package is named
+          # cmd/controller, so the import path keeps their images apart.
+          kubectl kustomize config/default \
+            | GOTOOLCHAIN=local ko resolve --preserve-import-paths --tags "${TAG}" \
+                --platform=linux/amd64,linux/arm64 -f - >"out/ack-extensions-${TAG}.yaml"
+          {
+            echo "### Images pushed for ${TAG}"
+            echo
+            grep -o "${KO_DOCKER_REPO}/[^\"' ]*" "out/ack-extensions-${TAG}.yaml" | sort -u | sed 's/^/- /'
+          } >> "${GITHUB_STEP_SUMMARY}"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: install
+          path: out/

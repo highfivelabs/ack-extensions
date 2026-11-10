@@ -1,0 +1,67 @@
+# Copyright 2026 High Five Labs
+# SPDX-License-Identifier: Apache-2.0
+#
+# The two checks docs/handoff.md runs on an offload VM, on every pull
+# request and on main: `task check` (generated files current, gofmt, vet,
+# SPDX lines, build, unit and end-to-end tests against moto) and
+# `task operator-e2e` (the operator on kind beside ACK's real
+# rds-controller, against moto in the cluster). Both after `task tools`, the
+# handoff's prep. Nothing here reaches real AWS: no credentials are given,
+# and hack/noaws (run by `task check`) keeps test paths on the fake.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/tools
+      - name: Repository tools cache (the pinned generator, bin/, moto)
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            third_party/code-generator
+            bin
+            .cache/moto-venv
+          key: repo-tools-${{ runner.os }}-${{ hashFiles('UPSTREAM.md', 'patches/**', 'Taskfile.yml', 'taskfiles/**', 'hack/moto-requirements.txt') }}
+      - run: task tools
+      - run: task check
+
+  operator-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/tools
+      - name: Repository tools cache (the pinned generator, bin/, moto)
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            third_party/code-generator
+            bin
+            .cache/moto-venv
+          key: repo-tools-${{ runner.os }}-${{ hashFiles('UPSTREAM.md', 'patches/**', 'Taskfile.yml', 'taskfiles/**', 'hack/moto-requirements.txt') }}
+      - run: task tools
+      - run: task operator-e2e
+      - name: Cluster state on failure
+        if: failure()
+        run: |
+          kubectl get pods -A -o wide || true
+          kubectl get events -A --sort-by=.lastTimestamp | tail -n 100 || true
