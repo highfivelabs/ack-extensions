@@ -2610,8 +2610,10 @@ Before it can run on a real cluster:
      6.34).
 4. CRD labels marking a gap kind and naming the upstream kind it
    anticipates, as gaps-gcp does.
-5. Offer patch 0001 upstream; comment on PRs #184 and #257 with what we
-   found (both conflict with their base).
+5. Patches 0001 and 0002 offered upstream on 2026-11-10
+   (code-generator #762 and #763, UPSTREAM.md). Comments on PRs #184 and
+   #257 with what we found (both conflict with their base) are drafted
+   and wait for the builder's approval.
 6. `hack/upstream-pr.sh`, as gaps-gcp has, to follow the PR heads copied
    from.
 7. CI: `task check` on Linux, with the envtest assets and moto cached.
