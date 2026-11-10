@@ -210,7 +210,7 @@ VM through `../offload`:
 - `tests/e2e` is one package whose tests run one after another, and takes
   about 9 to 10 minutes on a Spot VM, growing with each kind. `go test`'s
   default 10 minute timeout was hit once and is now 30 minutes
-  (`taskfiles/go.yml`, `TIMEOUT`). **The lasting fix is to run the kinds'
+  (factory `taskfiles/go.yml`, `TIMEOUT`). **The lasting fix is to run the kinds'
   tests in parallel, and that needs its own look at how
   `pkg/test/harness` shares moto and envtest** (one moto per test, a kube-
   apiserver per test, and the ports and CPU they take); do not just add
@@ -290,5 +290,5 @@ git makes has no sign-off: amend it.
 - `docs/plan.md` §2 (how a kind is built), §4.4 (moto's gaps), §5 (the ranked
   list), §6 (each kind), §7 (the operator), §8 (what is left), §9 (open
   questions).
-- `taskfiles/README.md`: how the shared tasks may be shared with other repos.
+- factory `taskfiles/README.md`: the shared `go:*` tasks, included remotely.
 - `hack/upstream.sh`, `hack/generate.sh`, `hack/coverage/`.
