@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConfigDeliveryChannel",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigDeliveryChannelCreate",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeDeliveryChannels",
+        "config:PutDeliveryChannel"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigDeliveryChannelRead",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeDeliveryChannels"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigDeliveryChannelUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeDeliveryChannels",
+        "config:PutDeliveryChannel"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigDeliveryChannelDelete",
+      "Effect": "Allow",
+      "Action": [
+        "config:DeleteDeliveryChannel"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
