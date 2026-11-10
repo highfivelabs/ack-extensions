@@ -16,8 +16,8 @@ import (
 )
 
 const (
-	readOnly = "arn:aws:iam::aws:policy/ReadOnlyAccess"
-	viewOnly = "arn:aws:iam::aws:policy/job-function/ViewOnlyAccess"
+	readOnly   = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+	s3ReadOnly = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
 )
 
 func managedPolicies(t *testing.T, e *env, inst, ps string) []string {
@@ -89,7 +89,7 @@ func TestIdentityCenter(t *testing.T) {
 
 	// A second managed policy: one replace of the list; moto has both.
 	if err := e.update(t, ps, func(o *unstructured.Unstructured) {
-		_ = unstructured.SetNestedSlice(o.Object, []any{readOnly, viewOnly}, "spec", "managedPolicies")
+		_ = unstructured.SetNestedSlice(o.Object, []any{readOnly, s3ReadOnly}, "spec", "managedPolicies")
 	}); err != nil {
 		t.Fatal(err)
 	}
