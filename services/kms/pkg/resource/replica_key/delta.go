@@ -49,3 +49,5 @@ func newResourceDelta(a *resource, b *resource) *ackcompare.Delta {
 	}
 	return delta
 }
+
+// ci-selective-demo: a throwaway change to show the selective path (not to merge).
