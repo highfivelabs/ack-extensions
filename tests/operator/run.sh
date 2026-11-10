@@ -129,6 +129,9 @@ refused "an Organization without the annotation" kubectl apply --dry-run=server 
 refused "an Organization with deletion-policy delete" kubectl apply --dry-run=server -f "${work}/org-delete.json"
 kubectl apply -f "${work}/org-retain.json" >/dev/null || fail "an Organization with deletion-policy retain was refused"
 ok "an Organization with deletion-policy retain is accepted"
+# AccountPlacement is retain-only too (an account always has a parent).
+printf '{"apiVersion":"organizations.aws.hfl.dev/v1alpha1","kind":"AccountPlacement","metadata":{"name":"app","namespace":"default"},"spec":{"accountID":"111111111111","parentID":"r-abcd"}}' >"${work}/placement-bare.json"
+refused "an AccountPlacement without the annotation" kubectl apply --dry-run=server -f "${work}/placement-bare.json"
 refused "the annotation changed to delete" kubectl -n default annotate organizations.organizations.aws.hfl.dev org services.k8s.aws/deletion-policy=delete --overwrite
 refused "the annotation removed" kubectl -n default annotate organizations.organizations.aws.hfl.dev org services.k8s.aws/deletion-policy-
 kubectl delete -f "${work}/org-retain.json" --wait=true >/dev/null || fail "the Organization could not be deleted"

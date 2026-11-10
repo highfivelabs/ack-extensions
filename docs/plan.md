@@ -1691,11 +1691,14 @@ ARN.
   (none is mapped, so `sdkDelete` is a no-op): an account always has a
   parent, and moving it back to the root on delete would take it out
   from under its OU's policies, which is the opposite of what deleting a
-  placement is for. Assumed, likely and cheap: the builder's answer to
-  question 12 (an organization is not deletable, so it is not treated as
-  such) applied to a placement; the builder to confirm. Whether the kind
-  also joins the retain-only admission policy (6.28), so that every
-  object carries `deletion-policy: retain`, follows that answer.
+  placement is for. **Assumed, for the builder to confirm:** the
+  builder's answer to question 12 (an organization is not deletable, so
+  it is not treated as such) applied to a placement; likely and cheap.
+  Following it, the kind joins the retain-only admission policy (6.28,
+  `config/admission/retain-only.yaml`), so every object carries
+  `services.k8s.aws/deletion-policy: retain`. Were the builder to want a
+  delete to move the account back to the root, the kind would map
+  `MoveAccount` as the delete too and leave the policy.
 - **One object per account.** Two placements of one account move it
   back and forth (#2369 names this); make one.
 - **Terminal:** `InvalidInputException`, `ConstraintViolationException`.
@@ -1707,7 +1710,11 @@ ARN.
 ARN the account's, and no create or update across resyncs; moved to the
 root outside Kubernetes, it is moved back; a new `parentID` moves it; an
 account already in its parent is placed (synced, ARN set); `accountID`
-cannot change; delete leaves both accounts in their parents.
+cannot change; delete leaves both accounts in their parents. With the
+retain-only policy installed: an object without the annotation, or with
+`delete`, is refused; one with `retain` places the account, its
+annotation cannot be changed or removed, and deleting it leaves the
+account in its OU. `tests/operator/run.sh` checks the refusal on kind.
 
 **Not proven on moto:** that the create makes no `MoveAccount` call when
 the account is already in place (moto accepts the call, so the test
@@ -1917,6 +1924,7 @@ identity scoped to it, and nothing else does:
   | `Policy` | `organizations:CreatePolicy`, `DescribePolicy`, `UpdatePolicy`, `DeletePolicy`, `ListTagsForResource`, `TagResource`, `UntagResource` |
   | `PolicyAttachment` | `organizations:AttachPolicy`, `DetachPolicy`, `ListTargetsForPolicy` |
   | `DelegatedAdministrator` | `organizations:RegisterDelegatedAdministrator`, `DeregisterDelegatedAdministrator`, `ListDelegatedAdministrators` |
+  | `AccountPlacement` | `organizations:MoveAccount`, `ListParents`, `DescribeAccount` |
   | `Organization` | `organizations:DescribeOrganization`, `ListRoots`, `EnablePolicyType`, `DisablePolicyType`, `EnableAWSServiceAccess`, `DisableAWSServiceAccess`, `ListAWSServiceAccessForOrganization`; and `organizations:CreateOrganization` with `iam:CreateServiceLinkedRole` only if the object is to make the organization |
 
   The role should also deny `organizations:DeleteOrganization` and

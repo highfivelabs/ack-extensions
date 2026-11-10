@@ -241,4 +241,78 @@ func TestOrganizationsAccountPlacement(t *testing.T) {
 		parentIs(t, app, sandbox)
 		parentIs(t, tools, workloads)
 	})
+
+	// The guarantee above is the controller's (it has no delete call); with
+	// the retain-only admission policy installed, every object must also say
+	// so (config/admission/retain-only.yaml).
+	installRetainOnly(t, ctx, env.Client)
+	placement := func(name, policy string) *orgv1.AccountPlacement {
+		o := &orgv1.AccountPlacement{
+			ObjectMeta: metav1.ObjectMeta{Name: name, Namespace: "default"},
+			Spec:       orgv1.AccountPlacementSpec{AccountID: aws.String(app), ParentID: aws.String(workloads)},
+		}
+		if policy != "" {
+			o.Annotations = map[string]string{deletionPolicy: policy}
+		}
+		return o
+	}
+
+	t.Run("an AccountPlacement without the retain annotation is refused", func(t *testing.T) {
+		harness.Eventually(t, 30*time.Second, "the policy's refusal", func() error {
+			err := env.Client.Create(ctx, placement("bare", ""), client.DryRunAll)
+			if err == nil {
+				return fmt.Errorf("accepted")
+			}
+			if !strings.Contains(err.Error(), "must carry the annotation services.k8s.aws/deletion-policy: retain") {
+				t.Fatalf("refused for another reason: %v", err)
+			}
+			return nil
+		})
+		if err := env.Client.Create(ctx, placement("deletes", "delete")); err == nil || !strings.Contains(err.Error(), "deletion-policy: retain") {
+			t.Fatalf("deletion-policy delete: %v", err)
+		}
+	})
+
+	retained := placement("retained", "retain")
+
+	t.Run("one with the retain annotation places the account, and the annotation cannot change", func(t *testing.T) {
+		if err := env.Client.Create(ctx, retained); err != nil {
+			t.Fatal(err)
+		}
+		waitSynced(t, retained)
+		parentIs(t, app, workloads)
+		for what, f := range map[string]func(*orgv1.AccountPlacement){
+			"changed": func(o *orgv1.AccountPlacement) { o.Annotations[deletionPolicy] = "delete" },
+			"removed": func(o *orgv1.AccountPlacement) { delete(o.Annotations, deletionPolicy) },
+		} {
+			var err error
+			harness.Eventually(t, 30*time.Second, what+": a refusal", func() error {
+				got := &orgv1.AccountPlacement{}
+				if err = env.Client.Get(ctx, client.ObjectKeyFromObject(retained), got); err != nil {
+					return err
+				}
+				f(got)
+				err = env.Client.Update(ctx, got)
+				if err == nil {
+					t.Fatalf("%s: the update was accepted", what)
+				}
+				if strings.Contains(err.Error(), "the object has been modified") {
+					return err
+				}
+				return nil
+			})
+			if !strings.Contains(err.Error(), "which cannot be removed or changed") {
+				t.Fatalf("%s: %v", what, err)
+			}
+		}
+	})
+
+	t.Run("deleting a retained one leaves the account where it is", func(t *testing.T) {
+		if err := env.Client.Delete(ctx, retained); err != nil {
+			t.Fatal(err)
+		}
+		gone(t, retained)
+		time.Sleep(5 * time.Second)
+		parentIs(t, app, workloads)
+	})
 }
