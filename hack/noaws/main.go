@@ -23,7 +23,16 @@
 //     real endpoint is refused use fakeaws.RealEndpoint;
 //   - S1: in the shell scripts under tests/, Python (which runs boto3) run
 //     other than through fake_py, which gives it an environment built from
-//     nothing with the dead proxy, or the AWS CLI run at all.
+//     nothing with the dead proxy, or the AWS CLI run at all;
+//   - L1: the live tests (docs/live-runs.md) stay apart: only the tasks
+//     test-live, live-sweep and live-list mention hack/live or -tags live,
+//     no other task calls them (go vet -tags live, which compiles and runs
+//     nothing, is allowed), and the Taskfile sets
+//     CLOUDCONTROL_E2E_TARGET to fake for every task;
+//   - L2: Go files built only with -tags live (the only code that may reach
+//     real AWS) live only in cloudcontrol/test/live, hack/live and
+//     cloudcontrol/test/e2e/live_test.go; the rules above skip them, since
+//     no task check builds them.
 //
 // Test paths are every _test.go file and everything under pkg/test,
 // tests, cloudcontrol/test and config/fake-aws. pkg/fakeaws (the guard
@@ -44,6 +53,8 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+
+	"sigs.k8s.io/yaml"
 
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -67,7 +78,7 @@ func main() {
 		}
 		var r *Report
 		if r, err = Scan(root); err == nil {
-			fmt.Printf("noaws: %d Go files and %d other files in test paths scanned\n", r.GoFiles, r.OtherFiles)
+			fmt.Printf("noaws: %d Go files and %d other files in test paths scanned; %d live-only Go files, all in their place; the Taskfiles checked\n", r.GoFiles, r.OtherFiles, r.LiveFiles)
 			if len(r.Findings) > 0 {
 				for _, f := range r.Findings {
 					fmt.Println(f)
@@ -146,8 +157,8 @@ func awsClient(args []string, env []corev1.EnvVar) bool {
 
 // Report is what Scan found.
 type Report struct {
-	GoFiles, OtherFiles int
-	Findings            []string
+	GoFiles, OtherFiles, LiveFiles int
+	Findings                       []string
 }
 
 func (r *Report) add(path string, line int, rule, msg string) {
@@ -191,6 +202,19 @@ func Scan(root string) (*Report, error) {
 			}
 			return nil
 		}
+		if strings.HasSuffix(rel, ".go") {
+			src, err := os.ReadFile(p)
+			if err != nil {
+				return err
+			}
+			if liveFile(src) {
+				r.LiveFiles++
+				if !liveAllowed(rel) {
+					r.add(rel, 1, "L2", "built with -tags live outside cloudcontrol/test/live, hack/live and cloudcontrol/test/e2e/live_test.go")
+				}
+				return nil
+			}
+		}
 		if !testPath(rel) {
 			return nil
 		}
@@ -215,8 +239,94 @@ func Scan(root string) (*Report, error) {
 		scanEndpoints(r, rel, src)
 		return nil
 	})
+	if err == nil {
+		err = scanTaskfiles(r, root)
+	}
 	sort.Strings(r.Findings)
 	return r, err
+}
+
+var buildLive = regexp.MustCompile(`(?m)^//go:build .*\blive\b`)
+
+func liveFile(src []byte) bool { return buildLive.Match(src) }
+
+func liveAllowed(rel string) bool {
+	return strings.HasPrefix(rel, "cloudcontrol/test/live/") || strings.HasPrefix(rel, "hack/live/") || rel == "cloudcontrol/test/e2e/live_test.go"
+}
+
+var liveTasks = map[string]bool{"test-live": true, "live-sweep": true, "live-list": true}
+
+var liveMention = regexp.MustCompile(`hack/live|-tags[ =]live\b|CLOUDCONTROL_E2E_TARGET=real`)
+
+// scanTaskfiles checks L1 on Taskfile.yml and taskfiles/*.yml.
+func scanTaskfiles(r *Report, root string) error {
+	files, _ := filepath.Glob(filepath.Join(root, "taskfiles", "*.yml"))
+	files = append([]string{filepath.Join(root, "Taskfile.yml")}, files...)
+	for _, f := range files {
+		b, err := os.ReadFile(f)
+		if os.IsNotExist(err) {
+			continue
+		}
+		if err != nil {
+			return err
+		}
+		rel, _ := filepath.Rel(root, f)
+		rel = filepath.ToSlash(rel)
+		var doc struct {
+			Env   map[string]any `json:"env"`
+			Tasks map[string]any `json:"tasks"`
+		}
+		if err := yaml.Unmarshal(b, &doc); err != nil {
+			return fmt.Errorf("%s: %w", rel, err)
+		}
+		if rel == "Taskfile.yml" && fmt.Sprint(doc.Env["CLOUDCONTROL_E2E_TARGET"]) != "fake" {
+			r.add(rel, 1, "L1", "the global env must set CLOUDCONTROL_E2E_TARGET: fake")
+		}
+		for name, t := range doc.Tasks {
+			var strs, calls []string
+			walk(t, &strs, &calls)
+			if liveTasks[name] && rel == "Taskfile.yml" {
+				continue
+			}
+			for _, s := range strs {
+				// go vet compiles the live code so it does not rot; it runs nothing.
+				if strings.HasPrefix(strings.TrimSpace(s), "go vet ") && !strings.Contains(s, "hack/live/run.sh") {
+					continue
+				}
+				if liveMention.MatchString(s) {
+					r.add(rel, 1, "L1", "task "+name+" reaches the live tests ("+liveMention.FindString(s)+"); only test-live, live-sweep and live-list may")
+				}
+			}
+			for _, c := range calls {
+				if liveTasks[c] {
+					r.add(rel, 1, "L1", "task "+name+" calls "+c)
+				}
+			}
+		}
+	}
+	return nil
+}
+
+// walk collects a task's strings and the tasks it calls ({task: name}).
+func walk(v any, strs, calls *[]string) {
+	switch x := v.(type) {
+	case string:
+		*strs = append(*strs, x)
+	case []any:
+		for _, e := range x {
+			walk(e, strs, calls)
+		}
+	case map[string]any:
+		if n, ok := x["task"].(string); ok {
+			*calls = append(*calls, n)
+		}
+		for k, e := range x {
+			if k == "desc" || k == "summary" {
+				continue
+			}
+			walk(e, strs, calls)
+		}
+	}
 }
 
 func scanGo(r *Report, rel string, src []byte) error {

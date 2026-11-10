@@ -32,6 +32,10 @@ func TestScanBad(t *testing.T) {
 		"tests/operator/bad.sh:4: S1",
 		"tests/operator/bad.sh:7: S1",
 		"tests/operator/bad.sh:8: G4",
+		"Taskfile.yml:1: L1: the global env",
+		"Taskfile.yml:1: L1: task check calls test-live",
+		"Taskfile.yml:1: L1: task test reaches the live tests",
+		"pkg/oops/real.go:1: L2",
 	}
 	got := strings.Join(r.Findings, "\n")
 	for _, w := range want {

@@ -19,6 +19,9 @@ includes:
 
 env:
   GOTOOLCHAIN: '{{.GOTOOLCHAIN | default "local"}}'
+  # Every task's end-to-end tests run against the fake; only
+  # hack/live/run.sh (task test-live) sets "real" for its own go test.
+  CLOUDCONTROL_E2E_TARGET: fake
 
 vars:
   # The project's name, for a rename: the Go module path, the images and
@@ -130,6 +133,8 @@ tasks:
       # metav1.Time and acktypes.VersionInfo literals), as ACK's own
       # controllers do; every other analyzer runs.
       - go vet -composites=false ./...
+      # The live-only code (docs/live-runs.md) compiled, never run.
+      - go vet -tags live ./cloudcontrol/test/live/... ./hack/live/... ./cloudcontrol/test/e2e/
       - hack/check-spdx.sh
       - task: build
       - task: test
@@ -181,6 +186,32 @@ tasks:
       - hack/check-spdx.sh
       - go build -o "{{.BIN}}/cloudcontrol-manager" ./cloudcontrol/cmd/manager
       - task: cloudcontrol:test
+
+  # Live tests against the real sandbox account (docs/live-runs.md). Never
+  # run by check or any task it runs (hack/noaws checks that); refuse to
+  # start without ACK_EXT_LIVE=create-real-aws-resources and an account in
+  # hack/live/accounts.txt. Run on an offload VM with --sa (federated
+  # credentials, hack/live/credentials.sh).
+  test-live:
+    desc: 'The Cloud Control e2e tests against the fake, then the real sandbox account: ACK_EXT_LIVE=create-real-aws-resources task test-live ACCOUNT=<id> ROLE_ARN=<arn> [TESTS="TestDetector"] (docs/live-runs.md).'
+    requires:
+      vars: [ACCOUNT, ROLE_ARN]
+    cmds:
+      - task: setup-envtest
+      - hack/moto.sh
+      - |
+        export KUBEBUILDER_ASSETS="$("{{.BIN}}/setup-envtest" use {{.ENVTEST_K8S_VERSION}} --bin-dir "{{.BIN}}/envtest" -p path)"
+        hack/live/run.sh --account "{{.ACCOUNT}}" --role-arn "{{.ROLE_ARN}}" {{.TESTS}}
+
+  live-sweep:
+    desc: 'Delete live-test leftovers of runs older than 2h, or everything of RUN=<id> (docs/live-runs.md).'
+    cmds:
+      - go run -tags live ./hack/live/sweep{{if .RUN}} --run "{{.RUN}}"{{end}}
+
+  live-list:
+    desc: 'List every live-test resource in the sandbox account (docs/live-runs.md).'
+    cmds:
+      - go run -tags live ./hack/live/sweep --list
 
   licenses:
     desc: Write docs/third-party-licenses.csv; fail on a licence outside the accepted set.

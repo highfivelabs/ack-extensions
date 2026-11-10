@@ -1,0 +1,11 @@
+version: '3'
+tasks:
+  check:
+    cmds:
+      - task: test-live
+  test:
+    cmds:
+      - go test -tags live ./...
+  test-live:
+    cmds:
+      - hack/live/run.sh
