@@ -22,3 +22,14 @@ resources:
   - route53resolver.cloudcontrol.aws.hfl.dev_firewallrulegroups.yaml
   - route53resolver.cloudcontrol.aws.hfl.dev_firewallrulegroupassociations.yaml
   - route53resolver.cloudcontrol.aws.hfl.dev_firewallconfigs.yaml
+  - config.cloudcontrol.aws.hfl.dev_configurationrecorders.yaml
+  - config.cloudcontrol.aws.hfl.dev_deliverychannels.yaml
+  - config.cloudcontrol.aws.hfl.dev_configrules.yaml
+  - config.cloudcontrol.aws.hfl.dev_configurationaggregators.yaml
+  - config.cloudcontrol.aws.hfl.dev_aggregationauthorizations.yaml
+  - config.cloudcontrol.aws.hfl.dev_organizationconformancepacks.yaml
+  - config.cloudcontrol.aws.hfl.dev_organizationconfigrules.yaml
+  - config.cloudcontrol.aws.hfl.dev_conformancepacks.yaml
+  - config.cloudcontrol.aws.hfl.dev_remediationconfigurations.yaml
+  - config.cloudcontrol.aws.hfl.dev_storedqueries.yaml
+  - config.cloudcontrol.aws.hfl.dev_connectors.yaml

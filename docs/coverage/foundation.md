@@ -13,7 +13,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | Category | Services | Resources | ACK | Ours beyond | None | Attributes | ACK | Ours beyond | Uncovered |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | platform-foundation | 16 | 241 | 55 (22.8%) | 34 (14.1%) | 152 | 2,400 | 28.2% | 8.3% | 63.5% |
-| security-adjacent | 18 | 112 | 14 (12.5%) | 2 (1.8%) | 96 | 2,082 | 37.6% | 0.6% | 61.8% |
+| security-adjacent | 18 | 112 | 14 (12.5%) | 13 (11.6%) | 85 | 2,082 | 37.6% | 6.3% | 56.1% |
 | application | 33 | 262 | 106 (40.5%) | 9 (3.4%) | 147 | 4,766 | 48.2% | 4.2% | 47.6% |
 | other | 238 | 1260 | 91 (7.2%) | 0 (0.0%) | 1169 | 76,525 | 3.0% | 0.0% | 97.0% |
 
@@ -42,7 +42,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 
 | # | Service | Resources | ACK | Ours beyond | None | Attributes ACK / ours / uncovered | ACK controller (latest release) |
 | ---: | --- | ---: | ---: | ---: | ---: | --- | --- |
-| 1 | `config` | 11 | 0 | 0 | 11 | 0.0% / 0.0% / 100.0% | none |
+| 1 | `config` | 11 | 0 | 11 | 0 | 0.0% / 100.0% / 0.0% | none |
 | 2 | `guardduty` | 11 | 0 | 1 | 10 | 0.0% / 12.4% / 87.6% | none |
 | 3 | `securityhub` | 17 | 0 | 0 | 17 | 0.0% / 0.0% / 100.0% | none |
 | 4 | `secretsmanager` | 4 | 1 | 0 | 3 | 17.8% / 0.0% / 82.2% | `secretsmanager-controller` v1.8.2 |
@@ -80,7 +80,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 | [F11](#f11) | ECR: registry policy, registry scanning, replication (ours), signing | platform-foundation | 6 | 3 / 4 / 15 | S, S | Good: `PutRegistryPolicy`, `PutRegistryScanningConfiguration`, `PutReplicationConfiguratio... |
 | [F12](#f12) | Identity Store: users, groups and group memberships of the Identity Center directory | platform-foundation | 3 | 0 / 0 / 45 | M (User), S, S | Good: `CreateUser`, `CreateGroup`, `CreateGroupMembership`, `DescribeUser`, `ListUsers`, `... |
 | [F13](#f13) | Network Manager (Cloud WAN) and Direct Connect (wait for ACK on the first) | platform-foundation | 6 | 0 / 0 / 48 | wait; M for the gateway | Network Manager: `CreateGlobalNetwork`, `CreateCoreNetwork`, `CreateSite` are implemented ... |
-| [F14](#f14) | Config: recorder, delivery channel, rules, aggregators, organization rules and conformance packs | security-adjacent | 11 | 0 / 0 / 118 | L (new service, eleven resources); S each after the first | Good for the first six: `PutConfigRule`, `PutConfigurationRecorder`, `PutDeliveryChannel`,... |
+| [F14](#f14) | Config: recorder, delivery channel, rules, aggregators, organization rules and conformance packs | security-adjacent | 11 | 0 / 118 / 0 | L (new service, eleven resources); S each after the first | Good for the first six: `PutConfigRule`, `PutConfigurationRecorder`, `PutDeliveryChannel`,... |
 | [F15](#f15) | GuardDuty: detector, filters, IP and threat intel sets, members | security-adjacent | 8 | 0 / 11 / 58 | L (new service) | Partial: `CreateDetector`, `UpdateDetector`, `CreateFilter`, `EnableOrganizationAdminAccou... |
 | [F16](#f16) | Security Hub: hub, standards, organization configuration, aggregator, automation rules | security-adjacent | 9 | 0 / 0 / 141 | L (new service; `AutomationRule` has 105 attributes and `Insight` 238) | Partial: `EnableSecurityHub`, `EnableOrganizationAdminAccount`, `UpdateOrganizationConfigu... |
 | [F17](#f17) | Secrets Manager: resource policy and rotation (wait for ACK on rotation) | security-adjacent | 4 | 8 / 0 / 37 | S | Good: `CreateSecret`, `RotateSecret`, `PutResourcePolicy` are implemented (21 of 23 operat... |
@@ -258,7 +258,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F14 Config: recorder, delivery channel, rules, aggregators, organization rules and conformance packs
 
-- **Resources:** `config/ConfigurationRecorder`, `config/DeliveryChannel`, `config/ConfigRule`, `config/ConfigurationAggregator`, `config/AggregationAuthorization`, `config/OrganizationConformancePack`, `config/OrganizationConfigRule`, `config/ConformancePack`, `config/RemediationConfiguration`, `config/StoredQuery`, `config/Connector`. Today ACK covers 0, ours 0, nothing covers 118 of 118 attributes.
+- **Resources:** `config/ConfigurationRecorder`, `config/DeliveryChannel`, `config/ConfigRule`, `config/ConfigurationAggregator`, `config/AggregationAuthorization`, `config/OrganizationConformancePack`, `config/OrganizationConfigRule`, `config/ConformancePack`, `config/RemediationConfiguration`, `config/StoredQuery`, `config/Connector`. Today ACK covers 0, ours 118, nothing covers 0 of 118 attributes.
 - **Why first:** The compliance record: what a security team turns on in every account. No ACK controller; community #2445 (open since 2025-04-29, seven comments) asks for `ConfigRule`, `OrganizationConfigRule` and `OrganizationConformancePack`.
 - **Proposed kinds:** A new service `config.aws.hfl.dev`: `ConfigurationRecorder` (and its start, `StartConfigurationRecorder`) and `DeliveryChannel` first (Config does nothing without them), then `ConfigRule`, `ConfigurationAggregator`, `AggregationAuthorization`, `OrganizationConformancePack`; all are put/describe/delete shapes, so mostly generated with `operation_type` mappings like our `ScalingPolicy`.
 - **Upstream:** No controller, no pull request. Community #2445 only.
@@ -722,17 +722,17 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `AggregationAuthorization` | none | - | whole resource (4 attrs) | no released controller | 0 | yes: `PutAggregationAuthorization` | S | `config.aws.hfl.dev/AggregationAuthorization`, in a new service manager | [F14](#f14) |
-| `ConfigurationAggregator` | none | - | whole resource (9 attrs) | no released controller | 0 | yes: `PutConfigurationAggregator` | S | `config.aws.hfl.dev/ConfigurationAggregator`, in a new service manager | [F14](#f14) |
-| `ConfigurationRecorder` | none | - | whole resource (12 attrs) | no released controller | 0 | yes: `PutConfigurationRecorder`, `StartConfigurationRecorder` | S | `config.aws.hfl.dev/ConfigurationRecorder`, in a new service manager | [F14](#f14) |
-| `ConformancePack` | none | - | whole resource (11 attrs) | no released controller | 0 | no: `PutConformancePack` is not in moto | S | `config.aws.hfl.dev/ConformancePack`, in a new service manager | [F14](#f14) |
-| `Connector` | none | - | whole resource (4 attrs) | no released controller | 0 | service-level only: moto `config`: 38 of 102 operations: `PutConfigRule`, `PutConfigurationRecorder`, `PutDeli... | S | `config.aws.hfl.dev/Connector`, in a new service manager | [F14](#f14) |
-| `DeliveryChannel` | none | - | whole resource (6 attrs) | no released controller | 0 | yes: `PutDeliveryChannel` | S | `config.aws.hfl.dev/DeliveryChannel`, in a new service manager | [F14](#f14) |
-| `OrganizationConformancePack` | none | - | whole resource (10 attrs) | no released controller | 0 | yes: `PutOrganizationConformancePack` | S | `config.aws.hfl.dev/OrganizationConformancePack`, in a new service manager | [F14](#f14) |
-| `RemediationConfiguration` | none | - | whole resource (11 attrs) | no released controller | 0 | no: `PutRemediationConfigurations` is not in moto | S | `config.aws.hfl.dev/RemediationConfiguration`, in a new service manager | [F14](#f14) |
-| `StoredQuery` | none | - | whole resource (5 attrs) | no released controller | 0 | no: `PutStoredQuery` is not in moto | S | `config.aws.hfl.dev/StoredQuery`, in a new service manager | [F14](#f14) |
-| `ConfigRule` | none | - | whole resource (17 attrs) | no released controller | 0 | yes: `PutConfigRule` | M | `config.aws.hfl.dev/ConfigRule`, in a new service manager | [F14](#f14) |
-| `OrganizationConfigRule` | none | - | whole resource (29 attrs) | no released controller | 0 | no: `PutOrganizationConfigRule` is not in moto | M | `config.aws.hfl.dev/OrganizationConfigRule`, in a new service manager | [F14](#f14) |
+| `AggregationAuthorization` | none | `AggregationAuthorization (Cloud Control)`: +4 | none | no released controller | 0 | yes: `PutAggregationAuthorization` | - | none (covered) | [F14](#f14) |
+| `ConfigurationAggregator` | none | `ConfigurationAggregator (Cloud Control)`: +9 | none | no released controller | 0 | yes: `PutConfigurationAggregator` | - | none (covered) | [F14](#f14) |
+| `ConfigurationRecorder` | none | `ConfigurationRecorder (Cloud Control)`: +12 | none | no released controller | 0 | yes: `PutConfigurationRecorder`, `StartConfigurationRecorder` | - | none (covered) | [F14](#f14) |
+| `ConformancePack` | none | `ConformancePack (Cloud Control)`: +11 | none | no released controller | 0 | no: `PutConformancePack` is not in moto | - | none (covered) | [F14](#f14) |
+| `Connector` | none | `Connector (Cloud Control)`: +4 | none | no released controller | 0 | service-level only: moto `config`: 38 of 102 operations: `PutConfigRule`, `PutConfigurationRecorder`, `PutDeli... | - | none (covered) | [F14](#f14) |
+| `DeliveryChannel` | none | `DeliveryChannel (Cloud Control)`: +6 | none | no released controller | 0 | yes: `PutDeliveryChannel` | - | none (covered) | [F14](#f14) |
+| `OrganizationConformancePack` | none | `OrganizationConformancePack (Cloud Control)`: +10 | none | no released controller | 0 | yes: `PutOrganizationConformancePack` | - | none (covered) | [F14](#f14) |
+| `RemediationConfiguration` | none | `RemediationConfiguration (Cloud Control)`: +11 | none | no released controller | 0 | no: `PutRemediationConfigurations` is not in moto | - | none (covered) | [F14](#f14) |
+| `StoredQuery` | none | `StoredQuery (Cloud Control)`: +5 | none | no released controller | 0 | no: `PutStoredQuery` is not in moto | - | none (covered) | [F14](#f14) |
+| `ConfigRule` | none | `ConfigRule (Cloud Control)`: +17 | none | no released controller | 0 | yes: `PutConfigRule` | - | none (covered) | [F14](#f14) |
+| `OrganizationConfigRule` | none | `OrganizationConfigRule (Cloud Control)`: +29 | none | no released controller | 0 | no: `PutOrganizationConfigRule` is not in moto | - | none (covered) | [F14](#f14) |
 ### security-adjacent: `guardduty`
 
 - **ACK controller:** none

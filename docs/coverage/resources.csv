@@ -397,17 +397,17 @@ comprehend,EntityRecognizer,25,,0,,0,25,false,
 comprehend,EntityRecognizerEndpoint,7,,0,,0,7,false,
 comprehend,Flywheel,16,,0,,0,16,false,
 computeoptimizer,AutomationRule,30,,0,,0,30,false,
-config,AggregationAuthorization,4,,0,,0,4,false,
-config,ConfigRule,17,,0,,0,17,false,
-config,ConfigurationAggregator,9,,0,,0,9,false,
-config,ConfigurationRecorder,12,,0,,0,12,false,
-config,ConformancePack,11,,0,,0,11,false,
-config,Connector,4,,0,,0,4,false,
-config,DeliveryChannel,6,,0,,0,6,false,
-config,OrganizationConfigRule,29,,0,,0,29,false,
-config,OrganizationConformancePack,10,,0,,0,10,false,
-config,RemediationConfiguration,11,,0,,0,11,false,
-config,StoredQuery,5,,0,,0,5,false,
+config,AggregationAuthorization,4,,0,AggregationAuthorization (Cloud Control),4,0,false,
+config,ConfigRule,17,,0,ConfigRule (Cloud Control),17,0,false,ours_unmapped=1
+config,ConfigurationAggregator,9,,0,ConfigurationAggregator (Cloud Control),9,0,false,
+config,ConfigurationRecorder,12,,0,ConfigurationRecorder (Cloud Control),12,0,false,
+config,ConformancePack,11,,0,ConformancePack (Cloud Control),11,0,false,ours ConformancePack (Cloud Control) unproven on fake: moto 5.2.5 has no PutConformancePack
+config,Connector,4,,0,Connector (Cloud Control),4,0,false,ours Connector (Cloud Control) unproven on fake: moto 5.2.5 has no Config connectors
+config,DeliveryChannel,6,,0,DeliveryChannel (Cloud Control),6,0,false,
+config,OrganizationConfigRule,29,,0,OrganizationConfigRule (Cloud Control),29,0,false,ours OrganizationConfigRule (Cloud Control) unproven on fake: moto 5.2.5 has no PutOrganizationConfigRule
+config,OrganizationConformancePack,10,,0,OrganizationConformancePack (Cloud Control),10,0,false,
+config,RemediationConfiguration,11,,0,RemediationConfiguration (Cloud Control),11,0,false,ours RemediationConfiguration (Cloud Control) unproven on fake: moto 5.2.5 has no PutRemediationConfigurations
+config,StoredQuery,5,,0,StoredQuery (Cloud Control),5,0,false,ours StoredQuery (Cloud Control) unproven on fake: moto 5.2.5 has no PutStoredQuery
 connect,AgentStatus,9,,0,,0,9,false,
 connect,ApprovedOrigin,2,,0,,0,2,false,
 connect,ContactFlow,8,,0,,0,8,false,

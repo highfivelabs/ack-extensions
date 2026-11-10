@@ -269,6 +269,18 @@ func startFake(t *testing.T, root string) (*fake.Server, string, aws.Config) {
 			b = fake.NewQueryLoggingConfig(motoCfg)
 		case "AWS::Route53Resolver::ResolverDNSSECConfig":
 			b = fake.NewResolverDNSSECConfig(motoCfg)
+		case "AWS::Config::ConfigurationRecorder":
+			b = fake.NewConfigurationRecorder(motoCfg)
+		case "AWS::Config::DeliveryChannel":
+			b = fake.NewDeliveryChannel(motoCfg)
+		case "AWS::Config::ConfigRule":
+			b = fake.NewConfigRule(motoCfg)
+		case "AWS::Config::ConfigurationAggregator":
+			b = fake.NewConfigurationAggregator(motoCfg)
+		case "AWS::Config::AggregationAuthorization":
+			b = fake.NewAggregationAuthorization(motoCfg)
+		case "AWS::Config::OrganizationConformancePack":
+			b = fake.NewOrganizationConformancePack(motoCfg)
 		default:
 			if ty.Unproven != "" {
 				// Marked in types.yaml: moto lacks the API.
