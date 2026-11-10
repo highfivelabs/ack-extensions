@@ -56,6 +56,9 @@ type config struct {
 		Kind     string   `json:"kind"`
 		Secrets  []string `json:"secrets"`
 		Unproven string   `json:"unproven"`
+		// NeverDelete keeps the resource when its object is deleted
+		// (cloudcontrol/types.yaml).
+		NeverDelete bool `json:"neverDelete"`
 	} `json:"types"`
 }
 
@@ -135,7 +138,7 @@ func runIAM(root string) error {
 		}
 		delete(want, ref)
 		served = append(served, ref)
-		results = append(results, iamgen.ForType(s))
+		results = append(results, iamgen.ForTypeWith(s, iamgen.Options{NeverDelete: t.NeverDelete}))
 	}
 	if len(want) > 0 {
 		var unknown []string
@@ -244,6 +247,7 @@ type generated struct {
 	TypeName, Group, Kind, Plural, File string
 	Secrets                             []string
 	Unproven                            string
+	NeverDelete                         bool
 	Report                              *crdgen.Report
 	IAM                                 iamgen.Result
 }
@@ -275,7 +279,7 @@ func generate(root string, files map[string][]byte, cfg config) error {
 			kind = s.Resource()
 		}
 		group := groupOf(s, cfg.GroupSuffix)
-		crd, rep, err := crdgen.Generate(s, crdgen.Options{Group: group, Version: cfg.Version, Kind: kind, Secrets: t.Secrets, Unproven: t.Unproven})
+		crd, rep, err := crdgen.Generate(s, crdgen.Options{Group: group, Version: cfg.Version, Kind: kind, Secrets: t.Secrets, Unproven: t.Unproven, NeverDelete: t.NeverDelete})
 		if err != nil {
 			return err
 		}
@@ -293,12 +297,12 @@ func generate(root string, files map[string][]byte, cfg config) error {
 		if err := writeFile(filepath.Join(out, "pkg/registry/schemas", file), raw); err != nil {
 			return err
 		}
-		pol := iamgen.ForType(s)
+		pol := iamgen.ForTypeWith(s, iamgen.Options{NeverDelete: t.NeverDelete})
 		pj, _ := json.MarshalIndent(pol.Policy, "", "  ")
 		if err := writeFile(filepath.Join(out, "config/iam", base+".json"), append(pj, '\n')); err != nil {
 			return err
 		}
-		gens = append(gens, generated{TypeName: t.TypeName, Group: group, Kind: kind, Plural: crd.Spec.Names.Plural, File: file, Secrets: t.Secrets, Unproven: t.Unproven, Report: rep, IAM: pol})
+		gens = append(gens, generated{TypeName: t.TypeName, Group: group, Kind: kind, Plural: crd.Spec.Names.Plural, File: file, Secrets: t.Secrets, Unproven: t.Unproven, NeverDelete: t.NeverDelete, Report: rep, IAM: pol})
 	}
 	if err := writeRBAC(out, gens); err != nil {
 		return err
@@ -394,6 +398,9 @@ func writeRegistry(out string, cfg config, gens []generated) error {
 		}
 		if g.Unproven != "" {
 			secrets += fmt.Sprintf(", Unproven: %q", g.Unproven)
+		}
+		if g.NeverDelete {
+			secrets += ", NeverDelete: true"
 		}
 		fmt.Fprintf(&b, "\t{Group: %q, Version: %q, Kind: %q, Plural: %q, TypeName: %q, SchemaFile: %q%s},\n",
 			g.Group, cfg.Version, g.Kind, g.Plural, g.TypeName, "schemas/"+g.File, secrets)
