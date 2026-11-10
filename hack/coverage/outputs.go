@@ -92,7 +92,7 @@ func (m *model) compute() *results {
 			rr.officialKinds = append(rr.officialKinds, cv.Kind)
 		}
 		for _, cv := range ours {
-			rr.oursKinds = append(rr.oursKinds, cv.Kind)
+			rr.oursKinds = append(rr.oursKinds, cv.Label())
 			if cv.PR != "" {
 				rr.fromPR = true
 			}
@@ -129,6 +129,9 @@ func (m *model) compute() *results {
 			}
 			if cv.PR != "" {
 				rr.notes = append(rr.notes, fmt.Sprintf("ours %s copied from %s", cv.Kind, cv.PR))
+			}
+			if cv.CloudControl && cv.Unproven != "" {
+				rr.notes = append(rr.notes, fmt.Sprintf("ours %s unproven on fake: %s", cv.Label(), cv.Unproven))
 			}
 		}
 		if n := unmappedCount(offs); n > 0 {
