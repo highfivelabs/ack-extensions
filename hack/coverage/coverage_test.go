@@ -193,7 +193,7 @@ func TestPct1(t *testing.T) {
 
 func TestBarSVGFixedWidthDeterministic(t *testing.T) {
 	s := svcRow{service: "x", attrTotal: 200, attrOfficial: 100, attrOursBeyond: 20, attrUncov: 80}
-	a, b := barSVG(barTitle("x", s), s), barSVG(barTitle("x", s), s)
+	a, b := barSVG(barTitle("x", s, tfCounts{}, false), s, tfCounts{}, false), barSVG(barTitle("x", s, tfCounts{}, false), s, tfCounts{}, false)
 	if string(a) != string(b) {
 		t.Fatal("not deterministic")
 	}
@@ -272,6 +272,49 @@ func TestTierRows(t *testing.T) {
 	}
 	if !strings.Contains(string(tiersSVG(rows)), "Tier 3: 1 services") {
 		t.Error("tiers svg lacks the tier 3 label")
+	}
+}
+
+func TestTerraformParseAndRollup(t *testing.T) {
+	in := "service,provider,category,resources_total,attributes_total,attributes_terraform_l1,attributes_terraform_l2,pct_terraform_l2\n" +
+		"a,aws,platform-foundation,2,10,4,6,60.0\n" +
+		"a,azurerm,other,2,10,10,10,100.0\n" +
+		"gone,aws,other,1,30,3,9,30.0\n" +
+		"b,aws,application,1,60,30,45,75.0\n"
+	rows, err := parseTerraformCSV([]byte(in), "aws")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(rows) != 3 || rows[0].service != "a" || rows[0].l1 != 4 || rows[0].l2 != 6 || rows[0].total != 10 {
+		t.Fatalf("%+v", rows)
+	}
+	r := &results{
+		priority: map[string]priorityEntry{"a": {1, "platform-foundation"}, "b": {2, "application"}},
+		svcs:     []svcRow{{service: "a", attrTotal: 10}, {service: "b", attrTotal: 60}},
+		tfRows:   rows,
+	}
+	cats := r.categoryRows()
+	if cats[0].tf != (tfCounts{10, 4, 6}) || cats[2].tf != (tfCounts{60, 30, 45}) || cats[3].tf != (tfCounts{30, 3, 9}) {
+		t.Errorf("categories: %+v", cats)
+	}
+	tiers := r.tierRows()
+	if tiers[2].tf != (tfCounts{30, 3, 9}) {
+		t.Errorf("tiers: %+v", tiers)
+	}
+	if got := tfCell(cats[0].tf, true); got != "~60.0% (≥40.0%)" {
+		t.Errorf("tfCell = %q", got)
+	}
+	if got := tfCell(tfCounts{}, false); got != "—" {
+		t.Errorf("tfCell of a missing service = %q", got)
+	}
+	svg := string(barSVG("x", svcRow{attrTotal: 10, attrOfficial: 5, attrUncov: 5}, tfCounts{10, 4, 6}, true))
+	for _, want := range []string{colTerraform, colTick, `height="33"`} {
+		if !strings.Contains(svg, want) {
+			t.Errorf("bar lacks %s:\n%s", want, svg)
+		}
+	}
+	if _, err := parseTerraformCSV([]byte("service,provider\n"), "aws"); err == nil {
+		t.Error("want an error for missing columns")
 	}
 }
 

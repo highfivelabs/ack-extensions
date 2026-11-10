@@ -1,4 +1,4 @@
-# Written by hack/coverage/run.sh --update-pins; read by the generator. Every number in
+# Written by hack/coverage/run.sh --update-pins and -terraform-pin; read by the generator. Every number in
 # docs/coverage/ comes from exactly these inputs plus this repository's CRDs.
 ack:
   controllers:
@@ -687,3 +687,16 @@ cloudformation:
   region: us-east-1
   sha256: 680b184be4a9fc0d936a2efc044388eb2044ea8b402777c2aece1c0449a60f1f
   url: https://schema.cloudformation.us-east-1.amazonaws.com/CloudformationSchema.zip
+terraform:
+  commit: 13064af34996c47f1a5498bb17aca16194c4574e
+  commitDate: "2026-11-09T22:36:38-06:00"
+  fetched: "2026-11-10"
+  files:
+  - from: docs/terraform/ack-extensions/terraform.csv
+    path: docs/coverage/inputs/terraform/terraform.csv
+    sha256: 564b0736a556aa3bc1b62853ef8adb3cfeabfb73989bfbc9ae4e0ffd23561f26
+  - from: docs/terraform/ack-extensions/terraform-resources.csv
+    path: docs/coverage/inputs/terraform/terraform-resources.csv
+    sha256: 53de14e1beba7ad23bf890f7fe4fe3b37b11c6f01cc23da72e8a9776988859d9
+  provider: aws
+  repo: https://github.com/highfivelabs/catalog
