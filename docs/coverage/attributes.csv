@@ -25824,7 +25824,7 @@ organizations,Account,ParentIds[],string,false,ours,,spec.parentID
 organizations,Account,RoleName,string,false,official,spec.roleName,
 organizations,Account,Tags[].Key,string,false,official,spec.tags[].key,
 organizations,Account,Tags[].Value,string,false,official,spec.tags[].value,
-organizations,Organization,FeatureSet,string,false,none,,
+organizations,Organization,FeatureSet,string,false,ours,,spec.featureSet
 organizations,OrganizationalUnit,Name,string,true,official,spec.name,
 organizations,OrganizationalUnit,ParentId,string,true,official,spec.parentID,
 organizations,OrganizationalUnit,Tags[].Key,string,false,official,spec.tags[].key,

@@ -1,0 +1,52 @@
+# Copyright 2026 High Five Labs
+# SPDX-License-Identifier: Apache-2.0
+#
+# Retain-only kinds: AWS things that are not deleted from Kubernetes (an
+# organization; later, an account's closure, root-level settings). Their
+# controllers have no delete call (the generator ignores it), so deleting
+# the object only stops managing the thing. This policy makes the object
+# say so: it refuses one that does not carry ACK's annotation
+# services.k8s.aws/deletion-policy: retain, and any update that removes or
+# changes it. A kind joins by adding its resource to resourceRules.
+#
+# A MutatingAdmissionPolicy could set the annotation instead of asking for
+# it, but it is not GA on Kubernetes 1.35 (envtest's here) or the older
+# versions EKS supports, so the annotation is required and the message says
+# how to add it. ValidatingAdmissionPolicy needs Kubernetes 1.30 or later.
+#
+# Objects being deleted are not checked, so the controller can always take
+# its finalizer off one that predates this policy.
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: ack-extensions-retain-only
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [organizations.aws.hfl.dev]
+        apiVersions: ["*"]
+        operations: [CREATE, UPDATE]
+        resources: [organizations]
+  matchConditions:
+    - name: not-being-deleted
+      expression: "!has(object.metadata.deletionTimestamp)"
+  validations:
+    - expression: >-
+        has(object.metadata.annotations) &&
+        'services.k8s.aws/deletion-policy' in object.metadata.annotations &&
+        object.metadata.annotations['services.k8s.aws/deletion-policy'] == 'retain'
+      messageExpression: >-
+        request.kind.kind + ' ' + object.metadata.name +
+        ' is not deleted from Kubernetes: deleting the object only stops managing it,
+        so it must carry the annotation services.k8s.aws/deletion-policy: retain'
+        + (request.operation == 'UPDATE' ? ', which cannot be removed or changed' : '')
+      reason: Invalid
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: ack-extensions-retain-only
+spec:
+  policyName: ack-extensions-retain-only
+  validationActions: [Deny]

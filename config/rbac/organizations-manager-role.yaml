@@ -27,6 +27,7 @@ rules:
   resources:
   - accountplacements
   - delegatedadministrators
+  - organizations
   - policies
   - policyattachments
   verbs:
@@ -42,6 +43,7 @@ rules:
   resources:
   - accountplacements/status
   - delegatedadministrators/status
+  - organizations/status
   - policies/status
   - policyattachments/status
   verbs:
