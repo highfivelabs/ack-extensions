@@ -894,7 +894,7 @@ AWS::HealthAgent::Domain,healthagent,Domain,other,FULLY_MUTABLE,,,ok,0,0,0,0,2,t
 AWS::HealthImaging::Datastore,healthimaging,Datastore,other,IMMUTABLE,,,ok,0,0,0,0,2,true
 AWS::HealthLake::DataTransformationProfile,healthlake,DataTransformationProfile,other,FULLY_MUTABLE,,,ok,0,0,1,2,2,true
 AWS::HealthLake::FHIRDatastore,healthlake,FHIRDatastore,other,FULLY_MUTABLE,,,ok,0,0,0,0,4,true
-AWS::IAM::AccessKey,iam,AccessKey,platform-foundation,NON_PROVISIONABLE,,,not provisionable,0,0,0,0,0,false
+AWS::IAM::AccessKey,iam,AccessKey,platform-foundation,NON_PROVISIONABLE,,AccessKey,not provisionable,0,0,0,0,0,false
 AWS::IAM::Group,iam,Group,platform-foundation,FULLY_MUTABLE,Group,,ok,1,0,0,0,2,true
 AWS::IAM::GroupPolicy,iam,GroupPolicy,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,1,false
 AWS::IAM::InstanceProfile,iam,InstanceProfile,platform-foundation,FULLY_MUTABLE,InstanceProfile,,ok,0,0,0,0,1,true

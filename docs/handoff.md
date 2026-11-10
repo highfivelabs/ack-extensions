@@ -130,7 +130,8 @@ agent.** PR 1 (`agent/cloudcontrol`) is the core. Still to do:
    `tests/e2e` and unit tests, and the README row, `UPSTREAM.md` rows and
    `docs/plan.md` §6 section, results and moto notes.
 6. **Then** `task coverage` and commit its output (`task coverage:check` must
-   pass).
+   pass), and `task cloudcontrol:generate` (Cloud Control's readiness survey
+   counts a new kind of ours; `task check` fails while it is stale).
 7. **Commit** with `git commit -s`, ending with the `Co-Authored-By` and
    `Claude-Session` trailers the session gives you. Never `--no-verify`,
    never push to main, never force-push, never touch the git config.
@@ -186,6 +187,7 @@ places every time, all mechanical:
 | `config/crds/kustomization.yaml`, `handwritten.go` | keep both |
 | `zz_generated.deepcopy.go`, `config/rbac/*-manager-role.yaml` | take main's and run `task generate` |
 | `docs/coverage/*`, the README's Coverage section | take main's and run `task coverage` |
+| `cloudcontrol/readiness.*` | take main's and run `task cloudcontrol:generate` |
 
 Then `task generate`, `go build ./...`, `task coverage`, commit the merge with
 `-s` and the trailers, and rerun the checks on the new head. A merge commit
