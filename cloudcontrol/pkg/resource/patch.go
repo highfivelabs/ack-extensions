@@ -48,8 +48,8 @@ func sortedMapKeys(m map[string]any) []string {
 //   - an object is merged: desired's keys over the observed value, so a
 //     nested server default is kept rather than removed;
 //   - an array is replaced whole, never patched by position (insertionOrder:
-//     false arrays are compared as multisets first, so a reordering alone is
-//     no change);
+//     false arrays, and the tag property, are compared as multisets first,
+//     so a reordering alone is no change);
 //   - a write-only property (never returned) is sent when writeOnlyChanged,
 //     unless it is also create-only.
 func Patch(s *cfn.Schema, desired, observed map[string]any, writeOnlyChanged bool) ([]Op, error) {
@@ -61,7 +61,7 @@ func Patch(s *cfn.Schema, desired, observed map[string]any, writeOnlyChanged boo
 		if dv == nil || sets.ReadOnly.Has(ptr) {
 			continue
 		}
-		prop := s.Properties[k]
+		prop := s.ComparedProperty(k)
 		if sets.WriteOnly.Has(ptr) {
 			if writeOnlyChanged && !sets.CreateOnly.Has(ptr) {
 				ops = append(ops, Op{Op: "add", Path: "/" + k, Value: dv})

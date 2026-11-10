@@ -280,6 +280,23 @@ func (s *Schema) TagProperty() string {
 	return name
 }
 
+// ComparedProperty is the top-level property name's node as Satisfies
+// should compare it: the schema's, except that the tag property is
+// unordered whatever its insertionOrder says. Tags are a set by key: AWS
+// returns them in its own order, and ACK's default tags (--resource-tags)
+// come from a map.
+func (s *Schema) ComparedProperty(name string) *Prop {
+	p := s.Properties[name]
+	if p == nil || name != s.TagProperty() {
+		return p
+	}
+	r, _ := s.Resolve(p)
+	c := *r
+	unordered := false
+	c.InsertionOrder = &unordered
+	return &c
+}
+
 // Unordered reports whether an array node's order does not matter.
 func Unordered(p *Prop) bool { return p != nil && p.InsertionOrder != nil && !*p.InsertionOrder }
 
