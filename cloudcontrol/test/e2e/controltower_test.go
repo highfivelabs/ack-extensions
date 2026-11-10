@@ -64,8 +64,8 @@ func landingZoneManifest(regions ...string) map[string]any {
 			"accountId": "111111111111",
 			"enabled":   true,
 			"configurations": map[string]any{
-				"loggingBucket":       map[string]any{"retentionDays": 365},
-				"accessLoggingBucket": map[string]any{"retentionDays": 3650},
+				"loggingBucket":       map[string]any{"retentionDays": int64(365)},
+				"accessLoggingBucket": map[string]any{"retentionDays": int64(3650)},
 			},
 		},
 		"securityRoles":    map[string]any{"accountId": "222222222222"},
