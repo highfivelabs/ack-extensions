@@ -46,6 +46,7 @@ import (
 	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/volume"
 	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/vpn_connection"
 	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/vpn_gateway"
+	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/vpn_gateway_route_propagation"
 
 	"github.com/highfivelabs/ack-extensions/services/ec2/pkg/version"
 )

@@ -687,7 +687,7 @@ AWS::EC2::VPNConcentrator,ec2,VPNConcentrator,platform-foundation,FULLY_MUTABLE,
 AWS::EC2::VPNConnection,ec2,VPNConnection,platform-foundation,FULLY_MUTABLE,,VPNConnection,ok,0,0,1,2,0,true
 AWS::EC2::VPNConnectionRoute,ec2,VPNConnectionRoute,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
 AWS::EC2::VPNGateway,ec2,VPNGateway,platform-foundation,FULLY_MUTABLE,,VPNGateway,ok,0,0,0,0,0,true
-AWS::EC2::VPNGatewayRoutePropagation,ec2,VPNGatewayRoutePropagation,platform-foundation,NON_PROVISIONABLE,,,not provisionable,0,0,0,0,0,false
+AWS::EC2::VPNGatewayRoutePropagation,ec2,VPNGatewayRoutePropagation,platform-foundation,NON_PROVISIONABLE,,VPNGatewayRoutePropagation,not provisionable,0,0,0,0,0,false
 AWS::ECR::PublicRepository,ecr,PublicRepository,platform-foundation,FULLY_MUTABLE,Repository,,ok,1,0,0,0,0,true
 AWS::ECR::PullThroughCacheRule,ecr,PullThroughCacheRule,platform-foundation,FULLY_MUTABLE,PullThroughCacheRule,,ok,0,0,3,3,2,true
 AWS::ECR::PullTimeUpdateExclusion,ecr,PullTimeUpdateExclusion,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true

@@ -17,6 +17,18 @@ operations:
     output_wrapper_field_path: VpnConnection
   CreateNetworkInterfacePermission:
     output_wrapper_field_path: InterfacePermission
+  # A VPN gateway's routes propagated into a route table: an attach pair,
+  # read from the table's propagating gateways (the PolicyAttachment
+  # pattern, organizations/generator.yaml).
+  EnableVgwRoutePropagation:
+    operation_type: Create
+    resource_name: VpnGatewayRoutePropagation
+  DisableVgwRoutePropagation:
+    operation_type: Delete
+    resource_name: VpnGatewayRoutePropagation
+  DescribeRouteTables:
+    operation_type: List
+    resource_name: VpnGatewayRoutePropagation
 resources:
   CustomerGateway:
     fields:
@@ -191,6 +203,34 @@ resources:
             - granted
     tags:
       ignore: true
+  # moto has none of EnableVgwRoutePropagation or
+  # DisableVgwRoutePropagation: unproven on the fake.
+  VpnGatewayRoutePropagation:
+    tags:
+      ignore: true
+    exceptions:
+      errors:
+        404:
+          code: InvalidRouteTableID.NotFound
+    list_operation:
+      match_fields:
+        - RouteTableId
+    fields:
+      GatewayID:
+        is_required: true
+        is_immutable: true
+        references:
+          resource: VPNGateway
+          path: Status.VPNGatewayID
+      RouteTableID:
+        is_primary_key: true
+        is_required: true
+        is_immutable: true
+    hooks:
+      sdk_read_many_post_build_request:
+        template_path: hooks/vpn_gateway_route_propagation/sdk_read_many_post_build_request.go.tpl
+      sdk_read_many_post_request:
+        template_path: hooks/vpn_gateway_route_propagation/sdk_read_many_post_request.go.tpl
   Volume:
     exceptions:
       errors:
@@ -248,6 +288,9 @@ ignore:
     - CreateVolumeInput.TagSpecifications
     - CreateVolumeInput.Operator
     - CreateNetworkInterfacePermissionInput.DryRun
+    - EnableVgwRoutePropagationInput.DryRun
+    - DisableVgwRoutePropagationInput.DryRun
+    - DescribeRouteTablesInput.DryRun
     # The attachments are the VolumeAttachment kind's to report; ignoring
     # them also keeps the generator from emitting a VolumeAttachment type
     # that would clash with that kind.

@@ -5,7 +5,8 @@ Status, 2026-11-09: the repository has twenty-nine kinds:
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
 - `ec2.aws.hfl.dev` `CustomerGateway`, `VPNGateway`, `VPNConnection`,
-  `NetworkInterfacePermission`, `Volume` and `VolumeAttachment`;
+  `VPNGatewayRoutePropagation`, `NetworkInterfacePermission`, `Volume` and
+  `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
 - `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy`, `AccessKey` and `VirtualMFADevice`;
@@ -470,7 +471,9 @@ controller to show it can fail:
   `detached`; AWS goes through `attaching` and `detaching`, and refuses
   to delete a gateway until it is detached). It keeps a deleted gateway
   listed in state `deleted`, as AWS does. It does not implement
-  `EnableVgwRoutePropagation`, so route propagation is not built.
+  `EnableVgwRoutePropagation` or `DisableVgwRoutePropagation` (server
+  errors, probed 2026-11-09), so `VPNGatewayRoutePropagation` is unproven
+  on the fake (section 6.34).
 - **EC2 VPN connections** (probed 2026-11-09). moto makes a connection
   `available` at once (AWS goes through `pending` for minutes), keeps a
   deleted one listed in state `deleted`, as AWS does, deletes one twice
@@ -2016,6 +2019,45 @@ coverage data's "unproven on fake" note exists only for Cloud Control
 kinds (`hack/coverage`, from a CRD annotation); it is said here and in the
 README instead.
 
+### 6.34 `ec2.aws.hfl.dev` `VPNGatewayRoutePropagation`
+
+A VPN gateway's routes propagated into a route table (F05; one of the two
+foundation types Cloud Control cannot provision, `docs/cloudcontrol.md`
+section 8, handed to this route). Upstream rechecked 2026-11-09:
+ec2-controller `v1.23.1` reports a table's propagating gateways in
+`RouteTable`'s status (`propagatingVGWs`, read-only) and has no way to
+set one, on master too; no pull request adds one.
+
+**Generated** from the attach pair, mapped in `generator.yaml`
+`operations` as `PolicyAttachment`'s are: `EnableVgwRoutePropagation`
+(create), `DisableVgwRoutePropagation` (delete), `DescribeRouteTables`
+(read, matched on the table's ID). About 98% of the new Go is generated
+(about 1,490 lines); written here are two read templates and `hooks.go`
+(about 35 lines): the read asks for the one table, and finds the
+propagation only when the table lists the gateway among its propagating
+gateways. There is no update call: both fields are immutable, and the
+generated update refuses.
+
+- **Spec:** `gatewayID` or `gatewayRef` (our `VPNGateway`), and
+  `routeTableID`, all immutable. **Status:** only the runtime's.
+- **Not built:** a reference to ACK's `RouteTable`: it needs ACK's
+  ec2-controller as a Go module, a new upstream dependency (open question 16,
+  raised by `VPNConnection`'s `transitGatewayRef` in PR #48).
+- **A propagation that exists already** (made outside Kubernetes) is
+  found by the first read, so the object adopts it, and its delete stops
+  it. Two objects for one gateway and table would share it; the first
+  deleted stops it for both.
+
+**Unproven on the fake:** moto has neither call. A stand-in unit test
+(`sdk_test.go`, on `pkg/fakeaws`'s guarded client) answers as the EC2 API
+reference documents and checks that the read asks for the one table and
+finds the propagation only when the gateway is listed (another gateway,
+none, and a table gone read as absent; another error passed on), and that
+the create and delete send the gateway and the table. No end-to-end test.
+As for `NetworkInterfacePermission`, the coverage data's "unproven on
+fake" note is for Cloud Control kinds only, so it is said here and in the
+README.
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)
@@ -2391,6 +2433,10 @@ Before it can run on a real cluster:
    - network interface permissions, the whole kind (moto has none of the
      API): a permission granted to another account, its state, the error
      code for an unknown ID, and the delete (section 6.33).
+   - VPN gateway route propagation, the whole kind (moto has neither
+     call): a propagation enabled and disabled, read back from the route
+     table, and EC2's answer to disabling one already stopped (section
+     6.34).
 4. CRD labels marking a gap kind and naming the upstream kind it
    anticipates, as gaps-gcp does.
 5. Offer patch 0001 upstream; comment on PRs #184 and #257 with what we

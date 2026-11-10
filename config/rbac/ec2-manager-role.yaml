@@ -30,6 +30,7 @@ rules:
   - volumeattachments
   - volumes
   - vpnconnections
+  - vpngatewayroutepropagations
   - vpngateways
   verbs:
   - create
@@ -47,6 +48,7 @@ rules:
   - volumeattachments/status
   - volumes/status
   - vpnconnections/status
+  - vpngatewayroutepropagations/status
   - vpngateways/status
   verbs:
   - get
