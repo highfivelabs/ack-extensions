@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConfigStoredQuery",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigStoredQueryCreate",
+      "Effect": "Allow",
+      "Action": [
+        "config:GetStoredQuery",
+        "config:PutStoredQuery",
+        "config:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigStoredQueryRead",
+      "Effect": "Allow",
+      "Action": [
+        "config:GetStoredQuery",
+        "config:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigStoredQueryUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "config:GetStoredQuery",
+        "config:ListTagsForResource",
+        "config:PutStoredQuery",
+        "config:TagResource",
+        "config:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigStoredQueryDelete",
+      "Effect": "Allow",
+      "Action": [
+        "config:DeleteStoredQuery",
+        "config:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

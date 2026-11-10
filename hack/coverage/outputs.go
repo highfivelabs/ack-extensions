@@ -74,10 +74,21 @@ type results struct {
 	outside  []resRow
 	svcIndex map[string]*svcRow
 	priority map[string]priorityEntry // service to tier and category, from priority.csv
+	// The Terraform estimate (terraform.go): every aws row, by service, and
+	// the sum of every row (services the dashboard no longer has included).
+	tfRows  []tfRow
+	tf      map[string]tfCounts
+	tfTotal tfCounts
 }
 
 func (m *model) compute() *results {
-	r := &results{svcIndex: map[string]*svcRow{}, priority: m.priority}
+	r := &results{svcIndex: map[string]*svcRow{}, priority: m.priority, tfRows: m.terraform, tf: map[string]tfCounts{}}
+	for _, t := range m.terraform {
+		c := r.tf[t.service]
+		c.add(t.tfCounts)
+		r.tf[t.service] = c
+		r.tfTotal.add(t.tfCounts)
+	}
 	for _, s := range m.services {
 		r.svcs = append(r.svcs, svcRow{service: s})
 	}

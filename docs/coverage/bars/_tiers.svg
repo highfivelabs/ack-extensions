@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="660" height="280" viewBox="0 0 660 280" role="img" aria-label="Tier 1: attributes official 28.2%, ours beyond 6.5%, uncovered 65.4%; resources official 22.8%, ours beyond 10.0%, uncovered 67.2%. Tier 2: attributes official 44.9%, ours beyond 3.1%, uncovered 51.9%; resources official 32.1%, ours beyond 2.9%, uncovered 65.0%. Tier 3: attributes official 3.0%, ours beyond 0.0%, uncovered 97.0%; resources official 7.2%, ours beyond 0.0%, uncovered 92.8%">
-<title>Tier 1: attributes official 28.2%, ours beyond 6.5%, uncovered 65.4%; resources official 22.8%, ours beyond 10.0%, uncovered 67.2%. Tier 2: attributes official 44.9%, ours beyond 3.1%, uncovered 51.9%; resources official 32.1%, ours beyond 2.9%, uncovered 65.0%. Tier 3: attributes official 3.0%, ours beyond 0.0%, uncovered 97.0%; resources official 7.2%, ours beyond 0.0%, uncovered 92.8%</title>
-<rect x="0.5" y="0.5" width="659" height="279" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="660" height="350" viewBox="0 0 660 350" role="img" aria-label="Tier 1: attributes official 28.2%, ours beyond 6.5%, uncovered 65.4%; resources official 22.8%, ours beyond 10.0%, uncovered 67.2%; Terraform aws provider (estimate): 51.5% of 2400 attributes, at least 43.5%. Tier 2: attributes official 44.9%, ours beyond 4.9%, uncovered 50.2%; resources official 32.1%, ours beyond 5.9%, uncovered 62.0%; Terraform aws provider (estimate): 57.9% of 6848 attributes, at least 54.2%. Tier 3: attributes official 3.0%, ours beyond 0.0%, uncovered 97.0%; resources official 7.2%, ours beyond 0.0%, uncovered 92.8%; Terraform aws provider (estimate): 65.4% of 76525 attributes, at least 48.5%">
+<title>Tier 1: attributes official 28.2%, ours beyond 6.5%, uncovered 65.4%; resources official 22.8%, ours beyond 10.0%, uncovered 67.2%; Terraform aws provider (estimate): 51.5% of 2400 attributes, at least 43.5%. Tier 2: attributes official 44.9%, ours beyond 4.9%, uncovered 50.2%; resources official 32.1%, ours beyond 5.9%, uncovered 62.0%; Terraform aws provider (estimate): 57.9% of 6848 attributes, at least 54.2%. Tier 3: attributes official 3.0%, ours beyond 0.0%, uncovered 97.0%; resources official 7.2%, ours beyond 0.0%, uncovered 92.8%; Terraform aws provider (estimate): 65.4% of 76525 attributes, at least 48.5%</title>
+<rect x="0.5" y="0.5" width="659" height="349" rx="6" fill="#ffffff" stroke="#d0d7de"/>
 <text x="10" y="19" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" dominant-baseline="central">Tier 1: 16 services, 241 resources, 2,400 attributes</text>
 <rect x="10" y="28" width="640" height="22" rx="3" fill="#d0d7de"/>
 <rect x="10" y="28" width="180.2" height="22" fill="#2f81f7"/>
@@ -18,38 +18,52 @@
 <rect x="219.7" y="56" width="430.3" height="22" fill="#d0d7de"/>
 <text x="434.8" y="68" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">67.2%</text>
 <rect x="10.5" y="56.5" width="639" height="21" rx="3" fill="none" stroke="#8c959f"/>
-<text x="10" y="101" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" dominant-baseline="central">Tier 2: 51 services, 374 resources, 6,848 attributes</text>
-<rect x="10" y="110" width="640" height="22" rx="3" fill="#d0d7de"/>
-<rect x="10" y="110" width="287.5" height="22" fill="#2f81f7"/>
-<text x="153.7" y="122" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">44.9%</text>
-<rect x="297.5" y="110" width="20.1" height="22" fill="#2da44e"/>
-<rect x="317.6" y="110" width="332.4" height="22" fill="#d0d7de"/>
-<text x="483.8" y="122" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">51.9%</text>
-<rect x="10.5" y="110.5" width="639" height="21" rx="3" fill="none" stroke="#8c959f"/>
-<rect x="10" y="138" width="640" height="22" rx="3" fill="#d0d7de"/>
-<rect x="10" y="138" width="205.3" height="22" fill="#2f81f7"/>
-<text x="112.6" y="150" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">32.1%</text>
-<rect x="215.3" y="138" width="18.8" height="22" fill="#2da44e"/>
-<rect x="234.1" y="138" width="415.9" height="22" fill="#d0d7de"/>
-<text x="442" y="150" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">65.0%</text>
-<rect x="10.5" y="138.5" width="639" height="21" rx="3" fill="none" stroke="#8c959f"/>
-<text x="10" y="183" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" dominant-baseline="central">Tier 3: 238 services, 1,260 resources, 76,525 attributes</text>
-<rect x="10" y="192" width="640" height="22" rx="3" fill="#d0d7de"/>
-<rect x="10" y="192" width="19" height="22" fill="#2f81f7"/>
-<rect x="29" y="192" width="621" height="22" fill="#d0d7de"/>
-<text x="339.5" y="204" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">97.0%</text>
-<rect x="10.5" y="192.5" width="639" height="21" rx="3" fill="none" stroke="#8c959f"/>
-<rect x="10" y="220" width="640" height="22" rx="3" fill="#d0d7de"/>
-<rect x="10" y="220" width="46.2" height="22" fill="#2f81f7"/>
-<text x="33.1" y="232" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">7.2%</text>
-<rect x="56.2" y="220" width="593.8" height="22" fill="#d0d7de"/>
-<text x="353.1" y="232" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">92.8%</text>
-<rect x="10.5" y="220.5" width="639" height="21" rx="3" fill="none" stroke="#8c959f"/>
-<rect x="10.5" y="249.5" width="11" height="11" rx="2" fill="#2f81f7" stroke="#8c959f"/>
-<text x="27" y="255" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#1f2328" dominant-baseline="central">ACK</text>
-<rect x="66.5" y="249.5" width="11" height="11" rx="2" fill="#2da44e" stroke="#8c959f"/>
-<text x="83" y="255" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#1f2328" dominant-baseline="central">ours beyond ACK</text>
-<rect x="206.5" y="249.5" width="11" height="11" rx="2" fill="#d0d7de" stroke="#8c959f"/>
-<text x="223" y="255" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#1f2328" dominant-baseline="central">uncovered</text>
-<text x="304" y="255" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#59636e" dominant-baseline="central">upper bar: attributes, lower bar: resources</text>
+<rect x="10" y="84" width="640" height="10" rx="3" fill="#d0d7de"/>
+<rect x="10" y="84" width="329.3" height="10" fill="#7b42bc"/>
+<rect x="287.4" y="84" width="2" height="10" fill="#1f2328"/>
+<rect x="10.5" y="84.5" width="639" height="9" rx="3" fill="none" stroke="#8c959f"/>
+<text x="10" y="117" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" dominant-baseline="central">Tier 2: 51 services, 374 resources, 6,848 attributes</text>
+<rect x="10" y="126" width="640" height="22" rx="3" fill="#d0d7de"/>
+<rect x="10" y="126" width="287.5" height="22" fill="#2f81f7"/>
+<text x="153.7" y="138" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">44.9%</text>
+<rect x="297.5" y="126" width="31.1" height="22" fill="#2da44e"/>
+<rect x="328.6" y="126" width="321.4" height="22" fill="#d0d7de"/>
+<text x="489.3" y="138" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">50.2%</text>
+<rect x="10.5" y="126.5" width="639" height="21" rx="3" fill="none" stroke="#8c959f"/>
+<rect x="10" y="154" width="640" height="22" rx="3" fill="#d0d7de"/>
+<rect x="10" y="154" width="205.3" height="22" fill="#2f81f7"/>
+<text x="112.6" y="166" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">32.1%</text>
+<rect x="215.3" y="154" width="37.6" height="22" fill="#2da44e"/>
+<rect x="252.9" y="154" width="397.1" height="22" fill="#d0d7de"/>
+<text x="451.4" y="166" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">62.0%</text>
+<rect x="10.5" y="154.5" width="639" height="21" rx="3" fill="none" stroke="#8c959f"/>
+<rect x="10" y="182" width="640" height="10" rx="3" fill="#d0d7de"/>
+<rect x="10" y="182" width="370.5" height="10" fill="#7b42bc"/>
+<rect x="355.7" y="182" width="2" height="10" fill="#1f2328"/>
+<rect x="10.5" y="182.5" width="639" height="9" rx="3" fill="none" stroke="#8c959f"/>
+<text x="10" y="215" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" dominant-baseline="central">Tier 3: 238 services, 1,260 resources, 76,525 attributes</text>
+<rect x="10" y="224" width="640" height="22" rx="3" fill="#d0d7de"/>
+<rect x="10" y="224" width="19" height="22" fill="#2f81f7"/>
+<rect x="29" y="224" width="621" height="22" fill="#d0d7de"/>
+<text x="339.5" y="236" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">97.0%</text>
+<rect x="10.5" y="224.5" width="639" height="21" rx="3" fill="none" stroke="#8c959f"/>
+<rect x="10" y="252" width="640" height="22" rx="3" fill="#d0d7de"/>
+<rect x="10" y="252" width="46.2" height="22" fill="#2f81f7"/>
+<text x="33.1" y="264" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">7.2%</text>
+<rect x="56.2" y="252" width="593.8" height="22" fill="#d0d7de"/>
+<text x="353.1" y="264" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">92.8%</text>
+<rect x="10.5" y="252.5" width="639" height="21" rx="3" fill="none" stroke="#8c959f"/>
+<rect x="10" y="280" width="640" height="10" rx="3" fill="#d0d7de"/>
+<rect x="10" y="280" width="418.8" height="10" fill="#7b42bc"/>
+<rect x="319.3" y="280" width="2" height="10" fill="#1f2328"/>
+<rect x="10.5" y="280.5" width="639" height="9" rx="3" fill="none" stroke="#8c959f"/>
+<rect x="10.5" y="297.5" width="11" height="11" rx="2" fill="#2f81f7" stroke="#8c959f"/>
+<text x="27" y="303" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#1f2328" dominant-baseline="central">ACK</text>
+<rect x="66.5" y="297.5" width="11" height="11" rx="2" fill="#2da44e" stroke="#8c959f"/>
+<text x="83" y="303" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#1f2328" dominant-baseline="central">ours beyond ACK</text>
+<rect x="206.5" y="297.5" width="11" height="11" rx="2" fill="#d0d7de" stroke="#8c959f"/>
+<text x="223" y="303" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#1f2328" dominant-baseline="central">uncovered</text>
+<text x="304" y="303" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#59636e" dominant-baseline="central">bars: attributes, resources, Terraform</text>
+<rect x="10.5" y="319.5" width="11" height="11" rx="2" fill="#7b42bc" stroke="#8c959f"/>
+<text x="27" y="325" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" fill="#1f2328" dominant-baseline="central">Terraform aws, estimate (tick: strict floor)</text>
 </svg>

@@ -34,6 +34,9 @@ const (
 type sources struct {
 	CloudFormation cfnSource `json:"cloudformation"`
 	ACK            ackSource `json:"ack"`
+	// Terraform is the catalog's Terraform estimate (terraform.go), pinned
+	// by -terraform-pin and kept as it is by --update-pins.
+	Terraform terraformSource `json:"terraform"`
 }
 
 type cfnSource struct {
@@ -179,6 +182,9 @@ func gh(args ...string) ([]byte, error) {
 func updatePins(c config) error {
 	today := time.Now().UTC().Format("2006-01-02")
 	s := &sources{}
+	if old, err := loadSources(c); err == nil {
+		s.Terraform = old.Terraform
+	}
 
 	// CloudFormation schemas.
 	resp, err := http.Get(cfnURL)
@@ -261,11 +267,16 @@ func updatePins(c config) error {
 			s.ACK.NoRelease = append(s.ACK.NoRelease, r.noRelease)
 		}
 	}
+	return writeSources(c, s)
+}
+
+// writeSources writes sources.yaml.
+func writeSources(c config, s *sources) error {
 	b, err := yaml.Marshal(s)
 	if err != nil {
 		return err
 	}
-	hdr := "# Written by hack/coverage/run.sh --update-pins; read by the generator. Every number in\n# docs/coverage/ comes from exactly these inputs plus this repository's CRDs.\n"
+	hdr := "# Written by hack/coverage/run.sh --update-pins and -terraform-pin; read by the generator. Every number in\n# docs/coverage/ comes from exactly these inputs plus this repository's CRDs.\n"
 	if err := os.MkdirAll(c.outDir, 0o755); err != nil {
 		return err
 	}

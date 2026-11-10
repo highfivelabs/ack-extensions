@@ -12,3 +12,14 @@ resources:
   - ec2.cloudcontrol.aws.hfl.dev_transitgatewaypeeringattachments.yaml
   - controltower.cloudcontrol.aws.hfl.dev_enabledcontrols.yaml
   - controltower.cloudcontrol.aws.hfl.dev_enabledbaselines.yaml
+  - config.cloudcontrol.aws.hfl.dev_configurationrecorders.yaml
+  - config.cloudcontrol.aws.hfl.dev_deliverychannels.yaml
+  - config.cloudcontrol.aws.hfl.dev_configrules.yaml
+  - config.cloudcontrol.aws.hfl.dev_configurationaggregators.yaml
+  - config.cloudcontrol.aws.hfl.dev_aggregationauthorizations.yaml
+  - config.cloudcontrol.aws.hfl.dev_organizationconformancepacks.yaml
+  - config.cloudcontrol.aws.hfl.dev_organizationconfigrules.yaml
+  - config.cloudcontrol.aws.hfl.dev_conformancepacks.yaml
+  - config.cloudcontrol.aws.hfl.dev_remediationconfigurations.yaml
+  - config.cloudcontrol.aws.hfl.dev_storedqueries.yaml
+  - config.cloudcontrol.aws.hfl.dev_connectors.yaml

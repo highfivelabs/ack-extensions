@@ -1,0 +1,77 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConfigOrganizationConformancePack",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigOrganizationConformancePackCreate",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeOrganizationConformancePackStatuses",
+        "config:DescribeOrganizationConformancePacks",
+        "config:GetOrganizationConformancePackDetailedStatus",
+        "config:ListTagsForResource",
+        "config:PutOrganizationConformancePack",
+        "config:TagResource",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "organizations:EnableAWSServiceAccess",
+        "organizations:ListDelegatedAdministrators",
+        "s3:GetBucketAcl",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigOrganizationConformancePackRead",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeOrganizationConformancePacks",
+        "config:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigOrganizationConformancePackUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeOrganizationConformancePackStatuses",
+        "config:DescribeOrganizationConformancePacks",
+        "config:GetOrganizationConformancePackDetailedStatus",
+        "config:ListTagsForResource",
+        "config:PutOrganizationConformancePack",
+        "config:TagResource",
+        "config:UntagResource",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "organizations:EnableAWSServiceAccess",
+        "organizations:ListDelegatedAdministrators",
+        "s3:GetBucketAcl",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigOrganizationConformancePackDelete",
+      "Effect": "Allow",
+      "Action": [
+        "config:DeleteOrganizationConformancePack",
+        "config:DescribeOrganizationConformancePackStatuses",
+        "config:GetOrganizationConformancePackDetailedStatus",
+        "config:UntagResource",
+        "organizations:ListDelegatedAdministrators"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConfigConformancePack",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigConformancePackCreate",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeConformancePackStatus",
+        "config:DescribeConformancePacks",
+        "config:ListTagsForResource",
+        "config:PutConformancePack",
+        "config:TagResource",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "s3:GetBucketAcl",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigConformancePackRead",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeConformancePacks",
+        "config:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigConformancePackUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeConformancePackStatus",
+        "config:DescribeConformancePacks",
+        "config:ListTagsForResource",
+        "config:PutConformancePack",
+        "config:TagResource",
+        "config:UntagResource",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "s3:GetBucketAcl",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigConformancePackDelete",
+      "Effect": "Allow",
+      "Action": [
+        "config:DeleteConformancePack",
+        "config:DescribeConformancePackStatus",
+        "config:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

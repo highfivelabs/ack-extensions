@@ -54,9 +54,10 @@ func outputs(c config, m *model, r *results) (map[string][]byte, error) {
 	}
 	for i := range r.svcs {
 		s := r.svcs[i]
-		files[dir+"bars/"+s.service+".svg"] = barSVG(barTitle(s.service, s), s)
+		tf, ok := r.tf[s.service]
+		files[dir+"bars/"+s.service+".svg"] = barSVG(barTitle(s.service, s, tf, ok), s, tf, ok)
 	}
-	files[dir+"bars/_total.svg"] = totalSVG(r.total, "ACK")
+	files[dir+"bars/_total.svg"] = totalSVG(r.total, "ACK", r.tfTotal)
 	files[dir+"bars/_tiers.svg"] = tiersSVG(r.tierRows())
 	files[dir+"tiers.csv"] = r.tiersCSV()
 	files[dir+"bars/_categories.svg"] = rollupSVG(r.categoryRows(), func(t tierRow) string { return t.label })

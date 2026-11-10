@@ -120,6 +120,9 @@ func (r *results) tierRows() []tierRow {
 		t.attrOursBeyond += s.attrOursBeyond
 		t.attrUncov += s.attrUncov
 	}
+	for _, x := range r.tfRows {
+		rows[r.tierOf(x.service)-1].tf.add(x.tfCounts)
+	}
 	return rows
 }
 
@@ -128,6 +131,7 @@ type tierRow struct {
 	label    string // "Tier 1", "platform-foundation"
 	services int
 	svcRow
+	tf tfCounts // the Terraform estimate over the group's terraform.csv rows
 }
 
 func (t tierRow) resUncov() int { return t.resTotal - t.resOfficial - t.resOursBeyond }
@@ -150,6 +154,9 @@ func (r *results) categoryRows() []tierRow {
 		t.attrOfficial += s.attrOfficial
 		t.attrOursBeyond += s.attrOursBeyond
 		t.attrUncov += s.attrUncov
+	}
+	for _, x := range r.tfRows {
+		rows[idx[r.categoryOf(x.service)]].tf.add(x.tfCounts)
 	}
 	return rows
 }
@@ -186,14 +193,15 @@ func tiersSVG(rows []tierRow) []byte {
 // rollupSVG draws one pair of bars per row.
 func rollupSVG(rows []tierRow, name func(tierRow) string) []byte {
 	const w, h, pad, labelH, gap = 640, 22, 10, 18, 6
-	groupH := labelH + 2*h + gap + 14
-	height := 2*pad + len(rows)*groupH + 22 - 14 + 6
+	const tfH = 10
+	groupH := labelH + 2*h + gap + tfH + gap + 14
+	height := 2*pad + len(rows)*groupH + 22 - 14 + 6 + 22
 	var b strings.Builder
 	var parts []string
 	for _, t := range rows {
-		parts = append(parts, fmt.Sprintf("%s: attributes official %s%%, ours beyond %s%%, uncovered %s%%; resources official %s%%, ours beyond %s%%, uncovered %s%%",
+		parts = append(parts, fmt.Sprintf("%s: attributes official %s%%, ours beyond %s%%, uncovered %s%%; resources official %s%%, ours beyond %s%%, uncovered %s%%; %s",
 			name(t), pct1(t.attrOfficial, t.attrTotal), pct1(t.attrOursBeyond, t.attrTotal), pct1(t.attrUncov, t.attrTotal),
-			pct1(t.resOfficial, t.resTotal), pct1(t.resOursBeyond, t.resTotal), pct1(t.resUncov(), t.resTotal)))
+			pct1(t.resOfficial, t.resTotal), pct1(t.resOursBeyond, t.resTotal), pct1(t.resUncov(), t.resTotal), tfTitle(t.tf)))
 	}
 	title := html.EscapeString(strings.Join(parts, ". "))
 	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" role="img" aria-label="%s">`+"\n", w+2*pad, height, w+2*pad, height, title)
@@ -205,9 +213,10 @@ func rollupSVG(rows []tierRow, name func(tierRow) string) []byte {
 		fmt.Fprintf(&b, `<text x="%d" y="%d" font-family="%s" font-size="12" font-weight="600" fill="%s" dominant-baseline="central">%s</text>`+"\n", pad, y+labelH/2, fontFamily, colTextDark, html.EscapeString(label))
 		segments(&b, t.attrOfficial, t.attrOursBeyond, t.attrUncov, pad, y+labelH, w, h, 12)
 		segments(&b, t.resOfficial, t.resOursBeyond, t.resUncov(), pad, y+labelH+h+gap, w, h, 12)
+		tfBar(&b, t.tf, pad, y+labelH+2*h+2*gap, w, tfH, 0)
 		y += groupH
 	}
-	items := []struct{ fill, text string }{{colOfficial, "ACK"}, {colOurs, "ours beyond ACK"}, {colNone, "uncovered"}, {"#ffffff", "upper bar: attributes, lower bar: resources"}}
+	items := []struct{ fill, text string }{{colOfficial, "ACK"}, {colOurs, "ours beyond ACK"}, {colNone, "uncovered"}, {"#ffffff", "bars: attributes, resources, Terraform"}}
 	x := pad
 	for _, it := range items[:3] {
 		fmt.Fprintf(&b, `<rect x="%d.5" y="%d.5" width="11" height="11" rx="2" fill="%s" stroke="%s"/>`+"\n", x, y-14+7, it.fill, colBorder)
@@ -215,6 +224,7 @@ func rollupSVG(rows []tierRow, name func(tierRow) string) []byte {
 		x += 17 + 7*len(it.text) + 18
 	}
 	fmt.Fprintf(&b, `<text x="%d" y="%d" font-family="%s" font-size="12" fill="#59636e" dominant-baseline="central">%s</text>`+"\n", x, y-14+13, fontFamily, html.EscapeString(items[3].text))
+	tfLegend(&b, pad, y-14+7+22)
 	b.WriteString("</svg>\n")
 	return []byte(b.String())
 }
