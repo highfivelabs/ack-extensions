@@ -12,6 +12,7 @@ This directory measures how much of AWS is covered by Kubernetes kinds: by the c
 | Covered by an official ACK kind | 266 | 6,033 (7.0%) |
 | Covered by ours, beyond official | 36 | 373 (0.4%) |
 | Covered by neither | 1,573 | 79,367 (92.5%) |
+| Matched by the Terraform `aws` provider (estimate, [below](#terraform)) | | about 55,279 (64.4%), at least 41,864 (48.8%) |
 
 ## Files
 
@@ -20,12 +21,13 @@ This directory measures how much of AWS is covered by Kubernetes kinds: by the c
 | [services.csv](services.csv) | service | `service,resources_total,resources_official,resources_ours_beyond,attributes_total,attributes_official,attributes_ours_beyond,attributes_uncovered,pct_official,pct_ours_beyond,pct_uncovered` |
 | [resources.csv](resources.csv) | resource | `service,resource,attributes_total,official_kinds,attributes_official,ours_kinds,attributes_ours_beyond,attributes_uncovered,ours_from_upstream_pr,notes` |
 | [attributes.csv](attributes.csv) | attribute | `service,resource,attribute,type,required,covered_by,official_path,ours_path` |
-| `bars/<service>.svg`, `bars/_total.svg` | service, and all | stacked bars: official blue, ours beyond official green, uncovered light grey; `_total.svg` shows attributes and resources |
+| `bars/<service>.svg`, `bars/_total.svg` | service, and all | stacked bars: official blue, ours beyond official green, uncovered light grey; under them the Terraform estimate in purple with its strict floor as a dark tick (see Terraform); `_total.svg` shows attributes, resources and Terraform |
 | [priority.csv](priority.csv) | service | `service,tier,category,rationale,source`: the tier and category of each service, **hand-edited input** (see Tiers); a service not in it is tier 3, category `other` |
 | [foundation.md](foundation.md) | | the ranked **foundation gap report**: the work queue for the kind agents (platform-foundation and security-adjacent resources: what ACK and we cover, what upstream has or is building, moto, size, proposed kinds) |
 | [categories.csv](categories.csv), `bars/_categories.svg` | category | the same columns as `tiers.csv`, for `platform-foundation`, `security-adjacent`, `application`, `other` |
 | [tiers.csv](tiers.csv), `bars/_tiers.svg` | tier | `tier,services,resources_total,resources_official,resources_ours_beyond,resources_uncovered,attributes_total,attributes_official,attributes_ours_beyond,attributes_uncovered,pct_attributes_official,pct_attributes_ours_beyond,pct_attributes_uncovered,pct_resources_official,pct_resources_ours_beyond,pct_resources_uncovered` |
-| [sources.yaml](sources.yaml) | | every pinned input: the schema zip and each ACK controller's release and commit |
+| [inputs/terraform/terraform.csv](inputs/terraform/terraform.csv), [inputs/terraform/terraform-resources.csv](inputs/terraform/terraform-resources.csv) | service, and resource | the Terraform estimate, **pinned input** copied from the catalog repository (see Terraform); its columns are in the catalog's `docs/terraform/README.md` |
+| [sources.yaml](sources.yaml) | | every pinned input: the schema zip, each ACK controller's release and commit, and the catalog commit of the Terraform estimate |
 
 In `attributes.csv`, `covered_by` is `official` (an official ACK kind covers it and ours does not), `ours` (ours covers it and official does not), `both`, or `none`; `official_path` and `ours_path` are the CRD `spec` path that covers it (`;`-separated, with the kind in front when several kinds of that side cover the resource). In `services.csv` and `resources.csv`, `attributes_official` counts `official` and `both`, `attributes_ours_beyond` counts `ours` only, and the three percentages are of `attributes_total` (so each row adds to 100.0, give or take rounding). `resources_official` counts resources with an official kind; `resources_ours_beyond` counts resources with a kind of ours and none official. `notes` carries `official_unmapped=N` and `ours_unmapped=N` (spec paths of the CRDs that matched no CloudFormation property), the kind of ours that is a property of a larger resource, and `outside-denominator`.
 
@@ -51,18 +53,18 @@ Services do not matter equally: `quicksight` alone has more attributes than all 
 
 **Tiers**: tier 1 is the platform-foundation services; tier 2 is the security-adjacent services and the application services some tracked module uses; tier 3 is everything else. (Before 2026-11-09 tier 1 was the services of the ten most-downloaded terraform-aws-modules; the builder's brief replaced that where the two conflict, so `s3`, `lambda`, `rds` and `logs` moved to tier 2. The module-usage ranking stays as each row's rationale.)
 
-| Category | Services | Resources | ACK | Ours beyond | Attributes | ACK | Ours beyond |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 16 | 241 | 22.8% | 10.0% | 2,400 | 28.2% | 6.5% |
-| security-adjacent | 18 | 112 | 12.5% | 2.7% | 2,082 | 37.6% | 0.8% |
-| application | 33 | 262 | 40.5% | 3.4% | 4,766 | 48.2% | 4.2% |
-| other | 238 | 1,260 | 7.2% | 0.0% | 76,525 | 3.0% | 0.0% |
+| Category | Services | Resources | ACK | Ours beyond | Attributes | ACK | Ours beyond | Terraform (estimate) |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| platform-foundation | 16 | 241 | 22.8% | 10.0% | 2,400 | 28.2% | 6.5% | ~51.5% (≥43.5%) |
+| security-adjacent | 18 | 112 | 12.5% | 2.7% | 2,082 | 37.6% | 0.8% | ~74.1% (≥72.0%) |
+| application | 33 | 262 | 40.5% | 3.4% | 4,766 | 48.2% | 4.2% | ~50.8% (≥46.4%) |
+| other | 238 | 1,260 | 7.2% | 0.0% | 76,525 | 3.0% | 0.0% | ~65.4% (≥48.5%) |
 
-| Tier | Services | Resources | ACK | Ours beyond | Attributes | ACK | Ours beyond |
-| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | 16 | 241 | 22.8% | 10.0% | 2,400 | 28.2% | 6.5% |
-| 2 | 51 | 374 | 32.1% | 3.2% | 6,848 | 44.9% | 3.2% |
-| 3 | 238 | 1,260 | 7.2% | 0.0% | 76,525 | 3.0% | 0.0% |
+| Tier | Services | Resources | ACK | Ours beyond | Attributes | ACK | Ours beyond | Terraform (estimate) |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 16 | 241 | 22.8% | 10.0% | 2,400 | 28.2% | 6.5% | ~51.5% (≥43.5%) |
+| 2 | 51 | 374 | 32.1% | 3.2% | 6,848 | 44.9% | 3.2% | ~57.9% (≥54.2%) |
+| 3 | 238 | 1,260 | 7.2% | 0.0% | 76,525 | 3.0% | 0.0% | ~65.4% (≥48.5%) |
 
 **The foundation gap report.** [foundation.md](foundation.md) ranks every resource of the platform-foundation and security-adjacent categories as a work queue for the kind agents: ACK coverage, ours, what is missing (whole resources first, then the attributes that matter), whether upstream has it or is building it (ACK controller releases, `generator.yaml` ignore lists, open pull requests and `community` issues, all read-only), how many of the 40 tracked terraform-aws-modules need it, whether moto 5.2.5 implements the API (we can only prove kinds against moto), a size estimate and the proposed kinds. Its numbers are regenerated; its research is `hack/coverage/foundation.yaml`.
 
@@ -105,6 +107,20 @@ To see any resource's matching, with the tier that matched each attribute and th
 
 ```sh
 hack/coverage/run.sh -explain rds/DBInstance
+```
+
+## Terraform
+
+Every bar carries a thin **purple** bar under it: the share of the same attributes (the CloudFormation denominator) that a writable attribute of a mapped resource of the Terraform `aws` provider matches, so a reader can compare ACK and ours with what a team migrating from Terraform has today. The bar is the lenient match (`pct_terraform_l2`), the dark tick on it the strict one (`pct_terraform_l1`), which is its floor. It is drawn beside official and ours, not stacked with them: they overlap.
+
+**It is an estimate, not a measurement.** The catalog repository maps each Terraform resource to CloudFormation resources and matches attribute names by rule; it under-counts where the provider renames or restructures a field and over-counts where two fields share a name. Its method and error are ["Method and error" in `docs/terraform-leverage.md`](https://github.com/highfivelabs/catalog/blob/13064af34996c47f1a5498bb17aca16194c4574e/docs/terraform-leverage.md#method-and-error) of the catalog repository. Nothing here recomputes it: the generator reads the numbers as they are.
+
+**Where it comes from.** `https://github.com/highfivelabs/catalog` (private), commit `13064af34996c47f1a5498bb17aca16194c4574e` (2026-11-09T22:36:38-06:00), copied 2026-11-10: `docs/terraform/ack-extensions/terraform.csv` as [`inputs/terraform/terraform.csv`](inputs/terraform/terraform.csv), sha256 `564b0736a556aa3bc1b62853ef8adb3cfeabfb73989bfbc9ae4e0ffd23561f26`; `docs/terraform/ack-extensions/terraform-resources.csv` as [`inputs/terraform/terraform-resources.csv`](inputs/terraform/terraform-resources.csv), sha256 `53de14e1beba7ad23bf890f7fe4fe3b37b11c6f01cc23da72e8a9776988859d9`. The copies are committed, as the catalog repository is private, and the generator refuses a copy whose checksum differs from `sources.yaml`. Only the `aws` provider's rows are read: `terraform.csv` gives each service's bar and table cell; the totals, categories and tiers are sums of its `attributes_terraform_l1`, `attributes_terraform_l2` and `attributes_total` over every row (306 rows, 85,773 attributes; a service the estimate has and the dashboard no longer has still counts in the total), grouped by this dashboard's category and tier. `terraform-resources.csv` lists, resource by resource, the Terraform resources each match relied on. The shared CSVs here (`services.csv`, `categories.csv`, `tiers.csv`, ...) carry no Terraform column.
+
+The estimate was made against this dashboard's denominator at the time, so its `attributes_total` can drift from `services.csv` as the CloudFormation pin moves; move the Terraform pin after the catalog reruns its analysis:
+
+```sh
+hack/coverage/run.sh -terraform-pin <catalog commit>   # reads $CATALOG_DIR (default ../catalog), copies the two files, rewrites sources.yaml, regenerates
 ```
 
 ## Pinned sources
@@ -284,11 +300,12 @@ beside the CRD paths that matched nothing (did ACK cover it under another name?)
 ```sh
 hack/coverage/run.sh               # regenerate everything under docs/coverage/ and the README's Coverage section
 hack/coverage/run.sh --check       # fail if the committed outputs differ from a regeneration from the pinned inputs
-hack/coverage/run.sh --update-pins # move the pins to the latest ACK releases and the current CloudFormation zip, then regenerate
+hack/coverage/run.sh --update-pins # move the pins to the latest ACK releases and the current CloudFormation zip, then regenerate (the Terraform pin is kept)
+hack/coverage/run.sh -terraform-pin <commit> # move the Terraform estimate to that catalog commit, then regenerate
 hack/coverage/run.sh -explain s3/Bucket
 task coverage                      # the first; `task coverage:check` is the second
 ```
 
-The generator is Go (`hack/coverage/`, run from the root module; `go test ./hack/coverage` has its unit tests). Regeneration reads only the committed zip, `sources.yaml`, `priority.csv`, `hack/coverage/foundation.yaml`, `hack/coverage/module-usage.csv`, `hack/coverage/mappings.yaml` and `config/crds/bases/`, plus the pinned ACK CRDs, which it downloads from `raw.githubusercontent.com` at the pinned commits into the git-ignored `.cache/coverage/`. Outputs carry no timestamps; the only dates are the pins' own. `--update-pins` needs the `gh` CLI (read-only calls) and changes the committed zip; review the diff of `sources.yaml` before committing it.
+The generator is Go (`hack/coverage/`, run from the root module; `go test ./hack/coverage` has its unit tests). Regeneration reads only the committed zip, the committed Terraform estimate (`inputs/terraform/`), `sources.yaml`, `priority.csv`, `hack/coverage/foundation.yaml`, `hack/coverage/module-usage.csv`, `hack/coverage/mappings.yaml` and `config/crds/bases/`, plus the pinned ACK CRDs, which it downloads from `raw.githubusercontent.com` at the pinned commits into the git-ignored `.cache/coverage/`. Outputs carry no timestamps; the only dates are the pins' own. `--update-pins` needs the `gh` CLI (read-only calls) and changes the committed zip; review the diff of `sources.yaml` before committing it.
 
 To teach the matcher a rename, add a line to `attributes:` (an official kind) or `oursAttributes:` in `mappings.yaml`, a CRD path prefix on the left and the CloudFormation path prefix on the right, then regenerate and read `-explain` for that resource.

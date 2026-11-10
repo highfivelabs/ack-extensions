@@ -47,6 +47,7 @@ type model struct {
 	howOfficial       map[string]int
 	howOurs           map[string]int
 	priority          map[string]priorityEntry
+	terraform         []tfRow // the catalog's Terraform estimate, aws rows
 	cfnReadOnly       int
 	cfnCut            int
 }
@@ -103,6 +104,9 @@ func build(c config) (*model, error) {
 	sort.Strings(m.services)
 
 	if m.priority, err = loadPriority(c, m.services); err != nil {
+		return nil, err
+	}
+	if m.terraform, err = loadTerraform(c, src); err != nil {
 		return nil, err
 	}
 
