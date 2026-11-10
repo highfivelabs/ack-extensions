@@ -277,6 +277,30 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: SSOInstanceAccessControlAttributeConfigurationDelete
+        - Action:
+          - iam:CreateVirtualMFADevice
+          - iam:EnableMFADevice
+          - iam:ListVirtualMFADevices
+          Effect: Allow
+          Resource: '*'
+          Sid: IAMVirtualMFADeviceCreate
+        - Action:
+          - iam:ListVirtualMFADevices
+          Effect: Allow
+          Resource: '*'
+          Sid: IAMVirtualMFADeviceRead
+        - Action:
+          - iam:TagMFADevice
+          - iam:UntagMFADevice
+          Effect: Allow
+          Resource: '*'
+          Sid: IAMVirtualMFADeviceUpdate
+        - Action:
+          - iam:DeactivateMFADevice
+          - iam:DeleteVirtualMFADevice
+          Effect: Allow
+          Resource: '*'
+          Sid: IAMVirtualMFADeviceDelete
         Version: "2012-10-17"
     Type: AWS::IAM::ManagedPolicy
   LiveTestRole:

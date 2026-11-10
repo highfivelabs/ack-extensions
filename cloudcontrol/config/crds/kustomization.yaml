@@ -6,3 +6,4 @@ resources:
   - sso.cloudcontrol.aws.hfl.dev_permissionsets.yaml
   - sso.cloudcontrol.aws.hfl.dev_assignments.yaml
   - sso.cloudcontrol.aws.hfl.dev_instanceaccesscontrolattributeconfigurations.yaml
+  - iam.cloudcontrol.aws.hfl.dev_virtualmfadevices.yaml

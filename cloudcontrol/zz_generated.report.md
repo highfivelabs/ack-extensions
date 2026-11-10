@@ -12,6 +12,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::SSO::PermissionSet` | `PermissionSet.sso.cloudcontrol.aws.hfl.dev` | 10 | 1 | 4 | 0 | 1 | 12 |
 | `AWS::SSO::Assignment` | `Assignment.sso.cloudcontrol.aws.hfl.dev` | 6 | 0 | 12 | 0 | 0 | 4 |
 | `AWS::SSO::InstanceAccessControlAttributeConfiguration` | `InstanceAccessControlAttributeConfiguration.sso.cloudcontrol.aws.hfl.dev` | 3 | 0 | 2 | 0 | 0 | 5 |
+| `AWS::IAM::VirtualMFADevice` | `VirtualMFADevice.iam.cloudcontrol.aws.hfl.dev` | 4 | 1 | 4 | 0 | 0 | 3 |
 
 ## `AWS::IAM::SAMLProvider`
 
@@ -82,5 +83,17 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - Nodes made `x-kubernetes-preserve-unknown-fields`: none
 - Read-only properties nested in writable objects (dropped): none
 - IAM actions (10): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `sso:CreateInstanceAccessControlAttributeConfiguration`, `sso:DeleteInstanceAccessControlAttributeConfiguration`, `sso:DescribeInstanceAccessControlAttributeConfiguration`, `sso:UpdateApplicationProfileForAWSAccountInstance`, `sso:UpdateInstanceAccessControlAttributeConfiguration`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::IAM::VirtualMFADevice`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: `/properties/Base32StringSeed (not in spec)`
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (12): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `iam:CreateVirtualMFADevice`, `iam:DeactivateMFADevice`, `iam:DeleteVirtualMFADevice`, `iam:EnableMFADevice`, `iam:ListVirtualMFADevices`, `iam:TagMFADevice`, `iam:UntagMFADevice`
 - Sensitive IAM actions: none
 - Left out (list handler only): none

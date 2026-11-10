@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIAMVirtualMFADevice",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IAMVirtualMFADeviceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateVirtualMFADevice",
+        "iam:EnableMFADevice",
+        "iam:ListVirtualMFADevices"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IAMVirtualMFADeviceRead",
+      "Effect": "Allow",
+      "Action": [
+        "iam:ListVirtualMFADevices"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IAMVirtualMFADeviceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:TagMFADevice",
+        "iam:UntagMFADevice"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IAMVirtualMFADeviceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iam:DeactivateMFADevice",
+        "iam:DeleteVirtualMFADevice"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

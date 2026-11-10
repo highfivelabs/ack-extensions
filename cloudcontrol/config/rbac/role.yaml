@@ -78,6 +78,7 @@ rules:
   - iam.cloudcontrol.aws.hfl.dev
   resources:
   - samlproviders
+  - virtualmfadevices
   verbs:
   - create
   - delete
@@ -90,6 +91,7 @@ rules:
   - iam.cloudcontrol.aws.hfl.dev
   resources:
   - samlproviders/status
+  - virtualmfadevices/status
   verbs:
   - get
   - patch

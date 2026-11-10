@@ -257,6 +257,8 @@ func startFake(t *testing.T, root string) (*fake.Server, string, aws.Config) {
 			b = fake.NewPermissionSet(motoCfg)
 		case "AWS::SSO::Assignment":
 			b = fake.NewAssignment(motoCfg)
+		case "AWS::IAM::VirtualMFADevice":
+			b = fake.NewVirtualMFADevice(motoCfg)
 		default:
 			if ty.Unproven != "" {
 				// Marked in types.yaml: moto lacks the API.

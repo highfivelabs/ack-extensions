@@ -13,4 +13,5 @@ var Types = []*Type{
 	{Group: "sso.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "PermissionSet", Plural: "permissionsets", TypeName: "AWS::SSO::PermissionSet", SchemaFile: "schemas/aws-sso-permissionset.json"},
 	{Group: "sso.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "Assignment", Plural: "assignments", TypeName: "AWS::SSO::Assignment", SchemaFile: "schemas/aws-sso-assignment.json"},
 	{Group: "sso.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "InstanceAccessControlAttributeConfiguration", Plural: "instanceaccesscontrolattributeconfigurations", TypeName: "AWS::SSO::InstanceAccessControlAttributeConfiguration", SchemaFile: "schemas/aws-sso-instanceaccesscontrolattributeconfiguration.json", Unproven: "moto 5.2.5 has no Create/Describe/Update/DeleteInstanceAccessControlAttributeConfiguration"},
+	{Group: "iam.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "VirtualMFADevice", Plural: "virtualmfadevices", TypeName: "AWS::IAM::VirtualMFADevice", SchemaFile: "schemas/aws-iam-virtualmfadevice.json"},
 }

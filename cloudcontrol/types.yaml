@@ -35,6 +35,10 @@ liveTestActions:
   - ec2:DescribeTransitGateways
   - ec2:CreateTags
   - sso:ListInstances
+  - iam:CreateUser
+  - iam:DeleteUser
+  - iam:ListMFADevices
+  - iam:ListMFADeviceTags
 types:
   # F03: IAM SAML providers. ACK's iam-controller ignores SAMLProvider.
   - typeName: AWS::IAM::SAMLProvider
@@ -52,3 +56,8 @@ types:
   - typeName: AWS::SSO::Assignment
   - typeName: AWS::SSO::InstanceAccessControlAttributeConfiguration
     unproven: "moto 5.2.5 has no Create/Describe/Update/DeleteInstanceAccessControlAttributeConfiguration"
+  # F03: IAM virtual MFA devices. ACK's iam-controller ignores
+  # VirtualMFADevice. The schema has no seed or QR code, so Cloud Control
+  # never returns them: a device made here cannot be added to an
+  # authenticator app (docs/cloudcontrol.md, "Batch 2").
+  - typeName: AWS::IAM::VirtualMFADevice
