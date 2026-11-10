@@ -1498,13 +1498,13 @@ robomaker,SimulationApplicationVersion,2,,0,,0,2,false,
 rolesanywhere,CRL,6,,0,,0,6,false,
 rolesanywhere,Profile,12,,0,,0,12,false,
 rolesanywhere,TrustAnchor,11,,0,,0,11,false,
-route53,CidrCollection,3,,0,,0,3,false,
+route53,CidrCollection,3,,0,CidrCollection (Cloud Control),3,0,false,ours CidrCollection (Cloud Control) unproven on fake: moto 5.2.5 has no Create/List/Change/DeleteCidrCollection
 route53,DelegationSet,0,,0,,0,0,false,
-route53,DNSSEC,1,,0,,0,1,false,
+route53,DNSSEC,1,,0,DNSSEC (Cloud Control),1,0,false,ours DNSSEC (Cloud Control) unproven on fake: moto 5.2.5 has no EnableHostedZoneDNSSEC or DisableHostedZoneDNSSEC
 route53,HealthCheck,20,HealthCheck,20,,0,0,false,official_unmapped=1
 route53,HostedZone,9,HostedZone,7,,0,2,false,official_unmapped=3
-route53,KeySigningKey,4,,0,,0,4,false,
-route53,QueryLoggingConfig,2,,0,,0,2,false,
+route53,KeySigningKey,4,,0,KeySigningKey (Cloud Control),4,0,false,ours KeySigningKey (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Activate/Deactivate/DeleteKeySigningKey
+route53,QueryLoggingConfig,2,,0,QueryLoggingConfig (Cloud Control),2,0,false,
 route53,RecordSet,21,RecordSet,19,,0,2,false,
 route53,RecordSetGroup,28,,0,,0,28,false,
 route53,TrafficPolicy,3,,0,,0,3,false,
@@ -1527,13 +1527,13 @@ route53recoveryreadiness,Cell,4,,0,,0,4,false,
 route53recoveryreadiness,ReadinessCheck,4,,0,,0,4,false,
 route53recoveryreadiness,RecoveryGroup,4,,0,,0,4,false,
 route53recoveryreadiness,ResourceSet,14,,0,,0,14,false,
-route53resolver,FirewallConfig,2,,0,,0,2,false,
-route53resolver,FirewallDomainList,5,,0,,0,5,false,
-route53resolver,FirewallRuleGroup,17,,0,,0,17,false,
-route53resolver,FirewallRuleGroupAssociation,7,,0,,0,7,false,
+route53resolver,FirewallConfig,2,,0,FirewallConfig (Cloud Control),2,0,false,ours FirewallConfig (Cloud Control) unproven on fake: moto 5.2.5 has no GetFirewallConfig or UpdateFirewallConfig
+route53resolver,FirewallDomainList,5,,0,FirewallDomainList (Cloud Control),5,0,false,ours FirewallDomainList (Cloud Control) unproven on fake: moto 5.2.5 has none of Route 53 Resolver's DNS Firewall calls
+route53resolver,FirewallRuleGroup,17,,0,FirewallRuleGroup (Cloud Control),17,0,false,ours FirewallRuleGroup (Cloud Control) unproven on fake: moto 5.2.5 has none of Route 53 Resolver's DNS Firewall calls
+route53resolver,FirewallRuleGroupAssociation,7,,0,FirewallRuleGroupAssociation (Cloud Control),7,0,false,ours FirewallRuleGroupAssociation (Cloud Control) unproven on fake: moto 5.2.5 has none of Route 53 Resolver's DNS Firewall calls
 route53resolver,OutpostResolver,6,,0,,0,6,false,
-route53resolver,ResolverConfig,2,,0,,0,2,false,
-route53resolver,ResolverDNSSECConfig,1,,0,,0,1,false,
+route53resolver,ResolverConfig,2,,0,ResolverConfig (Cloud Control),2,0,false,ours ResolverConfig (Cloud Control) unproven on fake: moto 5.2.5 has no GetResolverConfig or UpdateResolverConfig
+route53resolver,ResolverDNSSECConfig,1,,0,ResolverDNSSECConfig (Cloud Control),1,0,false,
 route53resolver,ResolverEndpoint,16,ResolverEndpoint,9,,0,7,false,
 route53resolver,ResolverQueryLoggingConfig,4,ResolverQueryLogConfig,4,,0,0,false,
 route53resolver,ResolverQueryLoggingConfigAssociation,2,ResolverQueryLogConfigAssociation,2,,0,0,false,

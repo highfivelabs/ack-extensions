@@ -55,6 +55,14 @@ liveTestActions:
   - ec2:GetTransitGatewayRouteTableAssociations
   - ec2:GetTransitGatewayRouteTablePropagations
   - ec2:DescribeTransitGatewayPeeringAttachments
+  - route53:CreateHostedZone
+  - route53:DeleteHostedZone
+  - route53:GetQueryLoggingConfig
+  - logs:CreateLogGroup
+  - logs:DeleteLogGroup
+  - logs:DescribeLogGroups
+  - ec2:DescribeVpcs
+  - route53resolver:ListResolverDnssecConfigs
   - iam:CreateRole
   - iam:DeleteRole
   - s3:CreateBucket
@@ -94,6 +102,34 @@ types:
     unproven: "moto 5.2.5 has no controltower, and no other emulator exists"
   - typeName: AWS::ControlTower::EnabledBaseline
     unproven: "moto 5.2.5 has no controltower, and no other emulator exists"
+  # F08: Route 53 beyond ACK's route53-controller v1.8.0 (HealthCheck,
+  # HostedZone, RecordSet). DNSSEC signing for a hosted zone (a delete
+  # disables signing: remove the zone's DS record at the parent first) and
+  # its key-signing key; query logging; CIDR collections for IP-based
+  # routing.
+  - typeName: AWS::Route53::QueryLoggingConfig
+  - typeName: AWS::Route53::DNSSEC
+    unproven: "moto 5.2.5 has no EnableHostedZoneDNSSEC or DisableHostedZoneDNSSEC"
+  - typeName: AWS::Route53::KeySigningKey
+    unproven: "moto 5.2.5 has no Create/Activate/Deactivate/DeleteKeySigningKey"
+  - typeName: AWS::Route53::CidrCollection
+    unproven: "moto 5.2.5 has no Create/List/Change/DeleteCidrCollection"
+  # F09: Route 53 Resolver beyond ACK's route53resolver-controller v1.11.0
+  # (endpoints, rules, query log configurations and their associations):
+  # DNS Firewall (domain lists, rule groups with their rules as a field,
+  # rule group associations to VPCs, a VPC's fail-open setting) and a VPC's
+  # DNSSEC validation and reverse-lookup autodefined rules.
+  - typeName: AWS::Route53Resolver::ResolverDNSSECConfig
+  - typeName: AWS::Route53Resolver::ResolverConfig
+    unproven: "moto 5.2.5 has no GetResolverConfig or UpdateResolverConfig"
+  - typeName: AWS::Route53Resolver::FirewallDomainList
+    unproven: "moto 5.2.5 has none of Route 53 Resolver's DNS Firewall calls"
+  - typeName: AWS::Route53Resolver::FirewallRuleGroup
+    unproven: "moto 5.2.5 has none of Route 53 Resolver's DNS Firewall calls"
+  - typeName: AWS::Route53Resolver::FirewallRuleGroupAssociation
+    unproven: "moto 5.2.5 has none of Route 53 Resolver's DNS Firewall calls"
+  - typeName: AWS::Route53Resolver::FirewallConfig
+    unproven: "moto 5.2.5 has no GetFirewallConfig or UpdateFirewallConfig"
   # F14: AWS Config. ACK has no Config controller and no pull request
   # (community issue 2445 asks for one, rechecked 2026-11-09). The
   # recorder, its delivery channel, managed and custom rules, an

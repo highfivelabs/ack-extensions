@@ -18,6 +18,16 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::EC2::TransitGatewayPeeringAttachment` | `TransitGatewayPeeringAttachment.ec2.cloudcontrol.aws.hfl.dev` | 5 | 4 | 8 | 0 | 0 | 0 |
 | `AWS::ControlTower::EnabledControl` | `EnabledControl.controltower.cloudcontrol.aws.hfl.dev` | 4 | 0 | 4 | 0 | 1 | 2 |
 | `AWS::ControlTower::EnabledBaseline` | `EnabledBaseline.controltower.cloudcontrol.aws.hfl.dev` | 5 | 1 | 4 | 0 | 1 | 4 |
+| `AWS::Route53::QueryLoggingConfig` | `QueryLoggingConfig.route53.cloudcontrol.aws.hfl.dev` | 2 | 2 | 4 | 0 | 0 | 1 |
+| `AWS::Route53::DNSSEC` | `DNSSEC.route53.cloudcontrol.aws.hfl.dev` | 1 | 0 | 2 | 0 | 0 | 1 |
+| `AWS::Route53::KeySigningKey` | `KeySigningKey.route53.cloudcontrol.aws.hfl.dev` | 4 | 0 | 6 | 0 | 0 | 2 |
+| `AWS::Route53::CidrCollection` | `CidrCollection.route53.cloudcontrol.aws.hfl.dev` | 2 | 2 | 2 | 0 | 0 | 1 |
+| `AWS::Route53Resolver::ResolverDNSSECConfig` | `ResolverDNSSECConfig.route53resolver.cloudcontrol.aws.hfl.dev` | 1 | 3 | 2 | 0 | 0 | 0 |
+| `AWS::Route53Resolver::ResolverConfig` | `ResolverConfig.route53resolver.cloudcontrol.aws.hfl.dev` | 2 | 3 | 4 | 0 | 0 | 0 |
+| `AWS::Route53Resolver::FirewallDomainList` | `FirewallDomainList.route53resolver.cloudcontrol.aws.hfl.dev` | 4 | 9 | 2 | 0 | 0 | 1 |
+| `AWS::Route53Resolver::FirewallRuleGroup` | `FirewallRuleGroup.route53resolver.cloudcontrol.aws.hfl.dev` | 3 | 10 | 2 | 0 | 0 | 1 |
+| `AWS::Route53Resolver::FirewallRuleGroupAssociation` | `FirewallRuleGroupAssociation.route53resolver.cloudcontrol.aws.hfl.dev` | 6 | 8 | 4 | 0 | 0 | 1 |
+| `AWS::Route53Resolver::FirewallConfig` | `FirewallConfig.route53resolver.cloudcontrol.aws.hfl.dev` | 2 | 3 | 2 | 0 | 0 | 0 |
 | `AWS::Config::ConfigurationRecorder` | `ConfigurationRecorder.config.cloudcontrol.aws.hfl.dev` | 5 | 1 | 4 | 0 | 0 | 2 |
 | `AWS::Config::DeliveryChannel` | `DeliveryChannel.config.cloudcontrol.aws.hfl.dev` | 6 | 0 | 2 | 0 | 0 | 0 |
 | `AWS::Config::ConfigRule` | `ConfigRule.config.cloudcontrol.aws.hfl.dev` | 8 | 2 | 2 | 0 | 1 | 0 |
@@ -173,6 +183,126 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - IAM actions (36): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `controltower:DisableBaseline`, `controltower:EnableBaseline`, `controltower:GetBaselineOperation`, `controltower:GetEnabledBaseline`, `controltower:ListEnabledBaselines`, `controltower:ListTagsForResource`, `controltower:TagResource`, `controltower:UntagResource`, `controltower:UpdateEnabledBaseline`, `organizations:AttachPolicy`, `organizations:CreateOrganization`, `organizations:CreateOrganizationalUnit`, `organizations:CreatePolicy`, `organizations:DeletePolicy`, `organizations:DetachPolicy`, `organizations:EnableAWSServiceAccess`, `organizations:EnablePolicyType`, `organizations:ListRoots`, `organizations:UpdatePolicy`, `servicecatalog:AssociatePrincipalWithPortfolio`, `servicecatalog:AssociateProductWithPortfolio`, `servicecatalog:CreatePortfolio`, `servicecatalog:CreateProduct`, `servicecatalog:CreateProvisioningArtifact`, `servicecatalog:DeleteProvisioningArtifact`, `servicecatalog:ListPortfolios`, `servicecatalog:ListPrincipalsForPortfolio`, `servicecatalog:ListProvisioningArtifacts`, `servicecatalog:SearchProductsAsAdmin`, `servicecatalog:UpdatePortfolio`, `servicecatalog:UpdateProvisioningArtifact`
 - Sensitive IAM actions: none
 - Left out (list handler only): none
+
+## `AWS::Route53::QueryLoggingConfig`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (8): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `route53:CreateQueryLoggingConfig`, `route53:DeleteQueryLoggingConfig`, `route53:GetQueryLoggingConfig`
+- Sensitive IAM actions: none
+- Left out (list handler only): `route53:ListQueryLoggingConfigs`
+
+## `AWS::Route53::DNSSEC`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (12): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `kms:CreateGrant`, `kms:DescribeKey`, `kms:GetPublicKey`, `kms:Sign`, `route53:DisableHostedZoneDNSSEC`, `route53:EnableHostedZoneDNSSEC`, `route53:GetDNSSEC`
+- Sensitive IAM actions: `kms:CreateGrant`
+- Left out (list handler only): `route53:ListHostedZones`
+
+## `AWS::Route53::KeySigningKey`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (14): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `kms:CreateGrant`, `kms:DescribeKey`, `kms:GetPublicKey`, `kms:Sign`, `route53:ActivateKeySigningKey`, `route53:CreateKeySigningKey`, `route53:DeactivateKeySigningKey`, `route53:DeleteKeySigningKey`, `route53:GetDNSSEC`
+- Sensitive IAM actions: `kms:CreateGrant`
+- Left out (list handler only): `route53:ListHostedZones`
+
+## `AWS::Route53::CidrCollection`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (10): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `route53:ChangeCidrCollection`, `route53:CreateCidrCollection`, `route53:DeleteCidrCollection`, `route53:ListCidrBlocks`, `route53:ListCidrCollections`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::Route53Resolver::ResolverDNSSECConfig`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (12): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:DescribeVpcs`, `resolverdnssec:CreateConfig`, `resolverdnssec:DeleteConfig`, `resolverdnssec:GetConfig`, `route53resolver:GetResolverDnssecConfig`, `route53resolver:ListResolverDnssecConfigs`, `route53resolver:UpdateResolverDnssecConfig`
+- Sensitive IAM actions: none
+- Left out (list handler only): `resolverdnssec:ListConfig`
+
+## `AWS::Route53Resolver::ResolverConfig`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (9): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:DescribeVpcs`, `route53resolver:GetResolverConfig`, `route53resolver:ListResolverConfigs`, `route53resolver:UpdateResolverConfig`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::Route53Resolver::FirewallDomainList`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/Domains`, `/properties/DomainFileUrl`
+- Of those, write-only strings that could be opted in if they are secrets: `/properties/DomainFileUrl`
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (13): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `route53resolver:CreateFirewallDomainList`, `route53resolver:DeleteFirewallDomainList`, `route53resolver:GetFirewallDomainList`, `route53resolver:ImportFirewallDomains`, `route53resolver:ListTagsForResource`, `route53resolver:TagResource`, `route53resolver:UntagResource`, `route53resolver:UpdateFirewallDomains`
+- Sensitive IAM actions: none
+- Left out (list handler only): `route53resolver:ListFirewallDomainLists`
+
+## `AWS::Route53Resolver::FirewallRuleGroup`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): `/properties/FirewallRules/*/FirewallThreatProtectionId`, `/properties/FirewallRules/*/Status`
+- IAM actions (15): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `route53resolver:CreateFirewallRule`, `route53resolver:CreateFirewallRuleGroup`, `route53resolver:DeleteFirewallRule`, `route53resolver:DeleteFirewallRuleGroup`, `route53resolver:GetFirewallRuleGroup`, `route53resolver:ListFirewallRules`, `route53resolver:ListTagsForResource`, `route53resolver:TagResource`, `route53resolver:UntagResource`, `route53resolver:UpdateFirewallRule`
+- Sensitive IAM actions: none
+- Left out (list handler only): `route53resolver:ListFirewallRuleGroups`
+
+## `AWS::Route53Resolver::FirewallRuleGroupAssociation`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (13): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:DescribeVpcs`, `route53resolver:AssociateFirewallRuleGroup`, `route53resolver:DisassociateFirewallRuleGroup`, `route53resolver:GetFirewallRuleGroupAssociation`, `route53resolver:ListTagsForResource`, `route53resolver:TagResource`, `route53resolver:UntagResource`, `route53resolver:UpdateFirewallRuleGroupAssociation`
+- Sensitive IAM actions: none
+- Left out (list handler only): `route53resolver:ListFirewallRuleGroupAssociations`
+
+## `AWS::Route53Resolver::FirewallConfig`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (8): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:DescribeVpcs`, `route53resolver:GetFirewallConfig`, `route53resolver:UpdateFirewallConfig`
+- Sensitive IAM actions: none
+- Left out (list handler only): `route53resolver:ListFirewallConfigs`
 
 ## `AWS::Config::ConfigurationRecorder`
 

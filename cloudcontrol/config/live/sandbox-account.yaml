@@ -533,6 +533,287 @@ Resources:
           Resource: '*'
           Sid: ControlTowerEnabledBaselineDelete
         - Action:
+          - route53:CreateQueryLoggingConfig
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53QueryLoggingConfigCreate
+        - Action:
+          - route53:GetQueryLoggingConfig
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53QueryLoggingConfigRead
+        - Action:
+          - route53:DeleteQueryLoggingConfig
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53QueryLoggingConfigDelete
+        - Action:
+          - kms:CreateGrant
+          - kms:DescribeKey
+          - kms:GetPublicKey
+          - kms:Sign
+          - route53:EnableHostedZoneDNSSEC
+          - route53:GetDNSSEC
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53DNSSECCreate
+        - Action:
+          - route53:GetDNSSEC
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53DNSSECRead
+        - Action:
+          - kms:CreateGrant
+          - kms:DescribeKey
+          - kms:GetPublicKey
+          - kms:Sign
+          - route53:DisableHostedZoneDNSSEC
+          - route53:GetDNSSEC
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53DNSSECDelete
+        - Action:
+          - kms:CreateGrant
+          - kms:DescribeKey
+          - kms:GetPublicKey
+          - kms:Sign
+          - route53:CreateKeySigningKey
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53KeySigningKeyCreate
+        - Action:
+          - route53:GetDNSSEC
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53KeySigningKeyRead
+        - Action:
+          - kms:CreateGrant
+          - kms:DescribeKey
+          - kms:GetPublicKey
+          - kms:Sign
+          - route53:ActivateKeySigningKey
+          - route53:DeactivateKeySigningKey
+          - route53:GetDNSSEC
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53KeySigningKeyUpdate
+        - Action:
+          - kms:CreateGrant
+          - kms:DescribeKey
+          - kms:GetPublicKey
+          - kms:Sign
+          - route53:DeactivateKeySigningKey
+          - route53:DeleteKeySigningKey
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53KeySigningKeyDelete
+        - Action:
+          - route53:ChangeCidrCollection
+          - route53:CreateCidrCollection
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53CidrCollectionCreate
+        - Action:
+          - route53:ListCidrBlocks
+          - route53:ListCidrCollections
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53CidrCollectionRead
+        - Action:
+          - route53:ChangeCidrCollection
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53CidrCollectionUpdate
+        - Action:
+          - route53:ChangeCidrCollection
+          - route53:DeleteCidrCollection
+          - route53:ListCidrBlocks
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53CidrCollectionDelete
+        - Action:
+          - ec2:DescribeVpcs
+          - resolverdnssec:CreateConfig
+          - route53resolver:GetResolverDnssecConfig
+          - route53resolver:UpdateResolverDnssecConfig
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverResolverDNSSECConfigCreate
+        - Action:
+          - resolverdnssec:GetConfig
+          - route53resolver:ListResolverDnssecConfigs
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverResolverDNSSECConfigRead
+        - Action:
+          - ec2:DescribeVpcs
+          - resolverdnssec:DeleteConfig
+          - route53resolver:ListResolverDnssecConfigs
+          - route53resolver:UpdateResolverDnssecConfig
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverResolverDNSSECConfigDelete
+        - Action:
+          - ec2:DescribeVpcs
+          - route53resolver:GetResolverConfig
+          - route53resolver:UpdateResolverConfig
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverResolverConfigCreate
+        - Action:
+          - ec2:DescribeVpcs
+          - route53resolver:GetResolverConfig
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverResolverConfigRead
+        - Action:
+          - ec2:DescribeVpcs
+          - route53resolver:ListResolverConfigs
+          - route53resolver:UpdateResolverConfig
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverResolverConfigDelete
+        - Action:
+          - route53resolver:CreateFirewallDomainList
+          - route53resolver:GetFirewallDomainList
+          - route53resolver:ImportFirewallDomains
+          - route53resolver:ListTagsForResource
+          - route53resolver:TagResource
+          - route53resolver:UpdateFirewallDomains
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverFirewallDomainListCreate
+        - Action:
+          - route53resolver:GetFirewallDomainList
+          - route53resolver:ListTagsForResource
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverFirewallDomainListRead
+        - Action:
+          - route53resolver:GetFirewallDomainList
+          - route53resolver:ImportFirewallDomains
+          - route53resolver:ListTagsForResource
+          - route53resolver:TagResource
+          - route53resolver:UntagResource
+          - route53resolver:UpdateFirewallDomains
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverFirewallDomainListUpdate
+        - Action:
+          - route53resolver:DeleteFirewallDomainList
+          - route53resolver:GetFirewallDomainList
+          - route53resolver:ListTagsForResource
+          - route53resolver:UntagResource
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverFirewallDomainListDelete
+        - Action:
+          - route53resolver:CreateFirewallRule
+          - route53resolver:CreateFirewallRuleGroup
+          - route53resolver:DeleteFirewallRule
+          - route53resolver:GetFirewallRuleGroup
+          - route53resolver:ListFirewallRules
+          - route53resolver:ListTagsForResource
+          - route53resolver:TagResource
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverFirewallRuleGroupCreate
+        - Action:
+          - route53resolver:GetFirewallRuleGroup
+          - route53resolver:ListFirewallRules
+          - route53resolver:ListTagsForResource
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverFirewallRuleGroupRead
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy4:
+    Properties:
+      Description: ack-extensions live tests, part 4
+      PolicyDocument:
+        Statement:
+        - Action:
+          - route53resolver:CreateFirewallRule
+          - route53resolver:DeleteFirewallRule
+          - route53resolver:GetFirewallRuleGroup
+          - route53resolver:ListFirewallRules
+          - route53resolver:ListTagsForResource
+          - route53resolver:TagResource
+          - route53resolver:UntagResource
+          - route53resolver:UpdateFirewallRule
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverFirewallRuleGroupUpdate
+        - Action:
+          - route53resolver:DeleteFirewallRule
+          - route53resolver:DeleteFirewallRuleGroup
+          - route53resolver:GetFirewallRuleGroup
+          - route53resolver:ListFirewallRules
+          - route53resolver:ListTagsForResource
+          - route53resolver:UntagResource
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverFirewallRuleGroupDelete
+        - Action:
+          - ec2:DescribeVpcs
+          - route53resolver:AssociateFirewallRuleGroup
+          - route53resolver:GetFirewallRuleGroupAssociation
+          - route53resolver:ListTagsForResource
+          - route53resolver:TagResource
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverFirewallRuleGroupAssociationCreate
+        - Action:
+          - route53resolver:GetFirewallRuleGroupAssociation
+          - route53resolver:ListTagsForResource
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverFirewallRuleGroupAssociationRead
+        - Action:
+          - route53resolver:GetFirewallRuleGroupAssociation
+          - route53resolver:ListTagsForResource
+          - route53resolver:TagResource
+          - route53resolver:UntagResource
+          - route53resolver:UpdateFirewallRuleGroupAssociation
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverFirewallRuleGroupAssociationUpdate
+        - Action:
+          - route53resolver:DisassociateFirewallRuleGroup
+          - route53resolver:GetFirewallRuleGroupAssociation
+          - route53resolver:ListTagsForResource
+          - route53resolver:UntagResource
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverFirewallRuleGroupAssociationDelete
+        - Action:
+          - ec2:DescribeVpcs
+          - route53resolver:GetFirewallConfig
+          - route53resolver:UpdateFirewallConfig
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverFirewallConfigCreate
+        - Action:
+          - ec2:DescribeVpcs
+          - route53resolver:GetFirewallConfig
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverFirewallConfigRead
+        - Action:
+          - ec2:DescribeVpcs
+          - route53resolver:GetFirewallConfig
+          - route53resolver:UpdateFirewallConfig
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverFirewallConfigUpdate
+        - Action:
+          - ec2:DescribeVpcs
+          - route53resolver:GetFirewallConfig
+          - route53resolver:UpdateFirewallConfig
+          Effect: Allow
+          Resource: '*'
+          Sid: Route53ResolverFirewallConfigDelete
+        - Action:
           - config:DescribeConfigurationRecorders
           - config:PutConfigurationRecorder
           - config:StartConfigurationRecorder
@@ -666,6 +947,13 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ConfigAggregationAuthorizationDelete
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy5:
+    Properties:
+      Description: ack-extensions live tests, part 5
+      PolicyDocument:
+        Statement:
         - Action:
           - config:DescribeOrganizationConformancePackStatuses
           - config:DescribeOrganizationConformancePacks
@@ -714,13 +1002,6 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ConfigOrganizationConformancePackDelete
-        Version: "2012-10-17"
-    Type: AWS::IAM::ManagedPolicy
-  LiveTestPolicy4:
-    Properties:
-      Description: ack-extensions live tests, part 4
-      PolicyDocument:
-        Statement:
         - Action:
           - config:DescribeOrganizationConfigRuleStatuses
           - config:DescribeOrganizationConfigRules
@@ -897,6 +1178,7 @@ Resources:
       - Ref: LiveTestPolicy2
       - Ref: LiveTestPolicy3
       - Ref: LiveTestPolicy4
+      - Ref: LiveTestPolicy5
       MaxSessionDuration: 3600
       RoleName: ack-extensions-live-tests
       Tags:

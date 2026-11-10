@@ -1,0 +1,69 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoute53ResolverFirewallRuleGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ResolverFirewallRuleGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "route53resolver:CreateFirewallRule",
+        "route53resolver:CreateFirewallRuleGroup",
+        "route53resolver:DeleteFirewallRule",
+        "route53resolver:GetFirewallRuleGroup",
+        "route53resolver:ListFirewallRules",
+        "route53resolver:ListTagsForResource",
+        "route53resolver:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ResolverFirewallRuleGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "route53resolver:GetFirewallRuleGroup",
+        "route53resolver:ListFirewallRules",
+        "route53resolver:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ResolverFirewallRuleGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "route53resolver:CreateFirewallRule",
+        "route53resolver:DeleteFirewallRule",
+        "route53resolver:GetFirewallRuleGroup",
+        "route53resolver:ListFirewallRules",
+        "route53resolver:ListTagsForResource",
+        "route53resolver:TagResource",
+        "route53resolver:UntagResource",
+        "route53resolver:UpdateFirewallRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ResolverFirewallRuleGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "route53resolver:DeleteFirewallRule",
+        "route53resolver:DeleteFirewallRuleGroup",
+        "route53resolver:GetFirewallRuleGroup",
+        "route53resolver:ListFirewallRules",
+        "route53resolver:ListTagsForResource",
+        "route53resolver:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

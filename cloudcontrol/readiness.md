@@ -6,11 +6,11 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 
 | Category | Types | Provisionable | FULLY_MUTABLE | IMMUTABLE | CRD accepted | Clean | Gap types | Gap, provisionable | Gap, CRD accepted | Gap, clean |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 162 | 158 | 158 | 155 |
+| platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 152 | 148 | 148 | 145 |
 | security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 85 | 67 | 67 | 65 |
 | application | 262 | 250 | 232 | 18 | 250 | 230 | 147 | 136 | 136 | 128 |
 | other | 1260 | 1188 | 1084 | 104 | 1188 | 1137 | 1169 | 1101 | 1101 | 1059 |
-| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1563 | 1462 | 1462 | 1407 |
+| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1553 | 1452 | 1452 | 1397 |
 
 ## Foundation gaps (platform-foundation and security-adjacent types with no kind)
 
@@ -198,24 +198,14 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::RAM::PrincipalAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::RAM::ResourceAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::RAM::SourceAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53::CidrCollection` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Route53::DelegationSet` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53::DNSSEC` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::Route53::KeySigningKey` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::Route53::QueryLoggingConfig` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Route53::RecordSetGroup` | platform-foundation | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
 | `AWS::Route53::TrafficPolicy` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Route53::TrafficPolicyInstance` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Route53Profiles::Profile` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Route53Profiles::ProfileAssociation` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
 | `AWS::Route53Profiles::ProfileResourceAssociation` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53Resolver::FirewallConfig` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53Resolver::FirewallDomainList` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
-| `AWS::Route53Resolver::FirewallRuleGroup` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53Resolver::FirewallRuleGroupAssociation` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Route53Resolver::OutpostResolver` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53Resolver::ResolverConfig` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53Resolver::ResolverDNSSECConfig` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::SecretsManager::ResourcePolicy` | security-adjacent | FULLY_MUTABLE | ok | 1 | 0 | 0 | 0 |
 | `AWS::SecretsManager::RotationSchedule` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 11 | 1 |
 | `AWS::SecretsManager::SecretTargetAttachment` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |

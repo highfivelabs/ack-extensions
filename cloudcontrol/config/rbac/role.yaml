@@ -165,6 +165,62 @@ rules:
   - patch
   - update
 - apiGroups:
+  - route53.cloudcontrol.aws.hfl.dev
+  resources:
+  - cidrcollections
+  - dnssecs
+  - keysigningkeys
+  - queryloggingconfigs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - route53.cloudcontrol.aws.hfl.dev
+  resources:
+  - cidrcollections/status
+  - dnssecs/status
+  - keysigningkeys/status
+  - queryloggingconfigs/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - route53resolver.cloudcontrol.aws.hfl.dev
+  resources:
+  - firewallconfigs
+  - firewalldomainlists
+  - firewallrulegroupassociations
+  - firewallrulegroups
+  - resolverconfigs
+  - resolverdnssecconfigs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - route53resolver.cloudcontrol.aws.hfl.dev
+  resources:
+  - firewallconfigs/status
+  - firewalldomainlists/status
+  - firewallrulegroupassociations/status
+  - firewallrulegroups/status
+  - resolverconfigs/status
+  - resolverdnssecconfigs/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - sso.cloudcontrol.aws.hfl.dev
   resources:
   - assignments

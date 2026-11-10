@@ -42,6 +42,8 @@ github.com/aws/aws-sdk-go-v2/service/autoscaling v1.64.3 h1:YBBu7ZhnMkHjBCFVa50N
 github.com/aws/aws-sdk-go-v2/service/autoscaling v1.64.3/go.mod h1:wRRzL5slhAzg/F8SwmTgIl3XXFB4V+X1t5qmuJf+O6k=
 github.com/aws/aws-sdk-go-v2/service/cloudcontrol v1.23.8 h1:qPNYKHiKuJXq7hknRbTBiwyOSX4UOFvSEnrNn0YblLg=
 github.com/aws/aws-sdk-go-v2/service/cloudcontrol v1.23.8/go.mod h1:NvDfw8nK40pfWTpXJI4FdVsEzI/UsTgDvIi/h37Z0lM=
+github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.65.0 h1:3yaFbUbuLfN8n1q01wZtQtHRzUDc/jm0VvniMY0IPE8=
+github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.65.0/go.mod h1:PobeppEnIjw4pcgjFryNDZCTH7AiqZw0yb5r98Gvf9c=
 github.com/aws/aws-sdk-go-v2/service/configservice v1.62.1 h1:0kqK/rGcsuDGDyLLBjLSH95zC3k8lIkW0nksCYEU72g=
 github.com/aws/aws-sdk-go-v2/service/configservice v1.62.1/go.mod h1:9dXB7G3BUakIT/aCgH8si8fCl//iWvR8wpkWuVKY22A=
 github.com/aws/aws-sdk-go-v2/service/ec2 v1.290.1 h1:iNxv8JSlaMFSo/DDDGsAPgvPuONsfNp6kyJnzjHgIQ4=
@@ -70,6 +72,10 @@ github.com/aws/aws-sdk-go-v2/service/organizations v1.37.4 h1:tnZdzF6NRpkixgjgpI
 github.com/aws/aws-sdk-go-v2/service/organizations v1.37.4/go.mod h1:+cn2w8QsHagJJeNGw6GnC+PtffLpF0cEMPoEX2noWWU=
 github.com/aws/aws-sdk-go-v2/service/rds v1.93.8 h1:arPMUy5db44S/YN1AIPIDHGkD6zd1Ov00JWY+Z2YDL4=
 github.com/aws/aws-sdk-go-v2/service/rds v1.93.8/go.mod h1:y3BbL7G7qwMzJsSV1LH90Y/n91PukXPy3TqGg1VVESE=
+github.com/aws/aws-sdk-go-v2/service/route53 v1.48.3 h1:9m6dc70AMaAIwephy90ApV/smdya4XA48zCWQTITcJE=
+github.com/aws/aws-sdk-go-v2/service/route53 v1.48.3/go.mod h1:CpxUf0l25aMre5K8cD0L2UeivINz0wiWM+CiWrHRxho=
+github.com/aws/aws-sdk-go-v2/service/route53resolver v1.34.9 h1:shcMHkZS3W0XvJlXFSgiVCnXMD+ACO5MLvIxjtNjK0M=
+github.com/aws/aws-sdk-go-v2/service/route53resolver v1.34.9/go.mod h1:C6VM78SJdplCtiPPwrrgCQmXkwnKp+p/MTflVjh2JlQ=
 github.com/aws/aws-sdk-go-v2/service/s3 v1.97.3 h1:HwxWTbTrIHm5qY+CAEur0s/figc3qwvLWsNkF4RPToo=
 github.com/aws/aws-sdk-go-v2/service/s3 v1.97.3/go.mod h1:uoA43SdFwacedBfSgfFSjjCvYe8aYBS7EnU5GZ/YKMM=
 github.com/aws/aws-sdk-go-v2/service/scheduler v1.12.13 h1:aOIMXa/GJEGOKKPsqPUa4Gye4Vs76yjHJVAcz+0iReA=
