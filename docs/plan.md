@@ -1717,7 +1717,13 @@ So "the same AWS identity" means three things:
    `app.kubernetes.io/managed-by: ack-extensions-operator` and is deleted
    when ACK's controller goes. Namespaced objects also carry an owner
    reference to ACK's Deployment.
-7. **The operator holds no AWS credentials.** It may bind only our two
+7. **An organization-scoped controller runs alone** (section 7.5).
+   Beside ACK's organizations-controller, the operator runs our manager
+   only while no other ACK controller (one we extend or not) shares its
+   namespace; otherwise it runs none, removes one it ran, and records a
+   Warning event, `SharedNamespace`, on that controller's Deployment.
+   The account-level managers in that namespace are not affected.
+8. **The operator holds no AWS credentials.** It may bind only our two
    manager ClusterRoles (RBAC `bind` by name). It does create
    ServiceAccounts carrying a role ARN, copied only from ACK's
    ServiceAccount in the same namespace. Kubernetes RBAC cannot narrow
@@ -1813,6 +1819,23 @@ as its port (`enableServiceLinks: false` in `config/fake-aws`). An image
 known only by digest loads into kind under a placeholder name, so the
 script checks the tag's digest and loads by tag.
 
+**The organization-scoped guard** (`TestReconcileOrganizationScoped`
+against envtest; `tests/operator/run.sh` on kind, 2026-11-09, with ACK's
+real organizations-controller `v1.7.0` from its own chart): beside ACK's
+rds-controller in `ack-system` it gets no manager and a `SharedNamespace`
+Warning event, and the rds manager keeps running; moved alone into
+`ack-organizations-system` (no role annotation, as for Pod Identity) it
+gets one, whose ServiceAccount carries no IRSA annotation, and a `Policy`
+syncs through it against moto. In envtest, ACK's s3 controller (one we
+do not extend) also counts, and the manager comes back once the
+namespace is the controller's alone. On the way, the `aws.hfl.dev/source`
+label (the ACK Deployment's `namespace.name`) passed a label value's 63
+characters for a controller in `ack-organizations-system`, and every
+object was refused; past 63 it is now the start and a hash. And two
+checks of `run.sh` had been joined on one line, so the check that ACK's
+controller holds none of our kinds' rights had not run since it was
+written; it runs again, and passes.
+
 **Not proven, and not possible on kind:**
 
 - IRSA and EKS Pod Identity themselves: the webhook and agent exchanging
@@ -1839,11 +1862,74 @@ identity scoped to it, and nothing else does:
   `ack-extensions-organizations-manager` there, with that role (section
   7.2), and no other namespace gets an Organizations manager. Account-level
   ACK controllers (iam, rds, ...) run in their own namespaces with
-  account-level roles that hold no `organizations:*` permission. Today
-  this is a convention the operator follows by construction (a manager
-  only ever takes the identity of the ACK controller beside it); the
-  operator does not yet refuse an Organizations controller that shares a
-  namespace with account-level ones (`docs/handoff.md`, next steps).
+  account-level roles that hold no `organizations:*` permission. A
+  manager only ever takes the identity of the ACK controller beside it,
+  and the operator refuses to run the Organizations manager while any
+  other ACK controller shares that namespace (section 7.2, item 7).
+- **The role is bound with EKS Pod Identity, not IRSA** (the builder,
+  2026-11-09: "not through Workload Identity but instead through Pod
+  Identity. Important distinction there, Pod Identity is newer"). ACK's
+  ServiceAccount carries no `eks.amazonaws.com/role-arn` annotation (do
+  not set `serviceAccount.annotations` in ACK's chart); the role is bound
+  outside the cluster, by one Pod Identity association per
+  ServiceAccount, cluster, namespace `ack-organizations-system`:
+  - `ack-organizations-controller`, ACK's controller;
+  - `ack-extensions-organizations-manager`, our manager (identity `own`,
+    the default). With identity `ack` our manager runs as ACK's
+    ServiceAccount and this second association is not needed.
+
+  The operator needs no change for this: it copies ACK's
+  `eks.amazonaws.com/*` annotations and finds none, and the Pod Identity
+  agent (the `eks-pod-identity-agent` add-on, which does not run on
+  Fargate) gives our pod the role through our ServiceAccount's
+  association. The operator holds no AWS credentials and does not make
+  associations; the platform's account-level install does, for example
+  with ACK's eks-controller `PodIdentityAssociation` kind
+  (`eks.services.k8s.aws`; `clusterName`, `namespace`,
+  `serviceAccount`, `roleARN`, `targetRoleARN` at `v1.26.0`, with
+  `disableSessionTags` left false, since the trust below reads the
+  session tags), never the Organizations manager, whose role holds no
+  `eks:*` permission.
+- **Trust, narrowed to the namespace.** The associated role trusts the
+  service principal `pods.eks.amazonaws.com` for `sts:AssumeRole` and
+  `sts:TagSession`. EKS tags each session with the cluster, namespace
+  and ServiceAccount, so the trust policy can say what the namespace rule
+  says, only these two ServiceAccounts in that namespace of that
+  cluster (the same conditions as the Cloud Control route's generated
+  trust policy, `docs/cloudcontrol.md`):
+
+  ```json
+  {
+    "Effect": "Allow",
+    "Principal": {"Service": "pods.eks.amazonaws.com"},
+    "Action": ["sts:AssumeRole", "sts:TagSession"],
+    "Condition": {
+      "StringEquals": {
+        "aws:SourceAccount": "<cluster account>",
+        "aws:RequestTag/kubernetes-namespace": "ack-organizations-system",
+        "aws:RequestTag/kubernetes-service-account": ["ack-organizations-controller", "ack-extensions-organizations-manager"]
+      },
+      "ArnEquals": {"aws:SourceArn": "arn:aws:eks:<region>:<cluster account>:cluster/<cluster>"}
+    }
+  }
+  ```
+- **The cluster's account and the management account.** An
+  association's role is in the cluster's account. A cluster in the
+  management account (which AWS advises against running workloads in)
+  associates `ack-organizations-controller` directly. Otherwise the
+  association names a role in the cluster's account that may do nothing
+  but assume the next, as `roleArn`, and the management account's (or
+  delegated administrator's) `ack-organizations-controller` as
+  `targetRoleArn`: EKS chains the two. The target role trusts the first
+  role's ARN only (`sts:AssumeRole`, `sts:TagSession`), and holds the
+  actions below.
+- **Proven and not.** `task operator-e2e` installs ACK's real
+  organizations-controller `v1.7.0` in `ack-organizations-system` with no
+  role annotation and checks that our manager's ServiceAccount carries
+  none either, and that a `Policy` reconciles through it against moto
+  (section 7.4). The associations, the agent and the trust conditions
+  need EKS and AWS: written from AWS's EKS Pod Identity documentation,
+  not tested here.
 - **Least privilege, per kind** (all `Resource: "*"` unless narrowed; the
   runtime also calls `sts:GetCallerIdentity`):
 
