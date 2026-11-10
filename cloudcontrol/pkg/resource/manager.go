@@ -64,13 +64,18 @@ func (m *manager) typeName() *string { return aws.String(m.t.TypeName) }
 
 // token is a Cloud Control client token: the same operation with the same
 // input from the same object gets the same token, so a request retried
-// after its status could not be written is not made twice. A failed
-// request's token is mixed in, so a retry after a failure is a new request.
+// after its status could not be written is not made twice. The last
+// finished request's token (status SUCCESS or FAILED) is mixed in, so a
+// retry after a failure is a new request, and so is a later request with
+// the same input as an earlier one that succeeded: a drift put back with
+// the patch of an earlier update. Without it Cloud Control would answer
+// the second with the first (client-token replay) and change nothing;
+// TestSecretResourcePolicy found it, 2026-11-10.
 func token(r *resource, op string, body []byte) string {
 	h := sha256.New()
 	fmt.Fprintf(h, "%s\x00%s\x00", r.u.GetUID(), op)
 	h.Write(body)
-	if q := r.request(); q.Status == string(cctypes.OperationStatusFailed) {
+	if q := r.request(); q.Token != "" && (q.Status == string(cctypes.OperationStatusFailed) || q.Status == string(cctypes.OperationStatusSuccess)) {
 		fmt.Fprintf(h, "\x00%s", q.Token)
 	}
 	return hex.EncodeToString(h.Sum(nil))[:64]

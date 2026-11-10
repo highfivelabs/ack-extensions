@@ -193,8 +193,12 @@ reconciler does the rest. Nothing in it names a type.
   the user writes is read by that name, as ACK's generated kinds do.
 - **Client tokens.** Every request carries a token derived from the object,
   the operation and the input: a request retried because its status could
-  not be written is not made twice. A failed request's token is mixed in,
-  so a retry after a failure is a new request. ACK's generated code sets a
+  not be written is not made twice. The last finished request's token
+  (succeeded or failed) is mixed in, so a retry after a failure is a new
+  request, and so is a later update with the same patch as an earlier one
+  (a drift put back with the value of an earlier change), which Cloud
+  Control would otherwise answer with the earlier request and change
+  nothing (found by `TestSecretResourcePolicy`, 2026-11-10; `TestToken`). ACK's generated code sets a
   client token only where a kind's hooks do.
 - **Errors.** A handler's `InvalidRequest`, `NotUpdatable`, `AlreadyExists`
   and the API's validation-type exceptions are terminal; everything else
@@ -565,7 +569,11 @@ the ARN, a create-only difference the reconciler would call terminal, so
 the test names the secret by ARN and the live run must check a name. A
 `secretRef` to ACK's `Secret` waits for the overlay (section 12, item 4).
 The test's own secret needs `secretsmanager:CreateSecret` and
-`DeleteSecret` on a live run (`liveTestActions`).
+`DeleteSecret` on a live run (`liveTestActions`). The test's drift check
+found a reconciler bug, fixed here: a put-back whose patch equals an
+earlier successful update's reused that update's client token, so the
+fake (as Cloud Control does) replayed the old request and the drift stayed
+(section 3, "Client tokens").
 
 **Not shown by the fake** (section 11): anything about real AWS.
 
