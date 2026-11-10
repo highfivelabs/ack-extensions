@@ -26,7 +26,7 @@ not repeat them.
   the account's public access block), rank 19 (Secrets Manager resource
   policy), rank 20 (RDS event subscriptions). Recheck upstream first (below).
 - **Foundation queue** (`docs/coverage/foundation.md`, F01 to F18) is the work list now, ahead of the ranks above. Done: F01 `Policy` (PR #30, plan 6.25), `PolicyAttachment` (PR #31, plan 6.26), `DelegatedAdministrator` (PR #33, plan 6.27), `Organization` (PR #35, plan 6.28), `AccountPlacement` (PR #38, plan 6.29: `MoveAccount` mapped as both the create and the update; retain-only). F01 is complete. `PolicyAttachment`, `DelegatedAdministrator` and `AccountPlacement` are generated from operations mapped in `generator.yaml` (step 3 below); a reference to an ACK kind of the same service works through a type alias in `apis/v1alpha1/ack_kinds.go`.
-- **Next:** IAM `AccessKey` (PR #40, plan 6.30). F02 (Identity Center) is the Cloud Control route's (`agent/cloudcontrol-types`), so not built here; check `docs/cloudcontrol.md` and the Cloud Control PRs before any kind, so none is built both ways.
+- **Next:** IAM `AccessKey` (PR #40, plan 6.30: the secret written once into a Secret the object owns, with the manager's own client; the pattern for any kind whose create returns a secret). F02 (Identity Center) is the Cloud Control route's (`agent/cloudcontrol-types`), so not built here; check `docs/cloudcontrol.md` and the Cloud Control PRs before any kind, so none is built both ways. Cloud Control takes F03 to F18 where it can (`docs/cloudcontrol.md` section 8, plan step 2); **queued here**, in order: IAM `VirtualMFADevice` (plan 9 question 14, the builder's decision: `CreateVirtualMFADevice`'s Base32 seed, and optionally the QR PNG, into a Secret owned by the object, never logged, never written over, on `AccessKey`'s pattern and `hooks.go`; Cloud Control never returns the seed, so its #44 is closed); then (the coordinator, 2026-11-09) two foundation gaps Cloud Control cannot provision, as small ACK-generator kinds: EC2 `NetworkInterfacePermission` (`CreateNetworkInterfacePermission`, `DescribeNetworkInterfacePermissions`, `DeleteNetworkInterfacePermission`) and `VPNGatewayRoutePropagation` (`EnableVgwRoutePropagation`/`DisableVgwRoutePropagation`, read with `DescribeRouteTables`' `PropagatingVgws`). moto has neither API: mark them unproven on the fake (unit tests and the coverage data's marker), and write down what a real run must check.
 - **Organization-scoped identity** (open question 11, answered; plan 7.5): the Organizations kinds run only in a namespace kept for organization-level objects, beside an ACK organizations-controller with an organization-scoped role bound by EKS Pod Identity (no IRSA annotation; plan 7.5 has the associations and the trust policy). The operator refuses an Organizations manager whose namespace has any other ACK controller, with a `SharedNamespace` Warning event (plan 7.2 item 7, proven in 7.4). A new organization-level kind adds its actions to plan 7.5's permissions table.
 - **Retain-only kinds** (open question 12; plan 6.28): a kind for something that is not deleted from Kubernetes (an organization; later an account's closure, root-level settings) has no delete call (`ignore.operations` in `generator.yaml`, so `sdkDelete` is a no-op), and its resource is added to `config/admission/retain-only.yaml`'s `resourceRules`, which requires `services.k8s.aws/deletion-policy: retain` on every object. Its e2e test deletes an object made before the policy is installed and checks the cloud thing stays, then checks the policy's refusals (`tests/e2e/organizations_organization_test.go`). **The factory's scaffolder should generate this pattern** (the ignored delete, the policy entry and the two tests) for a kind marked retain-only.
 - **Open questions:** 8 to 12 are answered. Assumed, for the builder to
@@ -173,7 +173,8 @@ agent.** PR 1 (`agent/cloudcontrol`) is the core. Still to do:
    `tests/e2e` and unit tests, and the README row, `UPSTREAM.md` rows and
    `docs/plan.md` §6 section, results and moto notes.
 6. **Then** `task coverage` and commit its output (`task coverage:check` must
-   pass).
+   pass), and `task cloudcontrol:generate` (Cloud Control's readiness survey
+   counts a new kind of ours; `task check` fails while it is stale).
 7. **Commit** with `git commit -s`, ending with the `Co-Authored-By` and
    `Claude-Session` trailers the session gives you. Never `--no-verify`,
    never push to main, never force-push, never touch the git config.
@@ -229,6 +230,7 @@ places every time, all mechanical:
 | `config/crds/kustomization.yaml`, `handwritten.go` | keep both |
 | `zz_generated.deepcopy.go`, `config/rbac/*-manager-role.yaml` | take main's and run `task generate` |
 | `docs/coverage/*`, the README's Coverage section | take main's and run `task coverage` |
+| `cloudcontrol/readiness.*` | take main's and run `task cloudcontrol:generate` |
 
 Then `task generate`, `go build ./...`, `task coverage`, commit the merge with
 `-s` and the trailers, and rerun the checks on the new head. A merge commit

@@ -8,7 +8,6 @@ rules:
   - ""
   resources:
   - configmaps
-  - secrets
   verbs:
   - get
   - list
@@ -23,8 +22,20 @@ rules:
   - list
   - watch
 - apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - watch
+- apiGroups:
   - iam.aws.hfl.dev
   resources:
+  - accesskeys
   - accountaliases
   - accountpasswordpolicies
   - loginprofiles
@@ -42,6 +53,7 @@ rules:
 - apiGroups:
   - iam.aws.hfl.dev
   resources:
+  - accesskeys/status
   - accountaliases/status
   - accountpasswordpolicies/status
   - loginprofiles/status

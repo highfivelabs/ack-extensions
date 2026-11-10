@@ -119,15 +119,26 @@ func TestAccountAlias(t *testing.T) {
 	})
 
 	t.Run("the alias cannot change", func(t *testing.T) {
-		got := &iamv1.AccountAlias{}
-		if err := env.Client.Get(ctx, client.ObjectKeyFromObject(acme), got); err != nil {
-			t.Fatal(err)
-		}
-		got.Spec.AccountAlias = aws.String("acme-staging")
-		err := env.Client.Update(ctx, got)
-		if err == nil || !strings.Contains(err.Error(), "immutable") {
-			t.Fatalf("changing accountAlias: got %v, want the CRD's immutability refusal", err)
-		}
+		// The controller patches the status on every resync, so an update
+		// can meet a conflict first; only the immutability refusal ends it.
+		harness.Eventually(t, 30*time.Second, "the CRD's immutability refusal", func() error {
+			got := &iamv1.AccountAlias{}
+			if err := env.Client.Get(ctx, client.ObjectKeyFromObject(acme), got); err != nil {
+				return err
+			}
+			got.Spec.AccountAlias = aws.String("acme-staging")
+			err := env.Client.Update(ctx, got)
+			if err == nil {
+				t.Fatal("changing accountAlias: accepted, want the CRD's immutability refusal")
+			}
+			if strings.Contains(err.Error(), "the object has been modified") {
+				return err
+			}
+			if !strings.Contains(err.Error(), "immutable") {
+				t.Fatalf("changing accountAlias: got %v, want the CRD's immutability refusal", err)
+			}
+			return nil
+		})
 	})
 
 	t.Run("deletion-policy retain leaves the alias", func(t *testing.T) {
