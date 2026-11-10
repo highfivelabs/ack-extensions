@@ -482,6 +482,22 @@ from moto. `AWS::SSO::InstanceAccessControlAttributeConfiguration` is
 reports; the e2e harness refuses a type with neither a backend nor that
 mark. Results: the pull request.
 
+**Batch 4: F07, Control Tower controls and baselines.**
+`AWS::ControlTower::EnabledControl` (a control on an OU, its identifier
+`<target>|<control>`) and `AWS::ControlTower::EnabledBaseline` (a baseline
+on an OU or account, identified by its own ARN) are **unproven on the
+fake**: moto 5.2.5 has no Control Tower and no other emulator does, so both
+are generated, accepted by envtest's API server with the other CRDs, and
+marked `unproven` in `types.yaml`; there is no e2e test. Each parameter's
+`Value` is free-form (`oneOf` without a type), so it is
+`x-kubernetes-preserve-unknown-fields` and compared as JSON. The create
+handlers' permissions reach into Organizations, Service Catalog and IAM
+(`config/iam/`), and `EnabledControl`'s create may take up to 720 minutes;
+the reconciler polls the request without holding a worker.
+`AWS::ControlTower::LandingZone` is held back: deleting one decommissions
+the landing zone (plan section 9, question 14). ACK has no Control Tower
+controller, issue or pull request.
+
 **Not shown by the fake** (section 11): anything about real AWS.
 
 `task check` (the whole repository) is reported in the pull request.
@@ -743,7 +759,8 @@ with limits":
 2. Types in foundation order, in reviewable batches, each with a
    fake-backed test where moto has the service, else marked "unproven on
    fake" in the coverage data; `task coverage` counts them as ours. Done:
-   the coverage change and batch 1 (F02, three Identity Center types).
+   the coverage change, batch 1 (F02, three Identity Center types) and
+   batch 4 (F07, two Control Tower types, unproven on the fake).
    Next: the rest of F03 to F18 by `docs/coverage/foundation.md`.
 3. The live-test switch (`task test-live`, a sweeper, the ledger
    `docs/live-runs.md`) and the CloudFormation template for the sandbox
