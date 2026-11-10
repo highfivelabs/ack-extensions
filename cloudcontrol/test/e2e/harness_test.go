@@ -46,6 +46,7 @@ import (
 	ccv1alpha1 "github.com/highfivelabs/ack-extensions/cloudcontrol/apis/v1alpha1"
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/pkg/registry"
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/test/fake"
+	"github.com/highfivelabs/ack-extensions/pkg/fakeaws"
 	"github.com/highfivelabs/ack-extensions/pkg/operator"
 )
 
@@ -118,7 +119,7 @@ func startMoto(t *testing.T, root string) string {
 	var out syncBuffer
 	cmd := exec.Command(server, "-H", "127.0.0.1", "-p", fmt.Sprint(port))
 	cmd.Stdout, cmd.Stderr = &out, &out
-	cmd.Env = fake.ChildEnv("PATH=" + os.Getenv("PATH"))
+	cmd.Env = fakeaws.Isolated("PATH=" + os.Getenv("PATH"))
 	if err := cmd.Start(); err != nil {
 		t.Fatal(err)
 	}
@@ -216,9 +217,15 @@ func start(t *testing.T) *env {
 		}
 		cc.Register(ty.Schema(), b)
 	}
+	// The fake passes everything that is not Cloud Control (STS) to moto,
+	// so its URL is the manager's one endpoint.
+	if err := cc.Upstream(motoURL); err != nil {
+		t.Fatal(err)
+	}
 	ccURL := cc.Start()
 	t.Cleanup(cc.Close)
-	if err := fake.LocalOnly(ccURL); err != nil {
+	endpoint, err := fakeaws.Parse(ccURL, fakeaws.Loopback)
+	if err != nil {
 		t.Fatal(err)
 	}
 
@@ -292,12 +299,10 @@ func start(t *testing.T) *env {
 	bin := buildManager(t, root)
 	logs := &syncBuffer{}
 	ctx, cancel := context.WithCancel(ctx)
-	// The operator's arguments, then the test's: the fake's endpoints, and
-	// local ports (a later flag wins).
+	// The operator's arguments, then the test's: local ports (a later flag
+	// wins); fakeaws.Command adds the one endpoint's flags and environment
+	// and refuses to start anything that could reach real AWS.
 	args := append(append([]string{}, managerArgs...),
-		"--aws-endpoint-url", ccURL,
-		"--aws-identity-endpoint-url", motoURL,
-		"--allow-unsafe-aws-endpoint-urls",
 		"--log-level", "debug",
 		"--enable-development-logging",
 		"--deletion-policy", "delete",
@@ -305,13 +310,16 @@ func start(t *testing.T) *env {
 		"--metrics-addr", fmt.Sprintf("127.0.0.1:%d", freePort(t)),
 		"--healthz-addr", fmt.Sprintf("127.0.0.1:%d", freePort(t)),
 	)
-	cmd := exec.CommandContext(ctx, bin, args...)
-	cmd.Env = fake.ChildEnv(
+	cmd, err := fakeaws.Command(ctx, endpoint, bin, args,
 		"KUBECONFIG="+writeKubeconfig(t, user.Config()),
 		"HOME="+t.TempDir(),
 		"PATH="+os.Getenv("PATH"),
 		"ACK_SYSTEM_NAMESPACE="+envNS,
 	)
+	if err != nil {
+		cancel()
+		t.Fatal(err)
+	}
 	cmd.Stdout, cmd.Stderr = logs, logs
 	if err := cmd.Start(); err != nil {
 		t.Fatal(err)

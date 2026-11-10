@@ -18,9 +18,9 @@ import (
 	ackkmsapitypes "github.com/aws-controllers-k8s/kms-controller/apis/v1alpha1"
 	ackmetrics "github.com/aws-controllers-k8s/runtime/pkg/metrics"
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/credentials"
 	svcsdk "github.com/aws/aws-sdk-go-v2/service/kms"
 
+	"github.com/highfivelabs/ack-extensions/pkg/fakeaws"
 	svcapitypes "github.com/highfivelabs/ack-extensions/services/kms/apis/v1alpha1"
 )
 
@@ -93,12 +93,12 @@ func standInManager(t *testing.T, s *kmsStandIn) *resourceManager {
 	t.Helper()
 	srv := httptest.NewServer(s)
 	t.Cleanup(srv.Close)
-	cfg := aws.Config{
-		Region:           primaryRegion,
-		Credentials:      credentials.NewStaticCredentialsProvider("testing", "testing", ""),
-		BaseEndpoint:     aws.String(srv.URL),
-		RetryMaxAttempts: 1,
+	// The stand-in on loopback, through the guarded client (pkg/fakeaws).
+	cfg, err := fakeaws.Config(srv.URL, primaryRegion)
+	if err != nil {
+		t.Fatal(err)
 	}
+	cfg.RetryMaxAttempts = 1
 	return &resourceManager{
 		clientcfg:    cfg,
 		metrics:      ackmetrics.NewMetrics("kms"),

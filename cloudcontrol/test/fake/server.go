@@ -25,6 +25,10 @@
 //   - a second request on a resource whose request is still in progress is
 //     refused with ConcurrentOperationException.
 //
+// Everything that is not a Cloud Control call (STS's GetCallerIdentity at
+// the manager's start, any other service) is passed to the upstream, moto,
+// so the fake's one URL is the manager's every endpoint (pkg/fakeaws).
+//
 // What it does not do: hooks, RoleArn, ListResources, CancelResourceRequest,
 // resource-level IAM. What real Cloud Control does that this cannot show is
 // in docs/cloudcontrol.md ("The fake").
@@ -38,6 +42,8 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"net/http/httputil"
+	"net/url"
 	"sort"
 	"strings"
 	"sync"
@@ -46,6 +52,7 @@ import (
 	jsonpatch "github.com/evanphx/json-patch/v5"
 
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/pkg/cfn"
+	"github.com/highfivelabs/ack-extensions/pkg/fakeaws"
 )
 
 // Backend does one type's work in moto, on CloudFormation models.
@@ -116,6 +123,7 @@ type Server struct {
 	calls     []Call
 	seq       int
 	http      *httptest.Server
+	upstream  *httputil.ReverseProxy
 }
 
 // New makes a server for the given types.
@@ -133,6 +141,20 @@ func New() *Server {
 func (s *Server) Register(schema *cfn.Schema, b Backend) {
 	s.schemas[schema.TypeName] = schema
 	s.backends[schema.TypeName] = b
+}
+
+// Upstream passes every request that is not a Cloud Control call to
+// endpoint (moto), which must be on loopback, through the guarded client.
+func (s *Server) Upstream(endpoint string) error {
+	e, err := fakeaws.Parse(endpoint, fakeaws.Loopback)
+	if err != nil {
+		return err
+	}
+	u, _ := url.Parse(e.String())
+	rp := httputil.NewSingleHostReverseProxy(u)
+	rp.Transport = fakeaws.HTTPClient().Transport
+	s.upstream = rp
+	return nil
 }
 
 // Start listens on a loopback port and returns the endpoint URL.
@@ -176,6 +198,10 @@ func exception(code, format string, a ...any) *apiError {
 
 func (s *Server) serve(w http.ResponseWriter, r *http.Request) {
 	target := r.Header.Get("X-Amz-Target")
+	if !strings.HasPrefix(target, "CloudApiService.") && s.upstream != nil {
+		s.upstream.ServeHTTP(w, r)
+		return
+	}
 	action := strings.TrimPrefix(target, "CloudApiService.")
 	body, _ := io.ReadAll(r.Body)
 	var in map[string]any
