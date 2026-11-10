@@ -169,6 +169,23 @@ reconciler does the rest. Nothing in it names a type.
 - **Delete.** `DeleteResource`; in progress, the token is recorded and the
   next pass finishes it; `NotFound` is done. `deletion-policy: retain` is
   ACK's runtime's, unchanged.
+- **Never delete.** A type marked `neverDelete: true` in
+  `cloudcontrol/types.yaml` (default false) is never deleted: deleting
+  its object removes the object and keeps the resource, as
+  `deletion-policy: retain` does, but for every object of the type,
+  whatever its annotations, including one made before any admission
+  policy. It is for a resource whose delete cannot be undone (a landing
+  zone, plan section 9 question 15). The generator carries it three ways:
+  `Delete` makes no call (`TestNeverDelete`); the type's IAM policy has
+  neither `cloudformation:DeleteResource` nor its delete handler's
+  actions, and an environment's merged policy drops `DeleteResource`
+  when none of its types may be deleted (`TestNeverDeletePolicy`); the
+  CRD carries `cloudcontrol.aws.hfl.dev/never-delete: "true"`. It is the
+  Cloud Control route's counterpart of a retain-only ACK-generated kind
+  (no delete call, `docs/handoff.md`); a type can add the retain-only
+  admission policy (`config/admission/retain-only.yaml`) too, so a
+  delete without `deletion-policy: retain` is refused rather than
+  quietly keeping the resource. No type served sets it yet.
 - **Adoption.** ACK's `adoption-policy: adopt` (or `adopt-or-create`) with
   `adoption-fields` naming the primary identifier by field
   (`{"transitGatewayRouteTableId": "tgw-rtb-..."}`) or `{"identifier": ...}`;

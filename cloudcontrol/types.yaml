@@ -23,7 +23,14 @@
 #   unproven  why the kind has no end-to-end test on the fake (moto lacks
 #             the service's API); the coverage data reports it. Every other
 #             type has a moto backend (cloudcontrol/test/fake) and a test
-#             (cloudcontrol/test/e2e).
+#             (cloudcontrol/test/e2e);
+#   neverDelete  true for a resource whose delete cannot be undone: deleting
+#             the object keeps the resource in AWS, whatever the object's
+#             annotations say. The reconciler never calls DeleteResource
+#             for the type, its IAM policy has no delete permissions, and
+#             its CRD carries cloudcontrol.aws.hfl.dev/never-delete. Default
+#             false; no type served sets it yet (docs/cloudcontrol.md,
+#             section 3).
 groupSuffix: cloudcontrol.aws.hfl.dev
 version: v1alpha1
 # What the end-to-end tests do themselves on a live run, beside the kinds'
