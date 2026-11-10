@@ -90,7 +90,8 @@ provisionable types**, including **251 of the 276 foundation-gap types**.
 | `cloudcontrol/config/crds/`, `config/iam/`, `config/rbac/`, `pkg/registry/zz_generated.registry.go`, `pkg/registry/schemas/` | per type: CRD, IAM policy, the registry entry, the embedded schema; for all, the manager's ClusterRole (namespaced rights, bound per environment) | **generated** |
 | `cloudcontrol/zz_generated.report.md` | what the generator could not map exactly, per type | generated |
 | `cloudcontrol/readiness.csv`, `readiness.md` | every type in the zip: provisioning type, CRD accepted or not, lossy nodes, secrets, sensitive IAM, ACK coverage | generated (`--survey`) |
-| `cloudcontrol/test/fake/` | the Cloud Control fake: a generic server plus one moto backend per type; the guard | test code |
+| `cloudcontrol/test/fake/` | the Cloud Control fake: a generic server plus one moto backend per type, passing everything else to moto | test code |
+| `pkg/fakeaws/`, `hack/noaws/` | the guard against real AWS, for every test path in the repository, and its check in `task check` (section 6) | test code |
 | `cloudcontrol/test/e2e/` | end to end: envtest, the manager binary, the fake over moto | test code |
 
 Tasks: `task cloudcontrol:generate`, `task cloudcontrol:check` (generated
@@ -296,39 +297,87 @@ type's CloudFormation handler using moto through the SDK:
 - `Detector` on moto's GuardDuty: create, get, update, delete; tags at
   create only (moto has no `TagResource` for GuardDuty).
 
-**The guard** (`cloudcontrol/test/fake/guard.go`). The Upjet spike in
-`highfivelabs/catalog` sent signed requests to the real Organizations
-endpoint because an endpoint block was mistyped and nothing complained. Here
-three independent locks, each enough on its own:
+**The guard against real AWS** (`pkg/fakeaws`, shared by every test path
+in the repository: the Cloud Control tests, the ACK kinds' harness, the
+operator on kind). The Upjet spike in `highfivelabs/catalog` sent signed
+requests to the real Organizations endpoint because an endpoint block was
+mistyped and nothing complained.
 
-1. `LocalOnly`: the harness refuses to start unless moto's and the fake's
-   URLs are loopback addresses;
-2. `HTTPClient`: every SDK client the tests and the fake make dials loopback
-   addresses only, checked on the literal host before any name is resolved,
-   so a missing endpoint override fails at the dial;
-3. `ChildEnv`: the manager and moto run with an environment built from
-   nothing: the credentials `testing`/`testing`, `/dev/null` shared config,
-   and `HTTP(S)_PROXY` at `127.0.0.1:9`, a closed port; Go never proxies
-   loopback, so every other request the manager makes dies at the proxy.
+**A mistake made once, 2026-11-09.** The first kind run gave the Cloud
+Control manager only `--aws-endpoint-url`. ACK's runtime asks STS who it is
+at start, at `--aws-identity-endpoint-url` or `AWS_ENDPOINT_URL`, else at
+the real regional STS endpoint; so that manager almost certainly sent
+`GetCallerIdentity`, signed with the dummy key `testing`, to real AWS STS,
+which refused it (the manager never became ready; no AWS account or
+credential was involved). The Go tests had their locks then; the kind test
+set its endpoints flag by flag, and one was missing.
 
-**On kind** (`task operator-e2e`), the managers run in pods, so the locks
-are the operator's test-only flags: both endpoints at moto in the cluster
-(`--aws-endpoint-url`, `--aws-identity-endpoint-url`, `AWS_ENDPOINT_URL`),
-and the third lock again, `HTTP(S)_PROXY` at `127.0.0.1:9` with `NO_PROXY`
-covering only in-cluster names and addresses; the operator refuses an
-endpoint override without the identity endpoint (`cmd/operator`,
-`checkEndpoints`). **A mistake made once, 2026-11-09:** the first kind run
-gave the Cloud Control manager only `--aws-endpoint-url`. ACK's runtime asks
-STS who it is at start, at the identity endpoint or `AWS_ENDPOINT_URL`,
-else at the real regional STS endpoint; so that manager almost certainly
-sent `GetCallerIdentity`, signed with the dummy key `testing`, to real AWS
-STS, which refused it (the manager never became ready; no AWS account or
-credential was involved). The kind test had none of the Go tests' locks
-then; it has all three now.
+**What changed: one setting, and a check that refuses anything else.**
+Setting endpoints one flag at a time was the cause, so nothing in a test
+path sets one any more:
 
-`TestGuard` proves each: the real endpoint is refused by `LocalOnly`; an SDK
-client with no endpoint override fails with "refusing to dial"; the child
-environment sends the real endpoint to the dead proxy and loopback direct.
+1. **One setting.** A fake is one URL, a `fakeaws.Endpoint`. From it come,
+   together, every endpoint a process has: ACK's runtime's service and STS
+   flags (`--aws-endpoint-url`, `--aws-identity-endpoint-url`) and
+   `AWS_ENDPOINT_URL`, which every client the SDK's default configuration
+   makes reads (STS for an assumed role, any service a handler or hook
+   calls); beside them the fake credentials, the metadata service off, and
+   `HTTP(S)_PROXY` (both cases) at `127.0.0.1:9`, a closed port, for every
+   host but the fake's and the Kubernetes API's. The Cloud Control fake now
+   passes every request that is not a Cloud Control call to moto
+   (`Server.Upstream`), so in the Go tests its URL is the manager's only
+   endpoint, STS included.
+2. **Refused at start.** `fakeaws.Verify` takes a process's whole command
+   line and environment (a container's, with `$(VAR)` expanded as
+   Kubernetes does) and refuses it unless both runtime endpoints and
+   `AWS_ENDPOINT_URL` are set; every endpoint flag or `*ENDPOINT_URL*`
+   variable is the fake's (loopback in Go tests, a `.svc` name or private
+   address on kind) and none is under an AWS partition's domain (all 14,
+   from the SDK's `partitions.json`); `AWS_IGNORE_CONFIGURED_ENDPOINT_URLS`
+   is unset; the proxy is the dead one and `NO_PROXY` names only the fake
+   and local addresses; and no credential source but the fake keys is
+   configured (no role, web identity, Pod Identity or session token).
+   - Go tests start every AWS client process with `fakeaws.Command`, which
+     builds it from the endpoint and calls `Verify`; their own SDK clients
+     come from `fakeaws.Config`, whose HTTP client dials loopback addresses
+     only (checked on the literal host before any name is resolved).
+   - The operator has one test-only flag, `--fake-aws-endpoint`, which
+     replaces `--cloudcontrol-manager-arg`/`-env`. It refuses to start if
+     the URL is an AWS domain or outside the cluster; in that mode every
+     manager it makes, the Cloud Control ones and those beside ACK's
+     controllers, gets the whole setting in place of whatever endpoint,
+     proxy or profile it copied, and is verified before it is applied (a
+     container with `envFrom`, or AWS variables from `valueFrom`, which
+     cannot be seen, is refused).
+   - On kind, `tests/operator/run.sh` sets one variable, `FAKE_AWS`; ACK's
+     controller gets the same environment (`hack/noaws env`), and after
+     each manager comes up `hack/noaws verify-deployments` runs `Verify`
+     on every AWS client in the cluster and fails if one could reach AWS
+     (or if it found none). Python (boto3) runs only through `fake_py`:
+     an environment built from nothing, the endpoint at the port-forward,
+     the dead proxy.
+3. **Checked in `task check`.** `task noaws` (`hack/noaws`, also in
+   `task cloudcontrol:check`) reads every test path (every `_test.go` file;
+   `pkg/test`, `tests`, `cloudcontrol/test`, `config/fake-aws`) and fails
+   on: an `aws.Config` made by hand, `config.LoadDefaultConfig`, or a
+   change to a configuration's `HTTPClient` or `BaseEndpoint` (G1); a
+   process started other than `go` whose environment is not set from
+   `pkg/fakeaws` (G2); `net/http`'s default client (G3); an AWS endpoint
+   written out, a URL or a regional host name, other than an XML namespace
+   (G4: tests that show a real endpoint is refused use
+   `fakeaws.RealEndpoint`); Python run other than through `fake_py`, or the
+   AWS CLI, in `tests/` scripts (S1). It has no exemption marker; only
+   `pkg/fakeaws` itself is not read. Its own tests prove each rule fires
+   (`hack/noaws/testdata`). Its first run found two unit tests
+   (`services/kms` and `services/rds`) with hand-made SDK configurations
+   and the kind script's direct Python calls; all now go through
+   `pkg/fakeaws`.
+
+`TestVerify` (`pkg/fakeaws`) replays the incident (only the service
+endpoint set: refused, naming `--aws-identity-endpoint-url`) and each other
+way out; `TestLocks` proves the dial and the proxy locks on their own;
+`TestFakeBesideManager` (`pkg/operator`) shows ACK's chart's container
+with no identity endpoint refused as copied and fixed in fake mode.
 
 ## 7. What was proven
 
@@ -522,10 +571,9 @@ the environment's role is the identity. An unknown kind in `spec.kinds`
 leaves whatever runs alone and sets `Ready=False`, `UnknownKinds`. The
 operator holds no AWS credentials and may bind only the manager's
 ClusterRole by name. A fake AWS's endpoint and dummy credentials reach the
-managers only through the operator's own flags
-(`--cloudcontrol-manager-arg`, `--cloudcontrol-manager-env`, for tests and
-kind), never through a context: an environment cannot point its manager at
-another endpoint.
+managers only through the operator's own test-only flag
+(`--fake-aws-endpoint`, section 6), never through a context: an
+environment cannot point its manager at another endpoint.
 
 **The EKS Pod Identity association** the environment needs (the operator
 cannot make it: it is an EKS API call, made with AWS credentials):

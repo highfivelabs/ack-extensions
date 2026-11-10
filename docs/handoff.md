@@ -49,7 +49,8 @@ fake and marked untested on real AWS until a real run. Adding a type:
    test in `cloudcontrol/test/e2e` when moto has the service; otherwise
    mark it "unproven on fake" (PR 2 adds the column to the coverage data).
 4. `tests/operator/run.sh` checks the CRD list; add the new CRD there.
-5. Never weaken the fake's three guards (`cloudcontrol/test/fake/guard.go`).
+5. Never weaken the guard against real AWS (`pkg/fakeaws`, checked by
+   `task noaws`; `docs/cloudcontrol.md` section 6).
 
 The identity is per environment: a `CloudControlContext` per namespace,
 the manager in the operator's namespace as
@@ -225,6 +226,10 @@ git makes has no sign-off: amend it.
 
 - Never edit `third_party/`; changes to upstream code go in
   `patches/code-generator/`. `task upstream` resets it to the pin and patches.
+- Every test path reaches AWS only through `pkg/fakeaws`: SDK clients from
+  `fakeaws.Config`, processes from `fakeaws.Command`, Python on kind through
+  `fake_py`. `task noaws` (in `task check`) fails otherwise; never add an
+  exemption to it.
 - Never use real cloud credentials, projects or accounts: moto only. Never
   catch an error and report success. Never claim a check passed that did not run.
 - Never open, comment on or review upstream PRs or issues; reading them is
