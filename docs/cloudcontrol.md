@@ -482,6 +482,27 @@ from moto. `AWS::SSO::InstanceAccessControlAttributeConfiguration` is
 reports; the e2e harness refuses a type with neither a backend nor that
 mark. Results: the pull request.
 
+**Batch 2: F03, IAM virtual MFA devices** (`TestVirtualMFADevice`).
+`AWS::IAM::VirtualMFADevice` on moto's IAM; the backend
+(`cloudcontrol/test/fake/moto_mfa.go`) does the handler's calls in order:
+`CreateVirtualMFADevice`, `EnableMFADevice` for each user (moto takes any
+two six-digit codes; AWS checks them against the seed, which only the
+handler holds), and `DeactivateMFADevice` before `DeleteVirtualMFADevice`.
+moto has no MFA device tags, so the backend keeps them. A device with a
+path, a user and a tag gets its serial number (the ARN,
+`arn:aws:iam::<account>:mfa/<path><name>`) as identifier and in status, and
+is the user's in `ListMFADevices`; resyncs make no update; a tag change is
+one `replace /Tags`; a new name is refused (create-only); the delete
+removes the device and the user's MFA. **What the kind cannot do:** the
+schema has no seed or QR code property, so Cloud Control never returns
+them; a device made through this kind is enabled for its users but no one
+can add it to an authenticator, and those users then fail any
+MFA-conditioned policy. It suits a device that exists to be adopted or
+deleted, not one a person will use. The handler's update permissions are
+tags only, so what it does with a changed user list is not known without
+AWS; the fake refuses it. ACK's iam-controller v1.11.3 ignores the
+resource (`generator.yaml`) and has no open pull request for it.
+
 **Not shown by the fake** (section 11): anything about real AWS.
 
 `task check` (the whole repository) is reported in the pull request.
@@ -743,7 +764,8 @@ with limits":
 2. Types in foundation order, in reviewable batches, each with a
    fake-backed test where moto has the service, else marked "unproven on
    fake" in the coverage data; `task coverage` counts them as ours. Done:
-   the coverage change and batch 1 (F02, three Identity Center types).
+   the coverage change, batch 1 (F02, three Identity Center types) and
+   batch 2 (F03, `VirtualMFADevice`).
    Next: the rest of F03 to F18 by `docs/coverage/foundation.md`.
 3. The live-test switch (`task test-live`, a sweeper, the ledger
    `docs/live-runs.md`) and the CloudFormation template for the sandbox

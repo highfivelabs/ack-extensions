@@ -115,7 +115,10 @@ IAM will refuse; `TestDetector` fails in an account that already has a
 detector (one per account and region); `TestIdentityCenter` needs Identity
 Center enabled in the account; `TestTransitGatewayRouteTable` makes a
 transit gateway (billed hourly) and deletes it at the end, but a run cut
-off before then leaves it, untagged. Each is a fixture change, made with the first run of that test.
+off before then leaves it, untagged. `TestVirtualMFADevice` makes an IAM
+user, `ack-ext-e2e-mfa`, and deletes it at the end; a run cut off before
+then leaves it (untagged, so the sweeper cannot see it) for the next run
+to reuse. Each is a fixture change, made with the first run of that test.
 
 ## Ledger
 
