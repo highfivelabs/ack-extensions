@@ -74,6 +74,7 @@ and what changed.
 | `services/kms/pkg/resource/replica_key/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton, by way of our `db_role_association` copy) | `78eb350e…` | package, kind, API group, KMS client, ARN, `IsSynced` (synced when `Enabled`), adoption fields |
 | `services/ec2/pkg/tags/{sync,sync_test}.go` | ec2-controller `v1.23.1` `pkg/tags/` | `9303654c…` | our `ec2.aws.hfl.dev` API types |
 | `services/ec2/pkg/resource/customer_gateway/hooks.go` | ec2-controller `v1.23.1` `pkg/resource/internet_gateway/hooks.go` (`customUpdateInternetGateway`, `updateTagSpecificationsInCreateRequest`) | `9303654c…` | a customer gateway: tags only, no VPC attachment or route tables |
+| `services/ec2/pkg/resource/vpn_connection/hooks.go` (`customUpdateVpnConnection`, `updateTagSpecificationsInCreateRequest`), `services/ec2/templates/hooks/vpn_connection/sdk_create_post_build_request.go.tpl` | ec2-controller `v1.23.1` `pkg/resource/internet_gateway/hooks.go`, through `vpn_gateway/hooks.go` | `9303654c…` | a VPN connection: tags, static routes, the connection's CIDRs and each tunnel's options; the options' read, the static routes and the other templates written here |
 | `services/ec2/pkg/resource/vpn_gateway/hooks.go`, `services/ec2/templates/hooks/vpn_gateway/*.go.tpl` | ec2-controller `v1.23.1` `pkg/resource/internet_gateway/hooks.go` and `templates/hooks/internet_gateway/` | `9303654c…` | a VPN gateway (`AttachVpnGateway`, `DetachVpnGateway`, `VpcAttachments`); no route tables; a deleted gateway reads as gone |
 | `services/ec2/pkg/resource/volume/hooks.go` | ec2-controller `v1.23.1` `pkg/resource/internet_gateway/hooks.go` | `9303654c…` | an EBS volume: `ModifyVolume` and tags; no attachment or route tables |
 | `services/ec2/pkg/resource/volume/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | an EBS volume's server defaults |
@@ -98,6 +99,7 @@ Written here: `services/rds/apis/v1alpha1/db_proxy_target.go`,
 `services/rds/apis/v1alpha1/db_role_association.go`,
 `services/lambda/apis/v1alpha1/permission.go`,
 `services/ec2/templates/hooks/customer_gateway/*.go.tpl`,
+`services/ec2/pkg/resource/vpn_connection/hooks_test.go`,
 `services/ecr/pkg/resource/replication_configuration/{delta,references,sdk_test}.go`,
 `services/eventbridge/pkg/resource/connection/{hooks,hooks_test}.go`,
 `services/eventbridge/pkg/resource/api_destination/custom_delta_test.go`,

@@ -1,0 +1,421 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: vpnconnections.ec2.aws.hfl.dev
+spec:
+  group: ec2.aws.hfl.dev
+  names:
+    kind: VPNConnection
+    listKind: VPNConnectionList
+    plural: vpnconnections
+    singular: vpnconnection
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.vpnConnectionID
+      name: ID
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: VPNConnection is the Schema for the VPNConnections API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              VpnConnectionSpec defines the desired state of VpnConnection.
+
+              Describes a VPN connection.
+            properties:
+              customerGatewayID:
+                description: The ID of the customer gateway.
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              customerGatewayRef:
+                description: "AWSResourceReferenceWrapper provides a wrapper around
+                  *AWSResourceReference\ntype to provide more user friendly syntax
+                  for references using 'from' field\nEx:\nAPIIDRef:\n\n\tfrom:\n\t
+                  \ name: my-api"
+                properties:
+                  from:
+                    description: |-
+                      AWSResourceReference provides all the values necessary to reference another
+                      k8s resource for finding the identifier(Id/ARN/Name)
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+              options:
+                description: The options for the VPN connection.
+                properties:
+                  enableAcceleration:
+                    type: boolean
+                  localIPv4NetworkCIDR:
+                    type: string
+                  localIPv6NetworkCIDR:
+                    type: string
+                  outsideIPAddressType:
+                    type: string
+                  remoteIPv4NetworkCIDR:
+                    type: string
+                  remoteIPv6NetworkCIDR:
+                    type: string
+                  staticRoutesOnly:
+                    type: boolean
+                  transportTransitGatewayAttachmentID:
+                    type: string
+                  tunnelInsideIPVersion:
+                    type: string
+                  tunnelOptions:
+                    items:
+                      description: The tunnel options for a single VPN tunnel.
+                      properties:
+                        dpdTimeoutAction:
+                          type: string
+                        dpdTimeoutSeconds:
+                          format: int64
+                          type: integer
+                        enableTunnelLifecycleControl:
+                          type: boolean
+                        iKEVersions:
+                          items:
+                            description: The IKE version that is permitted for the
+                              VPN tunnel.
+                            properties:
+                              value:
+                                type: string
+                            type: object
+                          type: array
+                        logOptions:
+                          description: Options for logging VPN tunnel activity.
+                          properties:
+                            cloudWatchLogOptions:
+                              description: Options for sending VPN tunnel logs to
+                                CloudWatch.
+                              properties:
+                                logEnabled:
+                                  type: boolean
+                                logGroupARN:
+                                  type: string
+                                logOutputFormat:
+                                  type: string
+                              type: object
+                          type: object
+                        phase1DHGroupNumbers:
+                          items:
+                            description: |-
+                              Specifies a Diffie-Hellman group number for the VPN tunnel for phase 1 IKE
+                              negotiations.
+                            properties:
+                              value:
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
+                        phase1EncryptionAlgorithms:
+                          items:
+                            description: Specifies the encryption algorithm for the
+                              VPN tunnel for phase 1 IKE negotiations.
+                            properties:
+                              value:
+                                type: string
+                            type: object
+                          type: array
+                        phase1IntegrityAlgorithms:
+                          items:
+                            description: Specifies the integrity algorithm for the
+                              VPN tunnel for phase 1 IKE negotiations.
+                            properties:
+                              value:
+                                type: string
+                            type: object
+                          type: array
+                        phase1LifetimeSeconds:
+                          format: int64
+                          type: integer
+                        phase2DHGroupNumbers:
+                          items:
+                            description: |-
+                              Specifies a Diffie-Hellman group number for the VPN tunnel for phase 2 IKE
+                              negotiations.
+                            properties:
+                              value:
+                                format: int64
+                                type: integer
+                            type: object
+                          type: array
+                        phase2EncryptionAlgorithms:
+                          items:
+                            description: Specifies the encryption algorithm for the
+                              VPN tunnel for phase 2 IKE negotiations.
+                            properties:
+                              value:
+                                type: string
+                            type: object
+                          type: array
+                        phase2IntegrityAlgorithms:
+                          items:
+                            description: Specifies the integrity algorithm for the
+                              VPN tunnel for phase 2 IKE negotiations.
+                            properties:
+                              value:
+                                type: string
+                            type: object
+                          type: array
+                        phase2LifetimeSeconds:
+                          format: int64
+                          type: integer
+                        preSharedKey:
+                          description: |-
+                            SecretKeyReference combines a k8s corev1.SecretReference with a
+                            specific key within the referred-to Secret
+                          properties:
+                            key:
+                              description: Key is the key within the secret
+                              type: string
+                            name:
+                              description: name is unique within a namespace to reference
+                                a secret resource.
+                              type: string
+                            namespace:
+                              description: namespace defines the space within which
+                                the secret name must be unique.
+                              type: string
+                          required:
+                          - key
+                          type: object
+                          x-kubernetes-map-type: atomic
+                        rekeyFuzzPercentage:
+                          format: int64
+                          type: integer
+                        rekeyMarginTimeSeconds:
+                          format: int64
+                          type: integer
+                        replayWindowSize:
+                          format: int64
+                          type: integer
+                        startupAction:
+                          type: string
+                        tunnelInsideCIDR:
+                          type: string
+                        tunnelInsideIPv6CIDR:
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              staticRoutes:
+                items:
+                  type: string
+                type: array
+              tags:
+                description: |-
+                  The tags. The value parameter is required, but if you don't want the tag
+                  to have a value, specify the parameter with no value, and we set the value
+                  to an empty string.
+                items:
+                  description: Describes a tag.
+                  properties:
+                    key:
+                      type: string
+                    value:
+                      type: string
+                  type: object
+                type: array
+              transitGatewayID:
+                description: |-
+                  The ID of the transit gateway. If you specify a transit gateway, you cannot
+                  specify a virtual private gateway.
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              type_:
+                description: The type of VPN connection (ipsec.1).
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              vpnGatewayID:
+                description: |-
+                  The ID of the virtual private gateway. If you specify a virtual private gateway,
+                  you cannot specify a transit gateway.
+                type: string
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
+              vpnGatewayRef:
+                description: "AWSResourceReferenceWrapper provides a wrapper around
+                  *AWSResourceReference\ntype to provide more user friendly syntax
+                  for references using 'from' field\nEx:\nAPIIDRef:\n\n\tfrom:\n\t
+                  \ name: my-api"
+                properties:
+                  from:
+                    description: |-
+                      AWSResourceReference provides all the values necessary to reference another
+                      k8s resource for finding the identifier(Id/ARN/Name)
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+            required:
+            - type_
+            type: object
+          status:
+            description: VPNConnectionStatus defines the observed state of VPNConnection
+            properties:
+              ackResourceMetadata:
+                description: |-
+                  All CRs managed by ACK have a common `Status.ACKResourceMetadata` member
+                  that is used to contain resource sync state, account ownership,
+                  constructed ARN for the resource
+                properties:
+                  arn:
+                    description: |-
+                      ARN is the Amazon Resource Name for the resource. This is a
+                      globally-unique identifier and is set only by the ACK service controller
+                      once the controller has orchestrated the creation of the resource OR
+                      when it has verified that an "adopted" resource (a resource where the
+                      ARN annotation was set by the Kubernetes user on the CR) exists and
+                      matches the supplied CR's Spec field values.
+                      https://github.com/aws/aws-controllers-k8s/issues/270
+                    type: string
+                  ownerAccountID:
+                    description: |-
+                      OwnerAccountID is the AWS Account ID of the account that owns the
+                      backend AWS service API resource.
+                    type: string
+                  partition:
+                    description: Partition is the AWS partition in which the resource
+                      exists or will exist
+                    type: string
+                  region:
+                    description: Region is the AWS region in which the resource exists
+                      or will exist.
+                    type: string
+                required:
+                - ownerAccountID
+                - region
+                type: object
+              category:
+                description: |-
+                  The category of the VPN connection. A value of VPN indicates an Amazon Web
+                  Services VPN connection. A value of VPN-Classic indicates an Amazon Web Services
+                  Classic VPN connection.
+                type: string
+              conditions:
+                description: |-
+                  All CRs managed by ACK have a common `Status.Conditions` member that
+                  contains a collection of `ackv1alpha1.Condition` objects that describe
+                  the various terminal states of the CR and its backend AWS service API
+                  resource
+                items:
+                  description: |-
+                    Condition is the common struct used by all CRDs managed by ACK service
+                    controllers to indicate terminal states  of the CR and its backend AWS
+                    service API resource
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A human readable message indicating details about
+                        the transition.
+                      type: string
+                    reason:
+                      description: The reason for the condition's last transition.
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the Condition
+                      type: string
+                  required:
+                  - status
+                  - type
+                  type: object
+                type: array
+              coreNetworkARN:
+                description: The ARN of the core network.
+                type: string
+              coreNetworkAttachmentARN:
+                description: The ARN of the core network attachment.
+                type: string
+              gatewayAssociationState:
+                description: The current state of the gateway association.
+                type: string
+              routes:
+                description: The static routes associated with the VPN connection.
+                items:
+                  description: Describes a static route for a VPN connection.
+                  properties:
+                    destinationCIDRBlock:
+                      type: string
+                    source:
+                      type: string
+                    state:
+                      type: string
+                  type: object
+                type: array
+              state:
+                description: The current state of the VPN connection.
+                type: string
+              vgwTelemetry:
+                description: Information about the VPN tunnel.
+                items:
+                  description: Describes telemetry for a VPN tunnel.
+                  properties:
+                    acceptedRouteCount:
+                      format: int64
+                      type: integer
+                    certificateARN:
+                      type: string
+                    lastStatusChange:
+                      format: date-time
+                      type: string
+                    outsideIPAddress:
+                      type: string
+                    status:
+                      type: string
+                    statusMessage:
+                      type: string
+                  type: object
+                type: array
+              vpnConnectionID:
+                description: The ID of the VPN connection.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

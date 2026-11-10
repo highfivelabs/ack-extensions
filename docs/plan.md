@@ -4,8 +4,8 @@ Status, 2026-11-09: the repository has twenty-nine kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
-- `ec2.aws.hfl.dev` `CustomerGateway`, `VPNGateway`, `Volume` and
-  `VolumeAttachment`;
+- `ec2.aws.hfl.dev` `CustomerGateway`, `VPNGateway`, `VPNConnection`,
+  `Volume` and `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
 - `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy`, `AccessKey` and `VirtualMFADevice`;
@@ -471,6 +471,15 @@ controller to show it can fail:
   to delete a gateway until it is detached). It keeps a deleted gateway
   listed in state `deleted`, as AWS does. It does not implement
   `EnableVgwRoutePropagation`, so route propagation is not built.
+- **EC2 VPN connections** (probed 2026-11-09). moto makes a connection
+  `available` at once (AWS goes through `pending` for minutes), keeps a
+  deleted one listed in state `deleted`, as AWS does, deletes one twice
+  without an error, and answers `InvalidVpnConnectionID.NotFound` for an
+  unknown ID. It returns no `Options` at all (AWS returns every tunnel's
+  options, its outside IP address and its pre-shared key) and no device
+  configuration with keys in it. It has none of
+  `ModifyVpnTunnelOptions`, `ModifyVpnConnectionOptions`,
+  `ModifyVpnConnection` or `CreateVpnConnectionRoute` (server errors).
 - **EBS volumes.** moto creates a volume `available` at once (AWS goes
   through `creating`), applies `ModifyVolume` at once (AWS goes through
   `modifying` and `optimizing`), and removes a deleted volume at once.
@@ -1892,6 +1901,77 @@ for `AccessKey`); the QR code (moto's is 64 random bytes, not a PNG);
 the owner reference's garbage
 collection; real AWS.
 
+### 6.32 `ec2.aws.hfl.dev` `VPNConnection`
+
+A site-to-site VPN connection (F05), handed over by the Cloud Control
+route: it fits ACK's generator better, with references to our
+`CustomerGateway` and `VPNGateway` and the tunnels' pre-shared keys from
+Secrets. Upstream rechecked 2026-11-09: ec2-controller `v1.23.1` ignores
+`VpnConnection` and `VpnConnectionRoute` in its `generator.yaml`, on master
+too; community #1868 ("VPN resources", open since 2023) has no pull
+request.
+
+**Generated** from `CreateVpnConnection` (create), `DescribeVpnConnections`
+(read) and `DeleteVpnConnection`, with ACK ec2-controller's tag hooks
+(`InternetGateway`'s, through `VPNGateway`'s). About 82% of the new Go is
+generated (about 2,240 lines); written here are four hook templates and
+`hooks.go` (about 500 lines together: the update, the options' read and
+the static routes).
+
+- **Spec:** `type`, `customerGatewayID` or `customerGatewayRef` (our
+  `CustomerGateway`), `vpnGatewayID` or `vpnGatewayRef` (our
+  `VPNGateway`), `transitGatewayID`, all immutable; `options` (the
+  connection's CIDRs, static-routes-only, acceleration, and per tunnel the
+  inside CIDR, IKE and phase settings, logging and
+  `preSharedKey`, a `SecretKeyReference`); `staticRoutes` (CIDRs, for a
+  static-routes-only connection); `tags`. **Status:** `vpnConnectionID`,
+  `state` (synced when `available`), `routes`, `vgwTelemetry` (each
+  tunnel's outside IP address and status), `category`,
+  `gatewayAssociationState`.
+- **The pre-shared keys.** The generated create reads each tunnel's key
+  from its Secret, as ACK's kinds read secrets. EC2 returns the keys in
+  two places, every tunnel's options and the device configuration (an
+  XML document for the customer's router); the read clears both from the
+  response before anything else reads it, and the configuration is never
+  a field. So a key is never in the object, a log or an event. EC2's keys
+  are not compared with the Secrets: a changed Secret is pushed when its
+  reference changes (a new name or key), not on its own.
+- **The options' read.** EC2 returns the options in another shape and
+  fills a default for every tunnel setting left out, so the read takes
+  from EC2 only the fields the spec sets (tunnels by position), and the
+  spec's key references. A setting changed outside Kubernetes is then
+  drift and is put back. With no options from EC2 (moto), the read keeps
+  the spec's.
+- **Updates:** tags (`CreateTags`/`DeleteTags`); static routes
+  (`CreateVpnConnectionRoute`/`DeleteVpnConnectionRoute`, read from the
+  connection's routes of source `Static`); the connection's four CIDRs
+  (`ModifyVpnConnectionOptions`); each changed tunnel
+  (`ModifyVpnTunnelOptions`, by the tunnel's outside IP address read from
+  EC2, its key read from its Secret). Acceleration, static-routes-only,
+  the inside IP version, the outside IP address type, the transport
+  attachment and the number of tunnels are refused (terminal): EC2 cannot
+  change them. Changing the gateways (`ModifyVpnConnection`) is not
+  offered: the fields are immutable, and a new connection is the way.
+- **Not built:** a reference to ACK's `TransitGateway` (`transitGatewayID`
+  is a plain ID): it needs ACK's ec2-controller as a Go module, a new
+  upstream dependency (open question 16). The newer
+  `PreSharedKeyStorage` (keys in Secrets Manager) and
+  `VpnConcentratorId` are not in the code generator's pinned EC2 model.
+
+**Proven on moto** (`TestVPNConnection`): a connection made from our
+`CustomerGateway` and `VPNGateway` by reference, its keys from a Secret,
+with its type, gateways and tags in the cloud, `available`; no second
+create and no update across resyncs; the keys in no manager log line, in
+nothing of the object's and in no event; tags changed; the type refused
+by the CRD; delete leaves the connection `deleted` in the cloud.
+
+**Not proven on moto** (unit-tested in their parts, `hooks_test.go`):
+the options' read against what EC2 returns (moto returns none), tunnel
+option and CIDR changes, static routes, that the keys reach EC2 (moto
+returns nothing to check them by), `pending` before `available`, and real
+AWS. The foundation queue's "done when" asked for a tunnel option change
+end to end; moto cannot show it.
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)
@@ -2259,6 +2339,11 @@ Before it can run on a real cluster:
      PNG that an authenticator reads, a device so made can be enabled for
      a user with two codes from the seed, and the delete of an enabled
      device is refused with `DeleteConflict` (section 6.31).
+   - VPN connections: the options' read against a real connection (no
+     update across resyncs, a tunnel setting changed outside Kubernetes
+     put back), a tunnel option change and a CIDR change, static routes
+     added and removed, `pending` to `available`, and the keys absent from
+     the manager's log at debug level (section 6.32).
 4. CRD labels marking a gap kind and naming the upstream kind it
    anticipates, as gaps-gcp does.
 5. Offer patch 0001 upstream; comment on PRs #184 and #257 with what we
@@ -2556,4 +2641,19 @@ Before it can run on a real cluster:
     until the builder answers; `EnabledControl` and `EnabledBaseline` (a
     control or baseline on an OU, which a delete only disables) are served
     without it, unproven on the fake (no emulator has Control Tower).
+16. **A reference from `VPNConnection` to ACK's `TransitGateway`** (F05,
+    section 6.32). The connection's other end is our `VPNGateway` or a
+    transit gateway, which ACK's ec2-controller manages. A
+    `transitGatewayRef` needs ACK's `TransitGateway` type, as `AccessKey`
+    and the Organizations kinds reference ACK's kinds: ACK's ec2-controller
+    as a Go module here (today only its `pkg/tags` is copied), a new
+    upstream dependency. Options:
+    - add `github.com/aws-controllers-k8s/ec2-controller` `v1.23.1` (the
+      version already pinned), alias `TransitGateway` in
+      `services/ec2/apis/v1alpha1/ack_kinds.go`, and register its scheme;
+    - leave `transitGatewayID` a plain ID.
 
+    Recommended: the first, the same pattern as the IAM and
+    Organizations references. Built meanwhile: the plain ID.
+    `VPNGatewayRoutePropagation`'s `routeTableRef` (PR #50) waits on the
+    same answer.
