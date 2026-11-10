@@ -39,8 +39,19 @@ them in step, and a pin move takes all of them to one ACK release.
 
 | Patch | What | Upstream? |
 | --- | --- | --- |
-| `0001-api-group-suffix-flag.patch` | adds `--api-group-suffix` to `ack-generate apis` and `controller`, so kinds generate into `<service>.aws.hfl.dev`; the generator already supports a suffix internally (its Crossplane path uses one) but its ACK commands always pass the default | yes: useful to anyone generating ACK-style controllers outside `services.k8s.aws` |
-| `0002-sdk-v2-createvolume-output-shape.patch` | takes EC2's `CreateVolume` off the generator's "shame list" of operations whose output keeps the v1 SDK's shape name: in aws-sdk-go-v2 the output is `CreateVolumeOutput`, and with the list entry the generator writes `*ec2.Volume`, which v2 does not have, so a generated `Volume` does not compile | yes: the shame list is aws-sdk-go v1's, and the generator writes v2 code; every entry there is suspect for v2 (`CreateSnapshot`, `AttachVolume`, `DetachVolume` are the same case) |
+| `0001-api-group-suffix-flag.patch` | adds `--api-group-suffix` to `ack-generate apis` and `controller`, so kinds generate into `<service>.aws.hfl.dev`; the generator already supports a suffix internally (its Crossplane path uses one) but its ACK commands always pass the default | offered as aws-controllers-k8s/code-generator#762 (2026-11-10), which also passes the flag to `release` |
+| `0002-sdk-v2-createvolume-output-shape.patch` | takes EC2's `CreateVolume` off the generator's "shame list" of operations whose output keeps the v1 SDK's shape name: in aws-sdk-go-v2 the output is `CreateVolumeOutput`, and with the list entry the generator writes `*ec2.Volume`, which v2 does not have, so a generated `Volume` does not compile | offered as aws-controllers-k8s/code-generator#763 (2026-11-10), with an assertion in `TestEC2_Volume`; the other EC2 entries (`CreateSnapshot`, `AttachVolume`, `DetachVolume`) are probably the same case and were left alone |
+
+## Pull requests we opened upstream
+
+Our patches offered upstream, from the builder's fork (approved
+2026-11-10). When one merges and a release ships it, drop the patch and
+move the pin.
+
+| PR | Head | Patch | State (2026-11-10) |
+| --- | --- | --- | --- |
+| aws-controllers-k8s/code-generator#762 | `1dd3ca96` | `0001-api-group-suffix-flag.patch` | open |
+| aws-controllers-k8s/code-generator#763 | `8c009dd8` | `0002-sdk-v2-createvolume-output-shape.patch` | open |
 
 ## What is copied
 
