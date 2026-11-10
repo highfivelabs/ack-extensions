@@ -69,7 +69,22 @@ aws cloudformation deploy --stack-name ack-extensions-live-tests \
 
 then add the account ID to `hack/live/accounts.txt` in a pull request.
 
-**To confirm on the first deploy** (not checkable without an account):
+**Found on the first deploy (2026-11-10, run `ackx-11101802-5696`):** the
+trust works. The VM's ID token for `offload-runner@our-chassis-514316-r0`
+carries `iss` `https://accounts.google.com`, `aud`
+`ack-extensions-live-tests`, and `azp` = `sub` = `102306610785199453342`;
+`AssumeRoleWithWebIdentity` into `ack-extensions-live-tests` succeeded and
+STS named account `830550549114`. The provider lists both the audience
+and the unique ID, so this run cannot tell which claim IAM compares with
+the list; removing one of the two client IDs and running again would
+tell. The role's permissions had a gap: the template's sweeper and fixture
+statement (`LiveRunSweeperAndFixtures`) was dropped when generated, so the
+sweep before the run was refused `cloudformation:ListResources` and the
+run stopped before any test reached AWS (nothing was created). Fixed in
+`hack/cloudcontrol-gen/live.go`; the stack needs redeploying from the
+regenerated template.
+
+**What was to be confirmed on the first deploy:**
 
 - IAM also accepts `accounts.google.com` as a built-in federated principal
   without an OIDC provider resource; the template makes the provider, as
@@ -126,4 +141,4 @@ peering request between the two gateways stays `pendingAcceptance`. Each is a fi
 
 | Date | Run | Commit | Account | Tests | Fake | Live | Found |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| | | | | | | | none yet: no sandbox account |
+| 2026-11-10 | `ackx-11101802-5696` | `a448a3d` + the account | 830550549114 | TestDetector | PASS | not run | Trust passed. The sweep before the run was refused `cloudformation:ListResources` (the template dropped `LiveRunSweeperAndFixtures`); the run stopped there, nothing created |
