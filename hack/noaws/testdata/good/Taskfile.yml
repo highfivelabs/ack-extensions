@@ -1,0 +1,14 @@
+version: '3'
+env:
+  CLOUDCONTROL_E2E_TARGET: fake
+tasks:
+  check:
+    cmds:
+      - task: test
+  test:
+    cmds:
+      - go test ./...
+  test-live:
+    desc: never from check
+    cmds:
+      - hack/live/run.sh

@@ -21,7 +21,13 @@ Status, 2026-11-09: the repository has twenty-nine kinds:
 
 There is an operator that runs our managers beside ACK's controllers as
 the same AWS identity, and tests against a fake AWS (moto), in Go and on
-kind (section 8). There is no image registry, release or remote yet.
+kind (section 8). Beside them, a generic Cloud Control route
+(`docs/cloudcontrol.md`): kinds generated from CloudFormation registry
+schemas in `<service>.cloudcontrol.aws.hfl.dev` (three so far:
+`iam` `SAMLProvider`, `ec2` `TransitGatewayRouteTable`, `guardduty`
+`Detector`), served by one generic manager per environment that a
+`CloudControlContext` enables, as that environment's own AWS role through
+EKS Pod Identity. There is no image registry, release or remote yet.
 This document says how it is built, why, how it stays in step with ACK,
 how it is tested, which gaps come next, and what is left.
 
@@ -2022,6 +2028,11 @@ Before it can run on a real cluster:
     roles schedules invoke their targets with). Should ACK ship a
     Scheduler controller, the manager moves beside it on its own
     (`pkg/operator`, `ourServices`).
+13. Cloud Control (`docs/cloudcontrol.md` section 12): one real-AWS run per
+    kind (the sandbox account), types in foundation order, the overlay
+    (renames, references, removed fields), selective CRD installation, and
+    a non-EKS identity (documented in section 10, not built). The coverage
+    dashboard does not count the Cloud Control kinds as ours yet.
 
 ## 9. Open questions
 
@@ -2198,3 +2209,60 @@ Before it can run on a real cluster:
     `metadata.annotations`, and the repository has no webhook server, so
     the policy is CEL in the API server. The policy's list of retain-only
     kinds is where later undeletable kinds join.
+13. **Identity of the Cloud Control manager** (the spike in
+    `docs/cloudcontrol.md`, branch `agent/cloudcontrol-spike`). The generic
+    Cloud Control manager serves types ACK has no controller for, so the
+    operator has no ACK controller to run it beside and copy the identity
+    from (section 7; `Beside` answered the same question for one service in
+    question 8). The manager is built on ACK's runtime, so CARM, team CARM
+    and `IAMRoleSelector` work unchanged once it has a base identity.
+    Options (`docs/cloudcontrol.md` section 10 has the table):
+    - beside an ACK controller with its identity, as Scheduler is beside
+      EventBridge: but one process serves many services, and that role
+      would need every Cloud Control type's permissions;
+    - **its own manager per AWS service**, installed by the operator from a
+      small configuration (role ARN or Pod Identity, region, the kinds to
+      serve): ServiceAccount `ack-extensions-cloudcontrol-<service>`, one
+      image with `--reconcile-resources` for that service's kinds, only
+      those CRDs installed, in ACK's namespace so CARM's ConfigMaps are
+      shared, its role from the generated IAM policy merged per service;
+    - one manager and one role for every Cloud Control type;
+    - a static bundle outside the operator.
+
+    Recommended: the second, which keeps ACK's one controller and one role
+    per service (question 5) and least privilege per service. The builder
+    to decide, with the other Cloud Control decisions in
+    `docs/cloudcontrol.md` section 12 (go or not, the API group, the
+    default for write-only properties, a sandbox account for real-AWS runs).
+
+    **Answered** (builder, 2026-11-09), all five Cloud Control decisions,
+    recorded in the builder's words in `docs/cloudcontrol.md` ("The
+    builder's decisions"):
+    1. go, with limits: productionize the generic manager, roll types out
+       in foundation order, each proven on the fake and marked untested
+       on real AWS until it has a real run; ACK-generated kinds where
+       ACK's generator gives better behaviour; Upjet the fallback;
+    2. the API group `<service>.cloudcontrol.aws.hfl.dev`, matching a
+       separate Bundt Provider, `hfl.aws-cloudcontrol`;
+    3. identity: "I think it's closer to the one shared cloud control
+       manager, but not exactly. I think the scoping should be at the
+       environment level, so each environment gets an identity attached,
+       and not through Workload Identity but instead through Pod
+       Identity. Important distinction there, Pod Identity is newer. I
+       don't think a per-service manager is the correct thing. Loosely,
+       this follows the KCC model of a GSA and KSA workload identity
+       bound that is enabled within a namespace to run KCC, and really
+       that namespace has a scope that it works within." Built: a
+       `CloudControlContext` per namespace; the operator runs that
+       namespace's manager in its own namespace (as Config Connector does
+       in `cnrm-system`) as `ack-extensions-cloudcontrol-<namespace>`,
+       bound by an EKS Pod Identity association to the environment's
+       role, watching only that namespace, with Kubernetes rights only
+       there (`docs/cloudcontrol.md` section 10). The per-service
+       managers recommended above are not built;
+    4. Secret references only for write-only fields marked as secrets,
+       opt-in per field;
+    5. a sandbox AWS account is coming for one real run per type (the
+       builder creates it); the live-test switch and the account's
+       CloudFormation template are prepared, credentials by federation
+       from the offload VMs' Google service account, never stored keys.

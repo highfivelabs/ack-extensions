@@ -2,7 +2,9 @@
 
 This repository is **ack-extensions**: Kubernetes kinds and controllers for AWS
 that AWS Controllers for Kubernetes (ACK: code-generator, runtime, and the service controllers named in UPSTREAM.md) does not have yet, built from upstream's own code and run
-as an operator beside it. API groups are `<service>.aws.hfl.dev`. Licence Apache-2.0.
+as an operator beside it. API groups are `<service>.aws.hfl.dev`; kinds
+served through AWS Cloud Control are `<service>.cloudcontrol.aws.hfl.dev`
+(`docs/cloudcontrol.md`). Licence Apache-2.0.
 It is maintained by High Five Labs for Bundt, which deploys with it; Bundt
 itself lives in its own repository and is never changed from here.
 
@@ -31,6 +33,9 @@ itself lives in its own repository and is never changed from here.
 - **The fake cloud:** docs/plan.md §4 (moto in server mode).
 - **Identity:** the managers run as their own narrow service account by
   default; sharing the upstream operator's is an opt-in (see `docs/plan.md`).
+  The Cloud Control manager runs once per environment (a namespace with a
+  `CloudControlContext`), as that environment's own role through EKS Pod
+  Identity (`docs/cloudcontrol.md` section 10).
 
 ## Adding or changing a kind
 

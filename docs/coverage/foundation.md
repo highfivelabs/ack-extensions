@@ -12,8 +12,8 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 
 | Category | Services | Resources | ACK | Ours beyond | None | Attributes | ACK | Ours beyond | Uncovered |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 16 | 241 | 55 (22.8%) | 8 (3.3%) | 178 | 2,400 | 28.2% | 2.0% | 69.9% |
-| security-adjacent | 18 | 112 | 14 (12.5%) | 1 (0.9%) | 97 | 2,082 | 37.6% | 0.1% | 62.3% |
+| platform-foundation | 16 | 241 | 55 (22.8%) | 17 (7.1%) | 169 | 2,400 | 28.2% | 4.1% | 67.8% |
+| security-adjacent | 18 | 112 | 14 (12.5%) | 2 (1.8%) | 96 | 2,082 | 37.6% | 0.6% | 61.8% |
 | application | 33 | 262 | 106 (40.5%) | 9 (3.4%) | 147 | 4,766 | 48.2% | 4.2% | 47.6% |
 | other | 238 | 1260 | 91 (7.2%) | 0 (0.0%) | 1169 | 76,525 | 3.0% | 0.0% | 97.0% |
 
@@ -22,9 +22,9 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | # | Service | Resources | ACK | Ours beyond | None | Attributes ACK / ours / uncovered | ACK controller (latest release) |
 | ---: | --- | ---: | ---: | ---: | ---: | --- | --- |
 | 1 | `organizations` | 5 | 2 | 2 | 1 | 42.9% / 38.1% / 19.0% | `organizations-controller` v1.7.0 |
-| 2 | `sso` | 6 | 0 | 0 | 6 | 0.0% / 0.0% / 100.0% | none |
-| 3 | `iam` | 16 | 7 | 0 | 9 | 41.2% / 3.5% / 55.3% | `iam-controller` v1.11.3 |
-| 4 | `ec2` | 126 | 20 | 4 | 102 | 22.7% / 1.8% / 75.5% | `ec2-controller` v1.23.1 |
+| 2 | `sso` | 6 | 0 | 3 | 3 | 0.0% / 61.0% / 39.0% | none |
+| 3 | `iam` | 16 | 7 | 1 | 8 | 41.2% / 14.1% / 44.7% | `iam-controller` v1.11.3 |
+| 4 | `ec2` | 126 | 20 | 9 | 97 | 22.7% / 2.9% / 74.3% | `ec2-controller` v1.23.1 |
 | 5 | `controltower` | 3 | 0 | 0 | 3 | 0.0% / 0.0% / 100.0% | none |
 | 6 | `route53` | 11 | 3 | 0 | 8 | 47.9% / 0.0% / 52.1% | `route53-controller` v1.8.0 |
 | 7 | `route53resolver` | 12 | 5 | 0 | 7 | 35.1% / 0.0% / 64.9% | `route53resolver-controller` v1.11.0 |
@@ -43,7 +43,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | # | Service | Resources | ACK | Ours beyond | None | Attributes ACK / ours / uncovered | ACK controller (latest release) |
 | ---: | --- | ---: | ---: | ---: | ---: | --- | --- |
 | 1 | `config` | 11 | 0 | 0 | 11 | 0.0% / 0.0% / 100.0% | none |
-| 2 | `guardduty` | 11 | 0 | 0 | 11 | 0.0% / 0.0% / 100.0% | none |
+| 2 | `guardduty` | 11 | 0 | 1 | 10 | 0.0% / 12.4% / 87.6% | none |
 | 3 | `securityhub` | 17 | 0 | 0 | 17 | 0.0% / 0.0% / 100.0% | none |
 | 4 | `secretsmanager` | 4 | 1 | 0 | 3 | 17.8% / 0.0% / 82.2% | `secretsmanager-controller` v1.8.2 |
 | 5 | `wafv2` | 6 | 3 | 1 | 2 | 82.6% / 0.3% / 17.0% | `wafv2-controller` v1.8.1 |
@@ -68,9 +68,9 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 | # | Item | Category | Resources | Attributes ACK / ours / none | Size | moto |
 | --- | --- | --- | ---: | --- | --- | --- |
 | [F01](#f01) | AWS Organizations: SCPs and the other policy types, attachment, delegated administrators, organization features, account placement | platform-foundation | 4 | 5 / 8 / 4 | M (Policy), M (PolicyAttachment), S (DelegatedAdministrator), M (Organization), S (AccountPlacement); plus one for the new `services/organizations/` manager | Good: `CreateOrganization`, `CreateAccount`, `CreateOrganizationalUnit`, `CreatePolicy`/`U... |
-| [F02](#f02) | IAM Identity Center: permission sets and account assignments | platform-foundation | 4 | 0 / 0 / 28 | L (PermissionSet: six APIs behind one kind), M (Assignment: async), S (attribute config); plus one for the new `services/ssoadmin/` manager | Mostly good: `CreatePermissionSet`/`DescribePermissionSet`/`UpdatePermissionSet`, `AttachM... |
-| [F03](#f03) | IAM: SAML providers (and the access-key question) | platform-foundation | 6 | 9 / 0 / 27 | S (SAMLProvider), M (AccessKey if wanted) | Good: `CreateSAMLProvider`, `CreateAccessKey`, `CreateVirtualMFADevice` are implemented |
-| [F04](#f04) | EC2 networking: Transit Gateway route tables, associations, propagation, routes and peering | platform-foundation | 7 | 20 / 0 / 23 | M, M | Good: `CreateTransitGateway`, `CreateTransitGatewayVpcAttachment`, `CreateTransitGatewayRo... |
+| [F02](#f02) | IAM Identity Center: permission sets and account assignments | platform-foundation | 4 | 0 / 25 / 3 | L (PermissionSet: six APIs behind one kind), M (Assignment: async), S (attribute config); plus one for the new `services/ssoadmin/` manager | Mostly good: `CreatePermissionSet`/`DescribePermissionSet`/`UpdatePermissionSet`, `AttachM... |
+| [F03](#f03) | IAM: SAML providers (and the access-key question) | platform-foundation | 6 | 9 / 9 / 18 | S (SAMLProvider), M (AccessKey if wanted) | Good: `CreateSAMLProvider`, `CreateAccessKey`, `CreateVirtualMFADevice` are implemented |
+| [F04](#f04) | EC2 networking: Transit Gateway route tables, associations, propagation, routes and peering | platform-foundation | 7 | 20 / 17 / 6 | M, M | Good: `CreateTransitGateway`, `CreateTransitGatewayVpcAttachment`, `CreateTransitGatewayRo... |
 | [F05](#f05) | EC2 networking: site-to-site VPN connections and route propagation | platform-foundation | 5 | 0 / 12 / 47 | L (VPNConnection), S (propagation) | Partial: `CreateVpnConnection`, `CreateVpnGateway`, `AttachVpnGateway`, `CreateCustomerGat... |
 | [F06](#f06) | EC2 networking: smaller VPC kinds (network interfaces, block public access, placement groups, CIDR reservations) | platform-foundation | 6 | 0 / 0 / 42 | M (NetworkInterface), S each for the rest | Partial: `CreateNetworkInterface` is implemented |
 | [F07](#f07) | Control Tower: landing zone, enabled controls, enabled baselines | platform-foundation | 3 | 0 / 0 / 18 | L each, and no emulator | None: moto 5 |
@@ -81,7 +81,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 | [F12](#f12) | Identity Store: users, groups and group memberships of the Identity Center directory | platform-foundation | 3 | 0 / 0 / 45 | M (User), S, S | Good: `CreateUser`, `CreateGroup`, `CreateGroupMembership`, `DescribeUser`, `ListUsers`, `... |
 | [F13](#f13) | Network Manager (Cloud WAN) and Direct Connect (wait for ACK on the first) | platform-foundation | 6 | 0 / 0 / 48 | wait; M for the gateway | Network Manager: `CreateGlobalNetwork`, `CreateCoreNetwork`, `CreateSite` are implemented ... |
 | [F14](#f14) | Config: recorder, delivery channel, rules, aggregators, organization rules and conformance packs | security-adjacent | 11 | 0 / 0 / 118 | L (new service, eleven resources); S each after the first | Good for the first six: `PutConfigRule`, `PutConfigurationRecorder`, `PutDeliveryChannel`,... |
-| [F15](#f15) | GuardDuty: detector, filters, IP and threat intel sets, members | security-adjacent | 8 | 0 / 0 / 69 | L (new service) | Partial: `CreateDetector`, `UpdateDetector`, `CreateFilter`, `EnableOrganizationAdminAccou... |
+| [F15](#f15) | GuardDuty: detector, filters, IP and threat intel sets, members | security-adjacent | 8 | 0 / 11 / 58 | L (new service) | Partial: `CreateDetector`, `UpdateDetector`, `CreateFilter`, `EnableOrganizationAdminAccou... |
 | [F16](#f16) | Security Hub: hub, standards, organization configuration, aggregator, automation rules | security-adjacent | 9 | 0 / 0 / 141 | L (new service; `AutomationRule` has 105 attributes and `Insight` 238) | Partial: `EnableSecurityHub`, `EnableOrganizationAdminAccount`, `UpdateOrganizationConfigu... |
 | [F17](#f17) | Secrets Manager: resource policy and rotation (wait for ACK on rotation) | security-adjacent | 4 | 8 / 0 / 37 | S | Good: `CreateSecret`, `RotateSecret`, `PutResourcePolicy` are implemented (21 of 23 operat... |
 | [F18](#f18) | Access Analyzer, Macie, Inspector, Detective, Firewall Manager, Audit Manager, Security Lake | security-adjacent | 9 | 0 / 0 / 224 | L each for a new service | Macie, Inspector2: partial |
@@ -106,7 +106,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F02 IAM Identity Center: permission sets and account assignments
 
-- **Resources:** `sso/PermissionSet`, `sso/Assignment`, `sso/Instance`, `sso/InstanceAccessControlAttributeConfiguration`. Today ACK covers 0, ours 0, nothing covers 28 of 28 attributes.
+- **Resources:** `sso/PermissionSet`, `sso/Assignment`, `sso/Instance`, `sso/InstanceAccessControlAttributeConfiguration`. Today ACK covers 0, ours 25, nothing covers 3 of 28 attributes.
 - **Why first:** How people get into accounts: a platform team's access model is permission sets assigned to groups per account. ACK has no controller (the `ssoadmin-controller` repository is empty), no PR, only an open request since 2023. It is the other half of the builder's account story.
 - **Proposed kinds:** In `ssoadmin.aws.hfl.dev` (ACK's service id is `ssoadmin`, so the group will match when ACK ships one; CloudFormation calls the service `sso`):
   - (1) `PermissionSet`: `name`, `description`, `sessionDuration`, `relayState`, `tags`, `managedPolicies[]` (ARNs), `customerManagedPolicyReferences[]` (name and path), `inlinePolicy` (JSON), `permissionsBoundary`; `instanceARN` or the organization's only instance found with `ListInstances`. Generated base from `CreatePermissionSet`/`DescribePermissionSet`/`UpdatePermissionSet`/`DeletePermissionSet`, with hooks for the attachment APIs (`AttachManagedPolicyToPermissionSet`, `AttachCustomerManagedPolicyReferenceToPermissionSet`, `PutInlinePolicyToPermissionSet`, `PutPermissionsBoundaryToPermissionSet`) and `ProvisionPermissionSet` after a change that reaches assigned accounts.
@@ -123,7 +123,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F03 IAM: SAML providers (and the access-key question)
 
-- **Resources:** `iam/SAMLProvider`, `iam/AccessKey`, `iam/VirtualMFADevice`, `iam/ServerCertificate`, `iam/OIDCProvider`, `iam/ManagedPolicy`. Today ACK covers 9, ours 0, nothing covers 27 of 36 attributes.
+- **Resources:** `iam/SAMLProvider`, `iam/AccessKey`, `iam/VirtualMFADevice`, `iam/ServerCertificate`, `iam/OIDCProvider`, `iam/ManagedPolicy`. Today ACK covers 9, ours 9, nothing covers 18 of 36 attributes.
 - **Why first:** Federation into the account is what a platform team wires first after roles and policies: `OpenIDConnectProvider` is covered (EKS IRSA), `SAMLProvider` is not and ACK ignores it. The rest of IAM that a platform team uses (roles, policies, boundaries through `Role.permissionsBoundary`, instance profiles, service-linked roles, users, groups, OIDC) is covered by ACK; ours already adds `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias` and `AccountPasswordPolicy`.
 - **Proposed kinds:** `iam.aws.hfl.dev/SAMLProvider`, generated: `CreateSAMLProvider`, `GetSAMLProvider`, `UpdateSAMLProvider`, `DeleteSAMLProvider`; `name` (immutable), `samlMetadataDocument` (the XML, read from a Secret or inline), `assertionEncryptionMode`, `addPrivateKey`/`removePrivateKey`, `tags`. The ARN is the identifier.
   - `AccessKey`: recommend NOT building. The secret is returned once on create; a kind needs a Kubernetes Secret write-back and the key is a long-lived credential (community #1879 asks for it). If the builder wants it, hand-write it on the `LoginProfile` pattern (which already writes a password) and add the Secret write-back in the same change.
@@ -137,7 +137,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F04 EC2 networking: Transit Gateway route tables, associations, propagation, routes and peering
 
-- **Resources:** `ec2/TransitGatewayRouteTable`, `ec2/TransitGatewayRouteTableAssociation`, `ec2/TransitGatewayRouteTablePropagation`, `ec2/TransitGatewayRoute`, `ec2/TransitGatewayPeeringAttachment`, `ec2/TransitGateway`, `ec2/TransitGatewayVpcAttachment`. Today ACK covers 20, ours 0, nothing covers 23 of 43 attributes.
+- **Resources:** `ec2/TransitGatewayRouteTable`, `ec2/TransitGatewayRouteTableAssociation`, `ec2/TransitGatewayRouteTablePropagation`, `ec2/TransitGatewayRoute`, `ec2/TransitGatewayPeeringAttachment`, `ec2/TransitGateway`, `ec2/TransitGatewayVpcAttachment`. Today ACK covers 20, ours 17, nothing covers 6 of 43 attributes.
 - **Why first:** A Transit Gateway is how a platform team joins VPCs and accounts. ACK has `TransitGateway` and the VPC attachment only; without route tables a gateway routes everything through its default table. Its generator also ignores `ModifyTransitGateway`, so a gateway's options cannot change after create.
 - **Proposed kinds:** In `ec2.aws.hfl.dev`: `TransitGatewayRouteTable`, generated from `CreateTransitGatewayRouteTable`/`DescribeTransitGatewayRouteTables`/`DeleteTransitGatewayRouteTable`, with `associations[]` (attachment refs, `AssociateTransitGatewayRouteTable`), `propagations[]` (`EnableTransitGatewayRouteTablePropagation`) and `routes[]` (`CreateTransitGatewayRoute`, static or blackhole) as fields, the way ACK's `RouteTable` carries routes (see its route handling in ec2-controller `pkg/resource/route_table/hooks.go`). `TransitGatewayPeeringAttachment`, generated, with the peer account's accept step as a field.
   - Then ask ACK for `ModifyTransitGateway`: four `TransitGateway` attributes are uncovered (`AssociationDefaultRouteTableId` and `PropagationDefaultRouteTableId`, which only make sense once route tables are kinds, `EncryptionSupport` and `SecurityGroupReferencingSupport`).
@@ -270,7 +270,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F15 GuardDuty: detector, filters, IP and threat intel sets, members
 
-- **Resources:** `guardduty/Detector`, `guardduty/Filter`, `guardduty/IPSet`, `guardduty/ThreatIntelSet`, `guardduty/Member`, `guardduty/PublishingDestination`, `guardduty/MalwareProtectionPlan`, `guardduty/Master`. Today ACK covers 0, ours 0, nothing covers 69 of 69 attributes.
+- **Resources:** `guardduty/Detector`, `guardduty/Filter`, `guardduty/IPSet`, `guardduty/ThreatIntelSet`, `guardduty/Member`, `guardduty/PublishingDestination`, `guardduty/MalwareProtectionPlan`, `guardduty/Master`. Today ACK covers 0, ours 11, nothing covers 58 of 69 attributes.
 - **Why first:** Threat detection every security team enables in every account. Community #2916 (open since 2026-06-14) asks for a controller; no PR.
 - **Proposed kinds:** A new service `guardduty.aws.hfl.dev`: `Detector` (generated; features as a field), `Filter`, `IPSet`, `ThreatIntelSet`, `Member`, `PublishingDestination`, `MalwareProtectionPlan`.
 - **Upstream:** No controller or PR. Community #2916.
@@ -349,11 +349,11 @@ One section per service in queue order; inside a service, resources that still n
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
 | `Instance` | none | - | whole resource (3 attrs) | no released controller | 0 | service-level only: moto `sso-admin`: 25 of 79 operations: `CreatePermissionSet`/`DescribePermissionSet`/`Upda... | S | not a kind: an organization has one instance, found with `ListInstances`; `instanceARN` is a field of the other kinds | [F02](#f02) |
-| `InstanceAccessControlAttributeConfiguration` | none | - | whole resource (5 attrs) | no released controller | 0 | no: `CreateInstanceAccessControlAttributeConfiguration` is not in moto | S | `ssoadmin.aws.hfl.dev/InstanceAccessControlAttributeConfiguration`, hand-written singleton; low priority | [F02](#f02) |
-| `Assignment` | none | - | whole resource (6 attrs) | no released controller | 0 | yes: `CreateAccountAssignment`, `DeleteAccountAssignment`, `ListAccountAssignments`, `DescribeAccountAssignmentCreationStatus` | M | `ssoadmin.aws.hfl.dev/Assignment`, hand-written (asynchronous create and delete), F02 | [F02](#f02) |
-| `PermissionSet` | none | - | whole resource (14 attrs) | no released controller | 0 | yes except `PutPermissionsBoundaryToPermissionSet` | L | `ssoadmin.aws.hfl.dev/PermissionSet`, generated base plus hooks for the policy-attachment calls, F02 | [F02](#f02) |
 | `ApplicationAssignment` | none | - | whole resource (3 attrs) | no released controller | 0 | no: not in moto | S | `ssoadmin.aws.hfl.dev/ApplicationAssignment`; low priority |  |
 | `Application` | none | - | whole resource (10 attrs) | no released controller | 0 | no: `CreateApplication` is not in moto | M | `ssoadmin.aws.hfl.dev/Application`; low priority (customer applications) |  |
+| `InstanceAccessControlAttributeConfiguration` | none | `InstanceAccessControlAttributeConfiguration (Cloud Control)`: +5 | none | no released controller | 0 | no: `CreateInstanceAccessControlAttributeConfiguration` is not in moto | - | `ssoadmin.aws.hfl.dev/InstanceAccessControlAttributeConfiguration`, hand-written singleton; low priority | [F02](#f02) |
+| `Assignment` | none | `Assignment (Cloud Control)`: +6 | none | no released controller | 0 | yes: `CreateAccountAssignment`, `DeleteAccountAssignment`, `ListAccountAssignments`, `DescribeAccountAssignmentCreationStatus` | - | `ssoadmin.aws.hfl.dev/Assignment`, hand-written (asynchronous create and delete), F02 | [F02](#f02) |
+| `PermissionSet` | none | `PermissionSet (Cloud Control)`: +14 | none | no released controller | 0 | yes except `PutPermissionsBoundaryToPermissionSet` | - | `ssoadmin.aws.hfl.dev/PermissionSet`, generated base plus hooks for the policy-attachment calls, F02 | [F02](#f02) |
 ### platform-foundation: `iam`
 
 - **ACK controller:** `iam-controller` v1.11.3: `Group`, `InstanceProfile`, `OpenIDConnectProvider`, `Policy`, `Role`, `ServiceLinkedRole`, `User`
@@ -365,7 +365,6 @@ One section per service in queue order; inside a service, resources that still n
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
 | `ManagedPolicy` | `Policy` v1.11.3: 4/7 | - | 3 of 7 attrs: `Groups[]`, `Roles[]`, `Users[]` | kind released; the rest is not in it | 2 | service-level only: moto `iam`: 119 of 180 operations, including `CreateSAMLProvider`, `CreateOpenIDConnectPro... | S | the missing fields: upstream PR or our copy (plan section 9, question 1) | [F03](#f03) |
 | `AccessKey` | none | - | whole resource (3 attrs) | ignored in ACK's generator.yaml | 1 | yes: `CreateAccessKey` is implemented | M | `iam.aws.hfl.dev/AccessKey`, hand-written; the secret is returned once, so it needs a Kubernetes Secret write-back (F03 recommends not building it) | [F03](#f03) |
-| `SAMLProvider` | none | - | whole resource (9 attrs) | ignored in ACK's generator.yaml | 0 | yes: `CreateSAMLProvider` is implemented | S | `iam.aws.hfl.dev/SAMLProvider`, generated (`CreateSAMLProvider`/`GetSAMLProvider`/`UpdateSAMLProvider`/`DeleteSAMLProvider`), F03 | [F03](#f03) |
 | `ServerCertificate` | none | - | whole resource (7 attrs) | controller exists; resource not in it | 0 | service-level only: moto `iam`: 119 of 180 operations, including `CreateSAMLProvider`, `CreateOpenIDConnectPro... | S | `iam.aws.hfl.dev/ServerCertificate`, generated; legacy (ACM replaced it) | [F03](#f03) |
 | `VirtualMFADevice` | none | - | whole resource (5 attrs) | ignored in ACK's generator.yaml | 0 | yes: `CreateVirtualMFADevice` is implemented | S | `iam.aws.hfl.dev/VirtualMFADevice`, generated; low priority (a person's device) | [F03](#f03) |
 | `Role` | `Role` v1.11.3: 10/11 | `RolePolicyAttachment`: +0 | 1 of 11 attrs: `Policies[].PolicyName` | kind released; the rest is not in it | 18 | service-level only: moto `iam`: 119 of 180 operations, including `CreateSAMLProvider`, `CreateOpenIDConnectPro... | S | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
@@ -378,6 +377,7 @@ One section per service in queue order; inside a service, resources that still n
 | `UserPolicy` | none | - | 3 attrs, covered inline: ACK `User.spec.inlinePolicies` | controller exists; resource not in it | 1 | service-level only: moto `iam`: 119 of 180 operations, including `CreateSAMLProvider`, `CreateOpenIDConnectPro... | - | none (inline) |  |
 | `UserToGroupAddition` | none | - | 2 attrs, covered inline: ours `UserGroupMembership` (user in groups); ACK PR #167 is group-side | controller exists; resource not in it | 1 | service-level only: moto `iam`: 119 of 180 operations, including `CreateSAMLProvider`, `CreateOpenIDConnectPro... | - | none (ours) |  |
 | `GroupPolicy` | none | - | 3 attrs, covered inline: ACK `Group.spec.inlinePolicies` | controller exists; resource not in it | 0 | service-level only: moto `iam`: 119 of 180 operations, including `CreateSAMLProvider`, `CreateOpenIDConnectPro... | - | none (inline) |  |
+| `SAMLProvider` | none | `SAMLProvider (Cloud Control)`: +9 | none | ignored in ACK's generator.yaml | 0 | yes: `CreateSAMLProvider` is implemented | - | `iam.aws.hfl.dev/SAMLProvider`, generated (`CreateSAMLProvider`/`GetSAMLProvider`/`UpdateSAMLProvider`/`DeleteSAMLProvider`), F03 | [F03](#f03) |
 | `ServiceLinkedRole` | `ServiceLinkedRole` v1.11.3: 3/3 | - | none | released | 0 | service-level only: moto `iam`: 119 of 180 operations, including `CreateSAMLProvider`, `CreateOpenIDConnectPro... | - | none (covered) |  |
 ### platform-foundation: `ec2`
 
@@ -390,8 +390,6 @@ One section per service in queue order; inside a service, resources that still n
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
 | `TransitGateway` | `TransitGateway` v1.23.1: 11/15 | - | 4 of 15 attrs: `AssociationDefaultRouteTableId`, `EncryptionSupport`, `PropagationDefaultRouteTableId`, `SecurityGroupReferencingSupport` | kind released; the rest is not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | S | the missing fields: upstream PR or our copy (plan section 9, question 1) | [F04](#f04) |
 | `TransitGatewayVpcAttachment` | `TransitGatewayVPCAttachment` v1.23.1: 9/11 | - | 2 of 11 attrs: `AddSubnetIds[]`, `RemoveSubnetIds[]` | kind released; the rest is not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | S | the missing fields: upstream PR or our copy (plan section 9, question 1) | [F04](#f04) |
-| `TransitGatewayRouteTable` | none | - | whole resource (3 attrs) | ignored in ACK's generator.yaml | 1 | yes: `CreateTransitGatewayRouteTable`, `AssociateTransitGatewayRouteTable`, `EnableTransitGatewayRouteTablePropagation`, `CreateTransitGatewayRoute` | M | `ec2.aws.hfl.dev/TransitGatewayRouteTable`, generated, with `associations[]`, `propagations[]` and `routes[]` as fields (the pattern of ACK's `RouteTable`), F04 | [F04](#f04) |
-| `TransitGatewayPeeringAttachment` | none | - | whole resource (6 attrs) | ignored in ACK's generator.yaml | 0 | yes: `CreateTransitGatewayPeeringAttachment` is implemented | M | `ec2.aws.hfl.dev/TransitGatewayPeeringAttachment`, generated (create, accept in the peer account, delete), F04 | [F04](#f04) |
 | `VPNGatewayRoutePropagation` | none | - | whole resource (2 attrs) | controller exists; resource not in it | 2 | no: `EnableVgwRoutePropagation` is not in moto | S | a field of `RouteTable` upstream (`propagatingVGWs`) or a sidecar kind; F05 | [F05](#f05) |
 | `VPNConnection` | none | - | whole resource (43 attrs) | ignored in ACK's generator.yaml | 1 | partly: `CreateVpnConnection` yes, `CreateVpnConnectionRoute` no | L | `ec2.aws.hfl.dev/VPNConnection`, generated (`CreateVpnConnection` with tunnel options), static routes as a field, F05 | [F05](#f05) |
 | `SecurityGroupVpcAssociation` | none | - | whole resource (2 attrs) | controller exists; resource not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/SecurityGroupVpcAssociation`, generated | [F06](#f06) |
@@ -435,16 +433,18 @@ One section per service in queue order; inside a service, resources that still n
 | `NetworkAclEntry` | none | - | 11 attrs, covered inline: ACK `NetworkACL.spec.entries[]` | ignored in ACK's generator.yaml | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline) |  |
 | `RouteTable` | `RouteTable` v1.23.1: 3/3 | - | none | released | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | none (covered) |  |
 | `SubnetRouteTableAssociation` | none | - | 2 attrs, covered inline: ACK `Subnet.spec.routeTables[]` and `routeTableRefs` | controller exists; resource not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline) |  |
-| `TransitGatewayRoute` | none | - | 4 attrs, covered inline: to be a field of `TransitGatewayRouteTable.spec.routes[]` (F04) | ignored in ACK's generator.yaml | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | a field of the `TransitGatewayRouteTable` kind | [F04](#f04) |
-| `TransitGatewayRouteTableAssociation` | none | - | 2 attrs, covered inline: to be a field of `TransitGatewayRouteTable.spec.associations[]` (F04) | controller exists; resource not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | a field of the `TransitGatewayRouteTable` kind | [F04](#f04) |
-| `TransitGatewayRouteTablePropagation` | none | - | 2 attrs, covered inline: to be a field of `TransitGatewayRouteTable.spec.propagations[]` (F04) | controller exists; resource not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | a field of the `TransitGatewayRouteTable` kind | [F04](#f04) |
+| `TransitGatewayRoute` | none | `TransitGatewayRoute (Cloud Control)`: +4 | none | ignored in ACK's generator.yaml | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | a field of the `TransitGatewayRouteTable` kind | [F04](#f04) |
+| `TransitGatewayRouteTableAssociation` | none | `TransitGatewayRouteTableAssociation (Cloud Control)`: +2 | none | controller exists; resource not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | a field of the `TransitGatewayRouteTable` kind | [F04](#f04) |
+| `TransitGatewayRouteTablePropagation` | none | `TransitGatewayRouteTablePropagation (Cloud Control)`: +2 | none | controller exists; resource not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | a field of the `TransitGatewayRouteTable` kind | [F04](#f04) |
 | `VPCCidrBlock` | none | - | 10 attrs, covered inline: ACK `VPC.spec.cidrBlocks[]` | ignored in ACK's generator.yaml | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline) |  |
 | `VPCDHCPOptionsAssociation` | none | - | 2 attrs, covered inline: ACK `DHCPOptions.spec.vpc[]` | controller exists; resource not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline) |  |
 | `VPNConnectionRoute` | none | - | 2 attrs, covered inline: to be a field of `VPNConnection.spec.staticRoutes[]` (F05) | ignored in ACK's generator.yaml | 1 | no: `CreateVpnConnectionRoute` is not in moto | - | a field of the `VPNConnection` kind | [F05](#f05) |
 | `VPNGateway` | none | `VPNGateway`: +4 | none | ignored in ACK's generator.yaml | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | none (covered) | [F05](#f05) |
+| `TransitGatewayRouteTable` | none | `TransitGatewayRouteTable (Cloud Control)`: +3 | none | ignored in ACK's generator.yaml | 1 | yes: `CreateTransitGatewayRouteTable`, `AssociateTransitGatewayRouteTable`, `EnableTransitGatewayRouteTablePropagation`, `CreateTransitGatewayRoute` | - | `ec2.aws.hfl.dev/TransitGatewayRouteTable`, generated, with `associations[]`, `propagations[]` and `routes[]` as fields (the pattern of ACK's `RouteTable`), F04 | [F04](#f04) |
 | `PrefixList` | `ManagedPrefixList` v1.23.1: 7/7 | - | none | released | 0 | service-level only: moto `ec2`: 232 of 809 operations | - | none (covered) |  |
 | `SubnetNetworkAclAssociation` | none | - | 2 attrs, covered inline: ACK `NetworkACL.spec.associations[]` | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline) |  |
 | `VPCEndpointServicePermissions` | none | - | 2 attrs, covered inline: ACK `VPCEndpointServiceConfiguration.spec.allowedPrincipals` | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline) |  |
+| `TransitGatewayPeeringAttachment` | none | `TransitGatewayPeeringAttachment (Cloud Control)`: +6 | none | ignored in ACK's generator.yaml | 0 | yes: `CreateTransitGatewayPeeringAttachment` is implemented | - | `ec2.aws.hfl.dev/TransitGatewayPeeringAttachment`, generated (create, accept in the peer account, delete), F04 | [F04](#f04) |
 ### platform-foundation: `controltower`
 
 - **ACK controller:** none: no ACK repository for Control Tower
@@ -742,7 +742,6 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `Detector` | none | - | whole resource (11 attrs) | no released controller | 0 | yes: `CreateDetector`, `UpdateDetector` | S | `guardduty.aws.hfl.dev/Detector`, in a new service manager | [F15](#f15) |
 | `IPSet` | none | - | whole resource (8 attrs) | no released controller | 0 | no: `CreateIPSet` is not in moto | S | `guardduty.aws.hfl.dev/IPSet`, in a new service manager | [F15](#f15) |
 | `MalwareProtectionPlan` | none | - | whole resource (6 attrs) | no released controller | 0 | no: `CreateMalwareProtectionPlan` is not in moto | S | `guardduty.aws.hfl.dev/MalwareProtectionPlan`, in a new service manager | [F15](#f15) |
 | `Master` | none | - | whole resource (3 attrs) | no released controller | 0 | service-level only: moto `guardduty`: 12 of 102 operations: `CreateDetector`, `UpdateDetector`, `CreateFilter`... | S | `guardduty.aws.hfl.dev/Master`, in a new service manager | [F15](#f15) |
@@ -753,6 +752,7 @@ One section per service in queue order; inside a service, resources that still n
 | `CustomDetectionRuleAssociation` | none | - | whole resource (4 attrs) | no released controller | 0 | service-level only: moto `guardduty`: 12 of 102 operations: `CreateDetector`, `UpdateDetector`, `CreateFilter`... | S | `guardduty.aws.hfl.dev/CustomDetectionRuleAssociation`, in a new service manager |  |
 | `ThreatEntitySet` | none | - | whole resource (8 attrs) | no released controller | 0 | service-level only: moto `guardduty`: 12 of 102 operations: `CreateDetector`, `UpdateDetector`, `CreateFilter`... | S | `guardduty.aws.hfl.dev/ThreatEntitySet`, in a new service manager |  |
 | `TrustedEntitySet` | none | - | whole resource (8 attrs) | no released controller | 0 | service-level only: moto `guardduty`: 12 of 102 operations: `CreateDetector`, `UpdateDetector`, `CreateFilter`... | S | `guardduty.aws.hfl.dev/TrustedEntitySet`, in a new service manager |  |
+| `Detector` | none | `Detector (Cloud Control)`: +11 | none | no released controller | 0 | yes: `CreateDetector`, `UpdateDetector` | - | none (covered) | [F15](#f15) |
 ### security-adjacent: `securityhub`
 
 - **ACK controller:** none

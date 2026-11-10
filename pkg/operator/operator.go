@@ -41,6 +41,8 @@ import (
 	rbacv1 "k8s.io/api/rbac/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	k8slabels "k8s.io/apimachinery/pkg/labels"
+	"k8s.io/apimachinery/pkg/selection"
 	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -79,6 +81,9 @@ type Options struct {
 	Images map[string]string
 	// Identity is the default identity, IdentityOwn or IdentityACK.
 	Identity string
+	// FakeAWS, for tests and kind only, points every manager at a fake AWS
+	// whatever the ACK controller it copies says (FakeAWS).
+	FakeAWS *FakeAWS
 }
 
 // Reconciler makes the desired managers exist and nothing else of ours.
@@ -309,6 +314,9 @@ func (r *Reconciler) Plan(src *appsv1.Deployment, service string, ackSA *corev1.
 		LivenessProbe:   c.LivenessProbe,
 		ReadinessProbe:  c.ReadinessProbe,
 	}
+	if err := r.Options.FakeAWS.Fake(&mc); err != nil {
+		return nil, fmt.Errorf("%s/%s: %w", ns, name, err)
+	}
 	podLabels := map[string]string{"app.kubernetes.io/name": name, LabelService: service}
 	one := int32(1)
 	objs = append(objs, &appsv1.Deployment{
@@ -415,8 +423,14 @@ func (r *Reconciler) Reconcile(ctx context.Context, _ reconcile.Request) (reconc
 
 // apply makes the live object match o in the fields the operator owns.
 func (r *Reconciler) apply(ctx context.Context, o client.Object) error {
+	return applyObject(ctx, r.Client, o)
+}
+
+// applyObject makes the live object match o in the fields the operator
+// owns.
+func applyObject(ctx context.Context, c client.Client, o client.Object) error {
 	live := o.DeepCopyObject().(client.Object)
-	_, err := controllerutil.CreateOrUpdate(ctx, r.Client, live, func() error {
+	_, err := controllerutil.CreateOrUpdate(ctx, c, live, func() error {
 		live.SetLabels(o.GetLabels())
 		live.SetOwnerReferences(o.GetOwnerReferences())
 		switch want := o.(type) {
@@ -450,8 +464,14 @@ func (r *Reconciler) apply(ctx context.Context, o client.Object) error {
 }
 
 // prune deletes what the operator made that no ACK controller needs now.
+// What the Cloud Control side made (LabelComponent) is its own: owned by
+// its context, it goes with it.
 func (r *Reconciler) prune(ctx context.Context, keep map[string]bool) error {
-	sel := client.MatchingLabels{LabelManagedBy: managedBy}
+	notCC, err := k8slabels.NewRequirement(LabelComponent, selection.DoesNotExist, nil)
+	if err != nil {
+		return err
+	}
+	sel := client.MatchingLabelsSelector{Selector: k8slabels.SelectorFromSet(k8slabels.Set{LabelManagedBy: managedBy}).Add(*notCC)}
 	lists := []struct {
 		kind string
 		list client.ObjectList

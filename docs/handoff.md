@@ -34,6 +34,112 @@ not repeat them.
   `AccountPlacement` leaves the account where it is (plan 6.29).
 - **moto probing** is cheap on the laptop: `.cache/moto-venv/bin/moto_server -p <port>` and a boto3 script with `.cache/moto-venv/bin/python` (kill the server after). Probe before writing a test.
 
+## Cloud Control types (`docs/cloudcontrol.md`)
+
+The second route, for types ACK has no controller for and whose
+CloudFormation model is what a platform team would write. The builder
+(2026-11-09): go, with limits; foundation order; each type proven on the
+fake and marked untested on real AWS until a real run. Adding a type:
+
+1. Check it is not better as an ACK-generated kind here (references, an
+   exclusive/non-exclusive choice, an attachment) and that
+   `cloudcontrol/readiness.md` says its CRD is accepted.
+2. Add `typeName` to `cloudcontrol/types.yaml`; opt in `secrets` only for
+   write-only strings that are secrets (the generation report lists the
+   candidates); `task cloudcontrol:generate`. No Go per type.
+3. A moto backend in `cloudcontrol/test/fake/moto.go` and an end-to-end
+   test in `cloudcontrol/test/e2e` when moto has the service; otherwise
+   mark it "unproven on fake" (PR 2 adds the column to the coverage data).
+4. `tests/operator/run.sh` checks the CRD list; add the new CRD there.
+5. Never weaken the guard against real AWS (`pkg/fakeaws`, checked by
+   `task noaws`; `docs/cloudcontrol.md` section 6).
+
+The identity is per environment: a `CloudControlContext` per namespace,
+the manager in the operator's namespace as
+`ack-extensions-cloudcontrol-<namespace>`, EKS Pod Identity to the
+environment's role (`pkg/operator/cloudcontrol.go`). Per-service Cloud
+Control managers were the spike's proposal and are not to be built.
+
+**Left of the builder's Cloud Control brief (2026-11-09), for the next
+agent.** PR 1 (`agent/cloudcontrol`) is the core. Still to do:
+
+- **PR 2, types in foundation order.** Done in `agent/cloudcontrol-types`:
+  coverage counts Cloud Control kinds (labelled "(Cloud Control)", with an
+  `unproven on fake` note from `unproven:` in `types.yaml`, which the
+  generator writes into the CRD), and batch 1, F02 (`PermissionSet`,
+  `Assignment` on moto's sso-admin; the access control attribute
+  configuration unproven). After `task cloudcontrol:generate`, run
+  `task coverage` and the survey (`go run ./hack/cloudcontrol-gen
+  --survey`) twice: each reads the other's output. **Next batches**, in
+  foundation order, recheck ACK first: F04's Transit Gateway route,
+  association, propagation and peering (batch 2, done:
+  `TestTransitGatewayRouting`), F07 Control Tower (no emulator:
+  unproven), F08/F09 Route 53 and its Resolver firewall, F14 to F18.
+  **F03 `VirtualMFADevice` is not for this route** (the builder,
+  2026-11-09, closing PR #44): Cloud Control never returns the seed or QR
+  code, so a device made through it cannot be enrolled. It is to be built
+  as a kind that writes the seed to a Kubernetes Secret (never logged),
+  like `AccessKey` (PR #40); PR #44's moto notes still hold (moto takes any
+  two six-digit codes in `EnableMFADevice`; it has no MFA device tags).
+  **Left for the ACK kinds agent, not this route:** two foundation gaps
+  Cloud Control cannot serve (non-provisionable) and ACK's generator here
+  can (`docs/cloudcontrol.md` section 8, the table of the 25):
+  `ec2.aws.hfl.dev/NetworkInterfacePermission` (a plain
+  create/describe/delete; moto has none of it, so unproven on fake) and
+  `VPNGatewayRoutePropagation` (an attach pair,
+  `EnableVgwRoutePropagation`/`DisableVgwRoutePropagation` read from
+  `DescribeRouteTables`, the `PolicyAttachment` pattern).
+  **F05 `VPNConnection` is not for this route** (step 1 above):
+  `docs/coverage/foundation.md` F05 proposes it ACK-generated in
+  `services/ec2/`, with references to our `CustomerGateway` and
+  `VPNGateway` (or ACK's `TransitGateway`) and the tunnels' pre-shared keys
+  from Secrets, which the generator gives and this route does not yet (no
+  references before the overlay). `VPNConnectionRoute` could come here,
+  but moto has no `CreateVpnConnectionRoute` (unproven on fake), so it is
+  better made beside the connection. Both for the ACK kinds agent.
+  The original brief for it:
+- **PR 2, types in foundation order**, in reviewable batches
+  (`docs/coverage/foundation.md`; `cloudcontrol/readiness.md` lists the
+  gap types and which make a clean CRD). Each with a moto backend and an
+  e2e test where moto has the service, else "unproven on fake" in the
+  coverage data. Coverage reads our CRDs from `config/crds/bases/` only
+  (`hack/coverage/model.go`, the glob near line 132): add
+  `cloudcontrol/config/crds/*_*.yaml`, a column or flag for the route and
+  for "unproven on fake", then `task coverage`. Kind names can repeat
+  across services; the manager handles it (group-qualified
+  `--cloudcontrol-kinds`, controller-name validation off), but check the
+  coverage matcher does too.
+- **PR 3, the live-test switch.** Built in `agent/cloudcontrol-live`
+  (`docs/live-runs.md`): `task test-live`, the sweeper, the ledger, the
+  sandbox account's template (generated into `cloudcontrol/config/live/`).
+  Next, once the builder has deployed the template and added the account
+  to `hack/live/accounts.txt`: one live run per type, fixing the fixtures
+  `docs/live-runs.md` lists, and a ledger row each. The original brief:
+- **PR 3, the live-test switch**, after the GCP repository's
+  (`config-connector-extensions`: `docs/live-runs.md`, `hack/live/run.sh`,
+  `sweep.sh`, `projects.sh`, `task test-live`, `live-sweep`, `live-list`):
+  a target variable for `cloudcontrol/test/e2e` (fake or real; `task check`
+  forces fake), the real mode refusing to start without an explicit opt-in
+  and an account ID on an allowlist (checked with STS `GetCallerIdentity`),
+  run-ID names and a tag on everything made, assertions on the fake's
+  call log skipped in real mode, the service SDK checks pointed at real
+  AWS. A sweeper can be generic: Cloud Control `ListResources` for each
+  served type, delete what carries the run tag (allowlist checked first).
+  Credentials by federation only: on an offload VM (`offload run --sa`),
+  fetch a Google ID token from the metadata server for an audience, write
+  it to a file, and let the SDK do `AssumeRoleWithWebIdentity`
+  (`AWS_WEB_IDENTITY_TOKEN_FILE`, `AWS_ROLE_ARN`), refreshing the file
+  before the hour. The CloudFormation template for the sandbox account
+  (for the builder to deploy; nothing deployed by an agent): the web
+  identity trust for `accounts.google.com` (check whether IAM needs an
+  OIDC provider resource for Google or takes `accounts.google.com`
+  natively, and which claim each condition key maps to:
+  `accounts.google.com:sub`, `:aud` (azp), `:oaud`), a test role trusting
+  only the offload VM service account's unique ID, its permissions from
+  `task cloudcontrol:iam` plus `cloudformation:ListResources`, and a
+  budget alarm. Never runnable by `task check`; the fake's three guards
+  stay as they are.
+
 ## The loop for one kind
 
 1. **Recheck upstream, read-only.** The ACK controller's latest release, its
@@ -163,6 +269,10 @@ git makes has no sign-off: amend it.
 
 - Never edit `third_party/`; changes to upstream code go in
   `patches/code-generator/`. `task upstream` resets it to the pin and patches.
+- Every test path reaches AWS only through `pkg/fakeaws`: SDK clients from
+  `fakeaws.Config`, processes from `fakeaws.Command`, Python on kind through
+  `fake_py`. `task noaws` (in `task check`) fails otherwise; never add an
+  exemption to it.
 - Never use real cloud credentials, projects or accounts: moto only. Never
   catch an error and report success. Never claim a check passed that did not run.
 - Never open, comment on or review upstream PRs or issues; reading them is

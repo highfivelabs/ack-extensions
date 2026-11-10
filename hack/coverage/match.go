@@ -70,6 +70,18 @@ type cov struct {
 	// Unmapped lists CRD spec paths that matched no CloudFormation attribute.
 	Unmapped []string
 	PR       string
+	// CloudControl: ours, served through AWS Cloud Control
+	// (docs/cloudcontrol.md); Unproven says why it has no test on the fake.
+	CloudControl bool
+	Unproven     string
+}
+
+// Label is the kind as the outputs name it: a Cloud Control kind is marked.
+func (cv *cov) Label() string {
+	if cv.CloudControl {
+		return cv.Kind + " (Cloud Control)"
+	}
+	return cv.Kind
 }
 
 // matcher holds one resource's CloudFormation attributes and one CRD's.
