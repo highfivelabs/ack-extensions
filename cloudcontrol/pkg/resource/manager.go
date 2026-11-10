@@ -380,10 +380,17 @@ func (m *manager) Update(ctx context.Context, desiredRes, latestRes acktypes.AWS
 
 // Delete asks Cloud Control to delete the resource. In progress, the
 // request token goes to status and ReadOne finishes it on the next pass.
+// A type marked neverDelete (cloudcontrol/types.yaml) is never deleted:
+// the object goes and the resource stays, as with ACK's
+// deletion-policy: retain, whatever the object's annotations say.
 func (m *manager) Delete(ctx context.Context, res acktypes.AWSResource) (acktypes.AWSResource, error) {
 	r := res.(*resource)
 	id := r.identifier()
 	if id == "" {
+		return nil, nil
+	}
+	if m.t.NeverDelete {
+		m.log.Info("kept in AWS: the type is never deleted", "type", m.t.TypeName, "identifier", id)
 		return nil, nil
 	}
 	out := r.DeepCopy().(*resource)

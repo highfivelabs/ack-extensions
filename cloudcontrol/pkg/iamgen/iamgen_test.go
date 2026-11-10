@@ -108,3 +108,39 @@ func TestTrustPolicy(t *testing.T) {
 		}
 	}
 }
+
+// A type that is never deleted gets no delete permissions: neither Cloud
+// Control's DeleteResource nor its delete handler's actions. An
+// environment keeps DeleteResource while one of its types may be deleted.
+func TestNeverDeletePolicy(t *testing.T) {
+	s := registry.ByTypeName("AWS::IAM::SAMLProvider").Schema()
+	never := iamgen.ForTypeWith(s, iamgen.Options{NeverDelete: true})
+	all := strings.Join(never.Actions, ",")
+	for _, gone := range []string{"cloudformation:DeleteResource", "iam:DeleteSAMLProvider"} {
+		if strings.Contains(all, gone) {
+			t.Errorf("a never-deleted type's policy has %s: %v", gone, never.Actions)
+		}
+	}
+	for _, st := range never.Policy.Statement {
+		if strings.HasSuffix(st.Sid, "Delete") {
+			t.Errorf("a never-deleted type's policy has a delete statement: %+v", st)
+		}
+	}
+	if !strings.Contains(all, "iam:CreateSAMLProvider") || !strings.Contains(all, "cloudformation:GetResource") {
+		t.Errorf("a never-deleted type's policy lost its other actions: %v", never.Actions)
+	}
+	has := func(p iamgen.Policy) bool {
+		for _, a := range p.Statement[0].Action {
+			if a == "cloudformation:DeleteResource" {
+				return true
+			}
+		}
+		return false
+	}
+	if has(iamgen.Merge([]iamgen.Result{never})) {
+		t.Error("an environment of never-deleted types allows cloudformation:DeleteResource")
+	}
+	if !has(iamgen.Merge([]iamgen.Result{never, iamgen.ForType(s)})) {
+		t.Error("an environment with a deletable type lacks cloudformation:DeleteResource")
+	}
+}
