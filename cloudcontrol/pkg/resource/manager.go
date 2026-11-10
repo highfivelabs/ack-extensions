@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"sort"
 	"strings"
 	"time"
 
@@ -451,9 +452,16 @@ func (m *manager) EnsureTags(_ context.Context, res acktypes.AWSResource, md ack
 			have[k] = v
 		}
 	}
-	for k, v := range defaults {
+	// In key order: defaults is a map, and a list built in its iteration
+	// order would differ from one reconcile to the next.
+	keys := make([]string, 0, len(defaults))
+	for k := range defaults {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
 		if _, ok := have[k]; !ok {
-			existing = append(existing, map[string]any{"key": k, "value": v})
+			existing = append(existing, map[string]any{"key": k, "value": defaults[k]})
 		}
 	}
 	spec[f] = existing

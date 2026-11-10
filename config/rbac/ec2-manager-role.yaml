@@ -26,8 +26,10 @@ rules:
   - ec2.aws.hfl.dev
   resources:
   - customergateways
+  - networkinterfacepermissions
   - volumeattachments
   - volumes
+  - vpnconnections
   - vpngatewayroutepropagations
   - vpngateways
   verbs:
@@ -42,8 +44,10 @@ rules:
   - ec2.aws.hfl.dev
   resources:
   - customergateways/status
+  - networkinterfacepermissions/status
   - volumeattachments/status
   - volumes/status
+  - vpnconnections/status
   - vpngatewayroutepropagations/status
   - vpngateways/status
   verbs:

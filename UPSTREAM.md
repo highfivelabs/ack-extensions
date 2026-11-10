@@ -26,7 +26,7 @@ factory's daily watch. Change both together; `task upstream:yaml-check`
 | wafv2-controller | `v1.8.1` | `d910e96f94d5b860cffc5dde648e87bafe94689c` | Go module: the API types of ACK's `WebACL`, which `WebACLAssociation` references; the WAFv2 SDK client at its version (`service/wafv2` `v1.55.11`) |
 | lambda-controller | `v1.19.0` | `86905357482d01538cb00ab28d59c6af5c46e6f4` | Go module: the API types of ACK's `Function`, which `Permission` references; the Lambda SDK client at its version (`service/lambda` `v1.88.5`) |
 | iam-controller | `v1.11.3` | `91ed7f353255e54e2c6372b3ce757bd2e7fae4ad` | Go module: the API types of ACK's `Role` and `Policy`, which our kinds reference |
-| organizations-controller | `v1.7.0` | `5824700fd7` | Go module: the API types of ACK's `Account` and `OrganizationalUnit`, which `DelegatedAdministrator` and `PolicyAttachment` reference (and its CRDs, for the tests); ACK's `Account` and `OrganizationalUnit` are left to it (the generator ignores them); the Organizations SDK client is at its version (`service/organizations` `v1.37.4`) |
+| organizations-controller | `v1.7.0` | `5824700fd7` | Go module: the API types of ACK's `Account` and `OrganizationalUnit`, which `AccountPlacement`, `DelegatedAdministrator` and `PolicyAttachment` reference (and its CRDs, for the tests); ACK's `Account` and `OrganizationalUnit` are left to it (the generator ignores them); the Organizations SDK client is at its version (`service/organizations` `v1.37.4`) |
 | EventBridge Scheduler | none | | no ACK controller (`community` issue #2784); the Scheduler SDK client is `service/scheduler` `v1.12.13`, its version in aws-sdk-go-v2 `v1.34.0`, the release of the models below |
 | aws-sdk-go-v2 models | `v1.34.0` | tag | the Smithy model the generator reads (`--aws-sdk-go-version`), the version rds-controller `v1.14.2` was generated from |
 
@@ -74,6 +74,7 @@ and what changed.
 | `services/kms/pkg/resource/replica_key/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton, by way of our `db_role_association` copy) | `78eb350e…` | package, kind, API group, KMS client, ARN, `IsSynced` (synced when `Enabled`), adoption fields |
 | `services/ec2/pkg/tags/{sync,sync_test}.go` | ec2-controller `v1.23.1` `pkg/tags/` | `9303654c…` | our `ec2.aws.hfl.dev` API types |
 | `services/ec2/pkg/resource/customer_gateway/hooks.go` | ec2-controller `v1.23.1` `pkg/resource/internet_gateway/hooks.go` (`customUpdateInternetGateway`, `updateTagSpecificationsInCreateRequest`) | `9303654c…` | a customer gateway: tags only, no VPC attachment or route tables |
+| `services/ec2/pkg/resource/vpn_connection/hooks.go` (`customUpdateVpnConnection`, `updateTagSpecificationsInCreateRequest`), `services/ec2/templates/hooks/vpn_connection/sdk_create_post_build_request.go.tpl` | ec2-controller `v1.23.1` `pkg/resource/internet_gateway/hooks.go`, through `vpn_gateway/hooks.go` | `9303654c…` | a VPN connection: tags, static routes, the connection's CIDRs and each tunnel's options; the options' read, the static routes and the other templates written here |
 | `services/ec2/pkg/resource/vpn_gateway/hooks.go`, `services/ec2/templates/hooks/vpn_gateway/*.go.tpl` | ec2-controller `v1.23.1` `pkg/resource/internet_gateway/hooks.go` and `templates/hooks/internet_gateway/` | `9303654c…` | a VPN gateway (`AttachVpnGateway`, `DetachVpnGateway`, `VpcAttachments`); no route tables; a deleted gateway reads as gone |
 | `services/ec2/pkg/resource/volume/hooks.go` | ec2-controller `v1.23.1` `pkg/resource/internet_gateway/hooks.go` | `9303654c…` | an EBS volume: `ModifyVolume` and tags; no attachment or route tables |
 | `services/ec2/pkg/resource/volume/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | an EBS volume's server defaults |
@@ -98,6 +99,9 @@ Written here: `services/rds/apis/v1alpha1/db_proxy_target.go`,
 `services/rds/apis/v1alpha1/db_role_association.go`,
 `services/lambda/apis/v1alpha1/permission.go`,
 `services/ec2/templates/hooks/customer_gateway/*.go.tpl`,
+`services/ec2/pkg/resource/vpn_connection/hooks_test.go`,
+`services/ec2/templates/hooks/network_interface_permission/*.go.tpl`,
+`services/ec2/pkg/resource/network_interface_permission/sdk_test.go`,
 `services/ec2/templates/hooks/vpn_gateway_route_propagation/*.go.tpl`,
 `services/ec2/pkg/resource/vpn_gateway_route_propagation/{hooks,sdk_test}.go`,
 `services/ecr/pkg/resource/replication_configuration/{delta,references,sdk_test}.go`,
@@ -108,12 +112,17 @@ Written here: `services/rds/apis/v1alpha1/db_proxy_target.go`,
 `services/scheduler/pkg/resource/schedule/custom_delta_test.go`,
 `services/organizations/templates/hooks/policy/*.go.tpl`,
 `services/organizations/pkg/resource/policy/{custom_delta,custom_delta_test}.go`,
+`services/organizations/templates/hooks/account_placement/*.go.tpl`,
+`services/organizations/pkg/resource/account_placement/hooks.go`,
 `services/organizations/templates/hooks/delegated_administrator/*.go.tpl`,
 `services/organizations/pkg/resource/delegated_administrator/{hooks,hooks_test}.go`,
 `services/organizations/templates/hooks/policy_attachment/*.go.tpl`,
 `services/organizations/pkg/resource/policy_attachment/{hooks,hooks_test}.go`,
 `services/organizations/templates/hooks/organization/*.go.tpl`,
 `services/organizations/pkg/resource/organization/{hooks,hooks_test}.go`,
+`services/iam/apis/v1alpha1/ack_kinds.go`,
+`services/iam/templates/hooks/access_key/*.go.tpl`,
+`services/iam/pkg/resource/access_key/{hooks,hooks_test}.go`,
 `config/admission/*.yaml`,
 `services/organizations/apis/v1alpha1/ack_kinds.go`, `services/organizations/cmd/controller/handwritten.go`,
 `services/kms/pkg/resource/replica_key/{delta,references,sdk_test}.go`,
@@ -131,6 +140,8 @@ Written here: `services/rds/apis/v1alpha1/db_proxy_target.go`,
 `services/iam/pkg/resource/account_alias/{sdk,delta,references,sdk_test}.go`,
 `services/iam/apis/v1alpha1/account_password_policy.go`,
 `services/iam/pkg/resource/account_password_policy/{sdk,delta,references,sdk_test}.go`,
+`services/iam/templates/hooks/virtual_mfa_device/*.go.tpl`,
+`services/iam/pkg/resource/virtual_mfa_device/{hooks,hooks_test}.go`,
 `services/ec2/apis/v1alpha1/volume_attachment.go`,
 `services/ec2/pkg/resource/volume_attachment/{sdk,delta,references,sdk_test}.go`,
 `services/wafv2/apis/v1alpha1/web_acl_association.go`,
