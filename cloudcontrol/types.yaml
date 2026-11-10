@@ -76,7 +76,7 @@ types:
   - typeName: AWS::EC2::TransitGatewayPeeringAttachment
   # F07: Control Tower's enabled controls and baselines on an OU. ACK has no
   # Control Tower controller, issue or pull request. LandingZone waits for
-  # the builder (plan section 9, question 14): deleting one decommissions
+  # the builder (plan section 9, question 15): deleting one decommissions
   # the landing zone.
   - typeName: AWS::ControlTower::EnabledControl
     unproven: "moto 5.2.5 has no controltower, and no other emulator exists"

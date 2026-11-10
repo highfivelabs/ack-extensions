@@ -2273,7 +2273,7 @@ Before it can run on a real cluster:
        builder creates it); the live-test switch and the account's
        CloudFormation template are prepared, credentials by federation
        from the offload VMs' Google service account, never stored keys.
-14. **Control Tower's `LandingZone` through Cloud Control** (F07). Deleting
+15. **Control Tower's `LandingZone` through Cloud Control** (F07). Deleting
     an `AWS::ControlTower::LandingZone` decommissions the landing zone: the
     organization's guardrails, the log archive and audit accounts' setup,
     and every enabled control. That is `Organization`'s case (question 12)

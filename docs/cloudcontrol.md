@@ -527,7 +527,7 @@ handlers' permissions reach into Organizations, Service Catalog and IAM
 (`config/iam/`), and `EnabledControl`'s create may take up to 720 minutes;
 the reconciler polls the request without holding a worker.
 `AWS::ControlTower::LandingZone` is held back: deleting one decommissions
-the landing zone (plan section 9, question 14). ACK has no Control Tower
+the landing zone (plan section 9, question 15). ACK has no Control Tower
 controller, issue or pull request.
 
 **Not shown by the fake** (section 11): anything about real AWS.
