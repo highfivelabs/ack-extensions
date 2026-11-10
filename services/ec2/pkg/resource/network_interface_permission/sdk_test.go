@@ -26,8 +26,6 @@ import (
 	svcapitypes "github.com/highfivelabs/ack-extensions/services/ec2/apis/v1alpha1"
 )
 
-const ec2NS = "http://ec2.amazonaws.com/doc/2016-11-15/"
-
 // ec2StandIn answers each action with a canned body, or an EC2 error with
 // code; it records each request's form.
 type ec2StandIn struct {
@@ -55,15 +53,15 @@ func (s *ec2StandIn) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	perm := fmt.Sprintf(`<networkInterfacePermissionId>eni-perm-0123</networkInterfacePermissionId><networkInterfaceId>eni-0abc</networkInterfaceId><awsAccountId>111122223333</awsAccountId><permission>INSTANCE-ATTACH</permission><permissionState><state>%s</state></permissionState>`, state)
 	switch action := req.PostForm.Get("Action"); action {
 	case "CreateNetworkInterfacePermission":
-		fmt.Fprintf(w, `<%[1]sResponse xmlns="%[2]s"><requestId>r</requestId><interfacePermission>%[3]s</interfacePermission></%[1]sResponse>`, action, ec2NS, perm)
+		fmt.Fprintf(w, `<%[1]sResponse><requestId>r</requestId><interfacePermission>%[2]s</interfacePermission></%[1]sResponse>`, action, perm)
 	case "DescribeNetworkInterfacePermissions":
 		items := ""
 		if state != "" {
 			items = "<item>" + perm + "</item>"
 		}
-		fmt.Fprintf(w, `<%[1]sResponse xmlns="%[2]s"><requestId>r</requestId><networkInterfacePermissions>%[3]s</networkInterfacePermissions></%[1]sResponse>`, action, ec2NS, items)
+		fmt.Fprintf(w, `<%[1]sResponse><requestId>r</requestId><networkInterfacePermissions>%[2]s</networkInterfacePermissions></%[1]sResponse>`, action, items)
 	case "DeleteNetworkInterfacePermission":
-		fmt.Fprintf(w, `<%[1]sResponse xmlns="%[2]s"><requestId>r</requestId><return>true</return></%[1]sResponse>`, action, ec2NS)
+		fmt.Fprintf(w, `<%[1]sResponse><requestId>r</requestId><return>true</return></%[1]sResponse>`, action)
 	default:
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, `<Response><Errors><Error><Code>InvalidAction</Code><Message>%s</Message></Error></Errors><RequestID>r</RequestID></Response>`, action)
