@@ -11,8 +11,8 @@ Status, 2026-11-09: the repository has twenty-nine kinds:
 - `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy` and `AccessKey`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
-- `organizations.aws.hfl.dev` `DelegatedAdministrator`, `Organization`, `Policy` and
-  `PolicyAttachment`;
+- `organizations.aws.hfl.dev` `AccountPlacement`, `DelegatedAdministrator`,
+  `Organization`, `Policy` and `PolicyAttachment`;
 - `rds.aws.hfl.dev` `OptionGroup`;
 - `rds.aws.hfl.dev` `DBProxyTarget`;
 - `rds.aws.hfl.dev` `DBRoleAssociation`;
@@ -579,6 +579,15 @@ controller to show it can fail:
     organization with no member accounts and refuses one with members
     (`OrganizationNotEmptyException`), as AWS does. `EnableAllFeatures`
     is not implemented.
+  - Account moves: moto's `MoveAccount` does not check that the account
+    is in `SourceParentId`, and moves an account to the parent it is
+    already in (AWS answers `SourceParentNotFoundException` and
+    `DuplicateAccountException`); for an unknown parent it answers
+    `ParentNotFoundException` (AWS: `SourceParentNotFoundException` or
+    `DestinationParentNotFoundException`). `ListParents` and
+    `DescribeAccount` answer as AWS does, `AccountNotFoundException` for
+    an unknown account (AWS answers `ListParents` with
+    `ChildNotFoundException`).
 - **An association's status.** moto marks a new association `ACTIVE` at
   once. On AWS it is `PENDING` first, and `INVALID` when RDS cannot assume
   the role. The rule (synced only when `ACTIVE`) is unit-tested.
@@ -1655,6 +1664,75 @@ consolidated-billing organization (moto allows both);
 policy type detaches its policies; a delegated administrator's account
 (its rights differ); real AWS.
 
+### 6.29 `organizations.aws.hfl.dev` `AccountPlacement`
+
+The OU (or the root) a member account is in. F01's fifth and last kind.
+Upstream rechecked 2026-11-09: no release after organizations-controller
+`v1.7.0`; ACK's `Account` has no parent field (`CreateAccount` takes
+none) and nothing calls `MoveAccount`; community #2369 (open since 2025,
+"How to support MoveAccount in organizations") asks for a field on
+`Account` or a separate resource, with no pull request. CloudFormation
+has it as `AWS::Organizations::Account`'s `ParentIds`. A field on ACK's
+`Account` is ACK's to add; a sidecar here is the other option #2369
+names, and moves to ACK if ACK adds either.
+
+**Generated**, from operations mapped in `generator.yaml`: `MoveAccount`
+is both the create and the update (`operation_type: [Create, Update]`),
+`ListParents` the read (its one parent is `spec.parentID`). About 95% of
+the new Go is generated (about 1,770 lines); written here are four
+one-to-five-line hook templates and `hooks.go` (87 lines): the parent to
+move from, the skip when the account is already there, and the account's
+ARN.
+
+- **Spec:** `accountID` or `accountRef` (ACK's `Account`, its
+  `status.accountID`), immutable; `parentID` (a root `r-...` or an OU
+  `ou-...`) or `parentRef` (ACK's `OrganizationalUnit`, its `status.id`).
+  `Organization.status.rootID` (6.28) is the root's ID.
+- **Placed, then kept there.** Until the object has placed the account
+  (no ARN in its status), its read finds nothing, as for the other
+  account-wide settings (`docs/handoff.md`); the create reads the parent
+  the account is in now and calls `MoveAccount` from it, or, when the
+  account is already there, nothing (AWS would refuse the move,
+  `DuplicateAccountException`). It then reads the account's ARN
+  (`DescribeAccount`) into `status.ackResourceMetadata.arn`. From then
+  on the read is `ListParents`: a changed `parentID` moves the account
+  (`SourceParentId` is the parent read), and a move outside Kubernetes is
+  moved back.
+- **Delete leaves the account where it is.** There is no delete call
+  (none is mapped, so `sdkDelete` is a no-op): an account always has a
+  parent, and moving it back to the root on delete would take it out
+  from under its OU's policies, which is the opposite of what deleting a
+  placement is for. **Assumed, for the builder to confirm:** the
+  builder's answer to question 12 (an organization is not deletable, so
+  it is not treated as such) applied to a placement; likely and cheap.
+  Following it, the kind joins the retain-only admission policy (6.28,
+  `config/admission/retain-only.yaml`), so every object carries
+  `services.k8s.aws/deletion-policy: retain`. Were the builder to want a
+  delete to move the account back to the root, the kind would map
+  `MoveAccount` as the delete too and leave the policy.
+- **One object per account.** Two placements of one account move it
+  back and forth (#2369 names this); make one.
+- **Terminal:** `InvalidInputException`, `ConstraintViolationException`.
+  An unknown account or parent is retried (it may be being made: ACK's
+  `Account` and `OrganizationalUnit` are referenced once they have IDs).
+
+**Proven on moto** (`TestOrganizationsAccountPlacement`): ACK's
+`Account` moved into ACK's `OrganizationalUnit` by reference, the status
+ARN the account's, and no create or update across resyncs; moved to the
+root outside Kubernetes, it is moved back; a new `parentID` moves it; an
+account already in its parent is placed (synced, ARN set); `accountID`
+cannot change; delete leaves both accounts in their parents. With the
+retain-only policy installed: an object without the annotation, or with
+`delete`, is refused; one with `retain` places the account, its
+annotation cannot be changed or removed, and deleting it leaves the
+account in its OU. `tests/operator/run.sh` checks the refusal on kind.
+
+**Not proven on moto:** that the create makes no `MoveAccount` call when
+the account is already in place (moto accepts the call, so the test
+shows only the outcome); AWS's `SourceParentNotFoundException` when the
+account moved between the read and the move (retried, then read again);
+the management account (AWS lets it move between OUs); real AWS.
+
 ### 6.30 `iam.aws.hfl.dev` `AccessKey`
 
 An IAM user's access key (F03; rank 15). Built on the builder's answer to
@@ -2024,6 +2102,7 @@ identity scoped to it, and nothing else does:
   | `Policy` | `organizations:CreatePolicy`, `DescribePolicy`, `UpdatePolicy`, `DeletePolicy`, `ListTagsForResource`, `TagResource`, `UntagResource` |
   | `PolicyAttachment` | `organizations:AttachPolicy`, `DetachPolicy`, `ListTargetsForPolicy` |
   | `DelegatedAdministrator` | `organizations:RegisterDelegatedAdministrator`, `DeregisterDelegatedAdministrator`, `ListDelegatedAdministrators` |
+  | `AccountPlacement` | `organizations:MoveAccount`, `ListParents`, `DescribeAccount` |
   | `Organization` | `organizations:DescribeOrganization`, `ListRoots`, `EnablePolicyType`, `DisablePolicyType`, `EnableAWSServiceAccess`, `DisableAWSServiceAccess`, `ListAWSServiceAccessForOrganization`; and `organizations:CreateOrganization` with `iam:CreateServiceLinkedRole` only if the object is to make the organization |
 
   The role should also deny `organizations:DeleteOrganization` and

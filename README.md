@@ -16,7 +16,7 @@ How much of AWS the official ACK controllers cover, and how much more this repos
 
 `quicksight` alone is 51,640 of the 85,773 attributes, so the attribute bar mostly describes it; the resource bar counts a resource as covered if ACK has a kind for it, however few of its fields.
 
-Of 85,773 attributes in 1875 resources across 305 services, ACK covers 6,033 (7.0%) and ours adds 326 more (0.4%), 22 of them copied from open upstream pull requests. By resource, ACK has a released kind for 266 of 1,875 (14.2%) and ours adds 31 more (1.7%).
+Of 85,773 attributes in 1875 resources across 305 services, ACK covers 6,033 (7.0%) and ours adds 327 more (0.4%), 22 of them copied from open upstream pull requests. By resource, ACK has a released kind for 266 of 1,875 (14.2%) and ours adds 31 more (1.7%).
 
 Not every service matters equally. Each service has a **category**: *platform-foundation* (what a platform team needs to stand up a target, up to a managed Kubernetes cluster: Organizations and Control Tower, IAM and Identity Center, VPC networking and DNS, KMS, CloudTrail, RAM, EKS and ECR), *security-adjacent* (Config, GuardDuty, Security Hub, WAF, Secrets Manager, ACM, ...), *application* (S3, SQS, Lambda, RDS, DynamoDB, ...) or *other*. Tier 1 is platform-foundation, tier 2 is security-adjacent plus the application services some tracked Terraform module uses, tier 3 is everything else ([how and why](docs/coverage/README.md#tiers); the hand-editable list is [priority.csv](docs/coverage/priority.csv)). In each bar pair the upper bar is attributes and the lower is resources.
 
@@ -24,7 +24,7 @@ Not every service matters equally. Each service has a **category**: *platform-fo
 
 | Category | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) |
 | --- | ---: | ---: | ---: |
-| platform-foundation | 16 | 22.8% / 8.3% | 28.2% / 4.6% |
+| platform-foundation | 16 | 22.8% / 8.3% | 28.2% / 4.7% |
 | security-adjacent | 18 | 12.5% / 1.8% | 37.6% / 0.6% |
 | application | 33 | 40.5% / 3.4% | 48.2% / 4.2% |
 | other | 238 | 7.2% / 0.0% | 3.0% / 0.0% |
@@ -35,7 +35,7 @@ The ranked work queue for the foundation and security categories, resource by re
 
 | Tier | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) |
 | --- | ---: | ---: | ---: |
-| 1 | 16 | 22.8% / 8.3% | 28.2% / 4.6% |
+| 1 | 16 | 22.8% / 8.3% | 28.2% / 4.7% |
 | 2 | 51 | 32.1% / 2.9% | 44.9% / 3.1% |
 | 3 | 238 | 7.2% / 0.0% | 3.0% / 0.0% |
 
@@ -50,7 +50,7 @@ The ranked work queue for the foundation and security categories, resource by re
 | 1 | platform-foundation | `route53resolver` | ![route53resolver](docs/coverage/bars/route53resolver.svg) | 35.1% | 0.0% | 64.9% |
 | 1 | platform-foundation | `sso` | ![sso](docs/coverage/bars/sso.svg) | 0.0% | 61.0% | 39.0% |
 | 1 | platform-foundation | `kms` | ![kms](docs/coverage/bars/kms.svg) | 54.5% | 22.7% | 22.7% |
-| 1 | platform-foundation | `organizations` | ![organizations](docs/coverage/bars/organizations.svg) | 42.9% | 33.3% | 23.8% |
+| 1 | platform-foundation | `organizations` | ![organizations](docs/coverage/bars/organizations.svg) | 42.9% | 38.1% | 19.0% |
 | 1 | platform-foundation | `controltower` | ![controltower](docs/coverage/bars/controltower.svg) | 0.0% | 72.2% | 27.8% |
 | 1 | platform-foundation | `ram` | ![ram](docs/coverage/bars/ram.svg) | 54.2% | 0.0% | 45.8% |
 | 1 | platform-foundation | `directconnect` | ![directconnect](docs/coverage/bars/directconnect.svg) | 0.0% | 0.0% | 100.0% |
@@ -146,11 +146,11 @@ Services are sorted by tier, then by attributes covered, and every tier 1 servic
 | `eventbridge.aws.hfl.dev/v1alpha1` `Connection` | An EventBridge connection: the credentials (basic, API key, OAuth) an API destination calls an endpoint with, its secrets read from Kubernetes Secrets. ACK's eventbridge-controller ignores it. | Generated; no ACK pull request adds it |
 | `iam.aws.hfl.dev/v1alpha1` `RolePolicyAttachment` | Attaches one managed policy to one IAM role, and detaches it on delete. It is for a role ACK does not manage (made by another team, by Terraform, or by EKS for a node group). | Copied from ACK iam-controller pull request #184 (open) |
 | `iam.aws.hfl.dev/v1alpha1` `UserGroupMembership` | An IAM user in a list of groups, by name or by reference to ACK's `User` and `Group`s. Not exclusive: only the listed groups are added or removed, and a group taken off the list is removed. ACK's iam-controller has no membership. | Hand-written on iam-controller PR #184's skeleton; no ACK pull request adds it |
-| `iam.aws.hfl.dev/v1alpha1` `AccessKey` | An IAM user's access key, by user name or by reference to ACK's `User`. The secret access key, which only the create returns, is written once into a Secret in the object's namespace (`spec.secretName`, else the object's name; `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`), owned by the object, and never into a log, the status or an event. Never written over: rotation is a new `AccessKey`. Deleting it deletes the key and its Secret. ACK's iam-controller ignores `AccessKey` (community #1879). | Generated (`CreateAccessKey`, `ListAccessKeys`, `DeleteAccessKey`), the Secret by hand |
 | `iam.aws.hfl.dev/v1alpha1` `LoginProfile` | An IAM user's console password, from a Kubernetes Secret, and whether it must be reset at first sign-in. ACK's iam-controller has none. | Generated; ACK's PR #147 was closed |
 | `iam.aws.hfl.dev/v1alpha1` `SSHPublicKey` | An IAM user's SSH public key for CodeCommit, active or inactive, by user name or by reference to ACK's `User`. ACK's iam-controller has none. | Hand-written on iam-controller PR #184's skeleton; no ACK pull request adds it |
 | `iam.aws.hfl.dev/v1alpha1` `AccountAlias` | The account's sign-in alias, set back if changed outside Kubernetes. ACK's iam-controller has none. | Hand-written on iam-controller PR #184's skeleton; no ACK pull request adds it |
 | `iam.aws.hfl.dev/v1alpha1` `AccountPasswordPolicy` | The account's password policy for IAM users (length, character classes, age, reuse), put back if changed outside Kubernetes. ACK's iam-controller has none. | Hand-written on iam-controller PR #184's skeleton; no ACK pull request adds it |
+| `organizations.aws.hfl.dev/v1alpha1` `AccountPlacement` | The OU (or root) a member account is in, by ID or by reference to ACK's `Account` and `OrganizationalUnit`; moved with `MoveAccount` when the spec changes, and moved back if moved outside Kubernetes. Deleting it leaves the account where it is, and the retain-only admission policy requires `services.k8s.aws/deletion-policy: retain` on every object. ACK's organizations-controller has no way to move an account (community #2369). | Generated (`MoveAccount`, `ListParents`), with three short hooks |
 | `organizations.aws.hfl.dev/v1alpha1` `DelegatedAdministrator` | A member account registered as an AWS service's delegated administrator for the organization (GuardDuty, Security Hub, Config, Identity Center and the rest), by account ID or by reference to ACK's `Account`; registered again if removed outside Kubernetes, deregistered on delete. ACK has none; community #2884 proposes it, with no pull request. | Generated (`RegisterDelegatedAdministrator`, `DeregisterDelegatedAdministrator`, `ListDelegatedAdministrators`) |
 | `organizations.aws.hfl.dev/v1alpha1` `Organization` | The account's organization, adopted (or made when there is none): its feature set, the policy types enabled on its root and the services with trusted access, put back if changed outside Kubernetes. Never deleted from Kubernetes: the controller has no `DeleteOrganization`, and an admission policy requires `services.k8s.aws/deletion-policy: retain` on every object. ACK's organizations-controller ignores `Organization`. | Generated (`CreateOrganization`, `DescribeOrganization`), the two lists by hand |
 | `organizations.aws.hfl.dev/v1alpha1` `Policy` | An AWS Organizations policy: a service control policy, resource control policy, tag policy or another type, with its tags; the document is compared as JSON. ACK's organizations-controller has `Account` and `OrganizationalUnit` only and ignores `Policy`; no pull request adds it. | Generated, with eventbridge-controller's tag hooks |

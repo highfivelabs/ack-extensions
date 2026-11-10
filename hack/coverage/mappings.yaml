@@ -84,6 +84,8 @@ ours:
   rds/DBProxyTarget: [rds/DBProxyTargetGroup]
   # The AssociatedRoles property of AWS::RDS::DBCluster and AWS::RDS::DBInstance.
   rds/DBRoleAssociation: [rds/DBCluster, rds/DBInstance]
+  # An account's parent: the ParentIds property of AWS::Organizations::Account.
+  organizations/AccountPlacement: [organizations/Account]
 
 # Our kinds whose coverage is copied from an open ACK pull request.
 fromUpstreamPR:
@@ -225,6 +227,8 @@ oursAttributes:
   rds/OptionGroup:
     name: OptionGroupName
     description: OptionGroupDescription
+  organizations/AccountPlacement:
+    parentID: ParentIds[]
 
 # Notes for resource rows, "<cfn service>/<Resource>".
 notes: {}
