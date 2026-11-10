@@ -72,7 +72,7 @@ agent.** PR 1 (`agent/cloudcontrol`) is the core. Still to do:
   --survey`) twice: each reads the other's output. **Next batches**, in
   foundation order, recheck ACK first: F03's `VirtualMFADevice` (moto has
   it), F04's Transit Gateway route, association, propagation and peering
-  (moto has them all), F05 `VPNConnection`, F07 Control Tower (no emulator:
+  (batch 3, done: `TestTransitGatewayRouting`), F05 `VPNConnection`, F07 Control Tower (no emulator:
   unproven), F08/F09 Route 53 and its Resolver firewall, F14 to F18.
   The original brief for it:
 - **PR 2, types in foundation order**, in reviewable batches
