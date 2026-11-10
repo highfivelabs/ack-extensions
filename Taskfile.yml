@@ -93,12 +93,14 @@ tasks:
       - go run . ../..
 
   generate:
-    desc: Regenerate the CRDs, API types, controllers and roles.
+    desc: Regenerate the CRDs, API types, controllers and roles; and ACKContext's CRD and deepcopy (controller-gen, apis/core).
     cmds:
       - task: upstream-check
       - task: controller-gen
       - task: goimports
       - hack/generate.sh
+      - '"{{.BIN}}/controller-gen" object:headerFile=cloudcontrol/hack/boilerplate.go.txt paths=./apis/...'
+      - '"{{.BIN}}/controller-gen" crd paths=./apis/... output:crd:artifacts:config=config/context'
 
   build:
     desc: Build every service's manager and the operator into bin/.
@@ -120,14 +122,23 @@ tasks:
   check:
     desc: Generated files current, gofmt, vet, SPDX lines, build, tests.
     cmds:
+      - task: check:static
+      - task: build
+      - task: test
+
+  # check without build and the tests: what every pull request runs, whatever
+  # it changed (hack/ci/select.sh; a kind's own tests follow).
+  "check:static":
+    desc: check's pin, generated-files, gofmt, vet and SPDX checks, without the build and the tests.
+    cmds:
       - task: upstream-check
       - task: upstream:yaml-check
       - task: go:fmt-check
-        vars: {DIRS: services pkg cmd tests cloudcontrol hack/cloudcontrol-gen hack/noaws}
+        vars: {DIRS: services apis pkg cmd tests cloudcontrol hack/cloudcontrol-gen hack/noaws hack/ack-iam}
       - task: noaws
       - task: generate
       - task: go:committed
-        vars: {PATHS: services config, WHAT: generated files}
+        vars: {PATHS: services apis config, WHAT: generated files}
       - task: cloudcontrol:generated
       # ACK's generated code fails vet's composites check (unkeyed fields in
       # metav1.Time and acktypes.VersionInfo literals), as ACK's own
@@ -136,8 +147,21 @@ tasks:
       # The live-only code (docs/live-runs.md) compiled, never run.
       - go vet -tags live ./cloudcontrol/test/live/... ./hack/live/... ./cloudcontrol/test/e2e/
       - hack/check-spdx.sh
-      - task: build
-      - task: test
+
+  # Some packages' tests, as test runs them: what CI runs for a pull request
+  # that changes only some services (hack/ci/select.sh).
+  "test:pkgs":
+    desc: 'The tests of some packages (envtest, moto): task test:pkgs PKGS="./services/iam/..." [RUN=regexp] [TIMEOUT=30m].'
+    requires:
+      vars: [PKGS]
+    cmds:
+      - task: setup-envtest
+      - hack/moto.sh
+      - task: go:test-envtest
+        vars:
+          ENVTEST_K8S_VERSION: '{{.ENVTEST_K8S_VERSION}}'
+          PKGS: '{{.PKGS}}{{if .RUN}} -run ''{{.RUN}}''{{end}}'
+          TIMEOUT: '{{.TIMEOUT | default "30m"}}'
 
   noaws:
     desc: 'Fail if any test path could reach a real AWS endpoint: SDK clients, processes, HTTP clients and scripts in test paths all go through pkg/fakeaws (hack/noaws/main.go lists the rules).'
@@ -159,6 +183,13 @@ tasks:
       vars: [NAMESPACE, ACCOUNT, CLUSTER_ARN, OUT]
     cmds:
       - go run ./hack/cloudcontrol-gen --iam --namespace "{{.NAMESPACE}}" --account "{{.ACCOUNT}}" --cluster-arn "{{.CLUSTER_ARN}}" --kinds "{{.KINDS}}" --out "{{.OUT}}"
+
+  ack:iam:
+    desc: 'One environment''s IAM role for its ACK-generated managers: permission policies (the kinds its ACKContext enables, read from the generated code plus pkg/ackiam''s curated extras) and the EKS Pod Identity trust policy for its managers. task ack:iam CONTEXT=ackcontext.yaml ACCOUNT=111122223333 CLUSTER_ARN=arn:aws:eks:...:cluster/x OUT=dir; task ack:iam LIST=1 prints every kind''s actions'
+    cmds:
+      - |
+        if [ -n "{{.LIST}}" ]; then go run ./hack/ack-iam --list; exit 0; fi
+        go run ./hack/ack-iam --context "{{.CONTEXT}}" --account "{{.ACCOUNT}}" --cluster-arn "{{.CLUSTER_ARN}}" --out "{{.OUT}}"
 
   cloudcontrol:generated:
     desc: Fail if the committed Cloud Control outputs differ from a regeneration.

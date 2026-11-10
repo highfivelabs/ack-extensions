@@ -296,16 +296,79 @@ func validate(sc *cfn.Schema, model map[string]any) error {
 	return nil
 }
 
-// splitWriteOnly removes top-level write-only properties from a model.
+// splitWriteOnly removes the write-only properties from a model and
+// returns them as a model of their own. A nested pointer
+// (/properties/Source/CustomPolicyDetails/PolicyText) removes only that
+// value, not the top-level property around it, as Cloud Control's reads
+// do. Pointers through an array are not followed.
 func splitWriteOnly(sc *cfn.Schema, model map[string]any) map[string]any {
 	wo := map[string]any{}
-	for _, name := range cfn.NewPointerSet(sc.WriteOnlyProperties).TopLevel() {
-		if v, ok := model[name]; ok {
-			wo[name] = v
-			delete(model, name)
+	for _, ptr := range sc.WriteOnlyProperties {
+		path := strings.Split(strings.TrimPrefix(ptr, "/properties/"), "/")
+		if v, ok := takePath(model, path); ok {
+			setPath(wo, path, v)
 		}
 	}
 	return wo
+}
+
+func takePath(m map[string]any, path []string) (any, bool) {
+	for _, k := range path[:len(path)-1] {
+		next, ok := m[k].(map[string]any)
+		if !ok {
+			return nil, false
+		}
+		m = next
+	}
+	last := path[len(path)-1]
+	v, ok := m[last]
+	if ok {
+		delete(m, last)
+	}
+	return v, ok
+}
+
+func setPath(m map[string]any, path []string, v any) {
+	for _, k := range path[:len(path)-1] {
+		next, ok := m[k].(map[string]any)
+		if !ok {
+			next = map[string]any{}
+			m[k] = next
+		}
+		m = next
+	}
+	m[path[len(path)-1]] = v
+}
+
+// deepCopy copies a JSON-shaped model.
+func deepCopy(m map[string]any) map[string]any {
+	b, _ := json.Marshal(m)
+	var out map[string]any
+	_ = json.Unmarshal(b, &out)
+	if out == nil {
+		out = map[string]any{}
+	}
+	return out
+}
+
+// withWriteOnly is a copy of model with the write-only values wo (from
+// splitWriteOnly) put back.
+func withWriteOnly(model, wo map[string]any) map[string]any {
+	out := deepCopy(model)
+	var merge func(dst, src map[string]any)
+	merge = func(dst, src map[string]any) {
+		for k, v := range src {
+			sm, ok1 := v.(map[string]any)
+			dm, ok2 := dst[k].(map[string]any)
+			if ok1 && ok2 {
+				merge(dm, sm)
+				continue
+			}
+			dst[k] = v
+		}
+	}
+	merge(out, deepCopy(wo))
+	return out
 }
 
 // begin records a request; caller holds no lock.
@@ -374,7 +437,8 @@ func (s *Server) create(ctx context.Context, typeName, desired, clientToken stri
 	if err := validate(sc, model); err != nil {
 		final = failed(err)
 	} else {
-		wo := splitWriteOnly(sc, model)
+		// The handler gets the whole model, write-only values too.
+		wo := splitWriteOnly(sc, deepCopy(model))
 		id, err := b.Create(ctx, model)
 		if err != nil {
 			final = failed(err)
@@ -442,13 +506,8 @@ func (s *Server) update(ctx context.Context, typeName, id, patch, clientToken st
 	}
 	if final.OperationStatus == "SUCCESS" {
 		s.mu.Lock()
-		doc := map[string]any{}
-		for k, v := range cur {
-			doc[k] = v
-		}
-		for k, v := range s.writeOnly[key] {
-			doc[k] = v
-		}
+		doc := withWriteOnly(cur, s.writeOnly[key])
+		prev := withWriteOnly(cur, s.writeOnly[key])
 		s.mu.Unlock()
 		for _, ro := range sets.ReadOnly.TopLevel() {
 			delete(doc, ro)
@@ -467,12 +526,7 @@ func (s *Server) update(ctx context.Context, typeName, id, patch, clientToken st
 			if err := validate(sc, next); err != nil {
 				final = failed(err)
 			} else {
-				wo := splitWriteOnly(sc, next)
-				prev := map[string]any{}
-				for k, v := range cur {
-					prev[k] = v
-				}
-				splitWriteOnly(sc, prev)
+				wo := splitWriteOnly(sc, deepCopy(next))
 				if err := b.Update(ctx, id, prev, next); err != nil {
 					final = failed(err)
 				} else {

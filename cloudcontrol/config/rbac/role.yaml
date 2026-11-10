@@ -35,6 +35,46 @@ rules:
   - create
   - patch
 - apiGroups:
+  - config.cloudcontrol.aws.hfl.dev
+  resources:
+  - aggregationauthorizations
+  - configrules
+  - configurationaggregators
+  - configurationrecorders
+  - conformancepacks
+  - connectors
+  - deliverychannels
+  - organizationconfigrules
+  - organizationconformancepacks
+  - remediationconfigurations
+  - storedqueries
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - config.cloudcontrol.aws.hfl.dev
+  resources:
+  - aggregationauthorizations/status
+  - configrules/status
+  - configurationaggregators/status
+  - configurationrecorders/status
+  - conformancepacks/status
+  - connectors/status
+  - deliverychannels/status
+  - organizationconfigrules/status
+  - organizationconformancepacks/status
+  - remediationconfigurations/status
+  - storedqueries/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - controltower.cloudcontrol.aws.hfl.dev
   resources:
   - enabledbaselines
@@ -134,6 +174,62 @@ rules:
   - iam.cloudcontrol.aws.hfl.dev
   resources:
   - samlproviders/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - route53.cloudcontrol.aws.hfl.dev
+  resources:
+  - cidrcollections
+  - dnssecs
+  - keysigningkeys
+  - queryloggingconfigs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - route53.cloudcontrol.aws.hfl.dev
+  resources:
+  - cidrcollections/status
+  - dnssecs/status
+  - keysigningkeys/status
+  - queryloggingconfigs/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - route53resolver.cloudcontrol.aws.hfl.dev
+  resources:
+  - firewallconfigs
+  - firewalldomainlists
+  - firewallrulegroupassociations
+  - firewallrulegroups
+  - resolverconfigs
+  - resolverdnssecconfigs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - route53resolver.cloudcontrol.aws.hfl.dev
+  resources:
+  - firewallconfigs/status
+  - firewalldomainlists/status
+  - firewallrulegroupassociations/status
+  - firewallrulegroups/status
+  - resolverconfigs/status
+  - resolverdnssecconfigs/status
   verbs:
   - get
   - patch

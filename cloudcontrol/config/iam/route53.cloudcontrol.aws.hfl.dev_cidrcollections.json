@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoute53CidrCollection",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53CidrCollectionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "route53:ChangeCidrCollection",
+        "route53:CreateCidrCollection"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53CidrCollectionRead",
+      "Effect": "Allow",
+      "Action": [
+        "route53:ListCidrBlocks",
+        "route53:ListCidrCollections"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53CidrCollectionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "route53:ChangeCidrCollection"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53CidrCollectionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "route53:ChangeCidrCollection",
+        "route53:DeleteCidrCollection",
+        "route53:ListCidrBlocks"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

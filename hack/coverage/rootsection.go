@@ -31,6 +31,7 @@ func rootSection(r *results) string {
 		fmt.Fprintf(&b, ", %s of them copied from open upstream pull requests", commas(t.oursBeyondPR))
 	}
 	fmt.Fprintf(&b, ". By resource, ACK has a released kind for %d of %s (%s%%) and ours adds %d more (%s%%).\n\n", t.resOfficial, commas(t.resTotal), pct1(t.resOfficial, t.resTotal), t.resOursBeyond, pct1(t.resOursBeyond, t.resTotal))
+	fmt.Fprintf(&b, "The purple bar is **Terraform** for comparison: the share of the same attributes that a writable attribute of the Terraform `aws` provider matches, about %s%% (at least %s%%, the dark tick, by the strict rule). It is an estimate from the High Five Labs catalog repository, pinned like every other input, with the error of its matching; see [Terraform](docs/coverage/README.md#terraform).\n\n", pct1(r.tfTotal.l2, r.tfTotal.total), pct1(r.tfTotal.l1, r.tfTotal.total))
 
 	var covered []svcRow
 	for _, s := range r.svcs {
@@ -50,25 +51,26 @@ func rootSection(r *results) string {
 		return covered[i].service < covered[j].service
 	})
 
-	b.WriteString("Not every service matters equally. Each service has a **category**: *platform-foundation* (what a platform team needs to stand up a target, up to a managed Kubernetes cluster: Organizations and Control Tower, IAM and Identity Center, VPC networking and DNS, KMS, CloudTrail, RAM, EKS and ECR), *security-adjacent* (Config, GuardDuty, Security Hub, WAF, Secrets Manager, ACM, ...), *application* (S3, SQS, Lambda, RDS, DynamoDB, ...) or *other*. Tier 1 is platform-foundation, tier 2 is security-adjacent plus the application services some tracked Terraform module uses, tier 3 is everything else ([how and why](docs/coverage/README.md#tiers); the hand-editable list is [priority.csv](docs/coverage/priority.csv)). In each bar pair the upper bar is attributes and the lower is resources.\n\n")
+	b.WriteString("Not every service matters equally. Each service has a **category**: *platform-foundation* (what a platform team needs to stand up a target, up to a managed Kubernetes cluster: Organizations and Control Tower, IAM and Identity Center, VPC networking and DNS, KMS, CloudTrail, RAM, EKS and ECR), *security-adjacent* (Config, GuardDuty, Security Hub, WAF, Secrets Manager, ACM, ...), *application* (S3, SQS, Lambda, RDS, DynamoDB, ...) or *other*. Tier 1 is platform-foundation, tier 2 is security-adjacent plus the application services some tracked Terraform module uses, tier 3 is everything else ([how and why](docs/coverage/README.md#tiers); the hand-editable list is [priority.csv](docs/coverage/priority.csv)). In each group the upper bar is attributes, the middle one resources, and the thin purple one the Terraform estimate of attributes.\n\n")
 	b.WriteString("![Coverage by category](docs/coverage/bars/_categories.svg)\n\n")
-	b.WriteString("| Category | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) |\n| --- | ---: | ---: | ---: |\n")
+	b.WriteString("| Category | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) | Terraform attributes (estimate) |\n| --- | ---: | ---: | ---: | ---: |\n")
 	for _, t := range r.categoryRows() {
-		fmt.Fprintf(&b, "| %s | %d | %s%% / %s%% | %s%% / %s%% |\n", t.label, t.services, pct1(t.resOfficial, t.resTotal), pct1(t.resOursBeyond, t.resTotal), pct1(t.attrOfficial, t.attrTotal), pct1(t.attrOursBeyond, t.attrTotal))
+		fmt.Fprintf(&b, "| %s | %d | %s%% / %s%% | %s%% / %s%% | %s |\n", t.label, t.services, pct1(t.resOfficial, t.resTotal), pct1(t.resOursBeyond, t.resTotal), pct1(t.attrOfficial, t.attrTotal), pct1(t.attrOursBeyond, t.attrTotal), tfCell(t.tf, true))
 	}
 	b.WriteString("\nThe ranked work queue for the foundation and security categories, resource by resource, with what upstream has and what to build first, is [docs/coverage/foundation.md](docs/coverage/foundation.md).\n\n")
 	b.WriteString("![Coverage by tier](docs/coverage/bars/_tiers.svg)\n\n")
-	b.WriteString("| Tier | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) |\n| --- | ---: | ---: | ---: |\n")
+	b.WriteString("| Tier | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) | Terraform attributes (estimate) |\n| --- | ---: | ---: | ---: | ---: |\n")
 	for _, t := range r.tierRows() {
-		fmt.Fprintf(&b, "| %d | %d | %s%% / %s%% | %s%% / %s%% |\n", t.tier, t.services, pct1(t.resOfficial, t.resTotal), pct1(t.resOursBeyond, t.resTotal), pct1(t.attrOfficial, t.attrTotal), pct1(t.attrOursBeyond, t.attrTotal))
+		fmt.Fprintf(&b, "| %d | %d | %s%% / %s%% | %s%% / %s%% | %s |\n", t.tier, t.services, pct1(t.resOfficial, t.resTotal), pct1(t.resOursBeyond, t.resTotal), pct1(t.attrOfficial, t.attrTotal), pct1(t.attrOursBeyond, t.attrTotal), tfCell(t.tf, true))
 	}
 	b.WriteString("\n")
 
 	row := func(s svcRow) string {
-		return fmt.Sprintf("| %d | %s | `%s` | ![%s](docs/coverage/bars/%s.svg) | %s%% | %s%% | %s%% |\n", r.tierOf(s.service), r.categoryOf(s.service), s.service, s.service, s.service,
-			pct1(s.attrOfficial, s.attrTotal), pct1(s.attrOursBeyond, s.attrTotal), pct1(s.attrUncov, s.attrTotal))
+		tf, ok := r.tf[s.service]
+		return fmt.Sprintf("| %d | %s | `%s` | ![%s](docs/coverage/bars/%s.svg) | %s%% | %s%% | %s%% | %s |\n", r.tierOf(s.service), r.categoryOf(s.service), s.service, s.service, s.service,
+			pct1(s.attrOfficial, s.attrTotal), pct1(s.attrOursBeyond, s.attrTotal), pct1(s.attrUncov, s.attrTotal), tfCell(tf, ok))
 	}
-	const tableHead = "| Tier | Category | Service | Coverage | Official | Ours beyond | Uncovered |\n| ---: | --- | --- | --- | ---: | ---: | ---: |\n"
+	const tableHead = "| Tier | Category | Service | Coverage | Official | Ours beyond | Uncovered | Terraform (estimate) |\n| ---: | --- | --- | --- | ---: | ---: | ---: | ---: |\n"
 	b.WriteString(tableHead)
 	var rest []svcRow
 	for _, s := range covered {
@@ -86,7 +88,7 @@ func rootSection(r *results) string {
 		}
 		b.WriteString("\n</details>\n")
 	}
-	fmt.Fprintf(&b, "\nServices are sorted by tier, then by attributes covered, and every tier 1 service is listed even where nothing covers it; blue is covered by ACK's released controllers, green by our kinds beyond ACK, grey by neither. The other %d services in the CloudFormation schemas have no coverage and are not tier 1. Full data: [services.csv](docs/coverage/services.csv) (one row per service), [resources.csv](docs/coverage/resources.csv) (one row per resource) and [attributes.csv](docs/coverage/attributes.csv) (one row per attribute).\n\n", len(r.svcs)-len(covered))
+	fmt.Fprintf(&b, "\nServices are sorted by tier, then by attributes covered, and every tier 1 service is listed even where nothing covers it; blue is covered by ACK's released controllers, green by our kinds beyond ACK, grey by neither; the thin purple bar under each is the Terraform estimate, its tick the strict floor (a dash where the estimate has no row for the service). The other %d services in the CloudFormation schemas have no coverage and are not tier 1. Full data: [services.csv](docs/coverage/services.csv) (one row per service), [resources.csv](docs/coverage/resources.csv) (one row per resource) and [attributes.csv](docs/coverage/attributes.csv) (one row per attribute).\n\n", len(r.svcs)-len(covered))
 	return b.String()
 }
 

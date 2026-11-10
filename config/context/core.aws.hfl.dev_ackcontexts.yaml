@@ -1,0 +1,277 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.19.0
+  name: ackcontexts.core.aws.hfl.dev
+spec:
+  group: core.aws.hfl.dev
+  names:
+    categories:
+    - aws
+    kind: ACKContext
+    listKind: ACKContextList
+    plural: ackcontexts
+    singular: ackcontext
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.roleARN
+      name: Role
+      type: string
+    - jsonPath: .spec.region
+      name: Region
+      type: string
+    - jsonPath: .status.conditions[?(@.type=="Ready")].status
+      name: Ready
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: |-
+          ACKContext enables ACK-generated managers in its namespace (an
+          environment): for each controller it lists, the operator runs one
+          manager, in the operator's namespace, watching only this namespace and
+          holding Kubernetes rights only here, as its own ServiceAccount bound by
+          EKS Pod Identity to the environment's IAM role. It is CloudControlContext
+          for the ACK-generated kinds, and Config Connector's
+          ConfigConnectorContext (namespaced mode) for AWS. One per namespace,
+          named ack.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: |-
+              ACKContextSpec is how an environment (a namespace) runs the
+              ACK-generated managers: as which AWS role, in which region, and which
+              controllers with which kinds.
+            properties:
+              controllers:
+                description: |-
+                  Controllers are the services whose managers run for this namespace,
+                  one manager each.
+                items:
+                  description: ACKController enables one service's manager in the
+                    namespace.
+                  properties:
+                    kinds:
+                      description: |-
+                        Kinds are the kinds of the service the manager serves (OptionGroup,
+                        DBProxyTarget). Empty: every kind of the service. An object of a
+                        kind not listed is left alone, and the role need not carry its
+                        permissions.
+                      items:
+                        type: string
+                      type: array
+                      x-kubernetes-list-type: set
+                    service:
+                      description: |-
+                        Service is the service, as in the API group <service>.aws.hfl.dev:
+                        iam, rds, scheduler. organizations is refused: it keeps an
+                        organization-scoped install of its own (docs/plan.md, section 7.5).
+                      pattern: ^[a-z0-9]+$
+                      type: string
+                  required:
+                  - service
+                  type: object
+                minItems: 1
+                type: array
+                x-kubernetes-list-map-keys:
+                - service
+                x-kubernetes-list-type: map
+              deletionPolicy:
+                description: |-
+                  DeletionPolicy is what deleting an object does to its AWS resource
+                  when the object does not say (ACK's services.k8s.aws/deletion-policy
+                  annotation): delete (the default) or retain.
+                enum:
+                - delete
+                - retain
+                type: string
+              region:
+                description: Region is the AWS region the environment's resources
+                  are made in.
+                pattern: ^[a-z]{2}(-[a-z]+)+-[0-9]$
+                type: string
+              roleARN:
+                description: |-
+                  RoleARN is the environment's IAM role for its ACK managers. The
+                  operator runs each enabled controller's manager as its own
+                  ServiceAccount, ack-extensions-<service>-<namespace>, in the
+                  operator's namespace; one EKS Pod Identity association per manager,
+                  made outside the cluster (the operator holds no AWS credentials),
+                  binds that ServiceAccount to this role.
+                  status.podIdentityAssociations says exactly which associations.
+                  The role's permissions are the generated policies of the kinds this
+                  context enables (task ack:iam).
+                pattern: ^arn:aws[a-z-]*:iam::[0-9]{12}:role/[\w+=,.@/-]+$
+                type: string
+            required:
+            - controllers
+            - region
+            - roleARN
+            type: object
+          status:
+            description: ACKContextStatus is what the operator made of the context.
+            properties:
+              conditions:
+                description: |-
+                  Conditions: Ready is true when every enabled controller's manager is
+                  rolled out and none is refused.
+                items:
+                  description: Condition contains details for one aspect of the current
+                    state of this API Resource.
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        lastTransitionTime is the last time the condition transitioned from one status to another.
+                        This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        message is a human readable message indicating details about the transition.
+                        This may be an empty string.
+                      maxLength: 32768
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        observedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      minimum: 0
+                      type: integer
+                    reason:
+                      description: |-
+                        reason contains a programmatic identifier indicating the reason for the condition's last transition.
+                        Producers of specific condition types may define expected values and meanings for this field,
+                        and whether the values are considered a guaranteed API.
+                        The value should be a CamelCase string.
+                        This field may not be empty.
+                      maxLength: 1024
+                      minLength: 1
+                      pattern: ^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$
+                      type: string
+                    status:
+                      description: status of the condition, one of True, False, Unknown.
+                      enum:
+                      - "True"
+                      - "False"
+                      - Unknown
+                      type: string
+                    type:
+                      description: type of condition in CamelCase or in foo.example.com/CamelCase.
+                      maxLength: 316
+                      pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              managers:
+                description: Managers are the managers that run for the namespace.
+                items:
+                  description: ACKManager is a manager the operator runs for the context.
+                  properties:
+                    kinds:
+                      description: Kinds are the kinds it serves.
+                      items:
+                        type: string
+                      type: array
+                    service:
+                      description: Service is the controller's service.
+                      type: string
+                    serviceAccount:
+                      description: ServiceAccount is the manager's, namespace/name.
+                      type: string
+                  required:
+                  - service
+                  - serviceAccount
+                  type: object
+                type: array
+              observedGeneration:
+                description: ObservedGeneration is the generation last acted on.
+                format: int64
+                type: integer
+              podIdentityAssociations:
+                description: |-
+                  PodIdentityAssociations are the associations the environment needs,
+                  one per manager.
+                items:
+                  description: |-
+                    PodIdentityAssociation is an EKS Pod Identity association the
+                    environment needs: this namespace and ServiceAccount, to the role.
+                  properties:
+                    namespace:
+                      type: string
+                    roleARN:
+                      type: string
+                    serviceAccount:
+                      type: string
+                  required:
+                  - namespace
+                  - roleARN
+                  - serviceAccount
+                  type: object
+                type: array
+              refused:
+                description: Refused are the controllers the operator does not run,
+                  and why.
+                items:
+                  description: |-
+                    ACKRefusal is a controller the operator does not run for the context,
+                    and why.
+                  properties:
+                    message:
+                      type: string
+                    reason:
+                      description: |-
+                        Reason: UnknownService, UnknownKinds, OrganizationScoped or
+                        NamespaceClaimed.
+                      type: string
+                    service:
+                      type: string
+                  required:
+                  - message
+                  - reason
+                  - service
+                  type: object
+                type: array
+            type: object
+        required:
+        - spec
+        type: object
+        x-kubernetes-validations:
+        - message: 'an ACKContext must be named ack: one per namespace'
+          rule: self.metadata.name == 'ack'
+    served: true
+    storage: true
+    subresources:
+      status: {}

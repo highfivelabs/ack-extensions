@@ -158,13 +158,17 @@ var Beside = map[string]string{"scheduler": "eventbridge"}
 // ourServices are the services whose managers run beside an ACK
 // controller of service ack: its own, if we extend it, and those Beside
 // names it, if we have their images.
-func (r *Reconciler) ourServices(ack string) []string {
+func (r *Reconciler) ourServices(ack string) []string { return servicesBeside(r.Options.Images, ack) }
+
+// servicesBeside are the services, of those images has, whose managers run
+// beside an ACK controller of service ack.
+func servicesBeside(images map[string]string, ack string) []string {
 	var out []string
-	if _, ok := r.Options.Images[ack]; ok {
+	if _, ok := images[ack]; ok {
 		out = append(out, ack)
 	}
 	for svc, host := range Beside {
-		if _, ok := r.Options.Images[svc]; ok && host == ack {
+		if _, ok := images[svc]; ok && host == ack {
 			out = append(out, svc)
 		}
 	}

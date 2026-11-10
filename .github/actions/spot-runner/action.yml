@@ -1,0 +1,91 @@
+# Copyright 2026 High Five Labs
+# SPDX-License-Identifier: Apache-2.0
+#
+# Start an offload Spot VM in hfl-dev-514205 that registers itself as a
+# just-in-time GitHub Actions runner for one job (runs-on: the label), and
+# wait until GitHub sees it online. The job on it costs no Actions minutes.
+#
+# 1. Google Cloud through workload identity federation, as
+#    factory-offload@hfl-dev-514205 (it may create offload VMs).
+# 2. The factory App's private key from Secret Manager
+#    (factory-app-private-key in hfl-dev-514205; only factory-offload@ may
+#    read it), and from it an installation token that may only read the
+#    factory repository and register organization runners. GitHub Free
+#    gives private repositories no organization secrets, so the key lives
+#    in one place for all three repositories, behind the federation.
+# 3. offload, vendored in the factory repository at FACTORY_REF
+#    (offload/ci/launch-runner.sh): registers the runner, creates the VM
+#    with the runner's one-time config (never the token), waits for it.
+# The VM deletes itself after the job, after 20 minutes without one, or at
+# `hours` whatever happens.
+name: spot-runner
+description: An offload Spot VM as a just-in-time runner for one job
+
+inputs:
+  label:
+    description: The runner's name and only label (lower case, digits, dashes)
+    required: true
+  hours:
+    description: Compute Engine deletes the VM after this many hours
+    default: "2"
+  machine:
+    description: One machine type, or empty for offload's 16-vCPU list, cheapest with room first
+    default: ""
+  save-cache:
+    description: Save the Go build cache back (runs on main only)
+    default: "false"
+
+runs:
+  using: composite
+  steps:
+    - uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+      with:
+        workload_identity_provider: projects/361760340954/locations/global/workloadIdentityPools/github/providers/factory
+        service_account: factory-offload@hfl-dev-514205.iam.gserviceaccount.com
+
+    - name: The factory App's key
+      id: key
+      shell: bash
+      run: |
+        set -euo pipefail
+        key="$(gcloud secrets versions access latest --secret factory-app-private-key --project hfl-dev-514205)"
+        while IFS= read -r line; do [[ -n "${line}" ]] && echo "::add-mask::${line}"; done <<<"${key}"
+        { echo "pem<<PEM_END"; echo "${key}"; echo "PEM_END"; } >> "${GITHUB_OUTPUT}"
+
+    - name: App token (read factory, register organization runners)
+      id: app
+      uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+      with:
+        app-id: "5692230"
+        private-key: ${{ steps.key.outputs.pem }}
+        owner: highfivelabs
+        repositories: factory
+        permission-contents: read
+        permission-organization-self-hosted-runners: write
+
+    - name: offload (factory, pinned)
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        repository: highfivelabs/factory
+        ref: ${{ env.FACTORY_REF }}
+        token: ${{ steps.app.outputs.token }}
+        path: .factory
+        sparse-checkout: offload
+        persist-credentials: false
+
+    - name: Launch the runner
+      shell: bash
+      env:
+        GH_TOKEN: ${{ steps.app.outputs.token }}
+        LABEL: ${{ inputs.label }}
+        HOURS: ${{ inputs.hours }}
+        MACHINE: ${{ inputs.machine }}
+        SAVE: ${{ inputs.save-cache }}
+        REPO: ${{ github.event.repository.name }}
+      run: |
+        set -euo pipefail
+        args=(--label "${LABEL}" --repo "${REPO}" --hours "${HOURS}")
+        [[ -n "${MACHINE}" ]] && args+=(--machine "${MACHINE}")
+        [[ "${SAVE}" == "true" ]] && args+=(--save-cache)
+        .factory/offload/ci/launch-runner.sh "${args[@]}"
+        echo "Spot runner \`${LABEL}\` online (VM \`gh-${LABEL}\`; its log: \`offload logs gh-${LABEL}\`)." >> "${GITHUB_STEP_SUMMARY}"
