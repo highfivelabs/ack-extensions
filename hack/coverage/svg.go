@@ -27,15 +27,29 @@ const (
 )
 
 // barSVG is a stacked horizontal bar, official then ours beyond then
-// uncovered, of fixed width.
-func barSVG(title string, s svcRow) []byte {
+// uncovered, of fixed width; with the Terraform estimate (hasTF), a thin
+// purple bar under it, its L1 floor marked by a tick.
+func barSVG(title string, s svcRow, tf tfCounts, hasTF bool) []byte {
+	height := barHeight
+	if hasTF {
+		height += tfGap + tfHeight
+	}
 	var b strings.Builder
-	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" role="img" aria-label="%s">`+"\n", barWidth, barHeight, barWidth, barHeight, html.EscapeString(title))
+	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" role="img" aria-label="%s">`+"\n", barWidth, height, barWidth, height, html.EscapeString(title))
 	fmt.Fprintf(&b, "<title>%s</title>\n", html.EscapeString(title))
 	segments(&b, s.attrOfficial, s.attrOursBeyond, s.attrUncov, 0, 0, barWidth, barHeight, 12)
+	if hasTF {
+		tfBar(&b, tf, 0, barHeight+tfGap, barWidth, tfHeight, 0)
+	}
 	b.WriteString("</svg>\n")
 	return []byte(b.String())
 }
+
+// The thin Terraform bar under a service's bar.
+const (
+	tfGap    = 3
+	tfHeight = 8
+)
 
 // segments draws the three parts of the bar at (x, y), w by h.
 func segments(b *strings.Builder, official, ours, none, x, y, w, h, fontPx int) {
@@ -83,19 +97,23 @@ func tenths(n int) string {
 	return fmt.Sprintf("%d.%d", n/10, n%10)
 }
 
-func barTitle(name string, s svcRow) string {
-	return fmt.Sprintf("%s: official %s%%, ours beyond official %s%%, uncovered %s%% of %d attributes",
+func barTitle(name string, s svcRow, tf tfCounts, hasTF bool) string {
+	t := fmt.Sprintf("%s: official %s%%, ours beyond official %s%%, uncovered %s%% of %d attributes",
 		name, pct1(s.attrOfficial, s.attrTotal), pct1(s.attrOursBeyond, s.attrTotal), pct1(s.attrUncov, s.attrTotal), s.attrTotal)
+	if hasTF {
+		t += "; lower bar: " + tfTitle(tf)
+	}
+	return t
 }
 
 // totalSVG is the total card: two bars, attributes and resources (a few very
 // large resources dominate the attribute count), with a legend, on its own
 // white card so the legend reads on a dark page too.
-func totalSVG(s svcRow, officialName string) []byte {
+func totalSVG(s svcRow, officialName string, tf tfCounts) []byte {
 	const w, h, pad, labelH = 640, 26, 10, 18
-	height := pad + 2*(labelH+h+8) + 22 + pad - 8
+	height := pad + 3*(labelH+h+8) + 22 + 22 + pad - 8
 	var b strings.Builder
-	title := html.EscapeString(barTitle("All services", s) + "; resources: " + fmt.Sprintf("official %s%%, ours beyond official %s%%, uncovered %s%% of %d",
+	title := html.EscapeString(barTitle("All services", s, tfCounts{}, false) + "; " + tfTitle(tf) + "; resources: " + fmt.Sprintf("official %s%%, ours beyond official %s%%, uncovered %s%% of %d",
 		pct1(s.resOfficial, s.resTotal), pct1(s.resOursBeyond, s.resTotal), pct1(s.resTotal-s.resOfficial-s.resOursBeyond, s.resTotal), s.resTotal))
 	fmt.Fprintf(&b, `<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" role="img" aria-label="%s">`+"\n", w+2*pad, height, w+2*pad, height, title)
 	fmt.Fprintf(&b, "<title>%s</title>\n", title)
@@ -113,6 +131,10 @@ func totalSVG(s svcRow, officialName string) []byte {
 		segments(&b, r.official, r.ours, r.none, pad, y+labelH, w, h, 13)
 		y += labelH + h + 8
 	}
+	fmt.Fprintf(&b, `<text x="%d" y="%d" font-family="%s" font-size="12" font-weight="600" fill="%s" dominant-baseline="central">%s</text>`+"\n", pad, y+labelH/2, fontFamily, colTextDark,
+		html.EscapeString(fmt.Sprintf("Terraform aws provider, attributes (%s): an estimate, not a measure of a controller", commas(tf.total))))
+	tfBar(&b, tf, pad, y+labelH, w, h, 13)
+	y += labelH + h + 8
 	items := []struct{ fill, text string }{
 		{colOfficial, officialName},
 		{colOurs, "ours beyond " + officialName},
@@ -124,6 +146,7 @@ func totalSVG(s svcRow, officialName string) []byte {
 		fmt.Fprintf(&b, `<text x="%d" y="%d" font-family="%s" font-size="12" fill="%s" dominant-baseline="central">%s</text>`+"\n", x+17, y+7, fontFamily, colTextDark, html.EscapeString(it.text))
 		x += 17 + 7*len(it.text) + 18
 	}
+	tfLegend(&b, pad, y+23)
 	b.WriteString("</svg>\n")
 	return []byte(b.String())
 }
