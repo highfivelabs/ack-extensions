@@ -1712,7 +1712,7 @@ the static routes).
   offered: the fields are immutable, and a new connection is the way.
 - **Not built:** a reference to ACK's `TransitGateway` (`transitGatewayID`
   is a plain ID): it needs ACK's ec2-controller as a Go module, a new
-  upstream dependency (open question 14). The newer
+  upstream dependency (open question 16). The newer
   `PreSharedKeyStorage` (keys in Secrets Manager) and
   `VpnConcentratorId` are not in the code generator's pinned EC2 model.
 
@@ -2358,7 +2358,30 @@ Before it can run on a real cluster:
        builder creates it); the live-test switch and the account's
        CloudFormation template are prepared, credentials by federation
        from the offload VMs' Google service account, never stored keys.
-14. **A reference from `VPNConnection` to ACK's `TransitGateway`** (F05,
+15. **Control Tower's `LandingZone` through Cloud Control** (F07). Deleting
+    an `AWS::ControlTower::LandingZone` decommissions the landing zone: the
+    organization's guardrails, the log archive and audit accounts' setup,
+    and every enabled control. That is `Organization`'s case (question 12)
+    and worse, since it can be undone only by setting the landing zone up
+    again. Options:
+    - serve it retain-only: add its resource to
+      `config/admission/retain-only.yaml`, so every object must carry
+      `services.k8s.aws/deletion-policy: retain`. The Cloud Control
+      reconciler would still call `DeleteResource` for an object without
+      the annotation that predates the policy, so the guarantee is the
+      policy alone, not a missing call as for `Organization`; a per-type
+      "never delete" in `cloudcontrol/types.yaml`, which the generic
+      reconciler honours, would close that;
+    - leave `LandingZone` out: a landing zone is set up once, by hand or by
+      AWS's own tooling, and adopted nowhere;
+    - serve it like any type.
+
+    Recommended: the first, with the per-type "never delete" in the same
+    change, so it is the same guarantee as `Organization`'s. Not built
+    until the builder answers; `EnabledControl` and `EnabledBaseline` (a
+    control or baseline on an OU, which a delete only disables) are served
+    without it, unproven on the fake (no emulator has Control Tower).
+16. **A reference from `VPNConnection` to ACK's `TransitGateway`** (F05,
     section 6.32). The connection's other end is our `VPNGateway` or a
     transit gateway, which ACK's ec2-controller manages. A
     `transitGatewayRef` needs ACK's `TransitGateway` type, as `AccessKey`
@@ -2371,5 +2394,6 @@ Before it can run on a real cluster:
     - leave `transitGatewayID` a plain ID.
 
     Recommended: the first, the same pattern as the IAM and
-    Organizations references. Built meanwhile: the plain ID. (Numbered
-    after main's 13; renumber on merge if another 14 lands first.)
+    Organizations references. Built meanwhile: the plain ID.
+    `VPNGatewayRoutePropagation`'s `routeTableRef` (PR #50) waits on the
+    same answer.

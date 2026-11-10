@@ -10,3 +10,5 @@ resources:
   - ec2.cloudcontrol.aws.hfl.dev_transitgatewayroutetableassociations.yaml
   - ec2.cloudcontrol.aws.hfl.dev_transitgatewayroutetablepropagations.yaml
   - ec2.cloudcontrol.aws.hfl.dev_transitgatewaypeeringattachments.yaml
+  - controltower.cloudcontrol.aws.hfl.dev_enabledcontrols.yaml
+  - controltower.cloudcontrol.aws.hfl.dev_enabledbaselines.yaml

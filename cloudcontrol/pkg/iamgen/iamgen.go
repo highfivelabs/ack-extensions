@@ -79,19 +79,38 @@ func sid(s string) string {
 	return b.String()
 }
 
+// Options change a type's policy.
+type Options struct {
+	// NeverDelete leaves out cloudformation:DeleteResource and the delete
+	// handler's permissions: the reconciler never deletes the type's
+	// resources (neverDelete in cloudcontrol/types.yaml).
+	NeverDelete bool
+}
+
 // ForType is the policy for one resource type.
-func ForType(s *cfn.Schema) Result {
+func ForType(s *cfn.Schema) Result { return ForTypeWith(s, Options{}) }
+
+// ForTypeWith is ForType with options.
+func ForTypeWith(s *cfn.Schema, o Options) Result {
 	res := Result{Policy: Policy{Version: "2012-10-17"}}
 	all := map[string]bool{}
-	res.Policy.Statement = append(res.Policy.Statement, Statement{
-		Sid: "CloudControl" + sid(s.Service()+s.Resource()), Effect: "Allow",
-		Action: append([]string(nil), CloudControlActions...), Resource: "*",
-	})
+	var cc []string
 	for _, a := range CloudControlActions {
+		if o.NeverDelete && a == "cloudformation:DeleteResource" {
+			continue
+		}
+		cc = append(cc, a)
 		all[a] = true
 	}
+	res.Policy.Statement = append(res.Policy.Statement, Statement{
+		Sid: "CloudControl" + sid(s.Service()+s.Resource()), Effect: "Allow",
+		Action: cc, Resource: "*",
+	})
 	used := map[string]bool{}
 	for _, h := range Handlers {
+		if o.NeverDelete && h == "delete" {
+			continue
+		}
 		hd := s.Handlers[h]
 		if hd == nil || len(hd.Permissions) == 0 {
 			continue
@@ -129,10 +148,24 @@ func ForType(s *cfn.Schema) Result {
 
 // Merge is one policy for a manager serving several types: one statement
 // per type and handler, kept apart so each action's reason stays visible.
+// The Cloud Control statement has the actions some type needs:
+// cloudformation:DeleteResource only when a type may be deleted.
 func Merge(results []Result) Policy {
+	need := map[string]bool{}
+	for _, r := range results {
+		for _, a := range r.Policy.Statement[0].Action {
+			need[a] = true
+		}
+	}
+	var cc []string
+	for _, a := range CloudControlActions {
+		if need[a] || len(results) == 0 {
+			cc = append(cc, a)
+		}
+	}
 	out := Policy{Version: "2012-10-17"}
 	out.Statement = append(out.Statement, Statement{
-		Sid: "CloudControl", Effect: "Allow", Action: append([]string(nil), CloudControlActions...), Resource: "*",
+		Sid: "CloudControl", Effect: "Allow", Action: cc, Resource: "*",
 	})
 	for _, r := range results {
 		out.Statement = append(out.Statement, r.Policy.Statement[1:]...)

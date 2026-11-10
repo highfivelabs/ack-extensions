@@ -12,7 +12,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 
 | Category | Services | Resources | ACK | Ours beyond | None | Attributes | ACK | Ours beyond | Uncovered |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 16 | 241 | 55 (22.8%) | 18 (7.5%) | 168 | 2,400 | 28.2% | 5.6% | 66.3% |
+| platform-foundation | 16 | 241 | 55 (22.8%) | 20 (8.3%) | 166 | 2,400 | 28.2% | 6.1% | 65.7% |
 | security-adjacent | 18 | 112 | 14 (12.5%) | 2 (1.8%) | 96 | 2,082 | 37.6% | 0.6% | 61.8% |
 | application | 33 | 262 | 106 (40.5%) | 9 (3.4%) | 147 | 4,766 | 48.2% | 4.2% | 47.6% |
 | other | 238 | 1260 | 91 (7.2%) | 0 (0.0%) | 1169 | 76,525 | 3.0% | 0.0% | 97.0% |
@@ -25,7 +25,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | 2 | `sso` | 6 | 0 | 3 | 3 | 0.0% / 61.0% / 39.0% | none |
 | 3 | `iam` | 16 | 7 | 1 | 8 | 41.2% / 14.1% / 44.7% | `iam-controller` v1.11.3 |
 | 4 | `ec2` | 126 | 20 | 10 | 96 | 22.7% / 5.4% / 71.8% | `ec2-controller` v1.23.1 |
-| 5 | `controltower` | 3 | 0 | 0 | 3 | 0.0% / 0.0% / 100.0% | none |
+| 5 | `controltower` | 3 | 0 | 2 | 1 | 0.0% / 72.2% / 27.8% | none |
 | 6 | `route53` | 11 | 3 | 0 | 8 | 47.9% / 0.0% / 52.1% | `route53-controller` v1.8.0 |
 | 7 | `route53resolver` | 12 | 5 | 0 | 7 | 35.1% / 0.0% / 64.9% | `route53resolver-controller` v1.11.0 |
 | 8 | `ram` | 6 | 2 | 0 | 4 | 54.2% / 0.0% / 45.8% | `ram-controller` v1.7.0 |
@@ -73,7 +73,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 | [F04](#f04) | EC2 networking: Transit Gateway route tables, associations, propagation, routes and peering | platform-foundation | 7 | 20 / 17 / 6 | M, M | Good: `CreateTransitGateway`, `CreateTransitGatewayVpcAttachment`, `CreateTransitGatewayRo... |
 | [F05](#f05) | EC2 networking: site-to-site VPN connections and route propagation | platform-foundation | 5 | 0 / 49 / 10 | L (VPNConnection), S (propagation) | Partial: `CreateVpnConnection`, `CreateVpnGateway`, `AttachVpnGateway`, `CreateCustomerGat... |
 | [F06](#f06) | EC2 networking: smaller VPC kinds (network interfaces, block public access, placement groups, CIDR reservations) | platform-foundation | 6 | 0 / 0 / 42 | M (NetworkInterface), S each for the rest | Partial: `CreateNetworkInterface` is implemented |
-| [F07](#f07) | Control Tower: landing zone, enabled controls, enabled baselines | platform-foundation | 3 | 0 / 0 / 18 | L each, and no emulator | None: moto 5 |
+| [F07](#f07) | Control Tower: landing zone, enabled controls, enabled baselines | platform-foundation | 3 | 0 / 13 / 5 | L each, and no emulator | None: moto 5 |
 | [F08](#f08) | Route 53: DNSSEC and key-signing keys, query logging, CIDR collections, second-VPC association | platform-foundation | 7 | 7 / 0 / 20 | S each | Partial: `CreateHostedZone`, `ChangeResourceRecordSets`, `CreateQueryLoggingConfig`, `Asso... |
 | [F09](#f09) | Route 53 Resolver: DNS Firewall, resolver endpoint settings, resolver configuration | platform-foundation | 8 | 18 / 0 / 44 | M, L, S | No for the Firewall kinds (`CreateFirewallRuleGroup`, `CreateFirewallDomainList`, `CreateF... |
 | [F10](#f10) | CloudTrail: start logging and select events on a Trail (and organization trails) | platform-foundation | 5 | 28 / 0 / 47 | M | Good for the first three: `StartLogging`, `StopLogging`, `PutEventSelectors`, `GetEventSel... |
@@ -174,7 +174,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F07 Control Tower: landing zone, enabled controls, enabled baselines
 
-- **Resources:** `controltower/LandingZone`, `controltower/EnabledControl`, `controltower/EnabledBaseline`. Today ACK covers 0, ours 0, nothing covers 18 of 18 attributes.
+- **Resources:** `controltower/LandingZone`, `controltower/EnabledControl`, `controltower/EnabledBaseline`. Today ACK covers 0, ours 13, nothing covers 5 of 18 attributes.
 - **Why first:** Where a platform team runs a multi-account landing zone, Control Tower is how guardrails are enabled. The builder asked for it 'where it has APIs': it has three CloudFormation resources and an asynchronous API. It ranks here, not first, because nothing can prove it yet.
 - **Proposed kinds:** In a new service `controltower.aws.hfl.dev`: `EnabledControl` (`EnableControl`/`GetEnabledControl`/`DisableControl`; the target is an OU ARN, with a control identifier and parameters), `EnabledBaseline` (`EnableBaseline`/`GetEnabledBaseline`/`DisableBaseline`), `LandingZone` (`CreateLandingZone`/`GetLandingZone`/`UpdateLandingZone`/`DeleteLandingZone`; the manifest is a JSON document, plus a version). All three are asynchronous: each call returns an operation identifier to poll (`GetControlOperation`, `GetBaselineOperation`, `GetLandingZoneOperation`), so write them by hand on the `Assignment` skeleton of F02 with a status poll rather than generating them.
 - **Upstream:** No ACK repository, issue or pull request found. Nothing to copy.
@@ -454,9 +454,9 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `EnabledBaseline` | none | - | whole resource (7 attrs) | no released controller | 0 | service-level only: none: moto 5 | S | `controltower.aws.hfl.dev/EnabledBaseline`, in a new service manager | [F07](#f07) |
-| `EnabledControl` | none | - | whole resource (6 attrs) | no released controller | 0 | service-level only: none: moto 5 | S | `controltower.aws.hfl.dev/EnabledControl`, in a new service manager | [F07](#f07) |
 | `LandingZone` | none | - | whole resource (5 attrs) | no released controller | 0 | service-level only: none: moto 5 | S | `controltower.aws.hfl.dev/LandingZone`, in a new service manager | [F07](#f07) |
+| `EnabledBaseline` | none | `EnabledBaseline (Cloud Control)`: +7 | none | no released controller | 0 | service-level only: none: moto 5 | - | none (covered) | [F07](#f07) |
+| `EnabledControl` | none | `EnabledControl (Cloud Control)`: +6 | none | no released controller | 0 | service-level only: none: moto 5 | - | none (covered) | [F07](#f07) |
 ### platform-foundation: `route53`
 
 - **ACK controller:** `route53-controller` v1.8.0: `HealthCheck`, `HostedZone`, `RecordSet`
