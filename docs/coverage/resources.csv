@@ -623,7 +623,7 @@ ec2,NetworkInsightsAnalysis,6,,0,,0,6,false,
 ec2,NetworkInsightsPath,20,,0,,0,20,false,
 ec2,NetworkInterface,22,,0,,0,22,false,
 ec2,NetworkInterfaceAttachment,7,,0,,0,7,false,
-ec2,NetworkInterfacePermission,3,,0,,0,3,false,
+ec2,NetworkInterfacePermission,3,,0,NetworkInterfacePermission,3,0,false,ours_unmapped=1
 ec2,NetworkPerformanceMetricSubscription,4,,0,,0,4,false,
 ec2,PlacementGroup,6,,0,,0,6,false,
 ec2,PrefixList,7,ManagedPrefixList,7,,0,0,false,
@@ -691,10 +691,10 @@ ec2,VPCEndpointServicePermissions,2,,0,,0,2,false,
 ec2,VPCGatewayAttachment,3,,0,,0,3,false,
 ec2,VPCPeeringConnection,8,VPCPeeringConnection,6,,0,2,false,official_unmapped=7
 ec2,VPNConcentrator,4,,0,,0,4,false,
-ec2,VPNConnection,43,,0,,0,43,false,
+ec2,VPNConnection,43,,0,VPNConnection,37,6,false,ours_unmapped=1
 ec2,VPNConnectionRoute,2,,0,,0,2,false,
 ec2,VPNGateway,4,,0,VPNGateway,4,0,false,ours_unmapped=2
-ec2,VPNGatewayRoutePropagation,2,,0,,0,2,false,
+ec2,VPNGatewayRoutePropagation,2,,0,VPNGatewayRoutePropagation,1,1,false,ours_unmapped=1
 ecr,PublicRepository,9,Repository,3,,0,6,false,
 ecr,PullThroughCacheRule,6,PullThroughCacheRule,6,,0,0,false,official_unmapped=1
 ecr,PullTimeUpdateExclusion,1,,0,,0,1,false,
@@ -902,7 +902,7 @@ healthagent,Domain,3,,0,,0,3,false,
 healthimaging,Datastore,3,,0,,0,3,false,
 healthlake,DataTransformationProfile,10,,0,,0,10,false,
 healthlake,FHIRDatastore,14,,0,,0,14,false,
-iam,AccessKey,3,,0,,0,3,false,
+iam,AccessKey,3,,0,AccessKey,1,2,false,ours_unmapped=1
 iam,AccountAlias,0,,0,AccountAlias,0,0,false,outside-denominator;ours_crd_attributes=1
 iam,AccountPasswordPolicy,0,,0,AccountPasswordPolicy,0,0,false,outside-denominator;ours_crd_attributes=9
 iam,Group,5,Group,4,,0,1,false,
@@ -920,7 +920,7 @@ iam,SSHPublicKey,0,,0,SSHPublicKey,0,0,false,outside-denominator;ours_crd_attrib
 iam,User,11,User,7,LoginProfile;UserGroupMembership,3,1,false,ours LoginProfile covers a property of this resource;ours UserGroupMembership covers a property of this resource
 iam,UserPolicy,3,,0,,0,3,false,
 iam,UserToGroupAddition,2,,0,,0,2,false,
-iam,VirtualMFADevice,5,,0,,0,5,false,
+iam,VirtualMFADevice,5,,0,VirtualMFADevice,2,3,false,ours_unmapped=1
 identitystore,Group,3,,0,,0,3,false,
 identitystore,GroupMembership,3,,0,,0,3,false,
 identitystore,User,39,,0,,0,39,false,
@@ -1322,7 +1322,7 @@ opensearchservice,Application,12,,0,,0,12,false,
 opensearchservice,Domain,87,Domain,62,,0,25,false,official_unmapped=7
 opensearchservice,VPCEndpoint,0,VPCEndpoint,0,,0,0,false,outside-denominator;official_crd_attributes=3
 opensearchservice,VPCEndpointAccess,0,VPCEndpointAccess,0,,0,0,false,outside-denominator;official_crd_attributes=3
-organizations,Account,6,Account,5,,0,1,false,official_unmapped=1
+organizations,Account,6,Account,5,AccountPlacement,1,0,false,ours AccountPlacement covers a property of this resource;official_unmapped=1;ours_unmapped=1
 organizations,DelegatedAdministrator,0,,0,DelegatedAdministrator,0,0,false,outside-denominator;ours_crd_attributes=2
 organizations,Organization,1,,0,Organization,1,0,false,ours_unmapped=2
 organizations,OrganizationalUnit,4,OrganizationalUnit,4,,0,0,false,

@@ -12,7 +12,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 
 | Category | Services | Resources | ACK | Ours beyond | None | Attributes | ACK | Ours beyond | Uncovered |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 16 | 241 | 55 (22.8%) | 29 (12.0%) | 157 | 2,400 | 28.2% | 6.4% | 65.4% |
+| platform-foundation | 16 | 241 | 55 (22.8%) | 34 (14.1%) | 152 | 2,400 | 28.2% | 8.3% | 63.5% |
 | security-adjacent | 18 | 112 | 14 (12.5%) | 2 (1.8%) | 96 | 2,082 | 37.6% | 0.6% | 61.8% |
 | application | 33 | 262 | 106 (40.5%) | 9 (3.4%) | 147 | 4,766 | 48.2% | 4.2% | 47.6% |
 | other | 238 | 1260 | 91 (7.2%) | 0 (0.0%) | 1169 | 76,525 | 3.0% | 0.0% | 97.0% |
@@ -21,10 +21,10 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 
 | # | Service | Resources | ACK | Ours beyond | None | Attributes ACK / ours / uncovered | ACK controller (latest release) |
 | ---: | --- | ---: | ---: | ---: | ---: | --- | --- |
-| 1 | `organizations` | 5 | 2 | 2 | 1 | 42.9% / 33.3% / 23.8% | `organizations-controller` v1.7.0 |
+| 1 | `organizations` | 5 | 2 | 2 | 1 | 42.9% / 38.1% / 19.0% | `organizations-controller` v1.7.0 |
 | 2 | `sso` | 6 | 0 | 3 | 3 | 0.0% / 61.0% / 39.0% | none |
-| 3 | `iam` | 16 | 7 | 1 | 8 | 41.2% / 14.1% / 44.7% | `iam-controller` v1.11.3 |
-| 4 | `ec2` | 126 | 20 | 9 | 97 | 22.7% / 2.9% / 74.3% | `ec2-controller` v1.23.1 |
+| 3 | `iam` | 16 | 7 | 3 | 6 | 41.2% / 17.6% / 41.2% | `iam-controller` v1.11.3 |
+| 4 | `ec2` | 126 | 20 | 12 | 94 | 22.7% / 5.7% / 71.6% | `ec2-controller` v1.23.1 |
 | 5 | `controltower` | 3 | 0 | 2 | 1 | 0.0% / 72.2% / 27.8% | none |
 | 6 | `route53` | 11 | 3 | 4 | 4 | 47.9% / 10.4% / 41.7% | `route53-controller` v1.8.0 |
 | 7 | `route53resolver` | 12 | 5 | 6 | 1 | 35.1% / 44.2% / 20.8% | `route53resolver-controller` v1.11.0 |
@@ -67,11 +67,11 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 | # | Item | Category | Resources | Attributes ACK / ours / none | Size | moto |
 | --- | --- | --- | ---: | --- | --- | --- |
-| [F01](#f01) | AWS Organizations: SCPs and the other policy types, attachment, delegated administrators, organization features, account placement | platform-foundation | 4 | 5 / 7 / 5 | M (Policy), M (PolicyAttachment), S (DelegatedAdministrator), M (Organization), S (AccountPlacement); plus one for the new `services/organizations/` manager | Good: `CreateOrganization`, `CreateAccount`, `CreateOrganizationalUnit`, `CreatePolicy`/`U... |
+| [F01](#f01) | AWS Organizations: SCPs and the other policy types, attachment, delegated administrators, organization features, account placement | platform-foundation | 4 | 5 / 8 / 4 | M (Policy), M (PolicyAttachment), S (DelegatedAdministrator), M (Organization), S (AccountPlacement); plus one for the new `services/organizations/` manager | Good: `CreateOrganization`, `CreateAccount`, `CreateOrganizationalUnit`, `CreatePolicy`/`U... |
 | [F02](#f02) | IAM Identity Center: permission sets and account assignments | platform-foundation | 4 | 0 / 25 / 3 | L (PermissionSet: six APIs behind one kind), M (Assignment: async), S (attribute config); plus one for the new `services/ssoadmin/` manager | Mostly good: `CreatePermissionSet`/`DescribePermissionSet`/`UpdatePermissionSet`, `AttachM... |
-| [F03](#f03) | IAM: SAML providers (and the access-key question) | platform-foundation | 6 | 9 / 9 / 18 | S (SAMLProvider), M (AccessKey if wanted) | Good: `CreateSAMLProvider`, `CreateAccessKey`, `CreateVirtualMFADevice` are implemented |
+| [F03](#f03) | IAM: SAML providers (and the access-key question) | platform-foundation | 6 | 9 / 12 / 15 | S (SAMLProvider), M (AccessKey if wanted) | Good: `CreateSAMLProvider`, `CreateAccessKey`, `CreateVirtualMFADevice` are implemented |
 | [F04](#f04) | EC2 networking: Transit Gateway route tables, associations, propagation, routes and peering | platform-foundation | 7 | 20 / 17 / 6 | M, M | Good: `CreateTransitGateway`, `CreateTransitGatewayVpcAttachment`, `CreateTransitGatewayRo... |
-| [F05](#f05) | EC2 networking: site-to-site VPN connections and route propagation | platform-foundation | 5 | 0 / 12 / 47 | L (VPNConnection), S (propagation) | Partial: `CreateVpnConnection`, `CreateVpnGateway`, `AttachVpnGateway`, `CreateCustomerGat... |
+| [F05](#f05) | EC2 networking: site-to-site VPN connections and route propagation | platform-foundation | 5 | 0 / 50 / 9 | L (VPNConnection), S (propagation) | Partial: `CreateVpnConnection`, `CreateVpnGateway`, `AttachVpnGateway`, `CreateCustomerGat... |
 | [F06](#f06) | EC2 networking: smaller VPC kinds (network interfaces, block public access, placement groups, CIDR reservations) | platform-foundation | 6 | 0 / 0 / 42 | M (NetworkInterface), S each for the rest | Partial: `CreateNetworkInterface` is implemented |
 | [F07](#f07) | Control Tower: landing zone, enabled controls, enabled baselines | platform-foundation | 3 | 0 / 13 / 5 | L each, and no emulator | None: moto 5 |
 | [F08](#f08) | Route 53: DNSSEC and key-signing keys, query logging, CIDR collections, second-VPC association | platform-foundation | 7 | 7 / 10 / 10 | S each | Partial: `CreateHostedZone`, `ChangeResourceRecordSets`, `CreateQueryLoggingConfig`, `Asso... |
@@ -88,7 +88,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F01 AWS Organizations: SCPs and the other policy types, attachment, delegated administrators, organization features, account placement
 
-- **Resources:** `organizations/Policy`, `organizations/Organization`, `organizations/Account`, `organizations/ResourcePolicy`. Today ACK covers 5, ours 7, nothing covers 5 of 17 attributes.
+- **Resources:** `organizations/Policy`, `organizations/Organization`, `organizations/Account`, `organizations/ResourcePolicy`. Today ACK covers 5, ours 8, nothing covers 4 of 17 attributes.
 - **Why first:** The builder's first ask: manage accounts, OUs and SCPs early and show it to platform teams. ACK ships `Account` and `OrganizationalUnit` but ignores `Policy` and `Organization`, so there is no way to declare an SCP, attach it, delegate an administrator or enable a policy type. Three of the five Organizations resources in CloudFormation are open here, and the API has more (delegated administrators, service access and policy-type enablement have no CloudFormation resource, so they are in none of the coverage numbers).
 - **Proposed kinds:** In `organizations.aws.hfl.dev`, beside ACK's `Account` and `OrganizationalUnit`:
   - (1) `Policy`: generated from `CreatePolicy`/`DescribePolicy`/`UpdatePolicy`/`DeletePolicy`; `name`, `description`, `type` (immutable: `SERVICE_CONTROL_POLICY`, `TAG_POLICY`, `BACKUP_POLICY`, `AISERVICES_OPT_OUT_POLICY` and the newer types), `content` (a JSON document, compared as canonical JSON), `tags`.
@@ -123,7 +123,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F03 IAM: SAML providers (and the access-key question)
 
-- **Resources:** `iam/SAMLProvider`, `iam/AccessKey`, `iam/VirtualMFADevice`, `iam/ServerCertificate`, `iam/OIDCProvider`, `iam/ManagedPolicy`. Today ACK covers 9, ours 9, nothing covers 18 of 36 attributes.
+- **Resources:** `iam/SAMLProvider`, `iam/AccessKey`, `iam/VirtualMFADevice`, `iam/ServerCertificate`, `iam/OIDCProvider`, `iam/ManagedPolicy`. Today ACK covers 9, ours 12, nothing covers 15 of 36 attributes.
 - **Why first:** Federation into the account is what a platform team wires first after roles and policies: `OpenIDConnectProvider` is covered (EKS IRSA), `SAMLProvider` is not and ACK ignores it. The rest of IAM that a platform team uses (roles, policies, boundaries through `Role.permissionsBoundary`, instance profiles, service-linked roles, users, groups, OIDC) is covered by ACK; ours already adds `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias` and `AccountPasswordPolicy`.
 - **Proposed kinds:** `iam.aws.hfl.dev/SAMLProvider`, generated: `CreateSAMLProvider`, `GetSAMLProvider`, `UpdateSAMLProvider`, `DeleteSAMLProvider`; `name` (immutable), `samlMetadataDocument` (the XML, read from a Secret or inline), `assertionEncryptionMode`, `addPrivateKey`/`removePrivateKey`, `tags`. The ARN is the identifier.
   - `AccessKey`: recommend NOT building. The secret is returned once on create; a kind needs a Kubernetes Secret write-back and the key is a long-lived credential (community #1879 asks for it). If the builder wants it, hand-write it on the `LoginProfile` pattern (which already writes a password) and add the Secret write-back in the same change.
@@ -150,7 +150,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F05 EC2 networking: site-to-site VPN connections and route propagation
 
-- **Resources:** `ec2/VPNConnection`, `ec2/VPNConnectionRoute`, `ec2/VPNGatewayRoutePropagation`, `ec2/VPNGateway`, `ec2/CustomerGateway`. Today ACK covers 0, ours 12, nothing covers 47 of 59 attributes.
+- **Resources:** `ec2/VPNConnection`, `ec2/VPNConnectionRoute`, `ec2/VPNGatewayRoutePropagation`, `ec2/VPNGateway`, `ec2/CustomerGateway`. Today ACK covers 0, ours 50, nothing covers 9 of 59 attributes.
 - **Why first:** Hybrid connectivity: a customer gateway and a VPN gateway (ours already) mean nothing without the connection that joins them. ACK has none of the three; community #1868 has asked since 2023.
 - **Proposed kinds:** `ec2.aws.hfl.dev/VPNConnection`, generated from `CreateVpnConnection`/`DescribeVpnConnections`/`DeleteVpnConnection`: `type`, `customerGatewayRef` and `vpnGatewayRef` (our kinds) or `transitGatewayRef` (ACK's), `staticRoutesOnly`, `tunnelOptions[]` (two tunnels: pre-shared key from a Secret, CIDRs, IKE and phase lifetimes), `staticRoutes[]` (a field, `CreateVpnConnectionRoute`), tags. 43 CloudFormation attributes: the largest EC2 networking kind. Route propagation to a route table is a field of `RouteTable` upstream (`EnableVgwRoutePropagation`) or a small sidecar kind of ours.
 - **Upstream:** ec2-controller ignores `VpnConnection`, `VpnConnectionRoute`, `VpnGateway`, `CustomerGateway` in generator.yaml. Community #1868 'VPN resources' (open since 2023-08-03, ten comments, no PR). Ours: `VPNGateway`, `CustomerGateway`.
@@ -334,9 +334,9 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `Account` | `Account` v1.7.0: 5/6 | - | 1 of 6 attrs: `ParentIds[] (MoveAccount)` | kind released; the rest is not in it | 0 | yes: `MoveAccount` is implemented | S | `organizations.aws.hfl.dev/AccountPlacement` (sidecar by `accountRef`: `MoveAccount`, `ListParents`), F01 | [F01](#f01) |
 | `ResourcePolicy` | none | - | whole resource (3 attrs) | controller exists; resource not in it | 0 | no: `PutResourcePolicy` is not in moto's organizations | S | `organizations.aws.hfl.dev/ResourcePolicy`, hand-written singleton; low priority | [F01](#f01) |
 | `Policy` | none | `Policy`: +6 | 1 of 7 attrs: `Name`, `Type`, `Content`, `Description`, `Tags[]`, `TargetIds[] (attach)` | ignored in ACK's generator.yaml | 0 | yes: `CreatePolicy`, `UpdatePolicy`, `DeletePolicy`, `AttachPolicy`, `DetachPolicy`, `EnablePolicyType` are implemented | M | `organizations.aws.hfl.dev/Policy` (generated) and `PolicyAttachment` (hand-written), F01 | [F01](#f01) |
+| `Account` | `Account` v1.7.0: 5/6 | `AccountPlacement`: +1 | none | released | 0 | yes: `MoveAccount` is implemented | - | `organizations.aws.hfl.dev/AccountPlacement` (sidecar by `accountRef`: `MoveAccount`, `ListParents`), F01 | [F01](#f01) |
 | `OrganizationalUnit` | `OrganizationalUnit` v1.7.0: 4/4 | - | none | released | 0 | service-level only: moto `organizations`: 41 of 63 operations, including `CreateOrganization`, `CreateAccount`... | - | none (covered) |  |
 | `Organization` | none | `Organization`: +1 | none | ignored in ACK's generator.yaml | 0 | yes: `CreateOrganization`, `EnablePolicyType`, `EnableAWSServiceAccess` are implemented; `EnableAllFeatures` is not | - | `organizations.aws.hfl.dev/Organization`, hand-written singleton (feature set, enabled policy types, service access principals), F01 | [F01](#f01) |
 ### platform-foundation: `sso`
@@ -364,9 +364,9 @@ One section per service in queue order; inside a service, resources that still n
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
 | `ManagedPolicy` | `Policy` v1.11.3: 4/7 | - | 3 of 7 attrs: `Groups[]`, `Roles[]`, `Users[]` | kind released; the rest is not in it | 2 | service-level only: moto `iam`: 119 of 180 operations, including `CreateSAMLProvider`, `CreateOpenIDConnectPro... | S | the missing fields: upstream PR or our copy (plan section 9, question 1) | [F03](#f03) |
-| `AccessKey` | none | - | whole resource (3 attrs) | ignored in ACK's generator.yaml | 1 | yes: `CreateAccessKey` is implemented | M | `iam.aws.hfl.dev/AccessKey`, hand-written; the secret is returned once, so it needs a Kubernetes Secret write-back (F03 recommends not building it) | [F03](#f03) |
+| `AccessKey` | none | `AccessKey`: +1 | 2 of 3 attrs: `Serial`, `Status` | ignored in ACK's generator.yaml | 1 | yes: `CreateAccessKey` is implemented | M | `iam.aws.hfl.dev/AccessKey`, hand-written; the secret is returned once, so it needs a Kubernetes Secret write-back (F03 recommends not building it) | [F03](#f03) |
 | `ServerCertificate` | none | - | whole resource (7 attrs) | controller exists; resource not in it | 0 | service-level only: moto `iam`: 119 of 180 operations, including `CreateSAMLProvider`, `CreateOpenIDConnectPro... | S | `iam.aws.hfl.dev/ServerCertificate`, generated; legacy (ACM replaced it) | [F03](#f03) |
-| `VirtualMFADevice` | none | - | whole resource (5 attrs) | ignored in ACK's generator.yaml | 0 | yes: `CreateVirtualMFADevice` is implemented | S | `iam.aws.hfl.dev/VirtualMFADevice`, generated; low priority (a person's device) | [F03](#f03) |
+| `VirtualMFADevice` | none | `VirtualMFADevice`: +2 | 3 of 5 attrs: `Users[]`, `Tags[].Key`, `Tags[].Value` | ignored in ACK's generator.yaml | 0 | yes: `CreateVirtualMFADevice` is implemented | S | `iam.aws.hfl.dev/VirtualMFADevice`, generated; low priority (a person's device) | [F03](#f03) |
 | `Role` | `Role` v1.11.3: 10/11 | `RolePolicyAttachment`: +0 | 1 of 11 attrs: `Policies[].PolicyName` | kind released; the rest is not in it | 18 | service-level only: moto `iam`: 119 of 180 operations, including `CreateSAMLProvider`, `CreateOpenIDConnectPro... | S | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
 | `InstanceProfile` | `InstanceProfile` v1.11.3: 2/3 | - | 1 of 3 attrs: `Roles[]` | kind released; the rest is not in it | 5 | service-level only: moto `iam`: 119 of 180 operations, including `CreateSAMLProvider`, `CreateOpenIDConnectPro... | S | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
 | `Group` | `Group` v1.11.3: 4/5 | - | 1 of 5 attrs: `Policies[].PolicyName` | kind released; the rest is not in it | 1 | service-level only: moto `iam`: 119 of 180 operations, including `CreateSAMLProvider`, `CreateOpenIDConnectPro... | S | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
@@ -390,8 +390,8 @@ One section per service in queue order; inside a service, resources that still n
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
 | `TransitGateway` | `TransitGateway` v1.23.1: 11/15 | - | 4 of 15 attrs: `AssociationDefaultRouteTableId`, `EncryptionSupport`, `PropagationDefaultRouteTableId`, `SecurityGroupReferencingSupport` | kind released; the rest is not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | S | the missing fields: upstream PR or our copy (plan section 9, question 1) | [F04](#f04) |
 | `TransitGatewayVpcAttachment` | `TransitGatewayVPCAttachment` v1.23.1: 9/11 | - | 2 of 11 attrs: `AddSubnetIds[]`, `RemoveSubnetIds[]` | kind released; the rest is not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | S | the missing fields: upstream PR or our copy (plan section 9, question 1) | [F04](#f04) |
-| `VPNGatewayRoutePropagation` | none | - | whole resource (2 attrs) | controller exists; resource not in it | 2 | no: `EnableVgwRoutePropagation` is not in moto | S | a field of `RouteTable` upstream (`propagatingVGWs`) or a sidecar kind; F05 | [F05](#f05) |
-| `VPNConnection` | none | - | whole resource (43 attrs) | ignored in ACK's generator.yaml | 1 | partly: `CreateVpnConnection` yes, `CreateVpnConnectionRoute` no | L | `ec2.aws.hfl.dev/VPNConnection`, generated (`CreateVpnConnection` with tunnel options), static routes as a field, F05 | [F05](#f05) |
+| `VPNGatewayRoutePropagation` | none | `VPNGatewayRoutePropagation`: +1 | 1 of 2 attrs: `RouteTableIds[]` | controller exists; resource not in it | 2 | no: `EnableVgwRoutePropagation` is not in moto | S | a field of `RouteTable` upstream (`propagatingVGWs`) or a sidecar kind; F05 | [F05](#f05) |
+| `VPNConnection` | none | `VPNConnection`: +37 | 6 of 43 attrs: `PreSharedKeyStorage`, `TunnelBandwidth`, `VpnConcentratorId`, `VpnTunnelOptionsSpecifications[].LogOptions.CloudwatchLogOptions.BgpLogEnabled`, `VpnTunnelOptionsSpecifications[].LogOptions.CloudwatchLogOptions.BgpLogGroupArn`, `VpnTunnelOptionsSpecifications[].LogOptions.CloudwatchLogOptions.BgpLogOutputFormat` | ignored in ACK's generator.yaml | 1 | partly: `CreateVpnConnection` yes, `CreateVpnConnectionRoute` no | L | `ec2.aws.hfl.dev/VPNConnection`, generated (`CreateVpnConnection` with tunnel options), static routes as a field, F05 | [F05](#f05) |
 | `SecurityGroupVpcAssociation` | none | - | whole resource (2 attrs) | controller exists; resource not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/SecurityGroupVpcAssociation`, generated | [F06](#f06) |
 | `VPCBlockPublicAccessExclusion` | none | - | whole resource (5 attrs) | ignored in ACK's generator.yaml | 1 | no: `CreateVpcBlockPublicAccessExclusion` is not in moto | S | `ec2.aws.hfl.dev/VPCBlockPublicAccessExclusion`, generated; F06 | [F06](#f06) |
 | `VPCBlockPublicAccessOptions` | none | - | whole resource (1 attr) | controller exists; resource not in it | 1 | no: `ModifyVpcBlockPublicAccessOptions` is not in moto | S | `ec2.aws.hfl.dev/VPCBlockPublicAccessOptions`, hand-written account/Region singleton; F06 | [F06](#f06) |
@@ -408,7 +408,6 @@ One section per service in queue order; inside a service, resources that still n
 | `EIPAssociation` | none | - | whole resource (5 attrs) | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/EIPAssociation`, generated |  |
 | `GatewayRouteTableAssociation` | none | - | whole resource (2 attrs) | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/GatewayRouteTableAssociation`, generated |  |
 | `NetworkInterfaceAttachment` | none | - | whole resource (7 attrs) | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/NetworkInterfaceAttachment`, generated |  |
-| `NetworkInterfacePermission` | none | - | whole resource (3 attrs) | ignored in ACK's generator.yaml | 0 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/NetworkInterfacePermission`, generated |  |
 | `SubnetCidrBlock` | none | - | whole resource (4 attrs) | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/SubnetCidrBlock`, generated |  |
 | `TransitGatewayAttachment` | none | - | whole resource (9 attrs) | ACK has the VPC type only (`TransitGatewayVPCAttachment`); peering, Connect and VPN types are ignored | 0 | service-level only: moto `ec2`: 232 of 809 operations | S | one kind per attachment type: `TransitGatewayPeeringAttachment` (F04); VPN attachments come with `VPNConnection` (F05) |  |
 | `TransitGatewayAttachmentNatConfiguration` | none | - | whole resource (6 attrs) | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/TransitGatewayAttachmentNatConfiguration`, generated |  |
@@ -441,6 +440,7 @@ One section per service in queue order; inside a service, resources that still n
 | `VPNConnectionRoute` | none | - | 2 attrs, covered inline: to be a field of `VPNConnection.spec.staticRoutes[]` (F05) | ignored in ACK's generator.yaml | 1 | no: `CreateVpnConnectionRoute` is not in moto | - | a field of the `VPNConnection` kind | [F05](#f05) |
 | `VPNGateway` | none | `VPNGateway`: +4 | none | ignored in ACK's generator.yaml | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | none (covered) | [F05](#f05) |
 | `TransitGatewayRouteTable` | none | `TransitGatewayRouteTable (Cloud Control)`: +3 | none | ignored in ACK's generator.yaml | 1 | yes: `CreateTransitGatewayRouteTable`, `AssociateTransitGatewayRouteTable`, `EnableTransitGatewayRouteTablePropagation`, `CreateTransitGatewayRoute` | - | `ec2.aws.hfl.dev/TransitGatewayRouteTable`, generated, with `associations[]`, `propagations[]` and `routes[]` as fields (the pattern of ACK's `RouteTable`), F04 | [F04](#f04) |
+| `NetworkInterfacePermission` | none | `NetworkInterfacePermission`: +3 | none | ignored in ACK's generator.yaml | 0 | service-level only: moto `ec2`: 232 of 809 operations | - | none (covered) |  |
 | `PrefixList` | `ManagedPrefixList` v1.23.1: 7/7 | - | none | released | 0 | service-level only: moto `ec2`: 232 of 809 operations | - | none (covered) |  |
 | `SubnetNetworkAclAssociation` | none | - | 2 attrs, covered inline: ACK `NetworkACL.spec.associations[]` | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline) |  |
 | `VPCEndpointServicePermissions` | none | - | 2 attrs, covered inline: ACK `VPCEndpointServiceConfiguration.spec.allowedPrincipals` | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline) |  |

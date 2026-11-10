@@ -118,7 +118,7 @@ through its own Provider, `hfl.aws-cloudcontrol`. `CloudControlContext` is
 | every other `writeOnlyProperties` | a plain field, never compared (the digest notices a change) | opt-in per field, the builder's decision 4: many are not secrets (an IPAM pool's netmask, a GuardDuty member's email, a SAML provider's key ID to remove). The generator refuses an opted-in pointer that is not a write-only string reachable through objects, and the report lists the remaining candidates |
 | `primaryIdentifier` | `status.cloudControl.identifier` (values joined with `\|`), and the read-only parts in status | adoption takes it from ACK's `adoption-fields` annotation |
 | `required` | `required`, minus read-only | |
-| `tagging.tagProperty` | the tag list; ACK's default tags (`services.k8s.aws/*`) added on create, filtered out of spec | |
+| `tagging.tagProperty` | the tag list; ACK's default tags (`services.k8s.aws/*`) added on create in key order, filtered out of spec; compared as a multiset whatever its `insertionOrder` (a reordering alone is no change) | the drift rule |
 | `insertionOrder: false` | compared as a multiset | the drift rule, not the CRD |
 | `enum`, lengths, ranges, `minItems`/`maxItems` | kept | |
 | `pattern`, `format` | dropped, counted | ECMAScript expressions are not RE2; Cloud Control validates them anyway |

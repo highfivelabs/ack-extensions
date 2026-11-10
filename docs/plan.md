@@ -1,18 +1,19 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has twenty-eight kinds:
+Status, 2026-11-09: the repository has twenty-nine kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
-- `ec2.aws.hfl.dev` `CustomerGateway`, `VPNGateway`, `Volume` and
+- `ec2.aws.hfl.dev` `CustomerGateway`, `VPNGateway`, `VPNConnection`,
+  `VPNGatewayRoutePropagation`, `NetworkInterfacePermission`, `Volume` and
   `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
-- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias` and `AccountPasswordPolicy`;
+- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy`, `AccessKey` and `VirtualMFADevice`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
-- `organizations.aws.hfl.dev` `DelegatedAdministrator`, `Organization`, `Policy` and
-  `PolicyAttachment`;
+- `organizations.aws.hfl.dev` `AccountPlacement`, `DelegatedAdministrator`,
+  `Organization`, `Policy` and `PolicyAttachment`;
 - `rds.aws.hfl.dev` `OptionGroup`;
 - `rds.aws.hfl.dev` `DBProxyTarget`;
 - `rds.aws.hfl.dev` `DBRoleAssociation`;
@@ -413,6 +414,11 @@ controller to show it can fail:
   case, as AWS stores them.
 - **IAM.** moto does not enforce it by default, so the tests prove which
   identity a pod presents, not that AWS would authorise it.
+- **Access keys** (probed 2026-11-09): moto answers as AWS does here: a
+  40-character secret returned only by the create, a third key for one
+  user refused (`LimitExceeded`), and `NoSuchEntity` for an unknown user's
+  `ListAccessKeys` and for a key deleted twice. It does not enforce the
+  key: any key signs a moto request.
 - **Removing a role from a cluster or instance.** moto 5.2.5 implements
   `AddRoleToDBCluster` and `AddRoleToDBInstance`, but not
   `RemoveRoleFromDBCluster` or `RemoveRoleFromDBInstance`: it answers
@@ -465,7 +471,23 @@ controller to show it can fail:
   `detached`; AWS goes through `attaching` and `detaching`, and refuses
   to delete a gateway until it is detached). It keeps a deleted gateway
   listed in state `deleted`, as AWS does. It does not implement
-  `EnableVgwRoutePropagation`, so route propagation is not built.
+  `EnableVgwRoutePropagation` or `DisableVgwRoutePropagation` (server
+  errors, probed 2026-11-09), so `VPNGatewayRoutePropagation` is unproven
+  on the fake (section 6.34).
+- **EC2 VPN connections** (probed 2026-11-09). moto makes a connection
+  `available` at once (AWS goes through `pending` for minutes), keeps a
+  deleted one listed in state `deleted`, as AWS does, deletes one twice
+  without an error, and answers `InvalidVpnConnectionID.NotFound` for an
+  unknown ID. It returns no `Options` at all (AWS returns every tunnel's
+  options, its outside IP address and its pre-shared key) and no device
+  configuration with keys in it. It has none of
+  `ModifyVpnTunnelOptions`, `ModifyVpnConnectionOptions`,
+  `ModifyVpnConnection` or `CreateVpnConnectionRoute` (server errors).
+- **EC2 network interface permissions** (probed 2026-11-09). moto has
+  none of `CreateNetworkInterfacePermission`,
+  `DescribeNetworkInterfacePermissions` or
+  `DeleteNetworkInterfacePermission` (a server error), so the kind is
+  unproven on the fake.
 - **EBS volumes.** moto creates a volume `available` at once (AWS goes
   through `creating`), applies `ModifyVolume` at once (AWS goes through
   `modifying` and `optimizing`), and removes a deleted volume at once.
@@ -510,6 +532,17 @@ controller to show it can fail:
 - **IAM password policy.** moto stores the policy and fills IAM's
   defaults for fields left out, as AWS does; it checks the lengths and
   ages IAM limits.
+- **IAM virtual MFA devices** (probed 2026-11-09). moto returns the seed
+  and the QR code from the create, as AWS does (the seed 64 Base32
+  characters; the "QR code" 64 random bytes, not a PNG), refuses a second device of the same path and
+  name (`EntityAlreadyExists`), pages the list at 100 with a marker, and
+  answers `NoSuchEntity` for a device deleted twice. It differs from AWS
+  in four ways: its `ListVirtualMFADevices` returns every device's seed
+  and QR code again (AWS returns neither after the create; the kind
+  ignores both fields, so nothing reads them); it deletes a device that is
+  enabled for a user (AWS answers `DeleteConflict`); its
+  `EnableMFADevice` takes any two six-digit codes; and it has none of the
+  MFA device tag calls nor `GetMFADevice` (a server error).
 - **KMS replica keys.**
   - moto keeps a replica in its own Region's backend, under the primary
     key's key ID, as AWS does.
@@ -574,6 +607,15 @@ controller to show it can fail:
     organization with no member accounts and refuses one with members
     (`OrganizationNotEmptyException`), as AWS does. `EnableAllFeatures`
     is not implemented.
+  - Account moves: moto's `MoveAccount` does not check that the account
+    is in `SourceParentId`, and moves an account to the parent it is
+    already in (AWS answers `SourceParentNotFoundException` and
+    `DuplicateAccountException`); for an unknown parent it answers
+    `ParentNotFoundException` (AWS: `SourceParentNotFoundException` or
+    `DestinationParentNotFoundException`). `ListParents` and
+    `DescribeAccount` answer as AWS does, `AccountNotFoundException` for
+    an unknown account (AWS answers `ListParents` with
+    `ChildNotFoundException`).
 - **An association's status.** moto marks a new association `ACTIVE` at
   once. On AWS it is `PENDING` first, and `INVALID` when RDS cannot assume
   the role. The rule (synced only when `ACTIVE`) is unit-tested.
@@ -622,7 +664,7 @@ its master (5.2.5 is the pin).
 | 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`; no pull request or issue, rechecked 2026-11-09) | yes | built |
 | 13 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237: mergeable, active 2026-11-06 | none | skipped: may be close to merging, and moto has none of it |
 | 14 | Route 53 DNSSEC and `KeySigningKey`, VPC association authorization | ignored in route53-controller's `generator.yaml` | none | skipped: moto has none of it |
-| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | built: `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy`; `AccessKey` waits on open question 10 |
+| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | built: `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy`; `AccessKey` (6.30; open question 10, answered) |
 | 16 | EC2 `PlacementGroup` | ignored in ec2-controller's `generator.yaml` | none | skipped: moto has none of it |
 | 17 | S3 `Object`, the account's public access block | none | yes | to build |
 | 18 | EC2 `KeyPair` | ec2-controller PR #396: both reviews' changes made, main merged in 2026-11-04, mergeable | yes | skipped: close to merging; wait for the release |
@@ -1650,6 +1692,372 @@ consolidated-billing organization (moto allows both);
 policy type detaches its policies; a delegated administrator's account
 (its rights differ); real AWS.
 
+### 6.29 `organizations.aws.hfl.dev` `AccountPlacement`
+
+The OU (or the root) a member account is in. F01's fifth and last kind.
+Upstream rechecked 2026-11-09: no release after organizations-controller
+`v1.7.0`; ACK's `Account` has no parent field (`CreateAccount` takes
+none) and nothing calls `MoveAccount`; community #2369 (open since 2025,
+"How to support MoveAccount in organizations") asks for a field on
+`Account` or a separate resource, with no pull request. CloudFormation
+has it as `AWS::Organizations::Account`'s `ParentIds`. A field on ACK's
+`Account` is ACK's to add; a sidecar here is the other option #2369
+names, and moves to ACK if ACK adds either.
+
+**Generated**, from operations mapped in `generator.yaml`: `MoveAccount`
+is both the create and the update (`operation_type: [Create, Update]`),
+`ListParents` the read (its one parent is `spec.parentID`). About 95% of
+the new Go is generated (about 1,770 lines); written here are four
+one-to-five-line hook templates and `hooks.go` (87 lines): the parent to
+move from, the skip when the account is already there, and the account's
+ARN.
+
+- **Spec:** `accountID` or `accountRef` (ACK's `Account`, its
+  `status.accountID`), immutable; `parentID` (a root `r-...` or an OU
+  `ou-...`) or `parentRef` (ACK's `OrganizationalUnit`, its `status.id`).
+  `Organization.status.rootID` (6.28) is the root's ID.
+- **Placed, then kept there.** Until the object has placed the account
+  (no ARN in its status), its read finds nothing, as for the other
+  account-wide settings (`docs/handoff.md`); the create reads the parent
+  the account is in now and calls `MoveAccount` from it, or, when the
+  account is already there, nothing (AWS would refuse the move,
+  `DuplicateAccountException`). It then reads the account's ARN
+  (`DescribeAccount`) into `status.ackResourceMetadata.arn`. From then
+  on the read is `ListParents`: a changed `parentID` moves the account
+  (`SourceParentId` is the parent read), and a move outside Kubernetes is
+  moved back.
+- **Delete leaves the account where it is.** There is no delete call
+  (none is mapped, so `sdkDelete` is a no-op): an account always has a
+  parent, and moving it back to the root on delete would take it out
+  from under its OU's policies, which is the opposite of what deleting a
+  placement is for. **Assumed, for the builder to confirm:** the
+  builder's answer to question 12 (an organization is not deletable, so
+  it is not treated as such) applied to a placement; likely and cheap.
+  Following it, the kind joins the retain-only admission policy (6.28,
+  `config/admission/retain-only.yaml`), so every object carries
+  `services.k8s.aws/deletion-policy: retain`. Were the builder to want a
+  delete to move the account back to the root, the kind would map
+  `MoveAccount` as the delete too and leave the policy.
+- **One object per account.** Two placements of one account move it
+  back and forth (#2369 names this); make one.
+- **Terminal:** `InvalidInputException`, `ConstraintViolationException`.
+  An unknown account or parent is retried (it may be being made: ACK's
+  `Account` and `OrganizationalUnit` are referenced once they have IDs).
+
+**Proven on moto** (`TestOrganizationsAccountPlacement`): ACK's
+`Account` moved into ACK's `OrganizationalUnit` by reference, the status
+ARN the account's, and no create or update across resyncs; moved to the
+root outside Kubernetes, it is moved back; a new `parentID` moves it; an
+account already in its parent is placed (synced, ARN set); `accountID`
+cannot change; delete leaves both accounts in their parents. With the
+retain-only policy installed: an object without the annotation, or with
+`delete`, is refused; one with `retain` places the account, its
+annotation cannot be changed or removed, and deleting it leaves the
+account in its OU. `tests/operator/run.sh` checks the refusal on kind.
+
+**Not proven on moto:** that the create makes no `MoveAccount` call when
+the account is already in place (moto accepts the call, so the test
+shows only the outcome); AWS's `SourceParentNotFoundException` when the
+account moved between the read and the move (retried, then read again);
+the management account (AWS lets it move between OUs); real AWS.
+
+### 6.30 `iam.aws.hfl.dev` `AccessKey`
+
+An IAM user's access key (F03; rank 15). Built on the builder's answer to
+open question 10. Upstream rechecked 2026-11-09: iam-controller `v1.11.3`
+ignores `AccessKey` in its `generator.yaml`; no pull request adds it;
+community #1879 asks for a way to get a key's secret. Cloud Control cannot
+serve it either (`AWS::IAM::AccessKey` is not provisionable,
+`docs/cloudcontrol.md` section 8, PR #36), so it is built here on ACK's
+generator.
+
+**Generated** from `CreateAccessKey` (create), `ListAccessKeys` (read,
+matched on the key's ID, `list_operation.match_fields`) and
+`DeleteAccessKey`. About 85% of the new Go is generated (about 1,590
+lines); written here are four hook templates and `hooks.go` (about 220
+lines: the Secret). `UpdateAccessKey` is ignored and a custom update
+refuses every change.
+
+- **Spec:** `userName` or `userRef` (ACK's `User`, its `spec.name`,
+  through a type alias in `apis/v1alpha1/ack_kinds.go`), and
+  `secretName`, both immutable. The create writes the default Secret
+  name into `spec.secretName`: the CRD's rule (`self == oldSelf`) does not
+  stop a field being set from unset, which would lose track of the
+  Secret (the first `task check` run showed it). **Status:** `accessKeyID`, `createDate`,
+  `status` (`Active`; the key's status is not managed).
+- **The secret, once, into a Secret.** `CreateAccessKeyOutput`'s
+  `SecretAccessKey` is ignored by the generator, so no generated code
+  copies it anywhere. A hook right after the create writes it, with the
+  key's ID, into a new Secret in the object's namespace, named
+  `spec.secretName` or else the object's name, keys `AWS_ACCESS_KEY_ID`
+  and `AWS_SECRET_ACCESS_KEY` (the names the AWS SDKs read, so a pod can
+  take both with `envFrom`), `immutable: true`, owned by the object
+  (controller reference, no `blockOwnerDeletion`), and clears the
+  secret from the response. The manager makes the Secret with its own
+  client (ACK's runtime gives a resource manager none that can create:
+  `WriteToSecret` patches an existing Secret, as acm-controller's
+  `AcmeExternalAccountBinding` uses it). The manager's role gains
+  `secrets` `create` and `delete` (section 7.3).
+- **Never written over.** A create whose Secret already exists is refused
+  (terminal) before any key is made: if the object does not own it, name
+  another; if it does, its key was deleted outside Kubernetes, and only a
+  new object (or deleting the Secret) makes a new key. If the Secret
+  cannot be made after the key was, the key is deleted (nobody could read
+  its secret again) and the create is tried later; if that delete fails,
+  the error is terminal and names the key, so that no more keys are made
+  up to IAM's limit of two a user.
+- **The Secret is the record.** The read, while the status has no key ID,
+  takes it from the Secret the object owns, so a status write that failed
+  after the create does not lead to a second key.
+- **Never logged.** The secret is in no error, event or status; the
+  manager's debug log in the tests does not contain it.
+- **Delete** deletes the key, then the Secret if the object owns it (the
+  owner reference does the same where garbage collection runs). A Secret
+  deleted by hand is not made again; the key's secret is gone, so rotate.
+- **Assumed, likely and cheap** (the builder named a spec field with a
+  default, not the default): the default Secret name is the object's
+  name, and the Secret's keys are `AWS_ACCESS_KEY_ID` and
+  `AWS_SECRET_ACCESS_KEY`.
+
+**Proven on moto** (`TestIAMAccessKey`): a key made for ACK's `User` by
+reference, its Secret holding the ID in status and a 40-character
+secret, owned by the object and immutable; no second create and the
+Secret not written again across resyncs; a status cleared of the ID takes
+it back from the Secret with no second key; the default written into
+`spec.secretName`, which then cannot change; a
+Secret not the object's is left untouched and no key is made; a key
+deleted outside Kubernetes is not made again over its Secret; delete
+removes the key and the Secret; the secret is in no manager log line, in
+nothing of the object's and in no event.
+
+**Not proven on moto:** a Secret that cannot be made after the key was
+(the key deleted, then made again: the path needs the API server to
+refuse a create that it accepted a moment before, and is unit-tested only
+in its parts); IAM's eventual consistency for a new key; the owner
+reference's garbage collection (envtest runs no garbage collector; the
+explicit delete is what the test shows); real AWS.
+
+### 6.31 `iam.aws.hfl.dev` `VirtualMFADevice`
+
+A virtual MFA device (F03). Built on the builder's decision of 2026-11-09,
+closing PR #44: Cloud Control never returns a device's seed or QR code,
+so a device made through it cannot be enrolled; this kind writes the seed
+into a Kubernetes Secret, on `AccessKey`'s pattern (section 6.30).
+Upstream rechecked 2026-11-09: iam-controller `v1.11.3` ignores
+`VirtualMFADevice` in its `generator.yaml`, on master too; no pull request
+or issue adds it.
+
+**Generated** from `CreateVirtualMFADevice` (create),
+`ListVirtualMFADevices` (read, matched on the serial number,
+`list_operation.match_fields`) and `DeleteVirtualMFADevice`. About 82% of
+the new Go is generated (about 1,460 lines); written here are six hook
+templates and `hooks.go` (about 310 lines together: the Secret and the
+list's pages). The create's `VirtualMFADeviceName` is renamed `name`, as
+ACK's `User` and `Role` do. There is no update call, and a custom update
+refuses every change.
+
+- **Spec:** `name`, `path` and `secretName`, all immutable; the create
+  writes the default Secret name into `spec.secretName`, as `AccessKey`
+  does. **Status:** `serialNumber` (the device's ARN) and `enableDate`
+  (set once a user enables it). The SDK's `User` shape is ignored, so the
+  user a device is enabled for is not shown.
+- **The seed, once, into a Secret.** `CreateVirtualMFADeviceOutput`'s
+  `Base32StringSeed` and `QRCodePNG` are ignored by the generator, so no
+  generated code copies them anywhere. A hook right after the create
+  writes them, with the serial number, into a new Secret in the object's
+  namespace, named `spec.secretName` or else the object's name, keys
+  `serialNumber`, `base32StringSeed` and `qrCodePNG` (the QR code is
+  part of the same response, so it costs nothing to keep),
+  `immutable: true`, owned by the object, and clears both from the
+  response. The manager makes the Secret with its own client, as
+  `AccessKey` does.
+- **Never written over**, **the Secret is the record**, **never logged**
+  and **delete** as for `AccessKey`: a create whose Secret exists is
+  refused (terminal) before any device is made; a Secret that cannot be
+  made after the device was deletes the device; the read, while the
+  status has no serial number, takes it from the Secret the object owns;
+  delete deletes the device, then the Secret if the object owns it.
+- **The list's pages.** `ListVirtualMFADevices` lists every device in the
+  account, 100 a page. The generated read takes one page, so a hook reads
+  on with the marker until a page holds the device.
+- **Not this kind's:** enabling the device for a user. `EnableMFADevice`
+  takes two consecutive codes computed from the seed, so it is a person's
+  step, or a later kind's that reads the Secret. A device enabled for a
+  user cannot be deleted (`DeleteConflict`): the delete fails and is
+  retried, and the error says why, until the device is deactivated.
+  Tags are not managed (the list does not return them, and moto has no
+  MFA device tag calls).
+- **Assumed, likely and cheap** (the builder named the seed and the QR
+  code, not the names): the default Secret name is the object's name, and
+  the Secret's keys are `serialNumber`, `base32StringSeed` and `qrCodePNG`.
+
+**Proven on moto** (`TestIAMVirtualMFADevice`): a device made after 105
+others, found on the list's second page; its Secret holding the serial
+number, the seed (Base32 text) and the QR code, owned by the object and
+immutable; no
+second create and the Secret not written again across resyncs; a status
+cleared of the serial number takes it back from the Secret with no second
+device; the default written into `spec.secretName`, which then cannot
+change; a Secret not the object's is left untouched and no device is made;
+a device deleted outside Kubernetes is not made again over its Secret;
+delete removes the device and the Secret; the seed is in no manager log
+line, in nothing of the object's and in no event.
+
+**Not proven on moto:** a delete refused for a device enabled for a user
+(moto deletes it); a Secret that cannot be made after the device was (as
+for `AccessKey`); the QR code (moto's is 64 random bytes, not a PNG);
+the owner reference's garbage
+collection; real AWS.
+
+### 6.32 `ec2.aws.hfl.dev` `VPNConnection`
+
+A site-to-site VPN connection (F05), handed over by the Cloud Control
+route: it fits ACK's generator better, with references to our
+`CustomerGateway` and `VPNGateway` and the tunnels' pre-shared keys from
+Secrets. Upstream rechecked 2026-11-09: ec2-controller `v1.23.1` ignores
+`VpnConnection` and `VpnConnectionRoute` in its `generator.yaml`, on master
+too; community #1868 ("VPN resources", open since 2023) has no pull
+request.
+
+**Generated** from `CreateVpnConnection` (create), `DescribeVpnConnections`
+(read) and `DeleteVpnConnection`, with ACK ec2-controller's tag hooks
+(`InternetGateway`'s, through `VPNGateway`'s). About 82% of the new Go is
+generated (about 2,240 lines); written here are four hook templates and
+`hooks.go` (about 500 lines together: the update, the options' read and
+the static routes).
+
+- **Spec:** `type`, `customerGatewayID` or `customerGatewayRef` (our
+  `CustomerGateway`), `vpnGatewayID` or `vpnGatewayRef` (our
+  `VPNGateway`), `transitGatewayID`, all immutable; `options` (the
+  connection's CIDRs, static-routes-only, acceleration, and per tunnel the
+  inside CIDR, IKE and phase settings, logging and
+  `preSharedKey`, a `SecretKeyReference`); `staticRoutes` (CIDRs, for a
+  static-routes-only connection); `tags`. **Status:** `vpnConnectionID`,
+  `state` (synced when `available`), `routes`, `vgwTelemetry` (each
+  tunnel's outside IP address and status), `category`,
+  `gatewayAssociationState`.
+- **The pre-shared keys.** The generated create reads each tunnel's key
+  from its Secret, as ACK's kinds read secrets. EC2 returns the keys in
+  two places, every tunnel's options and the device configuration (an
+  XML document for the customer's router); the read clears both from the
+  response before anything else reads it, and the configuration is never
+  a field. So a key is never in the object, a log or an event. EC2's keys
+  are not compared with the Secrets: a changed Secret is pushed when its
+  reference changes (a new name or key), not on its own.
+- **The options' read.** EC2 returns the options in another shape and
+  fills a default for every tunnel setting left out, so the read takes
+  from EC2 only the fields the spec sets (tunnels by position), and the
+  spec's key references. A setting changed outside Kubernetes is then
+  drift and is put back. With no options from EC2 (moto), the read keeps
+  the spec's.
+- **Updates:** tags (`CreateTags`/`DeleteTags`); static routes
+  (`CreateVpnConnectionRoute`/`DeleteVpnConnectionRoute`, read from the
+  connection's routes of source `Static`); the connection's four CIDRs
+  (`ModifyVpnConnectionOptions`); each changed tunnel
+  (`ModifyVpnTunnelOptions`, by the tunnel's outside IP address read from
+  EC2, its key read from its Secret). Acceleration, static-routes-only,
+  the inside IP version, the outside IP address type, the transport
+  attachment and the number of tunnels are refused (terminal): EC2 cannot
+  change them. Changing the gateways (`ModifyVpnConnection`) is not
+  offered: the fields are immutable, and a new connection is the way.
+- **Not built:** a reference to ACK's `TransitGateway` (`transitGatewayID`
+  is a plain ID): it needs ACK's ec2-controller as a Go module, a new
+  upstream dependency (open question 16). The newer
+  `PreSharedKeyStorage` (keys in Secrets Manager) and
+  `VpnConcentratorId` are not in the code generator's pinned EC2 model.
+
+**Proven on moto** (`TestVPNConnection`): a connection made from our
+`CustomerGateway` and `VPNGateway` by reference, its keys from a Secret,
+with its type, gateways and tags in the cloud, `available`; no second
+create and no update across resyncs; the keys in no manager log line, in
+nothing of the object's and in no event; tags changed; the type refused
+by the CRD; delete leaves the connection `deleted` in the cloud.
+
+**Not proven on moto** (unit-tested in their parts, `hooks_test.go`):
+the options' read against what EC2 returns (moto returns none), tunnel
+option and CIDR changes, static routes, that the keys reach EC2 (moto
+returns nothing to check them by), `pending` before `available`, and real
+AWS. The foundation queue's "done when" asked for a tunnel option change
+end to end; moto cannot show it.
+
+### 6.33 `ec2.aws.hfl.dev` `NetworkInterfacePermission`
+
+Another account's, or an AWS service's, permission on one of this
+account's network interfaces (F04/F05's networking gaps; one of the two
+foundation types Cloud Control cannot provision, `docs/cloudcontrol.md`
+section 8, handed to this route). Upstream rechecked 2026-11-09:
+ec2-controller `v1.23.1` ignores `NetworkInterfacePermission` in its
+`generator.yaml`; no pull request or issue adds it.
+
+**Generated**, all of it but one read hook: `CreateNetworkInterfacePermission`
+(its output wrapped in `InterfacePermission`, `output_wrapper_field_path`),
+`DescribeNetworkInterfacePermissions` (read by ID) and
+`DeleteNetworkInterfacePermission`. About 99% of the new Go is generated
+(about 1,480 lines); written here is a five-line template that reads a
+permission `revoking` or `revoked` as gone. There is no update call: every
+field is immutable, and the generated update refuses.
+
+- **Spec:** `networkInterfaceID`, `permission` (`INSTANCE-ATTACH` or
+  `EIP-ASSOCIATE`), `awsAccountID` or `awsService`, all immutable; no
+  tags (the API has none). **Status:** `networkInterfacePermissionID`,
+  `permissionState` (`state`, `statusMessage`); synced when `granted`.
+- **Not built:** a reference to the network interface. ACK's
+  ec2-controller has no `NetworkInterface` kind (F06 proposes ours), so
+  the interface is named by ID.
+- **Assumed, unproven:** the error code for an unknown permission ID,
+  `InvalidPermissionID.NotFound`, is not documented for these calls; an
+  empty answer is also read as gone, so either way works.
+
+**Unproven on the fake:** moto has none of the API. A stand-in unit test
+(`sdk_test.go`, on `pkg/fakeaws`'s guarded client, as `DBRoleAssociation`'s
+is) answers as the EC2 API reference documents and checks what the
+generated create, read and delete send and how they read the answers: the
+ID and state from the create, `granted` and `pending` kept, `revoking`,
+`revoked`, an empty list and the not-found code read as gone, another
+error passed on, no call before the create. No end-to-end test. The
+coverage data's "unproven on fake" note exists only for Cloud Control
+kinds (`hack/coverage`, from a CRD annotation); it is said here and in the
+README instead.
+
+### 6.34 `ec2.aws.hfl.dev` `VPNGatewayRoutePropagation`
+
+A VPN gateway's routes propagated into a route table (F05; one of the two
+foundation types Cloud Control cannot provision, `docs/cloudcontrol.md`
+section 8, handed to this route). Upstream rechecked 2026-11-09:
+ec2-controller `v1.23.1` reports a table's propagating gateways in
+`RouteTable`'s status (`propagatingVGWs`, read-only) and has no way to
+set one, on master too; no pull request adds one.
+
+**Generated** from the attach pair, mapped in `generator.yaml`
+`operations` as `PolicyAttachment`'s are: `EnableVgwRoutePropagation`
+(create), `DisableVgwRoutePropagation` (delete), `DescribeRouteTables`
+(read, matched on the table's ID). About 98% of the new Go is generated
+(about 1,490 lines); written here are two read templates and `hooks.go`
+(about 35 lines): the read asks for the one table, and finds the
+propagation only when the table lists the gateway among its propagating
+gateways. There is no update call: both fields are immutable, and the
+generated update refuses.
+
+- **Spec:** `gatewayID` or `gatewayRef` (our `VPNGateway`), and
+  `routeTableID`, all immutable. **Status:** only the runtime's.
+- **Not built:** a reference to ACK's `RouteTable`: it needs ACK's
+  ec2-controller as a Go module, a new upstream dependency (open question 16,
+  raised by `VPNConnection`'s `transitGatewayRef` in PR #48).
+- **A propagation that exists already** (made outside Kubernetes) is
+  found by the first read, so the object adopts it, and its delete stops
+  it. Two objects for one gateway and table would share it; the first
+  deleted stops it for both.
+
+**Unproven on the fake:** moto has neither call. A stand-in unit test
+(`sdk_test.go`, on `pkg/fakeaws`'s guarded client) answers as the EC2 API
+reference documents and checks that the read asks for the one table and
+finds the propagation only when the gateway is listed (another gateway,
+none, and a table gone read as absent; another error passed on), and that
+the create and delete send the gateway and the table. No end-to-end test.
+As for `NetworkInterfacePermission`, the coverage data's "unproven on
+fake" note is for Cloud Control kinds only, so it is said here and in the
+README.
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)
@@ -1754,6 +2162,11 @@ smaller than on Google Cloud: ACK's controller has no cluster-wide
 webhook or core rights. But `own` still keeps ACK's databases out of our
 manager's reach. Both columns hold the runtime's cluster-wide Secret read
 and patch; that is ACK's design, not ours.
+
+One manager has more: the iam manager also creates and deletes Secrets,
+cluster-wide, for `AccessKey` (6.30): it makes one Secret per key, owned
+by the object, and deletes only one its object owns. With identity `ack`
+that right comes to ACK's iam-controller's ServiceAccount with our role.
 
 ### 7.4 What was proven
 
@@ -1938,6 +2351,7 @@ identity scoped to it, and nothing else does:
   | `Policy` | `organizations:CreatePolicy`, `DescribePolicy`, `UpdatePolicy`, `DeletePolicy`, `ListTagsForResource`, `TagResource`, `UntagResource` |
   | `PolicyAttachment` | `organizations:AttachPolicy`, `DetachPolicy`, `ListTargetsForPolicy` |
   | `DelegatedAdministrator` | `organizations:RegisterDelegatedAdministrator`, `DeregisterDelegatedAdministrator`, `ListDelegatedAdministrators` |
+  | `AccountPlacement` | `organizations:MoveAccount`, `ListParents`, `DescribeAccount` |
   | `Organization` | `organizations:DescribeOrganization`, `ListRoots`, `EnablePolicyType`, `DisablePolicyType`, `EnableAWSServiceAccess`, `DisableAWSServiceAccess`, `ListAWSServiceAccessForOrganization`; and `organizations:CreateOrganization` with `iam:CreateServiceLinkedRole` only if the object is to make the organization |
 
   The role should also deny `organizations:DeleteOrganization` and
@@ -2006,7 +2420,23 @@ Before it can run on a real cluster:
    - role associations: how long `PENDING` lasts, when `INVALID` appears
      and whether it mends once the role's trust policy is fixed, and the
      real responses and faults of `RemoveRoleFromDBCluster` and
-     `RemoveRoleFromDBInstance`, which moto lacks (section 4.4).
+     `RemoveRoleFromDBInstance`, which moto lacks (section 4.4);
+   - virtual MFA devices: the seed decodes as Base32 and the QR code is a
+     PNG that an authenticator reads, a device so made can be enabled for
+     a user with two codes from the seed, and the delete of an enabled
+     device is refused with `DeleteConflict` (section 6.31).
+   - VPN connections: the options' read against a real connection (no
+     update across resyncs, a tunnel setting changed outside Kubernetes
+     put back), a tunnel option change and a CIDR change, static routes
+     added and removed, `pending` to `available`, and the keys absent from
+     the manager's log at debug level (section 6.32).
+   - network interface permissions, the whole kind (moto has none of the
+     API): a permission granted to another account, its state, the error
+     code for an unknown ID, and the delete (section 6.33).
+   - VPN gateway route propagation, the whole kind (moto has neither
+     call): a propagation enabled and disabled, read back from the route
+     table, and EC2's answer to disabling one already stopped (section
+     6.34).
 4. CRD labels marking a gap kind and naming the upstream kind it
    anticipates, as gaps-gcp does.
 5. Offer patch 0001 upstream; comment on PRs #184 and #257 with what we
@@ -2273,6 +2703,14 @@ Before it can run on a real cluster:
        builder creates it); the live-test switch and the account's
        CloudFormation template are prepared, credentials by federation
        from the offload VMs' Google service account, never stored keys.
+14. **IAM `VirtualMFADevice`** (F03). **Decided** (builder, 2026-11-09):
+    built here on ACK's generator (hand-written if it must be), not on
+    Cloud Control, since Cloud Control never returns the seed (the Cloud
+    Control `VirtualMFADevice`, PR #44, is closed). `CreateVirtualMFADevice`
+    returns the Base32 seed (and a QR code PNG) once; the create writes the
+    seed, and optionally the PNG, into a Kubernetes Secret owned by the
+    object, never logged and never written over: the same pattern as
+    `AccessKey` (6.30). Queued after `AccessKey` (`docs/handoff.md`).
 15. **Control Tower's `LandingZone` through Cloud Control** (F07). Deleting
     an `AWS::ControlTower::LandingZone` decommissions the landing zone: the
     organization's guardrails, the log archive and audit accounts' setup,
@@ -2296,4 +2734,19 @@ Before it can run on a real cluster:
     until the builder answers; `EnabledControl` and `EnabledBaseline` (a
     control or baseline on an OU, which a delete only disables) are served
     without it, unproven on the fake (no emulator has Control Tower).
+16. **A reference from `VPNConnection` to ACK's `TransitGateway`** (F05,
+    section 6.32). The connection's other end is our `VPNGateway` or a
+    transit gateway, which ACK's ec2-controller manages. A
+    `transitGatewayRef` needs ACK's `TransitGateway` type, as `AccessKey`
+    and the Organizations kinds reference ACK's kinds: ACK's ec2-controller
+    as a Go module here (today only its `pkg/tags` is copied), a new
+    upstream dependency. Options:
+    - add `github.com/aws-controllers-k8s/ec2-controller` `v1.23.1` (the
+      version already pinned), alias `TransitGateway` in
+      `services/ec2/apis/v1alpha1/ack_kinds.go`, and register its scheme;
+    - leave `transitGatewayID` a plain ID.
 
+    Recommended: the first, the same pattern as the IAM and
+    Organizations references. Built meanwhile: the plain ID.
+    `VPNGatewayRoutePropagation`'s `routeTableRef` (PR #50) waits on the
+    same answer.
