@@ -7,7 +7,7 @@
 # keep the resolved install manifest as the run's `install` artifact.
 #
 # The registry is written through Workload Identity Federation as
-# factory-offload@hfl-dev-514205; no key is stored here. It runs only when
+# hfl-release@hfl-dev-514205 (only artifactregistry.writer on hfl-oci; it cannot create VMs); no key is stored here. It runs only when
 # the repository variable RELEASE_ENABLED is "true", which is set once the
 # WIF provider admits this repository (the PR that added this file says
 # what to change).
@@ -45,7 +45,7 @@ jobs:
         uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
         with:
           workload_identity_provider: projects/361760340954/locations/global/workloadIdentityPools/github/providers/factory
-          service_account: factory-offload@hfl-dev-514205.iam.gserviceaccount.com
+          service_account: hfl-release@hfl-dev-514205.iam.gserviceaccount.com
           token_format: access_token
       - name: Log ko in to the registry
         env:

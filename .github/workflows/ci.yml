@@ -1,19 +1,27 @@
 # Copyright 2026 High Five Labs
 # SPDX-License-Identifier: Apache-2.0
 #
-# The two checks docs/handoff.md runs on an offload VM, on every pull
-# request and on main: `task check` (generated files current, gofmt, vet,
-# SPDX lines, build, unit and end-to-end tests against moto) and
-# `task operator-e2e` (the operator on kind beside ACK's real
-# rds-controller, against moto in the cluster). Both after `task tools`, the
-# handoff's prep. Nothing here reaches real AWS: no credentials are given,
-# and hack/noaws (run by `task check`) keeps test paths on the fake.
+# Pull requests (the builder's decisions of 2026-11-10, O22 and "selective"):
+#
+#   plan    hack/ci/select.sh maps the changed paths to what must run:
+#           none (docs only), groups (check:static, build and the changed
+#           services' own tests) or full (task check). When the Spot runners
+#           are on (repository variable SPOT_RUNNERS_ENABLED), it also
+#           starts the offload Spot VMs the heavy jobs run on
+#           (.github/actions/spot-runner).
+#   check   on GitHub's runner (Actions minutes), or on a Spot VM when
+#           CHECK_ON_SPOT is 'true' too.
+#   e2e     task operator-e2e on a Spot VM: no Actions minutes. Skipped
+#           while the Spot runners are off (the plan's summary says so).
+#   ci      the one status to require: fails if any job above failed or
+#           was cancelled; a skipped job is fine.
+#
+# Everything runs against moto, the fake AWS: no credentials reach a test.
+# The whole suite runs nightly on main (nightly.yml).
 name: ci
 
 on:
   pull_request:
-  push:
-    branches: [main]
 
 permissions:
   contents: read
@@ -22,16 +30,86 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  # offload, vendored in the factory repository (offload/), at this commit.
+  FACTORY_REF: ba59cca20632966e07bd5b9f36ed0a1b525ea023
+
 jobs:
-  check:
+  plan:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+    outputs:
+      mode: ${{ steps.plan.outputs.mode }}
+      groups: ${{ steps.plan.outputs.groups }}
+      e2e: ${{ steps.plan.outputs.e2e }}
+      check-runner: ${{ steps.runners.outputs.check }}
+      e2e-runner: ${{ steps.runners.outputs.e2e }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: What this pull request runs
+        id: plan
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          hack/ci/select.sh plan "${BASE}" "${HEAD}" > plan.out 2>> "${GITHUB_STEP_SUMMARY}"
+          cat plan.out
+          cat plan.out >> "${GITHUB_OUTPUT}"
+
+      - name: Where the heavy jobs run
+        id: runners
+        env:
+          MODE: ${{ steps.plan.outputs.mode }}
+          E2E: ${{ steps.plan.outputs.e2e }}
+          SPOT: ${{ vars.SPOT_RUNNERS_ENABLED == 'true' }}
+          CHECK_ON_SPOT: ${{ vars.CHECK_ON_SPOT == 'true' }}
+          PREFIX: ci-${{ github.event.repository.name }}-${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          check=ubuntu-latest e2e=""
+          if [[ "${SPOT}" == "true" ]]; then
+            [[ "${E2E}" == "true" ]] && e2e="${PREFIX}-e2e"
+            [[ "${MODE}" != "none" && "${CHECK_ON_SPOT}" == "true" ]] && check="${PREFIX}-check"
+          elif [[ "${E2E}" == "true" ]]; then
+            echo "**operator-e2e not run:** the Spot runners are off (repository variable \`SPOT_RUNNERS_ENABLED\`). With them on, the VM \`gh-${PREFIX}-e2e\` would run \`task tools\` and \`task operator-e2e\`." >> "${GITHUB_STEP_SUMMARY}"
+          fi
+          echo "check=${check}" >> "${GITHUB_OUTPUT}"
+          echo "e2e=${e2e}" >> "${GITHUB_OUTPUT}"
+
+      - name: Spot runner for check
+        if: steps.runners.outputs.check != 'ubuntu-latest'
+        uses: ./.github/actions/spot-runner
+        with:
+          label: ${{ steps.runners.outputs.check }}
+
+      - name: Spot runner for operator-e2e
+        if: steps.runners.outputs.e2e != ''
+        uses: ./.github/actions/spot-runner
+        with:
+          label: ${{ steps.runners.outputs.e2e }}
+
+  check:
+    needs: plan
+    if: needs.plan.outputs.mode != 'none'
+    runs-on: ${{ needs.plan.outputs.check-runner }}
     timeout-minutes: 75
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: ./.github/actions/tools
+      # A Spot VM has the tools and the Go cache already (the offload image).
+      - if: runner.environment == 'github-hosted'
+        uses: ./.github/actions/tools
       - name: Repository tools cache (the pinned generator, bin/, moto)
+        if: runner.environment == 'github-hosted'
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: |
@@ -40,24 +118,27 @@ jobs:
             .cache/moto-venv
           key: repo-tools-${{ runner.os }}-${{ hashFiles('UPSTREAM.md', 'patches/**', 'Taskfile.yml', 'taskfiles/**', 'hack/moto-requirements.txt') }}
       - run: task tools
-      - run: task check
+      - name: task check (full) or the changed services' checks (groups)
+        env:
+          MODE: ${{ needs.plan.outputs.mode }}
+          SELECTED: ${{ needs.plan.outputs.groups }}
+        run: |
+          if [[ "${MODE}" == "full" ]]; then
+            task check
+          else
+            # shellcheck disable=SC2086
+            hack/ci/select.sh run ${SELECTED}
+          fi
 
-  operator-e2e:
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
+  e2e:
+    needs: plan
+    if: needs.plan.outputs.e2e-runner != ''
+    runs-on: ${{ needs.plan.outputs.e2e-runner }}
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: ./.github/actions/tools
-      - name: Repository tools cache (the pinned generator, bin/, moto)
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: |
-            third_party/code-generator
-            bin
-            .cache/moto-venv
-          key: repo-tools-${{ runner.os }}-${{ hashFiles('UPSTREAM.md', 'patches/**', 'Taskfile.yml', 'taskfiles/**', 'hack/moto-requirements.txt') }}
       - run: task tools
       - run: task operator-e2e
       - name: Cluster state on failure
@@ -65,3 +146,18 @@ jobs:
         run: |
           kubectl get pods -A -o wide || true
           kubectl get events -A --sort-by=.lastTimestamp | tail -n 100 || true
+
+  # The one status branch protection requires.
+  ci:
+    needs: [plan, check, e2e]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "plan, check, e2e: ${RESULTS}"
+          for r in ${RESULTS}; do
+            case "${r}" in success|skipped) ;; *) exit 1 ;; esac
+          done

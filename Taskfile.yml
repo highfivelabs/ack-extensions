@@ -120,6 +120,15 @@ tasks:
   check:
     desc: Generated files current, gofmt, vet, SPDX lines, build, tests.
     cmds:
+      - task: check:static
+      - task: build
+      - task: test
+
+  # check without build and the tests: what every pull request runs, whatever
+  # it changed (hack/ci/select.sh; a kind's own tests follow).
+  "check:static":
+    desc: check's pin, generated-files, gofmt, vet and SPDX checks, without the build and the tests.
+    cmds:
       - task: upstream-check
       - task: upstream:yaml-check
       - task: go:fmt-check
@@ -136,8 +145,21 @@ tasks:
       # The live-only code (docs/live-runs.md) compiled, never run.
       - go vet -tags live ./cloudcontrol/test/live/... ./hack/live/... ./cloudcontrol/test/e2e/
       - hack/check-spdx.sh
-      - task: build
-      - task: test
+
+  # Some packages' tests, as test runs them: what CI runs for a pull request
+  # that changes only some services (hack/ci/select.sh).
+  "test:pkgs":
+    desc: 'The tests of some packages (envtest, moto): task test:pkgs PKGS="./services/iam/..." [RUN=regexp] [TIMEOUT=30m].'
+    requires:
+      vars: [PKGS]
+    cmds:
+      - task: setup-envtest
+      - hack/moto.sh
+      - task: go:test-envtest
+        vars:
+          ENVTEST_K8S_VERSION: '{{.ENVTEST_K8S_VERSION}}'
+          PKGS: '{{.PKGS}}{{if .RUN}} -run ''{{.RUN}}''{{end}}'
+          TIMEOUT: '{{.TIMEOUT | default "30m"}}'
 
   noaws:
     desc: 'Fail if any test path could reach a real AWS endpoint: SDK clients, processes, HTTP clients and scripts in test paths all go through pkg/fakeaws (hack/noaws/main.go lists the rules).'
