@@ -104,6 +104,7 @@ tasks:
       - for: {var: SERVICES, split: ' '}
         cmd: go build -o "{{.BIN}}/{{.ITEM}}-manager" ./services/{{.ITEM}}/cmd/controller
       - go build -o "{{.BIN}}/operator" ./cmd/operator
+      - go build -o "{{.BIN}}/cloudcontrol-manager" ./cloudcontrol/cmd/manager
 
   test:
     desc: Unit tests, the operator against envtest, and every kind end to end (envtest's kube-apiserver, the service's real controller binary, moto).
@@ -119,10 +120,11 @@ tasks:
       - task: upstream-check
       - task: upstream:yaml-check
       - task: go:fmt-check
-        vars: {DIRS: services pkg cmd tests}
+        vars: {DIRS: services pkg cmd tests cloudcontrol hack/cloudcontrol-gen}
       - task: generate
       - task: go:committed
         vars: {PATHS: services config, WHAT: generated files}
+      - task: cloudcontrol:generated
       # ACK's generated code fails vet's composites check (unkeyed fields in
       # metav1.Time and acktypes.VersionInfo literals), as ACK's own
       # controllers do; every other analyzer runs.
@@ -130,6 +132,48 @@ tasks:
       - hack/check-spdx.sh
       - task: build
       - task: test
+
+  cloudcontrol:generate:
+    desc: Regenerate the Cloud Control kinds (CRDs, embedded schemas, registry, IAM policies, RBAC, report) from cloudcontrol/types.yaml and the schema zip; CloudControlContext's CRD and deepcopy (controller-gen); and the readiness survey of every type.
+    cmds:
+      - task: controller-gen
+      - '"{{.BIN}}/controller-gen" object:headerFile=cloudcontrol/hack/boilerplate.go.txt paths=./cloudcontrol/apis/...'
+      - '"{{.BIN}}/controller-gen" crd paths=./cloudcontrol/apis/... output:crd:artifacts:config=cloudcontrol/config/context'
+      - go run ./hack/cloudcontrol-gen
+      - go run ./hack/cloudcontrol-gen --survey
+
+  cloudcontrol:iam:
+    desc: 'One environment''s IAM role for Cloud Control: permission policies (the kinds its CloudControlContext enables) and the EKS Pod Identity trust policy. task cloudcontrol:iam NAMESPACE=team-a-prod ACCOUNT=111122223333 CLUSTER_ARN=arn:aws:eks:...:cluster/x [KINDS=SAMLProvider.iam,Detector.guardduty] OUT=dir'
+    requires:
+      vars: [NAMESPACE, ACCOUNT, CLUSTER_ARN, OUT]
+    cmds:
+      - go run ./hack/cloudcontrol-gen --iam --namespace "{{.NAMESPACE}}" --account "{{.ACCOUNT}}" --cluster-arn "{{.CLUSTER_ARN}}" --kinds "{{.KINDS}}" --out "{{.OUT}}"
+
+  cloudcontrol:generated:
+    desc: Fail if the committed Cloud Control outputs differ from a regeneration.
+    cmds:
+      - task: cloudcontrol:generate
+      - task: go:committed
+        vars: {PATHS: cloudcontrol, WHAT: generated Cloud Control files}
+
+  cloudcontrol:test:
+    desc: The Cloud Control unit tests and end-to-end tests (envtest, the manager's real binary in namespaced mode as its namespace's restricted identity, the fake Cloud Control over moto).
+    cmds:
+      - task: setup-envtest
+      - hack/moto.sh
+      - task: go:test-envtest
+        vars: {ENVTEST_K8S_VERSION: '{{.ENVTEST_K8S_VERSION}}', PKGS: ./cloudcontrol/... ./hack/cloudcontrol-gen/..., TIMEOUT: 20m}
+
+  cloudcontrol:check:
+    desc: Everything the Cloud Control route needs before a commit (generated files current, vet, build, tests); task check runs it all too.
+    cmds:
+      - task: go:fmt-check
+        vars: {DIRS: cloudcontrol hack/cloudcontrol-gen}
+      - task: cloudcontrol:generated
+      - go vet ./cloudcontrol/... ./hack/cloudcontrol-gen/...
+      - hack/check-spdx.sh
+      - go build -o "{{.BIN}}/cloudcontrol-manager" ./cloudcontrol/cmd/manager
+      - task: cloudcontrol:test
 
   licenses:
     desc: Write docs/third-party-licenses.csv; fail on a licence outside the accepted set.

@@ -48,6 +48,8 @@ import (
 	rbacv1 "k8s.io/api/rbac/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	k8slabels "k8s.io/apimachinery/pkg/labels"
+	"k8s.io/apimachinery/pkg/selection"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/tools/record"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -487,8 +489,14 @@ func (r *Reconciler) Reconcile(ctx context.Context, _ reconcile.Request) (reconc
 
 // apply makes the live object match o in the fields the operator owns.
 func (r *Reconciler) apply(ctx context.Context, o client.Object) error {
+	return applyObject(ctx, r.Client, o)
+}
+
+// applyObject makes the live object match o in the fields the operator
+// owns.
+func applyObject(ctx context.Context, c client.Client, o client.Object) error {
 	live := o.DeepCopyObject().(client.Object)
-	_, err := controllerutil.CreateOrUpdate(ctx, r.Client, live, func() error {
+	_, err := controllerutil.CreateOrUpdate(ctx, c, live, func() error {
 		live.SetLabels(o.GetLabels())
 		live.SetOwnerReferences(o.GetOwnerReferences())
 		switch want := o.(type) {
@@ -522,8 +530,14 @@ func (r *Reconciler) apply(ctx context.Context, o client.Object) error {
 }
 
 // prune deletes what the operator made that no ACK controller needs now.
+// What the Cloud Control side made (LabelComponent) is its own: owned by
+// its context, it goes with it.
 func (r *Reconciler) prune(ctx context.Context, keep map[string]bool) error {
-	sel := client.MatchingLabels{LabelManagedBy: managedBy}
+	notCC, err := k8slabels.NewRequirement(LabelComponent, selection.DoesNotExist, nil)
+	if err != nil {
+		return err
+	}
+	sel := client.MatchingLabelsSelector{Selector: k8slabels.SelectorFromSet(k8slabels.Set{LabelManagedBy: managedBy}).Add(*notCC)}
 	lists := []struct {
 		kind string
 		list client.ObjectList

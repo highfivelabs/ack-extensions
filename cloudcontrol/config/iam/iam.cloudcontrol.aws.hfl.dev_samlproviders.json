@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIAMSAMLProvider",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IAMSAMLProviderCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateSAMLProvider",
+        "iam:GetSAMLProvider",
+        "iam:TagSAMLProvider"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IAMSAMLProviderRead",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetSAMLProvider"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IAMSAMLProviderUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetSAMLProvider",
+        "iam:ListSAMLProviderTags",
+        "iam:TagSAMLProvider",
+        "iam:UntagSAMLProvider",
+        "iam:UpdateSAMLProvider"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IAMSAMLProviderDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iam:DeleteSAMLProvider"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

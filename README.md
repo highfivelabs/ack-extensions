@@ -177,6 +177,41 @@ ACK's runtime: `services.k8s.aws/deletion-policy: retain`,
 `services.k8s.aws/region`, adoption, the cross-account role maps (CARM)
 and `IAMRoleSelector`.
 
+## Cloud Control kinds
+
+For AWS types ACK has no controller for, a second route: kinds generated
+from the CloudFormation registry schemas and served through the AWS Cloud
+Control API by one generic manager on ACK's runtime, in
+`<service>.cloudcontrol.aws.hfl.dev` (`docs/cloudcontrol.md`). Proven
+against a fake Cloud Control over moto; **untested on real AWS** until
+each has had a real run.
+
+| Kind | CloudFormation type |
+| --- | --- |
+| `iam.cloudcontrol.aws.hfl.dev/v1alpha1` `SAMLProvider` | `AWS::IAM::SAMLProvider` (the private key from a Secret) |
+| `ec2.cloudcontrol.aws.hfl.dev/v1alpha1` `TransitGatewayRouteTable` | `AWS::EC2::TransitGatewayRouteTable` |
+| `guardduty.cloudcontrol.aws.hfl.dev/v1alpha1` `Detector` | `AWS::GuardDuty::Detector` |
+
+They run per environment: a `CloudControlContext` named `cloudcontrol` in
+a namespace makes the operator run a manager for that namespace, watching
+only it, as the ServiceAccount
+`ack-extensions-system/ack-extensions-cloudcontrol-<namespace>`, which an
+EKS Pod Identity association binds to the environment's IAM role:
+
+```yaml
+apiVersion: cloudcontrol.aws.hfl.dev/v1alpha1
+kind: CloudControlContext
+metadata: {name: cloudcontrol, namespace: team-a-prod}
+spec:
+  roleARN: arn:aws:iam::111122223333:role/team-a-prod-cloudcontrol
+  region: us-west-2
+  kinds: [SAMLProvider.iam, Detector.guardduty]   # optional; empty: every kind
+```
+
+`task cloudcontrol:iam` writes that role's permission policies (the
+generated policies of the kinds enabled) and its trust policy; the
+context's `status.podIdentityAssociation` names the association to make.
+
 ## Where it sits
 
 | | ACK | ack-extensions |
@@ -185,6 +220,7 @@ and `IAMRoleSelector`.
 | Example | `rds.services.k8s.aws` `DBProxy` | `rds.aws.hfl.dev` `DBProxyTarget` |
 | Process | one controller per service (`ack-rds-controller`) | one manager per service (`ack-extensions-rds-manager`), beside ACK's |
 | Code | ACK's generator and runtime | ACK's generator (with one patch) and runtime, as Go modules |
+| Cloud Control kinds | none | `<service>.cloudcontrol.aws.hfl.dev`, one generic manager per environment (`CloudControlContext`), as the environment's own role |
 
 The groups never clash with ACK's, so both run on one cluster, and a kind
 moves from our group to ACK's when ACK ships it.
