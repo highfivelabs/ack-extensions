@@ -37,20 +37,6 @@ type AccessDetail struct {
 	LastAuthenticatedTime *metav1.Time `json:"lastAuthenticatedTime,omitempty"`
 }
 
-// Contains information about an Amazon Web Services access key.
-//
-// This data type is used as a response element in the CreateAccessKey and ListAccessKeys
-// operations.
-//
-// The SecretAccessKey value is returned only in response to CreateAccessKey.
-// You can get a secret access key only when you first create an access key;
-// you cannot recover the secret access key later. If you lose a secret access
-// key, you must create a new access key.
-type AccessKey struct {
-	CreateDate *metav1.Time `json:"createDate,omitempty"`
-	UserName   *string      `json:"userName,omitempty"`
-}
-
 // Contains information about the last time an Amazon Web Services access key
 // was used since IAM began tracking this information on April 22, 2015.
 //
@@ -65,8 +51,26 @@ type AccessKeyLastUsed struct {
 //
 // This data type is used as a response element in the ListAccessKeys operation.
 type AccessKeyMetadata struct {
-	CreateDate *metav1.Time `json:"createDate,omitempty"`
-	UserName   *string      `json:"userName,omitempty"`
+	AccessKeyID *string      `json:"accessKeyID,omitempty"`
+	CreateDate  *metav1.Time `json:"createDate,omitempty"`
+	Status      *string      `json:"status,omitempty"`
+	UserName    *string      `json:"userName,omitempty"`
+}
+
+// Contains information about an Amazon Web Services access key.
+//
+// This data type is used as a response element in the CreateAccessKey and ListAccessKeys
+// operations.
+//
+// The SecretAccessKey value is returned only in response to CreateAccessKey.
+// You can get a secret access key only when you first create an access key;
+// you cannot recover the secret access key later. If you lose a secret access
+// key, you must create a new access key.
+type AccessKey_SDK struct {
+	AccessKeyID *string      `json:"accessKeyID,omitempty"`
+	CreateDate  *metav1.Time `json:"createDate,omitempty"`
+	Status      *string      `json:"status,omitempty"`
+	UserName    *string      `json:"userName,omitempty"`
 }
 
 // An object that contains details about when the IAM entities (users or roles)
@@ -267,6 +271,7 @@ type SAMLProviderListEntry struct {
 //
 // This data type is used as a response element in the ListSSHPublicKeys operation.
 type SSHPublicKeyMetadata struct {
+	Status     *string      `json:"status,omitempty"`
 	UploadDate *metav1.Time `json:"uploadDate,omitempty"`
 	UserName   *string      `json:"userName,omitempty"`
 }
@@ -293,12 +298,14 @@ type ServiceLastAccessed struct {
 // Contains the details of a service-specific credential.
 type ServiceSpecificCredential struct {
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
+	Status     *string      `json:"status,omitempty"`
 	UserName   *string      `json:"userName,omitempty"`
 }
 
 // Contains additional details about a service-specific credential.
 type ServiceSpecificCredentialMetadata struct {
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
+	Status     *string      `json:"status,omitempty"`
 	UserName   *string      `json:"userName,omitempty"`
 }
 
@@ -307,6 +314,7 @@ type ServiceSpecificCredentialMetadata struct {
 // This data type is used as a response element in the UploadSigningCertificate
 // and ListSigningCertificates operations.
 type SigningCertificate struct {
+	Status     *string      `json:"status,omitempty"`
 	UploadDate *metav1.Time `json:"uploadDate,omitempty"`
 	UserName   *string      `json:"userName,omitempty"`
 }

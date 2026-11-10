@@ -894,7 +894,7 @@ AWS::HealthAgent::Domain,healthagent,Domain,other,FULLY_MUTABLE,,,ok,0,0,0,0,2,t
 AWS::HealthImaging::Datastore,healthimaging,Datastore,other,IMMUTABLE,,,ok,0,0,0,0,2,true
 AWS::HealthLake::DataTransformationProfile,healthlake,DataTransformationProfile,other,FULLY_MUTABLE,,,ok,0,0,1,2,2,true
 AWS::HealthLake::FHIRDatastore,healthlake,FHIRDatastore,other,FULLY_MUTABLE,,,ok,0,0,0,0,4,true
-AWS::IAM::AccessKey,iam,AccessKey,platform-foundation,NON_PROVISIONABLE,,,not provisionable,0,0,0,0,0,false
+AWS::IAM::AccessKey,iam,AccessKey,platform-foundation,NON_PROVISIONABLE,,AccessKey,not provisionable,0,0,0,0,0,false
 AWS::IAM::Group,iam,Group,platform-foundation,FULLY_MUTABLE,Group,,ok,1,0,0,0,2,true
 AWS::IAM::GroupPolicy,iam,GroupPolicy,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,1,false
 AWS::IAM::InstanceProfile,iam,InstanceProfile,platform-foundation,FULLY_MUTABLE,InstanceProfile,,ok,0,0,0,0,1,true
@@ -1305,7 +1305,7 @@ AWS::OpenSearchServerless::SecurityPolicy,opensearchserverless,SecurityPolicy,ot
 AWS::OpenSearchServerless::VpcEndpoint,opensearchserverless,VpcEndpoint,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::OpenSearchService::Application,opensearchservice,Application,application,FULLY_MUTABLE,,,ok,2,0,1,1,1,true
 AWS::OpenSearchService::Domain,opensearchservice,Domain,application,FULLY_MUTABLE,Domain,,ok,0,0,3,5,0,false
-AWS::Organizations::Account,organizations,Account,platform-foundation,FULLY_MUTABLE,Account,,ok,0,0,1,1,0,true
+AWS::Organizations::Account,organizations,Account,platform-foundation,FULLY_MUTABLE,Account,AccountPlacement,ok,0,0,1,1,0,true
 AWS::Organizations::Organization,organizations,Organization,platform-foundation,FULLY_MUTABLE,,Organization,ok,0,0,0,0,1,true
 AWS::Organizations::OrganizationalUnit,organizations,OrganizationalUnit,platform-foundation,FULLY_MUTABLE,OrganizationalUnit,,ok,0,0,0,0,0,true
 AWS::Organizations::Policy,organizations,Policy,platform-foundation,FULLY_MUTABLE,,Policy,ok,1,0,0,0,0,true

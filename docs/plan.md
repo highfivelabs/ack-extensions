@@ -8,11 +8,11 @@ Status, 2026-11-09: the repository has twenty-nine kinds:
   `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
-- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy` and `VirtualMFADevice`;
+- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy`, `AccessKey` and `VirtualMFADevice`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
-- `organizations.aws.hfl.dev` `DelegatedAdministrator`, `Organization`, `Policy` and
-  `PolicyAttachment`;
+- `organizations.aws.hfl.dev` `AccountPlacement`, `DelegatedAdministrator`,
+  `Organization`, `Policy` and `PolicyAttachment`;
 - `rds.aws.hfl.dev` `OptionGroup`;
 - `rds.aws.hfl.dev` `DBProxyTarget`;
 - `rds.aws.hfl.dev` `DBRoleAssociation`;
@@ -413,6 +413,11 @@ controller to show it can fail:
   case, as AWS stores them.
 - **IAM.** moto does not enforce it by default, so the tests prove which
   identity a pod presents, not that AWS would authorise it.
+- **Access keys** (probed 2026-11-09): moto answers as AWS does here: a
+  40-character secret returned only by the create, a third key for one
+  user refused (`LimitExceeded`), and `NoSuchEntity` for an unknown user's
+  `ListAccessKeys` and for a key deleted twice. It does not enforce the
+  key: any key signs a moto request.
 - **Removing a role from a cluster or instance.** moto 5.2.5 implements
   `AddRoleToDBCluster` and `AddRoleToDBInstance`, but not
   `RemoveRoleFromDBCluster` or `RemoveRoleFromDBInstance`: it answers
@@ -585,6 +590,15 @@ controller to show it can fail:
     organization with no member accounts and refuses one with members
     (`OrganizationNotEmptyException`), as AWS does. `EnableAllFeatures`
     is not implemented.
+  - Account moves: moto's `MoveAccount` does not check that the account
+    is in `SourceParentId`, and moves an account to the parent it is
+    already in (AWS answers `SourceParentNotFoundException` and
+    `DuplicateAccountException`); for an unknown parent it answers
+    `ParentNotFoundException` (AWS: `SourceParentNotFoundException` or
+    `DestinationParentNotFoundException`). `ListParents` and
+    `DescribeAccount` answer as AWS does, `AccountNotFoundException` for
+    an unknown account (AWS answers `ListParents` with
+    `ChildNotFoundException`).
 - **An association's status.** moto marks a new association `ACTIVE` at
   once. On AWS it is `PENDING` first, and `INVALID` when RDS cannot assume
   the role. The rule (synced only when `ACTIVE`) is unit-tested.
@@ -633,7 +647,7 @@ its master (5.2.5 is the pin).
 | 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`; no pull request or issue, rechecked 2026-11-09) | yes | built |
 | 13 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237: mergeable, active 2026-11-06 | none | skipped: may be close to merging, and moto has none of it |
 | 14 | Route 53 DNSSEC and `KeySigningKey`, VPC association authorization | ignored in route53-controller's `generator.yaml` | none | skipped: moto has none of it |
-| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | built: `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy`; `AccessKey` waits on open question 10 |
+| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | built: `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy`; `AccessKey` (6.30; open question 10, answered) |
 | 16 | EC2 `PlacementGroup` | ignored in ec2-controller's `generator.yaml` | none | skipped: moto has none of it |
 | 17 | S3 `Object`, the account's public access block | none | yes | to build |
 | 18 | EC2 `KeyPair` | ec2-controller PR #396: both reviews' changes made, main merged in 2026-11-04, mergeable | yes | skipped: close to merging; wait for the release |
@@ -1661,6 +1675,151 @@ consolidated-billing organization (moto allows both);
 policy type detaches its policies; a delegated administrator's account
 (its rights differ); real AWS.
 
+### 6.29 `organizations.aws.hfl.dev` `AccountPlacement`
+
+The OU (or the root) a member account is in. F01's fifth and last kind.
+Upstream rechecked 2026-11-09: no release after organizations-controller
+`v1.7.0`; ACK's `Account` has no parent field (`CreateAccount` takes
+none) and nothing calls `MoveAccount`; community #2369 (open since 2025,
+"How to support MoveAccount in organizations") asks for a field on
+`Account` or a separate resource, with no pull request. CloudFormation
+has it as `AWS::Organizations::Account`'s `ParentIds`. A field on ACK's
+`Account` is ACK's to add; a sidecar here is the other option #2369
+names, and moves to ACK if ACK adds either.
+
+**Generated**, from operations mapped in `generator.yaml`: `MoveAccount`
+is both the create and the update (`operation_type: [Create, Update]`),
+`ListParents` the read (its one parent is `spec.parentID`). About 95% of
+the new Go is generated (about 1,770 lines); written here are four
+one-to-five-line hook templates and `hooks.go` (87 lines): the parent to
+move from, the skip when the account is already there, and the account's
+ARN.
+
+- **Spec:** `accountID` or `accountRef` (ACK's `Account`, its
+  `status.accountID`), immutable; `parentID` (a root `r-...` or an OU
+  `ou-...`) or `parentRef` (ACK's `OrganizationalUnit`, its `status.id`).
+  `Organization.status.rootID` (6.28) is the root's ID.
+- **Placed, then kept there.** Until the object has placed the account
+  (no ARN in its status), its read finds nothing, as for the other
+  account-wide settings (`docs/handoff.md`); the create reads the parent
+  the account is in now and calls `MoveAccount` from it, or, when the
+  account is already there, nothing (AWS would refuse the move,
+  `DuplicateAccountException`). It then reads the account's ARN
+  (`DescribeAccount`) into `status.ackResourceMetadata.arn`. From then
+  on the read is `ListParents`: a changed `parentID` moves the account
+  (`SourceParentId` is the parent read), and a move outside Kubernetes is
+  moved back.
+- **Delete leaves the account where it is.** There is no delete call
+  (none is mapped, so `sdkDelete` is a no-op): an account always has a
+  parent, and moving it back to the root on delete would take it out
+  from under its OU's policies, which is the opposite of what deleting a
+  placement is for. **Assumed, for the builder to confirm:** the
+  builder's answer to question 12 (an organization is not deletable, so
+  it is not treated as such) applied to a placement; likely and cheap.
+  Following it, the kind joins the retain-only admission policy (6.28,
+  `config/admission/retain-only.yaml`), so every object carries
+  `services.k8s.aws/deletion-policy: retain`. Were the builder to want a
+  delete to move the account back to the root, the kind would map
+  `MoveAccount` as the delete too and leave the policy.
+- **One object per account.** Two placements of one account move it
+  back and forth (#2369 names this); make one.
+- **Terminal:** `InvalidInputException`, `ConstraintViolationException`.
+  An unknown account or parent is retried (it may be being made: ACK's
+  `Account` and `OrganizationalUnit` are referenced once they have IDs).
+
+**Proven on moto** (`TestOrganizationsAccountPlacement`): ACK's
+`Account` moved into ACK's `OrganizationalUnit` by reference, the status
+ARN the account's, and no create or update across resyncs; moved to the
+root outside Kubernetes, it is moved back; a new `parentID` moves it; an
+account already in its parent is placed (synced, ARN set); `accountID`
+cannot change; delete leaves both accounts in their parents. With the
+retain-only policy installed: an object without the annotation, or with
+`delete`, is refused; one with `retain` places the account, its
+annotation cannot be changed or removed, and deleting it leaves the
+account in its OU. `tests/operator/run.sh` checks the refusal on kind.
+
+**Not proven on moto:** that the create makes no `MoveAccount` call when
+the account is already in place (moto accepts the call, so the test
+shows only the outcome); AWS's `SourceParentNotFoundException` when the
+account moved between the read and the move (retried, then read again);
+the management account (AWS lets it move between OUs); real AWS.
+
+### 6.30 `iam.aws.hfl.dev` `AccessKey`
+
+An IAM user's access key (F03; rank 15). Built on the builder's answer to
+open question 10. Upstream rechecked 2026-11-09: iam-controller `v1.11.3`
+ignores `AccessKey` in its `generator.yaml`; no pull request adds it;
+community #1879 asks for a way to get a key's secret. Cloud Control cannot
+serve it either (`AWS::IAM::AccessKey` is not provisionable,
+`docs/cloudcontrol.md` section 8, PR #36), so it is built here on ACK's
+generator.
+
+**Generated** from `CreateAccessKey` (create), `ListAccessKeys` (read,
+matched on the key's ID, `list_operation.match_fields`) and
+`DeleteAccessKey`. About 85% of the new Go is generated (about 1,590
+lines); written here are four hook templates and `hooks.go` (about 220
+lines: the Secret). `UpdateAccessKey` is ignored and a custom update
+refuses every change.
+
+- **Spec:** `userName` or `userRef` (ACK's `User`, its `spec.name`,
+  through a type alias in `apis/v1alpha1/ack_kinds.go`), and
+  `secretName`, both immutable. The create writes the default Secret
+  name into `spec.secretName`: the CRD's rule (`self == oldSelf`) does not
+  stop a field being set from unset, which would lose track of the
+  Secret (the first `task check` run showed it). **Status:** `accessKeyID`, `createDate`,
+  `status` (`Active`; the key's status is not managed).
+- **The secret, once, into a Secret.** `CreateAccessKeyOutput`'s
+  `SecretAccessKey` is ignored by the generator, so no generated code
+  copies it anywhere. A hook right after the create writes it, with the
+  key's ID, into a new Secret in the object's namespace, named
+  `spec.secretName` or else the object's name, keys `AWS_ACCESS_KEY_ID`
+  and `AWS_SECRET_ACCESS_KEY` (the names the AWS SDKs read, so a pod can
+  take both with `envFrom`), `immutable: true`, owned by the object
+  (controller reference, no `blockOwnerDeletion`), and clears the
+  secret from the response. The manager makes the Secret with its own
+  client (ACK's runtime gives a resource manager none that can create:
+  `WriteToSecret` patches an existing Secret, as acm-controller's
+  `AcmeExternalAccountBinding` uses it). The manager's role gains
+  `secrets` `create` and `delete` (section 7.3).
+- **Never written over.** A create whose Secret already exists is refused
+  (terminal) before any key is made: if the object does not own it, name
+  another; if it does, its key was deleted outside Kubernetes, and only a
+  new object (or deleting the Secret) makes a new key. If the Secret
+  cannot be made after the key was, the key is deleted (nobody could read
+  its secret again) and the create is tried later; if that delete fails,
+  the error is terminal and names the key, so that no more keys are made
+  up to IAM's limit of two a user.
+- **The Secret is the record.** The read, while the status has no key ID,
+  takes it from the Secret the object owns, so a status write that failed
+  after the create does not lead to a second key.
+- **Never logged.** The secret is in no error, event or status; the
+  manager's debug log in the tests does not contain it.
+- **Delete** deletes the key, then the Secret if the object owns it (the
+  owner reference does the same where garbage collection runs). A Secret
+  deleted by hand is not made again; the key's secret is gone, so rotate.
+- **Assumed, likely and cheap** (the builder named a spec field with a
+  default, not the default): the default Secret name is the object's
+  name, and the Secret's keys are `AWS_ACCESS_KEY_ID` and
+  `AWS_SECRET_ACCESS_KEY`.
+
+**Proven on moto** (`TestIAMAccessKey`): a key made for ACK's `User` by
+reference, its Secret holding the ID in status and a 40-character
+secret, owned by the object and immutable; no second create and the
+Secret not written again across resyncs; a status cleared of the ID takes
+it back from the Secret with no second key; the default written into
+`spec.secretName`, which then cannot change; a
+Secret not the object's is left untouched and no key is made; a key
+deleted outside Kubernetes is not made again over its Secret; delete
+removes the key and the Secret; the secret is in no manager log line, in
+nothing of the object's and in no event.
+
+**Not proven on moto:** a Secret that cannot be made after the key was
+(the key deleted, then made again: the path needs the API server to
+refuse a create that it accepted a moment before, and is unit-tested only
+in its parts); IAM's eventual consistency for a new key; the owner
+reference's garbage collection (envtest runs no garbage collector; the
+explicit delete is what the test shows); real AWS.
+
 ### 6.31 `iam.aws.hfl.dev` `VirtualMFADevice`
 
 A virtual MFA device (F03). Built on the builder's decision of 2026-11-09,
@@ -1837,6 +1996,11 @@ smaller than on Google Cloud: ACK's controller has no cluster-wide
 webhook or core rights. But `own` still keeps ACK's databases out of our
 manager's reach. Both columns hold the runtime's cluster-wide Secret read
 and patch; that is ACK's design, not ours.
+
+One manager has more: the iam manager also creates and deletes Secrets,
+cluster-wide, for `AccessKey` (6.30): it makes one Secret per key, owned
+by the object, and deletes only one its object owns. With identity `ack`
+that right comes to ACK's iam-controller's ServiceAccount with our role.
 
 ### 7.4 What was proven
 
@@ -2021,6 +2185,7 @@ identity scoped to it, and nothing else does:
   | `Policy` | `organizations:CreatePolicy`, `DescribePolicy`, `UpdatePolicy`, `DeletePolicy`, `ListTagsForResource`, `TagResource`, `UntagResource` |
   | `PolicyAttachment` | `organizations:AttachPolicy`, `DetachPolicy`, `ListTargetsForPolicy` |
   | `DelegatedAdministrator` | `organizations:RegisterDelegatedAdministrator`, `DeregisterDelegatedAdministrator`, `ListDelegatedAdministrators` |
+  | `AccountPlacement` | `organizations:MoveAccount`, `ListParents`, `DescribeAccount` |
   | `Organization` | `organizations:DescribeOrganization`, `ListRoots`, `EnablePolicyType`, `DisablePolicyType`, `EnableAWSServiceAccess`, `DisableAWSServiceAccess`, `ListAWSServiceAccessForOrganization`; and `organizations:CreateOrganization` with `iam:CreateServiceLinkedRole` only if the object is to make the organization |
 
   The role should also deny `organizations:DeleteOrganization` and
@@ -2360,6 +2525,14 @@ Before it can run on a real cluster:
        builder creates it); the live-test switch and the account's
        CloudFormation template are prepared, credentials by federation
        from the offload VMs' Google service account, never stored keys.
+14. **IAM `VirtualMFADevice`** (F03). **Decided** (builder, 2026-11-09):
+    built here on ACK's generator (hand-written if it must be), not on
+    Cloud Control, since Cloud Control never returns the seed (the Cloud
+    Control `VirtualMFADevice`, PR #44, is closed). `CreateVirtualMFADevice`
+    returns the Base32 seed (and a QR code PNG) once; the create writes the
+    seed, and optionally the PNG, into a Kubernetes Secret owned by the
+    object, never logged and never written over: the same pattern as
+    `AccessKey` (6.30). Queued after `AccessKey` (`docs/handoff.md`).
 15. **Control Tower's `LandingZone` through Cloud Control** (F07). Deleting
     an `AWS::ControlTower::LandingZone` decommissions the landing zone: the
     organization's guardrails, the log archive and audit accounts' setup,

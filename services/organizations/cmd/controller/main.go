@@ -41,6 +41,7 @@ import (
 	svctypes "github.com/highfivelabs/ack-extensions/services/organizations/apis/v1alpha1"
 	svcresource "github.com/highfivelabs/ack-extensions/services/organizations/pkg/resource"
 
+	_ "github.com/highfivelabs/ack-extensions/services/organizations/pkg/resource/account_placement"
 	_ "github.com/highfivelabs/ack-extensions/services/organizations/pkg/resource/delegated_administrator"
 	_ "github.com/highfivelabs/ack-extensions/services/organizations/pkg/resource/organization"
 	_ "github.com/highfivelabs/ack-extensions/services/organizations/pkg/resource/policy"

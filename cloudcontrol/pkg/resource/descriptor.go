@@ -52,7 +52,7 @@ func (d *descriptor) Delta(a, b acktypes.AWSResource) *ackcompare.Delta {
 			continue
 		}
 		ov, ok := db[k]
-		if !ok || !s.Satisfies(s.Properties[k], da[k], ov) {
+		if !ok || !s.Satisfies(s.ComparedProperty(k), da[k], ov) {
 			f := names.ToField[k]
 			if f == "" {
 				f = k

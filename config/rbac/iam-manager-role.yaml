@@ -35,6 +35,7 @@ rules:
 - apiGroups:
   - iam.aws.hfl.dev
   resources:
+  - accesskeys
   - accountaliases
   - accountpasswordpolicies
   - loginprofiles
@@ -53,6 +54,7 @@ rules:
 - apiGroups:
   - iam.aws.hfl.dev
   resources:
+  - accesskeys/status
   - accountaliases/status
   - accountpasswordpolicies/status
   - loginprofiles/status

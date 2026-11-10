@@ -25,6 +25,7 @@ rules:
 - apiGroups:
   - organizations.aws.hfl.dev
   resources:
+  - accountplacements
   - delegatedadministrators
   - organizations
   - policies
@@ -40,6 +41,7 @@ rules:
 - apiGroups:
   - organizations.aws.hfl.dev
   resources:
+  - accountplacements/status
   - delegatedadministrators/status
   - organizations/status
   - policies/status

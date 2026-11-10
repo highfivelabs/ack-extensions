@@ -16506,7 +16506,7 @@ healthlake,FHIRDatastore,Tags[].Key,string,false,none,,
 healthlake,FHIRDatastore,Tags[].Value,string,false,none,,
 iam,AccessKey,Serial,integer,false,none,,
 iam,AccessKey,Status,string,false,none,,
-iam,AccessKey,UserName,string,true,none,,
+iam,AccessKey,UserName,string,true,ours,,spec.userName
 iam,Group,GroupName,string,false,official,spec.name,
 iam,Group,ManagedPolicyArns[],string,false,official,spec.policies[],
 iam,Group,Path,string,false,official,spec.path,
@@ -25820,7 +25820,7 @@ opensearchservice,Domain,VPCOptions.SecurityGroupIds[],string,false,official,spe
 opensearchservice,Domain,VPCOptions.SubnetIds[],string,false,official,spec.vpcOptions.subnetIDs[],
 organizations,Account,AccountName,string,true,official,spec.name,
 organizations,Account,Email,string,true,official,spec.email,
-organizations,Account,ParentIds[],string,false,none,,
+organizations,Account,ParentIds[],string,false,ours,,spec.parentID
 organizations,Account,RoleName,string,false,official,spec.roleName,
 organizations,Account,Tags[].Key,string,false,official,spec.tags[].key,
 organizations,Account,Tags[].Value,string,false,official,spec.tags[].value,

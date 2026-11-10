@@ -12,6 +12,13 @@
 # CreateLoginProfile, GetLoginProfile, UpdateLoginProfile and
 # DeleteLoginProfile; the password comes from a Kubernetes Secret.
 #
+# AccessKey (a user's access key) is generated from CreateAccessKey,
+# ListAccessKeys (read, matched on the key's ID) and DeleteAccessKey. The
+# secret access key, which only the create returns, is never put in the
+# object: it is ignored below, and a hook writes it into a Kubernetes Secret
+# owned by the object (hooks.go). UpdateAccessKey is ignored: every field is
+# immutable, and rotation is a new AccessKey.
+#
 # VirtualMFADevice (a virtual MFA device, not yet enabled for a user) is
 # generated from CreateVirtualMFADevice, ListVirtualMFADevices (read,
 # matched on the serial number, every page) and DeleteVirtualMFADevice.
@@ -21,6 +28,45 @@
 # immutable; enabling the device for a user takes two codes from the seed
 # and is not this kind's (docs/plan.md, the VirtualMFADevice section).
 resources:
+  AccessKey:
+    exceptions:
+      errors:
+        404:
+          code: NoSuchEntity
+    list_operation:
+      match_fields:
+        - AccessKeyId
+    fields:
+      UserName:
+        is_required: true
+        is_immutable: true
+        references:
+          resource: User
+          path: Spec.Name
+      SecretName:
+        # The Secret the key is written to, in the object's namespace; the
+        # object's name when unset, written here by the create.
+        type: string
+        is_immutable: true
+      AccessKeyId:
+        is_primary_key: true
+    update_operation:
+      # Every field is immutable: a changed userRef is refused here, with
+      # how to rotate (hooks.go).
+      custom_method_name: customUpdateAccessKey
+    hooks:
+      sdk_read_many_pre_build_request:
+        template_path: hooks/access_key/sdk_read_many_pre_build_request.go.tpl
+      sdk_create_pre_build_request:
+        template_path: hooks/access_key/sdk_create_pre_build_request.go.tpl
+      sdk_create_post_request:
+        template_path: hooks/access_key/sdk_create_post_request.go.tpl
+      sdk_create_post_set_output:
+        template_path: hooks/access_key/sdk_create_post_set_output.go.tpl
+      sdk_delete_post_request:
+        template_path: hooks/access_key/sdk_delete_post_request.go.tpl
+    tags:
+      ignore: true
   LoginProfile:
     exceptions:
       errors:
@@ -93,19 +139,24 @@ ignore:
   # here) would be generated as a second type of that name.
   shape_names:
     - SSHPublicKey
-    # A device's User (the user it is enabled for) is the SDK's User shape,
-    # which would clash with ACK's User kind; the kind does not enable.
+    # The SDK's User shape would clash with the alias of ACK's User kind
+    # (apis/v1alpha1/ack_kinds.go); no field of ours uses it (a device's User,
+    # the user it is enabled for, is that shape; the kind does not enable).
     - User
+  operations:
+    # Every AccessKey field is immutable (above); the key's Active/Inactive
+    # status is not managed.
+    - UpdateAccessKey
   field_paths:
     # Returned once, by the create; written to a Secret by a hook, never kept
     # in the object.
+    - CreateAccessKeyOutput.AccessKey.SecretAccessKey
     - CreateVirtualMFADeviceOutput.VirtualMFADevice.Base32StringSeed
     - CreateVirtualMFADeviceOutput.VirtualMFADevice.QRCodePNG
     # Tags are not managed (above).
     - CreateVirtualMFADeviceInput.Tags
     - CreateVirtualMFADeviceOutput.VirtualMFADevice.Tags
   resource_names:
-    - AccessKey
     - AccountAlias
     - Group
     - InstanceProfile
