@@ -391,17 +391,17 @@ AWS::Comprehend::EntityRecognizer,comprehend,EntityRecognizer,other,FULLY_MUTABL
 AWS::Comprehend::EntityRecognizerEndpoint,comprehend,EntityRecognizerEndpoint,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::Comprehend::Flywheel,comprehend,Flywheel,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::ComputeOptimizer::AutomationRule,computeoptimizer,AutomationRule,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::Config::AggregationAuthorization,config,AggregationAuthorization,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::Config::ConfigRule,config,ConfigRule,security-adjacent,FULLY_MUTABLE,,,ok,1,0,1,1,0,true
-AWS::Config::ConfigurationAggregator,config,ConfigurationAggregator,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::Config::ConfigurationRecorder,config,ConfigurationRecorder,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,1,1,true
-AWS::Config::ConformancePack,config,ConformancePack,security-adjacent,FULLY_MUTABLE,,,ok,0,0,2,3,2,true
-AWS::Config::Connector,config,Connector,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::Config::DeliveryChannel,config,DeliveryChannel,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::Config::OrganizationConfigRule,config,OrganizationConfigRule,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::Config::OrganizationConformancePack,config,OrganizationConformancePack,security-adjacent,FULLY_MUTABLE,,,ok,0,0,2,2,2,true
-AWS::Config::RemediationConfiguration,config,RemediationConfiguration,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,2,true
-AWS::Config::StoredQuery,config,StoredQuery,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::Config::AggregationAuthorization,config,AggregationAuthorization,security-adjacent,FULLY_MUTABLE,,AggregationAuthorization (Cloud Control),ok,0,0,0,0,0,true
+AWS::Config::ConfigRule,config,ConfigRule,security-adjacent,FULLY_MUTABLE,,ConfigRule (Cloud Control),ok,1,0,1,1,0,true
+AWS::Config::ConfigurationAggregator,config,ConfigurationAggregator,security-adjacent,FULLY_MUTABLE,,ConfigurationAggregator (Cloud Control),ok,0,0,0,0,1,true
+AWS::Config::ConfigurationRecorder,config,ConfigurationRecorder,security-adjacent,FULLY_MUTABLE,,ConfigurationRecorder (Cloud Control),ok,0,0,0,1,1,true
+AWS::Config::ConformancePack,config,ConformancePack,security-adjacent,FULLY_MUTABLE,,ConformancePack (Cloud Control),ok,0,0,2,3,2,true
+AWS::Config::Connector,config,Connector,security-adjacent,FULLY_MUTABLE,,Connector (Cloud Control),ok,0,0,0,0,1,true
+AWS::Config::DeliveryChannel,config,DeliveryChannel,security-adjacent,FULLY_MUTABLE,,DeliveryChannel (Cloud Control),ok,0,0,0,0,0,true
+AWS::Config::OrganizationConfigRule,config,OrganizationConfigRule,security-adjacent,FULLY_MUTABLE,,OrganizationConfigRule (Cloud Control),ok,0,0,0,0,1,true
+AWS::Config::OrganizationConformancePack,config,OrganizationConformancePack,security-adjacent,FULLY_MUTABLE,,OrganizationConformancePack (Cloud Control),ok,0,0,2,2,2,true
+AWS::Config::RemediationConfiguration,config,RemediationConfiguration,security-adjacent,FULLY_MUTABLE,,RemediationConfiguration (Cloud Control),ok,0,0,0,0,2,true
+AWS::Config::StoredQuery,config,StoredQuery,security-adjacent,FULLY_MUTABLE,,StoredQuery (Cloud Control),ok,0,0,0,0,0,true
 AWS::Connect::AgentStatus,connect,AgentStatus,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::Connect::ApprovedOrigin,connect,ApprovedOrigin,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::Connect::ContactFlow,connect,ContactFlow,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true

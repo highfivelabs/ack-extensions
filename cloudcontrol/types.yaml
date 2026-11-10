@@ -55,6 +55,11 @@ liveTestActions:
   - ec2:GetTransitGatewayRouteTableAssociations
   - ec2:GetTransitGatewayRouteTablePropagations
   - ec2:DescribeTransitGatewayPeeringAttachments
+  - iam:CreateRole
+  - iam:DeleteRole
+  - s3:CreateBucket
+  - s3:DeleteBucket
+  - config:DescribeConfigurationRecorderStatus
 types:
   # F03: IAM SAML providers. ACK's iam-controller ignores SAMLProvider.
   - typeName: AWS::IAM::SAMLProvider
@@ -89,3 +94,24 @@ types:
     unproven: "moto 5.2.5 has no controltower, and no other emulator exists"
   - typeName: AWS::ControlTower::EnabledBaseline
     unproven: "moto 5.2.5 has no controltower, and no other emulator exists"
+  # F14: AWS Config. ACK has no Config controller and no pull request
+  # (community issue 2445 asks for one, rechecked 2026-11-09). The
+  # recorder, its delivery channel, managed and custom rules, an
+  # aggregator and the authorization another account gives it, and
+  # organization conformance packs.
+  - typeName: AWS::Config::ConfigurationRecorder
+  - typeName: AWS::Config::DeliveryChannel
+  - typeName: AWS::Config::ConfigRule
+  - typeName: AWS::Config::ConfigurationAggregator
+  - typeName: AWS::Config::AggregationAuthorization
+  - typeName: AWS::Config::OrganizationConformancePack
+  - typeName: AWS::Config::OrganizationConfigRule
+    unproven: "moto 5.2.5 has no PutOrganizationConfigRule"
+  - typeName: AWS::Config::ConformancePack
+    unproven: "moto 5.2.5 has no PutConformancePack"
+  - typeName: AWS::Config::RemediationConfiguration
+    unproven: "moto 5.2.5 has no PutRemediationConfigurations"
+  - typeName: AWS::Config::StoredQuery
+    unproven: "moto 5.2.5 has no PutStoredQuery"
+  - typeName: AWS::Config::Connector
+    unproven: "moto 5.2.5 has no Config connectors"
