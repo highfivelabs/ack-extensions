@@ -873,6 +873,40 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ConfigConnectorDelete
+        - Action:
+          - cloudformation:ListResources
+          - config:DescribeConfigRules
+          - config:DescribeConfigurationRecorderStatus
+          - config:ListConfigurationRecorders
+          - config:ListConnectors
+          - config:ListStoredQueries
+          - ec2:CreateSubnet
+          - ec2:CreateTags
+          - ec2:CreateTransitGateway
+          - ec2:CreateTransitGatewayRouteTable
+          - ec2:CreateTransitGatewayVpcAttachment
+          - ec2:CreateVpc
+          - ec2:DeleteSubnet
+          - ec2:DeleteTransitGateway
+          - ec2:DeleteTransitGatewayRouteTable
+          - ec2:DeleteTransitGatewayVpcAttachment
+          - ec2:DeleteVpc
+          - ec2:DescribeTransitGatewayPeeringAttachments
+          - ec2:DescribeTransitGatewayVpcAttachments
+          - ec2:DescribeTransitGateways
+          - ec2:GetTransitGatewayRouteTableAssociations
+          - ec2:GetTransitGatewayRouteTablePropagations
+          - ec2:SearchTransitGatewayRoutes
+          - iam:CreateRole
+          - iam:DeleteRole
+          - iam:ListSAMLProviders
+          - s3:CreateBucket
+          - s3:DeleteBucket
+          - sso:ListInstances
+          - sso:ListPermissionSets
+          Effect: Allow
+          Resource: '*'
+          Sid: LiveRunSweeperAndFixtures
         Version: "2012-10-17"
     Type: AWS::IAM::ManagedPolicy
   LiveTestRole:

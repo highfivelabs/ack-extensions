@@ -46,8 +46,13 @@ func writeLiveTemplate(out string, cfg config, gens []generated) error {
 		acts = append(acts, a)
 	}
 	sort.Strings(acts)
-	results = append(results, iamgen.Result{Policy: iamgen.Policy{Statement: []iamgen.Statement{{Sid: "LiveRunSweeperAndFixtures", Effect: "Allow", Action: acts, Resource: "*"}}}})
-	policies, err := iamgen.Environment(results, 6144)
+	// Appended after Merge, not passed to it as a result: Merge keeps a
+	// result's statements after the first (the first is its Cloud Control
+	// statement, merged into one), so a one-statement result was dropped,
+	// and the first deployed role had no sweeper or fixture permissions.
+	merged := iamgen.Merge(results)
+	merged.Statement = append(merged.Statement, iamgen.Statement{Sid: "LiveRunSweeperAndFixtures", Effect: "Allow", Action: acts, Resource: "*"})
+	policies, err := iamgen.Split(merged, 6144)
 	if err != nil {
 		return err
 	}
