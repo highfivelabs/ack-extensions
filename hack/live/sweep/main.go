@@ -152,4 +152,3 @@ func del(ctx context.Context, cc *cloudcontrol.Client, typeName, id string) erro
 	}
 	return fmt.Errorf("delete not finished within 10 minutes")
 }
-

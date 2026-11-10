@@ -51,7 +51,7 @@ type config struct {
 	// LiveTestActions are what the end-to-end tests do themselves on a
 	// live run (fixtures and checks), for the sandbox account's template.
 	LiveTestActions []string `json:"liveTestActions"`
-	Types       []struct {
+	Types           []struct {
 		TypeName string   `json:"typeName"`
 		Kind     string   `json:"kind"`
 		Secrets  []string `json:"secrets"`

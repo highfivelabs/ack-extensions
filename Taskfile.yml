@@ -123,7 +123,7 @@ tasks:
       - task: upstream-check
       - task: upstream:yaml-check
       - task: go:fmt-check
-        vars: {DIRS: services pkg cmd tests cloudcontrol hack/cloudcontrol-gen hack/noaws}
+        vars: {DIRS: services pkg cmd tests cloudcontrol hack/cloudcontrol-gen hack/noaws hack/live}
       - task: noaws
       - task: generate
       - task: go:committed
