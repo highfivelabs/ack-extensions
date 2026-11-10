@@ -12,6 +12,8 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::SSO::PermissionSet` | `PermissionSet.sso.cloudcontrol.aws.hfl.dev` | 10 | 1 | 4 | 0 | 1 | 12 |
 | `AWS::SSO::Assignment` | `Assignment.sso.cloudcontrol.aws.hfl.dev` | 6 | 0 | 12 | 0 | 0 | 4 |
 | `AWS::SSO::InstanceAccessControlAttributeConfiguration` | `InstanceAccessControlAttributeConfiguration.sso.cloudcontrol.aws.hfl.dev` | 3 | 0 | 2 | 0 | 0 | 5 |
+| `AWS::ControlTower::EnabledControl` | `EnabledControl.controltower.cloudcontrol.aws.hfl.dev` | 4 | 0 | 4 | 0 | 1 | 2 |
+| `AWS::ControlTower::EnabledBaseline` | `EnabledBaseline.controltower.cloudcontrol.aws.hfl.dev` | 5 | 1 | 4 | 0 | 1 | 4 |
 
 ## `AWS::IAM::SAMLProvider`
 
@@ -82,5 +84,29 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - Nodes made `x-kubernetes-preserve-unknown-fields`: none
 - Read-only properties nested in writable objects (dropped): none
 - IAM actions (10): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `sso:CreateInstanceAccessControlAttributeConfiguration`, `sso:DeleteInstanceAccessControlAttributeConfiguration`, `sso:DescribeInstanceAccessControlAttributeConfiguration`, `sso:UpdateApplicationProfileForAWSAccountInstance`, `sso:UpdateInstanceAccessControlAttributeConfiguration`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::ControlTower::EnabledControl`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: `/properties/Parameters/*/Value (oneOf/anyOf without a type)`
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (22): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `controltower:DisableControl`, `controltower:EnableControl`, `controltower:GetControlOperation`, `controltower:GetEnabledControl`, `controltower:ListEnabledControls`, `controltower:ListTagsForResource`, `controltower:TagResource`, `controltower:UntagResource`, `controltower:UpdateEnabledControl`, `organizations:AttachPolicy`, `organizations:CreatePolicy`, `organizations:DeletePolicy`, `organizations:DescribePolicy`, `organizations:DetachPolicy`, `organizations:ListPoliciesForTarget`, `organizations:ListTargetsForPolicy`, `organizations:UpdatePolicy`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::ControlTower::EnabledBaseline`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: `/properties/Parameters/*/Value (oneOf/anyOf without a type)`
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (36): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `controltower:DisableBaseline`, `controltower:EnableBaseline`, `controltower:GetBaselineOperation`, `controltower:GetEnabledBaseline`, `controltower:ListEnabledBaselines`, `controltower:ListTagsForResource`, `controltower:TagResource`, `controltower:UntagResource`, `controltower:UpdateEnabledBaseline`, `organizations:AttachPolicy`, `organizations:CreateOrganization`, `organizations:CreateOrganizationalUnit`, `organizations:CreatePolicy`, `organizations:DeletePolicy`, `organizations:DetachPolicy`, `organizations:EnableAWSServiceAccess`, `organizations:EnablePolicyType`, `organizations:ListRoots`, `organizations:UpdatePolicy`, `servicecatalog:AssociatePrincipalWithPortfolio`, `servicecatalog:AssociateProductWithPortfolio`, `servicecatalog:CreatePortfolio`, `servicecatalog:CreateProduct`, `servicecatalog:CreateProvisioningArtifact`, `servicecatalog:DeleteProvisioningArtifact`, `servicecatalog:ListPortfolios`, `servicecatalog:ListPrincipalsForPortfolio`, `servicecatalog:ListProvisioningArtifacts`, `servicecatalog:SearchProductsAsAdmin`, `servicecatalog:UpdatePortfolio`, `servicecatalog:UpdateProvisioningArtifact`
 - Sensitive IAM actions: none
 - Left out (list handler only): none

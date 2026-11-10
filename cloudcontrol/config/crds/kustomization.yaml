@@ -6,3 +6,5 @@ resources:
   - sso.cloudcontrol.aws.hfl.dev_permissionsets.yaml
   - sso.cloudcontrol.aws.hfl.dev_assignments.yaml
   - sso.cloudcontrol.aws.hfl.dev_instanceaccesscontrolattributeconfigurations.yaml
+  - controltower.cloudcontrol.aws.hfl.dev_enabledcontrols.yaml
+  - controltower.cloudcontrol.aws.hfl.dev_enabledbaselines.yaml

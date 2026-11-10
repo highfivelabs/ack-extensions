@@ -277,6 +277,172 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: SSOInstanceAccessControlAttributeConfigurationDelete
+        - Action:
+          - controltower:EnableControl
+          - controltower:GetControlOperation
+          - controltower:GetEnabledControl
+          - controltower:ListEnabledControls
+          - controltower:ListTagsForResource
+          - controltower:TagResource
+          - organizations:AttachPolicy
+          - organizations:CreatePolicy
+          - organizations:DescribePolicy
+          - organizations:DetachPolicy
+          - organizations:ListPoliciesForTarget
+          - organizations:ListTargetsForPolicy
+          - organizations:UpdatePolicy
+          Effect: Allow
+          Resource: '*'
+          Sid: ControlTowerEnabledControlCreate
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy2:
+    Properties:
+      Description: ack-extensions live tests, part 2
+      PolicyDocument:
+        Statement:
+        - Action:
+          - controltower:GetEnabledControl
+          - controltower:ListEnabledControls
+          - controltower:ListTagsForResource
+          Effect: Allow
+          Resource: '*'
+          Sid: ControlTowerEnabledControlRead
+        - Action:
+          - controltower:GetControlOperation
+          - controltower:GetEnabledControl
+          - controltower:ListEnabledControls
+          - controltower:ListTagsForResource
+          - controltower:TagResource
+          - controltower:UntagResource
+          - controltower:UpdateEnabledControl
+          - organizations:AttachPolicy
+          - organizations:CreatePolicy
+          - organizations:DescribePolicy
+          - organizations:DetachPolicy
+          - organizations:ListPoliciesForTarget
+          - organizations:ListTargetsForPolicy
+          - organizations:UpdatePolicy
+          Effect: Allow
+          Resource: '*'
+          Sid: ControlTowerEnabledControlUpdate
+        - Action:
+          - controltower:DisableControl
+          - controltower:GetControlOperation
+          - controltower:GetEnabledControl
+          - controltower:ListEnabledControls
+          - controltower:ListTagsForResource
+          - organizations:AttachPolicy
+          - organizations:CreatePolicy
+          - organizations:DeletePolicy
+          - organizations:DescribePolicy
+          - organizations:DetachPolicy
+          - organizations:ListPoliciesForTarget
+          - organizations:ListTargetsForPolicy
+          - organizations:UpdatePolicy
+          Effect: Allow
+          Resource: '*'
+          Sid: ControlTowerEnabledControlDelete
+        - Action:
+          - controltower:EnableBaseline
+          - controltower:GetBaselineOperation
+          - controltower:GetEnabledBaseline
+          - controltower:ListTagsForResource
+          - controltower:TagResource
+          - controltower:UntagResource
+          - organizations:AttachPolicy
+          - organizations:CreateOrganization
+          - organizations:CreateOrganizationalUnit
+          - organizations:CreatePolicy
+          - organizations:DeletePolicy
+          - organizations:DetachPolicy
+          - organizations:EnableAWSServiceAccess
+          - organizations:EnablePolicyType
+          - organizations:ListRoots
+          - organizations:UpdatePolicy
+          - servicecatalog:AssociatePrincipalWithPortfolio
+          - servicecatalog:AssociateProductWithPortfolio
+          - servicecatalog:CreatePortfolio
+          - servicecatalog:CreateProduct
+          - servicecatalog:CreateProvisioningArtifact
+          - servicecatalog:DeleteProvisioningArtifact
+          - servicecatalog:ListPortfolios
+          - servicecatalog:ListPrincipalsForPortfolio
+          - servicecatalog:ListProvisioningArtifacts
+          - servicecatalog:SearchProductsAsAdmin
+          - servicecatalog:UpdatePortfolio
+          - servicecatalog:UpdateProvisioningArtifact
+          Effect: Allow
+          Resource: '*'
+          Sid: ControlTowerEnabledBaselineCreate
+        - Action:
+          - controltower:GetEnabledBaseline
+          - controltower:ListEnabledBaselines
+          - controltower:ListTagsForResource
+          Effect: Allow
+          Resource: '*'
+          Sid: ControlTowerEnabledBaselineRead
+        - Action:
+          - controltower:GetBaselineOperation
+          - controltower:GetEnabledBaseline
+          - controltower:ListTagsForResource
+          - controltower:TagResource
+          - controltower:UntagResource
+          - controltower:UpdateEnabledBaseline
+          - organizations:AttachPolicy
+          - organizations:CreateOrganization
+          - organizations:CreateOrganizationalUnit
+          - organizations:CreatePolicy
+          - organizations:DeletePolicy
+          - organizations:DetachPolicy
+          - organizations:EnableAWSServiceAccess
+          - organizations:EnablePolicyType
+          - organizations:ListRoots
+          - organizations:UpdatePolicy
+          - servicecatalog:AssociatePrincipalWithPortfolio
+          - servicecatalog:AssociateProductWithPortfolio
+          - servicecatalog:CreatePortfolio
+          - servicecatalog:CreateProduct
+          - servicecatalog:CreateProvisioningArtifact
+          - servicecatalog:DeleteProvisioningArtifact
+          - servicecatalog:ListPortfolios
+          - servicecatalog:ListPrincipalsForPortfolio
+          - servicecatalog:ListProvisioningArtifacts
+          - servicecatalog:SearchProductsAsAdmin
+          - servicecatalog:UpdatePortfolio
+          - servicecatalog:UpdateProvisioningArtifact
+          Effect: Allow
+          Resource: '*'
+          Sid: ControlTowerEnabledBaselineUpdate
+        - Action:
+          - controltower:DisableBaseline
+          - controltower:GetBaselineOperation
+          - controltower:ListTagsForResource
+          - organizations:AttachPolicy
+          - organizations:CreateOrganization
+          - organizations:CreateOrganizationalUnit
+          - organizations:CreatePolicy
+          - organizations:DeletePolicy
+          - organizations:DetachPolicy
+          - organizations:EnableAWSServiceAccess
+          - organizations:EnablePolicyType
+          - organizations:ListRoots
+          - organizations:UpdatePolicy
+          - servicecatalog:AssociatePrincipalWithPortfolio
+          - servicecatalog:AssociateProductWithPortfolio
+          - servicecatalog:CreatePortfolio
+          - servicecatalog:CreateProduct
+          - servicecatalog:CreateProvisioningArtifact
+          - servicecatalog:DeleteProvisioningArtifact
+          - servicecatalog:ListPortfolios
+          - servicecatalog:ListPrincipalsForPortfolio
+          - servicecatalog:ListProvisioningArtifacts
+          - servicecatalog:SearchProductsAsAdmin
+          - servicecatalog:UpdatePortfolio
+          - servicecatalog:UpdateProvisioningArtifact
+          Effect: Allow
+          Resource: '*'
+          Sid: ControlTowerEnabledBaselineDelete
         Version: "2012-10-17"
     Type: AWS::IAM::ManagedPolicy
   LiveTestRole:
@@ -298,6 +464,7 @@ Resources:
         web identity federation, for task test-live (ack-extensions docs/live-runs.md).
       ManagedPolicyArns:
       - Ref: LiveTestPolicy1
+      - Ref: LiveTestPolicy2
       MaxSessionDuration: 3600
       RoleName: ack-extensions-live-tests
       Tags:

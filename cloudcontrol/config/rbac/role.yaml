@@ -35,6 +35,28 @@ rules:
   - create
   - patch
 - apiGroups:
+  - controltower.cloudcontrol.aws.hfl.dev
+  resources:
+  - enabledbaselines
+  - enabledcontrols
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - controltower.cloudcontrol.aws.hfl.dev
+  resources:
+  - enabledbaselines/status
+  - enabledcontrols/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - ec2.cloudcontrol.aws.hfl.dev
   resources:
   - transitgatewayroutetables

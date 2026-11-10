@@ -52,3 +52,11 @@ types:
   - typeName: AWS::SSO::Assignment
   - typeName: AWS::SSO::InstanceAccessControlAttributeConfiguration
     unproven: "moto 5.2.5 has no Create/Describe/Update/DeleteInstanceAccessControlAttributeConfiguration"
+  # F07: Control Tower's enabled controls and baselines on an OU. ACK has no
+  # Control Tower controller, issue or pull request. LandingZone waits for
+  # the builder (plan section 9, question 14): deleting one decommissions
+  # the landing zone.
+  - typeName: AWS::ControlTower::EnabledControl
+    unproven: "moto 5.2.5 has no controltower, and no other emulator exists"
+  - typeName: AWS::ControlTower::EnabledBaseline
+    unproven: "moto 5.2.5 has no controltower, and no other emulator exists"
