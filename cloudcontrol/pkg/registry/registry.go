@@ -36,6 +36,9 @@ type Type struct {
 	// Secrets are the write-only properties served as Secret references
 	// (property pointers), opted in per field in cloudcontrol/types.yaml.
 	Secrets []string
+	// Unproven, when set, says why the kind has no end-to-end test on the
+	// fake (cloudcontrol/types.yaml); empty: it has one.
+	Unproven string
 
 	once    sync.Once
 	schema  *cfn.Schema

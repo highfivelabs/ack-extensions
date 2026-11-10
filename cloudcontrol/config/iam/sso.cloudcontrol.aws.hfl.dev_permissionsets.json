@@ -1,0 +1,83 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSSOPermissionSet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSOPermissionSetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sso:AttachCustomerManagedPolicyReferenceToPermissionSet",
+        "sso:AttachManagedPolicyToPermissionSet",
+        "sso:CreatePermissionSet",
+        "sso:DescribePermissionSet",
+        "sso:GetInlinePolicyForPermissionSet",
+        "sso:GetPermissionsBoundaryForPermissionSet",
+        "sso:ListCustomerManagedPolicyReferencesInPermissionSet",
+        "sso:ListManagedPoliciesInPermissionSet",
+        "sso:ListTagsForResource",
+        "sso:PutInlinePolicyToPermissionSet",
+        "sso:PutPermissionsBoundaryToPermissionSet",
+        "sso:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSOPermissionSetRead",
+      "Effect": "Allow",
+      "Action": [
+        "sso:DescribePermissionSet",
+        "sso:GetInlinePolicyForPermissionSet",
+        "sso:GetPermissionsBoundaryForPermissionSet",
+        "sso:ListCustomerManagedPolicyReferencesInPermissionSet",
+        "sso:ListManagedPoliciesInPermissionSet",
+        "sso:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSOPermissionSetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sso:AttachCustomerManagedPolicyReferenceToPermissionSet",
+        "sso:AttachManagedPolicyToPermissionSet",
+        "sso:DeleteInlinePolicyFromPermissionSet",
+        "sso:DeletePermissionsBoundaryFromPermissionSet",
+        "sso:DescribePermissionSet",
+        "sso:DescribePermissionSetProvisioningStatus",
+        "sso:DetachCustomerManagedPolicyReferenceFromPermissionSet",
+        "sso:DetachManagedPolicyFromPermissionSet",
+        "sso:GetInlinePolicyForPermissionSet",
+        "sso:GetPermissionsBoundaryForPermissionSet",
+        "sso:ListCustomerManagedPolicyReferencesInPermissionSet",
+        "sso:ListManagedPoliciesInPermissionSet",
+        "sso:ListTagsForResource",
+        "sso:ProvisionPermissionSet",
+        "sso:PutInlinePolicyToPermissionSet",
+        "sso:PutPermissionsBoundaryToPermissionSet",
+        "sso:TagResource",
+        "sso:UntagResource",
+        "sso:UpdatePermissionSet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSOPermissionSetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sso:DeletePermissionSet"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

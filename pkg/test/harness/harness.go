@@ -13,11 +13,12 @@
 //     versions go.mod pins;
 //   - the controller is the service's real binary
 //     (services/<svc>/cmd/controller), built once and started with the
-//     flags ACK's Helm chart passes, pointed at moto with
-//     --aws-endpoint-url and fake credentials.
+//     flags ACK's Helm chart passes, pointed at moto by one setting
+//     (pkg/fakeaws): every endpoint it has, fake credentials and a dead
+//     proxy, verified before it starts.
 //
-// Nothing here talks to real AWS: the process gets only the moto
-// endpoint and the credentials "testing"/"testing".
+// Nothing here talks to real AWS: the process can reach only moto, and
+// the test's own SDK clients dial loopback addresses only.
 package harness
 
 import (
@@ -25,7 +26,6 @@ import (
 	"context"
 	"fmt"
 	"net"
-	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -35,7 +35,6 @@ import (
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/credentials"
 	"k8s.io/apimachinery/pkg/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
@@ -43,6 +42,8 @@ import (
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
+
+	"github.com/highfivelabs/ack-extensions/pkg/fakeaws"
 )
 
 // Region is the AWS region every test uses.
@@ -98,6 +99,10 @@ func Start(t *testing.T, service string, scheme *runtime.Scheme) *Env {
 	if motoURL == "" {
 		motoURL = startMoto(t, root)
 	}
+	endpoint, err := fakeaws.Parse(motoURL, fakeaws.Loopback)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	crds := []string{
 		filepath.Join(root, "config", "crds", "bases"),
@@ -127,14 +132,9 @@ func Start(t *testing.T, service string, scheme *runtime.Scheme) *Env {
 
 	kubeconfig := writeKubeconfig(t, cfg)
 	bin := buildController(t, root, service)
-	logs := runController(t, bin, kubeconfig, motoURL)
+	logs := runController(t, bin, kubeconfig, endpoint)
 
-	awsCfg := aws.Config{
-		Region:       Region,
-		Credentials:  credentials.NewStaticCredentialsProvider("testing", "testing", ""),
-		BaseEndpoint: aws.String(motoURL),
-	}
-	return &Env{Client: c, MotoURL: motoURL, AWS: awsCfg, Rest: cfg, logs: logs}
+	return &Env{Client: c, MotoURL: motoURL, AWS: endpoint.Config(Region), Rest: cfg, logs: logs}
 }
 
 // Logs is what the controller wrote so far.
@@ -164,6 +164,7 @@ func startMoto(t *testing.T, root string) string {
 	var out bytes.Buffer
 	cmd := exec.Command(server, "-H", "127.0.0.1", "-p", fmt.Sprint(port))
 	cmd.Stdout, cmd.Stderr = &out, &out
+	cmd.Env = fakeaws.Isolated("PATH=" + os.Getenv("PATH"))
 	if err := cmd.Start(); err != nil {
 		t.Fatal(err)
 	}
@@ -173,8 +174,9 @@ func startMoto(t *testing.T, root string) string {
 	})
 	url := fmt.Sprintf("http://127.0.0.1:%d", port)
 	deadline := time.Now().Add(30 * time.Second)
+	hc := fakeaws.HTTPClient()
 	for time.Now().Before(deadline) {
-		if resp, err := http.Get(url + "/moto-api/"); err == nil {
+		if resp, err := hc.Get(url + "/moto-api/"); err == nil {
 			resp.Body.Close()
 			return url
 		}
@@ -244,16 +246,14 @@ func (s *syncBuffer) Write(p []byte) (int, error) {
 
 // runController starts the binary with the arguments ACK's Helm chart
 // gives a controller (templates/helm/templates/deployment.yaml), and an
-// environment holding only fake credentials and the kubeconfig.
-func runController(t *testing.T, bin, kubeconfig, motoURL string) *syncBuffer {
+// environment built from nothing: the kubeconfig, and what fakeaws.Command
+// adds for the endpoint (every endpoint, fake credentials, the dead proxy).
+func runController(t *testing.T, bin, kubeconfig string, endpoint fakeaws.Endpoint) *syncBuffer {
 	t.Helper()
 	sb := &syncBuffer{}
 	ctx, cancel := context.WithCancel(context.Background())
-	cmd := exec.CommandContext(ctx, bin,
+	cmd, err := fakeaws.Command(ctx, endpoint, bin, []string{
 		"--aws-region", Region,
-		"--aws-endpoint-url", motoURL,
-		"--aws-identity-endpoint-url", motoURL,
-		"--allow-unsafe-aws-endpoint-urls",
 		"--log-level", "debug",
 		"--enable-development-logging",
 		"--deletion-policy", "delete",
@@ -261,15 +261,15 @@ func runController(t *testing.T, bin, kubeconfig, motoURL string) *syncBuffer {
 		"--metrics-addr", fmt.Sprintf("127.0.0.1:%d", freePort(t)),
 		"--healthz-addr", fmt.Sprintf("127.0.0.1:%d", freePort(t)),
 		"--enable-carm=false",
-	)
-	cmd.Env = []string{
-		"KUBECONFIG=" + kubeconfig,
-		"HOME=" + t.TempDir(),
-		"PATH=" + os.Getenv("PATH"),
-		"AWS_ACCESS_KEY_ID=testing",
-		"AWS_SECRET_ACCESS_KEY=testing",
-		"AWS_EC2_METADATA_DISABLED=true",
+	},
+		"KUBECONFIG="+kubeconfig,
+		"HOME="+t.TempDir(),
+		"PATH="+os.Getenv("PATH"),
 		"ACK_SYSTEM_NAMESPACE=default",
+	)
+	if err != nil {
+		cancel()
+		t.Fatal(err)
 	}
 	cmd.Stdout, cmd.Stderr = sb, sb
 	if err := cmd.Start(); err != nil {

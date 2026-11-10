@@ -40,6 +40,10 @@ import (
 // AnnotationTypeName on a CRD names the CloudFormation type it was made from.
 const AnnotationTypeName = "cloudcontrol.aws.hfl.dev/type-name"
 
+// AnnotationUnproven on a CRD says why its kind is unproven on the fake
+// (no moto backend: moto lacks the service's API).
+const AnnotationUnproven = "cloudcontrol.aws.hfl.dev/unproven-on-fake"
+
 // Reserved status fields; a read-only property with one of these names is
 // an error the overlay must resolve.
 var reservedStatus = map[string]bool{
@@ -51,6 +55,10 @@ var reservedStatus = map[string]bool{
 type Options struct {
 	Group, Version, Kind string
 	Secrets              []string
+	// Unproven, when set, says why the kind has no test on the fake; it
+	// becomes the AnnotationUnproven annotation, which the coverage data
+	// reports.
+	Unproven string
 }
 
 // Report is what the generation could not map exactly.
@@ -136,11 +144,15 @@ func Generate(s *cfn.Schema, o Options) (*apiextv1.CustomResourceDefinition, *Re
 	}
 
 	plural := cfn.KindPlural(o.Kind)
+	annotations := map[string]string{AnnotationTypeName: s.TypeName}
+	if o.Unproven != "" {
+		annotations[AnnotationUnproven] = o.Unproven
+	}
 	crd := &apiextv1.CustomResourceDefinition{
 		TypeMeta: metav1.TypeMeta{APIVersion: "apiextensions.k8s.io/v1", Kind: "CustomResourceDefinition"},
 		ObjectMeta: metav1.ObjectMeta{
 			Name:        plural + "." + o.Group,
-			Annotations: map[string]string{AnnotationTypeName: s.TypeName},
+			Annotations: annotations,
 		},
 		Spec: apiextv1.CustomResourceDefinitionSpec{
 			Group: o.Group,
