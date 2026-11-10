@@ -2,7 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 # Retain-only kinds: AWS things that are not deleted from Kubernetes (an
-# organization; later, an account's closure, root-level settings). Their
+# organization; an account's place in it, since an account always has a
+# parent; later, an account's closure, root-level settings). Their
 # controllers have no delete call (the generator ignores it), so deleting
 # the object only stops managing the thing. This policy makes the object
 # say so: it refuses one that does not carry ACK's annotation
@@ -27,7 +28,7 @@ spec:
       - apiGroups: [organizations.aws.hfl.dev]
         apiVersions: ["*"]
         operations: [CREATE, UPDATE]
-        resources: [organizations]
+        resources: [organizations, accountplacements]
   matchConditions:
     - name: not-being-deleted
       expression: "!has(object.metadata.deletionTimestamp)"
