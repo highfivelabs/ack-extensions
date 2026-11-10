@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConfigConfigRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigConfigRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeConfigRules",
+        "config:PutConfigRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigConfigRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeComplianceByConfigRule",
+        "config:DescribeConfigRules"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigConfigRuleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeConfigRules",
+        "config:PutConfigRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigConfigRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "config:DeleteConfigRule",
+        "config:DescribeConfigRules"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -7,10 +7,10 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | Category | Types | Provisionable | FULLY_MUTABLE | IMMUTABLE | CRD accepted | Clean | Gap types | Gap, provisionable | Gap, CRD accepted | Gap, clean |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 162 | 158 | 158 | 155 |
-| security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 96 | 78 | 78 | 75 |
+| security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 85 | 67 | 67 | 65 |
 | application | 262 | 250 | 232 | 18 | 250 | 230 | 147 | 136 | 136 | 128 |
 | other | 1260 | 1188 | 1084 | 104 | 1188 | 1137 | 1169 | 1101 | 1101 | 1059 |
-| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1574 | 1473 | 1473 | 1417 |
+| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1563 | 1462 | 1462 | 1407 |
 
 ## Foundation gaps (platform-foundation and security-adjacent types with no kind)
 
@@ -25,17 +25,6 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::CloudTrail::Channel` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::CloudTrail::Dashboard` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::CloudTrail::ResourcePolicy` | platform-foundation | FULLY_MUTABLE | ok | 1 | 0 | 0 | 0 |
-| `AWS::Config::AggregationAuthorization` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Config::ConfigRule` | security-adjacent | FULLY_MUTABLE | ok | 1 | 0 | 1 | 0 |
-| `AWS::Config::ConfigurationAggregator` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::Config::ConfigurationRecorder` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::Config::ConformancePack` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 2 | 2 |
-| `AWS::Config::Connector` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::Config::DeliveryChannel` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Config::OrganizationConfigRule` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::Config::OrganizationConformancePack` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 2 | 2 |
-| `AWS::Config::RemediationConfiguration` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 2 |
-| `AWS::Config::StoredQuery` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::ControlTower::LandingZone` | platform-foundation | FULLY_MUTABLE | ok | 1 | 0 | 0 | 1 |
 | `AWS::Detective::Graph` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Detective::MemberInvitation` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |

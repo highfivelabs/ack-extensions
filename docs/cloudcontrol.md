@@ -547,6 +547,32 @@ the reconciler polls the request without holding a worker.
 the landing zone (plan section 9, question 15). ACK has no Control Tower
 controller, issue or pull request.
 
+**Batch 5: F14, AWS Config** (`TestConfig`). Eleven types; ACK has no
+Config controller and no pull request (community issue 2445 asks for one;
+rechecked 2026-11-09). Six are proven on moto
+(`cloudcontrol/test/fake/moto_config.go`): the region's
+`ConfigurationRecorder` (identifier its name, `default`), its
+`DeliveryChannel`, a managed `ConfigRule` (its `InputParameters` an
+object), a `ConfigurationAggregator` and an `AggregationAuthorization`
+(identifier `<account>|<region>`), both tagged, and an
+`OrganizationConformancePack`. The fixtures (the recorder's IAM role, the
+channel's S3 bucket) are made with the SDKs. Each gets its identifier and
+read-only fields in status; resyncs make no update; the channel's
+frequency, the rule's description, a tag on the aggregator and the pack's
+excluded accounts change in moto; a new rule name is refused (create-only);
+deleting each removes it. AWS cannot start a recorder before it has a
+channel, and a channel needs the recorder first, so the fake starts the
+recorder when its channel is made ("CloudFormation starts the recorder as
+soon as the delivery channel is available", the AWS::Config
+documentation); the real handlers' order is to be checked on the first
+live run. AWS keeps the last channel while a recorder runs, so delete the
+recorder first. moto differs from AWS in ways the backends make up for:
+it drops a recorder's `RecordingMode` and a rule's `EvaluationModes`, and
+has no tags for an organization conformance pack; the backends keep them.
+**Unproven on the fake** (moto 5.2.5 has none of their API):
+`OrganizationConfigRule`, `ConformancePack`, `RemediationConfiguration`,
+`StoredQuery`, `Connector`.
+
 **Not shown by the fake** (section 11): anything about real AWS.
 
 `task check` (the whole repository) is reported in the pull request.
@@ -742,6 +768,11 @@ the AWS SDK's default chain, so any of these works without code:
   per environment. Long-lived keys are what this repository avoids
   (plan 9, question 10); last resort.
 
+**The ACK-generated kinds follow the same model** (the builder,
+2026-11-10): an `ACKContext` per namespace, one manager per controller,
+in the operator's namespace (`docs/plan.md` section 7.6). The two
+contexts are siblings; both use `iamgen`'s trust policy and policy split.
+
 **What kind cannot show** (`task operator-e2e`): the Pod Identity Agent
 exchanging the pod's token for the role's credentials, and AWS honouring
 the trust policy's conditions. Everything on our side of that is proven
@@ -810,7 +841,8 @@ with limits":
    fake" in the coverage data; `task coverage` counts them as ours. Done:
    the coverage change, batch 1 (F02, three Identity Center types) and
    batch 2 (F04, four Transit Gateway routing types) and
-   batch 3 (F07, two Control Tower types, unproven on the fake).
+   batch 3 (F07, two Control Tower types, unproven on the fake) and
+   batch 5 (F14, eleven Config types, six proven on moto).
    Next: the rest of F03 to F18 by `docs/coverage/foundation.md`.
 3. The live-test switch (`task test-live`, a sweeper, the ledger
    `docs/live-runs.md`) and the CloudFormation template for the sandbox

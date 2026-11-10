@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConfigAggregationAuthorization",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigAggregationAuthorizationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeAggregationAuthorizations",
+        "config:PutAggregationAuthorization",
+        "config:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigAggregationAuthorizationRead",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeAggregationAuthorizations",
+        "config:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigAggregationAuthorizationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeAggregationAuthorizations",
+        "config:ListTagsForResource",
+        "config:TagResource",
+        "config:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigAggregationAuthorizationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "config:DeleteAggregationAuthorization",
+        "config:DescribeAggregationAuthorizations",
+        "config:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

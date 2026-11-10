@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConfigOrganizationConfigRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigOrganizationConfigRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeOrganizationConfigRuleStatuses",
+        "config:DescribeOrganizationConfigRules",
+        "config:PutOrganizationConfigRule",
+        "iam:CreateServiceLinkedRole",
+        "organizations:EnableAWSServiceAccess"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigOrganizationConfigRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeOrganizationConfigRules",
+        "config:GetOrganizationCustomRulePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigOrganizationConfigRuleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "config:DescribeOrganizationConfigRuleStatuses",
+        "config:DescribeOrganizationConfigRules",
+        "config:PutOrganizationConfigRule",
+        "iam:CreateServiceLinkedRole",
+        "organizations:EnableAWSServiceAccess"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigOrganizationConfigRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "config:DeleteOrganizationConfigRule",
+        "config:DescribeOrganizationConfigRuleStatuses"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConfigConnector",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigConnectorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "config:GetConnector",
+        "config:ListTagsForResource",
+        "config:PutConnector",
+        "config:TagResource",
+        "iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigConnectorRead",
+      "Effect": "Allow",
+      "Action": [
+        "config:GetConnector",
+        "config:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigConnectorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "config:GetConnector",
+        "config:ListTagsForResource",
+        "config:TagResource",
+        "config:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConfigConnectorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "config:DeleteConnector"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
