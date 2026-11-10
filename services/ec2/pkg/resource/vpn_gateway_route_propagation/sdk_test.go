@@ -27,8 +27,6 @@ import (
 	svcapitypes "github.com/highfivelabs/ack-extensions/services/ec2/apis/v1alpha1"
 )
 
-const ec2NS = "http://ec2.amazonaws.com/doc/2016-11-15/"
-
 // ec2StandIn answers DescribeRouteTables with one table propagating the
 // gateways listed, Enable/Disable with success, or any action with an EC2
 // error code; it records each request's form.
@@ -60,9 +58,9 @@ func (s *ec2StandIn) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		for _, g := range gws {
 			fmt.Fprintf(&b, "<item><gatewayId>%s</gatewayId></item>", g)
 		}
-		fmt.Fprintf(w, `<%[1]sResponse xmlns="%[2]s"><requestId>r</requestId><routeTableSet><item><routeTableId>rtb-0abc</routeTableId><vpcId>vpc-1</vpcId><propagatingVgwSet>%[3]s</propagatingVgwSet></item></routeTableSet></%[1]sResponse>`, action, ec2NS, b.String())
+		fmt.Fprintf(w, `<%[1]sResponse><requestId>r</requestId><routeTableSet><item><routeTableId>rtb-0abc</routeTableId><vpcId>vpc-1</vpcId><propagatingVgwSet>%[2]s</propagatingVgwSet></item></routeTableSet></%[1]sResponse>`, action, b.String())
 	case "EnableVgwRoutePropagation", "DisableVgwRoutePropagation":
-		fmt.Fprintf(w, `<%[1]sResponse xmlns="%[2]s"><requestId>r</requestId><return>true</return></%[1]sResponse>`, action, ec2NS)
+		fmt.Fprintf(w, `<%[1]sResponse><requestId>r</requestId><return>true</return></%[1]sResponse>`, action)
 	default:
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, `<Response><Errors><Error><Code>InvalidAction</Code><Message>%s</Message></Error></Errors><RequestID>r</RequestID></Response>`, action)
