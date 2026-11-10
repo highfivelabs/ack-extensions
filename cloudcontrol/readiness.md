@@ -6,11 +6,11 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 
 | Category | Types | Provisionable | FULLY_MUTABLE | IMMUTABLE | CRD accepted | Clean | Gap types | Gap, provisionable | Gap, CRD accepted | Gap, clean |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 169 | 162 | 162 | 156 |
+| platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 168 | 161 | 161 | 156 |
 | security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 96 | 78 | 78 | 75 |
 | application | 262 | 250 | 232 | 18 | 250 | 230 | 147 | 136 | 136 | 128 |
 | other | 1260 | 1188 | 1084 | 104 | 1188 | 1137 | 1169 | 1101 | 1101 | 1059 |
-| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1581 | 1477 | 1477 | 1418 |
+| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1580 | 1476 | 1476 | 1418 |
 
 ## Foundation gaps (platform-foundation and security-adjacent types with no kind)
 
@@ -174,7 +174,6 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::IAM::ServerCertificate` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 3 | 0 |
 | `AWS::IAM::UserPolicy` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::IAM::UserToGroupAddition` | platform-foundation | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
-| `AWS::IAM::VirtualMFADevice` | platform-foundation | FULLY_MUTABLE | ok | 0 | 1 | 0 | 0 |
 | `AWS::IdentityStore::Group` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::IdentityStore::GroupMembership` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::IdentityStore::User` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |

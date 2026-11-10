@@ -11,6 +11,15 @@
 # LoginProfile (a user's console password) is generated from
 # CreateLoginProfile, GetLoginProfile, UpdateLoginProfile and
 # DeleteLoginProfile; the password comes from a Kubernetes Secret.
+#
+# VirtualMFADevice (a virtual MFA device, not yet enabled for a user) is
+# generated from CreateVirtualMFADevice, ListVirtualMFADevices (read,
+# matched on the serial number, every page) and DeleteVirtualMFADevice.
+# The Base32 seed and the QR code, which only the create returns, are never
+# put in the object: they are ignored below, and a hook writes them into a
+# Kubernetes Secret owned by the object (hooks.go). Every field is
+# immutable; enabling the device for a user takes two codes from the seed
+# and is not this kind's (docs/plan.md, the VirtualMFADevice section).
 resources:
   LoginProfile:
     exceptions:
@@ -33,11 +42,68 @@ resources:
     # A login profile has no tags.
     tags:
       ignore: true
+  VirtualMFADevice:
+    exceptions:
+      errors:
+        404:
+          code: NoSuchEntity
+    list_operation:
+      match_fields:
+        - SerialNumber
+    renames:
+      operations:
+        CreateVirtualMFADevice:
+          input_fields:
+            VirtualMFADeviceName: Name
+    fields:
+      Name:
+        is_required: true
+        is_immutable: true
+      Path:
+        is_immutable: true
+      SecretName:
+        # The Secret the seed is written to, in the object's namespace; the
+        # object's name when unset, written here by the create.
+        type: string
+        is_immutable: true
+      SerialNumber:
+        is_primary_key: true
+    update_operation:
+      # Every field is immutable: a change is refused here (hooks.go).
+      custom_method_name: customUpdateVirtualMFADevice
+    hooks:
+      sdk_read_many_pre_build_request:
+        template_path: hooks/virtual_mfa_device/sdk_read_many_pre_build_request.go.tpl
+      sdk_read_many_post_request:
+        template_path: hooks/virtual_mfa_device/sdk_read_many_post_request.go.tpl
+      sdk_create_pre_build_request:
+        template_path: hooks/virtual_mfa_device/sdk_create_pre_build_request.go.tpl
+      sdk_create_post_request:
+        template_path: hooks/virtual_mfa_device/sdk_create_post_request.go.tpl
+      sdk_create_post_set_output:
+        template_path: hooks/virtual_mfa_device/sdk_create_post_set_output.go.tpl
+      sdk_delete_post_request:
+        template_path: hooks/virtual_mfa_device/sdk_delete_post_request.go.tpl
+    # The list does not return a device's tags, and moto has no MFA device
+    # tags (TagMFADevice): not managed.
+    tags:
+      ignore: true
 ignore:
   # A shape with the name of a hand-written kind (services/iam/apis, written
   # here) would be generated as a second type of that name.
   shape_names:
     - SSHPublicKey
+    # A device's User (the user it is enabled for) is the SDK's User shape,
+    # which would clash with ACK's User kind; the kind does not enable.
+    - User
+  field_paths:
+    # Returned once, by the create; written to a Secret by a hook, never kept
+    # in the object.
+    - CreateVirtualMFADeviceOutput.VirtualMFADevice.Base32StringSeed
+    - CreateVirtualMFADeviceOutput.VirtualMFADevice.QRCodePNG
+    # Tags are not managed (above).
+    - CreateVirtualMFADeviceInput.Tags
+    - CreateVirtualMFADeviceOutput.VirtualMFADevice.Tags
   resource_names:
     - AccessKey
     - AccountAlias
@@ -51,4 +117,3 @@ ignore:
     - ServiceLinkedRole
     - ServiceSpecificCredential
     - User
-    - VirtualMFADevice

@@ -42,6 +42,7 @@ import (
 	svcresource "github.com/highfivelabs/ack-extensions/services/iam/pkg/resource"
 
 	_ "github.com/highfivelabs/ack-extensions/services/iam/pkg/resource/login_profile"
+	_ "github.com/highfivelabs/ack-extensions/services/iam/pkg/resource/virtual_mfa_device"
 
 	"github.com/highfivelabs/ack-extensions/services/iam/pkg/version"
 )

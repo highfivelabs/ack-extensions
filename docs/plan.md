@@ -1,6 +1,6 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has twenty-eight kinds:
+Status, 2026-11-09: the repository has twenty-nine kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
@@ -8,7 +8,7 @@ Status, 2026-11-09: the repository has twenty-eight kinds:
   `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
-- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias` and `AccountPasswordPolicy`;
+- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy` and `VirtualMFADevice`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
 - `organizations.aws.hfl.dev` `DelegatedAdministrator`, `Organization`, `Policy` and
@@ -510,6 +510,17 @@ controller to show it can fail:
 - **IAM password policy.** moto stores the policy and fills IAM's
   defaults for fields left out, as AWS does; it checks the lengths and
   ages IAM limits.
+- **IAM virtual MFA devices** (probed 2026-11-09). moto returns the seed
+  and the QR code from the create, as AWS does (the seed 64 Base32
+  characters; the "QR code" 64 random bytes, not a PNG), refuses a second device of the same path and
+  name (`EntityAlreadyExists`), pages the list at 100 with a marker, and
+  answers `NoSuchEntity` for a device deleted twice. It differs from AWS
+  in four ways: its `ListVirtualMFADevices` returns every device's seed
+  and QR code again (AWS returns neither after the create; the kind
+  ignores both fields, so nothing reads them); it deletes a device that is
+  enabled for a user (AWS answers `DeleteConflict`); its
+  `EnableMFADevice` takes any two six-digit codes; and it has none of the
+  MFA device tag calls nor `GetMFADevice` (a server error).
 - **KMS replica keys.**
   - moto keeps a replica in its own Region's backend, under the primary
     key's key ID, as AWS does.
@@ -1650,6 +1661,78 @@ consolidated-billing organization (moto allows both);
 policy type detaches its policies; a delegated administrator's account
 (its rights differ); real AWS.
 
+### 6.31 `iam.aws.hfl.dev` `VirtualMFADevice`
+
+A virtual MFA device (F03). Built on the builder's decision of 2026-11-09,
+closing PR #44: Cloud Control never returns a device's seed or QR code,
+so a device made through it cannot be enrolled; this kind writes the seed
+into a Kubernetes Secret, on `AccessKey`'s pattern (section 6.30).
+Upstream rechecked 2026-11-09: iam-controller `v1.11.3` ignores
+`VirtualMFADevice` in its `generator.yaml`, on master too; no pull request
+or issue adds it.
+
+**Generated** from `CreateVirtualMFADevice` (create),
+`ListVirtualMFADevices` (read, matched on the serial number,
+`list_operation.match_fields`) and `DeleteVirtualMFADevice`. About 82% of
+the new Go is generated (about 1,460 lines); written here are six hook
+templates and `hooks.go` (about 310 lines together: the Secret and the
+list's pages). The create's `VirtualMFADeviceName` is renamed `name`, as
+ACK's `User` and `Role` do. There is no update call, and a custom update
+refuses every change.
+
+- **Spec:** `name`, `path` and `secretName`, all immutable; the create
+  writes the default Secret name into `spec.secretName`, as `AccessKey`
+  does. **Status:** `serialNumber` (the device's ARN) and `enableDate`
+  (set once a user enables it). The SDK's `User` shape is ignored, so the
+  user a device is enabled for is not shown.
+- **The seed, once, into a Secret.** `CreateVirtualMFADeviceOutput`'s
+  `Base32StringSeed` and `QRCodePNG` are ignored by the generator, so no
+  generated code copies them anywhere. A hook right after the create
+  writes them, with the serial number, into a new Secret in the object's
+  namespace, named `spec.secretName` or else the object's name, keys
+  `serialNumber`, `base32StringSeed` and `qrCodePNG` (the QR code is
+  part of the same response, so it costs nothing to keep),
+  `immutable: true`, owned by the object, and clears both from the
+  response. The manager makes the Secret with its own client, as
+  `AccessKey` does.
+- **Never written over**, **the Secret is the record**, **never logged**
+  and **delete** as for `AccessKey`: a create whose Secret exists is
+  refused (terminal) before any device is made; a Secret that cannot be
+  made after the device was deletes the device; the read, while the
+  status has no serial number, takes it from the Secret the object owns;
+  delete deletes the device, then the Secret if the object owns it.
+- **The list's pages.** `ListVirtualMFADevices` lists every device in the
+  account, 100 a page. The generated read takes one page, so a hook reads
+  on with the marker until a page holds the device.
+- **Not this kind's:** enabling the device for a user. `EnableMFADevice`
+  takes two consecutive codes computed from the seed, so it is a person's
+  step, or a later kind's that reads the Secret. A device enabled for a
+  user cannot be deleted (`DeleteConflict`): the delete fails and is
+  retried, and the error says why, until the device is deactivated.
+  Tags are not managed (the list does not return them, and moto has no
+  MFA device tag calls).
+- **Assumed, likely and cheap** (the builder named the seed and the QR
+  code, not the names): the default Secret name is the object's name, and
+  the Secret's keys are `serialNumber`, `base32StringSeed` and `qrCodePNG`.
+
+**Proven on moto** (`TestIAMVirtualMFADevice`): a device made after 105
+others, found on the list's second page; its Secret holding the serial
+number, the seed (Base32 text) and the QR code, owned by the object and
+immutable; no
+second create and the Secret not written again across resyncs; a status
+cleared of the serial number takes it back from the Secret with no second
+device; the default written into `spec.secretName`, which then cannot
+change; a Secret not the object's is left untouched and no device is made;
+a device deleted outside Kubernetes is not made again over its Secret;
+delete removes the device and the Secret; the seed is in no manager log
+line, in nothing of the object's and in no event.
+
+**Not proven on moto:** a delete refused for a device enabled for a user
+(moto deletes it); a Secret that cannot be made after the device was (as
+for `AccessKey`); the QR code (moto's is 64 random bytes, not a PNG);
+the owner reference's garbage
+collection; real AWS.
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)
@@ -2006,7 +2089,11 @@ Before it can run on a real cluster:
    - role associations: how long `PENDING` lasts, when `INVALID` appears
      and whether it mends once the role's trust policy is fixed, and the
      real responses and faults of `RemoveRoleFromDBCluster` and
-     `RemoveRoleFromDBInstance`, which moto lacks (section 4.4).
+     `RemoveRoleFromDBInstance`, which moto lacks (section 4.4);
+   - virtual MFA devices: the seed decodes as Base32 and the QR code is a
+     PNG that an authenticator reads, a device so made can be enabled for
+     a user with two codes from the seed, and the delete of an enabled
+     device is refused with `DeleteConflict` (section 6.31).
 4. CRD labels marking a gap kind and naming the upstream kind it
    anticipates, as gaps-gcp does.
 5. Offer patch 0001 upstream; comment on PRs #184 and #257 with what we

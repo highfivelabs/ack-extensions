@@ -8,7 +8,6 @@ rules:
   - ""
   resources:
   - configmaps
-  - secrets
   verbs:
   - get
   - list
@@ -23,6 +22,17 @@ rules:
   - list
   - watch
 - apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - watch
+- apiGroups:
   - iam.aws.hfl.dev
   resources:
   - accountaliases
@@ -31,6 +41,7 @@ rules:
   - rolepolicyattachments
   - sshpublickeys
   - usergroupmemberships
+  - virtualmfadevices
   verbs:
   - create
   - delete
@@ -48,6 +59,7 @@ rules:
   - rolepolicyattachments/status
   - sshpublickeys/status
   - usergroupmemberships/status
+  - virtualmfadevices/status
   verbs:
   - get
   - patch

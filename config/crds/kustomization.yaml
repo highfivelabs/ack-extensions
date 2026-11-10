@@ -19,6 +19,7 @@ resources:
   - bases/iam.aws.hfl.dev_rolepolicyattachments.yaml
   - bases/iam.aws.hfl.dev_usergroupmemberships.yaml
   - bases/iam.aws.hfl.dev_sshpublickeys.yaml
+  - bases/iam.aws.hfl.dev_virtualmfadevices.yaml
   - bases/kms.aws.hfl.dev_replicakeys.yaml
   - bases/lambda.aws.hfl.dev_permissions.yaml
   - bases/organizations.aws.hfl.dev_delegatedadministrators.yaml
