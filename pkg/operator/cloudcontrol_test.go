@@ -113,10 +113,13 @@ func can(t *testing.T, c client.Client, sa, verb, group, resource, ns string) bo
 func TestCloudControlContext(t *testing.T) {
 	c := startCCEnv(t)
 	ctx := context.Background()
+	fake, err := NewFakeAWS("http://moto.fake-aws.svc.cluster.local:5000", "10.96.0.1")
+	if err != nil {
+		t.Fatal(err)
+	}
 	r := &ContextReconciler{
 		Client: c, Namespace: sysNS, Image: "example.test/cloudcontrol-manager:dev",
-		ExtraArgs: []string{"--aws-endpoint-url=http://moto.fake-aws:5000"},
-		ExtraEnv:  []corev1.EnvVar{{Name: "AWS_ACCESS_KEY_ID", Value: "testing"}},
+		FakeAWS: fake,
 	}
 	key := types.NamespacedName{Namespace: "team-a-prod", Name: ccv1alpha1.ContextName}
 	pass := func(t *testing.T) {
@@ -209,7 +212,8 @@ func TestCloudControlContext(t *testing.T) {
 			"--watch-namespace=team-a-prod", "--aws-region=us-west-2", "--deletion-policy=retain",
 			"--leader-election-namespace=team-a-prod", "--enable-carm=false",
 			"--cloudcontrol-kinds=Detector.guardduty,SAMLProvider.iam",
-			"--aws-endpoint-url=http://moto.fake-aws:5000",
+			"--aws-endpoint-url=http://moto.fake-aws.svc.cluster.local:5000",
+			"--aws-identity-endpoint-url=http://moto.fake-aws.svc.cluster.local:5000",
 		} {
 			if !slices.Contains(args, want) {
 				t.Errorf("args lack %s: %v", want, args)
