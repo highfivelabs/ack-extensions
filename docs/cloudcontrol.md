@@ -624,6 +624,32 @@ batch: `ThreatEntitySet` and `TrustedEntitySet` (GuardDuty's newer
 replacements of the two sets) and `CustomDetectionRuleAssociation`, which
 `docs/coverage/foundation.md` F15 does not list.
 
+**Batch 7: F16, Security Hub.** ACK has no Security Hub controller, issue
+or pull request. Two types run on moto, in `TestSecurityHub`:
+`AWS::SecurityHub::Hub` (identified by its ARN, `hub/default`; its tags are
+a map) is enabled, resynced without an update, has `AutoEnableControls`
+changed (one replace) and is disabled by its delete; moto has no
+`UpdateSecurityHubConfiguration` or `TagResource` and always answers the
+two settings with its own values, so the backend keeps
+`ControlFindingGenerator`, `AutoEnableControls` and `Tags`, and only the
+create and the delete reach moto. `AWS::SecurityHub::OrganizationConfiguration`
+(identified `<account>/<region>/securityhub-organization-configuration`,
+the schema's pattern) is set by the delegated administrator, so the test
+makes an organization and designates its account through moto's own APIs
+first; it is changed (one replace of `/AutoEnable`), and its delete turns
+auto-enable off (`AutoEnable` false, `AutoEnableStandards` `NONE`, what the
+backend takes the handler's delete to do; not checked on real AWS). The
+test skips on a live run, since the sandbox account has no organization.
+`DelegatedAdmin` (moto can enable one but not list or disable it),
+`Standard`, `FindingAggregator`, `ConfigurationPolicy`,
+`PolicyAssociation`, `AutomationRule` and `ActionTarget` are **unproven on
+the fake**. **A gap found:** ACK's default tags (`--resource-tags`) are
+added only to a tag property that is a list of `Key`/`Value` objects
+(`cfn.Schema.TagProperty`), so a type whose tags are a map, as the hub's
+are, gets none, and the live sweeper cannot find it by its run tag. The
+test client is `aws-sdk-go-v2/service/securityhub` v1.55.6, of the same
+SDK release as the GuardDuty client pinned here.
+
 **Not shown by the fake** (section 11): anything about real AWS.
 
 `task check` (the whole repository) is reported in the pull request.
@@ -894,8 +920,9 @@ with limits":
    batch 2 (F04, four Transit Gateway routing types), batch 3 (F07, two
    Control Tower types, unproven on the fake), batch 4 (F08, F09: ten DNS
    types, two proven on moto), batch 5 (F14, eleven Config types, six
-   proven on moto) and batch 6 (F15, seven GuardDuty types, `Filter`
-   proven on moto).
+   proven on moto), batch 6 (F15, seven GuardDuty types, `Filter`
+   proven on moto) and batch 7 (F16, nine Security Hub types, `Hub` and
+   `OrganizationConfiguration` proven on moto).
    Next: the rest of F03 to F18 by `docs/coverage/foundation.md`.
 3. The live-test switch (`task test-live`, a sweeper, the ledger
    `docs/live-runs.md`) and the CloudFormation template for the sandbox

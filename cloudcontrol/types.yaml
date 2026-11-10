@@ -168,3 +168,24 @@ types:
     unproven: "moto 5.2.5 has no Create/Get/Update/DeleteMalwareProtectionPlan"
   - typeName: AWS::GuardDuty::Master
     unproven: "moto 5.2.5 has no AcceptAdministratorInvitation or DisassociateFromAdministratorAccount"
+  # F16: Security Hub. ACK has no Security Hub controller, issue or pull
+  # request. moto 5.2.5 has the hub (enable, describe, disable) and the
+  # organization configuration; it has enabling a delegated administrator
+  # but not listing or disabling one, and none of standards, aggregators,
+  # configuration policies, automation rules or action targets.
+  - typeName: AWS::SecurityHub::Hub
+  - typeName: AWS::SecurityHub::OrganizationConfiguration
+  - typeName: AWS::SecurityHub::DelegatedAdmin
+    unproven: "moto 5.2.5 has EnableOrganizationAdminAccount but no ListOrganizationAdminAccounts or DisableOrganizationAdminAccount"
+  - typeName: AWS::SecurityHub::Standard
+    unproven: "moto 5.2.5 has no BatchEnableStandards, GetEnabledStandards or BatchDisableStandards"
+  - typeName: AWS::SecurityHub::FindingAggregator
+    unproven: "moto 5.2.5 has no Create/Get/Update/DeleteFindingAggregator"
+  - typeName: AWS::SecurityHub::ConfigurationPolicy
+    unproven: "moto 5.2.5 has no Create/Get/Update/DeleteConfigurationPolicy"
+  - typeName: AWS::SecurityHub::PolicyAssociation
+    unproven: "moto 5.2.5 has no StartConfigurationPolicyAssociation or GetConfigurationPolicyAssociation"
+  - typeName: AWS::SecurityHub::AutomationRule
+    unproven: "moto 5.2.5 has no CreateAutomationRule or BatchGet/Update/DeleteAutomationRules"
+  - typeName: AWS::SecurityHub::ActionTarget
+    unproven: "moto 5.2.5 has no Create/Describe/Update/DeleteActionTarget(s)"

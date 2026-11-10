@@ -1624,23 +1624,23 @@ AWS::SecurityAgent::Pentest,securityagent,Pentest,other,FULLY_MUTABLE,,,ok,0,0,0
 AWS::SecurityAgent::PrivateConnection,securityagent,PrivateConnection,other,FULLY_MUTABLE,,,ok,0,0,1,2,1,true
 AWS::SecurityAgent::SecurityRequirementPack,securityagent,SecurityRequirementPack,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::SecurityAgent::TargetDomain,securityagent,TargetDomain,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::SecurityHub::ActionTarget,securityhub,ActionTarget,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::SecurityHub::ActionTarget,securityhub,ActionTarget,security-adjacent,FULLY_MUTABLE,,ActionTarget (Cloud Control),ok,0,0,0,0,0,true
 AWS::SecurityHub::AggregatorV2,securityhub,AggregatorV2,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::SecurityHub::AutomationRule,securityhub,AutomationRule,security-adjacent,FULLY_MUTABLE,,,ok,2,0,0,0,0,true
+AWS::SecurityHub::AutomationRule,securityhub,AutomationRule,security-adjacent,FULLY_MUTABLE,,AutomationRule (Cloud Control),ok,2,0,0,0,0,true
 AWS::SecurityHub::AutomationRuleV2,securityhub,AutomationRuleV2,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::SecurityHub::ConfigurationPolicy,securityhub,ConfigurationPolicy,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::SecurityHub::ConfigurationPolicy,securityhub,ConfigurationPolicy,security-adjacent,FULLY_MUTABLE,,ConfigurationPolicy (Cloud Control),ok,0,0,0,0,0,true
 AWS::SecurityHub::Connector,securityhub,Connector,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::SecurityHub::ConnectorV2,securityhub,ConnectorV2,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::SecurityHub::DelegatedAdmin,securityhub,DelegatedAdmin,security-adjacent,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::SecurityHub::FindingAggregator,securityhub,FindingAggregator,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::SecurityHub::Hub,securityhub,Hub,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
+AWS::SecurityHub::DelegatedAdmin,securityhub,DelegatedAdmin,security-adjacent,IMMUTABLE,,DelegatedAdmin (Cloud Control),ok,0,0,0,0,0,true
+AWS::SecurityHub::FindingAggregator,securityhub,FindingAggregator,security-adjacent,FULLY_MUTABLE,,FindingAggregator (Cloud Control),ok,0,0,0,0,0,true
+AWS::SecurityHub::Hub,securityhub,Hub,security-adjacent,FULLY_MUTABLE,,Hub (Cloud Control),ok,0,0,0,1,0,true
 AWS::SecurityHub::HubV2,securityhub,HubV2,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::SecurityHub::Insight,securityhub,Insight,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::SecurityHub::OrganizationConfiguration,securityhub,OrganizationConfiguration,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::SecurityHub::PolicyAssociation,securityhub,PolicyAssociation,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::SecurityHub::OrganizationConfiguration,securityhub,OrganizationConfiguration,security-adjacent,FULLY_MUTABLE,,OrganizationConfiguration (Cloud Control),ok,0,0,0,0,0,true
+AWS::SecurityHub::PolicyAssociation,securityhub,PolicyAssociation,security-adjacent,FULLY_MUTABLE,,PolicyAssociation (Cloud Control),ok,0,0,0,0,0,true
 AWS::SecurityHub::ProductSubscription,securityhub,ProductSubscription,security-adjacent,IMMUTABLE,,,ok,0,0,0,0,0,true
 AWS::SecurityHub::SecurityControl,securityhub,SecurityControl,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::SecurityHub::Standard,securityhub,Standard,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::SecurityHub::Standard,securityhub,Standard,security-adjacent,FULLY_MUTABLE,,Standard (Cloud Control),ok,0,0,0,0,0,true
 AWS::SecurityLake::AwsLogSource,securitylake,AwsLogSource,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,2,true
 AWS::SecurityLake::DataLake,securitylake,DataLake,security-adjacent,FULLY_MUTABLE,,,ok,0,0,1,1,4,true
 AWS::SecurityLake::Subscriber,securitylake,Subscriber,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,2,true
