@@ -13,7 +13,10 @@ import (
 type crdKind struct {
 	Group string
 	Kind  string
-	Attrs []attr
+	// Annotations are the CRD's own (a Cloud Control kind's names its
+	// CloudFormation type).
+	Annotations map[string]string
+	Attrs       []attr
 	// Refs counts the *Ref fields (references to other objects) skipped:
 	// each stands for an ID field already counted.
 	Refs int
@@ -30,7 +33,14 @@ func parseCRD(b []byte) (*crdKind, error) {
 	}
 	spec, _ := doc["spec"].(jm)
 	names, _ := spec["names"].(jm)
-	k := &crdKind{Group: str(spec["group"]), Kind: str(names["kind"])}
+	k := &crdKind{Group: str(spec["group"]), Kind: str(names["kind"]), Annotations: map[string]string{}}
+	if md, ok := doc["metadata"].(jm); ok {
+		if an, ok := md["annotations"].(jm); ok {
+			for a, v := range an {
+				k.Annotations[a] = str(v)
+			}
+		}
+	}
 	versions, _ := spec["versions"].([]any)
 	if k.Kind == "" || len(versions) == 0 {
 		return nil, fmt.Errorf("not a CRD")

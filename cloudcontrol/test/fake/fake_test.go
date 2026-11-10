@@ -7,23 +7,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+	"net/http/httptest"
 	"net/url"
 	"strings"
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/cloudcontrol"
 	cctypes "github.com/aws/aws-sdk-go-v2/service/cloudcontrol/types"
+	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"golang.org/x/net/http/httpproxy"
 
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/pkg/registry"
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/test/fake"
+	"github.com/highfivelabs/ack-extensions/pkg/fakeaws"
 )
 
 // The guard refuses AWS's real endpoints, by URL, by dial and by proxy.
 func TestGuard(t *testing.T) {
-	for _, u := range []string{"https://cloudcontrolapi.us-west-2.amazonaws.com", "http://10.0.0.1:5000", "http://example.com"} {
+	for _, u := range []string{fakeaws.RealEndpoint, "http://10.0.0.1:5000", "http://example.com"} {
 		if err := fake.LocalOnly(u); err == nil {
 			t.Errorf("LocalOnly(%q) accepted", u)
 		}
@@ -33,21 +36,11 @@ func TestGuard(t *testing.T) {
 			t.Errorf("LocalOnly(%q): %v", u, err)
 		}
 	}
-	if _, err := fake.AWSConfig("https://cloudcontrolapi.us-west-2.amazonaws.com", "us-west-2"); err == nil {
+	if _, err := fake.AWSConfig(fakeaws.RealEndpoint, "us-west-2"); err == nil {
 		t.Errorf("AWSConfig accepted a real endpoint")
 	}
-	// An SDK client with no endpoint override, as a mistyped configuration
-	// would make: the dial is refused before any name is resolved.
-	cfg := aws.Config{
-		Region:      "us-west-2",
-		Credentials: credentials.NewStaticCredentialsProvider(fake.FakeAccessKeyID, fake.FakeSecretAccessKey, ""),
-		HTTPClient:  fake.HTTPClient(),
-	}
-	cfg.RetryMaxAttempts = 1
-	_, err := cloudcontrol.NewFromConfig(cfg).GetResource(context.Background(), &cloudcontrol.GetResourceInput{TypeName: aws.String("AWS::IAM::SAMLProvider"), Identifier: aws.String("x")})
-	if err == nil || !strings.Contains(err.Error(), "refusing to dial") {
-		t.Errorf("a request to the real endpoint was not refused at the dial: %v", err)
-	}
+	// An SDK client with no endpoint override is refused at the dial:
+	// pkg/fakeaws TestLocks.
 	// The child environment sends every non-loopback request to a dead
 	// local proxy (and loopback ones direct).
 	env := map[string]string{}
@@ -57,7 +50,7 @@ func TestGuard(t *testing.T) {
 	}
 	pc := httpproxy.Config{HTTPProxy: env["HTTP_PROXY"], HTTPSProxy: env["HTTPS_PROXY"], NoProxy: env["NO_PROXY"]}
 	proxy := pc.ProxyFunc()
-	real, _ := url.Parse("https://cloudcontrolapi.us-west-2.amazonaws.com/")
+	real, _ := url.Parse(fakeaws.RealEndpoint + "/")
 	if p, err := proxy(real); err != nil || p == nil || p.String() != fake.DeadProxy {
 		t.Errorf("the real endpoint is not sent to the dead proxy: %v %v", p, err)
 	}
@@ -171,5 +164,43 @@ func TestServerRules(t *testing.T) {
 	_, err = c.GetResource(ctx, &cloudcontrol.GetResourceInput{TypeName: aws.String("AWS::No::Such"), Identifier: aws.String("x")})
 	if err == nil || !strings.Contains(err.Error(), "TypeNotFoundException") {
 		t.Errorf("unknown type: %v", err)
+	}
+}
+
+// A request that is not a Cloud Control call goes to the upstream, so the
+// fake's one URL is the manager's every endpoint: here STS's
+// GetCallerIdentity, which ACK's runtime makes at start.
+func TestUpstream(t *testing.T) {
+	up := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_ = r.ParseForm()
+		if r.Form.Get("Action") != "GetCallerIdentity" {
+			http.Error(w, "unexpected "+r.Form.Get("Action"), http.StatusBadRequest)
+			return
+		}
+		fmt.Fprint(w, `<GetCallerIdentityResponse xmlns="https://sts.example/doc/2011-06-15/"><GetCallerIdentityResult><Arn>arn:aws:iam::123456789012:user/moto</Arn><UserId>X</UserId><Account>123456789012</Account></GetCallerIdentityResult><ResponseMetadata><RequestId>r</RequestId></ResponseMetadata></GetCallerIdentityResponse>`)
+	}))
+	defer up.Close()
+	srv := fake.New()
+	if err := srv.Upstream(fakeaws.RealEndpoint); err == nil {
+		t.Error("Upstream accepted a real endpoint")
+	}
+	if err := srv.Upstream(up.URL); err != nil {
+		t.Fatal(err)
+	}
+	u := srv.Start()
+	defer srv.Close()
+	cfg, err := fake.AWSConfig(u, "us-west-2")
+	if err != nil {
+		t.Fatal(err)
+	}
+	out, err := sts.NewFromConfig(cfg).GetCallerIdentity(context.Background(), &sts.GetCallerIdentityInput{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if aws.ToString(out.Account) != "123456789012" {
+		t.Errorf("account %q", aws.ToString(out.Account))
+	}
+	if n := len(srv.Calls()); n != 0 {
+		t.Errorf("the fake counted %d Cloud Control calls for an STS request", n)
 	}
 }

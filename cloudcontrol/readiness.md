@@ -6,11 +6,11 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 
 | Category | Types | Provisionable | FULLY_MUTABLE | IMMUTABLE | CRD accepted | Clean | Gap types | Gap, provisionable | Gap, CRD accepted | Gap, clean |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 178 | 171 | 171 | 164 |
-| security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 97 | 79 | 79 | 76 |
+| platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 173 | 166 | 166 | 160 |
+| security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 96 | 78 | 78 | 75 |
 | application | 262 | 250 | 232 | 18 | 250 | 230 | 147 | 136 | 136 | 128 |
 | other | 1260 | 1188 | 1084 | 104 | 1188 | 1137 | 1169 | 1101 | 1101 | 1059 |
-| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1591 | 1487 | 1487 | 1427 |
+| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1585 | 1481 | 1481 | 1422 |
 
 ## Foundation gaps (platform-foundation and security-adjacent types with no kind)
 
@@ -133,7 +133,6 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::EC2::TransitGatewayPolicyTableAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::TransitGatewayPolicyTableEntry` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::TransitGatewayRoute` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayRouteTable` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::TransitGatewayRouteTableAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::TransitGatewayRouteTablePropagation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::VerifiedAccessEndpoint` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 3 |
@@ -163,7 +162,6 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::FMS::ProtocolsList` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::FMS::ResourceSet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::GuardDuty::CustomDetectionRuleAssociation` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::GuardDuty::Detector` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::GuardDuty::Filter` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::GuardDuty::IPSet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::GuardDuty::MalwareProtectionPlan` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
@@ -177,7 +175,6 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::IAM::GroupPolicy` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::IAM::Policy` | platform-foundation | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
 | `AWS::IAM::RolePolicy` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::IAM::SAMLProvider` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 2 | 0 |
 | `AWS::IAM::ServerCertificate` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 3 | 0 |
 | `AWS::IAM::UserPolicy` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::IAM::UserToGroupAddition` | platform-foundation | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
@@ -267,10 +264,7 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::SecurityLake::SubscriberNotification` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 5 | 3 |
 | `AWS::SSO::Application` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::SSO::ApplicationAssignment` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SSO::Assignment` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 2 |
 | `AWS::SSO::Instance` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::SSO::InstanceAccessControlAttributeConfiguration` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SSO::PermissionSet` | platform-foundation | FULLY_MUTABLE | ok | 1 | 0 | 0 | 0 |
 | `AWS::WAF::ByteMatchSet` | security-adjacent | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
 | `AWS::WAF::IPSet` | security-adjacent | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
 | `AWS::WAF::Rule` | security-adjacent | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |

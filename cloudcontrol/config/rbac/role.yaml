@@ -95,6 +95,30 @@ rules:
   - patch
   - update
 - apiGroups:
+  - sso.cloudcontrol.aws.hfl.dev
+  resources:
+  - assignments
+  - instanceaccesscontrolattributeconfigurations
+  - permissionsets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - sso.cloudcontrol.aws.hfl.dev
+  resources:
+  - assignments/status
+  - instanceaccesscontrolattributeconfigurations/status
+  - permissionsets/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - services.k8s.aws
   resources:
   - fieldexports

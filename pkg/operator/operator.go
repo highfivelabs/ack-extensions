@@ -90,6 +90,9 @@ type Options struct {
 	Images map[string]string
 	// Identity is the default identity, IdentityOwn or IdentityACK.
 	Identity string
+	// FakeAWS, for tests and kind only, points every manager at a fake AWS
+	// whatever the ACK controller it copies says (FakeAWS).
+	FakeAWS *FakeAWS
 }
 
 // Reconciler makes the desired managers exist and nothing else of ours.
@@ -361,6 +364,9 @@ func (r *Reconciler) Plan(src *appsv1.Deployment, service string, ackSA *corev1.
 		Ports:           c.Ports,
 		LivenessProbe:   c.LivenessProbe,
 		ReadinessProbe:  c.ReadinessProbe,
+	}
+	if err := r.Options.FakeAWS.Fake(&mc); err != nil {
+		return nil, fmt.Errorf("%s/%s: %w", ns, name, err)
 	}
 	podLabels := map[string]string{"app.kubernetes.io/name": name, LabelService: service}
 	one := int32(1)

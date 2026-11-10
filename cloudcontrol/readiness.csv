@@ -661,7 +661,7 @@ AWS::EC2::TransitGatewayPolicyTable,ec2,TransitGatewayPolicyTable,platform-found
 AWS::EC2::TransitGatewayPolicyTableAssociation,ec2,TransitGatewayPolicyTableAssociation,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
 AWS::EC2::TransitGatewayPolicyTableEntry,ec2,TransitGatewayPolicyTableEntry,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::EC2::TransitGatewayRoute,ec2,TransitGatewayRoute,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::EC2::TransitGatewayRouteTable,ec2,TransitGatewayRouteTable,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::EC2::TransitGatewayRouteTable,ec2,TransitGatewayRouteTable,platform-foundation,FULLY_MUTABLE,,TransitGatewayRouteTable (Cloud Control),ok,0,0,0,0,0,true
 AWS::EC2::TransitGatewayRouteTableAssociation,ec2,TransitGatewayRouteTableAssociation,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
 AWS::EC2::TransitGatewayRouteTablePropagation,ec2,TransitGatewayRouteTablePropagation,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
 AWS::EC2::TransitGatewayVpcAttachment,ec2,TransitGatewayVpcAttachment,platform-foundation,FULLY_MUTABLE,TransitGatewayVPCAttachment,,ok,0,0,0,2,0,true
@@ -880,7 +880,7 @@ AWS::GroundStation::DataflowEndpointGroup,groundstation,DataflowEndpointGroup,ot
 AWS::GroundStation::DataflowEndpointGroupV2,groundstation,DataflowEndpointGroupV2,other,FULLY_MUTABLE,,,ok,0,0,0,1,1,true
 AWS::GroundStation::MissionProfile,groundstation,MissionProfile,other,FULLY_MUTABLE,,,ok,0,0,0,0,2,true
 AWS::GuardDuty::CustomDetectionRuleAssociation,guardduty,CustomDetectionRuleAssociation,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::GuardDuty::Detector,guardduty,Detector,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
+AWS::GuardDuty::Detector,guardduty,Detector,security-adjacent,FULLY_MUTABLE,,Detector (Cloud Control),ok,0,0,0,0,1,true
 AWS::GuardDuty::Filter,guardduty,Filter,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::GuardDuty::IPSet,guardduty,IPSet,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,1,1,true
 AWS::GuardDuty::MalwareProtectionPlan,guardduty,MalwareProtectionPlan,security-adjacent,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
@@ -903,7 +903,7 @@ AWS::IAM::OIDCProvider,iam,OIDCProvider,platform-foundation,FULLY_MUTABLE,OpenID
 AWS::IAM::Policy,iam,Policy,platform-foundation,NON_PROVISIONABLE,,,not provisionable,0,0,0,0,0,false
 AWS::IAM::Role,iam,Role,platform-foundation,FULLY_MUTABLE,Role,RolePolicyAttachment,ok,2,0,0,0,3,true
 AWS::IAM::RolePolicy,iam,RolePolicy,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,1,false
-AWS::IAM::SAMLProvider,iam,SAMLProvider,platform-foundation,FULLY_MUTABLE,,,ok,0,0,2,2,0,true
+AWS::IAM::SAMLProvider,iam,SAMLProvider,platform-foundation,FULLY_MUTABLE,,SAMLProvider (Cloud Control),ok,0,0,2,2,0,true
 AWS::IAM::ServerCertificate,iam,ServerCertificate,platform-foundation,FULLY_MUTABLE,,,ok,0,0,3,3,0,true
 AWS::IAM::ServiceLinkedRole,iam,ServiceLinkedRole,platform-foundation,FULLY_MUTABLE,ServiceLinkedRole,,ok,0,0,2,2,1,false
 AWS::IAM::User,iam,User,platform-foundation,FULLY_MUTABLE,User,LoginProfile;UserGroupMembership,ok,1,0,1,1,3,true
@@ -1742,10 +1742,10 @@ AWS::SSMQuickSetup::ConfigurationManager,ssmquicksetup,ConfigurationManager,othe
 AWS::SSMQuickSetup::LifecycleAutomation,ssmquicksetup,LifecycleAutomation,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::SSO::Application,sso,Application,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::SSO::ApplicationAssignment,sso,ApplicationAssignment,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::SSO::Assignment,sso,Assignment,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,2,true
+AWS::SSO::Assignment,sso,Assignment,platform-foundation,IMMUTABLE,,Assignment (Cloud Control),ok,0,0,0,0,2,true
 AWS::SSO::Instance,sso,Instance,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::SSO::InstanceAccessControlAttributeConfiguration,sso,InstanceAccessControlAttributeConfiguration,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::SSO::PermissionSet,sso,PermissionSet,platform-foundation,FULLY_MUTABLE,,,ok,1,0,0,0,0,true
+AWS::SSO::InstanceAccessControlAttributeConfiguration,sso,InstanceAccessControlAttributeConfiguration,platform-foundation,FULLY_MUTABLE,,InstanceAccessControlAttributeConfiguration (Cloud Control),ok,0,0,0,0,0,true
+AWS::SSO::PermissionSet,sso,PermissionSet,platform-foundation,FULLY_MUTABLE,,PermissionSet (Cloud Control),ok,1,0,0,0,0,true
 AWS::StepFunctions::Activity,stepfunctions,Activity,application,FULLY_MUTABLE,Activity,,ok,0,0,0,0,0,true
 AWS::StepFunctions::StateMachine,stepfunctions,StateMachine,application,FULLY_MUTABLE,StateMachine,,ok,1,0,0,3,2,true
 AWS::StepFunctions::StateMachineAlias,stepfunctions,StateMachineAlias,application,FULLY_MUTABLE,StateMachineAlias,,ok,0,0,0,1,0,true

@@ -50,7 +50,8 @@ fake and marked untested on real AWS until a real run. Adding a type:
    test in `cloudcontrol/test/e2e` when moto has the service; otherwise
    mark it "unproven on fake" (PR 2 adds the column to the coverage data).
 4. `tests/operator/run.sh` checks the CRD list; add the new CRD there.
-5. Never weaken the fake's three guards (`cloudcontrol/test/fake/guard.go`).
+5. Never weaken the guard against real AWS (`pkg/fakeaws`, checked by
+   `task noaws`; `docs/cloudcontrol.md` section 6).
 
 The identity is per environment: a `CloudControlContext` per namespace,
 the manager in the operator's namespace as
@@ -61,6 +62,19 @@ Control managers were the spike's proposal and are not to be built.
 **Left of the builder's Cloud Control brief (2026-11-09), for the next
 agent.** PR 1 (`agent/cloudcontrol`) is the core. Still to do:
 
+- **PR 2, types in foundation order.** Done in `agent/cloudcontrol-types`:
+  coverage counts Cloud Control kinds (labelled "(Cloud Control)", with an
+  `unproven on fake` note from `unproven:` in `types.yaml`, which the
+  generator writes into the CRD), and batch 1, F02 (`PermissionSet`,
+  `Assignment` on moto's sso-admin; the access control attribute
+  configuration unproven). After `task cloudcontrol:generate`, run
+  `task coverage` and the survey (`go run ./hack/cloudcontrol-gen
+  --survey`) twice: each reads the other's output. **Next batches**, in
+  foundation order, recheck ACK first: F03's `VirtualMFADevice` (moto has
+  it), F04's Transit Gateway route, association, propagation and peering
+  (moto has them all), F05 `VPNConnection`, F07 Control Tower (no emulator:
+  unproven), F08/F09 Route 53 and its Resolver firewall, F14 to F18.
+  The original brief for it:
 - **PR 2, types in foundation order**, in reviewable batches
   (`docs/coverage/foundation.md`; `cloudcontrol/readiness.md` lists the
   gap types and which make a clean CRD). Each with a moto backend and an
@@ -72,6 +86,12 @@ agent.** PR 1 (`agent/cloudcontrol`) is the core. Still to do:
   across services; the manager handles it (group-qualified
   `--cloudcontrol-kinds`, controller-name validation off), but check the
   coverage matcher does too.
+- **PR 3, the live-test switch.** Built in `agent/cloudcontrol-live`
+  (`docs/live-runs.md`): `task test-live`, the sweeper, the ledger, the
+  sandbox account's template (generated into `cloudcontrol/config/live/`).
+  Next, once the builder has deployed the template and added the account
+  to `hack/live/accounts.txt`: one live run per type, fixing the fixtures
+  `docs/live-runs.md` lists, and a ledger row each. The original brief:
 - **PR 3, the live-test switch**, after the GCP repository's
   (`config-connector-extensions`: `docs/live-runs.md`, `hack/live/run.sh`,
   `sweep.sh`, `projects.sh`, `task test-live`, `live-sweep`, `live-list`):
@@ -226,6 +246,10 @@ git makes has no sign-off: amend it.
 
 - Never edit `third_party/`; changes to upstream code go in
   `patches/code-generator/`. `task upstream` resets it to the pin and patches.
+- Every test path reaches AWS only through `pkg/fakeaws`: SDK clients from
+  `fakeaws.Config`, processes from `fakeaws.Command`, Python on kind through
+  `fake_py`. `task noaws` (in `task check`) fails otherwise; never add an
+  exemption to it.
 - Never use real cloud credentials, projects or accounts: moto only. Never
   catch an error and report success. Never claim a check passed that did not run.
 - Never open, comment on or review upstream PRs or issues; reading them is

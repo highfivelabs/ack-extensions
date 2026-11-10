@@ -9,6 +9,9 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::IAM::SAMLProvider` | `SAMLProvider.iam.cloudcontrol.aws.hfl.dev` | 7 | 2 | 6 | 1 | 0 | 4 |
 | `AWS::EC2::TransitGatewayRouteTable` | `TransitGatewayRouteTable.ec2.cloudcontrol.aws.hfl.dev` | 2 | 1 | 2 | 0 | 0 | 0 |
 | `AWS::GuardDuty::Detector` | `Detector.guardduty.cloudcontrol.aws.hfl.dev` | 5 | 1 | 0 | 0 | 0 | 0 |
+| `AWS::SSO::PermissionSet` | `PermissionSet.sso.cloudcontrol.aws.hfl.dev` | 10 | 1 | 4 | 0 | 1 | 12 |
+| `AWS::SSO::Assignment` | `Assignment.sso.cloudcontrol.aws.hfl.dev` | 6 | 0 | 12 | 0 | 0 | 4 |
+| `AWS::SSO::InstanceAccessControlAttributeConfiguration` | `InstanceAccessControlAttributeConfiguration.sso.cloudcontrol.aws.hfl.dev` | 3 | 0 | 2 | 0 | 0 | 5 |
 
 ## `AWS::IAM::SAMLProvider`
 
@@ -44,4 +47,40 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - Read-only properties nested in writable objects (dropped): none
 - IAM actions (15): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `guardduty:CreateDetector`, `guardduty:DeleteDetector`, `guardduty:GetDetector`, `guardduty:ListDetectors`, `guardduty:ListTagsForResource`, `guardduty:TagResource`, `guardduty:UntagResource`, `guardduty:UpdateDetector`, `iam:CreateServiceLinkedRole`, `iam:GetRole`
 - Sensitive IAM actions: `iam:CreateServiceLinkedRole`
+- Left out (list handler only): none
+
+## `AWS::SSO::PermissionSet`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: `/properties/InlinePolicy (several types object|string)`
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (26): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `sso:AttachCustomerManagedPolicyReferenceToPermissionSet`, `sso:AttachManagedPolicyToPermissionSet`, `sso:CreatePermissionSet`, `sso:DeleteInlinePolicyFromPermissionSet`, `sso:DeletePermissionSet`, `sso:DeletePermissionsBoundaryFromPermissionSet`, `sso:DescribePermissionSet`, `sso:DescribePermissionSetProvisioningStatus`, `sso:DetachCustomerManagedPolicyReferenceFromPermissionSet`, `sso:DetachManagedPolicyFromPermissionSet`, `sso:GetInlinePolicyForPermissionSet`, `sso:GetPermissionsBoundaryForPermissionSet`, `sso:ListCustomerManagedPolicyReferencesInPermissionSet`, `sso:ListManagedPoliciesInPermissionSet`, `sso:ListTagsForResource`, `sso:ProvisionPermissionSet`, `sso:PutInlinePolicyToPermissionSet`, `sso:PutPermissionsBoundaryToPermissionSet`, `sso:TagResource`, `sso:UntagResource`, `sso:UpdatePermissionSet`
+- Sensitive IAM actions: none
+- Left out (list handler only): `sso:ListPermissionSets`
+
+## `AWS::SSO::Assignment`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (17): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `iam:AttachRolePolicy`, `iam:CreateRole`, `iam:CreateSAMLProvider`, `iam:GetSAMLProvider`, `iam:ListRolePolicies`, `iam:PutRolePolicy`, `iam:UpdateSAMLProvider`, `sso:CreateAccountAssignment`, `sso:DeleteAccountAssignment`, `sso:DescribeAccountAssignmentCreationStatus`, `sso:DescribeAccountAssignmentDeletionStatus`, `sso:ListAccountAssignments`
+- Sensitive IAM actions: `iam:AttachRolePolicy`, `iam:PutRolePolicy`
+- Left out (list handler only): none
+
+## `AWS::SSO::InstanceAccessControlAttributeConfiguration`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (10): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `sso:CreateInstanceAccessControlAttributeConfiguration`, `sso:DeleteInstanceAccessControlAttributeConfiguration`, `sso:DescribeInstanceAccessControlAttributeConfiguration`, `sso:UpdateApplicationProfileForAWSAccountInstance`, `sso:UpdateInstanceAccessControlAttributeConfiguration`
+- Sensitive IAM actions: none
 - Left out (list handler only): none

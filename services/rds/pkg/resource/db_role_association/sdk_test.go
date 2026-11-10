@@ -15,9 +15,9 @@ import (
 	ackv1alpha1 "github.com/aws-controllers-k8s/runtime/apis/core/v1alpha1"
 	ackmetrics "github.com/aws-controllers-k8s/runtime/pkg/metrics"
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/credentials"
 	svcsdk "github.com/aws/aws-sdk-go-v2/service/rds"
 
+	"github.com/highfivelabs/ack-extensions/pkg/fakeaws"
 	svcapitypes "github.com/highfivelabs/ack-extensions/services/rds/apis/v1alpha1"
 )
 
@@ -124,14 +124,14 @@ func standInManager(t *testing.T, s *rdsStandIn) *resourceManager {
 	t.Helper()
 	srv := httptest.NewServer(s)
 	t.Cleanup(srv.Close)
-	cfg := aws.Config{
-		Region:       "us-west-2",
-		Credentials:  credentials.NewStaticCredentialsProvider("testing", "testing", ""),
-		BaseEndpoint: aws.String(srv.URL),
-		// One attempt: the faults below are not retried by the SDK anyway,
-		// and a 5xx would only slow the test.
-		RetryMaxAttempts: 1,
+	// The stand-in on loopback, through the guarded client (pkg/fakeaws).
+	cfg, err := fakeaws.Config(srv.URL, "us-west-2")
+	if err != nil {
+		t.Fatal(err)
 	}
+	// One attempt: the faults below are not retried by the SDK anyway,
+	// and a 5xx would only slow the test.
+	cfg.RetryMaxAttempts = 1
 	return &resourceManager{
 		metrics:      ackmetrics.NewMetrics("rds"),
 		awsRegion:    "us-west-2",
