@@ -186,6 +186,8 @@ copied:
     from: {pin: ec2-controller, paths: [pkg/tags/]}
   - here: [services/ec2/pkg/resource/customer_gateway/hooks.go]
     from: &igw_hooks {pin: ec2-controller, paths: [pkg/resource/internet_gateway/hooks.go]}
+  - here: [services/ec2/pkg/resource/vpn_connection/hooks.go, services/ec2/templates/hooks/vpn_connection/sdk_create_post_build_request.go.tpl]
+    from: *igw_hooks
   - here: [services/ec2/pkg/resource/vpn_gateway/hooks.go, services/ec2/templates/hooks/vpn_gateway/*.go.tpl]
     from: {pin: ec2-controller, paths: [pkg/resource/internet_gateway/hooks.go, templates/hooks/internet_gateway/]}
   - here: [services/ec2/pkg/resource/volume/hooks.go]
