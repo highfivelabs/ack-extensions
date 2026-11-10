@@ -889,14 +889,14 @@ groundstation,DataflowEndpointGroupV2,20,,0,,0,20,false,
 groundstation,MissionProfile,14,,0,,0,14,false,
 guardduty,CustomDetectionRuleAssociation,4,,0,,0,4,false,
 guardduty,Detector,11,,0,Detector (Cloud Control),11,0,false,
-guardduty,Filter,21,,0,,0,21,false,
-guardduty,IPSet,8,,0,,0,8,false,
-guardduty,MalwareProtectionPlan,6,,0,,0,6,false,
-guardduty,Master,3,,0,,0,3,false,
-guardduty,Member,6,,0,,0,6,false,
-guardduty,PublishingDestination,6,,0,,0,6,false,
+guardduty,Filter,21,,0,Filter (Cloud Control),21,0,false,
+guardduty,IPSet,8,,0,IPSet (Cloud Control),8,0,false,ours IPSet (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Get/Update/DeleteIPSet
+guardduty,MalwareProtectionPlan,6,,0,MalwareProtectionPlan (Cloud Control),6,0,false,ours MalwareProtectionPlan (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Get/Update/DeleteMalwareProtectionPlan
+guardduty,Master,3,,0,Master (Cloud Control),3,0,false,ours Master (Cloud Control) unproven on fake: moto 5.2.5 has no AcceptAdministratorInvitation or DisassociateFromAdministratorAccount
+guardduty,Member,6,,0,Member (Cloud Control),6,0,false,ours Member (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Get/DeleteMembers or InviteMembers
+guardduty,PublishingDestination,6,,0,PublishingDestination (Cloud Control),6,0,false,ours PublishingDestination (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Describe/Update/DeletePublishingDestination
 guardduty,ThreatEntitySet,8,,0,,0,8,false,
-guardduty,ThreatIntelSet,8,,0,,0,8,false,
+guardduty,ThreatIntelSet,8,,0,ThreatIntelSet (Cloud Control),8,0,false,ours ThreatIntelSet (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Get/Update/DeleteThreatIntelSet
 guardduty,TrustedEntitySet,8,,0,,0,8,false,
 healthagent,Domain,3,,0,,0,3,false,
 healthimaging,Datastore,3,,0,,0,3,false,

@@ -33,3 +33,10 @@ resources:
   - config.cloudcontrol.aws.hfl.dev_remediationconfigurations.yaml
   - config.cloudcontrol.aws.hfl.dev_storedqueries.yaml
   - config.cloudcontrol.aws.hfl.dev_connectors.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_filters.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_ipsets.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_threatintelsets.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_members.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_publishingdestinations.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_malwareprotectionplans.yaml
+  - guardduty.cloudcontrol.aws.hfl.dev_masters.yaml

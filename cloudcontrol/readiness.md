@@ -7,10 +7,10 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | Category | Types | Provisionable | FULLY_MUTABLE | IMMUTABLE | CRD accepted | Clean | Gap types | Gap, provisionable | Gap, CRD accepted | Gap, clean |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 152 | 148 | 148 | 145 |
-| security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 85 | 67 | 67 | 65 |
+| security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 78 | 60 | 60 | 58 |
 | application | 262 | 250 | 232 | 18 | 250 | 230 | 147 | 136 | 136 | 128 |
 | other | 1260 | 1188 | 1084 | 104 | 1188 | 1137 | 1169 | 1101 | 1101 | 1059 |
-| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1553 | 1452 | 1452 | 1397 |
+| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1546 | 1445 | 1445 | 1390 |
 
 ## Foundation gaps (platform-foundation and security-adjacent types with no kind)
 
@@ -142,14 +142,7 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::FMS::ProtocolsList` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::FMS::ResourceSet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::GuardDuty::CustomDetectionRuleAssociation` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::GuardDuty::Filter` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::GuardDuty::IPSet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::GuardDuty::MalwareProtectionPlan` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::GuardDuty::Master` | security-adjacent | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::GuardDuty::Member` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
-| `AWS::GuardDuty::PublishingDestination` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::GuardDuty::ThreatEntitySet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::GuardDuty::ThreatIntelSet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::GuardDuty::TrustedEntitySet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::IAM::GroupPolicy` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::IAM::Policy` | platform-foundation | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |

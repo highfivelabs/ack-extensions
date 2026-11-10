@@ -39,6 +39,13 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::Config::RemediationConfiguration` | `RemediationConfiguration.config.cloudcontrol.aws.hfl.dev` | 10 | 0 | 2 | 0 | 0 | 0 |
 | `AWS::Config::StoredQuery` | `StoredQuery.config.cloudcontrol.aws.hfl.dev` | 4 | 2 | 2 | 0 | 0 | 4 |
 | `AWS::Config::Connector` | `Connector.config.cloudcontrol.aws.hfl.dev` | 2 | 3 | 2 | 0 | 0 | 0 |
+| `AWS::GuardDuty::Filter` | `Filter.guardduty.cloudcontrol.aws.hfl.dev` | 7 | 0 | 4 | 0 | 0 | 0 |
+| `AWS::GuardDuty::IPSet` | `IPSet.guardduty.cloudcontrol.aws.hfl.dev` | 7 | 1 | 4 | 0 | 0 | 0 |
+| `AWS::GuardDuty::ThreatIntelSet` | `ThreatIntelSet.guardduty.cloudcontrol.aws.hfl.dev` | 7 | 1 | 4 | 0 | 0 | 0 |
+| `AWS::GuardDuty::Member` | `Member.guardduty.cloudcontrol.aws.hfl.dev` | 6 | 0 | 4 | 0 | 0 | 0 |
+| `AWS::GuardDuty::PublishingDestination` | `PublishingDestination.guardduty.cloudcontrol.aws.hfl.dev` | 4 | 3 | 2 | 0 | 0 | 0 |
+| `AWS::GuardDuty::MalwareProtectionPlan` | `MalwareProtectionPlan.guardduty.cloudcontrol.aws.hfl.dev` | 4 | 5 | 0 | 0 | 0 | 0 |
+| `AWS::GuardDuty::Master` | `Master.guardduty.cloudcontrol.aws.hfl.dev` | 3 | 0 | 6 | 0 | 0 | 0 |
 
 ## `AWS::IAM::SAMLProvider`
 
@@ -435,3 +442,87 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - IAM actions (12): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `config:DeleteConnector`, `config:GetConnector`, `config:ListTagsForResource`, `config:PutConnector`, `config:TagResource`, `config:UntagResource`, `iam:CreateServiceLinkedRole`
 - Sensitive IAM actions: `iam:CreateServiceLinkedRole`
 - Left out (list handler only): `config:ListConnectors`
+
+## `AWS::GuardDuty::Filter`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (14): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `guardduty:CreateFilter`, `guardduty:DeleteFilter`, `guardduty:GetFilter`, `guardduty:ListDetectors`, `guardduty:ListFilters`, `guardduty:ListTagsForResource`, `guardduty:TagResource`, `guardduty:UntagResource`, `guardduty:UpdateFilter`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::GuardDuty::IPSet`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/Activate`
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (16): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `guardduty:CreateIPSet`, `guardduty:DeleteIPSet`, `guardduty:GetDetector`, `guardduty:GetIPSet`, `guardduty:ListDetectors`, `guardduty:ListIPSets`, `guardduty:TagResource`, `guardduty:UntagResource`, `guardduty:UpdateIPSet`, `iam:DeleteRolePolicy`, `iam:PutRolePolicy`
+- Sensitive IAM actions: `iam:PutRolePolicy`
+- Left out (list handler only): none
+
+## `AWS::GuardDuty::ThreatIntelSet`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/Activate`
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (15): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `guardduty:CreateThreatIntelSet`, `guardduty:DeleteThreatIntelSet`, `guardduty:GetThreatIntelSet`, `guardduty:ListDetectors`, `guardduty:ListThreatIntelSets`, `guardduty:TagResource`, `guardduty:UntagResource`, `guardduty:UpdateThreatIntelSet`, `iam:DeleteRolePolicy`, `iam:PutRolePolicy`
+- Sensitive IAM actions: `iam:PutRolePolicy`
+- Left out (list handler only): none
+
+## `AWS::GuardDuty::Member`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/DisableEmailNotification`, `/properties/Message`
+- Of those, write-only strings that could be opted in if they are secrets: `/properties/Message`
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (13): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `guardduty:CreateMembers`, `guardduty:DeleteMembers`, `guardduty:DisassociateMembers`, `guardduty:GetMembers`, `guardduty:InviteMembers`, `guardduty:ListMembers`, `guardduty:StartMonitoringMembers`, `guardduty:StopMonitoringMembers`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::GuardDuty::PublishingDestination`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (12): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `guardduty:CreatePublishingDestination`, `guardduty:DeletePublishingDestination`, `guardduty:DescribePublishingDestination`, `guardduty:ListTagsForResource`, `guardduty:TagResource`, `guardduty:UntagResource`, `guardduty:UpdatePublishingDestination`
+- Sensitive IAM actions: none
+- Left out (list handler only): `guardduty:ListPublishingDestinations`
+
+## `AWS::GuardDuty::MalwareProtectionPlan`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (12): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `guardduty:CreateMalwareProtectionPlan`, `guardduty:DeleteMalwareProtectionPlan`, `guardduty:GetMalwareProtectionPlan`, `guardduty:TagResource`, `guardduty:UntagResource`, `guardduty:UpdateMalwareProtectionPlan`, `iam:PassRole`
+- Sensitive IAM actions: `iam:PassRole`
+- Left out (list handler only): `guardduty:ListMalwareProtectionPlans`
+
+## `AWS::GuardDuty::Master`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (9): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `guardduty:AcceptInvitation`, `guardduty:DisassociateFromMasterAccount`, `guardduty:GetMasterAccount`, `guardduty:ListInvitations`
+- Sensitive IAM actions: none
+- Left out (list handler only): none

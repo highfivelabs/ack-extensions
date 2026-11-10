@@ -606,6 +606,24 @@ has no tags for an organization conformance pack; the backends keep them.
 `OrganizationConfigRule`, `ConformancePack`, `RemediationConfiguration`,
 `StoredQuery`, `Connector`.
 
+**Batch 6: F15, GuardDuty beside the detector.** ACK has no GuardDuty
+controller (community issue #2916, no pull request). `AWS::GuardDuty::Filter`
+(identified `<detector>|<name>`) runs on moto: `TestGuardDutyFilter` makes a
+detector and a filter whose criteria are a map of conditions keyed by
+finding field (`patternProperties`, served as a map with the user's keys),
+checks that resyncs of an unchanged filter make no update, changes the
+action and a criterion (replaces of `/Action` and `/FindingCriteria`), puts
+back a description changed in GuardDuty, refuses a new name (create-only)
+and deletes both. moto has no filter tags, so the backend keeps them, and
+it overwrites a filter of the same name where GuardDuty refuses one, so the
+backend checks first; the SDK pinned here has no `Matches`/`NotMatches`
+conditions, so those two are not proven. `IPSet`, `ThreatIntelSet`,
+`Member`, `PublishingDestination`, `MalwareProtectionPlan` and `Master` are
+**unproven on the fake**: moto 5.2.5 has none of their API. Left out of the
+batch: `ThreatEntitySet` and `TrustedEntitySet` (GuardDuty's newer
+replacements of the two sets) and `CustomDetectionRuleAssociation`, which
+`docs/coverage/foundation.md` F15 does not list.
+
 **Not shown by the fake** (section 11): anything about real AWS.
 
 `task check` (the whole repository) is reported in the pull request.
@@ -875,7 +893,8 @@ with limits":
    the coverage change, batch 1 (F02, three Identity Center types) and
    batch 2 (F04, four Transit Gateway routing types), batch 3 (F07, two
    Control Tower types, unproven on the fake), batch 4 (F08, F09: ten DNS
-   types, two proven on moto) and batch 5 (F14, eleven Config types, six
+   types, two proven on moto), batch 5 (F14, eleven Config types, six
+   proven on moto) and batch 6 (F15, seven GuardDuty types, `Filter`
    proven on moto).
    Next: the rest of F03 to F18 by `docs/coverage/foundation.md`.
 3. The live-test switch (`task test-live`, a sweeper, the ledger
