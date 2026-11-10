@@ -6,3 +6,7 @@ resources:
   - sso.cloudcontrol.aws.hfl.dev_permissionsets.yaml
   - sso.cloudcontrol.aws.hfl.dev_assignments.yaml
   - sso.cloudcontrol.aws.hfl.dev_instanceaccesscontrolattributeconfigurations.yaml
+  - ec2.cloudcontrol.aws.hfl.dev_transitgatewayroutes.yaml
+  - ec2.cloudcontrol.aws.hfl.dev_transitgatewayroutetableassociations.yaml
+  - ec2.cloudcontrol.aws.hfl.dev_transitgatewayroutetablepropagations.yaml
+  - ec2.cloudcontrol.aws.hfl.dev_transitgatewaypeeringattachments.yaml

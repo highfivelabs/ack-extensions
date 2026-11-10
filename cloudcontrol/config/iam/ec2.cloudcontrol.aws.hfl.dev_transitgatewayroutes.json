@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2TransitGatewayRoute",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayRouteCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTransitGatewayRoute",
+        "ec2:SearchTransitGatewayRoutes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayRouteRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:SearchTransitGatewayRoutes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayRouteDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteTransitGatewayRoute",
+        "ec2:SearchTransitGatewayRoutes"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

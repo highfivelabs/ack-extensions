@@ -242,6 +242,12 @@ func (b *TransitGatewayRouteTable) Read(ctx context.Context, id string) (map[str
 }
 
 func (b *TransitGatewayRouteTable) Update(ctx context.Context, id string, prev, next map[string]any) error {
+	return ec2SyncTags(ctx, b.EC2, id, prev, next)
+}
+
+// ec2SyncTags changes an EC2 resource's tags from prev's Tags to next's:
+// DeleteTags for the keys gone, CreateTags for the ones new or changed.
+func ec2SyncTags(ctx context.Context, c *ec2.Client, id string, prev, next map[string]any) error {
 	old, now := tagsOf(prev["Tags"]), tagsOf(next["Tags"])
 	var gone []ec2types.Tag
 	for k := range old {
@@ -250,7 +256,7 @@ func (b *TransitGatewayRouteTable) Update(ctx context.Context, id string, prev, 
 		}
 	}
 	if len(gone) > 0 {
-		if _, err := b.EC2.DeleteTags(ctx, &ec2.DeleteTagsInput{Resources: []string{id}, Tags: gone}); err != nil {
+		if _, err := c.DeleteTags(ctx, &ec2.DeleteTagsInput{Resources: []string{id}, Tags: gone}); err != nil {
 			return err
 		}
 	}
@@ -261,7 +267,7 @@ func (b *TransitGatewayRouteTable) Update(ctx context.Context, id string, prev, 
 		}
 	}
 	if len(changed) > 0 {
-		if _, err := b.EC2.CreateTags(ctx, &ec2.CreateTagsInput{Resources: []string{id}, Tags: ec2Tags(changed)}); err != nil {
+		if _, err := c.CreateTags(ctx, &ec2.CreateTagsInput{Resources: []string{id}, Tags: ec2Tags(changed)}); err != nil {
 			return err
 		}
 	}
