@@ -22,7 +22,11 @@ import (
 func TestDNS(t *testing.T) {
 	e := start(t)
 	r53 := route53.NewFromConfig(e.moto)
-	logs := cloudwatchlogs.NewFromConfig(e.moto)
+	// Route 53 takes query logs only into a log group in us-east-1, as
+	// moto checks too, whatever the environment's region.
+	logsCfg := e.moto.Copy()
+	logsCfg.Region = "us-east-1"
+	logs := cloudwatchlogs.NewFromConfig(logsCfg)
 	rr := route53resolver.NewFromConfig(e.moto)
 
 	// Fixtures: a public hosted zone and a log group.

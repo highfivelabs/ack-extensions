@@ -522,8 +522,8 @@ pull request for them (rechecked 2026-11-09). Two are proven on moto
 (`cloudcontrol/test/fake/moto_dns.go`): `AWS::Route53::QueryLoggingConfig`
 (a public hosted zone's query logs to a log group) and
 `AWS::Route53Resolver::ResolverDNSSECConfig` (a VPC's DNSSEC
-validation). The fixture (a hosted zone, a log group, a VPC) is made with
-the SDKs. The query logging configuration gets its ARN as identifier and
+validation). The fixture (a hosted zone, a log group in us-east-1, where Route 53
+requires it and moto checks it, and a VPC) is made with the SDKs. The query logging configuration gets its ARN as identifier and
 its ID in status and is in Route 53's `GetQueryLoggingConfig`; the DNSSEC
 configuration gets its `rdsc-` ID and `ENABLED`; resyncs of both make no
 update; a create-only change to each is refused (both are `IMMUTABLE`);
