@@ -77,6 +77,21 @@ agent.** PR 1 (`agent/cloudcontrol`) is the core. Still to do:
   `EnabledBaseline`, unproven; `LandingZone` waits for plan question 15), F08/F09 Route 53 and its Resolver firewall, F14 to F18 (F17 is batch 8:
   `ResourcePolicy` on moto; `RotationSchedule` waits for ACK's pull
   request #69).
+  **Next, F18** (`docs/coverage/foundation.md` says to ask the builder
+  first; the coordinator's brief of 2026-11-10 lists F15 to F18), probed
+  on moto 5.2.5: `macie2` has Enable/Get/DisableMacie (no
+  `UpdateMacieSession`) and invitations, no findings filters, allow lists,
+  custom data identifiers or `CreateMember`; `inspector2` has
+  Create/Delete/ListFilters (no `UpdateFilter`; read a filter through
+  `ListFilters`), tags, delegated admin and organization configuration, no
+  CIS scan configurations. Access Analyzer, Detective, Firewall Manager,
+  Audit Manager and Security Lake have no moto service at all. A sensible
+  split: batch 9, Macie `Session` and Inspector `Filter` on moto with the
+  rest of both services unproven (new test clients
+  `aws-sdk-go-v2/service/macie2` and `inspector2`, of the release the
+  GuardDuty client is from, as `securityhub` v1.55.6 was); batch 10, the
+  five services without moto, all unproven. Then F13 (Direct Connect,
+  when a catalog entry or adjacent coverage needs it, the builder's A10).
   **F03 `VirtualMFADevice` is not for this route** (the builder,
   2026-11-09, closing PR #44): Cloud Control never returns the seed or QR
   code, so a device made through it cannot be enrolled. It is to be built
