@@ -131,12 +131,14 @@ func TestApplicationScheduledAction(t *testing.T) {
 	})
 
 	t.Run("a changed capacity is put again", func(t *testing.T) {
-		obj := get(t, night)
-		obj.Spec.ScalableTargetAction.MaxCapacity = aws.Int64(2)
-		obj.Spec.Schedule = aws.String("cron(30 21 ? * MON-FRI *)")
-		if err := env.Client.Update(ctx, obj); err != nil {
-			t.Fatal(err)
-		}
+		// The controller writes the object too: read and update again
+		// until the update is not a conflict.
+		harness.Eventually(t, 30*time.Second, "spec updated", func() error {
+			obj := get(t, night)
+			obj.Spec.ScalableTargetAction.MaxCapacity = aws.Int64(2)
+			obj.Spec.Schedule = aws.String("cron(30 21 ? * MON-FRI *)")
+			return env.Client.Update(ctx, obj)
+		})
 		harness.Eventually(t, 60*time.Second, "new action in the cloud", func() error {
 			a, err := cloudAppScheduledAction(ctx, cloud, "web-night")
 			if err != nil || a == nil {

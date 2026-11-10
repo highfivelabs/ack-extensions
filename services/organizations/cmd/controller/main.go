@@ -42,6 +42,7 @@ import (
 	svcresource "github.com/highfivelabs/ack-extensions/services/organizations/pkg/resource"
 
 	_ "github.com/highfivelabs/ack-extensions/services/organizations/pkg/resource/delegated_administrator"
+	_ "github.com/highfivelabs/ack-extensions/services/organizations/pkg/resource/organization"
 	_ "github.com/highfivelabs/ack-extensions/services/organizations/pkg/resource/policy"
 	_ "github.com/highfivelabs/ack-extensions/services/organizations/pkg/resource/policy_attachment"
 
