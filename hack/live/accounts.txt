@@ -1,4 +1,6 @@
 # The only AWS accounts live tests may touch (docs/live-runs.md), one
 # 12-digit ID per line. Added by a reviewed change, never from the command
-# line. Empty until the builder's sandbox account exists, so every live run
-# refuses to start.
+# line.
+# The builder's sandbox (O5); stack ack-extensions-live-tests in us-east-2,
+# deployed 2026-11-10.
+830550549114
