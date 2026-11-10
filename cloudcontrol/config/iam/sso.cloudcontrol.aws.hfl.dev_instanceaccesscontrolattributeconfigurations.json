@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSSOInstanceAccessControlAttributeConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSOInstanceAccessControlAttributeConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sso:CreateInstanceAccessControlAttributeConfiguration",
+        "sso:DescribeInstanceAccessControlAttributeConfiguration",
+        "sso:UpdateApplicationProfileForAWSAccountInstance"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSOInstanceAccessControlAttributeConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "sso:DescribeInstanceAccessControlAttributeConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSOInstanceAccessControlAttributeConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sso:DescribeInstanceAccessControlAttributeConfiguration",
+        "sso:UpdateInstanceAccessControlAttributeConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSOInstanceAccessControlAttributeConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sso:DeleteInstanceAccessControlAttributeConfiguration",
+        "sso:DescribeInstanceAccessControlAttributeConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

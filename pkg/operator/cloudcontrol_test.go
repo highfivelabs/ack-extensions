@@ -28,6 +28,7 @@ import (
 	"sigs.k8s.io/yaml"
 
 	ccv1alpha1 "github.com/highfivelabs/ack-extensions/cloudcontrol/apis/v1alpha1"
+	"github.com/highfivelabs/ack-extensions/cloudcontrol/pkg/registry"
 )
 
 const (
@@ -285,7 +286,7 @@ func TestCloudControlContext(t *testing.T) {
 				t.Errorf("kept %s", a)
 			}
 		}
-		if got := getCC(t).Status.Kinds; len(got) != 3 {
+		if got := getCC(t).Status.Kinds; len(got) != len(registry.Types) {
 			t.Errorf("status.kinds %v", got)
 		}
 	})

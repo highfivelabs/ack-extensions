@@ -52,6 +52,7 @@ type config struct {
 		TypeName string   `json:"typeName"`
 		Kind     string   `json:"kind"`
 		Secrets  []string `json:"secrets"`
+		Unproven string   `json:"unproven"`
 	} `json:"types"`
 }
 
@@ -239,6 +240,7 @@ func crdYAML(crd *apiextv1.CustomResourceDefinition) ([]byte, error) {
 type generated struct {
 	TypeName, Group, Kind, Plural, File string
 	Secrets                             []string
+	Unproven                            string
 	Report                              *crdgen.Report
 	IAM                                 iamgen.Result
 }
@@ -270,7 +272,7 @@ func generate(root string, files map[string][]byte, cfg config) error {
 			kind = s.Resource()
 		}
 		group := groupOf(s, cfg.GroupSuffix)
-		crd, rep, err := crdgen.Generate(s, crdgen.Options{Group: group, Version: cfg.Version, Kind: kind, Secrets: t.Secrets})
+		crd, rep, err := crdgen.Generate(s, crdgen.Options{Group: group, Version: cfg.Version, Kind: kind, Secrets: t.Secrets, Unproven: t.Unproven})
 		if err != nil {
 			return err
 		}
@@ -293,7 +295,7 @@ func generate(root string, files map[string][]byte, cfg config) error {
 		if err := writeFile(filepath.Join(out, "config/iam", base+".json"), append(pj, '\n')); err != nil {
 			return err
 		}
-		gens = append(gens, generated{TypeName: t.TypeName, Group: group, Kind: kind, Plural: crd.Spec.Names.Plural, File: file, Secrets: t.Secrets, Report: rep, IAM: pol})
+		gens = append(gens, generated{TypeName: t.TypeName, Group: group, Kind: kind, Plural: crd.Spec.Names.Plural, File: file, Secrets: t.Secrets, Unproven: t.Unproven, Report: rep, IAM: pol})
 	}
 	if err := writeRBAC(out, gens); err != nil {
 		return err
@@ -383,6 +385,9 @@ func writeRegistry(out string, cfg config, gens []generated) error {
 		secrets := ""
 		if len(g.Secrets) > 0 {
 			secrets = fmt.Sprintf(", Secrets: %#v", g.Secrets)
+		}
+		if g.Unproven != "" {
+			secrets += fmt.Sprintf(", Unproven: %q", g.Unproven)
 		}
 		fmt.Fprintf(&b, "\t{Group: %q, Version: %q, Kind: %q, Plural: %q, TypeName: %q, SchemaFile: %q%s},\n",
 			g.Group, cfg.Version, g.Kind, g.Plural, g.TypeName, "schemas/"+g.File, secrets)
