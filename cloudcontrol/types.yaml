@@ -35,6 +35,19 @@ liveTestActions:
   - ec2:DescribeTransitGateways
   - ec2:CreateTags
   - sso:ListInstances
+  - ec2:CreateVpc
+  - ec2:DeleteVpc
+  - ec2:CreateSubnet
+  - ec2:DeleteSubnet
+  - ec2:CreateTransitGatewayVpcAttachment
+  - ec2:DeleteTransitGatewayVpcAttachment
+  - ec2:DescribeTransitGatewayVpcAttachments
+  - ec2:CreateTransitGatewayRouteTable
+  - ec2:DeleteTransitGatewayRouteTable
+  - ec2:SearchTransitGatewayRoutes
+  - ec2:GetTransitGatewayRouteTableAssociations
+  - ec2:GetTransitGatewayRouteTablePropagations
+  - ec2:DescribeTransitGatewayPeeringAttachments
 types:
   # F03: IAM SAML providers. ACK's iam-controller ignores SAMLProvider.
   - typeName: AWS::IAM::SAMLProvider
@@ -52,3 +65,12 @@ types:
   - typeName: AWS::SSO::Assignment
   - typeName: AWS::SSO::InstanceAccessControlAttributeConfiguration
     unproven: "moto 5.2.5 has no Create/Describe/Update/DeleteInstanceAccessControlAttributeConfiguration"
+  # F04: Transit Gateway routing beside the route table. ACK's
+  # ec2-controller v1.23.1 has TransitGateway and TransitGatewayVPCAttachment
+  # and none of these. Association and propagation link an attachment to a
+  # route table; a route is a static route in one; a peering attachment is
+  # the requester's side (the peer accepts it outside this kind).
+  - typeName: AWS::EC2::TransitGatewayRoute
+  - typeName: AWS::EC2::TransitGatewayRouteTableAssociation
+  - typeName: AWS::EC2::TransitGatewayRouteTablePropagation
+  - typeName: AWS::EC2::TransitGatewayPeeringAttachment

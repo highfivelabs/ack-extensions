@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2TransitGatewayRouteTableAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayRouteTableAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AssociateTransitGatewayRouteTable",
+        "ec2:GetTransitGatewayRouteTableAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayRouteTableAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:GetTransitGatewayRouteTableAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayRouteTableAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DisassociateTransitGatewayRouteTable",
+        "ec2:GetTransitGatewayRouteTableAssociations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

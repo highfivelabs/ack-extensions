@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2TransitGatewayPeeringAttachment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayPeeringAttachmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:CreateTransitGatewayPeeringAttachment",
+        "ec2:DescribeTags",
+        "ec2:DescribeTransitGatewayPeeringAttachments"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayPeeringAttachmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeTags",
+        "ec2:DescribeTransitGatewayPeeringAttachments"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayPeeringAttachmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeTags",
+        "ec2:DescribeTransitGatewayPeeringAttachments",
+        "ec2:ModifyTransitGatewayPeeringAttachment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayPeeringAttachmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteTags",
+        "ec2:DeleteTransitGatewayPeeringAttachment",
+        "ec2:DescribeTags",
+        "ec2:DescribeTransitGatewayPeeringAttachments"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

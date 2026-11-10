@@ -12,6 +12,10 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::SSO::PermissionSet` | `PermissionSet.sso.cloudcontrol.aws.hfl.dev` | 10 | 1 | 4 | 0 | 1 | 12 |
 | `AWS::SSO::Assignment` | `Assignment.sso.cloudcontrol.aws.hfl.dev` | 6 | 0 | 12 | 0 | 0 | 4 |
 | `AWS::SSO::InstanceAccessControlAttributeConfiguration` | `InstanceAccessControlAttributeConfiguration.sso.cloudcontrol.aws.hfl.dev` | 3 | 0 | 2 | 0 | 0 | 5 |
+| `AWS::EC2::TransitGatewayRoute` | `TransitGatewayRoute.ec2.cloudcontrol.aws.hfl.dev` | 4 | 0 | 8 | 0 | 0 | 0 |
+| `AWS::EC2::TransitGatewayRouteTableAssociation` | `TransitGatewayRouteTableAssociation.ec2.cloudcontrol.aws.hfl.dev` | 2 | 0 | 4 | 0 | 0 | 0 |
+| `AWS::EC2::TransitGatewayRouteTablePropagation` | `TransitGatewayRouteTablePropagation.ec2.cloudcontrol.aws.hfl.dev` | 2 | 0 | 4 | 0 | 0 | 0 |
+| `AWS::EC2::TransitGatewayPeeringAttachment` | `TransitGatewayPeeringAttachment.ec2.cloudcontrol.aws.hfl.dev` | 5 | 4 | 8 | 0 | 0 | 0 |
 
 ## `AWS::IAM::SAMLProvider`
 
@@ -82,5 +86,53 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - Nodes made `x-kubernetes-preserve-unknown-fields`: none
 - Read-only properties nested in writable objects (dropped): none
 - IAM actions (10): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `sso:CreateInstanceAccessControlAttributeConfiguration`, `sso:DeleteInstanceAccessControlAttributeConfiguration`, `sso:DescribeInstanceAccessControlAttributeConfiguration`, `sso:UpdateApplicationProfileForAWSAccountInstance`, `sso:UpdateInstanceAccessControlAttributeConfiguration`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::EC2::TransitGatewayRoute`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (8): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:CreateTransitGatewayRoute`, `ec2:DeleteTransitGatewayRoute`, `ec2:SearchTransitGatewayRoutes`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::EC2::TransitGatewayRouteTableAssociation`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (8): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:AssociateTransitGatewayRouteTable`, `ec2:DisassociateTransitGatewayRouteTable`, `ec2:GetTransitGatewayRouteTableAssociations`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::EC2::TransitGatewayRouteTablePropagation`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (8): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:DisableTransitGatewayRouteTablePropagation`, `ec2:EnableTransitGatewayRouteTablePropagation`, `ec2:GetTransitGatewayRouteTablePropagations`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::EC2::TransitGatewayPeeringAttachment`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (12): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:CreateTags`, `ec2:CreateTransitGatewayPeeringAttachment`, `ec2:DeleteTags`, `ec2:DeleteTransitGatewayPeeringAttachment`, `ec2:DescribeTags`, `ec2:DescribeTransitGatewayPeeringAttachments`, `ec2:ModifyTransitGatewayPeeringAttachment`
 - Sensitive IAM actions: none
 - Left out (list handler only): none

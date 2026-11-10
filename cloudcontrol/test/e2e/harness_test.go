@@ -257,6 +257,14 @@ func startFake(t *testing.T, root string) (*fake.Server, string, aws.Config) {
 			b = fake.NewPermissionSet(motoCfg)
 		case "AWS::SSO::Assignment":
 			b = fake.NewAssignment(motoCfg)
+		case "AWS::EC2::TransitGatewayRoute":
+			b = fake.NewTransitGatewayRoute(motoCfg)
+		case "AWS::EC2::TransitGatewayRouteTableAssociation":
+			b = fake.NewTransitGatewayRouteTableAssociation(motoCfg)
+		case "AWS::EC2::TransitGatewayRouteTablePropagation":
+			b = fake.NewTransitGatewayRouteTablePropagation(motoCfg)
+		case "AWS::EC2::TransitGatewayPeeringAttachment":
+			b = fake.NewTransitGatewayPeeringAttachment(motoCfg)
 		default:
 			if ty.Unproven != "" {
 				// Marked in types.yaml: moto lacks the API.
