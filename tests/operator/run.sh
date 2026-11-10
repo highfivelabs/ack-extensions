@@ -14,7 +14,11 @@
 #   4. checks: the CRDs, our manager beside ACK's with ACK's arguments,
 #      credentials and role ARN, its narrow rights, gap kinds reconciling
 #      against moto, and the switch to sharing ACK's ServiceAccount;
-#   5. Cloud Control: a CloudControlContext in one namespace (an
+#   5. ACK's real organizations-controller, from its own chart: refused
+#      beside the rds-controller, run alone in its own namespace with no
+#      IRSA annotation (EKS Pod Identity binds it on EKS), and a Policy
+#      reconciling against moto through its manager.
+#   6. Cloud Control: a CloudControlContext in one namespace (an
 #      environment) runs a manager for it in the operator's namespace, as
 #      the environment's own ServiceAccount (no IRSA annotation: EKS Pod
 #      Identity binds it, which kind cannot show), with rights in the
@@ -36,6 +40,11 @@ go mod download github.com/aws-controllers-k8s/rds-controller
 ACK_RDS_VERSION="$(go list -m -f '{{.Version}}' github.com/aws-controllers-k8s/rds-controller)"
 ACK_RDS_DIR="$(go list -m -f '{{.Dir}}' github.com/aws-controllers-k8s/rds-controller)"
 ACK_RDS_IMAGE="public.ecr.aws/aws-controllers-k8s/rds-controller:${ACK_RDS_VERSION#v}"
+go mod download github.com/aws-controllers-k8s/organizations-controller
+ACK_ORG_VERSION="$(go list -m -f '{{.Version}}' github.com/aws-controllers-k8s/organizations-controller)"
+ACK_ORG_DIR="$(go list -m -f '{{.Dir}}' github.com/aws-controllers-k8s/organizations-controller)"
+ACK_ORG_IMAGE="public.ecr.aws/aws-controllers-k8s/organizations-controller:${ACK_ORG_VERSION#v}"
+ORG_NS=ack-organizations-system
 MOTO_DIGEST="$(sed -n 's/^#  *\(sha256:[0-9a-f]\{64\}\)$/\1/p' config/fake-aws/moto.yaml)"
 MOTO_IMAGE="$(sed -n 's/^ *image: \(docker.io\/motoserver\/moto:.*\)$/\1/p' config/fake-aws/moto.yaml)"
 PY="${ROOT}/.cache/moto-venv/bin/python"
@@ -96,7 +105,9 @@ retry crane pull --platform "linux/${arch}" "${MOTO_IMAGE}" "${work}/moto.tar"
 kind load image-archive --name "${CLUSTER}" "${work}/moto.tar" >/dev/null
 retry crane pull --platform "linux/${arch}" "${ACK_RDS_IMAGE}" "${work}/ack-rds.tar"
 kind load image-archive --name "${CLUSTER}" "${work}/ack-rds.tar" >/dev/null
-ok "moto and ${ACK_RDS_IMAGE} loaded"
+retry crane pull --platform "linux/${arch}" "${ACK_ORG_IMAGE}" "${work}/ack-org.tar"
+kind load image-archive --name "${CLUSTER}" "${work}/ack-org.tar" >/dev/null
+ok "moto, ${ACK_RDS_IMAGE} and ${ACK_ORG_IMAGE} loaded"
 
 echo "== fake AWS"
 kubectl apply -f config/fake-aws/moto.yaml >/dev/null
@@ -143,10 +154,10 @@ kubectl -n ack-extensions-system patch deploy ack-extensions-operator --type=jso
   {"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--fake-aws-endpoint='"${FAKE_AWS}"'"}
 ]' >/dev/null
 kubectl -n ack-extensions-system rollout status deploy/ack-extensions-operator --timeout=180s >/dev/null
-for crd in scheduledactions.applicationautoscaling.aws.hfl.dev scalingpolicies.autoscaling.aws.hfl.dev scheduledactions.autoscaling.aws.hfl.dev customergateways.ec2.aws.hfl.dev volumeattachments.ec2.aws.hfl.dev volumes.ec2.aws.hfl.dev vpngateways.ec2.aws.hfl.dev replicationconfigurations.ecr.aws.hfl.dev apidestinations.eventbridge.aws.hfl.dev connections.eventbridge.aws.hfl.dev rolepolicyattachments.iam.aws.hfl.dev accesskeys.iam.aws.hfl.dev accountpasswordpolicies.iam.aws.hfl.dev accountaliases.iam.aws.hfl.dev sshpublickeys.iam.aws.hfl.dev loginprofiles.iam.aws.hfl.dev usergroupmemberships.iam.aws.hfl.dev replicakeys.kms.aws.hfl.dev permissions.lambda.aws.hfl.dev delegatedadministrators.organizations.aws.hfl.dev organizations.organizations.aws.hfl.dev policies.organizations.aws.hfl.dev policyattachments.organizations.aws.hfl.dev dbproxytargets.rds.aws.hfl.dev dbroleassociations.rds.aws.hfl.dev optiongroups.rds.aws.hfl.dev schedulegroups.scheduler.aws.hfl.dev schedules.scheduler.aws.hfl.dev webaclassociations.wafv2.aws.hfl.dev cloudcontrolcontexts.cloudcontrol.aws.hfl.dev samlproviders.iam.cloudcontrol.aws.hfl.dev transitgatewayroutetables.ec2.cloudcontrol.aws.hfl.dev detectors.guardduty.cloudcontrol.aws.hfl.dev permissionsets.sso.cloudcontrol.aws.hfl.dev assignments.sso.cloudcontrol.aws.hfl.dev instanceaccesscontrolattributeconfigurations.sso.cloudcontrol.aws.hfl.dev; do
+for crd in scheduledactions.applicationautoscaling.aws.hfl.dev scalingpolicies.autoscaling.aws.hfl.dev scheduledactions.autoscaling.aws.hfl.dev customergateways.ec2.aws.hfl.dev volumeattachments.ec2.aws.hfl.dev volumes.ec2.aws.hfl.dev vpngateways.ec2.aws.hfl.dev replicationconfigurations.ecr.aws.hfl.dev apidestinations.eventbridge.aws.hfl.dev connections.eventbridge.aws.hfl.dev rolepolicyattachments.iam.aws.hfl.dev accesskeys.iam.aws.hfl.dev accountpasswordpolicies.iam.aws.hfl.dev accountaliases.iam.aws.hfl.dev sshpublickeys.iam.aws.hfl.dev loginprofiles.iam.aws.hfl.dev usergroupmemberships.iam.aws.hfl.dev replicakeys.kms.aws.hfl.dev permissions.lambda.aws.hfl.dev delegatedadministrators.organizations.aws.hfl.dev organizations.organizations.aws.hfl.dev policies.organizations.aws.hfl.dev policyattachments.organizations.aws.hfl.dev dbproxytargets.rds.aws.hfl.dev dbroleassociations.rds.aws.hfl.dev optiongroups.rds.aws.hfl.dev schedulegroups.scheduler.aws.hfl.dev schedules.scheduler.aws.hfl.dev webaclassociations.wafv2.aws.hfl.dev cloudcontrolcontexts.cloudcontrol.aws.hfl.dev samlproviders.iam.cloudcontrol.aws.hfl.dev transitgatewayroutetables.ec2.cloudcontrol.aws.hfl.dev detectors.guardduty.cloudcontrol.aws.hfl.dev permissionsets.sso.cloudcontrol.aws.hfl.dev assignments.sso.cloudcontrol.aws.hfl.dev instanceaccesscontrolattributeconfigurations.sso.cloudcontrol.aws.hfl.dev transitgatewayroutes.ec2.cloudcontrol.aws.hfl.dev transitgatewayroutetableassociations.ec2.cloudcontrol.aws.hfl.dev transitgatewayroutetablepropagations.ec2.cloudcontrol.aws.hfl.dev transitgatewaypeeringattachments.ec2.cloudcontrol.aws.hfl.dev; do
   kubectl get crd "${crd}" >/dev/null || fail "CRD ${crd} missing"
 done
-ok "CRDs installed: scheduledactions.applicationautoscaling, scalingpolicies.autoscaling, scheduledactions.autoscaling, customergateways.ec2, volumeattachments.ec2, volumes.ec2, vpngateways.ec2, replicationconfigurations.ecr, apidestinations.eventbridge, connections.eventbridge, rolepolicyattachments.iam, accesskeys.iam, accountpasswordpolicies.iam, accountaliases.iam, sshpublickeys.iam, loginprofiles.iam, usergroupmemberships.iam, replicakeys.kms, permissions.lambda, delegatedadministrators.organizations, organizations.organizations, policies.organizations, policyattachments.organizations, dbproxytargets.rds, dbroleassociations.rds, optiongroups.rds, schedulegroups.scheduler, schedules.scheduler, webaclassociations.wafv2 (*.aws.hfl.dev); cloudcontrolcontexts.cloudcontrol, samlproviders.iam, transitgatewayroutetables.ec2, detectors.guardduty, permissionsets.sso, assignments.sso, instanceaccesscontrolattributeconfigurations.sso (*.cloudcontrol.aws.hfl.dev); operator running"
+ok "CRDs installed: scheduledactions.applicationautoscaling, scalingpolicies.autoscaling, scheduledactions.autoscaling, customergateways.ec2, volumeattachments.ec2, volumes.ec2, vpngateways.ec2, replicationconfigurations.ecr, apidestinations.eventbridge, connections.eventbridge, rolepolicyattachments.iam, accesskeys.iam, accountpasswordpolicies.iam, accountaliases.iam, sshpublickeys.iam, loginprofiles.iam, usergroupmemberships.iam, replicakeys.kms, permissions.lambda, delegatedadministrators.organizations, organizations.organizations, policies.organizations, policyattachments.organizations, dbproxytargets.rds, dbroleassociations.rds, optiongroups.rds, schedulegroups.scheduler, schedules.scheduler, webaclassociations.wafv2 (*.aws.hfl.dev); cloudcontrolcontexts.cloudcontrol, samlproviders.iam, transitgatewayroutetables.ec2, detectors.guardduty, permissionsets.sso, assignments.sso, instanceaccesscontrolattributeconfigurations.sso, transitgatewayroutes.ec2, transitgatewayroutetableassociations.ec2, transitgatewayroutetablepropagations.ec2, transitgatewaypeeringattachments.ec2 (*.cloudcontrol.aws.hfl.dev); operator running"
 
 echo "== retain-only kinds: config/admission's ValidatingAdmissionPolicy"
 # An Organization is never deleted from Kubernetes (the controller has no
@@ -282,6 +293,83 @@ kubectl -n "${ACK_NS}" rollout status deploy/ack-extensions-rds-manager --timeou
 ok "shared: ACK's ServiceAccount now also manages our kinds"
 kubectl -n "${ACK_NS}" annotate deploy "${ACK_DEPLOY}" aws.hfl.dev/identity- >/dev/null
 wait_for 60 "back to identity own" bash -c "[[ \$(kubectl -n ${ACK_NS} get deploy ack-extensions-rds-manager -o jsonpath='{.spec.template.spec.serviceAccountName}') == ack-extensions-rds-manager ]]"
+
+echo "== organization-scoped: ACK's organizations-controller ${ACK_ORG_VERSION} runs alone (docs/plan.md 7.5)"
+# Installed the way plan 7.5 says, but for the namespace: no IRSA annotation
+# on its ServiceAccount (EKS Pod Identity binds the role, outside the
+# cluster), the fake AWS's credentials Secret standing in for it here.
+org_deploy() { kubectl -n "$1" get deploy -l app.kubernetes.io/name=organizations-chart -o jsonpath='{.items[0].metadata.name}'; }
+ack_org() { # ack_org <namespace>: install ACK's organizations-controller there
+  kubectl create namespace "$1" --dry-run=client -o yaml | kubectl apply -f - >/dev/null
+  kubectl -n "$1" create secret generic aws-creds \
+    --from-literal=credentials=$'[default]\naws_access_key_id = testing\naws_secret_access_key = testing\n' \
+    --dry-run=client -o yaml | kubectl apply -f - >/dev/null
+  helm upgrade --install ack-organizations "${ACK_ORG_DIR}/helm" -n "$1" \
+    --set aws.region=us-west-2 \
+    --set aws.endpoint_url="${FAKE_AWS}" \
+    --set aws.identity_endpoint_url="${FAKE_AWS}" \
+    --set aws.allow_unsafe_aws_endpoint_urls=true \
+    --set aws.credentials.secretName=aws-creds \
+    --set image.pullPolicy=IfNotPresent \
+    --wait --timeout 180s >/dev/null
+  # The rest of the fake's environment (the dead proxy, AWS_ENDPOINT_URL),
+  # as for ACK's rds-controller above.
+  # shellcheck disable=SC2046
+  kubectl -n "$1" set env "deploy/$(org_deploy "$1")" $(go run ./hack/noaws env "${FAKE_AWS}" "${KUBE_HOST}") >/dev/null
+  kubectl -n "$1" rollout status "deploy/$(org_deploy "$1")" --timeout=180s >/dev/null
+}
+ack_org "${ACK_NS}"
+ORG_DEPLOY="$(org_deploy "${ACK_NS}")"
+ok "ACK's organizations-controller ${ACK_NS}/${ORG_DEPLOY} running beside ACK's rds-controller"
+refused_event() {
+  kubectl -n "${ACK_NS}" get events --field-selector "involvedObject.kind=Deployment,involvedObject.name=${ORG_DEPLOY},reason=SharedNamespace,type=Warning" \
+    -o jsonpath='{.items[*].message}' | grep -q 'account-level rds controller'
+}
+wait_for 60 "refused: Warning SharedNamespace on ${ACK_NS}/${ORG_DEPLOY}" refused_event
+kubectl -n "${ACK_NS}" get deploy,sa -l aws.hfl.dev/service=organizations -o name | grep -q . && fail "an organizations manager runs beside ACK's rds-controller"
+kubectl -n "${ACK_NS}" rollout status deploy/ack-extensions-rds-manager --timeout=30s >/dev/null || fail "the rds manager stopped"
+ok "no organizations manager in ${ACK_NS}; the rds manager still runs"
+
+helm uninstall ack-organizations -n "${ACK_NS}" --wait >/dev/null
+ack_org "${ORG_NS}"
+ORG_DEPLOY="$(org_deploy "${ORG_NS}")"
+ok "ACK's organizations-controller moved to ${ORG_NS}/${ORG_DEPLOY}, alone"
+wait_for 180 "manager ${ORG_NS}/ack-extensions-organizations-manager rolled out" \
+  kubectl -n "${ORG_NS}" rollout status deploy/ack-extensions-organizations-manager --timeout=5s
+org_sa_ann="$(kubectl -n "${ORG_NS}" get sa ack-extensions-organizations-manager -o jsonpath='{.metadata.annotations}')"
+[[ "${org_sa_ann}" != *eks.amazonaws.com* ]] || fail "our organizations ServiceAccount carries ${org_sa_ann}"
+ok "its ServiceAccount ${ORG_NS}/ack-extensions-organizations-manager carries no IRSA annotation (Pod Identity: one association for it on EKS)"
+fake_py - <<'PYEOF'
+import boto3
+kw = dict(endpoint_url="http://127.0.0.1:15000", region_name="us-west-2", aws_access_key_id="testing", aws_secret_access_key="testing")
+org = boto3.client("organizations", **kw)
+try:
+    org.describe_organization()
+except org.exceptions.AWSOrganizationsNotInUseException:
+    org.create_organization(FeatureSet="ALL")
+print("fixtures: an organization in moto")
+PYEOF
+cat <<YAML | kubectl apply -f - >/dev/null
+apiVersion: organizations.aws.hfl.dev/v1alpha1
+kind: Policy
+metadata: {name: deny-leave, namespace: ${ORG_NS}}
+spec:
+  name: deny-leave
+  description: no account leaves the organization
+  type_: SERVICE_CONTROL_POLICY
+  content: '{"Version":"2012-10-17","Statement":[{"Effect":"Deny","Action":"organizations:LeaveOrganization","Resource":"*"}]}'
+YAML
+synced_in() { [[ "$(kubectl -n "$1" get "$2" -o jsonpath='{.status.conditions[?(@.type=="ACK.ResourceSynced")].status}')" == True ]]; }
+wait_for 120 "Policy ${ORG_NS}/deny-leave synced through the organizations manager on kind" synced_in "${ORG_NS}" policy.organizations.aws.hfl.dev/deny-leave
+fake_py - <<'PYEOF'
+import boto3
+kw = dict(endpoint_url="http://127.0.0.1:15000", region_name="us-west-2", aws_access_key_id="testing", aws_secret_access_key="testing")
+org = boto3.client("organizations", **kw)
+names = [p["Name"] for p in org.list_policies(Filter="SERVICE_CONTROL_POLICY")["Policies"]]
+assert "deny-leave" in names, names
+print("ok: in moto: service control policies", names)
+PYEOF
+kubectl -n "${ORG_NS}" delete policy.organizations.aws.hfl.dev deny-leave --wait=true >/dev/null
 
 echo "== Cloud Control: one manager per environment (namespace), as that environment's identity"
 CC_ROLE="arn:aws:iam::123456789012:role/team-a-cloudcontrol"

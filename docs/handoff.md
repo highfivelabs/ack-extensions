@@ -27,7 +27,7 @@ not repeat them.
   policy), rank 20 (RDS event subscriptions). Recheck upstream first (below).
 - **Foundation queue** (`docs/coverage/foundation.md`, F01 to F18) is the work list now, ahead of the ranks above. Done: F01 `Policy` (PR #30, plan 6.25), `PolicyAttachment` (PR #31, plan 6.26), `DelegatedAdministrator` (PR #33, plan 6.27), `Organization` (PR #35, plan 6.28). `PolicyAttachment` and `DelegatedAdministrator` are generated from operations mapped in `generator.yaml` (step 3 below); a reference to an ACK kind of the same service works through a type alias in `apis/v1alpha1/ack_kinds.go`.
 - **Next:** F01 `AccountPlacement` (PR #38), IAM `AccessKey` (plan 6.30: the secret written once into a Secret the object owns, with the manager's own client; the pattern for any kind whose create returns a secret). F02 (Identity Center) is the Cloud Control route's (`agent/cloudcontrol-types`), so not built here; check `docs/cloudcontrol.md` and the Cloud Control PRs before any kind, so none is built both ways. Cloud Control takes F03 to F18 where it can (`docs/cloudcontrol.md` section 8, plan step 2); **queued here**, in order: IAM `VirtualMFADevice` (plan 9 question 14, the builder's decision: `CreateVirtualMFADevice`'s Base32 seed, and optionally the QR PNG, into a Secret owned by the object, never logged, never written over, on `AccessKey`'s pattern and `hooks.go`; Cloud Control never returns the seed, so its #44 is closed); then (the coordinator, 2026-11-09) two foundation gaps Cloud Control cannot provision, as small ACK-generator kinds: EC2 `NetworkInterfacePermission` (`CreateNetworkInterfacePermission`, `DescribeNetworkInterfacePermissions`, `DeleteNetworkInterfacePermission`) and `VPNGatewayRoutePropagation` (`EnableVgwRoutePropagation`/`DisableVgwRoutePropagation`, read with `DescribeRouteTables`' `PropagatingVgws`). moto has neither API: mark them unproven on the fake (unit tests and the coverage data's marker), and write down what a real run must check.
-- **Organization-scoped identity** (open question 11, answered; plan 7.5): the Organizations kinds run only in a namespace kept for organization-level objects, beside an ACK organizations-controller with an organization-scoped role. Next for the operator: refuse (or warn on) an Organizations manager whose namespace also has an account-level ACK controller, and an `operator-e2e` check of it.
+- **Organization-scoped identity** (open question 11, answered; plan 7.5): the Organizations kinds run only in a namespace kept for organization-level objects, beside an ACK organizations-controller with an organization-scoped role bound by EKS Pod Identity (no IRSA annotation; plan 7.5 has the associations and the trust policy). The operator refuses an Organizations manager whose namespace has any other ACK controller, with a `SharedNamespace` Warning event (plan 7.2 item 7, proven in 7.4). A new organization-level kind adds its actions to plan 7.5's permissions table.
 - **Retain-only kinds** (open question 12; plan 6.28): a kind for something that is not deleted from Kubernetes (an organization; later an account's closure, root-level settings) has no delete call (`ignore.operations` in `generator.yaml`, so `sdkDelete` is a no-op), and its resource is added to `config/admission/retain-only.yaml`'s `resourceRules`, which requires `services.k8s.aws/deletion-policy: retain` on every object. Its e2e test deletes an object made before the policy is installed and checks the cloud thing stays, then checks the policy's refusals (`tests/e2e/organizations_organization_test.go`). **The factory's scaffolder should generate this pattern** (the ignored delete, the policy entry and the two tests) for a kind marked retain-only.
 - **Open questions:** 8 to 12 are answered. Assumed, for the builder to
   confirm: `Organization`'s two lists are exclusive (plan 6.28).
@@ -70,10 +70,32 @@ agent.** PR 1 (`agent/cloudcontrol`) is the core. Still to do:
   configuration unproven). After `task cloudcontrol:generate`, run
   `task coverage` and the survey (`go run ./hack/cloudcontrol-gen
   --survey`) twice: each reads the other's output. **Next batches**, in
-  foundation order, recheck ACK first: F03's `VirtualMFADevice` (moto has
-  it), F04's Transit Gateway route, association, propagation and peering
-  (moto has them all), F05 `VPNConnection`, F07 Control Tower (no emulator:
+  foundation order, recheck ACK first: F04's Transit Gateway route,
+  association, propagation and peering (batch 2, done:
+  `TestTransitGatewayRouting`), F07 Control Tower (no emulator:
   unproven), F08/F09 Route 53 and its Resolver firewall, F14 to F18.
+  **F03 `VirtualMFADevice` is not for this route** (the builder,
+  2026-11-09, closing PR #44): Cloud Control never returns the seed or QR
+  code, so a device made through it cannot be enrolled. It is to be built
+  as a kind that writes the seed to a Kubernetes Secret (never logged),
+  like `AccessKey` (PR #40); PR #44's moto notes still hold (moto takes any
+  two six-digit codes in `EnableMFADevice`; it has no MFA device tags).
+  **Left for the ACK kinds agent, not this route:** two foundation gaps
+  Cloud Control cannot serve (non-provisionable) and ACK's generator here
+  can (`docs/cloudcontrol.md` section 8, the table of the 25):
+  `ec2.aws.hfl.dev/NetworkInterfacePermission` (a plain
+  create/describe/delete; moto has none of it, so unproven on fake) and
+  `VPNGatewayRoutePropagation` (an attach pair,
+  `EnableVgwRoutePropagation`/`DisableVgwRoutePropagation` read from
+  `DescribeRouteTables`, the `PolicyAttachment` pattern).
+  **F05 `VPNConnection` is not for this route** (step 1 above):
+  `docs/coverage/foundation.md` F05 proposes it ACK-generated in
+  `services/ec2/`, with references to our `CustomerGateway` and
+  `VPNGateway` (or ACK's `TransitGateway`) and the tunnels' pre-shared keys
+  from Secrets, which the generator gives and this route does not yet (no
+  references before the overlay). `VPNConnectionRoute` could come here,
+  but moto has no `CreateVpnConnectionRoute` (unproven on fake), so it is
+  better made beside the connection. Both for the ACK kinds agent.
   The original brief for it:
 - **PR 2, types in foundation order**, in reviewable batches
   (`docs/coverage/foundation.md`; `cloudcontrol/readiness.md` lists the

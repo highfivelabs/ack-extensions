@@ -25,6 +25,11 @@
 //   - Identity "ack": our manager runs as ACK's ServiceAccount: no AWS
 //     change at all, but our manager then holds every Kubernetes right ACK's
 //     controller holds, and ACK's controller our manager's.
+//   - Organization-scoped controllers (OrganizationScoped) must run alone:
+//     beside an ACK organizations-controller that shares its namespace with
+//     an account-level ACK controller, it runs no manager (and removes one
+//     it ran), and records a Warning event on that controller's Deployment
+//     (docs/plan.md, section 7.5).
 //
 // Everything it makes carries the managed-by label and is deleted when its
 // ACK controller goes.
@@ -32,6 +37,8 @@ package operator
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"sort"
 	"strings"
@@ -44,6 +51,7 @@ import (
 	k8slabels "k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/selection"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/client-go/tools/record"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
@@ -62,7 +70,8 @@ const (
 	managedBy      = Name + "-operator"
 	// LabelService is our service (applicationautoscaling, autoscaling, ec2, ecr, eventbridge, iam, kms, lambda, organizations, rds, scheduler, wafv2).
 	LabelService = "aws.hfl.dev/service"
-	// LabelSource is the ACK controller Deployment, namespace.name.
+	// LabelSource is the ACK controller Deployment, namespace.name, or, past
+	// a label value's 63 characters, its start and a hash (SourceLabel).
 	LabelSource = "aws.hfl.dev/source"
 	// AnnotationACKService names the ACK service of a Deployment that does
 	// not carry the Helm chart's label.
@@ -90,6 +99,37 @@ type Options struct {
 type Reconciler struct {
 	Client  client.Client
 	Options Options
+	// Recorder, if set, records why a manager is refused on ACK's
+	// controller Deployment.
+	Recorder record.EventRecorder
+}
+
+// OrganizationScoped are the ACK services whose controllers act on the
+// whole AWS organization with an organization-scoped role (docs/plan.md,
+// section 7.5; open question 11). Such a controller must be alone among
+// ACK controllers in its namespace: a namespace shares CARM's role maps
+// and is where Kubernetes RBAC for the organization's guardrails is drawn.
+var OrganizationScoped = map[string]bool{"organizations": true}
+
+// ReasonSharedNamespace is the reason of the Warning event recorded when an
+// organization-scoped controller shares its namespace.
+const ReasonSharedNamespace = "SharedNamespace"
+
+// AccountLevelBeside returns, sorted, the account-level ACK services
+// running in a namespace whose ACK services are inNamespace, if service is
+// organization-scoped; otherwise nil.
+func AccountLevelBeside(service string, inNamespace map[string]bool) []string {
+	if !OrganizationScoped[service] {
+		return nil
+	}
+	var out []string
+	for s := range inNamespace {
+		if !OrganizationScoped[s] {
+			out = append(out, s)
+		}
+	}
+	sort.Strings(out)
+	return out
 }
 
 var allKey = reconcile.Request{NamespacedName: types.NamespacedName{Name: "all"}}
@@ -213,9 +253,20 @@ func labels(service string, src *appsv1.Deployment) map[string]string {
 	return map[string]string{
 		LabelManagedBy:           managedBy,
 		LabelService:             service,
-		LabelSource:              src.Namespace + "." + src.Name,
+		LabelSource:              SourceLabel(src.Namespace + "." + src.Name),
 		"app.kubernetes.io/name": managerName(service),
 	}
+}
+
+// SourceLabel is s as a label value: s itself if it fits in 63
+// characters, else its first 52 and a hash of the whole, so two long
+// sources still differ.
+func SourceLabel(s string) string {
+	if len(s) <= 63 {
+		return s
+	}
+	sum := sha256.Sum256([]byte(s))
+	return strings.TrimRight(s[:52], "-._") + "-" + hex.EncodeToString(sum[:])[:10]
 }
 
 func owner(src *appsv1.Deployment) []metav1.OwnerReference {
@@ -372,6 +423,17 @@ func (r *Reconciler) Reconcile(ctx context.Context, _ reconcile.Request) (reconc
 	sort.Slice(deps.Items, func(i, j int) bool {
 		return deps.Items[i].Namespace+"/"+deps.Items[i].Name < deps.Items[j].Namespace+"/"+deps.Items[j].Name
 	})
+	// The ACK services running in each namespace, ours or not.
+	ackIn := map[string]map[string]bool{}
+	for i := range deps.Items {
+		d := &deps.Items[i]
+		if s := ACKService(d); s != "" && d.DeletionTimestamp.IsZero() {
+			if ackIn[d.Namespace] == nil {
+				ackIn[d.Namespace] = map[string]bool{}
+			}
+			ackIn[d.Namespace][s] = true
+		}
+	}
 	var errs []string
 	for i := range deps.Items {
 		src := &deps.Items[i]
@@ -384,6 +446,16 @@ func (r *Reconciler) Reconcile(ctx context.Context, _ reconcile.Request) (reconc
 			continue
 		}
 		if !src.DeletionTimestamp.IsZero() {
+			continue
+		}
+		if beside := AccountLevelBeside(service, ackIn[src.Namespace]); len(beside) > 0 {
+			// Refused: nothing is planned, so a manager made before is pruned.
+			msg := fmt.Sprintf("no %s manager: ACK's %s controller is organization-scoped and namespace %s also runs ACK's account-level %s controller(s); run it alone in a namespace of its own (docs/plan.md, section 7.5)",
+				strings.Join(ours, ", "), service, src.Namespace, strings.Join(beside, ", "))
+			lg.Info("refused", "deployment", src.Namespace+"/"+src.Name, "reason", ReasonSharedNamespace, "message", msg)
+			if r.Recorder != nil {
+				r.Recorder.Event(src, corev1.EventTypeWarning, ReasonSharedNamespace, msg)
+			}
 			continue
 		}
 		saName := src.Spec.Template.Spec.ServiceAccountName

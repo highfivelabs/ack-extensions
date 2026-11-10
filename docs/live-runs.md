@@ -115,7 +115,12 @@ IAM will refuse; `TestDetector` fails in an account that already has a
 detector (one per account and region); `TestIdentityCenter` needs Identity
 Center enabled in the account; `TestTransitGatewayRouteTable` makes a
 transit gateway (billed hourly) and deletes it at the end, but a run cut
-off before then leaves it, untagged. Each is a fixture change, made with the first run of that test.
+off before then leaves it, untagged. `TestTransitGatewayRouting` makes two
+transit gateways, a VPC with a subnet, a VPC attachment and a route table
+with the EC2 SDK, untagged, and deletes them at the end; on AWS the
+gateways and the attachment take minutes to become `available` (the test
+does not wait for that yet), the attachment is billed hourly, and the
+peering request between the two gateways stays `pendingAcceptance`. Each is a fixture change, made with the first run of that test.
 
 ## Ledger
 

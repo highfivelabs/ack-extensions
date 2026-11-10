@@ -37,6 +37,10 @@ rules:
 - apiGroups:
   - ec2.cloudcontrol.aws.hfl.dev
   resources:
+  - transitgatewaypeeringattachments
+  - transitgatewayroutes
+  - transitgatewayroutetableassociations
+  - transitgatewayroutetablepropagations
   - transitgatewayroutetables
   verbs:
   - create
@@ -49,6 +53,10 @@ rules:
 - apiGroups:
   - ec2.cloudcontrol.aws.hfl.dev
   resources:
+  - transitgatewaypeeringattachments/status
+  - transitgatewayroutes/status
+  - transitgatewayroutetableassociations/status
+  - transitgatewayroutetablepropagations/status
   - transitgatewayroutetables/status
   verbs:
   - get

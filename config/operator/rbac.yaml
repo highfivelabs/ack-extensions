@@ -42,6 +42,8 @@ rules:
     verbs: ["get", "update", "patch"]
   # The rules of the leader-election Role it makes for each manager:
   # Kubernetes lets a Role be made only by someone who holds its rules.
+  # The events rule also lets it record why it refuses a manager (a Warning
+  # on ACK's controller Deployment).
   - apiGroups: ["coordination.k8s.io"]
     resources: ["leases"]
     verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]

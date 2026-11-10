@@ -6,11 +6,11 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 
 | Category | Types | Provisionable | FULLY_MUTABLE | IMMUTABLE | CRD accepted | Clean | Gap types | Gap, provisionable | Gap, CRD accepted | Gap, clean |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 172 | 166 | 166 | 160 |
+| platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 168 | 162 | 162 | 156 |
 | security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 96 | 78 | 78 | 75 |
 | application | 262 | 250 | 232 | 18 | 250 | 230 | 147 | 136 | 136 | 128 |
 | other | 1260 | 1188 | 1084 | 104 | 1188 | 1137 | 1169 | 1101 | 1101 | 1059 |
-| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1584 | 1481 | 1481 | 1422 |
+| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1580 | 1477 | 1477 | 1418 |
 
 ## Foundation gaps (platform-foundation and security-adjacent types with no kind)
 
@@ -128,13 +128,9 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::EC2::TransitGatewayMulticastDomainAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::TransitGatewayMulticastGroupMember` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::TransitGatewayMulticastGroupSource` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayPeeringAttachment` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::TransitGatewayPolicyTable` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::TransitGatewayPolicyTableAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::TransitGatewayPolicyTableEntry` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayRoute` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayRouteTableAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayRouteTablePropagation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::VerifiedAccessEndpoint` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 3 |
 | `AWS::EC2::VerifiedAccessGroup` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 2 |
 | `AWS::EC2::VerifiedAccessInstance` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |

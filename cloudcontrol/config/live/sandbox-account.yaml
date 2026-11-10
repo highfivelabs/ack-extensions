@@ -277,6 +277,95 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: SSOInstanceAccessControlAttributeConfigurationDelete
+        - Action:
+          - ec2:CreateTransitGatewayRoute
+          - ec2:SearchTransitGatewayRoutes
+          Effect: Allow
+          Resource: '*'
+          Sid: EC2TransitGatewayRouteCreate
+        - Action:
+          - ec2:SearchTransitGatewayRoutes
+          Effect: Allow
+          Resource: '*'
+          Sid: EC2TransitGatewayRouteRead
+        - Action:
+          - ec2:DeleteTransitGatewayRoute
+          - ec2:SearchTransitGatewayRoutes
+          Effect: Allow
+          Resource: '*'
+          Sid: EC2TransitGatewayRouteDelete
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy2:
+    Properties:
+      Description: ack-extensions live tests, part 2
+      PolicyDocument:
+        Statement:
+        - Action:
+          - ec2:AssociateTransitGatewayRouteTable
+          - ec2:GetTransitGatewayRouteTableAssociations
+          Effect: Allow
+          Resource: '*'
+          Sid: EC2TransitGatewayRouteTableAssociationCreate
+        - Action:
+          - ec2:GetTransitGatewayRouteTableAssociations
+          Effect: Allow
+          Resource: '*'
+          Sid: EC2TransitGatewayRouteTableAssociationRead
+        - Action:
+          - ec2:DisassociateTransitGatewayRouteTable
+          - ec2:GetTransitGatewayRouteTableAssociations
+          Effect: Allow
+          Resource: '*'
+          Sid: EC2TransitGatewayRouteTableAssociationDelete
+        - Action:
+          - ec2:EnableTransitGatewayRouteTablePropagation
+          - ec2:GetTransitGatewayRouteTablePropagations
+          Effect: Allow
+          Resource: '*'
+          Sid: EC2TransitGatewayRouteTablePropagationCreate
+        - Action:
+          - ec2:GetTransitGatewayRouteTablePropagations
+          Effect: Allow
+          Resource: '*'
+          Sid: EC2TransitGatewayRouteTablePropagationRead
+        - Action:
+          - ec2:DisableTransitGatewayRouteTablePropagation
+          - ec2:GetTransitGatewayRouteTablePropagations
+          Effect: Allow
+          Resource: '*'
+          Sid: EC2TransitGatewayRouteTablePropagationDelete
+        - Action:
+          - ec2:CreateTags
+          - ec2:CreateTransitGatewayPeeringAttachment
+          - ec2:DescribeTags
+          - ec2:DescribeTransitGatewayPeeringAttachments
+          Effect: Allow
+          Resource: '*'
+          Sid: EC2TransitGatewayPeeringAttachmentCreate
+        - Action:
+          - ec2:DescribeTags
+          - ec2:DescribeTransitGatewayPeeringAttachments
+          Effect: Allow
+          Resource: '*'
+          Sid: EC2TransitGatewayPeeringAttachmentRead
+        - Action:
+          - ec2:CreateTags
+          - ec2:DeleteTags
+          - ec2:DescribeTags
+          - ec2:DescribeTransitGatewayPeeringAttachments
+          - ec2:ModifyTransitGatewayPeeringAttachment
+          Effect: Allow
+          Resource: '*'
+          Sid: EC2TransitGatewayPeeringAttachmentUpdate
+        - Action:
+          - ec2:DeleteTags
+          - ec2:DeleteTransitGatewayPeeringAttachment
+          - ec2:DescribeTags
+          - ec2:DescribeTransitGatewayPeeringAttachments
+          Effect: Allow
+          Resource: '*'
+          Sid: EC2TransitGatewayPeeringAttachmentDelete
         Version: "2012-10-17"
     Type: AWS::IAM::ManagedPolicy
   LiveTestRole:
@@ -298,6 +387,7 @@ Resources:
         web identity federation, for task test-live (ack-extensions docs/live-runs.md).
       ManagedPolicyArns:
       - Ref: LiveTestPolicy1
+      - Ref: LiveTestPolicy2
       MaxSessionDuration: 3600
       RoleName: ack-extensions-live-tests
       Tags:
