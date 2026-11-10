@@ -120,7 +120,8 @@ tasks:
       - task: upstream-check
       - task: upstream:yaml-check
       - task: go:fmt-check
-        vars: {DIRS: services pkg cmd tests cloudcontrol hack/cloudcontrol-gen}
+        vars: {DIRS: services pkg cmd tests cloudcontrol hack/cloudcontrol-gen hack/noaws}
+      - task: noaws
       - task: generate
       - task: go:committed
         vars: {PATHS: services config, WHAT: generated files}
@@ -132,6 +133,11 @@ tasks:
       - hack/check-spdx.sh
       - task: build
       - task: test
+
+  noaws:
+    desc: 'Fail if any test path could reach a real AWS endpoint: SDK clients, processes, HTTP clients and scripts in test paths all go through pkg/fakeaws (hack/noaws/main.go lists the rules).'
+    cmds:
+      - go run ./hack/noaws .
 
   cloudcontrol:generate:
     desc: Regenerate the Cloud Control kinds (CRDs, embedded schemas, registry, IAM policies, RBAC, report) from cloudcontrol/types.yaml and the schema zip; CloudControlContext's CRD and deepcopy (controller-gen); and the readiness survey of every type.
@@ -169,6 +175,7 @@ tasks:
     cmds:
       - task: go:fmt-check
         vars: {DIRS: cloudcontrol hack/cloudcontrol-gen}
+      - task: noaws
       - task: cloudcontrol:generated
       - go vet ./cloudcontrol/... ./hack/cloudcontrol-gen/...
       - hack/check-spdx.sh
