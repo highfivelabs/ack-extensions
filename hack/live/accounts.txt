@@ -1,0 +1,4 @@
+# The only AWS accounts live tests may touch (docs/live-runs.md), one
+# 12-digit ID per line. Added by a reviewed change, never from the command
+# line. Empty until the builder's sandbox account exists, so every live run
+# refuses to start.
