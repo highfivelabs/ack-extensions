@@ -694,7 +694,7 @@ ec2,VPNConcentrator,4,,0,,0,4,false,
 ec2,VPNConnection,43,,0,,0,43,false,
 ec2,VPNConnectionRoute,2,,0,,0,2,false,
 ec2,VPNGateway,4,,0,VPNGateway,4,0,false,ours_unmapped=2
-ec2,VPNGatewayRoutePropagation,2,,0,,0,2,false,
+ec2,VPNGatewayRoutePropagation,2,,0,VPNGatewayRoutePropagation,1,1,false,ours_unmapped=1
 ecr,PublicRepository,9,Repository,3,,0,6,false,
 ecr,PullThroughCacheRule,6,PullThroughCacheRule,6,,0,0,false,official_unmapped=1
 ecr,PullTimeUpdateExclusion,1,,0,,0,1,false,

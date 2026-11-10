@@ -28,6 +28,7 @@ rules:
   - customergateways
   - volumeattachments
   - volumes
+  - vpngatewayroutepropagations
   - vpngateways
   verbs:
   - create
@@ -43,6 +44,7 @@ rules:
   - customergateways/status
   - volumeattachments/status
   - volumes/status
+  - vpngatewayroutepropagations/status
   - vpngateways/status
   verbs:
   - get

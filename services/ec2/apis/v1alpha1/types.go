@@ -539,9 +539,10 @@ type CapacityReservationTargetResponse struct {
 
 // Describes a carrier gateway.
 type CarrierGateway struct {
-	OwnerID *string `json:"ownerID,omitempty"`
-	Tags    []*Tag  `json:"tags,omitempty"`
-	VPCID   *string `json:"vpcID,omitempty"`
+	CarrierGatewayID *string `json:"carrierGatewayID,omitempty"`
+	OwnerID          *string `json:"ownerID,omitempty"`
+	Tags             []*Tag  `json:"tags,omitempty"`
+	VPCID            *string `json:"vpcID,omitempty"`
 }
 
 // Information about the client certificate used for authentication.
@@ -3702,6 +3703,8 @@ type RevokedSecurityGroupRule struct {
 
 // Describes a route in a route table.
 type Route struct {
+	CarrierGatewayID            *string `json:"carrierGatewayID,omitempty"`
+	CoreNetworkARN              *string `json:"coreNetworkARN,omitempty"`
 	DestinationCIDRBlock        *string `json:"destinationCIDRBlock,omitempty"`
 	DestinationIPv6CIDRBlock    *string `json:"destinationIPv6CIDRBlock,omitempty"`
 	DestinationPrefixListID     *string `json:"destinationPrefixListID,omitempty"`
@@ -3712,30 +3715,39 @@ type Route struct {
 	LocalGatewayID              *string `json:"localGatewayID,omitempty"`
 	NATGatewayID                *string `json:"natGatewayID,omitempty"`
 	NetworkInterfaceID          *string `json:"networkInterfaceID,omitempty"`
+	Origin                      *string `json:"origin,omitempty"`
+	State                       *string `json:"state,omitempty"`
 	TransitGatewayID            *string `json:"transitGatewayID,omitempty"`
 	VPCPeeringConnectionID      *string `json:"vpcPeeringConnectionID,omitempty"`
 }
 
 // Describes a route table.
 type RouteTable struct {
-	OwnerID      *string `json:"ownerID,omitempty"`
-	RouteTableID *string `json:"routeTableID,omitempty"`
-	Tags         []*Tag  `json:"tags,omitempty"`
-	VPCID        *string `json:"vpcID,omitempty"`
+	Associations    []*RouteTableAssociation `json:"associations,omitempty"`
+	OwnerID         *string                  `json:"ownerID,omitempty"`
+	PropagatingVGWs []*PropagatingVGW        `json:"propagatingVGWs,omitempty"`
+	RouteTableID    *string                  `json:"routeTableID,omitempty"`
+	Routes          []*Route                 `json:"routes,omitempty"`
+	Tags            []*Tag                   `json:"tags,omitempty"`
+	VPCID           *string                  `json:"vpcID,omitempty"`
 }
 
 // Describes an association between a route table and a subnet or gateway.
 type RouteTableAssociation struct {
-	GatewayID               *string `json:"gatewayID,omitempty"`
-	Main                    *bool   `json:"main,omitempty"`
-	RouteTableAssociationID *string `json:"routeTableAssociationID,omitempty"`
-	RouteTableID            *string `json:"routeTableID,omitempty"`
-	SubnetID                *string `json:"subnetID,omitempty"`
+	// Describes the state of an association between a route table and a subnet
+	// or gateway.
+	AssociationState        *RouteTableAssociationState `json:"associationState,omitempty"`
+	GatewayID               *string                     `json:"gatewayID,omitempty"`
+	Main                    *bool                       `json:"main,omitempty"`
+	RouteTableAssociationID *string                     `json:"routeTableAssociationID,omitempty"`
+	RouteTableID            *string                     `json:"routeTableID,omitempty"`
+	SubnetID                *string                     `json:"subnetID,omitempty"`
 }
 
 // Describes the state of an association between a route table and a subnet
 // or gateway.
 type RouteTableAssociationState struct {
+	State         *string `json:"state,omitempty"`
 	StatusMessage *string `json:"statusMessage,omitempty"`
 }
 

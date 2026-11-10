@@ -12546,7 +12546,7 @@ ec2,VPNGateway,Tags[].Key,string,false,ours,,spec.tags[].key
 ec2,VPNGateway,Tags[].Value,string,false,ours,,spec.tags[].value
 ec2,VPNGateway,Type,string,true,ours,,spec.type_
 ec2,VPNGatewayRoutePropagation,RouteTableIds[],string,true,none,,
-ec2,VPNGatewayRoutePropagation,VpnGatewayId,string,true,none,,
+ec2,VPNGatewayRoutePropagation,VpnGatewayId,string,true,ours,,spec.gatewayID
 ecr,PublicRepository,RepositoryCatalogData.AboutText,string,false,none,,
 ecr,PublicRepository,RepositoryCatalogData.Architectures[],string,false,none,,
 ecr,PublicRepository,RepositoryCatalogData.OperatingSystems[],string,false,none,,
