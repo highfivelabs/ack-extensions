@@ -265,6 +265,17 @@ role:
 - A credentials Secret (`aws.credentials.secretName` in ACK's chart): no
   step; our manager mounts the same Secret.
 
+**Organizations** (`docs/plan.md`, section 7.5): ACK's
+organizations-controller runs alone in a namespace kept for
+organization-level objects (`ack-organizations-system`), with an
+organization-scoped role bound by **EKS Pod Identity**, not IRSA: no
+role annotation on ACK's ServiceAccount, and one association each for
+`ack-organizations-controller` and `ack-extensions-organizations-manager`
+in that namespace. The operator refuses to run the Organizations manager
+beside any other ACK controller in the same namespace, removes one it ran
+there, and records a `SharedNamespace` Warning event on ACK's
+Deployment.
+
 EventBridge Scheduler has no ACK controller. Its manager runs beside ACK's
 EventBridge controller, as that controller's identity, so that role needs
 `scheduler:*`, and `iam:PassRole` for the roles schedules invoke their
