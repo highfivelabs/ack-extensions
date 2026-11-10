@@ -16506,7 +16506,7 @@ healthlake,FHIRDatastore,Tags[].Key,string,false,none,,
 healthlake,FHIRDatastore,Tags[].Value,string,false,none,,
 iam,AccessKey,Serial,integer,false,none,,
 iam,AccessKey,Status,string,false,none,,
-iam,AccessKey,UserName,string,true,none,,
+iam,AccessKey,UserName,string,true,ours,,spec.userName
 iam,Group,GroupName,string,false,official,spec.name,
 iam,Group,ManagedPolicyArns[],string,false,official,spec.policies[],
 iam,Group,Path,string,false,official,spec.path,

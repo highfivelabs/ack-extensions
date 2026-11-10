@@ -12,7 +12,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 
 | Category | Services | Resources | ACK | Ours beyond | None | Attributes | ACK | Ours beyond | Uncovered |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 16 | 241 | 55 (22.8%) | 8 (3.3%) | 178 | 2,400 | 28.2% | 1.9% | 69.9% |
+| platform-foundation | 16 | 241 | 55 (22.8%) | 9 (3.7%) | 177 | 2,400 | 28.2% | 2.0% | 69.9% |
 | security-adjacent | 18 | 112 | 14 (12.5%) | 1 (0.9%) | 97 | 2,082 | 37.6% | 0.1% | 62.3% |
 | application | 33 | 262 | 106 (40.5%) | 9 (3.4%) | 147 | 4,766 | 48.2% | 4.2% | 47.6% |
 | other | 238 | 1260 | 91 (7.2%) | 0 (0.0%) | 1169 | 76,525 | 3.0% | 0.0% | 97.0% |
@@ -23,7 +23,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | ---: | --- | ---: | ---: | ---: | ---: | --- | --- |
 | 1 | `organizations` | 5 | 2 | 2 | 1 | 42.9% / 33.3% / 23.8% | `organizations-controller` v1.7.0 |
 | 2 | `sso` | 6 | 0 | 0 | 6 | 0.0% / 0.0% / 100.0% | none |
-| 3 | `iam` | 16 | 7 | 0 | 9 | 41.2% / 3.5% / 55.3% | `iam-controller` v1.11.3 |
+| 3 | `iam` | 16 | 7 | 1 | 8 | 41.2% / 4.7% / 54.1% | `iam-controller` v1.11.3 |
 | 4 | `ec2` | 126 | 20 | 4 | 102 | 22.7% / 1.8% / 75.5% | `ec2-controller` v1.23.1 |
 | 5 | `controltower` | 3 | 0 | 0 | 3 | 0.0% / 0.0% / 100.0% | none |
 | 6 | `route53` | 11 | 3 | 0 | 8 | 47.9% / 0.0% / 52.1% | `route53-controller` v1.8.0 |
@@ -69,7 +69,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 | --- | --- | --- | ---: | --- | --- | --- |
 | [F01](#f01) | AWS Organizations: SCPs and the other policy types, attachment, delegated administrators, organization features, account placement | platform-foundation | 4 | 5 / 7 / 5 | M (Policy), M (PolicyAttachment), S (DelegatedAdministrator), M (Organization), S (AccountPlacement); plus one for the new `services/organizations/` manager | Good: `CreateOrganization`, `CreateAccount`, `CreateOrganizationalUnit`, `CreatePolicy`/`U... |
 | [F02](#f02) | IAM Identity Center: permission sets and account assignments | platform-foundation | 4 | 0 / 0 / 28 | L (PermissionSet: six APIs behind one kind), M (Assignment: async), S (attribute config); plus one for the new `services/ssoadmin/` manager | Mostly good: `CreatePermissionSet`/`DescribePermissionSet`/`UpdatePermissionSet`, `AttachM... |
-| [F03](#f03) | IAM: SAML providers (and the access-key question) | platform-foundation | 6 | 9 / 0 / 27 | S (SAMLProvider), M (AccessKey if wanted) | Good: `CreateSAMLProvider`, `CreateAccessKey`, `CreateVirtualMFADevice` are implemented |
+| [F03](#f03) | IAM: SAML providers (and the access-key question) | platform-foundation | 6 | 9 / 1 / 26 | S (SAMLProvider), M (AccessKey if wanted) | Good: `CreateSAMLProvider`, `CreateAccessKey`, `CreateVirtualMFADevice` are implemented |
 | [F04](#f04) | EC2 networking: Transit Gateway route tables, associations, propagation, routes and peering | platform-foundation | 7 | 20 / 0 / 23 | M, M | Good: `CreateTransitGateway`, `CreateTransitGatewayVpcAttachment`, `CreateTransitGatewayRo... |
 | [F05](#f05) | EC2 networking: site-to-site VPN connections and route propagation | platform-foundation | 5 | 0 / 12 / 47 | L (VPNConnection), S (propagation) | Partial: `CreateVpnConnection`, `CreateVpnGateway`, `AttachVpnGateway`, `CreateCustomerGat... |
 | [F06](#f06) | EC2 networking: smaller VPC kinds (network interfaces, block public access, placement groups, CIDR reservations) | platform-foundation | 6 | 0 / 0 / 42 | M (NetworkInterface), S each for the rest | Partial: `CreateNetworkInterface` is implemented |
@@ -123,7 +123,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F03 IAM: SAML providers (and the access-key question)
 
-- **Resources:** `iam/SAMLProvider`, `iam/AccessKey`, `iam/VirtualMFADevice`, `iam/ServerCertificate`, `iam/OIDCProvider`, `iam/ManagedPolicy`. Today ACK covers 9, ours 0, nothing covers 27 of 36 attributes.
+- **Resources:** `iam/SAMLProvider`, `iam/AccessKey`, `iam/VirtualMFADevice`, `iam/ServerCertificate`, `iam/OIDCProvider`, `iam/ManagedPolicy`. Today ACK covers 9, ours 1, nothing covers 26 of 36 attributes.
 - **Why first:** Federation into the account is what a platform team wires first after roles and policies: `OpenIDConnectProvider` is covered (EKS IRSA), `SAMLProvider` is not and ACK ignores it. The rest of IAM that a platform team uses (roles, policies, boundaries through `Role.permissionsBoundary`, instance profiles, service-linked roles, users, groups, OIDC) is covered by ACK; ours already adds `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias` and `AccountPasswordPolicy`.
 - **Proposed kinds:** `iam.aws.hfl.dev/SAMLProvider`, generated: `CreateSAMLProvider`, `GetSAMLProvider`, `UpdateSAMLProvider`, `DeleteSAMLProvider`; `name` (immutable), `samlMetadataDocument` (the XML, read from a Secret or inline), `assertionEncryptionMode`, `addPrivateKey`/`removePrivateKey`, `tags`. The ARN is the identifier.
   - `AccessKey`: recommend NOT building. The secret is returned once on create; a kind needs a Kubernetes Secret write-back and the key is a long-lived credential (community #1879 asks for it). If the builder wants it, hand-write it on the `LoginProfile` pattern (which already writes a password) and add the Secret write-back in the same change.
@@ -364,7 +364,7 @@ One section per service in queue order; inside a service, resources that still n
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
 | `ManagedPolicy` | `Policy` v1.11.3: 4/7 | - | 3 of 7 attrs: `Groups[]`, `Roles[]`, `Users[]` | kind released; the rest is not in it | 2 | service-level only: moto `iam`: 119 of 180 operations, including `CreateSAMLProvider`, `CreateOpenIDConnectPro... | S | the missing fields: upstream PR or our copy (plan section 9, question 1) | [F03](#f03) |
-| `AccessKey` | none | - | whole resource (3 attrs) | ignored in ACK's generator.yaml | 1 | yes: `CreateAccessKey` is implemented | M | `iam.aws.hfl.dev/AccessKey`, hand-written; the secret is returned once, so it needs a Kubernetes Secret write-back (F03 recommends not building it) | [F03](#f03) |
+| `AccessKey` | none | `AccessKey`: +1 | 2 of 3 attrs: `Serial`, `Status` | ignored in ACK's generator.yaml | 1 | yes: `CreateAccessKey` is implemented | M | `iam.aws.hfl.dev/AccessKey`, hand-written; the secret is returned once, so it needs a Kubernetes Secret write-back (F03 recommends not building it) | [F03](#f03) |
 | `SAMLProvider` | none | - | whole resource (9 attrs) | ignored in ACK's generator.yaml | 0 | yes: `CreateSAMLProvider` is implemented | S | `iam.aws.hfl.dev/SAMLProvider`, generated (`CreateSAMLProvider`/`GetSAMLProvider`/`UpdateSAMLProvider`/`DeleteSAMLProvider`), F03 | [F03](#f03) |
 | `ServerCertificate` | none | - | whole resource (7 attrs) | controller exists; resource not in it | 0 | service-level only: moto `iam`: 119 of 180 operations, including `CreateSAMLProvider`, `CreateOpenIDConnectPro... | S | `iam.aws.hfl.dev/ServerCertificate`, generated; legacy (ACM replaced it) | [F03](#f03) |
 | `VirtualMFADevice` | none | - | whole resource (5 attrs) | ignored in ACK's generator.yaml | 0 | yes: `CreateVirtualMFADevice` is implemented | S | `iam.aws.hfl.dev/VirtualMFADevice`, generated; low priority (a person's device) | [F03](#f03) |

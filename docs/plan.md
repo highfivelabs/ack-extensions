@@ -1,6 +1,6 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has twenty-eight kinds:
+Status, 2026-11-09: the repository has twenty-nine kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
@@ -8,7 +8,7 @@ Status, 2026-11-09: the repository has twenty-eight kinds:
   `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
-- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias` and `AccountPasswordPolicy`;
+- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy` and `AccessKey`;
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
 - `organizations.aws.hfl.dev` `DelegatedAdministrator`, `Organization`, `Policy` and
@@ -407,6 +407,11 @@ controller to show it can fail:
   case, as AWS stores them.
 - **IAM.** moto does not enforce it by default, so the tests prove which
   identity a pod presents, not that AWS would authorise it.
+- **Access keys** (probed 2026-11-09): moto answers as AWS does here: a
+  40-character secret returned only by the create, a third key for one
+  user refused (`LimitExceeded`), and `NoSuchEntity` for an unknown user's
+  `ListAccessKeys` and for a key deleted twice. It does not enforce the
+  key: any key signs a moto request.
 - **Removing a role from a cluster or instance.** moto 5.2.5 implements
   `AddRoleToDBCluster` and `AddRoleToDBInstance`, but not
   `RemoveRoleFromDBCluster` or `RemoveRoleFromDBInstance`: it answers
@@ -616,7 +621,7 @@ its master (5.2.5 is the pin).
 | 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`; no pull request or issue, rechecked 2026-11-09) | yes | built |
 | 13 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237: mergeable, active 2026-11-06 | none | skipped: may be close to merging, and moto has none of it |
 | 14 | Route 53 DNSSEC and `KeySigningKey`, VPC association authorization | ignored in route53-controller's `generator.yaml` | none | skipped: moto has none of it |
-| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | built: `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy`; `AccessKey` waits on open question 10 |
+| 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | built: `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy`; `AccessKey` (6.30; open question 10, answered) |
 | 16 | EC2 `PlacementGroup` | ignored in ec2-controller's `generator.yaml` | none | skipped: moto has none of it |
 | 17 | S3 `Object`, the account's public access block | none | yes | to build |
 | 18 | EC2 `KeyPair` | ec2-controller PR #396: both reviews' changes made, main merged in 2026-11-04, mergeable | yes | skipped: close to merging; wait for the release |
@@ -1644,6 +1649,78 @@ consolidated-billing organization (moto allows both);
 policy type detaches its policies; a delegated administrator's account
 (its rights differ); real AWS.
 
+### 6.30 `iam.aws.hfl.dev` `AccessKey`
+
+An IAM user's access key (F03; rank 15). Built on the builder's answer to
+open question 10. Upstream rechecked 2026-11-09: iam-controller `v1.11.3`
+ignores `AccessKey` in its `generator.yaml`; no pull request adds it;
+community #1879 asks for a way to get a key's secret. Cloud Control cannot
+serve it either (`AWS::IAM::AccessKey` is not provisionable,
+`docs/cloudcontrol.md` section 8, PR #36), so it is built here on ACK's
+generator.
+
+**Generated** from `CreateAccessKey` (create), `ListAccessKeys` (read,
+matched on the key's ID, `list_operation.match_fields`) and
+`DeleteAccessKey`. About 85% of the new Go is generated (about 1,590
+lines); written here are four hook templates and `hooks.go` (about 220
+lines: the Secret). `UpdateAccessKey` is ignored and a custom update
+refuses every change.
+
+- **Spec:** `userName` or `userRef` (ACK's `User`, its `spec.name`,
+  through a type alias in `apis/v1alpha1/ack_kinds.go`), and
+  `secretName`, both immutable. **Status:** `accessKeyID`, `createDate`,
+  `status` (`Active`; the key's status is not managed).
+- **The secret, once, into a Secret.** `CreateAccessKeyOutput`'s
+  `SecretAccessKey` is ignored by the generator, so no generated code
+  copies it anywhere. A hook right after the create writes it, with the
+  key's ID, into a new Secret in the object's namespace, named
+  `spec.secretName` or else the object's name, keys `AWS_ACCESS_KEY_ID`
+  and `AWS_SECRET_ACCESS_KEY` (the names the AWS SDKs read, so a pod can
+  take both with `envFrom`), `immutable: true`, owned by the object
+  (controller reference, no `blockOwnerDeletion`), and clears the
+  secret from the response. The manager makes the Secret with its own
+  client (ACK's runtime gives a resource manager none that can create:
+  `WriteToSecret` patches an existing Secret, as acm-controller's
+  `AcmeExternalAccountBinding` uses it). The manager's role gains
+  `secrets` `create` and `delete` (section 7.3).
+- **Never written over.** A create whose Secret already exists is refused
+  (terminal) before any key is made: if the object does not own it, name
+  another; if it does, its key was deleted outside Kubernetes, and only a
+  new object (or deleting the Secret) makes a new key. If the Secret
+  cannot be made after the key was, the key is deleted (nobody could read
+  its secret again) and the create is tried later; if that delete fails,
+  the error is terminal and names the key, so that no more keys are made
+  up to IAM's limit of two a user.
+- **The Secret is the record.** The read, while the status has no key ID,
+  takes it from the Secret the object owns, so a status write that failed
+  after the create does not lead to a second key.
+- **Never logged.** The secret is in no error, event or status; the
+  manager's debug log in the tests does not contain it.
+- **Delete** deletes the key, then the Secret if the object owns it (the
+  owner reference does the same where garbage collection runs). A Secret
+  deleted by hand is not made again; the key's secret is gone, so rotate.
+- **Assumed, likely and cheap** (the builder named a spec field with a
+  default, not the default): the default Secret name is the object's
+  name, and the Secret's keys are `AWS_ACCESS_KEY_ID` and
+  `AWS_SECRET_ACCESS_KEY`.
+
+**Proven on moto** (`TestIAMAccessKey`): a key made for ACK's `User` by
+reference, its Secret holding the ID in status and a 40-character
+secret, owned by the object and immutable; no second create and the
+Secret not written again across resyncs; a status cleared of the ID takes
+it back from the Secret with no second key; `secretName` cannot change; a
+Secret not the object's is left untouched and no key is made; a key
+deleted outside Kubernetes is not made again over its Secret; delete
+removes the key and the Secret; the secret is in no manager log line, in
+nothing of the object's and in no event.
+
+**Not proven on moto:** a Secret that cannot be made after the key was
+(the key deleted, then made again: the path needs the API server to
+refuse a create that it accepted a moment before, and is unit-tested only
+in its parts); IAM's eventual consistency for a new key; the owner
+reference's garbage collection (envtest runs no garbage collector; the
+explicit delete is what the test shows); real AWS.
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)
@@ -1742,6 +1819,11 @@ smaller than on Google Cloud: ACK's controller has no cluster-wide
 webhook or core rights. But `own` still keeps ACK's databases out of our
 manager's reach. Both columns hold the runtime's cluster-wide Secret read
 and patch; that is ACK's design, not ours.
+
+One manager has more: the iam manager also creates and deletes Secrets,
+cluster-wide, for `AccessKey` (6.30): it makes one Secret per key, owned
+by the object, and deletes only one its object owns. With identity `ack`
+that right comes to ACK's iam-controller's ServiceAccount with our role.
 
 ### 7.4 What was proven
 
