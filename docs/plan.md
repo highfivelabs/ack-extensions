@@ -5,7 +5,7 @@ Status, 2026-11-09: the repository has twenty-nine kinds:
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
 - `ec2.aws.hfl.dev` `CustomerGateway`, `VPNGateway`, `VPNConnection`,
-  `Volume` and `VolumeAttachment`;
+  `NetworkInterfacePermission`, `Volume` and `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
 - `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy`, `AccessKey` and `VirtualMFADevice`;
@@ -480,6 +480,11 @@ controller to show it can fail:
   configuration with keys in it. It has none of
   `ModifyVpnTunnelOptions`, `ModifyVpnConnectionOptions`,
   `ModifyVpnConnection` or `CreateVpnConnectionRoute` (server errors).
+- **EC2 network interface permissions** (probed 2026-11-09). moto has
+  none of `CreateNetworkInterfacePermission`,
+  `DescribeNetworkInterfacePermissions` or
+  `DeleteNetworkInterfacePermission` (a server error), so the kind is
+  unproven on the fake.
 - **EBS volumes.** moto creates a volume `available` at once (AWS goes
   through `creating`), applies `ModifyVolume` at once (AWS goes through
   `modifying` and `optimizing`), and removes a deleted volume at once.
@@ -1972,6 +1977,45 @@ returns nothing to check them by), `pending` before `available`, and real
 AWS. The foundation queue's "done when" asked for a tunnel option change
 end to end; moto cannot show it.
 
+### 6.33 `ec2.aws.hfl.dev` `NetworkInterfacePermission`
+
+Another account's, or an AWS service's, permission on one of this
+account's network interfaces (F04/F05's networking gaps; one of the two
+foundation types Cloud Control cannot provision, `docs/cloudcontrol.md`
+section 8, handed to this route). Upstream rechecked 2026-11-09:
+ec2-controller `v1.23.1` ignores `NetworkInterfacePermission` in its
+`generator.yaml`; no pull request or issue adds it.
+
+**Generated**, all of it but one read hook: `CreateNetworkInterfacePermission`
+(its output wrapped in `InterfacePermission`, `output_wrapper_field_path`),
+`DescribeNetworkInterfacePermissions` (read by ID) and
+`DeleteNetworkInterfacePermission`. About 99% of the new Go is generated
+(about 1,480 lines); written here is a five-line template that reads a
+permission `revoking` or `revoked` as gone. There is no update call: every
+field is immutable, and the generated update refuses.
+
+- **Spec:** `networkInterfaceID`, `permission` (`INSTANCE-ATTACH` or
+  `EIP-ASSOCIATE`), `awsAccountID` or `awsService`, all immutable; no
+  tags (the API has none). **Status:** `networkInterfacePermissionID`,
+  `permissionState` (`state`, `statusMessage`); synced when `granted`.
+- **Not built:** a reference to the network interface. ACK's
+  ec2-controller has no `NetworkInterface` kind (F06 proposes ours), so
+  the interface is named by ID.
+- **Assumed, unproven:** the error code for an unknown permission ID,
+  `InvalidPermissionID.NotFound`, is not documented for these calls; an
+  empty answer is also read as gone, so either way works.
+
+**Unproven on the fake:** moto has none of the API. A stand-in unit test
+(`sdk_test.go`, on `pkg/fakeaws`'s guarded client, as `DBRoleAssociation`'s
+is) answers as the EC2 API reference documents and checks what the
+generated create, read and delete send and how they read the answers: the
+ID and state from the create, `granted` and `pending` kept, `revoking`,
+`revoked`, an empty list and the not-found code read as gone, another
+error passed on, no call before the create. No end-to-end test. The
+coverage data's "unproven on fake" note exists only for Cloud Control
+kinds (`hack/coverage`, from a CRD annotation); it is said here and in the
+README instead.
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)
@@ -2344,6 +2388,9 @@ Before it can run on a real cluster:
      put back), a tunnel option change and a CIDR change, static routes
      added and removed, `pending` to `available`, and the keys absent from
      the manager's log at debug level (section 6.32).
+   - network interface permissions, the whole kind (moto has none of the
+     API): a permission granted to another account, its state, the error
+     code for an unknown ID, and the delete (section 6.33).
 4. CRD labels marking a gap kind and naming the upstream kind it
    anticipates, as gaps-gcp does.
 5. Offer patch 0001 upstream; comment on PRs #184 and #257 with what we

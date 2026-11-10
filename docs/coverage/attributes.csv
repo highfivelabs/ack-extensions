@@ -11844,9 +11844,9 @@ ec2,NetworkInterfaceAttachment,EnaSrdSpecification.EnaSrdEnabled,boolean,false,n
 ec2,NetworkInterfaceAttachment,EnaSrdSpecification.EnaSrdUdpSpecification.EnaSrdUdpEnabled,boolean,false,none,,
 ec2,NetworkInterfaceAttachment,InstanceId,string,true,none,,
 ec2,NetworkInterfaceAttachment,NetworkInterfaceId,string,true,none,,
-ec2,NetworkInterfacePermission,AwsAccountId,string,true,none,,
-ec2,NetworkInterfacePermission,NetworkInterfaceId,string,true,none,,
-ec2,NetworkInterfacePermission,Permission,string,true,none,,
+ec2,NetworkInterfacePermission,AwsAccountId,string,true,ours,,spec.awsAccountID
+ec2,NetworkInterfacePermission,NetworkInterfaceId,string,true,ours,,spec.networkInterfaceID
+ec2,NetworkInterfacePermission,Permission,string,true,ours,,spec.permission
 ec2,NetworkPerformanceMetricSubscription,Destination,string,true,none,,
 ec2,NetworkPerformanceMetricSubscription,Metric,string,true,none,,
 ec2,NetworkPerformanceMetricSubscription,Source,string,true,none,,

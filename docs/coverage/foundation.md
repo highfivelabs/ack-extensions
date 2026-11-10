@@ -12,7 +12,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 
 | Category | Services | Resources | ACK | Ours beyond | None | Attributes | ACK | Ours beyond | Uncovered |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 16 | 241 | 55 (22.8%) | 22 (9.1%) | 164 | 2,400 | 28.2% | 6.3% | 65.5% |
+| platform-foundation | 16 | 241 | 55 (22.8%) | 23 (9.5%) | 163 | 2,400 | 28.2% | 6.4% | 65.4% |
 | security-adjacent | 18 | 112 | 14 (12.5%) | 2 (1.8%) | 96 | 2,082 | 37.6% | 0.6% | 61.8% |
 | application | 33 | 262 | 106 (40.5%) | 9 (3.4%) | 147 | 4,766 | 48.2% | 4.2% | 47.6% |
 | other | 238 | 1260 | 91 (7.2%) | 0 (0.0%) | 1169 | 76,525 | 3.0% | 0.0% | 97.0% |
@@ -24,7 +24,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | 1 | `organizations` | 5 | 2 | 2 | 1 | 42.9% / 38.1% / 19.0% | `organizations-controller` v1.7.0 |
 | 2 | `sso` | 6 | 0 | 3 | 3 | 0.0% / 61.0% / 39.0% | none |
 | 3 | `iam` | 16 | 7 | 3 | 6 | 41.2% / 17.6% / 41.2% | `iam-controller` v1.11.3 |
-| 4 | `ec2` | 126 | 20 | 10 | 96 | 22.7% / 5.4% / 71.8% | `ec2-controller` v1.23.1 |
+| 4 | `ec2` | 126 | 20 | 11 | 95 | 22.7% / 5.6% / 71.6% | `ec2-controller` v1.23.1 |
 | 5 | `controltower` | 3 | 0 | 2 | 1 | 0.0% / 72.2% / 27.8% | none |
 | 6 | `route53` | 11 | 3 | 0 | 8 | 47.9% / 0.0% / 52.1% | `route53-controller` v1.8.0 |
 | 7 | `route53resolver` | 12 | 5 | 0 | 7 | 35.1% / 0.0% / 64.9% | `route53resolver-controller` v1.11.0 |
@@ -408,7 +408,6 @@ One section per service in queue order; inside a service, resources that still n
 | `EIPAssociation` | none | - | whole resource (5 attrs) | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/EIPAssociation`, generated |  |
 | `GatewayRouteTableAssociation` | none | - | whole resource (2 attrs) | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/GatewayRouteTableAssociation`, generated |  |
 | `NetworkInterfaceAttachment` | none | - | whole resource (7 attrs) | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/NetworkInterfaceAttachment`, generated |  |
-| `NetworkInterfacePermission` | none | - | whole resource (3 attrs) | ignored in ACK's generator.yaml | 0 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/NetworkInterfacePermission`, generated |  |
 | `SubnetCidrBlock` | none | - | whole resource (4 attrs) | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/SubnetCidrBlock`, generated |  |
 | `TransitGatewayAttachment` | none | - | whole resource (9 attrs) | ACK has the VPC type only (`TransitGatewayVPCAttachment`); peering, Connect and VPN types are ignored | 0 | service-level only: moto `ec2`: 232 of 809 operations | S | one kind per attachment type: `TransitGatewayPeeringAttachment` (F04); VPN attachments come with `VPNConnection` (F05) |  |
 | `TransitGatewayAttachmentNatConfiguration` | none | - | whole resource (6 attrs) | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/TransitGatewayAttachmentNatConfiguration`, generated |  |
@@ -441,6 +440,7 @@ One section per service in queue order; inside a service, resources that still n
 | `VPNConnectionRoute` | none | - | 2 attrs, covered inline: to be a field of `VPNConnection.spec.staticRoutes[]` (F05) | ignored in ACK's generator.yaml | 1 | no: `CreateVpnConnectionRoute` is not in moto | - | a field of the `VPNConnection` kind | [F05](#f05) |
 | `VPNGateway` | none | `VPNGateway`: +4 | none | ignored in ACK's generator.yaml | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | none (covered) | [F05](#f05) |
 | `TransitGatewayRouteTable` | none | `TransitGatewayRouteTable (Cloud Control)`: +3 | none | ignored in ACK's generator.yaml | 1 | yes: `CreateTransitGatewayRouteTable`, `AssociateTransitGatewayRouteTable`, `EnableTransitGatewayRouteTablePropagation`, `CreateTransitGatewayRoute` | - | `ec2.aws.hfl.dev/TransitGatewayRouteTable`, generated, with `associations[]`, `propagations[]` and `routes[]` as fields (the pattern of ACK's `RouteTable`), F04 | [F04](#f04) |
+| `NetworkInterfacePermission` | none | `NetworkInterfacePermission`: +3 | none | ignored in ACK's generator.yaml | 0 | service-level only: moto `ec2`: 232 of 809 operations | - | none (covered) |  |
 | `PrefixList` | `ManagedPrefixList` v1.23.1: 7/7 | - | none | released | 0 | service-level only: moto `ec2`: 232 of 809 operations | - | none (covered) |  |
 | `SubnetNetworkAclAssociation` | none | - | 2 attrs, covered inline: ACK `NetworkACL.spec.associations[]` | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline) |  |
 | `VPCEndpointServicePermissions` | none | - | 2 attrs, covered inline: ACK `VPCEndpointServiceConfiguration.spec.allowedPrincipals` | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline) |  |

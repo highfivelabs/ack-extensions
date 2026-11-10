@@ -6,11 +6,11 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 
 | Category | Types | Provisionable | FULLY_MUTABLE | IMMUTABLE | CRD accepted | Clean | Gap types | Gap, provisionable | Gap, CRD accepted | Gap, clean |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 164 | 158 | 158 | 155 |
+| platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 163 | 158 | 158 | 155 |
 | security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 96 | 78 | 78 | 75 |
 | application | 262 | 250 | 232 | 18 | 250 | 230 | 147 | 136 | 136 | 128 |
 | other | 1260 | 1188 | 1084 | 104 | 1188 | 1137 | 1169 | 1101 | 1101 | 1059 |
-| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1576 | 1473 | 1473 | 1417 |
+| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1575 | 1473 | 1473 | 1417 |
 
 ## Foundation gaps (platform-foundation and security-adjacent types with no kind)
 
@@ -91,7 +91,6 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::EC2::NetworkInsightsPath` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::NetworkInterface` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
 | `AWS::EC2::NetworkInterfaceAttachment` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::NetworkInterfacePermission` | platform-foundation | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
 | `AWS::EC2::NetworkPerformanceMetricSubscription` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::PlacementGroup` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::Route` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |

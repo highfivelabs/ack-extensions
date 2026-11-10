@@ -803,6 +803,12 @@ type CreateVerifiedAccessEndpointCIDROptions struct {
 	CIDR *string `json:"cidr,omitempty"`
 }
 
+// Describes the network interface options when creating an Amazon Web Services
+// Verified Access endpoint using the network-interface type.
+type CreateVerifiedAccessEndpointEniOptions struct {
+	NetworkInterfaceID *string `json:"networkInterfaceID,omitempty"`
+}
+
 // Describes the RDS options for a Verified Access endpoint.
 type CreateVerifiedAccessEndpointRdsOptions struct {
 	RdsEndpoint *string `json:"rdsEndpoint,omitempty"`
@@ -2262,6 +2268,7 @@ type InstanceNetworkInterfaceSpecification struct {
 	IPv6AddressCount               *int64  `json:"ipv6AddressCount,omitempty"`
 	IPv6PrefixCount                *int64  `json:"ipv6PrefixCount,omitempty"`
 	NetworkCardIndex               *int64  `json:"networkCardIndex,omitempty"`
+	NetworkInterfaceID             *string `json:"networkInterfaceID,omitempty"`
 	PrimaryIPv6                    *bool   `json:"primaryIPv6,omitempty"`
 	PrivateIPAddress               *string `json:"privateIPAddress,omitempty"`
 	SecondaryPrivateIPAddressCount *int64  `json:"secondaryPrivateIPAddressCount,omitempty"`
@@ -2633,6 +2640,7 @@ type LaunchTemplateInstanceNetworkInterfaceSpecification struct {
 	IPv6AddressCount               *int64  `json:"ipv6AddressCount,omitempty"`
 	IPv6PrefixCount                *int64  `json:"ipv6PrefixCount,omitempty"`
 	NetworkCardIndex               *int64  `json:"networkCardIndex,omitempty"`
+	NetworkInterfaceID             *string `json:"networkInterfaceID,omitempty"`
 	PrimaryIPv6                    *bool   `json:"primaryIPv6,omitempty"`
 	PrivateIPAddress               *string `json:"privateIPAddress,omitempty"`
 	SecondaryPrivateIPAddressCount *int64  `json:"secondaryPrivateIPAddressCount,omitempty"`
@@ -2650,6 +2658,7 @@ type LaunchTemplateInstanceNetworkInterfaceSpecificationRequest struct {
 	IPv6AddressCount               *int64  `json:"ipv6AddressCount,omitempty"`
 	IPv6PrefixCount                *int64  `json:"ipv6PrefixCount,omitempty"`
 	NetworkCardIndex               *int64  `json:"networkCardIndex,omitempty"`
+	NetworkInterfaceID             *string `json:"networkInterfaceID,omitempty"`
 	PrimaryIPv6                    *bool   `json:"primaryIPv6,omitempty"`
 	PrivateIPAddress               *string `json:"privateIPAddress,omitempty"`
 	SecondaryPrivateIPAddressCount *int64  `json:"secondaryPrivateIPAddressCount,omitempty"`
@@ -2787,6 +2796,7 @@ type LocalGateway struct {
 // Describes a route for a local gateway route table.
 type LocalGatewayRoute struct {
 	DestinationCIDRBlock *string `json:"destinationCIDRBlock,omitempty"`
+	NetworkInterfaceID   *string `json:"networkInterfaceID,omitempty"`
 	OwnerID              *string `json:"ownerID,omitempty"`
 }
 
@@ -3109,17 +3119,21 @@ type NetworkInterfaceIPv6Address struct {
 	IsPrimaryIPv6 *bool   `json:"isPrimaryIPv6,omitempty"`
 }
 
+// Describes the state of a network interface permission.
+type NetworkInterfacePermissionState struct {
+	State         *string `json:"state,omitempty"`
+	StatusMessage *string `json:"statusMessage,omitempty"`
+}
+
 // Describes a permission for a network interface.
-type NetworkInterfacePermission struct {
+type NetworkInterfacePermission_SDK struct {
 	AWSAccountID                 *string `json:"awsAccountID,omitempty"`
 	AWSService                   *string `json:"awsService,omitempty"`
 	NetworkInterfaceID           *string `json:"networkInterfaceID,omitempty"`
 	NetworkInterfacePermissionID *string `json:"networkInterfacePermissionID,omitempty"`
-}
-
-// Describes the state of a network interface permission.
-type NetworkInterfacePermissionState struct {
-	StatusMessage *string `json:"statusMessage,omitempty"`
+	Permission                   *string `json:"permission,omitempty"`
+	// Describes the state of a network interface permission.
+	PermissionState *NetworkInterfacePermissionState `json:"permissionState,omitempty"`
 }
 
 // Describes the private IPv4 address of a network interface.
@@ -3877,6 +3891,7 @@ type ScheduledInstancesNetworkInterface struct {
 	Description                    *string `json:"description,omitempty"`
 	DeviceIndex                    *int64  `json:"deviceIndex,omitempty"`
 	IPv6AddressCount               *int64  `json:"ipv6AddressCount,omitempty"`
+	NetworkInterfaceID             *string `json:"networkInterfaceID,omitempty"`
 	PrivateIPAddress               *string `json:"privateIPAddress,omitempty"`
 	SecondaryPrivateIPAddressCount *int64  `json:"secondaryPrivateIPAddressCount,omitempty"`
 }
@@ -5164,6 +5179,11 @@ type VerifiedAccessEndpoint struct {
 // Describes the CIDR options for a Verified Access endpoint.
 type VerifiedAccessEndpointCIDROptions struct {
 	CIDR *string `json:"cidr,omitempty"`
+}
+
+// Options for a network-interface type endpoint.
+type VerifiedAccessEndpointEniOptions struct {
+	NetworkInterfaceID *string `json:"networkInterfaceID,omitempty"`
 }
 
 // Describes a load balancer when creating an Amazon Web Services Verified Access
