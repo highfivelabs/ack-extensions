@@ -6,11 +6,11 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 
 | Category | Types | Provisionable | FULLY_MUTABLE | IMMUTABLE | CRD accepted | Clean | Gap types | Gap, provisionable | Gap, CRD accepted | Gap, clean |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 179 | 172 | 172 | 165 |
+| platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 178 | 171 | 171 | 164 |
 | security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 97 | 79 | 79 | 76 |
 | application | 262 | 250 | 232 | 18 | 250 | 230 | 147 | 136 | 136 | 128 |
 | other | 1260 | 1188 | 1084 | 104 | 1188 | 1137 | 1169 | 1101 | 1101 | 1059 |
-| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1592 | 1488 | 1488 | 1428 |
+| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1591 | 1487 | 1487 | 1427 |
 
 ## Foundation gaps (platform-foundation and security-adjacent types with no kind)
 
@@ -218,7 +218,6 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::NetworkManager::TransitGatewayRegistration` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::NetworkManager::TransitGatewayRouteTableAttachment` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 1 |
 | `AWS::NetworkManager::VpcAttachment` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 1 |
-| `AWS::Organizations::Organization` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::Organizations::ResourcePolicy` | platform-foundation | FULLY_MUTABLE | ok | 1 | 0 | 0 | 0 |
 | `AWS::RAM::PermissionAssociation` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::RAM::PrincipalAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
