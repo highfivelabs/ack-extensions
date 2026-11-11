@@ -33,7 +33,7 @@ import (
 //
 //   - each top-level read-only property of type string, integer, number
 //     or boolean: the first value of its enum if it has one; else an
-//     ARN-shaped string for a name ending in Arn, a
+//     ARN-shaped string (padded or cut to the schema's lengths) for a name ending in Arn, a
 //     "<resource>-<n>" for any other string, n for a number, true for a
 //     boolean;
 //   - a writable primary identifier the model leaves out (CloudFormation
@@ -88,10 +88,20 @@ func (b *SchemaStore) value(name string, n int) any {
 	switch p.Type.Single() {
 	case "string", "":
 		res := strings.ToLower(b.Schema.Resource())
+		v := fmt.Sprintf("%s-%d", res, n)
 		if strings.HasSuffix(name, "Arn") || strings.HasSuffix(name, "ARN") {
-			return fmt.Sprintf("arn:aws:%s:%s:%s:%s/%s-%d", strings.ToLower(b.Schema.Service()), b.Region, b.Account, res, res, n)
+			v = fmt.Sprintf("arn:aws:%s:%s:%s:%s/%s-%d", strings.ToLower(b.Schema.Service()), b.Region, b.Account, res, res, n)
 		}
-		return fmt.Sprintf("%s-%d", res, n)
+		// The CRD keeps the schema's lengths too.
+		if p.MinLength != nil {
+			for int64(len(v)) < *p.MinLength {
+				v += "0"
+			}
+		}
+		if p.MaxLength != nil && int64(len(v)) > *p.MaxLength {
+			v = v[len(v)-int(*p.MaxLength):]
+		}
+		return v
 	case "integer", "number":
 		return float64(n)
 	case "boolean":
