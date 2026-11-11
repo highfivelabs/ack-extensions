@@ -1637,7 +1637,7 @@ scn,Dataset,13,,0,,0,13,false,
 scn,Instance,5,,0,,0,5,false,
 scn,Namespace,5,,0,,0,5,false,
 sdb,Domain,1,,0,,0,1,false,
-secretsmanager,ResourcePolicy,3,,0,,0,3,false,
+secretsmanager,ResourcePolicy,3,,0,ResourcePolicy (Cloud Control),3,0,false,
 secretsmanager,RotationSchedule,20,,0,,0,20,false,
 secretsmanager,Secret,19,Secret,8,,0,11,false,official_unmapped=2
 secretsmanager,SecretTargetAttachment,3,,0,,0,3,false,

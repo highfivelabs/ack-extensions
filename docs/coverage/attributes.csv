@@ -82007,9 +82007,9 @@ scn,Namespace,Name,string,true,none,,
 scn,Namespace,Tags[].Key,string,false,none,,
 scn,Namespace,Tags[].Value,string,false,none,,
 sdb,Domain,Description,string,false,none,,
-secretsmanager,ResourcePolicy,BlockPublicPolicy,boolean,false,none,,
-secretsmanager,ResourcePolicy,ResourcePolicy,string|object,true,none,,
-secretsmanager,ResourcePolicy,SecretId,string,true,none,,
+secretsmanager,ResourcePolicy,BlockPublicPolicy,boolean,false,ours,,spec.blockPublicPolicy
+secretsmanager,ResourcePolicy,ResourcePolicy,string|object,true,ours,,spec.resourcePolicy
+secretsmanager,ResourcePolicy,SecretId,string,true,ours,,spec.secretId
 secretsmanager,RotationSchedule,ExternalSecretRotationMetadata[].Key,string,false,none,,
 secretsmanager,RotationSchedule,ExternalSecretRotationMetadata[].Value,string,false,none,,
 secretsmanager,RotationSchedule,ExternalSecretRotationRoleArn,string,false,none,,

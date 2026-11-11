@@ -18,7 +18,7 @@ How much of AWS the official ACK controllers cover, and how much more this repos
 
 `quicksight` alone is 51,640 of the 85,773 attributes, so the attribute bar mostly describes it; the resource bar counts a resource as covered if ACK has a kind for it, however few of its fields.
 
-Of 85,773 attributes in 1875 resources across 305 services, ACK covers 6,033 (7.0%) and ours adds 736 more (0.9%), 22 of them copied from open upstream pull requests. By resource, ACK has a released kind for 266 of 1,875 (14.2%) and ours adds 73 more (3.9%).
+Of 85,773 attributes in 1875 resources across 305 services, ACK covers 6,033 (7.0%) and ours adds 739 more (0.9%), 22 of them copied from open upstream pull requests. By resource, ACK has a released kind for 266 of 1,875 (14.2%) and ours adds 74 more (3.9%).
 
 The purple bar is **Terraform** for comparison: the share of the same attributes that a writable attribute of the Terraform `aws` provider matches, about 64.4% (at least 48.8%, the dark tick, by the strict rule). It is an estimate from the High Five Labs catalog repository, pinned like every other input, with the error of its matching; see [Terraform](docs/coverage/README.md#terraform).
 
@@ -29,7 +29,7 @@ Not every service matters equally. Each service has a **category**: *platform-fo
 | Category | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) | Terraform attributes (estimate) |
 | --- | ---: | ---: | ---: | ---: |
 | platform-foundation | 16 | 22.8% / 14.5% | 28.2% / 8.5% | ~51.5% (≥43.5%) |
-| security-adjacent | 18 | 12.5% / 25.9% | 37.6% / 15.9% | ~74.1% (≥72.0%) |
+| security-adjacent | 18 | 12.5% / 26.8% | 37.6% / 16.0% | ~74.1% (≥72.0%) |
 | application | 33 | 40.5% / 3.4% | 48.2% / 4.2% | ~50.8% (≥46.4%) |
 | other | 238 | 7.2% / 0.0% | 3.0% / 0.0% | ~65.4% (≥48.5%) |
 
@@ -40,7 +40,7 @@ The ranked work queue for the foundation and security categories, resource by re
 | Tier | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) | Terraform attributes (estimate) |
 | --- | ---: | ---: | ---: | ---: |
 | 1 | 16 | 22.8% / 14.5% | 28.2% / 8.5% | ~51.5% (≥43.5%) |
-| 2 | 51 | 32.1% / 10.2% | 44.9% / 7.8% | ~57.9% (≥54.2%) |
+| 2 | 51 | 32.1% / 10.4% | 44.9% / 7.8% | ~57.9% (≥54.2%) |
 | 3 | 238 | 7.2% / 0.0% | 3.0% / 0.0% | ~65.4% (≥48.5%) |
 
 | Tier | Category | Service | Coverage | Official | Ours beyond | Uncovered | Terraform (estimate) |
@@ -100,7 +100,7 @@ The ranked work queue for the foundation and security categories, resource by re
 | 2 | application | `sqs` | ![sqs](docs/coverage/bars/sqs.svg) | 81.0% | 0.0% | 19.0% | ~57.1% (≥57.1%) |
 | 2 | application | `stepfunctions` | ![stepfunctions](docs/coverage/bars/stepfunctions.svg) | 45.9% | 0.0% | 54.1% | ~27.0% (≥27.0%) |
 | 2 | application | `s3vectors` | ![s3vectors](docs/coverage/bars/s3vectors.svg) | 78.9% | 0.0% | 21.1% | ~89.5% (≥89.5%) |
-| 2 | security-adjacent | `secretsmanager` | ![secretsmanager](docs/coverage/bars/secretsmanager.svg) | 17.8% | 0.0% | 82.2% | ~13.3% (≥13.3%) |
+| 2 | security-adjacent | `secretsmanager` | ![secretsmanager](docs/coverage/bars/secretsmanager.svg) | 17.8% | 6.7% | 75.6% | ~13.3% (≥13.3%) |
 | 2 | application | `aps` | ![aps](docs/coverage/bars/aps.svg) | 13.2% | 0.0% | 86.8% | ~34.0% (≥34.0%) |
 | 2 | application | `dsql` | ![dsql](docs/coverage/bars/dsql.svg) | 85.7% | 0.0% | 14.3% | ~85.7% (≥85.7%) |
 | 3 | other | `sagemaker` | ![sagemaker](docs/coverage/bars/sagemaker.svg) | 49.9% | 0.0% | 50.1% | ~45.5% (≥45.2%) |
@@ -158,7 +158,7 @@ Services are sorted by tier, then by attributes covered, and every tier 1 servic
 | `iam.aws.hfl.dev/v1alpha1` `AccountPasswordPolicy` | The account's password policy for IAM users (length, character classes, age, reuse), put back if changed outside Kubernetes. ACK's iam-controller has none. | Hand-written on iam-controller PR #184's skeleton; no ACK pull request adds it |
 | `organizations.aws.hfl.dev/v1alpha1` `AccountPlacement` | The OU (or root) a member account is in, by ID or by reference to ACK's `Account` and `OrganizationalUnit`; moved with `MoveAccount` when the spec changes, and moved back if moved outside Kubernetes. Deleting it leaves the account where it is, and the retain-only admission policy requires `services.k8s.aws/deletion-policy: retain` on every object. ACK's organizations-controller has no way to move an account (community #2369). | Generated (`MoveAccount`, `ListParents`), with three short hooks |
 | `organizations.aws.hfl.dev/v1alpha1` `DelegatedAdministrator` | A member account registered as an AWS service's delegated administrator for the organization (GuardDuty, Security Hub, Config, Identity Center and the rest), by account ID or by reference to ACK's `Account`; registered again if removed outside Kubernetes, deregistered on delete. ACK has none; community #2884 proposes it, with no pull request. | Generated (`RegisterDelegatedAdministrator`, `DeregisterDelegatedAdministrator`, `ListDelegatedAdministrators`) |
-| `organizations.aws.hfl.dev/v1alpha1` `Organization` | The account's organization, adopted (or made when there is none): its feature set, the policy types enabled on its root and the services with trusted access, put back if changed outside Kubernetes. Never deleted from Kubernetes: the controller has no `DeleteOrganization`, and an admission policy requires `services.k8s.aws/deletion-policy: retain` on every object. ACK's organizations-controller ignores `Organization`. | Generated (`CreateOrganization`, `DescribeOrganization`), the two lists by hand |
+| `organizations.aws.hfl.dev/v1alpha1` `Organization` | The account's organization, adopted (or made when there is none): its feature set, the policy types enabled on its root and the services with trusted access. The two lists are additive: what is listed is put back if disabled outside Kubernetes; what is enabled outside it is kept and reported in `status.unmanaged…` for import, and only what the object owns is disabled. Never deleted from Kubernetes: the controller has no `DeleteOrganization`, and an admission policy requires `services.k8s.aws/deletion-policy: retain` on every object. ACK's organizations-controller ignores `Organization`. | Generated (`CreateOrganization`, `DescribeOrganization`), the two lists by hand |
 | `organizations.aws.hfl.dev/v1alpha1` `Policy` | An AWS Organizations policy: a service control policy, resource control policy, tag policy or another type, with its tags; the document is compared as JSON. ACK's organizations-controller has `Account` and `OrganizationalUnit` only and ignores `Policy`; no pull request adds it. | Generated, with eventbridge-controller's tag hooks |
 | `organizations.aws.hfl.dev/v1alpha1` `PolicyAttachment` | One Organizations policy attached to one root, OU or account, by ID or by reference to our `Policy` and ACK's `OrganizationalUnit`; attached again if detached outside Kubernetes, detached on delete, and the target's other policies left alone. ACK has no attachment; community #2884 proposes one, with no pull request. | Generated (`AttachPolicy`, `DetachPolicy`, `ListTargetsForPolicy`) |
 | `rds.aws.hfl.dev/v1alpha1` `OptionGroup` | An RDS option group (MySQL, MariaDB, SQL Server and Oracle options such as the audit plugin), with its options added and removed through `ModifyOptionGroup`. | Generated from ACK rds-controller pull request #257 (open) |
@@ -209,6 +209,7 @@ each has had a real run.
 | `controltower.cloudcontrol.aws.hfl.dev/v1alpha1` `EnabledControl` | `AWS::ControlTower::EnabledControl` (a control on an OU); **unproven on the fake** (no emulator has Control Tower) |
 | `controltower.cloudcontrol.aws.hfl.dev/v1alpha1` `EnabledBaseline` | `AWS::ControlTower::EnabledBaseline` (a baseline on an OU or account); **unproven on the fake** |
 | `controltower.cloudcontrol.aws.hfl.dev/v1alpha1` `LandingZone` | `AWS::ControlTower::LandingZone`; **never deleted** (deleting the object keeps the landing zone) and retain-only (every object carries `services.k8s.aws/deletion-policy: retain`); proven on a test double of ours, since no emulator has Control Tower |
+| `secretsmanager.cloudcontrol.aws.hfl.dev/v1alpha1` `ResourcePolicy` | `AWS::SecretsManager::ResourcePolicy` (a secret's resource policy; the secret by ARN) |
 
 They run per environment: a `CloudControlContext` named `cloudcontrol` in
 a namespace makes the operator run a manager for that namespace, watching

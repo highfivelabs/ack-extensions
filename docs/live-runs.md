@@ -6,8 +6,22 @@ file says how a live run is made, what keeps it apart from everything else,
 and what each run found. The GCP repository's `docs/live-runs.md` is the
 model.
 
-**Status, 2026-11-09: no live run yet.** The sandbox account does not exist;
-`hack/live/accounts.txt` is empty, so every live run refuses to start.
+**Status, 2026-11-10:** the sandbox account is `830550549114` (the
+builder's O5 sandbox). The builder deployed the stack
+`ack-extensions-live-tests` there (in us-east-2; IAM is global, the tests
+run in us-west-2), trusting `offload-runner@our-chassis-514316-r0`
+(unique ID `102306610785199453342`), so live runs start offload VMs in
+`our-chassis-514316-r0`:
+
+```sh
+OFFLOAD_PROJECT=our-chassis-514316-r0 \
+OFFLOAD_BUCKET=gs://our-chassis-514316-r0-offload \
+OFFLOAD_SA=offload-runner@our-chassis-514316-r0.iam.gserviceaccount.com \
+../offload/offload run --machine e2-standard-8 \
+  --sa offload-runner@our-chassis-514316-r0.iam.gserviceaccount.com ...
+```
+
+our-chassis has 12 vCPUs of quota: one 8-vCPU VM at a time.
 
 ## What keeps it apart
 

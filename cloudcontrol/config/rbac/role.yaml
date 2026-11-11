@@ -237,6 +237,26 @@ rules:
   - patch
   - update
 - apiGroups:
+  - secretsmanager.cloudcontrol.aws.hfl.dev
+  resources:
+  - resourcepolicies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - secretsmanager.cloudcontrol.aws.hfl.dev
+  resources:
+  - resourcepolicies/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - securityhub.cloudcontrol.aws.hfl.dev
   resources:
   - actiontargets
