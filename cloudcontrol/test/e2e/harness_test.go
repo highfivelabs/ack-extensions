@@ -295,6 +295,14 @@ func startFake(t *testing.T, root string) (*fake.Server, string, aws.Config) {
 			b = fake.NewAggregationAuthorization(motoCfg)
 		case "AWS::Config::OrganizationConformancePack":
 			b = fake.NewOrganizationConformancePack(motoCfg)
+		case "AWS::ECR::RegistryPolicy":
+			b = fake.NewRegistryPolicy(motoCfg)
+		case "AWS::ECR::RegistryScanningConfiguration":
+			b = fake.NewRegistryScanningConfiguration(motoCfg)
+		case "AWS::IdentityStore::Group":
+			b = fake.NewIdentityStoreGroup(motoCfg)
+		case "AWS::IdentityStore::GroupMembership":
+			b = fake.NewIdentityStoreGroupMembership(motoCfg)
 		default:
 			if ty.Unproven != "" {
 				// Marked in types.yaml: moto lacks the API, so the type
