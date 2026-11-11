@@ -71,27 +71,19 @@ jobs:
           E2E: ${{ steps.plan.outputs.e2e }}
           SPOT: ${{ vars.SPOT_RUNNERS_ENABLED == 'true' }}
           CHECK_ON_SPOT: ${{ vars.CHECK_ON_SPOT == 'true' }}
+          # A pull request from a fork gets no Spot runner (no id-token for it).
+          SAME_REPO: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
           PREFIX: ci-${{ github.event.repository.name }}-${{ github.run_id }}-${{ github.run_attempt }}
-        run: |
-          set -euo pipefail
-          check=ubuntu-latest e2e=""
-          if [[ "${SPOT}" == "true" ]]; then
-            [[ "${E2E}" == "true" ]] && e2e="${PREFIX}-e2e"
-            [[ "${MODE}" != "none" && "${CHECK_ON_SPOT}" == "true" ]] && check="${PREFIX}-check"
-          elif [[ "${E2E}" == "true" ]]; then
-            echo "**operator-e2e not run:** the Spot runners are off (repository variable \`SPOT_RUNNERS_ENABLED\`). With them on, the VM \`gh-${PREFIX}-e2e\` would run \`task tools\` and \`task operator-e2e\`." >> "${GITHUB_STEP_SUMMARY}"
-          fi
-          echo "check=${check}" >> "${GITHUB_OUTPUT}"
-          echo "e2e=${e2e}" >> "${GITHUB_OUTPUT}"
+        run: hack/ci/runners.sh
 
       - name: Spot runner for check
-        if: steps.runners.outputs.check != 'ubuntu-latest'
+        if: steps.runners.outputs.check != 'ubuntu-latest' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
         uses: ./.github/actions/spot-runner
         with:
           label: ${{ steps.runners.outputs.check }}
 
       - name: Spot runner for operator-e2e
-        if: steps.runners.outputs.e2e != ''
+        if: steps.runners.outputs.e2e != '' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
         uses: ./.github/actions/spot-runner
         with:
           label: ${{ steps.runners.outputs.e2e }}
@@ -122,13 +114,7 @@ jobs:
         env:
           MODE: ${{ needs.plan.outputs.mode }}
           SELECTED: ${{ needs.plan.outputs.groups }}
-        run: |
-          if [[ "${MODE}" == "full" ]]; then
-            task check
-          else
-            # shellcheck disable=SC2086
-            hack/ci/select.sh run ${SELECTED}
-          fi
+        run: task ci:check MODE="${MODE}" GROUPS="${SELECTED}"
 
   e2e:
     needs: plan
@@ -143,9 +129,7 @@ jobs:
       - run: task operator-e2e
       - name: Cluster state on failure
         if: failure()
-        run: |
-          kubectl get pods -A -o wide || true
-          kubectl get events -A --sort-by=.lastTimestamp | tail -n 100 || true
+        run: task operator-e2e:debug
 
   # The one status branch protection requires.
   ci:
@@ -154,10 +138,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - env:
           RESULTS: ${{ join(needs.*.result, ' ') }}
-        run: |
-          echo "plan, check, e2e: ${RESULTS}"
-          for r in ${RESULTS}; do
-            case "${r}" in success|skipped) ;; *) exit 1 ;; esac
-          done
+        run: hack/ci/results.sh "${RESULTS}"
