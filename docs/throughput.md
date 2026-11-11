@@ -104,11 +104,16 @@ ECR `RegistryPolicy` and `RegistryScanningConfiguration`, Identity Store
 Two limits reached on 2026-11-11, for the builder:
 
 - the live-test role holds 10 managed policies, IAM's default maximum
-  (plan question 21): no type is added until it is answered;
+  (plan question 21): no type is added until it is answered. Answered the
+  same day: the role holds the kinds sampled on live runs only
+  (`liveKinds` in `cloudcontrol/types.yaml`), one managed policy, and
+  types can be added again;
 - GitHub Actions stopped starting jobs ("recent account payments have
   failed or your spending limit needs to be increased"): #76 to #78
   passed on an offload VM (`task check`, then `task cloudcontrol:check`
   after fixes; the run IDs are in each PR) and wait for CI to merge.
+  Actions were then turned off, and the merge gate became the
+  `offload/ci` status that `task ci` posts (#80, docs/testing.md).
 
 Written in one session on 2026-11-11: 152 types in four pull requests,
 against 51 in the two days before. What is left of the foundation and

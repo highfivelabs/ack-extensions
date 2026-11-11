@@ -34,6 +34,18 @@
 #             live-test role and is never swept.
 groupSuffix: cloudcontrol.aws.hfl.dev
 version: v1alpha1
+# The kinds sampled on live runs (plan question 21, answered 2026-11-11).
+# The sandbox account's role (config/live) holds these kinds' permissions
+# only, and the sweeper lists only these; every other kind is proven on
+# the fakes only (moto, the schema fake). Sampling starts with kinds AWS
+# does not charge for that have an end-to-end test: IAM SAML providers,
+# Identity Center permission sets and assignments. A kind added here must
+# keep the role within IAM's 10 managed policies (the generator fails
+# otherwise), and the sandbox stack is redeployed for it to take effect.
+liveKinds:
+  - AWS::IAM::SAMLProvider
+  - AWS::SSO::PermissionSet
+  - AWS::SSO::Assignment
 # What the end-to-end tests do themselves on a live run, beside the kinds'
 # own handler permissions: fixtures they make and the checks they read.
 # Goes into the sandbox account's template (config/live, docs/live-runs.md).
