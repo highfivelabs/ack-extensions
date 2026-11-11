@@ -43,7 +43,9 @@
 # it: deleting the object only stops managing the organization (docs/plan.md
 # section 9, question 12). The enabled policy types and trusted service
 # access are custom fields, applied by hand-written syncs (hooks.go) after
-# the create and in the update (there is no UpdateOrganization).
+# the create and in the update (there is no UpdateOrganization). Both are
+# additive: what is enabled outside Kubernetes is kept and reported in the
+# status, not disabled.
 operations:
   AttachPolicy:
     operation_type: Create
@@ -277,6 +279,23 @@ resources:
       RootID:
         is_read_only: true
         type: string
+      # The two lists are additive (the builder, A3, 2026-11-10): for each,
+      # owned<List> is what this object put there or took on by listing it,
+      # the only entries it ever disables; unmanaged<List> is what is
+      # enabled in AWS and not listed, kept and reported for import
+      # (hooks.go; docs/plan.md section 6.28).
+      OwnedEnabledPolicyTypes:
+        is_read_only: true
+        type: "[]*string"
+      UnmanagedEnabledPolicyTypes:
+        is_read_only: true
+        type: "[]*string"
+      OwnedAWSServiceAccessPrincipals:
+        is_read_only: true
+        type: "[]*string"
+      UnmanagedAWSServiceAccessPrincipals:
+        is_read_only: true
+        type: "[]*string"
     hooks:
       delta_pre_compare:
         code: customPreCompare(delta, a, b)

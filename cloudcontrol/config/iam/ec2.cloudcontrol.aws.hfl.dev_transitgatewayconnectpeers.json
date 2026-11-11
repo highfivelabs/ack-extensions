@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2TransitGatewayConnectPeer",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayConnectPeerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:CreateTransitGatewayConnectPeer",
+        "ec2:DescribeTags",
+        "ec2:DescribeTransitGatewayConnectPeers"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayConnectPeerRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeTags",
+        "ec2:DescribeTransitGatewayConnectPeers"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayConnectPeerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeTransitGatewayConnectPeers"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayConnectPeerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteTags",
+        "ec2:DeleteTransitGatewayConnectPeer",
+        "ec2:DescribeTags",
+        "ec2:DescribeTransitGatewayConnectPeers"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

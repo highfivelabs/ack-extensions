@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRolesAnywhereCRL",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RolesAnywhereCRLCreate",
+      "Effect": "Allow",
+      "Action": [
+        "rolesanywhere:ImportCrl",
+        "rolesanywhere:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RolesAnywhereCRLRead",
+      "Effect": "Allow",
+      "Action": [
+        "rolesanywhere:GetCrl",
+        "rolesanywhere:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RolesAnywhereCRLUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "rolesanywhere:DisableCrl",
+        "rolesanywhere:EnableCrl",
+        "rolesanywhere:ListTagsForResource",
+        "rolesanywhere:TagResource",
+        "rolesanywhere:UntagResource",
+        "rolesanywhere:UpdateCrl"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RolesAnywhereCRLDelete",
+      "Effect": "Allow",
+      "Action": [
+        "rolesanywhere:DeleteCrl"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

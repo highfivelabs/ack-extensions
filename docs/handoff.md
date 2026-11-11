@@ -30,9 +30,12 @@ not repeat them.
 - **Organization-scoped identity** (open question 11, answered; plan 7.5): the Organizations kinds run only in a namespace kept for organization-level objects, beside an ACK organizations-controller with an organization-scoped role bound by EKS Pod Identity (no IRSA annotation; plan 7.5 has the associations and the trust policy). The operator refuses an Organizations manager whose namespace has any other ACK controller, with a `SharedNamespace` Warning event (plan 7.2 item 7, proven in 7.4). A new organization-level kind adds its actions to plan 7.5's permissions table.
 - **Retain-only kinds** (open question 12; plan 6.28): a kind for something that is not deleted from Kubernetes (an organization; later an account's closure, root-level settings) has no delete call (`ignore.operations` in `generator.yaml`, so `sdkDelete` is a no-op), and its resource is added to `config/admission/retain-only.yaml`'s `resourceRules`, which requires `services.k8s.aws/deletion-policy: retain` on every object. Its e2e test deletes an object made before the policy is installed and checks the cloud thing stays, then checks the policy's refusals (`tests/e2e/organizations_organization_test.go`). **The factory's scaffolder should generate this pattern** (the ignored delete, the policy entry and the two tests) for a kind marked retain-only.
 - **Per-environment ACK managers** (open question 5, answered 2026-11-10; plan 7.6): an `ACKContext` (`core.aws.hfl.dev`, named `ack`) in a namespace lists controllers; the operator runs one manager per controller in `ack-extensions-system` as `ack-extensions-<service>-<namespace>`, watching only that namespace, bound by EKS Pod Identity. `task ack:iam` writes the role from the context (`pkg/ackiam` reads each kind's SDK calls from the generated code; a new kind needs nothing, but a call needing more than its own action, such as `iam:PassRole`, goes in `ackiam.Curated`). Open: questions 17 (the name) and 18 (ACK's own controllers per environment).
-- **Open questions:** 8 to 12 are answered. Assumed, for the builder to
-  confirm: `Organization`'s two lists are exclusive (plan 6.28); deleting an
-  `AccountPlacement` leaves the account where it is (plan 6.29).
+- **Open questions:** 8 to 12 are answered. `Organization`'s two lists are
+  additive (the builder, A3, 2026-11-10; plan 6.28): what is enabled
+  outside Kubernetes is kept and reported in `status.unmanaged<List>`, and
+  only `status.owned<List>` is ever disabled. A later list made additive
+  uses the same two status fields. Assumed, for the builder to confirm:
+  deleting an `AccountPlacement` leaves the account where it is (plan 6.29).
 - **moto probing** is cheap on the laptop: `.cache/moto-venv/bin/moto_server -p <port>` and a boto3 script with `.cache/moto-venv/bin/python` (kill the server after). Probe before writing a test.
 
 ## Cloud Control types (`docs/cloudcontrol.md`)
@@ -48,10 +51,15 @@ fake and marked untested on real AWS until a real run. Adding a type:
 2. Add `typeName` to `cloudcontrol/types.yaml`; opt in `secrets` only for
    write-only strings that are secrets (the generation report lists the
    candidates); `task cloudcontrol:generate`. No Go per type.
-3. A moto backend in `cloudcontrol/test/fake/moto.go` and an end-to-end
-   test in `cloudcontrol/test/e2e` when moto has the service; otherwise
-   mark it "unproven on fake" (PR 2 adds the column to the coverage data).
-4. `tests/operator/run.sh` checks the CRD list; add the new CRD there.
+3. Add types a service group at a time with `go run ./hack/cloudcontrol-batch
+   --services <a,b> --note "..."` (`docs/throughput.md`): it skips what
+   `cloudcontrol/excluded.yaml` excludes and marks each type unproven, so
+   it runs on the schema fake in `TestEveryKindOnSchemaFake` with no
+   per-type code. A moto backend in `cloudcontrol/test/fake` and a test in
+   `cloudcontrol/test/e2e` upgrade a type to proven on moto (then drop its
+   `unproven:`); `docs/testing.md` has the levels.
+4. `tests/operator/run.sh` reads the CRD list from the generated
+   kustomization; nothing to add there.
 5. Never weaken the guard against real AWS (`pkg/fakeaws`, checked by
    `task noaws`; `docs/cloudcontrol.md` section 6).
 
@@ -75,7 +83,25 @@ agent.** PR 1 (`agent/cloudcontrol`) is the core. Still to do:
   foundation order, recheck ACK first: F04's Transit Gateway route,
   association, propagation and peering (batch 2, done:
   `TestTransitGatewayRouting`), F07 Control Tower (batch 3: `EnabledControl` and
-  `EnabledBaseline`, unproven; `LandingZone` waits for plan question 15), F08/F09 Route 53 and its Resolver firewall, F14 Config (batch 5: `TestConfig`; six of eleven proven on moto, the organization config rule, conformance pack, remediation, stored query and connector unproven), F15 to F18.
+  `EnabledBaseline`, unproven; `LandingZone` never deleted and retain-only,
+  on a test double, `TestLandingZone`), F08/F09 Route 53 and its Resolver firewall (batch 4: `TestDNS`; two of ten proven on moto, the DNS Firewall, DNSSEC signing, key-signing key, CIDR collection and resolver configuration types unproven), F14 Config (batch 5: `TestConfig`; six of eleven proven on moto, the organization config rule, conformance pack, remediation, stored query and connector unproven), F15 GuardDuty (batch 6: `Filter` on moto, six unproven), F16 Security Hub (batch 7: `Hub` and `OrganizationConfiguration` on moto, seven unproven; map-shaped tags get no ACK default tags, `docs/cloudcontrol.md` section 7), F17 (batch 8:
+  `ResourcePolicy` on moto; `RotationSchedule` waits for ACK's pull
+  request #69).
+  **Next, F18** (`docs/coverage/foundation.md` says to ask the builder
+  first; the coordinator's brief of 2026-11-10 lists F15 to F18), probed
+  on moto 5.2.5: `macie2` has Enable/Get/DisableMacie (no
+  `UpdateMacieSession`) and invitations, no findings filters, allow lists,
+  custom data identifiers or `CreateMember`; `inspector2` has
+  Create/Delete/ListFilters (no `UpdateFilter`; read a filter through
+  `ListFilters`), tags, delegated admin and organization configuration, no
+  CIS scan configurations. Access Analyzer, Detective, Firewall Manager,
+  Audit Manager and Security Lake have no moto service at all. A sensible
+  split: batch 9, Macie `Session` and Inspector `Filter` on moto with the
+  rest of both services unproven (new test clients
+  `aws-sdk-go-v2/service/macie2` and `inspector2`, of the release the
+  GuardDuty client is from, as `securityhub` v1.55.6 was); batch 10, the
+  five services without moto, all unproven. Then F13 (Direct Connect,
+  when a catalog entry or adjacent coverage needs it, the builder's A10).
   **F03 `VirtualMFADevice` is not for this route** (the builder,
   2026-11-09, closing PR #44): Cloud Control never returns the seed or QR
   code, so a device made through it cannot be enrolled. It is to be built
@@ -276,7 +302,9 @@ git makes has no sign-off: amend it.
   `fakeaws.Config`, processes from `fakeaws.Command`, Python on kind through
   `fake_py`. `task noaws` (in `task check`) fails otherwise; never add an
   exemption to it.
-- Never use real cloud credentials, projects or accounts: moto only. Never
+- Real AWS only through a live run (sandbox account `830550549114`, role
+  `ack-extensions-live-tests`, offload VMs, `ACK_EXT_LIVE`; `docs/live-runs.md`);
+  everything else is moto only. Never
   catch an error and report success. Never claim a check passed that did not run.
 - Never open, comment on or review upstream PRs or issues; reading them is
   fine. Never create or change a GitHub repository's visibility.

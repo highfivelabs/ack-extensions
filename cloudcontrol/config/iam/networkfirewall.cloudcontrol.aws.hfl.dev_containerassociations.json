@@ -1,0 +1,70 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkFirewallContainerAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFirewallContainerAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:DescribeClusters",
+        "ecs:ListContainerInstances",
+        "eks:DescribeCluster",
+        "events:PutRule",
+        "events:PutTargets",
+        "iam:CreateServiceLinkedRole",
+        "network-firewall:CreateContainerAssociation",
+        "network-firewall:DescribeContainerAssociation",
+        "network-firewall:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFirewallContainerAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "network-firewall:DescribeContainerAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFirewallContainerAssociationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:DescribeClusters",
+        "ecs:ListContainerInstances",
+        "eks:DescribeCluster",
+        "events:DeleteRule",
+        "events:PutRule",
+        "events:PutTargets",
+        "events:RemoveTargets",
+        "network-firewall:DescribeContainerAssociation",
+        "network-firewall:TagResource",
+        "network-firewall:UntagResource",
+        "network-firewall:UpdateContainerAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFirewallContainerAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "events:DeleteRule",
+        "events:RemoveTargets",
+        "network-firewall:DeleteContainerAssociation",
+        "network-firewall:DescribeContainerAssociation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

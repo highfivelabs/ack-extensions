@@ -6,65 +6,28 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 
 | Category | Types | Provisionable | FULLY_MUTABLE | IMMUTABLE | CRD accepted | Clean | Gap types | Gap, provisionable | Gap, CRD accepted | Gap, clean |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 162 | 158 | 158 | 155 |
-| security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 85 | 67 | 67 | 65 |
-| application | 262 | 250 | 232 | 18 | 250 | 230 | 147 | 136 | 136 | 128 |
+| platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 60 | 56 | 56 | 54 |
+| security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 22 | 4 | 4 | 4 |
+| application | 262 | 250 | 232 | 18 | 250 | 230 | 132 | 121 | 121 | 113 |
 | other | 1260 | 1188 | 1084 | 104 | 1188 | 1137 | 1169 | 1101 | 1101 | 1059 |
-| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1563 | 1462 | 1462 | 1407 |
+| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1383 | 1282 | 1282 | 1230 |
 
 ## Foundation gaps (platform-foundation and security-adjacent types with no kind)
 
 | Type | Category | Provisioning | CRD | Lossy | CEL skipped | Write-only strings | Sensitive IAM |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: |
-| `AWS::AccessAnalyzer::Analyzer` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::AccessAnalyzer::ArchiveRule` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::ACMPCA::Permission` | security-adjacent | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::AuditManager::Assessment` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 4 | 1 |
-| `AWS::AuditManager::AssessmentFramework` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::CertificateManager::Account` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::CloudTrail::Channel` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::CloudTrail::Dashboard` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::CloudTrail::ResourcePolicy` | platform-foundation | FULLY_MUTABLE | ok | 1 | 0 | 0 | 0 |
-| `AWS::ControlTower::LandingZone` | platform-foundation | FULLY_MUTABLE | ok | 1 | 0 | 0 | 1 |
-| `AWS::Detective::Graph` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Detective::MemberInvitation` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
-| `AWS::Detective::OrganizationAdmin` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::DirectConnect::Connection` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::DirectConnect::DirectConnectGateway` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::DirectConnect::DirectConnectGatewayAssociation` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 1 |
 | `AWS::DirectConnect::Lag` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::DirectConnect::PrivateVirtualInterface` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 1 |
 | `AWS::DirectConnect::PublicVirtualInterface` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 1 |
 | `AWS::DirectConnect::ResiliencyGroup` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
 | `AWS::DirectConnect::TransitVirtualInterface` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 1 |
-| `AWS::EC2::ApplicationStatusCheck` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::EC2::CapacityManagerDataExport` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::CapacityReservationFleet` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::EC2::CarrierGateway` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::ClientVpnAuthorizationRule` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::ClientVpnEndpoint` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::EC2::ClientVpnRoute` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::ClientVpnTargetNetworkAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 2 | 0 |
 | `AWS::EC2::EC2Fleet` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::EC2::EIPAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::EnclaveCertificateIamRoleAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::FpgaImage` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::GatewayRouteTableAssociation` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::Host` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::InstanceConnectEndpoint` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 1 |
-| `AWS::EC2::InstanceEventWindow` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::IPAM` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::EC2::IPAMAllocation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::IpamExternalResourceVerificationToken` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::IpamInternetRegistryAssociation` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::IPAMPool` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::IPAMPoolCidr` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::IPAMPrefixListResolver` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
-| `AWS::EC2::IPAMPrefixListResolverTarget` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::IPAMResourceDiscovery` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::EC2::IPAMResourceDiscoveryAssociation` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::IPAMScope` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::IpPoolRouteTableAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::IPv4Pool` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::KeyPair` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 1 | 0 |
 | `AWS::EC2::LocalGatewayRoute` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
@@ -74,109 +37,28 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::EC2::LocalGatewayVirtualInterface` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::LocalGatewayVirtualInterfaceGroup` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::NetworkAclEntry` | platform-foundation | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
-| `AWS::EC2::NetworkInsightsAccessScope` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::NetworkInsightsAccessScopeAnalysis` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::NetworkInsightsAnalysis` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::NetworkInsightsPath` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::NetworkInterface` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
-| `AWS::EC2::NetworkInterfaceAttachment` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::NetworkPerformanceMetricSubscription` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::PlacementGroup` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::Route` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::RouteServer` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::RouteServerAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::RouteServerEndpoint` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::RouteServerPeer` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::RouteServerPropagation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::SecondaryNetwork` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::SecurityGroupEgress` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::SecurityGroupIngress` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::SecurityGroupVpcAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::Snapshot` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::SnapshotBlockPublicAccess` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::SpotFleet` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::EC2::SqlHaStandbyDetectedInstance` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::EC2::SubnetCidrBlock` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 1 | 0 |
-| `AWS::EC2::SubnetCidrReservation` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::SubnetNetworkAclAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::SubnetRouteTableAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TrafficMirrorFilter` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TrafficMirrorFilterRule` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TrafficMirrorSession` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TrafficMirrorTarget` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::TransitGatewayAttachment` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayAttachmentNatConfiguration` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayConnect` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayConnectPeer` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayMeteringPolicy` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayMeteringPolicyEntry` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayMulticastDomain` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayMulticastDomainAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayMulticastGroupMember` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayMulticastGroupSource` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayPolicyTable` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayPolicyTableAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayPolicyTableEntry` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::VerifiedAccessEndpoint` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 3 |
-| `AWS::EC2::VerifiedAccessGroup` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 2 |
-| `AWS::EC2::VerifiedAccessInstance` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::EC2::VerifiedAccessTrustProvider` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 2 |
-| `AWS::EC2::VPCBlockPublicAccessExclusion` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::VPCBlockPublicAccessOptions` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::VPCCidrBlock` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 2 | 0 |
 | `AWS::EC2::VPCDHCPOptionsAssociation` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::VPCEncryptionControl` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 8 | 0 |
-| `AWS::EC2::VPCEndpointConnectionNotification` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::VPCEndpointServicePermissions` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::VPCGatewayAttachment` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::VPNConcentrator` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::VPNConnectionRoute` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::ECR::PullTimeUpdateExclusion` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::ECR::RegistryPolicy` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::ECR::RegistryScanningConfiguration` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::ECR::SigningConfiguration` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EKS::CertificateAuthority` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::FMS::ApplicationsList` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::FMS::NotificationChannel` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::FMS::Policy` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::FMS::ProtocolsList` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::FMS::ResourceSet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::GuardDuty::CustomDetectionRuleAssociation` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::GuardDuty::Filter` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::GuardDuty::IPSet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::GuardDuty::MalwareProtectionPlan` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::GuardDuty::Master` | security-adjacent | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::GuardDuty::Member` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
-| `AWS::GuardDuty::PublishingDestination` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::GuardDuty::ThreatEntitySet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::GuardDuty::ThreatIntelSet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::GuardDuty::TrustedEntitySet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::IAM::GroupPolicy` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::IAM::Policy` | platform-foundation | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
 | `AWS::IAM::RolePolicy` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::IAM::ServerCertificate` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 3 | 0 |
 | `AWS::IAM::UserPolicy` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::IAM::UserToGroupAddition` | platform-foundation | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
-| `AWS::IdentityStore::Group` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::IdentityStore::GroupMembership` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::IdentityStore::User` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Inspector::AssessmentTarget` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Inspector::AssessmentTemplate` | security-adjacent | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Inspector::ResourceGroup` | security-adjacent | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::InspectorV2::CisScanConfiguration` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::InspectorV2::CodeSecurityIntegration` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::InspectorV2::CodeSecurityScanConfiguration` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::InspectorV2::Connector` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::InspectorV2::Filter` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Macie::AllowList` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Macie::CustomDataIdentifier` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Macie::FindingsFilter` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Macie::Member` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
-| `AWS::Macie::Session` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::NetworkFirewall::ContainerAssociation` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::NetworkFirewall::LoggingConfiguration` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::NetworkFirewall::TLSInspectionConfiguration` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::NetworkFirewall::VpcEndpointAssociation` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::NetworkManager::ConnectAttachment` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
 | `AWS::NetworkManager::ConnectPeer` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 2 | 0 |
 | `AWS::NetworkManager::CoreNetwork` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
@@ -194,54 +76,9 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::NetworkManager::TransitGatewayRouteTableAttachment` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 1 |
 | `AWS::NetworkManager::VpcAttachment` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 1 |
 | `AWS::Organizations::ResourcePolicy` | platform-foundation | FULLY_MUTABLE | ok | 1 | 0 | 0 | 0 |
-| `AWS::RAM::PermissionAssociation` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::RAM::PrincipalAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::RAM::ResourceAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::RAM::SourceAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53::CidrCollection` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53::DelegationSet` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53::DNSSEC` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::Route53::KeySigningKey` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::Route53::QueryLoggingConfig` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Route53::RecordSetGroup` | platform-foundation | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
-| `AWS::Route53::TrafficPolicy` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53::TrafficPolicyInstance` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53Profiles::Profile` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53Profiles::ProfileAssociation` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
-| `AWS::Route53Profiles::ProfileResourceAssociation` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53Resolver::FirewallConfig` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53Resolver::FirewallDomainList` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
-| `AWS::Route53Resolver::FirewallRuleGroup` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53Resolver::FirewallRuleGroupAssociation` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Route53Resolver::OutpostResolver` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53Resolver::ResolverConfig` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Route53Resolver::ResolverDNSSECConfig` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecretsManager::ResourcePolicy` | security-adjacent | FULLY_MUTABLE | ok | 1 | 0 | 0 | 0 |
 | `AWS::SecretsManager::RotationSchedule` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 11 | 1 |
-| `AWS::SecretsManager::SecretTargetAttachment` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::ActionTarget` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::AggregatorV2` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::AutomationRule` | security-adjacent | FULLY_MUTABLE | ok | 2 | 0 | 0 | 0 |
-| `AWS::SecurityHub::AutomationRuleV2` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::ConfigurationPolicy` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::Connector` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::ConnectorV2` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::SecurityHub::DelegatedAdmin` | security-adjacent | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::FindingAggregator` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::Hub` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::HubV2` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::SecurityHub::Insight` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::OrganizationConfiguration` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::PolicyAssociation` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::ProductSubscription` | security-adjacent | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::SecurityControl` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::Standard` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityLake::AwsLogSource` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 2 |
-| `AWS::SecurityLake::DataLake` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 1 | 4 |
-| `AWS::SecurityLake::Subscriber` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 2 |
-| `AWS::SecurityLake::SubscriberNotification` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 5 | 3 |
-| `AWS::SSO::Application` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SSO::ApplicationAssignment` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::SSO::Instance` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::WAF::ByteMatchSet` | security-adjacent | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
 | `AWS::WAF::IPSet` | security-adjacent | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
@@ -261,5 +98,3 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::WAFRegional::WebACL` | security-adjacent | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
 | `AWS::WAFRegional::WebACLAssociation` | security-adjacent | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
 | `AWS::WAFRegional::XssMatchSet` | security-adjacent | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
-| `AWS::WAFv2::LoggingConfiguration` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::WAFv2::RegexPatternSet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |

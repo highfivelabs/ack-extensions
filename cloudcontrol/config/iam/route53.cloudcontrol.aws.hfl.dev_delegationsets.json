@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoute53DelegationSet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53DelegationSetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "route53:CreateReusableDelegationSet",
+        "route53:GetReusableDelegationSet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53DelegationSetRead",
+      "Effect": "Allow",
+      "Action": [
+        "route53:GetReusableDelegationSet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53DelegationSetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "route53:DeleteReusableDelegationSet",
+        "route53:GetReusableDelegationSet"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

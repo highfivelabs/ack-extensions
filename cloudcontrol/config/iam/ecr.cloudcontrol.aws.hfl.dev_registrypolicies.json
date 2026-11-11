@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlECRRegistryPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECRRegistryPolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:GetRegistryPolicy",
+        "ecr:PutRegistryPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECRRegistryPolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:GetRegistryPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECRRegistryPolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:GetRegistryPolicy",
+        "ecr:PutRegistryPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECRRegistryPolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:DeleteRegistryPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

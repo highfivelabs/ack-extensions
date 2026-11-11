@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2TransitGatewayMulticastDomainAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayMulticastDomainAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AssociateTransitGatewayMulticastDomain",
+        "ec2:GetTransitGatewayMulticastDomainAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayMulticastDomainAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:GetTransitGatewayMulticastDomainAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayMulticastDomainAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DisassociateTransitGatewayMulticastDomain",
+        "ec2:GetTransitGatewayMulticastDomainAssociations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

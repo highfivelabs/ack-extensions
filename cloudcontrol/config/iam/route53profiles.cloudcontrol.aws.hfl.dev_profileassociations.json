@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoute53ProfilesProfileAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ProfilesProfileAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcs",
+        "route53profiles:AssociateProfile",
+        "route53profiles:GetProfileAssociation",
+        "route53profiles:ListProfileAssociations",
+        "route53profiles:ListTagsForResource",
+        "route53profiles:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ProfilesProfileAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "route53profiles:GetProfileAssociation",
+        "route53profiles:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ProfilesProfileAssociationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "route53profiles:GetProfileAssociation",
+        "route53profiles:ListTagsForResource",
+        "route53profiles:TagResource",
+        "route53profiles:UntagResource",
+        "route53profiles:UpdateProfileAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ProfilesProfileAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "route53profiles:DisassociateProfile",
+        "route53profiles:GetProfileAssociation",
+        "route53profiles:ListTagsForResource",
+        "route53profiles:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

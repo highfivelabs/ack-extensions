@@ -1,12 +1,12 @@
 service,resource,attributes_total,official_kinds,attributes_official,ours_kinds,attributes_ours_beyond,attributes_uncovered,ours_from_upstream_pr,notes
-accessanalyzer,Analyzer,17,,0,,0,17,false,
-accessanalyzer,ArchiveRule,6,,0,,0,6,false,
+accessanalyzer,Analyzer,17,,0,Analyzer (Cloud Control),17,0,false,ours Analyzer (Cloud Control) unproven on fake: moto 5.2.5 has no accessanalyzer; on the schema fake only
+accessanalyzer,ArchiveRule,6,,0,ArchiveRule (Cloud Control),6,0,false,ours ArchiveRule (Cloud Control) unproven on fake: moto 5.2.5 has no accessanalyzer; on the schema fake only
 accountaccess,Application,3,,0,,0,3,false,
 accountaccess,Entitlement,4,,0,,0,4,false,
 acmpca,Certificate,66,Certificate,66,,0,0,false,official_unmapped=1
 acmpca,CertificateAuthority,69,CertificateAuthority,66,,0,3,false,
 acmpca,CertificateAuthorityActivation,4,CertificateAuthorityActivation,4,,0,0,false,official_unmapped=1
-acmpca,Permission,4,,0,,0,4,false,
+acmpca,Permission,4,,0,Permission (Cloud Control),4,0,false,ours Permission (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has acmpca); on the schema fake only
 agentregistry,Registry,21,,0,,0,21,false,
 agentregistry,RegistryRecord,41,,0,,0,41,false,
 aiops,InvestigationGroup,13,,0,,0,13,false,
@@ -141,8 +141,8 @@ athena,DataCatalog,9,DataCatalog,6,,0,3,false,
 athena,NamedQuery,5,,0,,0,5,false,
 athena,PreparedStatement,4,PreparedStatement,4,,0,0,false,
 athena,WorkGroup,74,WorkGroup,19,,0,55,false,official_unmapped=7
-auditmanager,Assessment,28,,0,,0,28,false,
-auditmanager,AssessmentFramework,7,,0,,0,7,false,
+auditmanager,Assessment,28,,0,Assessment (Cloud Control),28,0,false,ours Assessment (Cloud Control) unproven on fake: moto 5.2.5 has no auditmanager; on the schema fake only
+auditmanager,AssessmentFramework,7,,0,AssessmentFramework (Cloud Control),7,0,false,ours AssessmentFramework (Cloud Control) unproven on fake: moto 5.2.5 has no auditmanager; on the schema fake only
 autoscaling,AutoScalingGroup,105,AutoScalingGroup,89,,0,16,false,official_unmapped=2
 autoscaling,LaunchConfiguration,30,,0,,0,30,false,
 autoscaling,LifecycleHook,8,,0,,0,8,false,
@@ -253,7 +253,7 @@ cassandra,Type,4,,0,,0,4,false,
 ce,AnomalyMonitor,6,,0,,0,6,false,
 ce,AnomalySubscription,9,,0,,0,9,false,
 ce,CostCategory,7,,0,,0,7,false,
-certificatemanager,Account,1,,0,,0,1,false,
+certificatemanager,Account,1,,0,Account (Cloud Control),1,0,false,ours Account (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has acm); on the schema fake only
 certificatemanager,AcmeDomainValidation,8,AcmeDomainValidation,8,,0,0,false,
 certificatemanager,AcmeEndpoint,7,AcmeEndpoint,7,,0,0,false,
 certificatemanager,AcmeExternalAccountBinding,6,AcmeExternalAccountBinding,6,,0,0,false,official_unmapped=1
@@ -326,8 +326,8 @@ cloudfront,StreamingDistribution,13,,0,,0,13,false,
 cloudfront,TrustStore,8,,0,,0,8,false,
 cloudfront,VpcOrigin,9,VPCOrigin,8,,0,1,false,
 cloudhsm,Cluster,8,,0,,0,8,false,
-cloudtrail,Channel,6,,0,,0,6,false,
-cloudtrail,Dashboard,11,,0,,0,11,false,
+cloudtrail,Channel,6,,0,Channel (Cloud Control),6,0,false,ours Channel (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has cloudtrail); on the schema fake only
+cloudtrail,Dashboard,11,,0,Dashboard (Cloud Control),11,0,false,ours Dashboard (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has cloudtrail); on the schema fake only
 cloudtrail,EventDataStore,25,EventDataStore,15,,0,10,false,
 cloudtrail,ResourcePolicy,2,,0,,0,2,false,
 cloudtrail,Trail,31,Trail,13,,0,18,false,
@@ -336,12 +336,12 @@ cloudwatch,AccessProfile,5,,0,,0,5,false,
 cloudwatch,Alarm,47,MetricAlarm,42,,0,5,false,
 cloudwatch,AlarmMuteRule,10,,0,,0,10,false,
 cloudwatch,AnomalyDetector,28,,0,,0,28,false,
-cloudwatch,CompositeAlarm,15,,0,,0,15,false,
+cloudwatch,CompositeAlarm,15,,0,CompositeAlarm (Cloud Control),15,0,false,ours CompositeAlarm (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has cloudwatch); on the schema fake only
 cloudwatch,Dashboard,4,Dashboard,2,,0,2,false,
 cloudwatch,Domain,5,,0,,0,5,false,
 cloudwatch,DomainAccessGrantForOrganization,9,,0,,0,9,false,
 cloudwatch,DomainForOrganization,6,,0,,0,6,false,
-cloudwatch,InsightRule,6,,0,,0,6,false,
+cloudwatch,InsightRule,6,,0,InsightRule (Cloud Control),6,0,false,ours InsightRule (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has cloudwatch); on the schema fake only
 cloudwatch,Integration,7,,0,,0,7,false,
 cloudwatch,LogAlarm,29,,0,,0,29,false,
 cloudwatch,MetricStream,14,MetricStream,14,,0,0,false,
@@ -451,7 +451,7 @@ connectcampaigns,Campaign,14,,0,,0,14,false,
 connectcampaignsv2,Campaign,70,,0,,0,70,false,
 controltower,EnabledBaseline,7,,0,EnabledBaseline (Cloud Control),7,0,false,"ours EnabledBaseline (Cloud Control) unproven on fake: moto 5.2.5 has no controltower, and no other emulator exists"
 controltower,EnabledControl,6,,0,EnabledControl (Cloud Control),6,0,false,"ours EnabledControl (Cloud Control) unproven on fake: moto 5.2.5 has no controltower, and no other emulator exists"
-controltower,LandingZone,5,,0,,0,5,false,
+controltower,LandingZone,5,,0,LandingZone (Cloud Control),5,0,false,
 cur,ReportDefinition,14,,0,,0,14,false,
 customerprofiles,CalculatedAttributeDefinition,23,,0,,0,23,false,
 customerprofiles,Domain,29,,0,,0,29,false,
@@ -519,9 +519,9 @@ deadline,QueueFleetAssociation,3,,0,,0,3,false,
 deadline,QueueLimitAssociation,3,,0,,0,3,false,
 deadline,StorageProfile,6,,0,,0,6,false,
 deadline,Worker,7,,0,,0,7,false,
-detective,Graph,3,,0,,0,3,false,
-detective,MemberInvitation,5,,0,,0,5,false,
-detective,OrganizationAdmin,1,,0,,0,1,false,
+detective,Graph,3,,0,Graph (Cloud Control),3,0,false,ours Graph (Cloud Control) unproven on fake: moto 5.2.5 has no detective; on the schema fake only
+detective,MemberInvitation,5,,0,MemberInvitation (Cloud Control),5,0,false,ours MemberInvitation (Cloud Control) unproven on fake: moto 5.2.5 has no detective; on the schema fake only
+detective,OrganizationAdmin,1,,0,OrganizationAdmin (Cloud Control),1,0,false,ours OrganizationAdmin (Cloud Control) unproven on fake: moto 5.2.5 has no detective; on the schema fake only
 devopsagent,AgentSpace,15,,0,,0,15,false,
 devopsagent,Asset,8,,0,,0,8,false,
 devopsagent,Association,66,,0,,0,66,false,
@@ -532,8 +532,8 @@ devopsguru,LogAnomalyDetectionIntegration,0,,0,,0,0,false,
 devopsguru,NotificationChannel,3,,0,,0,3,false,
 devopsguru,ResourceCollection,3,,0,,0,3,false,
 directconnect,Connection,8,,0,,0,8,false,
-directconnect,DirectConnectGateway,4,,0,,0,4,false,
-directconnect,DirectConnectGatewayAssociation,4,,0,,0,4,false,
+directconnect,DirectConnectGateway,4,,0,DirectConnectGateway (Cloud Control),4,0,false,ours DirectConnectGateway (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has directconnect); on the schema fake only
+directconnect,DirectConnectGatewayAssociation,4,,0,DirectConnectGatewayAssociation (Cloud Control),4,0,false,ours DirectConnectGatewayAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has directconnect); on the schema fake only
 directconnect,Lag,8,,0,,0,8,false,
 directconnect,PrivateVirtualInterface,16,,0,,0,16,false,
 directconnect,PublicVirtualInterface,13,,0,,0,13,false,
@@ -569,42 +569,42 @@ dsql,Cluster,7,Cluster,6,,0,1,false,official_unmapped=1
 dynamodb,Backup,0,Backup,0,,0,0,false,outside-denominator;official_crd_attributes=2
 dynamodb,GlobalTable,96,GlobalTable,1,,0,95,false,official_unmapped=1
 dynamodb,Table,64,Table,34,,0,30,false,official_unmapped=10
-ec2,ApplicationStatusCheck,19,,0,,0,19,false,
-ec2,CapacityManagerDataExport,6,,0,,0,6,false,
+ec2,ApplicationStatusCheck,19,,0,ApplicationStatusCheck (Cloud Control),19,0,false,ours ApplicationStatusCheck (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,CapacityManagerDataExport,6,,0,CapacityManagerDataExport (Cloud Control),6,0,false,ours CapacityManagerDataExport (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,CapacityReservation,17,CapacityReservation,13,,0,4,false,official_unmapped=6
 ec2,CapacityReservationFleet,17,,0,,0,17,false,
 ec2,CarrierGateway,3,,0,,0,3,false,
-ec2,ClientVpnAuthorizationRule,5,,0,,0,5,false,
-ec2,ClientVpnEndpoint,41,,0,,0,41,false,
-ec2,ClientVpnRoute,4,,0,,0,4,false,
-ec2,ClientVpnTargetNetworkAssociation,4,,0,,0,4,false,
+ec2,ClientVpnAuthorizationRule,5,,0,ClientVpnAuthorizationRule (Cloud Control),5,0,false,ours ClientVpnAuthorizationRule (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,ClientVpnEndpoint,41,,0,ClientVpnEndpoint (Cloud Control),41,0,false,ours ClientVpnEndpoint (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,ClientVpnRoute,4,,0,ClientVpnRoute (Cloud Control),4,0,false,ours ClientVpnRoute (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,ClientVpnTargetNetworkAssociation,4,,0,ClientVpnTargetNetworkAssociation (Cloud Control),4,0,false,ours ClientVpnTargetNetworkAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,CustomerGateway,8,,0,CustomerGateway,8,0,false,
 ec2,DHCPOptions,8,DHCPOptions,2,,0,6,false,official_unmapped=3
 ec2,EC2Fleet,123,,0,,0,123,false,
 ec2,EgressOnlyInternetGateway,3,EgressOnlyInternetGateway,3,,0,0,false,
 ec2,EIP,9,ElasticIPAddress,5,,0,4,false,official_unmapped=1
-ec2,EIPAssociation,5,,0,,0,5,false,
-ec2,EnclaveCertificateIamRoleAssociation,2,,0,,0,2,false,
+ec2,EIPAssociation,5,,0,EIPAssociation (Cloud Control),5,0,false,ours EIPAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,EnclaveCertificateIamRoleAssociation,2,,0,EnclaveCertificateIamRoleAssociation (Cloud Control),2,0,false,ours EnclaveCertificateIamRoleAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,FlowLog,17,FlowLog,14,,0,3,false,
 ec2,FpgaImage,8,,0,,0,8,false,
-ec2,GatewayRouteTableAssociation,2,,0,,0,2,false,
+ec2,GatewayRouteTableAssociation,2,,0,GatewayRouteTableAssociation (Cloud Control),2,0,false,ours GatewayRouteTableAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,Host,10,,0,,0,10,false,
 ec2,Instance,79,Instance,66,,0,13,false,official_unmapped=28
-ec2,InstanceConnectEndpoint,6,,0,,0,6,false,
-ec2,InstanceEventWindow,8,,0,,0,8,false,
+ec2,InstanceConnectEndpoint,6,,0,InstanceConnectEndpoint (Cloud Control),6,0,false,ours InstanceConnectEndpoint (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,InstanceEventWindow,8,,0,InstanceEventWindow (Cloud Control),8,0,false,ours InstanceEventWindow (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,InternetGateway,2,InternetGateway,2,,0,0,false,official_unmapped=2
-ec2,IPAM,8,,0,,0,8,false,
-ec2,IPAMAllocation,4,,0,,0,4,false,
-ec2,IpamExternalResourceVerificationToken,3,,0,,0,3,false,
-ec2,IpamInternetRegistryAssociation,6,,0,,0,6,false,
-ec2,IPAMPool,21,,0,,0,21,false,
-ec2,IPAMPoolCidr,3,,0,,0,3,false,
-ec2,IPAMPrefixListResolver,17,,0,,0,17,false,
-ec2,IPAMPrefixListResolverTarget,7,,0,,0,7,false,
-ec2,IPAMResourceDiscovery,5,,0,,0,5,false,
-ec2,IPAMResourceDiscoveryAssociation,4,,0,,0,4,false,
-ec2,IPAMScope,6,,0,,0,6,false,
-ec2,IpPoolRouteTableAssociation,2,,0,,0,2,false,
+ec2,IPAM,8,,0,IPAM (Cloud Control),8,0,false,ours IPAM (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,IPAMAllocation,4,,0,IPAMAllocation (Cloud Control),4,0,false,ours IPAMAllocation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,IpamExternalResourceVerificationToken,3,,0,IpamExternalResourceVerificationToken (Cloud Control),3,0,false,ours IpamExternalResourceVerificationToken (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,IpamInternetRegistryAssociation,6,,0,IpamInternetRegistryAssociation (Cloud Control),6,0,false,ours IpamInternetRegistryAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,IPAMPool,21,,0,IPAMPool (Cloud Control),21,0,false,ours IPAMPool (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,IPAMPoolCidr,3,,0,IPAMPoolCidr (Cloud Control),3,0,false,ours IPAMPoolCidr (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,IPAMPrefixListResolver,17,,0,IPAMPrefixListResolver (Cloud Control),17,0,false,ours IPAMPrefixListResolver (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,IPAMPrefixListResolverTarget,7,,0,IPAMPrefixListResolverTarget (Cloud Control),7,0,false,ours IPAMPrefixListResolverTarget (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,IPAMResourceDiscovery,5,,0,IPAMResourceDiscovery (Cloud Control),5,0,false,ours IPAMResourceDiscovery (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,IPAMResourceDiscoveryAssociation,4,,0,IPAMResourceDiscoveryAssociation (Cloud Control),4,0,false,ours IPAMResourceDiscoveryAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,IPAMScope,6,,0,IPAMScope (Cloud Control),6,0,false,ours IPAMScope (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,IpPoolRouteTableAssociation,2,,0,IpPoolRouteTableAssociation (Cloud Control),2,0,false,ours IpPoolRouteTableAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,IPv4Pool,2,,0,,0,2,false,
 ec2,KeyPair,6,,0,,0,6,false,
 ec2,LaunchTemplate,133,LaunchTemplate,116,,0,17,false,official_unmapped=11
@@ -617,93 +617,93 @@ ec2,LocalGatewayVirtualInterfaceGroup,5,,0,,0,5,false,
 ec2,NatGateway,15,NATGateway,10,,0,5,false,
 ec2,NetworkAcl,3,NetworkACL,3,,0,0,false,official_unmapped=13
 ec2,NetworkAclEntry,11,,0,,0,11,false,
-ec2,NetworkInsightsAccessScope,42,,0,,0,42,false,
-ec2,NetworkInsightsAccessScopeAnalysis,3,,0,,0,3,false,
-ec2,NetworkInsightsAnalysis,6,,0,,0,6,false,
-ec2,NetworkInsightsPath,20,,0,,0,20,false,
-ec2,NetworkInterface,22,,0,,0,22,false,
-ec2,NetworkInterfaceAttachment,7,,0,,0,7,false,
+ec2,NetworkInsightsAccessScope,42,,0,NetworkInsightsAccessScope (Cloud Control),42,0,false,ours NetworkInsightsAccessScope (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,NetworkInsightsAccessScopeAnalysis,3,,0,NetworkInsightsAccessScopeAnalysis (Cloud Control),3,0,false,ours NetworkInsightsAccessScopeAnalysis (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,NetworkInsightsAnalysis,6,,0,NetworkInsightsAnalysis (Cloud Control),6,0,false,ours NetworkInsightsAnalysis (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,NetworkInsightsPath,20,,0,NetworkInsightsPath (Cloud Control),20,0,false,ours NetworkInsightsPath (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,NetworkInterface,22,,0,NetworkInterface (Cloud Control),22,0,false,ours NetworkInterface (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,NetworkInterfaceAttachment,7,,0,NetworkInterfaceAttachment (Cloud Control),7,0,false,ours NetworkInterfaceAttachment (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,NetworkInterfacePermission,3,,0,NetworkInterfacePermission,3,0,false,ours_unmapped=1
-ec2,NetworkPerformanceMetricSubscription,4,,0,,0,4,false,
-ec2,PlacementGroup,6,,0,,0,6,false,
+ec2,NetworkPerformanceMetricSubscription,4,,0,NetworkPerformanceMetricSubscription (Cloud Control),4,0,false,ours NetworkPerformanceMetricSubscription (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,PlacementGroup,6,,0,PlacementGroup (Cloud Control),6,0,false,ours PlacementGroup (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,PrefixList,7,ManagedPrefixList,7,,0,0,false,
 ec2,Route,16,,0,,0,16,false,
-ec2,RouteServer,6,,0,,0,6,false,
-ec2,RouteServerAssociation,2,,0,,0,2,false,
-ec2,RouteServerEndpoint,4,,0,,0,4,false,
-ec2,RouteServerPeer,6,,0,,0,6,false,
-ec2,RouteServerPropagation,2,,0,,0,2,false,
+ec2,RouteServer,6,,0,RouteServer (Cloud Control),6,0,false,ours RouteServer (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,RouteServerAssociation,2,,0,RouteServerAssociation (Cloud Control),2,0,false,ours RouteServerAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,RouteServerEndpoint,4,,0,RouteServerEndpoint (Cloud Control),4,0,false,ours RouteServerEndpoint (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,RouteServerPeer,6,,0,RouteServerPeer (Cloud Control),6,0,false,ours RouteServerPeer (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,RouteServerPropagation,2,,0,RouteServerPropagation (Cloud Control),2,0,false,ours RouteServerPropagation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,RouteTable,3,RouteTable,3,,0,0,false,official_unmapped=14
-ec2,SecondaryNetwork,4,,0,,0,4,false,
+ec2,SecondaryNetwork,4,,0,SecondaryNetwork (Cloud Control),4,0,false,ours SecondaryNetwork (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,SecurityGroup,23,SecurityGroup,23,,0,0,false,official_unmapped=14
 ec2,SecurityGroupEgress,9,,0,,0,9,false,
 ec2,SecurityGroupIngress,12,,0,,0,12,false,
-ec2,SecurityGroupVpcAssociation,2,,0,,0,2,false,
-ec2,Snapshot,4,,0,,0,4,false,
-ec2,SnapshotBlockPublicAccess,1,,0,,0,1,false,
+ec2,SecurityGroupVpcAssociation,2,,0,SecurityGroupVpcAssociation (Cloud Control),2,0,false,ours SecurityGroupVpcAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,Snapshot,4,,0,Snapshot (Cloud Control),4,0,false,ours Snapshot (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,SnapshotBlockPublicAccess,1,,0,SnapshotBlockPublicAccess (Cloud Control),1,0,false,ours SnapshotBlockPublicAccess (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,SpotFleet,148,,0,,0,148,false,
 ec2,SqlHaStandbyDetectedInstance,2,,0,,0,2,false,
 ec2,Subnet,20,Subnet,15,,0,5,false,official_unmapped=2
 ec2,SubnetCidrBlock,4,,0,,0,4,false,
-ec2,SubnetCidrReservation,6,,0,,0,6,false,
+ec2,SubnetCidrReservation,6,,0,SubnetCidrReservation (Cloud Control),6,0,false,ours SubnetCidrReservation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,SubnetNetworkAclAssociation,2,,0,,0,2,false,
 ec2,SubnetRouteTableAssociation,2,,0,,0,2,false,
-ec2,TrafficMirrorFilter,4,,0,,0,4,false,
-ec2,TrafficMirrorFilterRule,14,,0,,0,14,false,
-ec2,TrafficMirrorSession,10,,0,,0,10,false,
-ec2,TrafficMirrorTarget,6,,0,,0,6,false,
+ec2,TrafficMirrorFilter,4,,0,TrafficMirrorFilter (Cloud Control),4,0,false,ours TrafficMirrorFilter (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,TrafficMirrorFilterRule,14,,0,TrafficMirrorFilterRule (Cloud Control),14,0,false,ours TrafficMirrorFilterRule (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,TrafficMirrorSession,10,,0,TrafficMirrorSession (Cloud Control),10,0,false,ours TrafficMirrorSession (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,TrafficMirrorTarget,6,,0,TrafficMirrorTarget (Cloud Control),6,0,false,ours TrafficMirrorTarget (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,TransitGateway,15,TransitGateway,11,,0,4,false,
 ec2,TransitGatewayAttachment,9,,0,,0,9,false,
-ec2,TransitGatewayAttachmentNatConfiguration,6,,0,,0,6,false,
-ec2,TransitGatewayConnect,4,,0,,0,4,false,
-ec2,TransitGatewayConnectPeer,6,,0,,0,6,false,
-ec2,TransitGatewayMeteringPolicy,4,,0,,0,4,false,
-ec2,TransitGatewayMeteringPolicyEntry,12,,0,,0,12,false,
-ec2,TransitGatewayMulticastDomain,6,,0,,0,6,false,
-ec2,TransitGatewayMulticastDomainAssociation,3,,0,,0,3,false,
-ec2,TransitGatewayMulticastGroupMember,3,,0,,0,3,false,
-ec2,TransitGatewayMulticastGroupSource,3,,0,,0,3,false,
+ec2,TransitGatewayAttachmentNatConfiguration,6,,0,TransitGatewayAttachmentNatConfiguration (Cloud Control),6,0,false,ours TransitGatewayAttachmentNatConfiguration (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,TransitGatewayConnect,4,,0,TransitGatewayConnect (Cloud Control),4,0,false,ours TransitGatewayConnect (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,TransitGatewayConnectPeer,6,,0,TransitGatewayConnectPeer (Cloud Control),6,0,false,ours TransitGatewayConnectPeer (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,TransitGatewayMeteringPolicy,4,,0,TransitGatewayMeteringPolicy (Cloud Control),4,0,false,ours TransitGatewayMeteringPolicy (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,TransitGatewayMeteringPolicyEntry,12,,0,TransitGatewayMeteringPolicyEntry (Cloud Control),12,0,false,ours TransitGatewayMeteringPolicyEntry (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,TransitGatewayMulticastDomain,6,,0,TransitGatewayMulticastDomain (Cloud Control),6,0,false,ours TransitGatewayMulticastDomain (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,TransitGatewayMulticastDomainAssociation,3,,0,TransitGatewayMulticastDomainAssociation (Cloud Control),3,0,false,ours TransitGatewayMulticastDomainAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,TransitGatewayMulticastGroupMember,3,,0,TransitGatewayMulticastGroupMember (Cloud Control),3,0,false,ours TransitGatewayMulticastGroupMember (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,TransitGatewayMulticastGroupSource,3,,0,TransitGatewayMulticastGroupSource (Cloud Control),3,0,false,ours TransitGatewayMulticastGroupSource (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,TransitGatewayPeeringAttachment,6,,0,TransitGatewayPeeringAttachment (Cloud Control),6,0,false,
-ec2,TransitGatewayPolicyTable,3,,0,,0,3,false,
-ec2,TransitGatewayPolicyTableAssociation,2,,0,,0,2,false,
-ec2,TransitGatewayPolicyTableEntry,8,,0,,0,8,false,
+ec2,TransitGatewayPolicyTable,3,,0,TransitGatewayPolicyTable (Cloud Control),3,0,false,ours TransitGatewayPolicyTable (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,TransitGatewayPolicyTableAssociation,2,,0,TransitGatewayPolicyTableAssociation (Cloud Control),2,0,false,ours TransitGatewayPolicyTableAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,TransitGatewayPolicyTableEntry,8,,0,TransitGatewayPolicyTableEntry (Cloud Control),8,0,false,ours TransitGatewayPolicyTableEntry (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,TransitGatewayRoute,4,,0,TransitGatewayRoute (Cloud Control),4,0,false,
 ec2,TransitGatewayRouteTable,3,,0,TransitGatewayRouteTable (Cloud Control),3,0,false,
 ec2,TransitGatewayRouteTableAssociation,2,,0,TransitGatewayRouteTableAssociation (Cloud Control),2,0,false,
 ec2,TransitGatewayRouteTablePropagation,2,,0,TransitGatewayRouteTablePropagation (Cloud Control),2,0,false,
 ec2,TransitGatewayVpcAttachment,11,TransitGatewayVPCAttachment,9,,0,2,false,
-ec2,VerifiedAccessEndpoint,37,,0,,0,37,false,
-ec2,VerifiedAccessGroup,8,,0,,0,8,false,
-ec2,VerifiedAccessInstance,21,,0,,0,21,false,
-ec2,VerifiedAccessTrustProvider,26,,0,,0,26,false,
+ec2,VerifiedAccessEndpoint,37,,0,VerifiedAccessEndpoint (Cloud Control),37,0,false,ours VerifiedAccessEndpoint (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,VerifiedAccessGroup,8,,0,VerifiedAccessGroup (Cloud Control),8,0,false,ours VerifiedAccessGroup (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,VerifiedAccessInstance,21,,0,VerifiedAccessInstance (Cloud Control),21,0,false,ours VerifiedAccessInstance (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,VerifiedAccessTrustProvider,26,,0,VerifiedAccessTrustProvider (Cloud Control),26,0,false,ours VerifiedAccessTrustProvider (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,Volume,16,,0,Volume,12,4,false,
 ec2,VolumeAttachment,4,,0,VolumeAttachment,3,1,false,
 ec2,VPC,17,VPC,8,,0,9,false,official_unmapped=8
-ec2,VPCBlockPublicAccessExclusion,5,,0,,0,5,false,
-ec2,VPCBlockPublicAccessOptions,1,,0,,0,1,false,
+ec2,VPCBlockPublicAccessExclusion,5,,0,VPCBlockPublicAccessExclusion (Cloud Control),5,0,false,ours VPCBlockPublicAccessExclusion (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,VPCBlockPublicAccessOptions,1,,0,VPCBlockPublicAccessOptions (Cloud Control),1,0,false,ours VPCBlockPublicAccessOptions (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,VPCCidrBlock,10,,0,,0,10,false,
 ec2,VPCDHCPOptionsAssociation,2,,0,,0,2,false,
-ec2,VPCEncryptionControl,12,,0,,0,12,false,
+ec2,VPCEncryptionControl,12,,0,VPCEncryptionControl (Cloud Control),12,0,false,ours VPCEncryptionControl (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,VPCEndpoint,18,VPCEndpoint,16,,0,2,false,
-ec2,VPCEndpointConnectionNotification,4,,0,,0,4,false,
+ec2,VPCEndpointConnectionNotification,4,,0,VPCEndpointConnectionNotification (Cloud Control),4,0,false,ours VPCEndpointConnectionNotification (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,VPCEndpointService,10,VPCEndpointServiceConfiguration,8,,0,2,false,official_unmapped=1
 ec2,VPCEndpointServicePermissions,2,,0,,0,2,false,
 ec2,VPCGatewayAttachment,3,,0,,0,3,false,
 ec2,VPCPeeringConnection,8,VPCPeeringConnection,6,,0,2,false,official_unmapped=7
-ec2,VPNConcentrator,4,,0,,0,4,false,
+ec2,VPNConcentrator,4,,0,VPNConcentrator (Cloud Control),4,0,false,ours VPNConcentrator (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,VPNConnection,43,,0,VPNConnection,37,6,false,ours_unmapped=1
 ec2,VPNConnectionRoute,2,,0,,0,2,false,
 ec2,VPNGateway,4,,0,VPNGateway,4,0,false,ours_unmapped=2
 ec2,VPNGatewayRoutePropagation,2,,0,VPNGatewayRoutePropagation,1,1,false,ours_unmapped=1
 ecr,PublicRepository,9,Repository,3,,0,6,false,
 ecr,PullThroughCacheRule,6,PullThroughCacheRule,6,,0,0,false,official_unmapped=1
-ecr,PullTimeUpdateExclusion,1,,0,,0,1,false,
-ecr,RegistryPolicy,1,,0,,0,1,false,
-ecr,RegistryScanningConfiguration,4,,0,,0,4,false,
+ecr,PullTimeUpdateExclusion,1,,0,PullTimeUpdateExclusion (Cloud Control),1,0,false,ours PullTimeUpdateExclusion (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ecr); on the schema fake only
+ecr,RegistryPolicy,1,,0,RegistryPolicy (Cloud Control),1,0,false,ours RegistryPolicy (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ecr); on the schema fake only
+ecr,RegistryScanningConfiguration,4,,0,RegistryScanningConfiguration (Cloud Control),4,0,false,ours RegistryScanningConfiguration (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ecr); on the schema fake only
 ecr,ReplicationConfiguration,4,,0,ReplicationConfiguration,4,0,true,ours ReplicationConfiguration copied from ecr-controller#121;ours_unmapped=1
 ecr,Repository,13,Repository,12,,0,1,false,
 ecr,RepositoryCreationTemplate,13,RepositoryCreationTemplate,13,,0,0,false,
-ecr,SigningConfiguration,3,,0,,0,3,false,
+ecr,SigningConfiguration,3,,0,SigningConfiguration (Cloud Control),3,0,false,ours SigningConfiguration (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ecr); on the schema fake only
 ecs,CapacityProvider,61,CapacityProvider,59,,0,2,false,official_unmapped=1
 ecs,Cluster,19,Cluster,17,,0,2,false,
 ecs,ClusterCapacityProviderAssociations,5,,0,,0,5,false,
@@ -722,7 +722,7 @@ efs,MountTarget,6,MountTarget,4,,0,2,false,
 eks,AccessEntry,10,AccessEntry,10,,0,0,false,
 eks,Addon,12,Addon,10,,0,2,false,official_unmapped=1
 eks,Capability,17,Capability,17,,0,0,false,
-eks,CertificateAuthority,1,,0,,0,1,false,
+eks,CertificateAuthority,1,,0,CertificateAuthority (Cloud Control),1,0,false,ours CertificateAuthority (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has eks); on the schema fake only
 eks,Cluster,48,Cluster,40,,0,8,false,official_unmapped=3
 eks,FargateProfile,9,FargateProfile,9,,0,0,false,official_unmapped=1
 eks,IdentityProviderConfig,13,IdentityProviderConfig,12,,0,1,false,
@@ -798,11 +798,11 @@ evs,Environment,39,,0,,0,39,false,
 finspace,Environment,17,,0,,0,17,false,
 fis,ExperimentTemplate,28,,0,,0,28,false,
 fis,TargetAccountConfiguration,4,,0,,0,4,false,
-fms,ApplicationsList,6,,0,,0,6,false,
-fms,NotificationChannel,2,,0,,0,2,false,
-fms,Policy,42,,0,,0,42,false,
-fms,ProtocolsList,4,,0,,0,4,false,
-fms,ResourceSet,6,,0,,0,6,false,
+fms,ApplicationsList,6,,0,ApplicationsList (Cloud Control),6,0,false,ours ApplicationsList (Cloud Control) unproven on fake: moto 5.2.5 has no fms; on the schema fake only
+fms,NotificationChannel,2,,0,NotificationChannel (Cloud Control),2,0,false,ours NotificationChannel (Cloud Control) unproven on fake: moto 5.2.5 has no fms; on the schema fake only
+fms,Policy,42,,0,Policy (Cloud Control),42,0,false,ours Policy (Cloud Control) unproven on fake: moto 5.2.5 has no fms; on the schema fake only
+fms,ProtocolsList,4,,0,ProtocolsList (Cloud Control),4,0,false,ours ProtocolsList (Cloud Control) unproven on fake: moto 5.2.5 has no fms; on the schema fake only
+fms,ResourceSet,6,,0,ResourceSet (Cloud Control),6,0,false,ours ResourceSet (Cloud Control) unproven on fake: moto 5.2.5 has no fms; on the schema fake only
 forecast,Dataset,10,,0,,0,10,false,
 forecast,DatasetGroup,5,,0,,0,5,false,
 frauddetector,Detector,42,,0,,0,42,false,
@@ -887,17 +887,17 @@ groundstation,Config,32,,0,,0,32,false,
 groundstation,DataflowEndpointGroup,21,,0,,0,21,false,
 groundstation,DataflowEndpointGroupV2,20,,0,,0,20,false,
 groundstation,MissionProfile,14,,0,,0,14,false,
-guardduty,CustomDetectionRuleAssociation,4,,0,,0,4,false,
+guardduty,CustomDetectionRuleAssociation,4,,0,CustomDetectionRuleAssociation (Cloud Control),4,0,false,ours CustomDetectionRuleAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has guardduty); on the schema fake only
 guardduty,Detector,11,,0,Detector (Cloud Control),11,0,false,
-guardduty,Filter,21,,0,,0,21,false,
-guardduty,IPSet,8,,0,,0,8,false,
-guardduty,MalwareProtectionPlan,6,,0,,0,6,false,
-guardduty,Master,3,,0,,0,3,false,
-guardduty,Member,6,,0,,0,6,false,
-guardduty,PublishingDestination,6,,0,,0,6,false,
-guardduty,ThreatEntitySet,8,,0,,0,8,false,
-guardduty,ThreatIntelSet,8,,0,,0,8,false,
-guardduty,TrustedEntitySet,8,,0,,0,8,false,
+guardduty,Filter,21,,0,Filter (Cloud Control),21,0,false,
+guardduty,IPSet,8,,0,IPSet (Cloud Control),8,0,false,ours IPSet (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Get/Update/DeleteIPSet
+guardduty,MalwareProtectionPlan,6,,0,MalwareProtectionPlan (Cloud Control),6,0,false,ours MalwareProtectionPlan (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Get/Update/DeleteMalwareProtectionPlan
+guardduty,Master,3,,0,Master (Cloud Control),3,0,false,ours Master (Cloud Control) unproven on fake: moto 5.2.5 has no AcceptAdministratorInvitation or DisassociateFromAdministratorAccount
+guardduty,Member,6,,0,Member (Cloud Control),6,0,false,ours Member (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Get/DeleteMembers or InviteMembers
+guardduty,PublishingDestination,6,,0,PublishingDestination (Cloud Control),6,0,false,ours PublishingDestination (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Describe/Update/DeletePublishingDestination
+guardduty,ThreatEntitySet,8,,0,ThreatEntitySet (Cloud Control),8,0,false,ours ThreatEntitySet (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has guardduty); on the schema fake only
+guardduty,ThreatIntelSet,8,,0,ThreatIntelSet (Cloud Control),8,0,false,ours ThreatIntelSet (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Get/Update/DeleteThreatIntelSet
+guardduty,TrustedEntitySet,8,,0,TrustedEntitySet (Cloud Control),8,0,false,ours TrustedEntitySet (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has guardduty); on the schema fake only
 healthagent,Domain,3,,0,,0,3,false,
 healthimaging,Datastore,3,,0,,0,3,false,
 healthlake,DataTransformationProfile,10,,0,,0,10,false,
@@ -914,16 +914,16 @@ iam,Policy,5,,0,,0,5,false,
 iam,Role,11,Role,10,RolePolicyAttachment,0,1,true,ours RolePolicyAttachment covers a property of this resource;ours RolePolicyAttachment copied from iam-controller#184
 iam,RolePolicy,3,,0,,0,3,false,
 iam,SAMLProvider,9,,0,SAMLProvider (Cloud Control),9,0,false,
-iam,ServerCertificate,7,,0,,0,7,false,
+iam,ServerCertificate,7,,0,ServerCertificate (Cloud Control),7,0,false,ours ServerCertificate (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has iam); on the schema fake only
 iam,ServiceLinkedRole,3,ServiceLinkedRole,3,,0,0,false,
 iam,SSHPublicKey,0,,0,SSHPublicKey,0,0,false,outside-denominator;ours_crd_attributes=3
 iam,User,11,User,7,LoginProfile;UserGroupMembership,3,1,false,ours LoginProfile covers a property of this resource;ours UserGroupMembership covers a property of this resource
 iam,UserPolicy,3,,0,,0,3,false,
 iam,UserToGroupAddition,2,,0,,0,2,false,
 iam,VirtualMFADevice,5,,0,VirtualMFADevice,2,3,false,ours_unmapped=1
-identitystore,Group,3,,0,,0,3,false,
-identitystore,GroupMembership,3,,0,,0,3,false,
-identitystore,User,39,,0,,0,39,false,
+identitystore,Group,3,,0,Group (Cloud Control),3,0,false,ours Group (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has identitystore); on the schema fake only
+identitystore,GroupMembership,3,,0,GroupMembership (Cloud Control),3,0,false,ours GroupMembership (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has identitystore); on the schema fake only
+identitystore,User,39,,0,User (Cloud Control),39,0,false,ours User (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has identitystore); on the schema fake only
 imagebuilder,Component,10,,0,,0,10,false,
 imagebuilder,ContainerRecipe,29,,0,,0,29,false,
 imagebuilder,DistributionConfiguration,31,,0,,0,31,false,
@@ -936,11 +936,11 @@ imagebuilder,Workflow,9,,0,,0,9,false,
 inspector,AssessmentTarget,2,,0,,0,2,false,
 inspector,AssessmentTemplate,6,,0,,0,6,false,
 inspector,ResourceGroup,2,,0,,0,2,false,
-inspectorv2,CisScanConfiguration,14,,0,,0,14,false,
-inspectorv2,CodeSecurityIntegration,8,,0,,0,8,false,
-inspectorv2,CodeSecurityScanConfiguration,8,,0,,0,8,false,
-inspectorv2,Connector,14,,0,,0,14,false,
-inspectorv2,Filter,105,,0,,0,105,false,
+inspectorv2,CisScanConfiguration,14,,0,CisScanConfiguration (Cloud Control),14,0,false,ours CisScanConfiguration (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has inspector2); on the schema fake only
+inspectorv2,CodeSecurityIntegration,8,,0,CodeSecurityIntegration (Cloud Control),8,0,false,ours CodeSecurityIntegration (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has inspector2); on the schema fake only
+inspectorv2,CodeSecurityScanConfiguration,8,,0,CodeSecurityScanConfiguration (Cloud Control),8,0,false,ours CodeSecurityScanConfiguration (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has inspector2); on the schema fake only
+inspectorv2,Connector,14,,0,Connector (Cloud Control),14,0,false,ours Connector (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has inspector2); on the schema fake only
+inspectorv2,Filter,105,,0,Filter (Cloud Control),105,0,false,ours Filter (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has inspector2); on the schema fake only
 interconnect,Connection,10,,0,,0,10,false,
 internetmonitor,Monitor,22,,0,,0,22,false,
 invoicing,InvoiceUnit,7,,0,,0,7,false,
@@ -1125,32 +1125,32 @@ location,PlaceIndex,7,,0,,0,7,false,
 location,RouteCalculator,6,,0,,0,6,false,
 location,Tracker,10,,0,,0,10,false,
 location,TrackerConsumer,2,,0,,0,2,false,
-logs,AccountPolicy,5,,0,,0,5,false,
+logs,AccountPolicy,5,,0,AccountPolicy (Cloud Control),5,0,false,ours AccountPolicy (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
 logs,Delivery,8,Delivery,6,,0,2,false,official_unmapped=2
 logs,DeliveryDestination,8,DeliveryDestination,6,,0,2,false,
 logs,DeliveryDestinationPolicy,0,DeliveryDestinationPolicy,0,,0,0,false,outside-denominator;official_crd_attributes=2
 logs,DeliverySource,6,DeliverySource,5,,0,1,false,
-logs,Destination,6,,0,,0,6,false,
-logs,Integration,7,,0,,0,7,false,
-logs,LogAnomalyDetector,7,,0,,0,7,false,
+logs,Destination,6,,0,Destination (Cloud Control),6,0,false,ours Destination (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
+logs,Integration,7,,0,Integration (Cloud Control),7,0,false,ours Integration (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
+logs,LogAnomalyDetector,7,,0,LogAnomalyDetector (Cloud Control),7,0,false,ours LogAnomalyDetector (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
 logs,LogGroup,11,LogGroup,4,,0,7,false,official_unmapped=6
 logs,LogStream,2,,0,,0,2,false,
 logs,MetricFilter,13,,0,,0,13,false,
-logs,QueryDefinition,7,,0,,0,7,false,
+logs,QueryDefinition,7,,0,QueryDefinition (Cloud Control),7,0,false,ours QueryDefinition (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
 logs,ResourcePolicy,2,ResourcePolicy,2,,0,0,false,official_unmapped=1
-logs,ScheduledQuery,16,,0,,0,16,false,
-logs,StorageTierPolicy,1,,0,,0,1,false,
-logs,SubscriptionFilter,9,,0,,0,9,false,
-logs,Transformer,61,,0,,0,61,false,
+logs,ScheduledQuery,16,,0,ScheduledQuery (Cloud Control),16,0,false,ours ScheduledQuery (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
+logs,StorageTierPolicy,1,,0,StorageTierPolicy (Cloud Control),1,0,false,ours StorageTierPolicy (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
+logs,SubscriptionFilter,9,,0,SubscriptionFilter (Cloud Control),9,0,false,ours SubscriptionFilter (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
+logs,Transformer,61,,0,Transformer (Cloud Control),61,0,false,ours Transformer (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
 lookoutequipment,InferenceScheduler,16,,0,,0,16,false,
 m2,Application,8,,0,,0,8,false,
 m2,Deployment,3,,0,,0,3,false,
 m2,Environment,17,,0,,0,17,false,
-macie,AllowList,7,,0,,0,7,false,
-macie,CustomDataIdentifier,8,,0,,0,8,false,
-macie,FindingsFilter,12,,0,,0,12,false,
-macie,Member,4,,0,,0,4,false,
-macie,Session,2,,0,,0,2,false,
+macie,AllowList,7,,0,AllowList (Cloud Control),7,0,false,ours AllowList (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has macie2); on the schema fake only
+macie,CustomDataIdentifier,8,,0,CustomDataIdentifier (Cloud Control),8,0,false,ours CustomDataIdentifier (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has macie2); on the schema fake only
+macie,FindingsFilter,12,,0,FindingsFilter (Cloud Control),12,0,false,ours FindingsFilter (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has macie2); on the schema fake only
+macie,Member,4,,0,Member (Cloud Control),4,0,false,ours Member (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has macie2); on the schema fake only
+macie,Session,2,,0,Session (Cloud Control),2,0,false,ours Session (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has macie2); on the schema fake only
 managedblockchain,Accessor,4,,0,,0,4,false,
 managedblockchain,Member,14,,0,,0,14,false,
 managedblockchain,Node,4,,0,,0,4,false,
@@ -1244,13 +1244,13 @@ neptune,GlobalCluster,8,,0,,0,8,false,
 neptunegraph,Graph,21,,0,,0,21,false,
 neptunegraph,GraphSnapshot,4,,0,,0,4,false,
 neptunegraph,PrivateGraphEndpoint,4,,0,,0,4,false,
-networkfirewall,ContainerAssociation,8,,0,,0,8,false,
+networkfirewall,ContainerAssociation,8,,0,ContainerAssociation (Cloud Control),8,0,false,ours ContainerAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has networkfirewall); on the schema fake only
 networkfirewall,Firewall,22,Firewall,11,,0,11,false,official_unmapped=5
 networkfirewall,FirewallPolicy,21,FirewallPolicy,18,,0,3,false,official_unmapped=2
-networkfirewall,LoggingConfiguration,6,,0,,0,6,false,
+networkfirewall,LoggingConfiguration,6,,0,LoggingConfiguration (Cloud Control),6,0,false,ours LoggingConfiguration (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has networkfirewall); on the schema fake only
 networkfirewall,RuleGroup,37,RuleGroup,36,,0,1,false,official_unmapped=7
-networkfirewall,TLSInspectionConfiguration,15,,0,,0,15,false,
-networkfirewall,VpcEndpointAssociation,7,,0,,0,7,false,
+networkfirewall,TLSInspectionConfiguration,15,,0,TLSInspectionConfiguration (Cloud Control),15,0,false,ours TLSInspectionConfiguration (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has networkfirewall); on the schema fake only
+networkfirewall,VpcEndpointAssociation,7,,0,VpcEndpointAssociation (Cloud Control),7,0,false,ours VpcEndpointAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has networkfirewall); on the schema fake only
 networkflowmonitor,Monitor,8,,0,,0,8,false,
 networkflowmonitor,Scope,5,,0,,0,5,false,
 networkmanager,ConnectAttachment,8,,0,,0,8,false,
@@ -1423,11 +1423,11 @@ quicksight,Topic,133,,0,,0,133,false,
 quicksight,TopicV2,16,,0,,0,16,false,
 quicksight,VPCConnection,10,,0,,0,10,false,
 ram,Permission,5,Permission,5,,0,0,false,
-ram,PermissionAssociation,3,,0,,0,3,false,
-ram,PrincipalAssociation,2,,0,,0,2,false,
-ram,ResourceAssociation,2,,0,,0,2,false,
+ram,PermissionAssociation,3,,0,PermissionAssociation (Cloud Control),3,0,false,ours PermissionAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ram); on the schema fake only
+ram,PrincipalAssociation,2,,0,PrincipalAssociation (Cloud Control),2,0,false,ours PrincipalAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ram); on the schema fake only
+ram,ResourceAssociation,2,,0,ResourceAssociation (Cloud Control),2,0,false,ours ResourceAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ram); on the schema fake only
 ram,ResourceShare,10,ResourceShare,8,,0,2,false,
-ram,SourceAssociation,2,,0,,0,2,false,
+ram,SourceAssociation,2,,0,SourceAssociation (Cloud Control),2,0,false,ours SourceAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ram); on the schema fake only
 rbin,Rule,13,Rule,10,,0,3,false,
 rds,ClusterSnapshot,4,,0,,0,4,false,
 rds,CustomDBEngineVersion,14,,0,,0,14,false,
@@ -1446,7 +1446,7 @@ rds,DBShardGroup,8,,0,,0,8,false,
 rds,DBSnapshot,4,DBSnapshot,4,,0,0,false,
 rds,DBSubnetGroup,5,DBSubnetGroup,5,,0,0,false,
 rds,Deployment,13,,0,,0,13,false,
-rds,EventSubscription,8,,0,,0,8,false,
+rds,EventSubscription,8,,0,EventSubscription (Cloud Control),8,0,false,ours EventSubscription (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has rds); on the schema fake only
 rds,GlobalCluster,9,GlobalCluster,8,,0,1,false,official_unmapped=1
 rds,Integration,9,,0,,0,9,false,
 rds,OptionGroup,13,,0,OptionGroup,13,0,true,ours OptionGroup copied from rds-controller#257;ours_unmapped=7
@@ -1495,20 +1495,20 @@ robomaker,RobotApplication,9,,0,,0,9,false,
 robomaker,RobotApplicationVersion,2,,0,,0,2,false,
 robomaker,SimulationApplication,13,,0,,0,13,false,
 robomaker,SimulationApplicationVersion,2,,0,,0,2,false,
-rolesanywhere,CRL,6,,0,,0,6,false,
-rolesanywhere,Profile,12,,0,,0,12,false,
-rolesanywhere,TrustAnchor,11,,0,,0,11,false,
-route53,CidrCollection,3,,0,,0,3,false,
-route53,DelegationSet,0,,0,,0,0,false,
-route53,DNSSEC,1,,0,,0,1,false,
+rolesanywhere,CRL,6,,0,CRL (Cloud Control),6,0,false,ours CRL (Cloud Control) unproven on fake: moto 5.2.5 has no rolesanywhere; on the schema fake only
+rolesanywhere,Profile,12,,0,Profile (Cloud Control),12,0,false,ours Profile (Cloud Control) unproven on fake: moto 5.2.5 has no rolesanywhere; on the schema fake only
+rolesanywhere,TrustAnchor,11,,0,TrustAnchor (Cloud Control),11,0,false,ours TrustAnchor (Cloud Control) unproven on fake: moto 5.2.5 has no rolesanywhere; on the schema fake only
+route53,CidrCollection,3,,0,CidrCollection (Cloud Control),3,0,false,ours CidrCollection (Cloud Control) unproven on fake: moto 5.2.5 has no Create/List/Change/DeleteCidrCollection
+route53,DelegationSet,0,,0,DelegationSet (Cloud Control),0,0,false,ours DelegationSet (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has route53); on the schema fake only
+route53,DNSSEC,1,,0,DNSSEC (Cloud Control),1,0,false,ours DNSSEC (Cloud Control) unproven on fake: moto 5.2.5 has no EnableHostedZoneDNSSEC or DisableHostedZoneDNSSEC
 route53,HealthCheck,20,HealthCheck,20,,0,0,false,official_unmapped=1
 route53,HostedZone,9,HostedZone,7,,0,2,false,official_unmapped=3
-route53,KeySigningKey,4,,0,,0,4,false,
-route53,QueryLoggingConfig,2,,0,,0,2,false,
+route53,KeySigningKey,4,,0,KeySigningKey (Cloud Control),4,0,false,ours KeySigningKey (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Activate/Deactivate/DeleteKeySigningKey
+route53,QueryLoggingConfig,2,,0,QueryLoggingConfig (Cloud Control),2,0,false,
 route53,RecordSet,21,RecordSet,19,,0,2,false,
 route53,RecordSetGroup,28,,0,,0,28,false,
-route53,TrafficPolicy,3,,0,,0,3,false,
-route53,TrafficPolicyInstance,5,,0,,0,5,false,
+route53,TrafficPolicy,3,,0,TrafficPolicy (Cloud Control),3,0,false,ours TrafficPolicy (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has route53); on the schema fake only
+route53,TrafficPolicyInstance,5,,0,TrafficPolicyInstance (Cloud Control),5,0,false,ours TrafficPolicyInstance (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has route53); on the schema fake only
 route53globalresolver,AccessSource,8,,0,,0,8,false,
 route53globalresolver,AccessToken,6,,0,,0,6,false,
 route53globalresolver,DnsView,9,,0,,0,9,false,
@@ -1516,9 +1516,9 @@ route53globalresolver,FirewallDomainList,8,,0,,0,8,false,
 route53globalresolver,FirewallRule,14,,0,,0,14,false,
 route53globalresolver,GlobalResolver,8,,0,,0,8,false,
 route53globalresolver,HostedZoneAssociation,3,,0,,0,3,false,
-route53profiles,Profile,3,,0,,0,3,false,
-route53profiles,ProfileAssociation,7,,0,,0,7,false,
-route53profiles,ProfileResourceAssociation,4,,0,,0,4,false,
+route53profiles,Profile,3,,0,Profile (Cloud Control),3,0,false,ours Profile (Cloud Control) unproven on fake: moto 5.2.5 has no route53profiles; on the schema fake only
+route53profiles,ProfileAssociation,7,,0,ProfileAssociation (Cloud Control),7,0,false,ours ProfileAssociation (Cloud Control) unproven on fake: moto 5.2.5 has no route53profiles; on the schema fake only
+route53profiles,ProfileResourceAssociation,4,,0,ProfileResourceAssociation (Cloud Control),4,0,false,ours ProfileResourceAssociation (Cloud Control) unproven on fake: moto 5.2.5 has no route53profiles; on the schema fake only
 route53recoverycontrol,Cluster,4,,0,,0,4,false,
 route53recoverycontrol,ControlPanel,4,,0,,0,4,false,
 route53recoverycontrol,RoutingControl,3,,0,,0,3,false,
@@ -1527,13 +1527,13 @@ route53recoveryreadiness,Cell,4,,0,,0,4,false,
 route53recoveryreadiness,ReadinessCheck,4,,0,,0,4,false,
 route53recoveryreadiness,RecoveryGroup,4,,0,,0,4,false,
 route53recoveryreadiness,ResourceSet,14,,0,,0,14,false,
-route53resolver,FirewallConfig,2,,0,,0,2,false,
-route53resolver,FirewallDomainList,5,,0,,0,5,false,
-route53resolver,FirewallRuleGroup,17,,0,,0,17,false,
-route53resolver,FirewallRuleGroupAssociation,7,,0,,0,7,false,
+route53resolver,FirewallConfig,2,,0,FirewallConfig (Cloud Control),2,0,false,ours FirewallConfig (Cloud Control) unproven on fake: moto 5.2.5 has no GetFirewallConfig or UpdateFirewallConfig
+route53resolver,FirewallDomainList,5,,0,FirewallDomainList (Cloud Control),5,0,false,ours FirewallDomainList (Cloud Control) unproven on fake: moto 5.2.5 has none of Route 53 Resolver's DNS Firewall calls
+route53resolver,FirewallRuleGroup,17,,0,FirewallRuleGroup (Cloud Control),17,0,false,ours FirewallRuleGroup (Cloud Control) unproven on fake: moto 5.2.5 has none of Route 53 Resolver's DNS Firewall calls
+route53resolver,FirewallRuleGroupAssociation,7,,0,FirewallRuleGroupAssociation (Cloud Control),7,0,false,ours FirewallRuleGroupAssociation (Cloud Control) unproven on fake: moto 5.2.5 has none of Route 53 Resolver's DNS Firewall calls
 route53resolver,OutpostResolver,6,,0,,0,6,false,
-route53resolver,ResolverConfig,2,,0,,0,2,false,
-route53resolver,ResolverDNSSECConfig,1,,0,,0,1,false,
+route53resolver,ResolverConfig,2,,0,ResolverConfig (Cloud Control),2,0,false,ours ResolverConfig (Cloud Control) unproven on fake: moto 5.2.5 has no GetResolverConfig or UpdateResolverConfig
+route53resolver,ResolverDNSSECConfig,1,,0,ResolverDNSSECConfig (Cloud Control),1,0,false,
 route53resolver,ResolverEndpoint,16,ResolverEndpoint,9,,0,7,false,
 route53resolver,ResolverQueryLoggingConfig,4,ResolverQueryLogConfig,4,,0,0,false,
 route53resolver,ResolverQueryLoggingConfigAssociation,2,ResolverQueryLogConfigAssociation,2,,0,0,false,
@@ -1637,10 +1637,10 @@ scn,Dataset,13,,0,,0,13,false,
 scn,Instance,5,,0,,0,5,false,
 scn,Namespace,5,,0,,0,5,false,
 sdb,Domain,1,,0,,0,1,false,
-secretsmanager,ResourcePolicy,3,,0,,0,3,false,
+secretsmanager,ResourcePolicy,3,,0,ResourcePolicy (Cloud Control),3,0,false,
 secretsmanager,RotationSchedule,20,,0,,0,20,false,
 secretsmanager,Secret,19,Secret,8,,0,11,false,official_unmapped=2
-secretsmanager,SecretTargetAttachment,3,,0,,0,3,false,
+secretsmanager,SecretTargetAttachment,3,,0,SecretTargetAttachment (Cloud Control),3,0,false,ours SecretTargetAttachment (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has secretsmanager); on the schema fake only
 securityagent,AgentSpace,39,,0,,0,39,false,
 securityagent,Application,5,,0,,0,5,false,
 securityagent,Artifact,4,,0,,0,4,false,
@@ -1649,27 +1649,27 @@ securityagent,Pentest,47,,0,,0,47,false,
 securityagent,PrivateConnection,13,,0,,0,13,false,
 securityagent,SecurityRequirementPack,11,,0,,0,11,false,
 securityagent,TargetDomain,4,,0,,0,4,false,
-securityhub,ActionTarget,3,,0,,0,3,false,
-securityhub,AggregatorV2,3,,0,,0,3,false,
-securityhub,AutomationRule,105,,0,,0,105,false,
-securityhub,AutomationRuleV2,30,,0,,0,30,false,
-securityhub,ConfigurationPolicy,17,,0,,0,17,false,
-securityhub,Connector,7,,0,,0,7,false,
-securityhub,ConnectorV2,11,,0,,0,11,false,
-securityhub,DelegatedAdmin,1,,0,,0,1,false,
-securityhub,FindingAggregator,2,,0,,0,2,false,
-securityhub,Hub,4,,0,,0,4,false,
-securityhub,HubV2,2,,0,,0,2,false,
-securityhub,Insight,238,,0,,0,238,false,
-securityhub,OrganizationConfiguration,3,,0,,0,3,false,
-securityhub,PolicyAssociation,3,,0,,0,3,false,
-securityhub,ProductSubscription,1,,0,,0,1,false,
-securityhub,SecurityControl,12,,0,,0,12,false,
-securityhub,Standard,3,,0,,0,3,false,
-securitylake,AwsLogSource,4,,0,,0,4,false,
-securitylake,DataLake,9,,0,,0,9,false,
-securitylake,Subscriber,12,,0,,0,12,false,
-securitylake,SubscriberNotification,7,,0,,0,7,false,
+securityhub,ActionTarget,3,,0,ActionTarget (Cloud Control),3,0,false,ours ActionTarget (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Describe/Update/DeleteActionTarget(s)
+securityhub,AggregatorV2,3,,0,AggregatorV2 (Cloud Control),3,0,false,ours AggregatorV2 (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has securityhub); on the schema fake only
+securityhub,AutomationRule,105,,0,AutomationRule (Cloud Control),105,0,false,ours AutomationRule (Cloud Control) unproven on fake: moto 5.2.5 has no CreateAutomationRule or BatchGet/Update/DeleteAutomationRules
+securityhub,AutomationRuleV2,30,,0,AutomationRuleV2 (Cloud Control),30,0,false,ours AutomationRuleV2 (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has securityhub); on the schema fake only
+securityhub,ConfigurationPolicy,17,,0,ConfigurationPolicy (Cloud Control),17,0,false,ours ConfigurationPolicy (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Get/Update/DeleteConfigurationPolicy
+securityhub,Connector,7,,0,Connector (Cloud Control),7,0,false,ours Connector (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has securityhub); on the schema fake only
+securityhub,ConnectorV2,11,,0,ConnectorV2 (Cloud Control),11,0,false,ours ConnectorV2 (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has securityhub); on the schema fake only
+securityhub,DelegatedAdmin,1,,0,DelegatedAdmin (Cloud Control),1,0,false,ours DelegatedAdmin (Cloud Control) unproven on fake: moto 5.2.5 has EnableOrganizationAdminAccount but no ListOrganizationAdminAccounts or DisableOrganizationAdminAccount
+securityhub,FindingAggregator,2,,0,FindingAggregator (Cloud Control),2,0,false,ours FindingAggregator (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Get/Update/DeleteFindingAggregator
+securityhub,Hub,4,,0,Hub (Cloud Control),4,0,false,
+securityhub,HubV2,2,,0,HubV2 (Cloud Control),2,0,false,ours HubV2 (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has securityhub); on the schema fake only
+securityhub,Insight,238,,0,Insight (Cloud Control),238,0,false,ours Insight (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has securityhub); on the schema fake only
+securityhub,OrganizationConfiguration,3,,0,OrganizationConfiguration (Cloud Control),3,0,false,
+securityhub,PolicyAssociation,3,,0,PolicyAssociation (Cloud Control),3,0,false,ours PolicyAssociation (Cloud Control) unproven on fake: moto 5.2.5 has no StartConfigurationPolicyAssociation or GetConfigurationPolicyAssociation
+securityhub,ProductSubscription,1,,0,ProductSubscription (Cloud Control),1,0,false,ours ProductSubscription (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has securityhub); on the schema fake only
+securityhub,SecurityControl,12,,0,SecurityControl (Cloud Control),12,0,false,ours SecurityControl (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has securityhub); on the schema fake only
+securityhub,Standard,3,,0,Standard (Cloud Control),3,0,false,"ours Standard (Cloud Control) unproven on fake: moto 5.2.5 has no BatchEnableStandards, GetEnabledStandards or BatchDisableStandards"
+securitylake,AwsLogSource,4,,0,AwsLogSource (Cloud Control),4,0,false,ours AwsLogSource (Cloud Control) unproven on fake: moto 5.2.5 has no securitylake; on the schema fake only
+securitylake,DataLake,9,,0,DataLake (Cloud Control),9,0,false,ours DataLake (Cloud Control) unproven on fake: moto 5.2.5 has no securitylake; on the schema fake only
+securitylake,Subscriber,12,,0,Subscriber (Cloud Control),12,0,false,ours Subscriber (Cloud Control) unproven on fake: moto 5.2.5 has no securitylake; on the schema fake only
+securitylake,SubscriberNotification,7,,0,SubscriberNotification (Cloud Control),7,0,false,ours SubscriberNotification (Cloud Control) unproven on fake: moto 5.2.5 has no securitylake; on the schema fake only
 serverlessrepo,Application,11,,0,,0,11,false,
 servicecatalog,AcceptedPortfolioShare,2,,0,,0,2,false,
 servicecatalog,CloudFormationProduct,23,,0,,0,23,false,
@@ -1767,8 +1767,8 @@ ssmincidents,ReplicationSet,5,,0,,0,5,false,
 ssmincidents,ResponsePlan,24,,0,,0,24,false,
 ssmquicksetup,ConfigurationManager,8,,0,,0,8,false,
 ssmquicksetup,LifecycleAutomation,4,,0,,0,4,false,
-sso,Application,10,,0,,0,10,false,
-sso,ApplicationAssignment,3,,0,,0,3,false,
+sso,Application,10,,0,Application (Cloud Control),10,0,false,ours Application (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ssoadmin); on the schema fake only
+sso,ApplicationAssignment,3,,0,ApplicationAssignment (Cloud Control),3,0,false,ours ApplicationAssignment (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ssoadmin); on the schema fake only
 sso,Assignment,6,,0,Assignment (Cloud Control),6,0,false,
 sso,Instance,3,,0,,0,3,false,
 sso,InstanceAccessControlAttributeConfiguration,5,,0,InstanceAccessControlAttributeConfiguration (Cloud Control),5,0,false,ours InstanceAccessControlAttributeConfiguration (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Describe/Update/DeleteInstanceAccessControlAttributeConfiguration
@@ -1851,8 +1851,8 @@ wafregional,WebACL,6,,0,,0,6,false,
 wafregional,WebACLAssociation,2,,0,,0,2,false,
 wafregional,XssMatchSet,4,,0,,0,4,false,
 wafv2,IPSet,7,IPSet,7,,0,0,false,
-wafv2,LoggingConfiguration,11,,0,,0,11,false,
-wafv2,RegexPatternSet,6,,0,,0,6,false,
+wafv2,LoggingConfiguration,11,,0,LoggingConfiguration (Cloud Control),11,0,false,ours LoggingConfiguration (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has wafv2); on the schema fake only
+wafv2,RegexPatternSet,6,,0,RegexPatternSet (Cloud Control),6,0,false,ours RegexPatternSet (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has wafv2); on the schema fake only
 wafv2,RuleGroup,266,RuleGroup,226,,0,40,false,official_unmapped=79
 wafv2,WebACL,365,WebACL,310,,0,55,false,official_unmapped=37
 wafv2,WebACLAssociation,2,,0,WebACLAssociation,2,0,false,

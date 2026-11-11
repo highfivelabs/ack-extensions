@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLogsTransformer",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsTransformerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "logs:GetTransformer",
+        "logs:PutTransformer"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsTransformerRead",
+      "Effect": "Allow",
+      "Action": [
+        "logs:GetTransformer"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsTransformerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "logs:GetTransformer",
+        "logs:PutTransformer"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsTransformerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "logs:DeleteTransformer"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2NetworkPerformanceMetricSubscription",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2NetworkPerformanceMetricSubscriptionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeAwsNetworkPerformanceMetricSubscriptions",
+        "ec2:EnableAwsNetworkPerformanceMetricSubscription"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2NetworkPerformanceMetricSubscriptionRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeAwsNetworkPerformanceMetricSubscriptions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2NetworkPerformanceMetricSubscriptionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeAwsNetworkPerformanceMetricSubscriptions",
+        "ec2:DisableAwsNetworkPerformanceMetricSubscription"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

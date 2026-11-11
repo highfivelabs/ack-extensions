@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityHubStandard",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubStandardCreate",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:BatchEnableStandards",
+        "securityhub:GetEnabledStandards",
+        "securityhub:UpdateStandardsControl"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubStandardRead",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:DescribeStandardsControls",
+        "securityhub:GetEnabledStandards"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubStandardUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:GetEnabledStandards",
+        "securityhub:UpdateStandardsControl"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubStandardDelete",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:BatchDisableStandards",
+        "securityhub:GetEnabledStandards"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

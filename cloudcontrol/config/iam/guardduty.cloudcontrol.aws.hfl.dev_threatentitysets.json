@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGuardDutyThreatEntitySet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyThreatEntitySetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:CreateThreatEntitySet",
+        "guardduty:GetThreatEntitySet",
+        "guardduty:TagResource",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyThreatEntitySetRead",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:GetThreatEntitySet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyThreatEntitySetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:GetThreatEntitySet",
+        "guardduty:ListThreatEntitySets",
+        "guardduty:TagResource",
+        "guardduty:UntagResource",
+        "guardduty:UpdateThreatEntitySet",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyThreatEntitySetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:DeleteThreatEntitySet",
+        "guardduty:GetThreatEntitySet",
+        "guardduty:ListDetectors",
+        "guardduty:ListThreatEntitySets"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

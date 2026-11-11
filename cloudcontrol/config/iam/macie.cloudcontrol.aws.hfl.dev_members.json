@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMacieMember",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MacieMemberCreate",
+      "Effect": "Allow",
+      "Action": [
+        "macie2:CreateMember",
+        "macie2:GetMember",
+        "macie2:ListTagsForResource",
+        "macie2:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MacieMemberRead",
+      "Effect": "Allow",
+      "Action": [
+        "macie2:GetMember",
+        "macie2:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MacieMemberUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "macie2:GetMember",
+        "macie2:ListTagsForResource",
+        "macie2:TagResource",
+        "macie2:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MacieMemberDelete",
+      "Effect": "Allow",
+      "Action": [
+        "macie2:DeleteMember",
+        "macie2:GetMember",
+        "macie2:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

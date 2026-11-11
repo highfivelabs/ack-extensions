@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRolesAnywhereTrustAnchor",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RolesAnywhereTrustAnchorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "rolesanywhere:CreateTrustAnchor",
+        "rolesanywhere:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RolesAnywhereTrustAnchorRead",
+      "Effect": "Allow",
+      "Action": [
+        "rolesanywhere:GetTrustAnchor",
+        "rolesanywhere:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RolesAnywhereTrustAnchorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "acm-pca:GetCertificateAuthorityCertificate",
+        "rolesanywhere:DisableTrustAnchor",
+        "rolesanywhere:EnableTrustAnchor",
+        "rolesanywhere:GetTrustAnchor",
+        "rolesanywhere:ListTagsForResource",
+        "rolesanywhere:PutNotificationSettings",
+        "rolesanywhere:ResetNotificationSettings",
+        "rolesanywhere:TagResource",
+        "rolesanywhere:UntagResource",
+        "rolesanywhere:UpdateTrustAnchor"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RolesAnywhereTrustAnchorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "rolesanywhere:DeleteTrustAnchor"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

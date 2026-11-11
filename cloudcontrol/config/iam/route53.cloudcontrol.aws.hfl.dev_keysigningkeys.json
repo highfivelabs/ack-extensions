@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoute53KeySigningKey",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53KeySigningKeyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:GetPublicKey",
+        "kms:Sign",
+        "route53:CreateKeySigningKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53KeySigningKeyRead",
+      "Effect": "Allow",
+      "Action": [
+        "route53:GetDNSSEC"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53KeySigningKeyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:GetPublicKey",
+        "kms:Sign",
+        "route53:ActivateKeySigningKey",
+        "route53:DeactivateKeySigningKey",
+        "route53:GetDNSSEC"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53KeySigningKeyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:GetPublicKey",
+        "kms:Sign",
+        "route53:DeactivateKeySigningKey",
+        "route53:DeleteKeySigningKey"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

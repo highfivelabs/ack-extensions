@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2ClientVpnTargetNetworkAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2ClientVpnTargetNetworkAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AssociateClientVpnTargetNetwork",
+        "ec2:DescribeClientVpnTargetNetworks"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2ClientVpnTargetNetworkAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeClientVpnTargetNetworks"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2ClientVpnTargetNetworkAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeClientVpnTargetNetworks",
+        "ec2:DisassociateClientVpnTargetNetwork"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2CapacityManagerDataExport",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2CapacityManagerDataExportCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateCapacityManagerDataExport",
+        "ec2:CreateTags",
+        "ec2:DescribeCapacityManagerDataExports"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2CapacityManagerDataExportRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeCapacityManagerDataExports",
+        "ec2:DescribeTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2CapacityManagerDataExportUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeCapacityManagerDataExports"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2CapacityManagerDataExportDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteCapacityManagerDataExport",
+        "ec2:DeleteTags",
+        "ec2:DescribeCapacityManagerDataExports"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

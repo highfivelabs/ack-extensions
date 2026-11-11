@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMacieAllowList",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MacieAllowListCreate",
+      "Effect": "Allow",
+      "Action": [
+        "macie2:CreateAllowList",
+        "macie2:GetAllowList",
+        "macie2:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MacieAllowListRead",
+      "Effect": "Allow",
+      "Action": [
+        "macie2:GetAllowList"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MacieAllowListUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "macie2:GetAllowList",
+        "macie2:TagResource",
+        "macie2:UntagResource",
+        "macie2:UpdateAllowList"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MacieAllowListDelete",
+      "Effect": "Allow",
+      "Action": [
+        "macie2:DeleteAllowList"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

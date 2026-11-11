@@ -1,0 +1,116 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityLakeSubscriberNotification",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityLakeSubscriberNotificationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "events:CreateApiDestination",
+        "events:CreateConnection",
+        "events:CreateRule",
+        "events:DeleteApiDestination",
+        "events:DeleteConnection",
+        "events:DeleteRule",
+        "events:DescribeRule",
+        "events:ListApiDestinations",
+        "events:ListConnections",
+        "events:ListTargetsByRule",
+        "events:PutRule",
+        "events:PutTargets",
+        "events:RemoveTargets",
+        "events:UpdateApiDestination",
+        "events:UpdateConnection",
+        "iam:CreateServiceLinkedRole",
+        "iam:DeleteRolePolicy",
+        "iam:PassRole",
+        "iam:PutRolePolicy",
+        "s3:GetBucketNotification",
+        "s3:PutBucketNotification",
+        "secretsmanager:CreateSecret",
+        "securitylake:CreateDataLake",
+        "securitylake:CreateSubscriber",
+        "securitylake:CreateSubscriberNotification",
+        "securitylake:GetSubscriber",
+        "sqs:CreateQueue",
+        "sqs:GetQueueAttributes",
+        "sqs:GetQueueUrl",
+        "sqs:SetQueueAttributes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityLakeSubscriberNotificationRead",
+      "Effect": "Allow",
+      "Action": [
+        "securitylake:GetSubscriber"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityLakeSubscriberNotificationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "events:CreateApiDestination",
+        "events:CreateConnection",
+        "events:DeleteApiDestination",
+        "events:DeleteConnection",
+        "events:DeleteRule",
+        "events:DescribeRule",
+        "events:ListApiDestinations",
+        "events:ListConnections",
+        "events:ListTargetsByRule",
+        "events:PutRule",
+        "events:PutTargets",
+        "events:RemoveTargets",
+        "events:UpdateApiDestination",
+        "events:UpdateConnection",
+        "iam:CreateServiceLinkedRole",
+        "iam:DeleteRolePolicy",
+        "iam:PassRole",
+        "iam:PutRolePolicy",
+        "s3:GetBucketNotification",
+        "s3:GetBucketNotificationConfiguration",
+        "s3:PutBucketNotification",
+        "s3:PutBucketNotificationConfiguration",
+        "secretsmanager:CreateSecret",
+        "securitylake:GetSubscriber",
+        "securitylake:UpdateSubscriberNotification",
+        "sqs:CreateQueue",
+        "sqs:DeleteQueue",
+        "sqs:GetQueueAttributes",
+        "sqs:SetQueueAttributes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityLakeSubscriberNotificationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "events:DeleteApiDestination",
+        "events:DeleteConnection",
+        "events:DeleteRule",
+        "events:DescribeRule",
+        "events:ListTargetsByRule",
+        "events:RemoveTargets",
+        "iam:DeleteRole",
+        "iam:DeleteRolePolicy",
+        "securitylake:DeleteSubscriberNotification",
+        "securitylake:GetSubscriber",
+        "sqs:DeleteQueue"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

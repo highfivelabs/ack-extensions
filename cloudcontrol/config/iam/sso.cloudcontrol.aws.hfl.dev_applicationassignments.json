@@ -1,0 +1,42 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSSOApplicationAssignment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSOApplicationAssignmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sso:CreateApplicationAssignment",
+        "sso:DescribeApplicationAssignment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSOApplicationAssignmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "sso:DescribeApplicationAssignment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSOApplicationAssignmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sso:DeleteApplicationAssignment"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

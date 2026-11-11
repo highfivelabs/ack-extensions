@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlFMSResourceSet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FMSResourceSetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "fms:BatchAssociateResource",
+        "fms:ListResourceSetResources",
+        "fms:PutResourceSet",
+        "fms:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FMSResourceSetRead",
+      "Effect": "Allow",
+      "Action": [
+        "fms:GetResourceSet",
+        "fms:ListResourceSetResources",
+        "fms:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FMSResourceSetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "fms:BatchAssociateResource",
+        "fms:BatchDisassociateResource",
+        "fms:GetResourceSet",
+        "fms:ListResourceSetResources",
+        "fms:ListTagsForResource",
+        "fms:PutResourceSet",
+        "fms:TagResource",
+        "fms:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FMSResourceSetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "fms:DeleteResourceSet"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

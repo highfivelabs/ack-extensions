@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2RouteServer",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2RouteServerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateRouteServer",
+        "ec2:CreateTags",
+        "ec2:DescribeRouteServers",
+        "sns:CreateTopic"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2RouteServerRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRouteServers",
+        "ec2:DescribeTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2RouteServerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeRouteServers",
+        "ec2:DescribeTags",
+        "ec2:ModifyRouteServer",
+        "sns:CreateTopic",
+        "sns:DeleteTopic"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2RouteServerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteRouteServer",
+        "ec2:DeleteTags",
+        "ec2:DescribeRouteServers",
+        "ec2:DescribeTags",
+        "sns:DeleteTopic"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlFMSProtocolsList",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FMSProtocolsListCreate",
+      "Effect": "Allow",
+      "Action": [
+        "fms:PutProtocolsList",
+        "fms:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FMSProtocolsListRead",
+      "Effect": "Allow",
+      "Action": [
+        "fms:GetProtocolsList",
+        "fms:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FMSProtocolsListUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "fms:GetProtocolsList",
+        "fms:ListTagsForResource",
+        "fms:PutProtocolsList",
+        "fms:TagResource",
+        "fms:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FMSProtocolsListDelete",
+      "Effect": "Allow",
+      "Action": [
+        "fms:DeleteProtocolsList"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

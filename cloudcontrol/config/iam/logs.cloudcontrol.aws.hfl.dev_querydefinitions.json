@@ -1,0 +1,49 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLogsQueryDefinition",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsQueryDefinitionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "logs:PutQueryDefinition"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsQueryDefinitionRead",
+      "Effect": "Allow",
+      "Action": [
+        "logs:DescribeQueryDefinitions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsQueryDefinitionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "logs:PutQueryDefinition"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsQueryDefinitionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "logs:DeleteQueryDefinition"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityHubProductSubscription",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubProductSubscriptionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:EnableImportFindingsForProduct"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubProductSubscriptionRead",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:ListEnabledProductsForImport"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubProductSubscriptionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:DisableImportFindingsForProduct",
+        "securityhub:ListEnabledProductsForImport"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

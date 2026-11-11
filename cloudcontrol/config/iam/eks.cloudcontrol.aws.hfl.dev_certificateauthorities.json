@@ -1,0 +1,47 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEKSCertificateAuthority",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EKSCertificateAuthorityCreate",
+      "Effect": "Allow",
+      "Action": [
+        "eks:CreateCertificateAuthority",
+        "eks:DescribeCertificateAuthority",
+        "eks:DescribeUpdate",
+        "eks:ListCertificateAuthorities"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EKSCertificateAuthorityRead",
+      "Effect": "Allow",
+      "Action": [
+        "eks:DescribeCertificateAuthority"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EKSCertificateAuthorityDelete",
+      "Effect": "Allow",
+      "Action": [
+        "eks:DeleteCertificateAuthority",
+        "eks:DescribeCertificateAuthority",
+        "eks:DescribeUpdate",
+        "eks:ListCertificateAuthorities"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

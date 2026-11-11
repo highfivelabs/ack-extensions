@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGuardDutyCustomDetectionRuleAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyCustomDetectionRuleAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:CreateCustomDetectionRuleAssociation",
+        "guardduty:GetCustomDetectionRuleAssociation",
+        "guardduty:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyCustomDetectionRuleAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:GetCustomDetectionRuleAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyCustomDetectionRuleAssociationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:GetCustomDetectionRuleAssociation",
+        "guardduty:TagResource",
+        "guardduty:UntagResource",
+        "guardduty:UpdateCustomDetectionRuleAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyCustomDetectionRuleAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:DeleteCustomDetectionRuleAssociation",
+        "guardduty:GetCustomDetectionRuleAssociation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2RouteServerPropagation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2RouteServerPropagationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:EnableRouteServerPropagation",
+        "ec2:GetRouteServerPropagations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2RouteServerPropagationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:GetRouteServerPropagations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2RouteServerPropagationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DisableRouteServerPropagation",
+        "ec2:GetRouteServerPropagations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityLakeSubscriber",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityLakeSubscriberCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetDatabase",
+        "glue:GetTable",
+        "iam:CreateRole",
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole",
+        "iam:GetRolePolicy",
+        "iam:PutRolePolicy",
+        "lakeformation:GrantPermissions",
+        "lakeformation:ListPermissions",
+        "lakeformation:RegisterResource",
+        "lakeformation:RevokePermissions",
+        "ram:CreateResourceShare",
+        "ram:GetResourceShareAssociations",
+        "ram:GetResourceShares",
+        "ram:UpdateResourceShare",
+        "securitylake:CreateCustomLogSource",
+        "securitylake:CreateDataLake",
+        "securitylake:CreateSubscriber",
+        "securitylake:GetSubscriber",
+        "securitylake:ListSubscribers",
+        "securitylake:ListTagsForResource",
+        "securitylake:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityLakeSubscriberRead",
+      "Effect": "Allow",
+      "Action": [
+        "securitylake:GetSubscriber",
+        "securitylake:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityLakeSubscriberUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "events:CreateApiDestination",
+        "events:CreateConnection",
+        "events:DeleteApiDestination",
+        "events:DeleteConnection",
+        "events:DeleteRule",
+        "events:DescribeRule",
+        "events:ListApiDestinations",
+        "events:ListConnections",
+        "events:ListTargetsByRule",
+        "events:PutRule",
+        "events:PutTargets",
+        "events:RemoveTargets",
+        "events:UpdateApiDestination",
+        "events:UpdateConnection",
+        "glue:GetDatabase",
+        "glue:GetTable",
+        "iam:CreateRole",
+        "iam:DeleteRole",
+        "iam:DeleteRolePolicy",
+        "iam:GetRole",
+        "iam:ListAttachedRolePolicies",
+        "iam:ListRolePolicies",
+        "iam:PutRolePolicy",
+        "lakeformation:GrantPermissions",
+        "lakeformation:ListPermissions",
+        "lakeformation:RevokePermissions",
+        "ram:CreateResourceShare",
+        "ram:DeleteResourceShare",
+        "ram:GetResourceShareAssociations",
+        "ram:GetResourceShares",
+        "ram:UpdateResourceShare",
+        "securitylake:GetSubscriber",
+        "securitylake:ListTagsForResource",
+        "securitylake:TagResource",
+        "securitylake:UntagResource",
+        "securitylake:UpdateSubscriber"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityLakeSubscriberDelete",
+      "Effect": "Allow",
+      "Action": [
+        "events:DeleteApiDestination",
+        "events:DeleteConnection",
+        "events:DeleteRule",
+        "events:DescribeRule",
+        "events:ListApiDestinations",
+        "events:ListTargetsByRule",
+        "events:RemoveTargets",
+        "glue:GetTable",
+        "iam:DeleteRole",
+        "iam:DeleteRolePolicy",
+        "iam:GetRole",
+        "iam:ListAttachedRolePolicies",
+        "iam:ListRolePolicies",
+        "lakeformation:ListPermissions",
+        "lakeformation:RevokePermissions",
+        "ram:DeleteResourceShare",
+        "ram:GetResourceShares",
+        "securitylake:DeleteSubscriber",
+        "sqs:DeleteQueue",
+        "sqs:GetQueueUrl"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

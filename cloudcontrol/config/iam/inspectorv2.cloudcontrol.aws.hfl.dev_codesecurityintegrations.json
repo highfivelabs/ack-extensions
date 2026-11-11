@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlInspectorV2CodeSecurityIntegration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InspectorV2CodeSecurityIntegrationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "inspector2:CreateCodeSecurityIntegration",
+        "inspector2:GetCodeSecurityIntegration",
+        "inspector2:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InspectorV2CodeSecurityIntegrationRead",
+      "Effect": "Allow",
+      "Action": [
+        "inspector2:GetCodeSecurityIntegration",
+        "inspector2:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InspectorV2CodeSecurityIntegrationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "inspector2:GetCodeSecurityIntegration",
+        "inspector2:ListTagsForResource",
+        "inspector2:TagResource",
+        "inspector2:UntagResource",
+        "inspector2:UpdateCodeSecurityIntegration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InspectorV2CodeSecurityIntegrationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "inspector2:DeleteCodeSecurityIntegration",
+        "inspector2:GetCodeSecurityIntegration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

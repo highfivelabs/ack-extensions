@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2IPAMPrefixListResolver",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMPrefixListResolverCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateIpamPrefixListResolver",
+        "ec2:CreateTags",
+        "ec2:DescribeIpamPrefixListResolvers",
+        "ec2:GetIpamPrefixListResolverRules"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMPrefixListResolverRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeIpamPrefixListResolvers",
+        "ec2:GetIpamPrefixListResolverRules"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMPrefixListResolverUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeIpamPrefixListResolvers",
+        "ec2:GetIpamPrefixListResolverRules",
+        "ec2:ModifyIpamPrefixListResolver"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMPrefixListResolverDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteIpamPrefixListResolver",
+        "ec2:DeleteTags",
+        "ec2:DescribeIpamPrefixListResolvers"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -273,7 +273,33 @@ func TestOrganizationsOrganization(t *testing.T) {
 		}
 	})
 
-	t.Run("changes outside Kubernetes are put back", func(t *testing.T) {
+	// statusIs waits for the owned and unmanaged status lists (A3), each
+	// sorted and comma-joined: policy types, then service principals.
+	statusIs := func(t *testing.T, ownedTypes, unmanagedTypes, ownedPrincipals, unmanagedPrincipals string) {
+		t.Helper()
+		want := []string{ownedTypes, unmanagedTypes, ownedPrincipals, unmanagedPrincipals}
+		harness.Eventually(t, 60*time.Second, fmt.Sprintf("owned and unmanaged %q", want), func() error {
+			o := &orgv1.Organization{}
+			if err := env.Client.Get(ctx, client.ObjectKeyFromObject(managed), o); err != nil {
+				return err
+			}
+			got := []string{}
+			for _, l := range [][]*string{o.Status.OwnedEnabledPolicyTypes, o.Status.UnmanagedEnabledPolicyTypes, o.Status.OwnedAWSServiceAccessPrincipals, o.Status.UnmanagedAWSServiceAccessPrincipals} {
+				got = append(got, strings.Join(aws.ToStringSlice(l), ","))
+			}
+			if strings.Join(got, "|") != strings.Join(want, "|") {
+				return fmt.Errorf("owned and unmanaged %q", got)
+			}
+			return nil
+		})
+	}
+	const backup = "BACKUP_POLICY"
+
+	t.Run("the adopted entries are owned, and nothing is unmanaged", func(t *testing.T) {
+		statusIs(t, scp+","+tag, "", guardduty+","+sso, "")
+	})
+
+	t.Run("a listed entry disabled outside Kubernetes is put back", func(t *testing.T) {
 		got := &orgv1.Organization{}
 		if err := env.Client.Get(ctx, client.ObjectKeyFromObject(managed), got); err != nil {
 			t.Fatal(err)
@@ -281,20 +307,44 @@ func TestOrganizationsOrganization(t *testing.T) {
 		if _, err := cloud.DisablePolicyType(ctx, &organizations.DisablePolicyTypeInput{RootId: got.Status.RootID, PolicyType: tag}); err != nil {
 			t.Fatal(err)
 		}
-		if _, err := cloud.EnableAWSServiceAccess(ctx, &organizations.EnableAWSServiceAccessInput{ServicePrincipal: aws.String(config)}); err != nil {
-			t.Fatal(err)
-		}
 		cloudIs(t, scp+","+tag, guardduty+","+sso)
 	})
 
-	t.Run("an entry taken off a list is disabled", func(t *testing.T) {
+	t.Run("entries enabled outside Kubernetes are kept and reported for import", func(t *testing.T) {
+		got := &orgv1.Organization{}
+		if err := env.Client.Get(ctx, client.ObjectKeyFromObject(managed), got); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := cloud.EnablePolicyType(ctx, &organizations.EnablePolicyTypeInput{RootId: got.Status.RootID, PolicyType: backup}); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := cloud.EnableAWSServiceAccess(ctx, &organizations.EnableAWSServiceAccessInput{ServicePrincipal: aws.String(config)}); err != nil {
+			t.Fatal(err)
+		}
+		statusIs(t, scp+","+tag, backup, guardduty+","+sso, config)
+		time.Sleep(15 * time.Second) // three resyncs: still there
+		cloudIs(t, backup+","+scp+","+tag, config+","+guardduty+","+sso)
+		statusIs(t, scp+","+tag, backup, guardduty+","+sso, config)
+	})
+
+	t.Run("listing an unmanaged entry takes it on", func(t *testing.T) {
+		harness.Eventually(t, 30*time.Second, "spec updated", func() error {
+			return update(managed, func(o *orgv1.Organization) {
+				o.Spec.AWSServiceAccessPrincipals = aws.StringSlice([]string{guardduty, sso, config})
+			})
+		})
+		statusIs(t, scp+","+tag, backup, config+","+guardduty+","+sso, "")
+	})
+
+	t.Run("owned entries taken off a list are disabled, unmanaged ones kept", func(t *testing.T) {
 		harness.Eventually(t, 30*time.Second, "spec updated", func() error {
 			return update(managed, func(o *orgv1.Organization) {
 				o.Spec.EnabledPolicyTypes = aws.StringSlice([]string{scp})
 				o.Spec.AWSServiceAccessPrincipals = aws.StringSlice([]string{sso})
 			})
 		})
-		cloudIs(t, scp, sso)
+		cloudIs(t, backup+","+scp, sso)
+		statusIs(t, scp, backup, sso, "")
 	})
 
 	t.Run("delete leaves the organization as it is", func(t *testing.T) {
@@ -305,7 +355,7 @@ func TestOrganizationsOrganization(t *testing.T) {
 		if got := orgID(t); got != id {
 			t.Fatalf("the organization is %s, was %s", got, id)
 		}
-		cloudIs(t, scp, sso)
+		cloudIs(t, backup+","+scp, sso)
 		if strings.Contains(env.Logs(), "DeleteOrganization") {
 			t.Fatal("the controller logged a DeleteOrganization call")
 		}

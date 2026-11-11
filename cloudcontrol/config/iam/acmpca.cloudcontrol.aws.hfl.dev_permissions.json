@@ -1,0 +1,42 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlACMPCAPermission",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ACMPCAPermissionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "acm-pca:CreatePermission",
+        "acm-pca:ListPermissions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ACMPCAPermissionRead",
+      "Effect": "Allow",
+      "Action": [
+        "acm-pca:ListPermissions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ACMPCAPermissionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "acm-pca:DeletePermission"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

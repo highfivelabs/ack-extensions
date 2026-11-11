@@ -1,0 +1,46 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityHubDelegatedAdmin",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubDelegatedAdminCreate",
+      "Effect": "Allow",
+      "Action": [
+        "organizations:DescribeOrganization",
+        "organizations:EnableAWSServiceAccess",
+        "organizations:RegisterDelegatedAdministrator",
+        "securityhub:EnableOrganizationAdminAccount"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubDelegatedAdminRead",
+      "Effect": "Allow",
+      "Action": [
+        "organizations:DescribeOrganization",
+        "securityhub:ListOrganizationAdminAccounts"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubDelegatedAdminDelete",
+      "Effect": "Allow",
+      "Action": [
+        "organizations:DescribeOrganization",
+        "securityhub:DisableOrganizationAdminAccount"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

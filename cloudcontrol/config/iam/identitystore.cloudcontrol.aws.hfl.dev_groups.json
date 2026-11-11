@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIdentityStoreGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IdentityStoreGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "identitystore:CreateGroup",
+        "identitystore:DescribeGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IdentityStoreGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "identitystore:DescribeGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IdentityStoreGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "identitystore:DescribeGroup",
+        "identitystore:UpdateGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IdentityStoreGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "identitystore:DeleteGroup",
+        "identitystore:DescribeGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

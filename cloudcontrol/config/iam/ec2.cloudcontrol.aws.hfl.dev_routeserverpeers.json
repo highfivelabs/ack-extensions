@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2RouteServerPeer",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2RouteServerPeerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AuthorizeSecurityGroupIngress",
+        "ec2:CreateRouteServerPeer",
+        "ec2:CreateTags",
+        "ec2:DescribeRouteServerPeers"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2RouteServerPeerRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRouteServerPeers",
+        "ec2:DescribeTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2RouteServerPeerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeRouteServerPeers",
+        "ec2:DescribeTags",
+        "ec2:ModifyRouteServerPeer"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2RouteServerPeerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteRouteServerPeer",
+        "ec2:DeleteTags",
+        "ec2:DescribeRouteServerPeers",
+        "ec2:DescribeTags",
+        "ec2:RevokeSecurityGroupIngress"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

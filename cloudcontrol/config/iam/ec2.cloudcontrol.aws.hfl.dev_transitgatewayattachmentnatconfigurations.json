@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2TransitGatewayAttachmentNatConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayAttachmentNatConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:GetTransitGatewayAttachmentNatConfiguration",
+        "ec2:ModifyTransitGatewayAttachmentNatConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayAttachmentNatConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:GetTransitGatewayAttachmentNatConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayAttachmentNatConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:GetTransitGatewayAttachmentNatConfiguration",
+        "ec2:ModifyTransitGatewayAttachmentNatConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayAttachmentNatConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:GetTransitGatewayAttachmentNatConfiguration",
+        "ec2:ModifyTransitGatewayAttachmentNatConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

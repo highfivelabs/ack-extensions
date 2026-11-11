@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWAFv2RegexPatternSet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WAFv2RegexPatternSetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "wafv2:CreateRegexPatternSet",
+        "wafv2:GetRegexPatternSet",
+        "wafv2:ListTagsForResource",
+        "wafv2:TagResource",
+        "wafv2:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WAFv2RegexPatternSetRead",
+      "Effect": "Allow",
+      "Action": [
+        "wafv2:GetRegexPatternSet",
+        "wafv2:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WAFv2RegexPatternSetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "wafv2:GetRegexPatternSet",
+        "wafv2:ListTagsForResource",
+        "wafv2:TagResource",
+        "wafv2:UntagResource",
+        "wafv2:UpdateRegexPatternSet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WAFv2RegexPatternSetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "wafv2:DeleteRegexPatternSet",
+        "wafv2:GetRegexPatternSet"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2NetworkInsightsAccessScopeAnalysis",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2NetworkInsightsAccessScopeAnalysisCreate",
+      "Effect": "Allow",
+      "Action": [
+        "directconnect:Describe*",
+        "ec2:CreateTags",
+        "ec2:Describe*",
+        "ec2:GetTransitGatewayRouteTablePropagations",
+        "ec2:StartNetworkInsightsAccessScopeAnalysis",
+        "elasticloadbalancing:Describe*",
+        "tiros:CreateQuery",
+        "tiros:GetQueryAnswer",
+        "tiros:GetQueryExplanation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2NetworkInsightsAccessScopeAnalysisRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeNetworkInsightsAccessScopeAnalyses"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2NetworkInsightsAccessScopeAnalysisUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeNetworkInsightsAccessScopeAnalyses"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2NetworkInsightsAccessScopeAnalysisDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteNetworkInsightsAccessScopeAnalysis",
+        "ec2:DeleteTags"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityHubPolicyAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubPolicyAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:GetConfigurationPolicyAssociation",
+        "securityhub:StartConfigurationPolicyAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubPolicyAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:GetConfigurationPolicyAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubPolicyAssociationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:GetConfigurationPolicyAssociation",
+        "securityhub:StartConfigurationPolicyAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubPolicyAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:GetConfigurationPolicyAssociation",
+        "securityhub:StartConfigurationPolicyDisassociation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
