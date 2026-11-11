@@ -32,7 +32,8 @@ import (
 // What it fills, unverified on real AWS:
 //
 //   - each top-level read-only property of type string, integer, number
-//     or boolean: an ARN-shaped string for a name ending in Arn, a
+//     or boolean: the first value of its enum if it has one; else an
+//     ARN-shaped string for a name ending in Arn, a
 //     "<resource>-<n>" for any other string, n for a number, true for a
 //     boolean;
 //   - a writable primary identifier the model leaves out (CloudFormation
@@ -79,6 +80,11 @@ func (b *SchemaStore) value(name string, n int) any {
 		return nil
 	}
 	p, _ = b.Schema.Resolve(p)
+	if len(p.Enum) > 0 {
+		// The CRD's status keeps the schema's enum: a value outside it
+		// is refused by the API server.
+		return p.Enum[0]
+	}
 	switch p.Type.Single() {
 	case "string", "":
 		res := strings.ToLower(b.Schema.Resource())
