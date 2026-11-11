@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2IPAMScope",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMScopeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateIpamScope",
+        "ec2:CreateTags",
+        "ec2:DescribeIpamScopes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMScopeRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeIpamScopes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMScopeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeIpamScopes",
+        "ec2:ModifyIpamScope"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMScopeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteIpamScope",
+        "ec2:DeleteTags",
+        "ec2:DescribeIpamScopes"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

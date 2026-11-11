@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2IPAMPool",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMPoolCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateIpamPool",
+        "ec2:CreateTags",
+        "ec2:DescribeIpamPools",
+        "ec2:GetIpamPoolCidrs",
+        "ec2:ProvisionIpamPoolCidr"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMPoolRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeIpamPools",
+        "ec2:GetIpamPoolCidrs"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMPoolUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DeprovisionIpamPoolCidr",
+        "ec2:DescribeIpamPools",
+        "ec2:GetIpamPoolCidrs",
+        "ec2:ModifyIpamPool",
+        "ec2:ProvisionIpamPoolCidr"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMPoolDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteIpamPool",
+        "ec2:DeleteTags",
+        "ec2:DeprovisionIpamPoolCidr",
+        "ec2:DescribeIpamPools",
+        "ec2:GetIpamPoolCidrs"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

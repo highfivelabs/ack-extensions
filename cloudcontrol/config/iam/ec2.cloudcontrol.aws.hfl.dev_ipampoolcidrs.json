@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2IPAMPoolCidr",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMPoolCidrCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:GetIpamPoolCidrs",
+        "ec2:ProvisionIpamPoolCidr"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMPoolCidrRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:GetIpamPoolCidrs"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMPoolCidrDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeprovisionIpamPoolCidr",
+        "ec2:GetIpamPoolCidrs"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

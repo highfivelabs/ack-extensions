@@ -367,3 +367,145 @@ types:
     unproven: "no moto backend yet (moto 5.2.5 has ssoadmin); on the schema fake only"
   - typeName: AWS::SSO::ApplicationAssignment
     unproven: "no moto backend yet (moto 5.2.5 has ssoadmin); on the schema fake only"
+  # Batch 11 (docs/throughput.md), EC2 networking: every gap type of EC2
+  # that ec2-controller v1.23.1 does not serve, is not a field of one of its
+  # kinds and is foundation (cloudcontrol/excluded.yaml has the rest, each
+  # with its reason): IPAM, VPC block public access, network interfaces,
+  # placement groups, CIDR reservations, Client VPN, traffic mirroring, the
+  # rest of Transit Gateway, Verified Access, Network Access Analyzer, route
+  # servers and more, added with hack/cloudcontrol-batch on 2026-11-11. On the
+  # schema fake until a moto backend or a live run proves them.
+  - typeName: AWS::EC2::ApplicationStatusCheck
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::CapacityManagerDataExport
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::ClientVpnAuthorizationRule
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::ClientVpnEndpoint
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::ClientVpnRoute
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::ClientVpnTargetNetworkAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::EIPAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::EnclaveCertificateIamRoleAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::GatewayRouteTableAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::InstanceConnectEndpoint
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::InstanceEventWindow
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::IPAM
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::IPAMAllocation
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::IpamExternalResourceVerificationToken
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::IpamInternetRegistryAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::IPAMPool
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::IPAMPoolCidr
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::IPAMPrefixListResolver
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::IPAMPrefixListResolverTarget
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::IPAMResourceDiscovery
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::IPAMResourceDiscoveryAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::IPAMScope
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::IpPoolRouteTableAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::NetworkInsightsAccessScope
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::NetworkInsightsAccessScopeAnalysis
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::NetworkInsightsAnalysis
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::NetworkInsightsPath
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::NetworkInterface
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::NetworkInterfaceAttachment
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::NetworkPerformanceMetricSubscription
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::PlacementGroup
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::RouteServer
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::RouteServerAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::RouteServerEndpoint
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::RouteServerPeer
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::RouteServerPropagation
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::SecondaryNetwork
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::SecurityGroupVpcAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::Snapshot
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::SnapshotBlockPublicAccess
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::SubnetCidrReservation
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::TrafficMirrorFilter
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::TrafficMirrorFilterRule
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::TrafficMirrorSession
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::TrafficMirrorTarget
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::TransitGatewayAttachmentNatConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::TransitGatewayConnect
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::TransitGatewayConnectPeer
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::TransitGatewayMeteringPolicy
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::TransitGatewayMeteringPolicyEntry
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::TransitGatewayMulticastDomain
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::TransitGatewayMulticastDomainAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::TransitGatewayMulticastGroupMember
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::TransitGatewayMulticastGroupSource
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::TransitGatewayPolicyTable
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::TransitGatewayPolicyTableAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::TransitGatewayPolicyTableEntry
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::VerifiedAccessEndpoint
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::VerifiedAccessGroup
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::VerifiedAccessInstance
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::VerifiedAccessTrustProvider
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+    # A native application's OIDC client secret.
+    secrets: [/properties/NativeApplicationOidcOptions/ClientSecret]
+  - typeName: AWS::EC2::VPCBlockPublicAccessExclusion
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::VPCBlockPublicAccessOptions
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::VPCEncryptionControl
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::VPCEndpointConnectionNotification
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::VPNConcentrator
+    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"

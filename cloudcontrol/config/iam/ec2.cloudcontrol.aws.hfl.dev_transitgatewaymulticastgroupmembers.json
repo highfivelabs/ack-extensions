@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2TransitGatewayMulticastGroupMember",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayMulticastGroupMemberCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:RegisterTransitGatewayMulticastGroupMembers",
+        "ec2:SearchTransitGatewayMulticastGroups"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayMulticastGroupMemberRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:SearchTransitGatewayMulticastGroups"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayMulticastGroupMemberDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeregisterTransitGatewayMulticastGroupMembers",
+        "ec2:SearchTransitGatewayMulticastGroups"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

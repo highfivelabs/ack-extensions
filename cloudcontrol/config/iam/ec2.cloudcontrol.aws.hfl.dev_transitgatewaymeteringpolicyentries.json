@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2TransitGatewayMeteringPolicyEntry",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayMeteringPolicyEntryCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTransitGatewayMeteringPolicyEntry",
+        "ec2:GetTransitGatewayMeteringPolicyEntries"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayMeteringPolicyEntryRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:GetTransitGatewayMeteringPolicyEntries"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayMeteringPolicyEntryDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteTransitGatewayMeteringPolicyEntry",
+        "ec2:GetTransitGatewayMeteringPolicyEntries"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

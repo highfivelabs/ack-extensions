@@ -1,0 +1,84 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2VerifiedAccessGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VerifiedAccessGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:CreateVerifiedAccessGroup",
+        "ec2:DescribeTags",
+        "ec2:DescribeVerifiedAccessGroups",
+        "ec2:GetVerifiedAccessGroupPolicy",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VerifiedAccessGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeTags",
+        "ec2:DescribeVerifiedAccessGroups",
+        "ec2:GetVerifiedAccessGroupPolicy",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VerifiedAccessGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeTags",
+        "ec2:DescribeVerifiedAccessGroups",
+        "ec2:GetVerifiedAccessGroupPolicy",
+        "ec2:ModifyVerifiedAccessGroup",
+        "ec2:ModifyVerifiedAccessGroupPolicy",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VerifiedAccessGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteTags",
+        "ec2:DeleteVerifiedAccessGroup",
+        "ec2:DescribeTags",
+        "ec2:DescribeVerifiedAccessGroups",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

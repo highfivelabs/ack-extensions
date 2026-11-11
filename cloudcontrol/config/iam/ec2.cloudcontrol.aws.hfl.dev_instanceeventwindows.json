@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2InstanceEventWindow",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2InstanceEventWindowCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateInstanceEventWindow",
+        "ec2:CreateTags",
+        "ec2:DescribeInstanceEventWindows"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2InstanceEventWindowRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeInstanceEventWindows"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2InstanceEventWindowUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeInstanceEventWindows",
+        "ec2:ModifyInstanceEventWindow"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2InstanceEventWindowDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteInstanceEventWindow",
+        "ec2:DescribeInstanceEventWindows"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

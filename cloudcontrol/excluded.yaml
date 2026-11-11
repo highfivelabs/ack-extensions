@@ -16,6 +16,7 @@ types:
   AWS::EC2::VPCDHCPOptionsAssociation: "ACK's DHCPOptions has vpc"
   AWS::EC2::SubnetNetworkAclAssociation: "ACK's NetworkACL has associations"
   AWS::EC2::VPCEndpointServicePermissions: "ACK's VPCEndpointServiceConfiguration has allowedPrincipals"
+  AWS::EC2::TransitGatewayAttachment: "the VPC attachment under its older name: ACK's TransitGatewayVPCAttachment"
   AWS::IAM::RolePolicy: "ACK's Role has inlinePolicies (plan question 1)"
   AWS::IAM::UserPolicy: "ACK's User has inlinePolicies (plan question 1)"
   AWS::IAM::GroupPolicy: "ACK's Group has inlinePolicies (plan question 1)"

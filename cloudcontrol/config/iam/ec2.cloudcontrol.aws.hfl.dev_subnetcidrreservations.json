@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2SubnetCidrReservation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2SubnetCidrReservationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateSubnetCidrReservation",
+        "ec2:CreateTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2SubnetCidrReservationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeTags",
+        "ec2:GetSubnetCidrReservations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2SubnetCidrReservationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeTags",
+        "ec2:GetSubnetCidrReservations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2SubnetCidrReservationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteSubnetCidrReservation",
+        "ec2:DescribeTags",
+        "ec2:GetSubnetCidrReservations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

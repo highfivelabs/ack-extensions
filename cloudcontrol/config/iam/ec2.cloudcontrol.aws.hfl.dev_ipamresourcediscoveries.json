@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2IPAMResourceDiscovery",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMResourceDiscoveryCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateIpamResourceDiscovery",
+        "ec2:CreateTags",
+        "ec2:DescribeIpamResourceDiscoveries",
+        "ec2:ModifyIpamResourceDiscovery",
+        "iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMResourceDiscoveryRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeIpamResourceDiscoveries"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMResourceDiscoveryUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeIpamResourceDiscoveries",
+        "ec2:ModifyIpamResourceDiscovery"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMResourceDiscoveryDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteIpamResourceDiscovery",
+        "ec2:DeleteTags",
+        "ec2:DescribeIpamResourceDiscoveries"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

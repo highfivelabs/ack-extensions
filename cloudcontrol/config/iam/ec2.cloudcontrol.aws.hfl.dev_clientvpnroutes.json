@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2ClientVpnRoute",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2ClientVpnRouteCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateClientVpnRoute",
+        "ec2:DescribeClientVpnRoutes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2ClientVpnRouteRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeClientVpnRoutes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2ClientVpnRouteDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteClientVpnRoute",
+        "ec2:DescribeClientVpnRoutes"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

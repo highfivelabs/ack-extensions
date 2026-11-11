@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2SecondaryNetwork",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2SecondaryNetworkCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateSecondaryNetwork",
+        "ec2:CreateTags",
+        "ec2:DescribeSecondaryNetworks"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2SecondaryNetworkRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeSecondaryNetworks",
+        "ec2:DescribeTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2SecondaryNetworkUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeSecondaryNetworks",
+        "ec2:DescribeTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2SecondaryNetworkDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteSecondaryNetwork",
+        "ec2:DescribeSecondaryNetworks",
+        "ec2:DescribeTags"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
