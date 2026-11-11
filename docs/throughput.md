@@ -106,9 +106,9 @@ Two limits reached on 2026-11-11, for the builder:
 - the live-test role holds 10 managed policies, IAM's default maximum
   (plan question 21): no type is added until it is answered;
 - GitHub Actions stopped starting jobs ("recent account payments have
-  failed or your spending limit needs to be increased"): #76 to #78 were
-  checked on an offload VM instead (`task check`, then
-  `task cloudcontrol:check` after fixes), the run IDs in each PR.
+  failed or your spending limit needs to be increased"): #76 to #78
+  passed on an offload VM (`task check`, then `task cloudcontrol:check`
+  after fixes; the run IDs are in each PR) and wait for CI to merge.
 
 Written in one session on 2026-11-11: 152 types in four pull requests,
 against 51 in the two days before. What is left of the foundation and
