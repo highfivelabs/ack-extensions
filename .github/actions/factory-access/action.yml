@@ -1,0 +1,62 @@
+# Copyright 2026 High Five Labs
+# SPDX-License-Identifier: Apache-2.0
+#
+# Read access to the private factory repository for the rest of the job, so
+# Task can fetch the remote include in Taskfile.yml (factory's
+# taskfiles/go.yml).
+#
+# The factory App (organization secrets FACTORY_APP_ID and
+# FACTORY_APP_PRIVATE_KEY, shared with this repository) mints an
+# installation token that may only read factory. Git gets it through
+# GIT_CONFIG_* in the job's environment: a URL rewrite for factory only,
+# nothing written to disk, and the token is masked in the log. A pull
+# request from a fork gets no secrets, so this step fails there.
+#
+# The calling job passes the two secrets as inputs (a composite action
+# cannot read secrets itself).
+name: factory-access
+description: Let git (and so Task's remote include) read highfivelabs/factory
+
+inputs:
+  app-id:
+    description: The factory App's ID (secrets.FACTORY_APP_ID)
+    required: true
+  private-key:
+    description: The factory App's private key (secrets.FACTORY_APP_PRIVATE_KEY)
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Factory secrets present
+      shell: bash
+      env:
+        APP_ID: ${{ inputs.app-id }}
+        KEY: ${{ inputs.private-key }}
+      run: |
+        if [[ -z "${APP_ID}" || -z "${KEY}" ]]; then
+          echo "::error::FACTORY_APP_ID / FACTORY_APP_PRIVATE_KEY are not available (a fork's pull request, or the organization secrets are not shared with this repository); Task cannot fetch factory's taskfiles."
+          exit 1
+        fi
+
+    - name: App token (read factory)
+      id: app
+      uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+      with:
+        app-id: ${{ inputs.app-id }}
+        private-key: ${{ inputs.private-key }}
+        owner: highfivelabs
+        repositories: factory
+        permission-contents: read
+
+    - name: Git reads factory with it
+      shell: bash
+      env:
+        TOKEN: ${{ steps.app.outputs.token }}
+      run: |
+        set -euo pipefail
+        {
+          echo "GIT_CONFIG_COUNT=1"
+          echo "GIT_CONFIG_KEY_0=url.https://x-access-token:${TOKEN}@github.com/highfivelabs/factory.insteadOf"
+          echo "GIT_CONFIG_VALUE_0=https://github.com/highfivelabs/factory"
+        } >> "${GITHUB_ENV}"
