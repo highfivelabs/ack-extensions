@@ -8,10 +8,10 @@ This directory measures how much of AWS is covered by Kubernetes kinds: by the c
 
 | | Resources | Attributes |
 | --- | ---: | ---: |
-| In the CloudFormation schemas (the denominator) | 1,875 | 85,773 |
-| Covered by an official ACK kind | 266 | 6,033 (7.0%) |
+| In the CloudFormation schemas (the denominator) | 1,878 | 85,831 |
+| Covered by an official ACK kind | 267 | 6,044 (7.0%) |
 | Covered by ours, beyond official | 226 | 2,320 (2.7%) |
-| Covered by neither | 1,383 | 77,420 (90.3%) |
+| Covered by neither | 1,385 | 77,467 (90.3%) |
 | Matched by the Terraform `aws` provider (estimate, [below](#terraform)) | | about 55,279 (64.4%), at least 41,864 (48.8%) |
 
 ## Files
@@ -55,16 +55,16 @@ Services do not matter equally: `quicksight` alone has more attributes than all 
 
 | Category | Services | Resources | ACK | Ours beyond | Attributes | ACK | Ours beyond | Terraform (estimate) |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 16 | 241 | 22.8% | 52.3% | 2,400 | 28.2% | 36.8% | ~51.5% (≥43.5%) |
+| platform-foundation | 16 | 241 | 22.8% | 52.3% | 2,418 | 28.0% | 36.5% | ~51.5% (≥43.5%) |
 | security-adjacent | 18 | 112 | 12.5% | 67.9% | 2,082 | 37.6% | 50.9% | ~74.1% (≥72.0%) |
-| application | 33 | 262 | 40.5% | 9.2% | 4,766 | 48.2% | 8.0% | ~50.8% (≥46.4%) |
-| other | 238 | 1,260 | 7.2% | 0.0% | 76,525 | 3.0% | 0.0% | ~65.4% (≥48.5%) |
+| application | 33 | 263 | 40.3% | 9.1% | 4,788 | 47.9% | 7.9% | ~50.8% (≥46.4%) |
+| other | 238 | 1,262 | 7.3% | 0.0% | 76,543 | 3.0% | 0.0% | ~65.4% (≥48.5%) |
 
 | Tier | Services | Resources | ACK | Ours beyond | Attributes | ACK | Ours beyond | Terraform (estimate) |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | 16 | 241 | 22.8% | 52.3% | 2,400 | 28.2% | 36.8% | ~51.5% (≥43.5%) |
-| 2 | 51 | 374 | 32.1% | 26.7% | 6,848 | 44.9% | 21.0% | ~57.9% (≥54.2%) |
-| 3 | 238 | 1,260 | 7.2% | 0.0% | 76,525 | 3.0% | 0.0% | ~65.4% (≥48.5%) |
+| 1 | 16 | 241 | 22.8% | 52.3% | 2,418 | 28.0% | 36.5% | ~51.5% (≥43.5%) |
+| 2 | 51 | 375 | 32.0% | 26.7% | 6,870 | 44.8% | 20.9% | ~57.9% (≥54.2%) |
+| 3 | 238 | 1,262 | 7.3% | 0.0% | 76,543 | 3.0% | 0.0% | ~65.4% (≥48.5%) |
 
 **The foundation gap report.** [foundation.md](foundation.md) ranks every resource of the platform-foundation and security-adjacent categories as a work queue for the kind agents: ACK coverage, ours, what is missing (whole resources first, then the attributes that matter), whether upstream has it or is building it (ACK controller releases, `generator.yaml` ignore lists, open pull requests and `community` issues, all read-only), how many of the 40 tracked terraform-aws-modules need it, whether moto 5.2.5 implements the API (we can only prove kinds against moto), a size estimate and the proposed kinds. Its numbers are regenerated; its research is `hack/coverage/foundation.yaml`.
 
@@ -80,7 +80,7 @@ Services do not matter equally: `quicksight` alone has more attributes than all 
 
 ## Method
 
-1. **Denominator.** The CloudFormation resource-schema zip for us-east-1 (every `AWS::*` resource type: 1,875 resources in 305 services, 85,773 writable attributes after removing 7,008 read-only leaves). `Alexa::ASK::Skill` is dropped. Resources with no writable property are kept (they count as resources, not attributes).
+1. **Denominator.** The CloudFormation resource-schema zip for us-east-1 (every `AWS::*` resource type: 1,878 resources in 305 services, 85,831 writable attributes after removing 7,020 read-only leaves). `Alexa::ASK::Skill` is dropped. Resources with no writable property are kept (they count as resources, not attributes).
 2. **Official.** For every ACK controller repository with a published GitHub release, the latest release's tag is resolved to a commit, and every CRD under `helm/crds/` (except ACK's own `services.k8s.aws` kinds, `FieldExport` and `IAMRoleSelector`) is read. The CRD's `spec` is walked the same way as a CloudFormation schema: leaves become dotted paths (ACK's `*Ref` reference fields are skipped, each stands for an ID field already counted; a `{name, namespace, key}` secret reference is one string).
 3. **Ours.** The same walk over this repository's `config/crds/bases/*.yaml`.
 4. **Which resource a kind is.** A kind is the CloudFormation resource of the same name in the same service (case and punctuation ignored: `VPCLink` is `VpcLink`). The service ids that differ are in `hack/coverage/mappings.yaml` (`acm` is `certificatemanager`, `eventbridge` is `events`, `sfn` is `stepfunctions`, `kafka` is `msk`, ...), as are the kinds whose name differs (`ElasticIPAddress` is `EIP`, `Policy` is `ManagedPolicy`) and the kinds with no CloudFormation resource. A kind of ours that is a *property* of a larger CloudFormation resource is mapped to that resource and its properties: `applicationautoscaling` `ScheduledAction` to `ScalableTarget.ScheduledActions[]`, `LoginProfile` to `User.LoginProfile`, `UserGroupMembership` to `User.Groups[]`, `RolePolicyAttachment` to `Role.ManagedPolicyArns[]`, `DBProxyTarget` to `DBProxyTargetGroup`, `DBRoleAssociation` to `DBCluster` and `DBInstance` `.AssociatedRoles[]`; the resource row says so in `notes`.
@@ -88,7 +88,7 @@ Services do not matter equally: `quicksight` alone has more attributes than all 
 
 | Tier | Rule | Official | Ours |
 | --- | --- | ---: | ---: |
-| `exact` | the same path, names compared lower-cased without punctuation, `[]` and `{}` kept (`DBInstanceClass` and `dbInstanceClass`; ACK's `{quantity, items[]}` wrappers count as the list) | 5,174 | 2,265 |
+| `exact` | the same path, names compared lower-cased without punctuation, `[]` and `{}` kept (`DBInstanceClass` and `dbInstanceClass`; ACK's `{quantity, items[]}` wrappers count as the list) | 5,185 | 2,265 |
 | `alias` | a path-prefix rename written by hand in `mappings.yaml` (`ingressRules[]` is `SecurityGroupIngress[]`) | 145 | 25 |
 | `tags-map` | CloudFormation's `Tags[].Key` and `Tags[].Value` against ACK's `tags{}` map | 74 | 0 |
 | `free-form` | the CRD takes a free-form value (`x-kubernetes-preserve-unknown-fields`) above the CloudFormation path, so it covers everything under it | 0 | 0 |
@@ -125,85 +125,85 @@ hack/coverage/run.sh -terraform-pin <catalog commit>   # reads $CATALOG_DIR (def
 
 ## Pinned sources
 
-**CloudFormation resource schemas.** `https://schema.cloudformation.us-east-1.amazonaws.com/CloudformationSchema.zip` (region us-east-1), fetched 2026-11-09 (`Last-Modified: Mon, 09 Nov 2026 14:29:07 GMT`), 3,320,086 bytes, sha256 `680b184be4a9fc0d936a2efc044388eb2044ea8b402777c2aece1c0449a60f1f`. AWS rebuilds the file at that URL every hour, so it cannot reproduce an old pin; the pinned copy is committed as [`inputs/CloudformationSchema.zip`](inputs/CloudformationSchema.zip) and the generator refuses a copy whose checksum differs from this one.
+**CloudFormation resource schemas.** `https://schema.cloudformation.us-east-1.amazonaws.com/CloudformationSchema.zip` (region us-east-1), fetched 2026-11-11 (`Last-Modified: Wed, 11 Nov 2026 08:29:08 GMT`), 3,328,898 bytes, sha256 `f3b504c11e5941f8608d46b419a68f7044fdad1e8977b25bd6ee80c49532367e`. AWS rebuilds the file at that URL every hour, so it cannot reproduce an old pin; the pinned copy is committed as [`inputs/CloudformationSchema.zip`](inputs/CloudformationSchema.zip) and the generator refuses a copy whose checksum differs from this one.
 
-**ACK controllers.** aws-controllers-k8s, resolved 2026-11-09: the latest GitHub release of every `*-controller` repository that has one and has CRDs. Source: `https://raw.githubusercontent.com/aws-controllers-k8s/<repo>/<commit>/helm/crds/<file>`; the commit is the release tag resolved at the time (tags can move; commits cannot). The same table, with each CRD's path, is [sources.yaml](sources.yaml).
+**ACK controllers.** aws-controllers-k8s, resolved 2026-11-11: the latest GitHub release of every `*-controller` repository that has one and has CRDs. Source: `https://raw.githubusercontent.com/aws-controllers-k8s/<repo>/<commit>/helm/crds/<file>`; the commit is the release tag resolved at the time (tags can move; commits cannot). The same table, with each CRD's path, is [sources.yaml](sources.yaml).
 
 | Controller | Release | Commit | CRDs |
 | --- | --- | --- | ---: |
-| `acm` | `v1.11.0` | `ae641dedff0e` | 4 |
-| `acmpca` | `v1.7.0` | `ff72856735e7` | 3 |
-| `apigateway` | `v1.11.0` | `18216b0feadb` | 11 |
-| `apigatewayv2` | `v1.8.0` | `caaa3d6be8e7` | 9 |
-| `applicationautoscaling` | `v1.9.0` | `009baef3a28e` | 2 |
-| `athena` | `v1.10.0` | `f9c64997c47f` | 3 |
-| `autoscaling` | `v1.5.0` | `56316c75a5da` | 1 |
-| `backup` | `v1.5.0` | `a93a17dd5b9d` | 4 |
-| `bedrock` | `v1.6.1` | `2cc3a6dc3994` | 1 |
-| `bedrockagent` | `v1.6.1` | `c4f6318d8719` | 1 |
-| `bedrockagentcorecontrol` | `v1.19.0` | `815147e8d9be` | 15 |
-| `cloudfront` | `v1.10.1` | `6b828699fe89` | 9 |
-| `cloudtrail` | `v1.9.1` | `ff9ac850b74c` | 2 |
-| `cloudwatch` | `v1.11.0` | `091119726675` | 3 |
-| `cloudwatchlogs` | `v1.10.0` | `01e3ea012e97` | 6 |
-| `codeartifact` | `v1.9.0` | `b53d3e5b3866` | 2 |
-| `cognitoidentityprovider` | `v1.9.0` | `fdf136d9cc65` | 3 |
-| `dms` | `v0.4.1` | `2936ff05b5e1` | 6 |
-| `documentdb` | `v1.9.1` | `de61ced2d2af` | 3 |
-| `dsql` | `v1.4.0` | `881f8c7b2a79` | 1 |
-| `dynamodb` | `v1.14.2` | `2fcea71a4f8d` | 3 |
-| `ec2` | `v1.23.1` | `9303654c2cff` | 20 |
-| `ecr` | `v1.11.1` | `72590cedeb2a` | 3 |
-| `ecrpublic` | `v1.7.0` | `898fd47a6364` | 1 |
-| `ecs` | `v1.9.2` | `92029ad47285` | 4 |
-| `efs` | `v1.8.0` | `1ebcaad2c889` | 3 |
-| `eks` | `v1.26.0` | `2549d1be1a9f` | 8 |
-| `elasticache` | `v1.12.0` | `c1c4c0897b82` | 9 |
+| `acm` | `v1.12.0` | `2e79afdeb1a0` | 4 |
+| `acmpca` | `v1.8.0` | `6f341a5f4921` | 3 |
+| `apigateway` | `v1.12.0` | `35139aecd06c` | 11 |
+| `apigatewayv2` | `v1.9.0` | `4e95251285d9` | 9 |
+| `applicationautoscaling` | `v1.10.0` | `9b2c47e3be3d` | 2 |
+| `athena` | `v1.11.0` | `1ad50a974e0b` | 3 |
+| `autoscaling` | `v1.6.0` | `599c0339c810` | 1 |
+| `backup` | `v1.6.0` | `dd3be32dde39` | 4 |
+| `bedrock` | `v1.7.0` | `cef174b6fc8a` | 1 |
+| `bedrockagent` | `v1.7.0` | `06721373416e` | 1 |
+| `bedrockagentcorecontrol` | `v1.20.0` | `889f4d94c4ed` | 15 |
+| `cloudfront` | `v1.11.0` | `753248487a02` | 9 |
+| `cloudtrail` | `v1.10.0` | `2cffdfa083fc` | 2 |
+| `cloudwatch` | `v1.12.0` | `0071b37b7092` | 3 |
+| `cloudwatchlogs` | `v1.11.0` | `7f4e9382b1af` | 6 |
+| `codeartifact` | `v1.10.0` | `acacff33f396` | 2 |
+| `cognitoidentityprovider` | `v1.10.0` | `51377384d67d` | 3 |
+| `dms` | `v0.5.0` | `1c0531044d31` | 6 |
+| `documentdb` | `v1.10.0` | `2be40623f804` | 3 |
+| `dsql` | `v1.5.0` | `d3fdc30fbd5f` | 1 |
+| `dynamodb` | `v1.15.0` | `978c36e12600` | 3 |
+| `ec2` | `v1.24.0` | `768e23f6dbfe` | 20 |
+| `ecr` | `v1.12.0` | `5f811463e4fa` | 3 |
+| `ecrpublic` | `v1.8.0` | `fb130dc9f7a9` | 1 |
+| `ecs` | `v1.10.0` | `1bd704ef2761` | 4 |
+| `efs` | `v1.9.0` | `4bea998f5732` | 3 |
+| `eks` | `v1.27.0` | `ada5fe1f62d1` | 8 |
+| `elasticache` | `v1.13.0` | `2c1bbfbc231a` | 9 |
 | `elasticsearchservice` (archived) | `v0.0.2` | `3795a9e83b6b` | 1 |
-| `elbv2` | `v1.9.0` | `7d61ceb05889` | 4 |
-| `emr` | `v0.4.0` | `1984027b07e9` | 1 |
-| `emrcontainers` | `v1.9.1` | `0ab646c9019f` | 2 |
-| `emrserverless` | `v1.4.0` | `5636b5872355` | 1 |
-| `eventbridge` | `v1.9.2` | `fd084a0bb4d9` | 4 |
-| `firehose` | `v0.8.1` | `94370bbdcff7` | 1 |
-| `fsx` | `v0.1.0` | `9a6169c615d7` | 1 |
-| `glue` | `v1.5.1` | `8a15585c298e` | 2 |
-| `iam` | `v1.11.3` | `538aed660e54` | 7 |
-| `kafka` | `v1.14.0` | `7264a328ebd2` | 4 |
-| `keyspaces` | `v1.8.0` | `825adddd4808` | 2 |
-| `kinesis` | `v1.7.1` | `c7db9f4b1ea6` | 1 |
-| `kms` | `v1.7.0` | `57250fba83d5` | 3 |
-| `lambda` | `v1.19.0` | `86905357482d` | 7 |
-| `lambdamicrovms` | `v0.5.0` | `8e1a846d687d` | 2 |
-| `memorydb` | `v1.9.0` | `8b533f3b1260` | 7 |
-| `mq` | `v1.8.0` | `04843758bdfa` | 1 |
-| `mwaa` | `v1.4.0` | `74ae20c95d10` | 1 |
-| `mwaaserverless` | `v0.3.0` | `f32be4950789` | 1 |
-| `networkfirewall` | `v1.7.0` | `6d7cec5f8948` | 3 |
-| `opensearchserverless` | `v1.6.0` | `a382e4ea3f73` | 4 |
-| `opensearchservice` | `v1.9.0` | `ffa3379859d8` | 3 |
-| `organizations` | `v1.7.0` | `5824700fd75e` | 2 |
-| `pipes` | `v1.8.0` | `08b598079c25` | 1 |
-| `prometheusservice` | `v1.9.0` | `267b34a7c955` | 4 |
-| `quicksight` | `v1.3.0` | `789879cdb66e` | 4 |
-| `ram` | `v1.7.0` | `97f62cacffe7` | 2 |
-| `rds` | `v1.14.2` | `8ee2451cc31e` | 10 |
-| `recyclebin` | `v1.7.1` | `93bb615ab6cf` | 1 |
-| `route53` | `v1.8.0` | `73c2b0e3ccf4` | 3 |
-| `route53resolver` | `v1.11.0` | `3b7ef2f717c4` | 5 |
-| `s3` | `v1.15.0` | `e679633287f9` | 1 |
-| `s3control` | `v1.9.0` | `2ee9ccbfaaaa` | 1 |
-| `s3files` | `v1.4.0` | `65bf22917a90` | 3 |
-| `s3tables` | `v1.4.0` | `1b42f56b0091` | 3 |
-| `s3vectors` | `v1.4.0` | `90f3dd3381ed` | 2 |
-| `sagemaker` | `v1.12.0` | `7971daf9fe2c` | 26 |
-| `secretsmanager` | `v1.8.2` | `dc099cdc08aa` | 1 |
-| `ses` | `v1.7.0` | `8ff0d7061de0` | 1 |
-| `sfn` | `v1.9.1` | `8de3cc822d99` | 3 |
-| `sns` | `v1.13.0` | `a1f0e5b19582` | 4 |
-| `sqs` | `v1.9.0` | `0810c99dd5b0` | 1 |
-| `ssm` | `v1.8.0` | `d07ea0193aef` | 4 |
-| `wafv2` | `v1.8.1` | `d910e96f94d5` | 3 |
+| `elbv2` | `v1.10.0` | `03c52d6cd111` | 4 |
+| `emr` | `v0.5.0` | `c7aa068d4666` | 1 |
+| `emrcontainers` | `v1.10.0` | `ba51117a32b8` | 2 |
+| `emrserverless` | `v1.5.0` | `9e9ce3ebc925` | 1 |
+| `eventbridge` | `v1.10.0` | `8ac05cf68e68` | 4 |
+| `firehose` | `v0.9.0` | `2a8582664716` | 1 |
+| `fsx` | `v0.2.0` | `543e06d98e21` | 1 |
+| `glue` | `v1.6.0` | `923e6003d80e` | 2 |
+| `iam` | `v1.12.0` | `b79515035ef3` | 7 |
+| `kafka` | `v1.15.0` | `dc1556913489` | 4 |
+| `keyspaces` | `v1.9.0` | `9e6c748d8aea` | 2 |
+| `kinesis` | `v1.8.0` | `9d5de374ea5d` | 1 |
+| `kms` | `v1.8.0` | `bcba1ede0511` | 3 |
+| `lambda` | `v1.20.0` | `b668b24f5c31` | 7 |
+| `lambdamicrovms` | `v0.6.0` | `5a6d93664527` | 2 |
+| `memorydb` | `v1.10.0` | `f0979d55d665` | 7 |
+| `mq` | `v1.9.0` | `6322d9eb0a63` | 1 |
+| `mwaa` | `v1.5.0` | `1fabf6af793c` | 1 |
+| `mwaaserverless` | `v0.4.0` | `67de476911c8` | 1 |
+| `networkfirewall` | `v1.8.0` | `4756924349a0` | 3 |
+| `opensearchserverless` | `v1.7.0` | `97faad3dcddc` | 5 |
+| `opensearchservice` | `v1.10.0` | `a2f082f1ec1d` | 3 |
+| `organizations` | `v1.8.0` | `ee1333179881` | 2 |
+| `pipes` | `v1.9.0` | `f9438aa679d9` | 1 |
+| `prometheusservice` | `v1.10.0` | `c9b7d2ea3cc6` | 4 |
+| `quicksight` | `v1.4.0` | `7bb79d3afd26` | 4 |
+| `ram` | `v1.8.0` | `9f807c3c84d8` | 2 |
+| `rds` | `v1.15.0` | `b9a72c3e6346` | 10 |
+| `recyclebin` | `v1.8.0` | `c91585aa037d` | 1 |
+| `route53` | `v1.9.0` | `723b554dd2c8` | 3 |
+| `route53resolver` | `v1.12.0` | `ba0627950af8` | 5 |
+| `s3` | `v1.16.0` | `b01d9c1cd40c` | 1 |
+| `s3control` | `v1.10.0` | `fffb49fc6f75` | 1 |
+| `s3files` | `v1.5.0` | `571c86dff5f4` | 3 |
+| `s3tables` | `v1.5.0` | `cebd6e59a115` | 3 |
+| `s3vectors` | `v1.5.0` | `904f7cd007e9` | 2 |
+| `sagemaker` | `v1.13.0` | `21eafe41edeb` | 26 |
+| `secretsmanager` | `v1.9.0` | `9430ae61bfca` | 1 |
+| `ses` | `v1.8.0` | `094d46a3303f` | 1 |
+| `sfn` | `v1.10.0` | `19ee9fc8ca53` | 3 |
+| `sns` | `v1.14.0` | `c6109e956053` | 4 |
+| `sqs` | `v1.10.0` | `3a05c88b64da` | 1 |
+| `ssm` | `v1.9.0` | `85b088d12968` | 4 |
+| `wafv2` | `v1.9.0` | `59a950a8c80f` | 3 |
 
 No release (or none with CRDs), so counted as covering nothing officially: `amg`, `appconfig`, `batch`, `billing`, `budgets`, `cloudwatchevents`, `cognitoidentity`, `drs`, `ebs`, `globalaccelerator`, `lakeformation`, `lambdacore`, `networkmanager`, `redshift`, `rolesanywhere`, `servicecatalog`, `ssoadmin`, `transfer`, `vpclattice`, `workspacesapplications`.
 
@@ -211,7 +211,7 @@ This repository's own pins (`UPSTREAM.md`) cover only a few of these controllers
 
 ## Known error and caveats
 
-- **Unmapped.** Of the 7,536 spec paths in the 266 official CRDs mapped to a CloudFormation resource, 1,524 matched no CloudFormation property (**unmapped = 1,524**). Some are ACK-only fields (`clientRequestToken`, cross-resource helpers, fields ACK takes from the SDK that CloudFormation lacks); the rest are renames the matcher missed. Ours: 29 of 2,359 spec paths unmapped. Both are listed per resource as `official_unmapped` and `ours_unmapped` in `resources.csv` and per attribute by `-explain`.
+- **Unmapped.** Of the 7,547 spec paths in the 267 official CRDs mapped to a CloudFormation resource, 1,524 matched no CloudFormation property (**unmapped = 1,524**). Some are ACK-only fields (`clientRequestToken`, cross-resource helpers, fields ACK takes from the SDK that CloudFormation lacks); the rest are renames the matcher missed. Ours: 29 of 2,359 spec paths unmapped. Both are listed per resource as `official_unmapped` and `ours_unmapped` in `resources.csv` and per attribute by `-explain`.
 - **Upper bound on the understatement.** Where ACK covers a property under a name the matcher cannot pair, official coverage is under-counted. A resource's misses cannot exceed the smaller of its unmatched CloudFormation attributes and its unmapped spec paths; summed over every official kind that is **499 attributes (0.6% of the denominator, 8.3% of what is counted as official)**. The real figure is far lower, because most unmapped paths have no CloudFormation counterpart: the spot checks below found about 2% of covered attributes missed.
 - **No false credit from the denominator's shape.** An attribute is a leaf, so a resource with a very deep schema weighs more than a flat one. The largest services by attributes are `quicksight` (51,640, 60.2% of the total), `lex` (2,018, 2.4% of the total), `ec2` (1,495, 1.7% of the total), `sagemaker` (1,469, 1.7% of the total), `medialive` (1,115, 1.3% of the total). Percentages by *resource* are in `services.csv` too (`resources_official / resources_total`). A resource with ACK coverage of one field of a hundred still counts as one official resource.
 - **CloudFormation is not the API.** The denominator is CloudFormation's view of each service. Operations CloudFormation does not model (jobs, executions, one-shot actions, data-plane calls) are not in it, and neither is anything an ACK kind covers that CloudFormation lacks; that is why some kinds are outside it (below). A service ACK covers that CloudFormation has no resource for is not penalised, but it is not credited either.

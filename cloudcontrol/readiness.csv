@@ -329,6 +329,7 @@ AWS::CloudWatch::AccessGrant,cloudwatch,AccessGrant,application,IMMUTABLE,,,ok,0
 AWS::CloudWatch::AccessProfile,cloudwatch,AccessProfile,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::CloudWatch::Alarm,cloudwatch,Alarm,application,FULLY_MUTABLE,MetricAlarm,,ok,0,0,0,0,0,true
 AWS::CloudWatch::AlarmMuteRule,cloudwatch,AlarmMuteRule,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::CloudWatch::Alert,cloudwatch,Alert,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::CloudWatch::AnomalyDetector,cloudwatch,AnomalyDetector,application,NON_PROVISIONABLE,,,not provisionable,0,0,0,0,0,false
 AWS::CloudWatch::CompositeAlarm,cloudwatch,CompositeAlarm,application,FULLY_MUTABLE,,CompositeAlarm (Cloud Control),ok,0,0,0,0,0,true
 AWS::CloudWatch::Dashboard,cloudwatch,Dashboard,application,FULLY_MUTABLE,Dashboard,,ok,0,0,0,0,0,true
@@ -828,7 +829,7 @@ AWS::GlobalAccelerator::CrossAccountAttachment,globalaccelerator,CrossAccountAtt
 AWS::GlobalAccelerator::EndpointGroup,globalaccelerator,EndpointGroup,other,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
 AWS::GlobalAccelerator::Listener,globalaccelerator,Listener,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::Glue::Blueprint,glue,Blueprint,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::Glue::Catalog,glue,Catalog,other,FULLY_MUTABLE,,,ok,0,0,2,2,3,true
+AWS::Glue::Catalog,glue,Catalog,other,FULLY_MUTABLE,,,ok,0,0,2,2,4,true
 AWS::Glue::Classifier,glue,Classifier,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::Glue::Connection,glue,Connection,other,FULLY_MUTABLE,,,ok,0,0,2,9,0,true
 AWS::Glue::ConnectionType,glue,ConnectionType,other,FULLY_MUTABLE,,,ok,0,0,1,3,0,true
@@ -1238,22 +1239,22 @@ AWS::NetworkFirewall::TLSInspectionConfiguration,networkfirewall,TLSInspectionCo
 AWS::NetworkFirewall::VpcEndpointAssociation,networkfirewall,VpcEndpointAssociation,security-adjacent,FULLY_MUTABLE,,VpcEndpointAssociation (Cloud Control),ok,0,0,0,0,1,true
 AWS::NetworkFlowMonitor::Monitor,networkflowmonitor,Monitor,other,FULLY_MUTABLE,,,ok,0,0,1,1,0,true
 AWS::NetworkFlowMonitor::Scope,networkflowmonitor,Scope,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::NetworkManager::ConnectAttachment,networkmanager,ConnectAttachment,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,1,0,true
+AWS::NetworkManager::ConnectAttachment,networkmanager,ConnectAttachment,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,2,0,true
 AWS::NetworkManager::ConnectPeer,networkmanager,ConnectPeer,platform-foundation,FULLY_MUTABLE,,,ok,0,0,2,3,0,true
 AWS::NetworkManager::CoreNetwork,networkmanager,CoreNetwork,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::NetworkManager::CoreNetworkPrefixListAssociation,networkmanager,CoreNetworkPrefixListAssociation,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
 AWS::NetworkManager::CustomerGatewayAssociation,networkmanager,CustomerGatewayAssociation,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
 AWS::NetworkManager::Device,networkmanager,Device,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::NetworkManager::DirectConnectGatewayAttachment,networkmanager,DirectConnectGatewayAttachment,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,1,1,true
+AWS::NetworkManager::DirectConnectGatewayAttachment,networkmanager,DirectConnectGatewayAttachment,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,2,1,true
 AWS::NetworkManager::GlobalNetwork,networkmanager,GlobalNetwork,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::NetworkManager::Link,networkmanager,Link,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::NetworkManager::LinkAssociation,networkmanager,LinkAssociation,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
 AWS::NetworkManager::Site,networkmanager,Site,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::NetworkManager::SiteToSiteVpnAttachment,networkmanager,SiteToSiteVpnAttachment,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,1,0,true
+AWS::NetworkManager::SiteToSiteVpnAttachment,networkmanager,SiteToSiteVpnAttachment,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,2,0,true
 AWS::NetworkManager::TransitGatewayPeering,networkmanager,TransitGatewayPeering,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::NetworkManager::TransitGatewayRegistration,networkmanager,TransitGatewayRegistration,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
 AWS::NetworkManager::TransitGatewayRouteTableAttachment,networkmanager,TransitGatewayRouteTableAttachment,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,1,1,true
-AWS::NetworkManager::VpcAttachment,networkmanager,VpcAttachment,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,1,1,true
+AWS::NetworkManager::VpcAttachment,networkmanager,VpcAttachment,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,2,1,true
 AWS::NetworkMonitor::Monitor,networkmonitor,Monitor,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::NetworkMonitor::Probe,networkmonitor,Probe,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::NetworkSecurityManager::Deployment,networksecuritymanager,Deployment,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
@@ -1296,7 +1297,7 @@ AWS::Omics::WorkflowVersion,omics,WorkflowVersion,other,FULLY_MUTABLE,,,ok,0,0,5
 AWS::OpenSearch::DataSource,opensearch,DataSource,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::OpenSearchServerless::AccessPolicy,opensearchserverless,AccessPolicy,other,FULLY_MUTABLE,AccessPolicy,,ok,0,0,0,0,0,true
 AWS::OpenSearchServerless::Collection,opensearchserverless,Collection,other,FULLY_MUTABLE,Collection,,ok,0,0,0,2,2,true
-AWS::OpenSearchServerless::CollectionGroup,opensearchserverless,CollectionGroup,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::OpenSearchServerless::CollectionGroup,opensearchserverless,CollectionGroup,other,FULLY_MUTABLE,CollectionGroup,,ok,0,0,0,0,0,true
 AWS::OpenSearchServerless::CollectionIndex,opensearchserverless,CollectionIndex,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,false
 AWS::OpenSearchServerless::Index,opensearchserverless,Index,other,FULLY_MUTABLE,,,ok,1,0,1,2,0,true
 AWS::OpenSearchServerless::LifecyclePolicy,opensearchserverless,LifecyclePolicy,other,FULLY_MUTABLE,LifecyclePolicy,,ok,0,0,0,0,0,true
@@ -1831,7 +1832,9 @@ AWS::WAFv2::WebACL,wafv2,WebACL,security-adjacent,FULLY_MUTABLE,WebACL,,ok,5,0,0
 AWS::WAFv2::WebACLAssociation,wafv2,WebACLAssociation,security-adjacent,FULLY_MUTABLE,,WebACLAssociation,ok,0,0,0,0,0,false
 AWS::WellArchitected::AgentContext,wellarchitected,AgentContext,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::WellArchitected::AgentGoal,wellarchitected,AgentGoal,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::WellArchitected::AgentOrganizationalProfile,wellarchitected,AgentOrganizationalProfile,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::WellArchitected::AgentProfile,wellarchitected,AgentProfile,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
+AWS::WellArchitected::AgentProfilePolicy,wellarchitected,AgentProfilePolicy,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::WellArchitected::Lens,wellarchitected,Lens,other,FULLY_MUTABLE,,,ok,0,0,1,1,0,true
 AWS::WellArchitected::Profile,wellarchitected,Profile,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::WellArchitected::ReviewTemplate,wellarchitected,ReviewTemplate,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
