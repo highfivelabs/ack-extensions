@@ -64,10 +64,16 @@ Nothing is deployed by an agent. It holds:
 - `LiveTestRole` (`ack-extensions-live-tests`): `sts:AssumeRoleWithWebIdentity`
   through that provider, only when `accounts.google.com:sub` is the
   service account's unique ID (a parameter), at most an hour; managed
-  policies with every served type's Cloud Control actions and handler
-  permissions, the list handlers' and `cloudformation:ListResources` for
-  the sweeper, and the tests' own fixtures (`liveTestActions` in
-  `types.yaml`), split to IAM's 6,144-character limit;
+  policies with the Cloud Control actions and handler permissions of the
+  kinds sampled on live runs (`liveKinds` in `types.yaml`), their list
+  handlers' and `cloudformation:ListResources` for the sweeper, and the
+  tests' own fixtures (`liveTestActions`), split to IAM's 6,144-character
+  limit and kept within IAM's default of 10 managed policies per role
+  (the generator fails beyond it, and `TestLiveRoleWithinManagedPolicyLimit`
+  checks the committed template). Every other kind is proven on the fakes
+  only (plan question 21): a live run of a test whose kind is not in
+  `liveKinds` is refused by IAM. Adding a kind to `liveKinds` needs the
+  stack redeployed;
 - `BudgetAlarm`: a monthly cost budget (default USD 50) with e-mail alerts
   at 80% of actual and 100% of forecast spend.
 
@@ -83,7 +89,22 @@ aws cloudformation deploy --stack-name ack-extensions-live-tests \
 
 then add the account ID to `hack/live/accounts.txt` in a pull request.
 
-**To confirm on the first deploy** (not checkable without an account):
+**Found on the first deploy (2026-11-10, run `ackx-11101802-5696`):** the
+trust works. The VM's ID token for `offload-runner@our-chassis-514316-r0`
+carries `iss` `https://accounts.google.com`, `aud`
+`ack-extensions-live-tests`, and `azp` = `sub` = `102306610785199453342`;
+`AssumeRoleWithWebIdentity` into `ack-extensions-live-tests` succeeded and
+STS named account `830550549114`. The provider lists both the audience
+and the unique ID, so this run cannot tell which claim IAM compares with
+the list; removing one of the two client IDs and running again would
+tell. The role's permissions had a gap: the template's sweeper and fixture
+statement (`LiveRunSweeperAndFixtures`) was dropped when generated, so the
+sweep before the run was refused `cloudformation:ListResources` and the
+run stopped before any test reached AWS (nothing was created). Fixed in
+`hack/cloudcontrol-gen/live.go`; the stack needs redeploying from the
+regenerated template.
+
+**What was to be confirmed on the first deploy:**
 
 - IAM also accepts `accounts.google.com` as a built-in federated principal
   without an OIDC provider resource; the template makes the provider, as
@@ -117,8 +138,9 @@ is swept and what is left is listed. Output:
 `left.txt`).
 
 The sweeper (`task live-sweep`, `task live-list`, the same opt-in and
-federated credentials) lists every served type through Cloud Control
-`ListResources` and deletes what carries the run tag. Types that take no
+federated credentials) lists every live kind (`liveKinds`; no live run
+makes another) through Cloud Control `ListResources` and deletes what
+carries the run tag. Types that take no
 tags (`Assignment`, `InstanceAccessControlAttributeConfiguration`) are
 deleted by the tests that made them; a run cut off before then leaves them,
 and `left.txt` cannot show them.
@@ -144,4 +166,4 @@ policy letting Route 53 write to it, which the test does not make yet. Each is a
 
 | Date | Run | Commit | Account | Tests | Fake | Live | Found |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| | | | | | | | none yet: no sandbox account |
+| 2026-11-10 | `ackx-11101802-5696` | `a448a3d` + the account | 830550549114 | TestDetector | PASS | not run | Trust passed. The sweep before the run was refused `cloudformation:ListResources` (the template dropped `LiveRunSweeperAndFixtures`); the run stopped there, nothing created |
