@@ -2,3 +2,6 @@
 /third_party/
 /.cache/
 /.task/
+
+# Local environment identifiers (.env.example lists them).
+/.env

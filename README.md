@@ -276,9 +276,9 @@ the controllers (services) the environment uses; for each, the operator
 runs one manager, in `ack-extensions-system`, as the ServiceAccount
 `ack-extensions-<service>-<namespace>`, watching only that namespace and
 holding Kubernetes rights only there. One EKS Pod Identity association
-per manager binds it to the environment's IAM role (the builder,
-2026-11-10: the same environment-scoped Pod Identity model as Cloud
-Control, one manager per controller per namespace):
+per manager binds it to the environment's IAM role (decided 2026-11-10: the same
+environment-scoped Pod Identity model as Cloud Control, one manager per
+controller per namespace):
 
 ```yaml
 apiVersion: core.aws.hfl.dev/v1alpha1

@@ -3,7 +3,7 @@
 #
 # ACK has no Scheduler controller (community issue #2784). The manager
 # runs beside ACK's EventBridge controller, with its identity (open
-# question 8, answered by the builder: pkg/operator, Beside).
+# question 8, answered: pkg/operator, Beside).
 #
 # Schedule is generated from CreateSchedule, GetSchedule, UpdateSchedule
 # and DeleteSchedule; groupRef names a ScheduleGroup. Scheduler fills in

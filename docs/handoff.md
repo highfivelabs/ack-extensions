@@ -31,7 +31,7 @@ not repeat them.
 - **Retain-only kinds** (open question 12; plan 6.28): a kind for something that is not deleted from Kubernetes (an organization; later an account's closure, root-level settings) has no delete call (`ignore.operations` in `generator.yaml`, so `sdkDelete` is a no-op), and its resource is added to `config/admission/retain-only.yaml`'s `resourceRules`, which requires `services.k8s.aws/deletion-policy: retain` on every object. Its e2e test deletes an object made before the policy is installed and checks the cloud thing stays, then checks the policy's refusals (`tests/e2e/organizations_organization_test.go`). **The factory's scaffolder should generate this pattern** (the ignored delete, the policy entry and the two tests) for a kind marked retain-only.
 - **Per-environment ACK managers** (open question 5, answered 2026-11-10; plan 7.6): an `ACKContext` (`core.aws.hfl.dev`, named `ack`) in a namespace lists controllers; the operator runs one manager per controller in `ack-extensions-system` as `ack-extensions-<service>-<namespace>`, watching only that namespace, bound by EKS Pod Identity. `task ack:iam` writes the role from the context (`pkg/ackiam` reads each kind's SDK calls from the generated code; a new kind needs nothing, but a call needing more than its own action, such as `iam:PassRole`, goes in `ackiam.Curated`). Open: questions 17 (the name) and 18 (ACK's own controllers per environment).
 - **Open questions:** 8 to 12 are answered. `Organization`'s two lists are
-  additive (the builder, A3, 2026-11-10; plan 6.28): what is enabled
+  additive (decision A3, 2026-11-10; plan 6.28): what is enabled
   outside Kubernetes is kept and reported in `status.unmanaged<List>`, and
   only `status.owned<List>` is ever disabled. A later list made additive
   uses the same two status fields. Assumed, for the builder to confirm:
@@ -41,8 +41,8 @@ not repeat them.
 ## Cloud Control types (`docs/cloudcontrol.md`)
 
 The second route, for types ACK has no controller for and whose
-CloudFormation model is what a platform team would write. The builder
-(2026-11-09): go, with limits; foundation order; each type proven on the
+CloudFormation model is what a platform team would write. Decided
+2026-11-09: go, with limits; foundation order; each type proven on the
 fake and marked untested on real AWS until a real run. Adding a type:
 
 1. Check it is not better as an ACK-generated kind here (references, an
@@ -69,7 +69,7 @@ the manager in the operator's namespace as
 environment's role (`pkg/operator/cloudcontrol.go`). Per-service Cloud
 Control managers were the spike's proposal and are not to be built.
 
-**Left of the builder's Cloud Control brief (2026-11-09), for the next
+**Left of the Cloud Control brief (2026-11-09), for the next
 agent.** PR 1 (`agent/cloudcontrol`) is the core. Still to do:
 
 - **PR 2, types in foundation order.** Done in `agent/cloudcontrol-types`:
@@ -101,8 +101,8 @@ agent.** PR 1 (`agent/cloudcontrol`) is the core. Still to do:
   `aws-sdk-go-v2/service/macie2` and `inspector2`, of the release the
   GuardDuty client is from, as `securityhub` v1.55.6 was); batch 10, the
   five services without moto, all unproven. Then F13 (Direct Connect,
-  when a catalog entry or adjacent coverage needs it, the builder's A10).
-  **F03 `VirtualMFADevice` is not for this route** (the builder,
+  when a catalog entry or adjacent coverage needs it, decision A10).
+  **F03 `VirtualMFADevice` is not for this route** (decided
   2026-11-09, closing PR #44): Cloud Control never returns the seed or QR
   code, so a device made through it cannot be enrolled. It is to be built
   as a kind that writes the seed to a Kubernetes Secret (never logged),
@@ -139,8 +139,8 @@ agent.** PR 1 (`agent/cloudcontrol`) is the core. Still to do:
 - **PR 3, the live-test switch.** Built in `agent/cloudcontrol-live`
   (`docs/live-runs.md`): `task test-live`, the sweeper, the ledger, the
   sandbox account's template (generated into `cloudcontrol/config/live/`).
-  Next, once the builder has deployed the template and added the account
-  to `hack/live/accounts.txt`: one live run per type, fixing the fixtures
+  Next, once the builder has deployed the template and the account ID is
+  in `AWS_SANDBOX_ACCOUNT_ID` (`.env.example`): one live run per type, fixing the fixtures
   `docs/live-runs.md` lists, and a ledger row each. The original brief:
 - **PR 3, the live-test switch**, after the GCP repository's
   (`config-connector-extensions`: `docs/live-runs.md`, `hack/live/run.sh`,
@@ -177,7 +177,7 @@ agent.** PR 1 (`agent/cloudcontrol`) is the core. Still to do:
 2. **Branch from the latest main:** `agent/<short-kind-name>`, one PR per
    kind. Avoid stacking; if a kind needs another's code (Schedule needs
    ScheduleGroup), say so in the PR body.
-3. **Generate first (the builder, 2026-11-09).** Prefer ACK's generator for every kind it can produce and keep hooks small; say in the PR roughly what share is generated. An attach/detach pair is generable: map the calls in `generator.yaml` `operations` (`operation_type: Create`/`Delete`/`List`) and match the list on the target (`list_operation.match_fields`), as `PolicyAttachment` does. A reference to an ACK kind of the same service: alias ACK's type into our `apis/v1alpha1` (`organizations/apis/v1alpha1/ack_kinds.go`), add ACK's RBAC marker by hand and its scheme in `handwritten.go`. Any generator call you script goes in `hack/`.
+3. **Generate first (decided 2026-11-09).** Prefer ACK's generator for every kind it can produce and keep hooks small; say in the PR roughly what share is generated. An attach/detach pair is generable: map the calls in `generator.yaml` `operations` (`operation_type: Create`/`Delete`/`List`) and match the list on the target (`list_operation.match_fields`), as `PolicyAttachment` does. A reference to an ACK kind of the same service: alias ACK's type into our `apis/v1alpha1` (`organizations/apis/v1alpha1/ack_kinds.go`), add ACK's RBAC marker by hand and its scheme in `handwritten.go`. Any generator call you script goes in `hack/`.
    **Generated or hand-written?** If the API has a Create, Describe and
    Delete, add the resource to the service's `generator.yaml` (remove it
    from `ignore.resource_names`), copy upstream's hooks and templates when
@@ -302,7 +302,7 @@ git makes has no sign-off: amend it.
   `fakeaws.Config`, processes from `fakeaws.Command`, Python on kind through
   `fake_py`. `task noaws` (in `task check`) fails otherwise; never add an
   exemption to it.
-- Real AWS only through a live run (sandbox account `830550549114`, role
+- Real AWS only through a live run (sandbox account `$AWS_SANDBOX_ACCOUNT_ID`, role
   `ack-extensions-live-tests`, offload VMs, `ACK_EXT_LIVE`; `docs/live-runs.md`);
   everything else is moto only. Never
   catch an error and report success. Never claim a check passed that did not run.

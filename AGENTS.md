@@ -68,7 +68,7 @@ itself lives in its own repository and is never changed from here.
   names, API groups, identity defaults, a new upstream dependency,
   anything that makes the repository public.
 - Test against real AWS (a live run, under the rule in "Never") in
-  two cases (builder, 2026-11-11):
+  two cases (2026-11-11):
   1. where moto cannot give the signal: the service or behaviour is not
      faked, or the case depends on real permissions, quotas, defaults or
      eventual consistency; and
@@ -80,7 +80,7 @@ itself lives in its own repository and is never changed from here.
 ## Never
 
 - Never reach real AWS except through a live run: sandbox account
-  `830550549114` only, through role `ack-extensions-live-tests` only, from
+  `$AWS_SANDBOX_ACCOUNT_ID` only, through role `ack-extensions-live-tests` only, from
   an offload Spot VM only, with `ACK_EXT_LIVE` set (`docs/live-runs.md`).
   Never on a laptop, never with stored keys, never in any other account,
   and never from `task check`. Every live resource carries the run's name

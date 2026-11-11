@@ -11,8 +11,9 @@
 #   ACK_EXT_LIVE=create-real-aws-resources \
 #     hack/live/run.sh --account ID --role-arn ARN [TEST...]
 #
-# Refuses unless ACK_EXT_LIVE is exactly that, the account is in
-# hack/live/accounts.txt, the credentials are federated (credentials.sh)
+# Refuses unless ACK_EXT_LIVE is exactly that, the account is the
+# sandbox account AWS_SANDBOX_ACCOUNT_ID (from the environment, passed to
+# the offload VM on its command line; .env.example), the credentials are federated (credentials.sh)
 # and STS says they are that account's (cloudcontrol/test/live). TEST is a
 # go test -run pattern (default: every test in cloudcontrol/test/e2e).
 #
@@ -42,8 +43,9 @@ if [[ "${ACK_EXT_LIVE:-}" != create-real-aws-resources ]]; then
   echo "live: a live run creates real AWS resources; set ACK_EXT_LIVE=create-real-aws-resources to mean it" >&2
   exit 2
 fi
-grep -qx "${account:-none}" <(sed 's/#.*//; s/[[:space:]]//g' hack/live/accounts.txt) \
-  || { echo "live: account '${account}' is not in hack/live/accounts.txt" >&2; exit 2; }
+: "${AWS_SANDBOX_ACCOUNT_ID:?set AWS_SANDBOX_ACCOUNT_ID to the sandbox account ID (see .env.example)}"
+[[ -n "${account}" && "${account}" == "${AWS_SANDBOX_ACCOUNT_ID}" ]] \
+  || { echo "live: account '${account}' is not AWS_SANDBOX_ACCOUNT_ID" >&2; exit 2; }
 [[ "${role}" == "arn:aws:iam::${account}:role/"* ]] || { echo "live: --role-arn must be a role in ${account}" >&2; exit 2; }
 : "${KUBEBUILDER_ASSETS:?run through task test-live, which installs envtest}"
 pattern="."

@@ -17,7 +17,7 @@
 #   kind      the kind's name, when the resource's name will not do;
 #   secrets   write-only string properties that are secrets, as property
 #             pointers: each becomes a Kubernetes Secret reference. Opt-in
-#             per field (the builder, 2026-11-09); every other write-only
+#             per field (decided 2026-11-09); every other write-only
 #             property is a plain field. The generation report lists the
 #             candidates;
 #   unproven  why the kind has no end-to-end test on the fake (moto lacks
@@ -107,9 +107,9 @@ types:
   # F07: the landing zone. Deleting one decommissions it (the guardrails,
   # the log archive and audit accounts' setup, every enabled control), so
   # it is never deleted, and the retain-only admission policy makes every
-  # object carry deletion-policy: retain (the builder, 2026-11-10; plan
+  # object carry deletion-policy: retain (decided 2026-11-10; plan
   # section 9, question 15). No emulator has Control Tower: the fake's
-  # backend is a test double of ours (the builder, 2026-11-10).
+  # backend is a test double of ours (decided 2026-11-10).
   - typeName: AWS::ControlTower::LandingZone
     neverDelete: true
   # F08: Route 53 beyond ACK's route53-controller v1.8.0 (HealthCheck,
@@ -206,7 +206,7 @@ types:
   # the overlay.
   - typeName: AWS::SecretsManager::ResourcePolicy
   # Batch 9 (docs/throughput.md), security-adjacent: every gap type of the
-  # security services the builder named that Cloud Control can serve, added
+  # security services in scope that Cloud Control can serve, added
   # with hack/cloudcontrol-batch on 2026-11-11. ACK has no controller for
   # Access Analyzer, Macie, Inspector, Detective, Firewall Manager, Audit
   # Manager, Security Lake, GuardDuty or Security Hub (no issue or pull

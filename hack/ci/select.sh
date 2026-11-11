@@ -2,7 +2,7 @@
 # Copyright 2026 High Five Labs
 # SPDX-License-Identifier: Apache-2.0
 #
-# What a pull request must run, from the paths it changes (the builder,
+# What a pull request must run, from the paths it changes (decided
 # 2026-11-10: the whole suite nightly, otherwise only what changed).
 #
 #   hack/ci/select.sh plan BASE HEAD   the plan for git diff BASE...HEAD

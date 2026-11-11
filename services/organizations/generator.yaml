@@ -279,7 +279,7 @@ resources:
       RootID:
         is_read_only: true
         type: string
-      # The two lists are additive (the builder, A3, 2026-11-10): for each,
+      # The two lists are additive (decision A3, 2026-11-10): for each,
       # owned<List> is what this object put there or took on by listing it,
       # the only entries it ever disables; unmanaged<List> is what is
       # enabled in AWS and not listed, kept and reported for import

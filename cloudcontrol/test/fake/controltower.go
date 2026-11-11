@@ -14,7 +14,7 @@ import (
 
 // LandingZone is a test double for Control Tower's landing zone: moto
 // 5.2.5 has no controltower and no other emulator has it, so this backend
-// keeps the landing zone itself, in memory (the builder, 2026-11-10: a test
+// keeps the landing zone itself, in memory (decided 2026-11-10: a test
 // double or recordings for Control Tower). What it models, from Control
 // Tower's API reference, unverified on real AWS:
 //

@@ -1,6 +1,6 @@
 # Cloud Control: one generic controller for the AWS long tail
 
-Status, 2026-11-09: **go, with limits** (the builder). The spike of PR #34
+Status, 2026-11-09: **go, with limits** (decided). The spike of PR #34
 is productionized on branch `agent/cloudcontrol`: one generic reconciler of
 our own over the AWS Cloud Control API, with CRDs generated from the
 CloudFormation registry schemas, as Terraform's `awscc` and Pulumi's
@@ -27,28 +27,26 @@ Control fake over moto, with **no per-type Go**. Run on every type in the
 pinned schema zip, the generator makes an accepted CRD for **all 1,766
 provisionable types**, including **251 of the 276 foundation-gap types**.
 
-## The builder's decisions (2026-11-09)
+## Decisions (2026-11-09)
 
-1. **Go, with limits.** "Productionize the generic manager and roll types
-   out in foundation order; each type proven on the fake and marked
-   untested on real AWS until it has a real run. Keep ACK-generated kinds
+1. **Go, with limits.** Productionize the generic manager and roll types
+   out in foundation order; each type is proven on the fake and marked
+   untested on real AWS until it has a real run. ACK-generated kinds stay
    where ACK's generator gives better behaviour; Upjet remains the
-   fallback for types this route can't handle."
+   fallback for types this route can't handle.
 2. **API group:** `<service>.cloudcontrol.aws.hfl.dev`, separate from our
    ACK-generated `<service>.aws.hfl.dev`, matching a separate Bundt
    Provider named `hfl.aws-cloudcontrol`.
-3. **Identity**, in the builder's words: "I think it's closer to the one
-   shared cloud control manager, but not exactly. I think the scoping
-   should be at the environment level, so each environment gets an
-   identity attached, and not through Workload Identity but instead
-   through Pod Identity. Important distinction there, Pod Identity is
-   newer. I don't think a per-service manager is the correct thing.
-   Loosely, this follows the KCC model of a GSA and KSA workload identity
-   bound that is enabled within a namespace to run KCC, and really that
-   namespace has a scope that it works within." Built as section 10 says;
+3. **Identity**: closer to the one shared Cloud Control manager, but not
+   exactly. The scoping is at the environment level, so each environment
+   gets an identity attached, through Pod Identity rather than Workload
+   Identity (an important distinction: Pod Identity is newer). Not a
+   per-service manager. Loosely, this follows the KCC model of a GSA and
+   KSA workload identity binding enabled within a namespace to run KCC,
+   where that namespace sets the scope it works within. Built as section 10 says;
    the spike's per-service managers are gone.
-4. **Write-only fields:** "Secret references only for fields marked as
-   secrets, opt-in per field (many write-only fields aren't secrets)."
+4. **Write-only fields:** Secret references only for fields marked as
+   secrets, opt-in per field (many write-only fields aren't secrets).
    Built: `secrets` per type in `cloudcontrol/types.yaml` (section 2).
 5. **A sandbox AWS account is coming** for one real run per type; the
    builder will create it. To prepare for it: a live-test switch like the
@@ -101,7 +99,7 @@ also runs them (fmt, the generated-files check, and `go test ./...`), and
 `task operator-e2e` runs a context on kind.
 
 The kinds live in `<service>.cloudcontrol.aws.hfl.dev`
-(`SAMLProvider.iam.cloudcontrol.aws.hfl.dev`), the builder's decision 2:
+(`SAMLProvider.iam.cloudcontrol.aws.hfl.dev`), decision 2:
 the engine is visible in the group, a kind cannot clash with one built
 here with ACK's generator (`<service>.aws.hfl.dev`), and Bundt serves them
 through its own Provider, `hfl.aws-cloudcontrol`. `CloudControlContext` is
@@ -115,7 +113,7 @@ through its own Provider, `hfl.aws-cloudcontrol`. `CloudControlContext` is
 | `readOnlyProperties` (top level) | `status.<field>` | nested read-only inside a writable object: dropped from spec, reported |
 | `createOnlyProperties` | CEL on the field: `self == oldSelf`; on its parent: `has(self.f) == has(oldSelf.f)` | the API server refuses the edit; paths inside arrays have no rule (a transition rule there needs a keyed list) and are refused by the reconciler instead |
 | `writeOnlyProperties` a type opts in (`secrets` in `types.yaml`: write-only strings only) | a Secret reference (`{name, namespace, key}`, ACK's `SecretKeyReference`) | resolved by ACK's runtime, which refuses a Secret in another namespace unless `--enable-cross-namespace` (the operator never sets it, and the manager's rights end at its namespace anyway); a digest in `status.cloudControl.writeOnlyDigest` notices a changed Secret, since Cloud Control never returns the value |
-| every other `writeOnlyProperties` | a plain field, never compared (the digest notices a change) | opt-in per field, the builder's decision 4: many are not secrets (an IPAM pool's netmask, a GuardDuty member's email, a SAML provider's key ID to remove). The generator refuses an opted-in pointer that is not a write-only string reachable through objects, and the report lists the remaining candidates |
+| every other `writeOnlyProperties` | a plain field, never compared (the digest notices a change) | opt-in per field, decision 4: many are not secrets (an IPAM pool's netmask, a GuardDuty member's email, a SAML provider's key ID to remove). The generator refuses an opted-in pointer that is not a write-only string reachable through objects, and the report lists the remaining candidates |
 | `primaryIdentifier` | `status.cloudControl.identifier` (values joined with `\|`), and the read-only parts in status | adoption takes it from ACK's `adoption-fields` annotation |
 | `required` | `required`, minus read-only | |
 | `tagging.tagProperty` | the tag list; ACK's default tags (`services.k8s.aws/*`) added on create in key order, filtered out of spec; compared as a multiset whatever its `insertionOrder` (a reordering alone is no change) | the drift rule |
@@ -247,8 +245,8 @@ run. `iamgen` writes, per type (`cloudcontrol/config/iam/`):
   the report.
 
 **An environment's role** carries the policies of the kinds its context
-enables, nothing more (the builder: "the role's permissions are scoped to
-what that environment manages"):
+enables, nothing more: the role's permissions are scoped to what that
+environment manages:
 
 ```sh
 task cloudcontrol:iam NAMESPACE=team-a-prod ACCOUNT=111122223333 \
@@ -552,14 +550,14 @@ handlers' permissions reach into Organizations, Service Catalog and IAM
 the reconciler polls the request without holding a worker.
 ACK has no Control Tower controller, issue or pull request.
 
-`AWS::ControlTower::LandingZone` (the builder, 2026-11-10, plan section 9
+`AWS::ControlTower::LandingZone` (decided 2026-11-10, plan section 9
 question 15): deleting one decommissions the landing zone, so it is
 `neverDelete` in `types.yaml` and in `config/admission/retain-only.yaml`,
 the same guarantee as the ACK-generated `Organization`: no
 `DeleteResource` call, no delete permissions in its IAM policy, and every
 object must carry `deletion-policy: retain`. Its `Manifest` has no type in
 the schema, so it is free-form and compared whole. **Proven on a test
-double** (the builder, 2026-11-10: a test double or recordings for Control
+double** (decided 2026-11-10: a test double or recordings for Control
 Tower): `cloudcontrol/test/fake/controltower.go` keeps the landing zone in
 memory, one per account, with the ARN, status and drift status Control
 Tower's API reference describes, none of it checked on real AWS.
@@ -745,7 +743,7 @@ deprecated service), `AWS::IAM::Policy`, `AWS::IAM::AccessKey`,
 are the fallback's (ACK's generator first, Upjet only if that fails).
 
 **The 25 this route cannot serve, and what could** (2026-11-09, for the
-builder's question whether any fallback, such as community Crossplane
+open question whether any fallback, such as community Crossplane
 providers as a third-party Provider, is needed):
 
 | Type | Why not Cloud Control | What fills it | Fallback needed? |
@@ -796,7 +794,7 @@ whole JSON documents.
 
 ## 10. Identity and placement: one manager per environment
 
-The builder's decision 3 (above, verbatim): identity at the environment
+Decision 3 (above): identity at the environment
 level, through EKS Pod Identity, loosely Config Connector's namespaced
 mode. Config Connector, read for this: a `ConfigConnectorContext` (named
 `configconnectorcontext.core.cnrm.cloud.google.com`, one per namespace)
@@ -872,7 +870,7 @@ environment's ServiceAccount, plus `aws:SourceAccount` and `aws:SourceArn`
 environment's ServiceAccount, for a pod in the environment's own
 namespace, or in another cluster cannot use the role; and every call the
 manager makes is in CloudTrail with those tags. Pod Identity, not IRSA, as
-the builder decided: no OIDC provider per cluster, no role-ARN annotation
+decided: no OIDC provider per cluster, no role-ARN annotation
 for anyone with ServiceAccount rights to copy, and a role's trust policy
 that names no cluster's OIDC issuer.
 
@@ -894,7 +892,7 @@ the AWS SDK's default chain, so any of these works without code:
   per environment. Long-lived keys are what this repository avoids
   (plan 9, question 10); last resort.
 
-**The ACK-generated kinds follow the same model** (the builder,
+**The ACK-generated kinds follow the same model** (decided
 2026-11-10): an `ACKContext` per namespace, one manager per controller,
 in the operator's namespace (`docs/plan.md` section 7.6). The two
 contexts are siblings; both use `iamgen`'s trust policy and policy split.
@@ -911,7 +909,7 @@ the trust policy's conditions. Everything on our side of that is proven
   with a write-only string, many are not secrets
   (`AWS::EC2::VPCCidrBlock`'s IPAM parameters,
   `AWS::SecretsManager::RotationSchedule`'s eleven, `GuardDuty::Member`'s
-  email). Now opt-in per field (`secrets` in `types.yaml`), the builder's
+  email). Now opt-in per field (`secrets` in `types.yaml`),
   decision 4.
 - **Names.** Lower camel case from PascalCase is mechanical and mostly
   right; `IPv6CidrBlock` becomes `iPv6CidrBlock`. An overlay rename is needed
@@ -942,8 +940,8 @@ the trust policy's conditions. Everything on our side of that is proven
 
 ## 12. Decisions taken, and the plan
 
-The builder's decisions are at the top. The limits that come with "go,
-with limits":
+The decisions are at the top. The limits that come with "go, with
+limits":
 
 1. it is proven on a fake only; every kind is marked untested on real AWS
    until one run on a real account has checked the read model against

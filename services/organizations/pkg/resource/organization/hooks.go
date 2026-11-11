@@ -8,7 +8,7 @@ package organization
 // their own calls and no field in DescribeOrganization, and the update,
 // which has no UpdateOrganization.
 //
-// Both lists are additive (the builder, A3, 2026-11-10): an entry enabled
+// Both lists are additive (decision A3, 2026-11-10): an entry enabled
 // outside Kubernetes is kept, never disabled, and reported in
 // status.unmanaged<List> so Bundt can offer to import it. The object
 // disables only what it owns, status.owned<List>: the entries it listed

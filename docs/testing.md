@@ -20,9 +20,9 @@ harness ("no fake backend"). Nothing in a test path can reach AWS
 
 ## Live runs
 
-- **Where:** the sandbox account `830550549114` only (`hack/live/accounts.txt`),
+- **Where:** the sandbox account `$AWS_SANDBOX_ACCOUNT_ID` only (`.env.example`),
   as the role `ack-extensions-live-tests`, from offload VMs in
-  `our-chassis-514316-r0` started with `--sa offload-runner@...`
+  `$OFFLOAD_PROJECT` started with `--sa "$OFFLOAD_SA"`
   (federation, no stored keys), with `ACK_EXT_LIVE=create-real-aws-resources`.
   Never from the laptop, never with a laptop AWS profile.
 - **What:** sampled over time, not every kind on every change. Free kinds

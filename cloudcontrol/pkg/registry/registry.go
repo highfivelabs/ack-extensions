@@ -20,7 +20,7 @@ import (
 )
 
 // GroupSuffix is the suffix of every Cloud Control kind's API group,
-// <service>.cloudcontrol.aws.hfl.dev (the builder, 2026-11-09): separate
+// <service>.cloudcontrol.aws.hfl.dev (decided 2026-11-09): separate
 // from the ACK-generated <service>.aws.hfl.dev, and matched by its own
 // Bundt Provider, hfl.aws-cloudcontrol.
 const GroupSuffix = "cloudcontrol.aws.hfl.dev"

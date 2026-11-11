@@ -1,7 +1,7 @@
 # Copyright 2026 High Five Labs
 # SPDX-License-Identifier: Apache-2.0
 #
-# The whole suite on main, once a day (the builder, 2026-11-10): task check
+# The whole suite on main, once a day (decided 2026-11-10): task check
 # and task operator-e2e, one after the other on one offload Spot VM (no
 # Actions minutes but the launcher's). A failure opens one issue labelled
 # ci-nightly, or comments on it if it is open already (a green night runs
