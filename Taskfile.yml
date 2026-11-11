@@ -345,7 +345,7 @@ tasks:
     env:
       TAG: '{{.TAG}}'
       REGISTRY: '{{.REGISTRY | default "us-central1-docker.pkg.dev"}}'
-      KO_DOCKER_REPO: '{{.KO_DOCKER_REPO | default "us-central1-docker.pkg.dev/hfl-dev-514205/hfl-oci/ack-extensions"}}'
+      KO_DOCKER_REPO: '{{.KO_DOCKER_REPO}}'
     cmds:
       - hack/release.sh
 
