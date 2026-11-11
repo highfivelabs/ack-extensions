@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRolesAnywhereProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RolesAnywhereProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetPolicy",
+        "iam:GetRole",
+        "iam:PassRole",
+        "rolesanywhere:CreateProfile",
+        "rolesanywhere:DeleteAttributeMapping",
+        "rolesanywhere:PutAttributeMapping",
+        "rolesanywhere:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RolesAnywhereProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "rolesanywhere:GetProfile",
+        "rolesanywhere:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RolesAnywhereProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetPolicy",
+        "iam:GetRole",
+        "iam:PassRole",
+        "rolesanywhere:DeleteAttributeMapping",
+        "rolesanywhere:DisableProfile",
+        "rolesanywhere:EnableProfile",
+        "rolesanywhere:GetProfile",
+        "rolesanywhere:ListTagsForResource",
+        "rolesanywhere:PutAttributeMapping",
+        "rolesanywhere:TagResource",
+        "rolesanywhere:UntagResource",
+        "rolesanywhere:UpdateProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RolesAnywhereProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "rolesanywhere:DeleteProfile"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

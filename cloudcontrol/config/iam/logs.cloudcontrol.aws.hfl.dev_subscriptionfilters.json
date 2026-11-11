@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLogsSubscriptionFilter",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsSubscriptionFilterCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "logs:DescribeSubscriptionFilters",
+        "logs:PutSubscriptionFilter"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsSubscriptionFilterRead",
+      "Effect": "Allow",
+      "Action": [
+        "logs:DescribeSubscriptionFilters"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsSubscriptionFilterUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "logs:DescribeSubscriptionFilters",
+        "logs:PutSubscriptionFilter"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsSubscriptionFilterDelete",
+      "Effect": "Allow",
+      "Action": [
+        "logs:DeleteSubscriptionFilter"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

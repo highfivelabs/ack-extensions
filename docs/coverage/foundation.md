@@ -14,7 +14,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | platform-foundation | 16 | 241 | 55 (22.8%) | 126 (52.3%) | 60 | 2,400 | 28.2% | 36.8% | 35.1% |
 | security-adjacent | 18 | 112 | 14 (12.5%) | 76 (67.9%) | 22 | 2,082 | 37.6% | 50.9% | 11.6% |
-| application | 33 | 262 | 106 (40.5%) | 9 (3.4%) | 147 | 4,766 | 48.2% | 4.2% | 47.6% |
+| application | 33 | 262 | 106 (40.5%) | 24 (9.2%) | 132 | 4,766 | 48.2% | 8.0% | 43.9% |
 | other | 238 | 1260 | 91 (7.2%) | 0 (0.0%) | 1169 | 76,525 | 3.0% | 0.0% | 97.0% |
 
 **platform-foundation, by service** (in the order the queue takes them):

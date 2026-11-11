@@ -336,12 +336,12 @@ cloudwatch,AccessProfile,5,,0,,0,5,false,
 cloudwatch,Alarm,47,MetricAlarm,42,,0,5,false,
 cloudwatch,AlarmMuteRule,10,,0,,0,10,false,
 cloudwatch,AnomalyDetector,28,,0,,0,28,false,
-cloudwatch,CompositeAlarm,15,,0,,0,15,false,
+cloudwatch,CompositeAlarm,15,,0,CompositeAlarm (Cloud Control),15,0,false,ours CompositeAlarm (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has cloudwatch); on the schema fake only
 cloudwatch,Dashboard,4,Dashboard,2,,0,2,false,
 cloudwatch,Domain,5,,0,,0,5,false,
 cloudwatch,DomainAccessGrantForOrganization,9,,0,,0,9,false,
 cloudwatch,DomainForOrganization,6,,0,,0,6,false,
-cloudwatch,InsightRule,6,,0,,0,6,false,
+cloudwatch,InsightRule,6,,0,InsightRule (Cloud Control),6,0,false,ours InsightRule (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has cloudwatch); on the schema fake only
 cloudwatch,Integration,7,,0,,0,7,false,
 cloudwatch,LogAlarm,29,,0,,0,29,false,
 cloudwatch,MetricStream,14,MetricStream,14,,0,0,false,
@@ -1125,23 +1125,23 @@ location,PlaceIndex,7,,0,,0,7,false,
 location,RouteCalculator,6,,0,,0,6,false,
 location,Tracker,10,,0,,0,10,false,
 location,TrackerConsumer,2,,0,,0,2,false,
-logs,AccountPolicy,5,,0,,0,5,false,
+logs,AccountPolicy,5,,0,AccountPolicy (Cloud Control),5,0,false,ours AccountPolicy (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
 logs,Delivery,8,Delivery,6,,0,2,false,official_unmapped=2
 logs,DeliveryDestination,8,DeliveryDestination,6,,0,2,false,
 logs,DeliveryDestinationPolicy,0,DeliveryDestinationPolicy,0,,0,0,false,outside-denominator;official_crd_attributes=2
 logs,DeliverySource,6,DeliverySource,5,,0,1,false,
-logs,Destination,6,,0,,0,6,false,
-logs,Integration,7,,0,,0,7,false,
-logs,LogAnomalyDetector,7,,0,,0,7,false,
+logs,Destination,6,,0,Destination (Cloud Control),6,0,false,ours Destination (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
+logs,Integration,7,,0,Integration (Cloud Control),7,0,false,ours Integration (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
+logs,LogAnomalyDetector,7,,0,LogAnomalyDetector (Cloud Control),7,0,false,ours LogAnomalyDetector (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
 logs,LogGroup,11,LogGroup,4,,0,7,false,official_unmapped=6
 logs,LogStream,2,,0,,0,2,false,
 logs,MetricFilter,13,,0,,0,13,false,
-logs,QueryDefinition,7,,0,,0,7,false,
+logs,QueryDefinition,7,,0,QueryDefinition (Cloud Control),7,0,false,ours QueryDefinition (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
 logs,ResourcePolicy,2,ResourcePolicy,2,,0,0,false,official_unmapped=1
-logs,ScheduledQuery,16,,0,,0,16,false,
-logs,StorageTierPolicy,1,,0,,0,1,false,
-logs,SubscriptionFilter,9,,0,,0,9,false,
-logs,Transformer,61,,0,,0,61,false,
+logs,ScheduledQuery,16,,0,ScheduledQuery (Cloud Control),16,0,false,ours ScheduledQuery (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
+logs,StorageTierPolicy,1,,0,StorageTierPolicy (Cloud Control),1,0,false,ours StorageTierPolicy (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
+logs,SubscriptionFilter,9,,0,SubscriptionFilter (Cloud Control),9,0,false,ours SubscriptionFilter (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
+logs,Transformer,61,,0,Transformer (Cloud Control),61,0,false,ours Transformer (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
 lookoutequipment,InferenceScheduler,16,,0,,0,16,false,
 m2,Application,8,,0,,0,8,false,
 m2,Deployment,3,,0,,0,3,false,
@@ -1446,7 +1446,7 @@ rds,DBShardGroup,8,,0,,0,8,false,
 rds,DBSnapshot,4,DBSnapshot,4,,0,0,false,
 rds,DBSubnetGroup,5,DBSubnetGroup,5,,0,0,false,
 rds,Deployment,13,,0,,0,13,false,
-rds,EventSubscription,8,,0,,0,8,false,
+rds,EventSubscription,8,,0,EventSubscription (Cloud Control),8,0,false,ours EventSubscription (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has rds); on the schema fake only
 rds,GlobalCluster,9,GlobalCluster,8,,0,1,false,official_unmapped=1
 rds,Integration,9,,0,,0,9,false,
 rds,OptionGroup,13,,0,OptionGroup,13,0,true,ours OptionGroup copied from rds-controller#257;ours_unmapped=7
@@ -1495,9 +1495,9 @@ robomaker,RobotApplication,9,,0,,0,9,false,
 robomaker,RobotApplicationVersion,2,,0,,0,2,false,
 robomaker,SimulationApplication,13,,0,,0,13,false,
 robomaker,SimulationApplicationVersion,2,,0,,0,2,false,
-rolesanywhere,CRL,6,,0,,0,6,false,
-rolesanywhere,Profile,12,,0,,0,12,false,
-rolesanywhere,TrustAnchor,11,,0,,0,11,false,
+rolesanywhere,CRL,6,,0,CRL (Cloud Control),6,0,false,ours CRL (Cloud Control) unproven on fake: moto 5.2.5 has no rolesanywhere; on the schema fake only
+rolesanywhere,Profile,12,,0,Profile (Cloud Control),12,0,false,ours Profile (Cloud Control) unproven on fake: moto 5.2.5 has no rolesanywhere; on the schema fake only
+rolesanywhere,TrustAnchor,11,,0,TrustAnchor (Cloud Control),11,0,false,ours TrustAnchor (Cloud Control) unproven on fake: moto 5.2.5 has no rolesanywhere; on the schema fake only
 route53,CidrCollection,3,,0,CidrCollection (Cloud Control),3,0,false,ours CidrCollection (Cloud Control) unproven on fake: moto 5.2.5 has no Create/List/Change/DeleteCidrCollection
 route53,DelegationSet,0,,0,DelegationSet (Cloud Control),0,0,false,ours DelegationSet (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has route53); on the schema fake only
 route53,DNSSEC,1,,0,DNSSEC (Cloud Control),1,0,false,ours DNSSEC (Cloud Control) unproven on fake: moto 5.2.5 has no EnableHostedZoneDNSSEC or DisableHostedZoneDNSSEC

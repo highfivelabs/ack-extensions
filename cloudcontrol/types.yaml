@@ -509,3 +509,44 @@ types:
     unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
   - typeName: AWS::EC2::VPNConcentrator
     unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  # Batch 12 (docs/throughput.md), logging and identity beside the foundation:
+  # CloudWatch Logs account policies, destinations, subscription filters,
+  # query definitions, anomaly detectors, transformers, integrations,
+  # scheduled queries and storage tiers (metric filters wait for ACK
+  # cloudwatchlogs-controller pull request #61); CloudWatch composite alarms
+  # and Contributor Insights rules (ignored in cloudwatch-controller v1.11.0;
+  # plan section 5, rank 9); RDS event subscriptions (ignored in
+  # rds-controller's generator.yaml; rank 20); IAM Roles Anywhere (its ACK
+  # repository is an empty scaffold with no release), added with
+  # hack/cloudcontrol-batch on 2026-11-11. On the schema fake until a moto
+  # backend or a live run proves them.
+  - typeName: AWS::CloudWatch::CompositeAlarm
+    unproven: "no moto backend yet (moto 5.2.5 has cloudwatch); on the schema fake only"
+  - typeName: AWS::CloudWatch::InsightRule
+    unproven: "no moto backend yet (moto 5.2.5 has cloudwatch); on the schema fake only"
+  - typeName: AWS::Logs::AccountPolicy
+    unproven: "no moto backend yet (moto 5.2.5 has logs); on the schema fake only"
+  - typeName: AWS::Logs::Destination
+    unproven: "no moto backend yet (moto 5.2.5 has logs); on the schema fake only"
+  - typeName: AWS::Logs::Integration
+    unproven: "no moto backend yet (moto 5.2.5 has logs); on the schema fake only"
+  - typeName: AWS::Logs::LogAnomalyDetector
+    unproven: "no moto backend yet (moto 5.2.5 has logs); on the schema fake only"
+  - typeName: AWS::Logs::QueryDefinition
+    unproven: "no moto backend yet (moto 5.2.5 has logs); on the schema fake only"
+  - typeName: AWS::Logs::ScheduledQuery
+    unproven: "no moto backend yet (moto 5.2.5 has logs); on the schema fake only"
+  - typeName: AWS::Logs::StorageTierPolicy
+    unproven: "no moto backend yet (moto 5.2.5 has logs); on the schema fake only"
+  - typeName: AWS::Logs::SubscriptionFilter
+    unproven: "no moto backend yet (moto 5.2.5 has logs); on the schema fake only"
+  - typeName: AWS::Logs::Transformer
+    unproven: "no moto backend yet (moto 5.2.5 has logs); on the schema fake only"
+  - typeName: AWS::RDS::EventSubscription
+    unproven: "no moto backend yet (moto 5.2.5 has rds); on the schema fake only"
+  - typeName: AWS::RolesAnywhere::CRL
+    unproven: "moto 5.2.5 has no rolesanywhere; on the schema fake only"
+  - typeName: AWS::RolesAnywhere::Profile
+    unproven: "moto 5.2.5 has no rolesanywhere; on the schema fake only"
+  - typeName: AWS::RolesAnywhere::TrustAnchor
+    unproven: "moto 5.2.5 has no rolesanywhere; on the schema fake only"

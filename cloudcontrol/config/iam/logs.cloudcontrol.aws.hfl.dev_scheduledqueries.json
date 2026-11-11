@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLogsScheduledQuery",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsScheduledQueryCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "logs:CreateScheduledQuery",
+        "logs:GetScheduledQuery",
+        "logs:ListTagsForResource",
+        "logs:StartQuery",
+        "logs:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsScheduledQueryRead",
+      "Effect": "Allow",
+      "Action": [
+        "logs:GetScheduledQuery",
+        "logs:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsScheduledQueryUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "logs:GetScheduledQuery",
+        "logs:ListTagsForResource",
+        "logs:TagResource",
+        "logs:UntagResource",
+        "logs:UpdateScheduledQuery"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsScheduledQueryDelete",
+      "Effect": "Allow",
+      "Action": [
+        "logs:DeleteScheduledQuery",
+        "logs:GetScheduledQuery",
+        "logs:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

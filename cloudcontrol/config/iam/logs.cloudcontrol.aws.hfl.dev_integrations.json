@@ -1,0 +1,80 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLogsIntegration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsIntegrationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "aoss:APIAccessAll",
+        "aoss:BatchGetCollection",
+        "aoss:BatchGetLifecyclePolicy",
+        "aoss:CreateAccessPolicy",
+        "aoss:CreateCollection",
+        "aoss:CreateLifeCyclePolicy",
+        "aoss:CreateSecurityPolicy",
+        "aoss:DeleteAccessPolicy",
+        "aoss:DeleteCollection",
+        "aoss:DeleteLifeCyclePolicy",
+        "aoss:DeleteSecurityPolicy",
+        "aoss:GetAccessPolicy",
+        "aoss:GetSecurityPolicy",
+        "aoss:TagResource",
+        "es:AddDirectQueryDataSource",
+        "es:AddTags",
+        "es:CreateApplication",
+        "es:DeleteApplication",
+        "es:DeleteDirectQueryDataSource",
+        "es:GetApplication",
+        "es:GetDirectQueryDataSource",
+        "es:ListApplications",
+        "es:UpdateApplication",
+        "iam:AttachRolePolicy",
+        "iam:AttachUserPolicy",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "logs:GetIntegration",
+        "logs:PutIntegration",
+        "opensearch:AddDirectQueryDataSource",
+        "opensearch:ApplicationAccessAll",
+        "opensearch:CreateApplication",
+        "opensearch:DashboardsAccessAll",
+        "opensearch:DeleteApplication",
+        "opensearch:DeleteDirectQueryDataSource",
+        "opensearch:GetApplication",
+        "opensearch:GetDirectQuery",
+        "opensearch:GetDirectQueryDataSource",
+        "opensearch:StartDirectQuery",
+        "opensearch:UpdateApplication"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsIntegrationRead",
+      "Effect": "Allow",
+      "Action": [
+        "logs:GetIntegration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsIntegrationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "logs:DeleteIntegration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRDSEventSubscription",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSEventSubscriptionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "rds:AddTagsToResource",
+        "rds:CreateEventSubscription",
+        "rds:DescribeEventSubscriptions",
+        "rds:ListTagsForResource",
+        "rds:RemoveTagsFromResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSEventSubscriptionRead",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DescribeEventSubscriptions",
+        "rds:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSEventSubscriptionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "rds:AddSourceIdentifierToSubscription",
+        "rds:AddTagsToResource",
+        "rds:DescribeEventSubscriptions",
+        "rds:ListTagsForResource",
+        "rds:ModifyEventSubscription",
+        "rds:RemoveSourceIdentifierFromSubscription",
+        "rds:RemoveTagsFromResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSEventSubscriptionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DeleteEventSubscription",
+        "rds:DescribeEventSubscriptions"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
