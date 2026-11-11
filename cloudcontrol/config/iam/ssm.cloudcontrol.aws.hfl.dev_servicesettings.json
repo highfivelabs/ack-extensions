@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSSMServiceSetting",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMServiceSettingCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetServiceSetting",
+        "ssm:UpdateServiceSetting"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMServiceSettingRead",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetServiceSetting"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMServiceSettingUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetServiceSetting",
+        "ssm:UpdateServiceSetting"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMServiceSettingDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetServiceSetting",
+        "ssm:ResetServiceSetting"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

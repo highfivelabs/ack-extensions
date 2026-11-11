@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlApiGatewayV2PortalProduct",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayV2PortalProductCreate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:CreatePortalProduct",
+        "apigateway:POST",
+        "apigateway:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayV2PortalProductRead",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET",
+        "apigateway:GetPortalProduct",
+        "apigateway:GetTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayV2PortalProductUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:DELETE",
+        "apigateway:GET",
+        "apigateway:GetPortalProduct",
+        "apigateway:GetTags",
+        "apigateway:PATCH",
+        "apigateway:POST",
+        "apigateway:TagResource",
+        "apigateway:UntagResource",
+        "apigateway:UpdatePortalProduct"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayV2PortalProductDelete",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:DeletePortalProduct",
+        "apigateway:GET",
+        "apigateway:GetPortalProduct"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudFrontCloudFrontOriginAccessIdentity",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontCloudFrontOriginAccessIdentityCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:CreateCloudFrontOriginAccessIdentity"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontCloudFrontOriginAccessIdentityRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:GetCloudFrontOriginAccessIdentity"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontCloudFrontOriginAccessIdentityUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:GetCloudFrontOriginAccessIdentity",
+        "cloudfront:UpdateCloudFrontOriginAccessIdentity"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontCloudFrontOriginAccessIdentityDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:DeleteCloudFrontOriginAccessIdentity",
+        "cloudfront:GetCloudFrontOriginAccessIdentity"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

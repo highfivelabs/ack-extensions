@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAutoScalingWarmPool",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AutoScalingWarmPoolCreate",
+      "Effect": "Allow",
+      "Action": [
+        "autoscaling:DescribeAutoScalingGroups",
+        "autoscaling:DescribeWarmPool",
+        "autoscaling:PutWarmPool"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AutoScalingWarmPoolRead",
+      "Effect": "Allow",
+      "Action": [
+        "autoscaling:DescribeWarmPool"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AutoScalingWarmPoolUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "autoscaling:DescribeAutoScalingGroups",
+        "autoscaling:DescribeWarmPool",
+        "autoscaling:PutWarmPool"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AutoScalingWarmPoolDelete",
+      "Effect": "Allow",
+      "Action": [
+        "autoscaling:DeleteWarmPool",
+        "autoscaling:DescribeWarmPool"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

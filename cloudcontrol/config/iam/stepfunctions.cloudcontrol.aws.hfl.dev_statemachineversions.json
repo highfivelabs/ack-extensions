@@ -1,0 +1,44 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlStepFunctionsStateMachineVersion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StepFunctionsStateMachineVersionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "states:DescribeStateMachine",
+        "states:ListStateMachineVersions",
+        "states:PublishStateMachineVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StepFunctionsStateMachineVersionRead",
+      "Effect": "Allow",
+      "Action": [
+        "states:DescribeStateMachine"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StepFunctionsStateMachineVersionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "states:DeleteStateMachineVersion",
+        "states:DescribeStateMachine"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

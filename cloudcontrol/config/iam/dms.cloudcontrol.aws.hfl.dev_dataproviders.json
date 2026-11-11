@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDMSDataProvider",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DMSDataProviderCreate",
+      "Effect": "Allow",
+      "Action": [
+        "dms:AddTagsToResource",
+        "dms:CreateDataProvider",
+        "dms:DescribeDataProviders",
+        "dms:ListDataProviders",
+        "dms:ListTagsForResource",
+        "iam:GetRole",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DMSDataProviderRead",
+      "Effect": "Allow",
+      "Action": [
+        "dms:DescribeDataProviders",
+        "dms:ListDataProviders",
+        "dms:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DMSDataProviderUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "dms:AddTagsToResource",
+        "dms:ListTagsForResource",
+        "dms:ModifyDataProvider",
+        "dms:RemoveTagsFromResource",
+        "dms:UpdateDataProvider",
+        "iam:GetRole",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DMSDataProviderDelete",
+      "Effect": "Allow",
+      "Action": [
+        "dms:DeleteDataProvider"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

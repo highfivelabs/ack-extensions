@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlECSDaemonTaskDefinition",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSDaemonTaskDefinitionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:DescribeDaemonTaskDefinition",
+        "ecs:RegisterDaemonTaskDefinition",
+        "ecs:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSDaemonTaskDefinitionRead",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:DescribeDaemonTaskDefinition",
+        "ecs:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSDaemonTaskDefinitionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:DescribeDaemonTaskDefinition",
+        "ecs:ListTagsForResource",
+        "ecs:TagResource",
+        "ecs:UntagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSDaemonTaskDefinitionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:DeleteDaemonTaskDefinition",
+        "ecs:DescribeDaemonTaskDefinition",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

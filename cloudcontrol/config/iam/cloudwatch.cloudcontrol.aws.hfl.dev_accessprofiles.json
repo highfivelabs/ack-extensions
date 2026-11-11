@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudWatchAccessProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchAccessProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:CreateAccessProfile",
+        "cloudwatch:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchAccessProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetAccessProfile",
+        "cloudwatch:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchAccessProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:ListTagsForResource",
+        "cloudwatch:TagResource",
+        "cloudwatch:UntagResource",
+        "cloudwatch:UpdateAccessProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchAccessProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DeleteAccessProfile",
+        "cloudwatch:GetAccessProfile",
+        "cloudwatch:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudFrontKeyValueStore",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontKeyValueStoreCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:CreateKeyValueStore",
+        "cloudfront:DescribeKeyValueStore",
+        "cloudfront:TagResource",
+        "s3:GetBucketLocation",
+        "s3:GetObject",
+        "s3:HeadObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontKeyValueStoreRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:DescribeKeyValueStore",
+        "cloudfront:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontKeyValueStoreUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:DescribeKeyValueStore",
+        "cloudfront:TagResource",
+        "cloudfront:UntagResource",
+        "cloudfront:UpdateKeyValueStore"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontKeyValueStoreDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:DeleteKeyValueStore",
+        "cloudfront:DescribeKeyValueStore"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

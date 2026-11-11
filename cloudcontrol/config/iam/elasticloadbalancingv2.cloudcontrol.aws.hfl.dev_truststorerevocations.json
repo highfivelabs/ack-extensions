@@ -1,0 +1,45 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlElasticLoadBalancingV2TrustStoreRevocation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElasticLoadBalancingV2TrustStoreRevocationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "elasticloadbalancing:AddTrustStoreRevocations",
+        "elasticloadbalancing:DescribeTrustStoreRevocations",
+        "s3:GetObject",
+        "s3:GetObjectVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElasticLoadBalancingV2TrustStoreRevocationRead",
+      "Effect": "Allow",
+      "Action": [
+        "elasticloadbalancing:DescribeTrustStoreRevocations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElasticLoadBalancingV2TrustStoreRevocationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "elasticloadbalancing:DescribeTrustStoreRevocations",
+        "elasticloadbalancing:RemoveTrustStoreRevocations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

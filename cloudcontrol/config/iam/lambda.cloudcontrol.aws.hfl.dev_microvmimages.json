@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLambdaMicrovmImage",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaMicrovmImageCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "lambda:CreateMicrovmImage",
+        "lambda:GetMicrovmImage",
+        "lambda:PassNetworkConnector",
+        "lambda:TagResource",
+        "lambda:TagResource20170331v2"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaMicrovmImageRead",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:GetMicrovmImage",
+        "lambda:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaMicrovmImageUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "lambda:DeleteMicrovmImageVersion",
+        "lambda:GetMicrovmImage",
+        "lambda:GetMicrovmImageVersion",
+        "lambda:PassNetworkConnector",
+        "lambda:TagResource",
+        "lambda:TagResource20170331v2",
+        "lambda:UntagResource",
+        "lambda:UntagResource20170331v2",
+        "lambda:UpdateMicrovmImage"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaMicrovmImageDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:DeleteMicrovmImage",
+        "lambda:GetMicrovmImage"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLambdaWebFunction",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaWebFunctionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:CreateWebFunction",
+        "lambda:GetWebFunction",
+        "lambda:ListTags",
+        "lambda:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaWebFunctionRead",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:GetWebFunction",
+        "lambda:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaWebFunctionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:GetWebFunction",
+        "lambda:ListTags",
+        "lambda:TagResource",
+        "lambda:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaWebFunctionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:DeleteWebFunction",
+        "lambda:GetWebFunction",
+        "lambda:ListTags"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

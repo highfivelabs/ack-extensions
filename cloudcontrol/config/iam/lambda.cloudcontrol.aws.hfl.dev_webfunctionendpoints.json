@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLambdaWebFunctionEndpoint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaWebFunctionEndpointCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:CreateWebFunctionEndpoint",
+        "lambda:GetWebFunctionEndpoint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaWebFunctionEndpointRead",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:GetWebFunctionEndpoint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaWebFunctionEndpointUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:GetWebFunctionEndpoint",
+        "lambda:UpdateWebFunctionEndpoint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaWebFunctionEndpointDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:DeleteWebFunctionEndpoint",
+        "lambda:GetWebFunctionEndpoint"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

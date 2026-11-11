@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudWatchIntegration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchIntegrationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:CreateIntegration",
+        "cloudwatch:GetIntegration",
+        "cloudwatch:ListTagsForResource",
+        "cloudwatch:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchIntegrationRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetIntegration",
+        "cloudwatch:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchIntegrationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetIntegration",
+        "cloudwatch:ListTagsForResource",
+        "cloudwatch:TagResource",
+        "cloudwatch:UntagResource",
+        "cloudwatch:UpdateIntegration",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchIntegrationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DeleteIntegration",
+        "cloudwatch:GetIntegration",
+        "cloudwatch:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

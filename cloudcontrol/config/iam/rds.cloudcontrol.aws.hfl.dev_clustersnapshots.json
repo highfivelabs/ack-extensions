@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRDSClusterSnapshot",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSClusterSnapshotCreate",
+      "Effect": "Allow",
+      "Action": [
+        "rds:AddTagsToResource",
+        "rds:CreateDBClusterSnapshot",
+        "rds:DescribeDBClusterSnapshots",
+        "rds:DescribeDBClusters",
+        "rds:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSClusterSnapshotRead",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DescribeDBClusterSnapshots",
+        "rds:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSClusterSnapshotUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "rds:AddTagsToResource",
+        "rds:DescribeDBClusterSnapshots",
+        "rds:ListTagsForResource",
+        "rds:RemoveTagsFromResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSClusterSnapshotDelete",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DeleteDBClusterSnapshot",
+        "rds:DescribeDBClusterSnapshots",
+        "rds:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
