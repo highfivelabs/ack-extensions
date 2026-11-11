@@ -53,11 +53,16 @@ func writeLiveTemplate(out string, cfg config, gens []generated) error {
 		acts = append(acts, a)
 	}
 	sort.Strings(acts)
-	results = append(results, iamgen.Result{Policy: iamgen.Policy{Statement: []iamgen.Statement{{Sid: "LiveRunSweeperAndFixtures", Effect: "Allow", Action: acts, Resource: "*"}}}})
+	// Appended after Merge, not passed to it as a result: Merge keeps a
+	// result's statements after the first (the first is its Cloud Control
+	// statement, merged into one), so a one-statement result was dropped,
+	// and the first deployed role had no sweeper or fixture permissions.
+	merged := iamgen.Merge(results)
+	merged.Statement = append(merged.Statement, iamgen.Statement{Sid: "LiveRunSweeperAndFixtures", Effect: "Allow", Action: acts, Resource: "*"})
 	// Compacted (one statement per service, the same actions): every type's
 	// handler statements kept apart would pass IAM's ten managed policies
 	// per role at about 70 types (docs/throughput.md).
-	policies, err := iamgen.Split(iamgen.Compact(iamgen.Merge(results)), 6144)
+	policies, err := iamgen.Split(iamgen.Compact(merged), 6144)
 	if err != nil {
 		return err
 	}
