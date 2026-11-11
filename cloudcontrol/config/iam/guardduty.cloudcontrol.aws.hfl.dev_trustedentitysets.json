@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGuardDutyTrustedEntitySet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyTrustedEntitySetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:CreateTrustedEntitySet",
+        "guardduty:GetTrustedEntitySet",
+        "guardduty:TagResource",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyTrustedEntitySetRead",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:GetTrustedEntitySet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyTrustedEntitySetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:GetTrustedEntitySet",
+        "guardduty:ListTrustedEntitySets",
+        "guardduty:TagResource",
+        "guardduty:UntagResource",
+        "guardduty:UpdateTrustedEntitySet",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyTrustedEntitySetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:DeleteTrustedEntitySet",
+        "guardduty:GetTrustedEntitySet",
+        "guardduty:ListDetectors",
+        "guardduty:ListTrustedEntitySets"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -7,27 +7,18 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | Category | Types | Provisionable | FULLY_MUTABLE | IMMUTABLE | CRD accepted | Clean | Gap types | Gap, provisionable | Gap, CRD accepted | Gap, clean |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 151 | 147 | 147 | 145 |
-| security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 68 | 50 | 50 | 50 |
+| security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 22 | 4 | 4 | 4 |
 | application | 262 | 250 | 232 | 18 | 250 | 230 | 147 | 136 | 136 | 128 |
 | other | 1260 | 1188 | 1084 | 104 | 1188 | 1137 | 1169 | 1101 | 1101 | 1059 |
-| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1535 | 1434 | 1434 | 1382 |
+| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1489 | 1388 | 1388 | 1336 |
 
 ## Foundation gaps (platform-foundation and security-adjacent types with no kind)
 
 | Type | Category | Provisioning | CRD | Lossy | CEL skipped | Write-only strings | Sensitive IAM |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: |
-| `AWS::AccessAnalyzer::Analyzer` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::AccessAnalyzer::ArchiveRule` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::ACMPCA::Permission` | security-adjacent | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::AuditManager::Assessment` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 4 | 1 |
-| `AWS::AuditManager::AssessmentFramework` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::CertificateManager::Account` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::CloudTrail::Channel` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::CloudTrail::Dashboard` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::CloudTrail::ResourcePolicy` | platform-foundation | FULLY_MUTABLE | ok | 1 | 0 | 0 | 0 |
-| `AWS::Detective::Graph` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Detective::MemberInvitation` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
-| `AWS::Detective::OrganizationAdmin` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::DirectConnect::Connection` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::DirectConnect::DirectConnectGateway` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::DirectConnect::DirectConnectGatewayAssociation` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 1 |
@@ -135,14 +126,6 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::ECR::RegistryScanningConfiguration` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::ECR::SigningConfiguration` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EKS::CertificateAuthority` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::FMS::ApplicationsList` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::FMS::NotificationChannel` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::FMS::Policy` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::FMS::ProtocolsList` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::FMS::ResourceSet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::GuardDuty::CustomDetectionRuleAssociation` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::GuardDuty::ThreatEntitySet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::GuardDuty::TrustedEntitySet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::IAM::GroupPolicy` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::IAM::Policy` | platform-foundation | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
 | `AWS::IAM::RolePolicy` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
@@ -155,20 +138,6 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::Inspector::AssessmentTarget` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Inspector::AssessmentTemplate` | security-adjacent | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Inspector::ResourceGroup` | security-adjacent | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::InspectorV2::CisScanConfiguration` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::InspectorV2::CodeSecurityIntegration` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::InspectorV2::CodeSecurityScanConfiguration` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::InspectorV2::Connector` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::InspectorV2::Filter` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Macie::AllowList` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Macie::CustomDataIdentifier` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Macie::FindingsFilter` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::Macie::Member` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
-| `AWS::Macie::Session` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::NetworkFirewall::ContainerAssociation` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::NetworkFirewall::LoggingConfiguration` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::NetworkFirewall::TLSInspectionConfiguration` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::NetworkFirewall::VpcEndpointAssociation` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
 | `AWS::NetworkManager::ConnectAttachment` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
 | `AWS::NetworkManager::ConnectPeer` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 2 | 0 |
 | `AWS::NetworkManager::CoreNetwork` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
@@ -199,19 +168,6 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::Route53Profiles::ProfileResourceAssociation` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Route53Resolver::OutpostResolver` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::SecretsManager::RotationSchedule` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 11 | 1 |
-| `AWS::SecretsManager::SecretTargetAttachment` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::AggregatorV2` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::AutomationRuleV2` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::Connector` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::ConnectorV2` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::SecurityHub::HubV2` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::SecurityHub::Insight` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::ProductSubscription` | security-adjacent | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityHub::SecurityControl` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::SecurityLake::AwsLogSource` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 2 |
-| `AWS::SecurityLake::DataLake` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 1 | 4 |
-| `AWS::SecurityLake::Subscriber` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 2 |
-| `AWS::SecurityLake::SubscriberNotification` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 5 | 3 |
 | `AWS::SSO::Application` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::SSO::ApplicationAssignment` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::SSO::Instance` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
@@ -233,5 +189,3 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::WAFRegional::WebACL` | security-adjacent | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
 | `AWS::WAFRegional::WebACLAssociation` | security-adjacent | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
 | `AWS::WAFRegional::XssMatchSet` | security-adjacent | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
-| `AWS::WAFv2::LoggingConfiguration` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::WAFv2::RegexPatternSet` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |

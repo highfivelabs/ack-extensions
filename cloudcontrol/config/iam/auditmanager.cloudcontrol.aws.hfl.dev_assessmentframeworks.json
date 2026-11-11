@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAuditManagerAssessmentFramework",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AuditManagerAssessmentFrameworkCreate",
+      "Effect": "Allow",
+      "Action": [
+        "auditmanager:CreateAssessmentFramework",
+        "auditmanager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AuditManagerAssessmentFrameworkRead",
+      "Effect": "Allow",
+      "Action": [
+        "auditmanager:GetAssessmentFramework"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AuditManagerAssessmentFrameworkUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "auditmanager:TagResource",
+        "auditmanager:UntagResource",
+        "auditmanager:UpdateAssessmentFramework"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AuditManagerAssessmentFrameworkDelete",
+      "Effect": "Allow",
+      "Action": [
+        "auditmanager:DeleteAssessmentFramework"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

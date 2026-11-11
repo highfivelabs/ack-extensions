@@ -1,0 +1,83 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityLakeDataLake",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityLakeDataLakeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "events:*",
+        "glue:*",
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole",
+        "iam:ListAttachedRolePolicies",
+        "iam:PassRole",
+        "iam:PutRolePolicy",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "lakeformation:*",
+        "lambda:*",
+        "organizations:*",
+        "s3:*",
+        "securitylake:CreateDataLake",
+        "securitylake:List*",
+        "securitylake:TagResource",
+        "sqs:*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityLakeDataLakeRead",
+      "Effect": "Allow",
+      "Action": [
+        "securitylake:List*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityLakeDataLakeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "events:*",
+        "iam:CreateServiceLinkedRole",
+        "iam:DeleteRolePolicy",
+        "iam:GetRole",
+        "iam:PassRole",
+        "iam:PutRolePolicy",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "lakeformation:*",
+        "lambda:*",
+        "organizations:*",
+        "s3:*",
+        "securitylake:List*",
+        "securitylake:TagResource",
+        "securitylake:UntagResource",
+        "securitylake:UpdateDataLake",
+        "sqs:*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityLakeDataLakeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "organizations:*",
+        "securitylake:DeleteDataLake",
+        "securitylake:List*"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

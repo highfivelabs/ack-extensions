@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMacieSession",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MacieSessionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "macie2:EnableMacie",
+        "macie2:GetMacieSession",
+        "macie2:ListAutomatedDiscoveryAccounts"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MacieSessionRead",
+      "Effect": "Allow",
+      "Action": [
+        "macie2:GetMacieSession",
+        "macie2:ListAutomatedDiscoveryAccounts"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MacieSessionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "macie2:GetMacieSession",
+        "macie2:ListAutomatedDiscoveryAccounts",
+        "macie2:UpdateMacieSession"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MacieSessionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "macie2:DisableMacie"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

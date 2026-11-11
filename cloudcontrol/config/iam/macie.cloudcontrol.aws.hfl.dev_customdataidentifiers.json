@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMacieCustomDataIdentifier",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MacieCustomDataIdentifierCreate",
+      "Effect": "Allow",
+      "Action": [
+        "macie2:CreateCustomDataIdentifier",
+        "macie2:GetCustomDataIdentifier",
+        "macie2:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MacieCustomDataIdentifierRead",
+      "Effect": "Allow",
+      "Action": [
+        "macie2:GetCustomDataIdentifier"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MacieCustomDataIdentifierUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "macie2:GetCustomDataIdentifier",
+        "macie2:TagResource",
+        "macie2:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MacieCustomDataIdentifierDelete",
+      "Effect": "Allow",
+      "Action": [
+        "macie2:DeleteCustomDataIdentifier"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

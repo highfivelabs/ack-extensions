@@ -205,3 +205,106 @@ types:
   # named by ARN or name (secretId); a reference to ACK's Secret waits for
   # the overlay.
   - typeName: AWS::SecretsManager::ResourcePolicy
+  # Batch 9 (docs/throughput.md), security-adjacent: every gap type of the
+  # security services the builder named that Cloud Control can serve, added
+  # with hack/cloudcontrol-batch on 2026-11-11. ACK has no controller for
+  # Access Analyzer, Macie, Inspector, Detective, Firewall Manager, Audit
+  # Manager, Security Lake, GuardDuty or Security Hub (no issue or pull
+  # request, rechecked 2026-11-11); for WAFv2, ACM, ACM PCA, Network Firewall
+  # and Secrets Manager these types are ones the released controllers do not
+  # serve. On the schema fake until a moto backend or a live run proves them.
+  - typeName: AWS::AccessAnalyzer::Analyzer
+    unproven: "moto 5.2.5 has no accessanalyzer; on the schema fake only"
+  - typeName: AWS::AccessAnalyzer::ArchiveRule
+    unproven: "moto 5.2.5 has no accessanalyzer; on the schema fake only"
+  - typeName: AWS::ACMPCA::Permission
+    unproven: "no moto backend yet (moto 5.2.5 has acmpca); on the schema fake only"
+  - typeName: AWS::AuditManager::Assessment
+    unproven: "moto 5.2.5 has no auditmanager; on the schema fake only"
+  - typeName: AWS::AuditManager::AssessmentFramework
+    unproven: "moto 5.2.5 has no auditmanager; on the schema fake only"
+  - typeName: AWS::CertificateManager::Account
+    unproven: "no moto backend yet (moto 5.2.5 has acm); on the schema fake only"
+  - typeName: AWS::Detective::Graph
+    unproven: "moto 5.2.5 has no detective; on the schema fake only"
+  - typeName: AWS::Detective::MemberInvitation
+    unproven: "moto 5.2.5 has no detective; on the schema fake only"
+  - typeName: AWS::Detective::OrganizationAdmin
+    unproven: "moto 5.2.5 has no detective; on the schema fake only"
+  - typeName: AWS::FMS::ApplicationsList
+    unproven: "moto 5.2.5 has no fms; on the schema fake only"
+  - typeName: AWS::FMS::NotificationChannel
+    unproven: "moto 5.2.5 has no fms; on the schema fake only"
+  - typeName: AWS::FMS::Policy
+    unproven: "moto 5.2.5 has no fms; on the schema fake only"
+  - typeName: AWS::FMS::ProtocolsList
+    unproven: "moto 5.2.5 has no fms; on the schema fake only"
+  - typeName: AWS::FMS::ResourceSet
+    unproven: "moto 5.2.5 has no fms; on the schema fake only"
+  - typeName: AWS::GuardDuty::CustomDetectionRuleAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has guardduty); on the schema fake only"
+  - typeName: AWS::GuardDuty::ThreatEntitySet
+    unproven: "no moto backend yet (moto 5.2.5 has guardduty); on the schema fake only"
+  - typeName: AWS::GuardDuty::TrustedEntitySet
+    unproven: "no moto backend yet (moto 5.2.5 has guardduty); on the schema fake only"
+  - typeName: AWS::InspectorV2::CisScanConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has inspector2); on the schema fake only"
+  - typeName: AWS::InspectorV2::CodeSecurityIntegration
+    unproven: "no moto backend yet (moto 5.2.5 has inspector2); on the schema fake only"
+  - typeName: AWS::InspectorV2::CodeSecurityScanConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has inspector2); on the schema fake only"
+  - typeName: AWS::InspectorV2::Connector
+    unproven: "no moto backend yet (moto 5.2.5 has inspector2); on the schema fake only"
+  - typeName: AWS::InspectorV2::Filter
+    unproven: "no moto backend yet (moto 5.2.5 has inspector2); on the schema fake only"
+  - typeName: AWS::Macie::AllowList
+    unproven: "no moto backend yet (moto 5.2.5 has macie2); on the schema fake only"
+  - typeName: AWS::Macie::CustomDataIdentifier
+    unproven: "no moto backend yet (moto 5.2.5 has macie2); on the schema fake only"
+  - typeName: AWS::Macie::FindingsFilter
+    unproven: "no moto backend yet (moto 5.2.5 has macie2); on the schema fake only"
+  - typeName: AWS::Macie::Member
+    unproven: "no moto backend yet (moto 5.2.5 has macie2); on the schema fake only"
+  - typeName: AWS::Macie::Session
+    unproven: "no moto backend yet (moto 5.2.5 has macie2); on the schema fake only"
+  - typeName: AWS::NetworkFirewall::ContainerAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has networkfirewall); on the schema fake only"
+  - typeName: AWS::NetworkFirewall::LoggingConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has networkfirewall); on the schema fake only"
+  - typeName: AWS::NetworkFirewall::TLSInspectionConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has networkfirewall); on the schema fake only"
+  - typeName: AWS::NetworkFirewall::VpcEndpointAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has networkfirewall); on the schema fake only"
+  - typeName: AWS::SecretsManager::SecretTargetAttachment
+    unproven: "no moto backend yet (moto 5.2.5 has secretsmanager); on the schema fake only"
+  - typeName: AWS::SecurityHub::AggregatorV2
+    unproven: "no moto backend yet (moto 5.2.5 has securityhub); on the schema fake only"
+  - typeName: AWS::SecurityHub::AutomationRuleV2
+    unproven: "no moto backend yet (moto 5.2.5 has securityhub); on the schema fake only"
+  - typeName: AWS::SecurityHub::Connector
+    unproven: "no moto backend yet (moto 5.2.5 has securityhub); on the schema fake only"
+  - typeName: AWS::SecurityHub::ConnectorV2
+    unproven: "no moto backend yet (moto 5.2.5 has securityhub); on the schema fake only"
+  - typeName: AWS::SecurityHub::HubV2
+    unproven: "no moto backend yet (moto 5.2.5 has securityhub); on the schema fake only"
+  - typeName: AWS::SecurityHub::Insight
+    unproven: "no moto backend yet (moto 5.2.5 has securityhub); on the schema fake only"
+  - typeName: AWS::SecurityHub::ProductSubscription
+    unproven: "no moto backend yet (moto 5.2.5 has securityhub); on the schema fake only"
+  - typeName: AWS::SecurityHub::SecurityControl
+    unproven: "no moto backend yet (moto 5.2.5 has securityhub); on the schema fake only"
+  - typeName: AWS::SecurityLake::AwsLogSource
+    unproven: "moto 5.2.5 has no securitylake; on the schema fake only"
+  - typeName: AWS::SecurityLake::DataLake
+    unproven: "moto 5.2.5 has no securitylake; on the schema fake only"
+  - typeName: AWS::SecurityLake::Subscriber
+    unproven: "moto 5.2.5 has no securitylake; on the schema fake only"
+  - typeName: AWS::SecurityLake::SubscriberNotification
+    unproven: "moto 5.2.5 has no securitylake; on the schema fake only"
+    # The HTTPS endpoint's API key value is a secret; its name, the
+    # endpoint, the method and the role stay plain fields.
+    secrets: [/properties/NotificationConfiguration/HttpsNotificationConfiguration/AuthorizationApiKeyValue]
+  - typeName: AWS::WAFv2::LoggingConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has wafv2); on the schema fake only"
+  - typeName: AWS::WAFv2::RegexPatternSet
+    unproven: "no moto backend yet (moto 5.2.5 has wafv2); on the schema fake only"

@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlInspectorV2Filter",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InspectorV2FilterCreate",
+      "Effect": "Allow",
+      "Action": [
+        "inspector2:CreateFilter",
+        "inspector2:ListFilters",
+        "inspector2:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InspectorV2FilterRead",
+      "Effect": "Allow",
+      "Action": [
+        "inspector2:ListFilters",
+        "inspector2:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InspectorV2FilterUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "inspector2:ListFilters",
+        "inspector2:ListTagsForResource",
+        "inspector2:TagResource",
+        "inspector2:UntagResource",
+        "inspector2:UpdateFilter"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InspectorV2FilterDelete",
+      "Effect": "Allow",
+      "Action": [
+        "inspector2:DeleteFilter",
+        "inspector2:ListFilters"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

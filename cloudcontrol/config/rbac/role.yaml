@@ -35,6 +35,90 @@ rules:
   - create
   - patch
 - apiGroups:
+  - accessanalyzer.cloudcontrol.aws.hfl.dev
+  resources:
+  - analyzers
+  - archiverules
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - accessanalyzer.cloudcontrol.aws.hfl.dev
+  resources:
+  - analyzers/status
+  - archiverules/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - acmpca.cloudcontrol.aws.hfl.dev
+  resources:
+  - permissions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - acmpca.cloudcontrol.aws.hfl.dev
+  resources:
+  - permissions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - auditmanager.cloudcontrol.aws.hfl.dev
+  resources:
+  - assessmentframeworks
+  - assessments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - auditmanager.cloudcontrol.aws.hfl.dev
+  resources:
+  - assessmentframeworks/status
+  - assessments/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - certificatemanager.cloudcontrol.aws.hfl.dev
+  resources:
+  - accounts
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - certificatemanager.cloudcontrol.aws.hfl.dev
+  resources:
+  - accounts/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - config.cloudcontrol.aws.hfl.dev
   resources:
   - aggregationauthorizations
@@ -99,6 +183,30 @@ rules:
   - patch
   - update
 - apiGroups:
+  - detective.cloudcontrol.aws.hfl.dev
+  resources:
+  - graphs
+  - memberinvitations
+  - organizationadmins
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - detective.cloudcontrol.aws.hfl.dev
+  resources:
+  - graphs/status
+  - memberinvitations/status
+  - organizationadmins/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - ec2.cloudcontrol.aws.hfl.dev
   resources:
   - transitgatewaypeeringattachments
@@ -127,8 +235,37 @@ rules:
   - patch
   - update
 - apiGroups:
+  - fms.cloudcontrol.aws.hfl.dev
+  resources:
+  - applicationslists
+  - notificationchannels
+  - policies
+  - protocolslists
+  - resourcesets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - fms.cloudcontrol.aws.hfl.dev
+  resources:
+  - applicationslists/status
+  - notificationchannels/status
+  - policies/status
+  - protocolslists/status
+  - resourcesets/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - guardduty.cloudcontrol.aws.hfl.dev
   resources:
+  - customdetectionruleassociations
   - detectors
   - filters
   - ipsets
@@ -136,7 +273,9 @@ rules:
   - masters
   - members
   - publishingdestinations
+  - threatentitysets
   - threatintelsets
+  - trustedentitysets
   verbs:
   - create
   - delete
@@ -148,6 +287,7 @@ rules:
 - apiGroups:
   - guardduty.cloudcontrol.aws.hfl.dev
   resources:
+  - customdetectionruleassociations/status
   - detectors/status
   - filters/status
   - ipsets/status
@@ -155,7 +295,9 @@ rules:
   - masters/status
   - members/status
   - publishingdestinations/status
+  - threatentitysets/status
   - threatintelsets/status
+  - trustedentitysets/status
   verbs:
   - get
   - patch
@@ -176,6 +318,88 @@ rules:
   - iam.cloudcontrol.aws.hfl.dev
   resources:
   - samlproviders/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - inspectorv2.cloudcontrol.aws.hfl.dev
+  resources:
+  - cisscanconfigurations
+  - codesecurityintegrations
+  - codesecurityscanconfigurations
+  - connectors
+  - filters
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - inspectorv2.cloudcontrol.aws.hfl.dev
+  resources:
+  - cisscanconfigurations/status
+  - codesecurityintegrations/status
+  - codesecurityscanconfigurations/status
+  - connectors/status
+  - filters/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - macie.cloudcontrol.aws.hfl.dev
+  resources:
+  - allowlists
+  - customdataidentifiers
+  - findingsfilters
+  - members
+  - sessions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - macie.cloudcontrol.aws.hfl.dev
+  resources:
+  - allowlists/status
+  - customdataidentifiers/status
+  - findingsfilters/status
+  - members/status
+  - sessions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - networkfirewall.cloudcontrol.aws.hfl.dev
+  resources:
+  - containerassociations
+  - loggingconfigurations
+  - tlsinspectionconfigurations
+  - vpcendpointassociations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - networkfirewall.cloudcontrol.aws.hfl.dev
+  resources:
+  - containerassociations/status
+  - loggingconfigurations/status
+  - tlsinspectionconfigurations/status
+  - vpcendpointassociations/status
   verbs:
   - get
   - patch
@@ -240,6 +464,7 @@ rules:
   - secretsmanager.cloudcontrol.aws.hfl.dev
   resources:
   - resourcepolicies
+  - secrettargetattachments
   verbs:
   - create
   - delete
@@ -252,6 +477,7 @@ rules:
   - secretsmanager.cloudcontrol.aws.hfl.dev
   resources:
   - resourcepolicies/status
+  - secrettargetattachments/status
   verbs:
   - get
   - patch
@@ -260,13 +486,21 @@ rules:
   - securityhub.cloudcontrol.aws.hfl.dev
   resources:
   - actiontargets
+  - aggregatorv2s
   - automationrules
+  - automationrulev2s
   - configurationpolicies
+  - connectors
+  - connectorv2s
   - delegatedadmins
   - findingaggregators
   - hubs
+  - hubv2s
+  - insights
   - organizationconfigurations
   - policyassociations
+  - productsubscriptions
+  - securitycontrols
   - standards
   verbs:
   - create
@@ -280,14 +514,48 @@ rules:
   - securityhub.cloudcontrol.aws.hfl.dev
   resources:
   - actiontargets/status
+  - aggregatorv2s/status
   - automationrules/status
+  - automationrulev2s/status
   - configurationpolicies/status
+  - connectors/status
+  - connectorv2s/status
   - delegatedadmins/status
   - findingaggregators/status
   - hubs/status
+  - hubv2s/status
+  - insights/status
   - organizationconfigurations/status
   - policyassociations/status
+  - productsubscriptions/status
+  - securitycontrols/status
   - standards/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - securitylake.cloudcontrol.aws.hfl.dev
+  resources:
+  - awslogsources
+  - datalakes
+  - subscribernotifications
+  - subscribers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - securitylake.cloudcontrol.aws.hfl.dev
+  resources:
+  - awslogsources/status
+  - datalakes/status
+  - subscribernotifications/status
+  - subscribers/status
   verbs:
   - get
   - patch
@@ -312,6 +580,28 @@ rules:
   - assignments/status
   - instanceaccesscontrolattributeconfigurations/status
   - permissionsets/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - wafv2.cloudcontrol.aws.hfl.dev
+  resources:
+  - loggingconfigurations
+  - regexpatternsets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - wafv2.cloudcontrol.aws.hfl.dev
+  resources:
+  - loggingconfigurations/status
+  - regexpatternsets/status
   verbs:
   - get
   - patch

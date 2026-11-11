@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlFMSNotificationChannel",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FMSNotificationChannelCreate",
+      "Effect": "Allow",
+      "Action": [
+        "fms:GetNotificationChannel",
+        "fms:PutNotificationChannel",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FMSNotificationChannelRead",
+      "Effect": "Allow",
+      "Action": [
+        "fms:GetNotificationChannel"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FMSNotificationChannelUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "fms:GetNotificationChannel",
+        "fms:PutNotificationChannel",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FMSNotificationChannelDelete",
+      "Effect": "Allow",
+      "Action": [
+        "fms:DeleteNotificationChannel",
+        "fms:GetNotificationChannel"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

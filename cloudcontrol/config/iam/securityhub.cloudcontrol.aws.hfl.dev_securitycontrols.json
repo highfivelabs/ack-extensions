@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityHubSecurityControl",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubSecurityControlCreate",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:BatchGetSecurityControls",
+        "securityhub:DescribeStandardsControls",
+        "securityhub:UpdateSecurityControl",
+        "securityhub:UpdateStandardsControl"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubSecurityControlRead",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:BatchGetSecurityControls",
+        "securityhub:DescribeStandardsControls"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubSecurityControlUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:BatchGetSecurityControls",
+        "securityhub:DescribeStandardsControls",
+        "securityhub:UpdateSecurityControl",
+        "securityhub:UpdateStandardsControl"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubSecurityControlDelete",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:BatchGetSecurityControls",
+        "securityhub:DescribeStandardsControls",
+        "securityhub:UpdateSecurityControl",
+        "securityhub:UpdateStandardsControl"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityHubConnector",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubConnectorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:CreateConnector",
+        "securityhub:GetConnector",
+        "securityhub:ListTagsForResource",
+        "securityhub:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubConnectorRead",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:GetConnector",
+        "securityhub:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubConnectorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:GetConnector",
+        "securityhub:ListTagsForResource",
+        "securityhub:TagResource",
+        "securityhub:UntagResource",
+        "securityhub:UpdateConnector"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubConnectorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:DeleteConnector",
+        "securityhub:GetConnector"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

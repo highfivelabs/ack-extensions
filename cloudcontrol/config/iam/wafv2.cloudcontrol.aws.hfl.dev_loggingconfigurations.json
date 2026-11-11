@@ -1,0 +1,71 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWAFv2LoggingConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WAFv2LoggingConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "firehose:ListDeliveryStreams",
+        "iam:CreateServiceLinkedRole",
+        "iam:DescribeOrganization",
+        "logs:CreateLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:PutResourcePolicy",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy",
+        "wafv2:GetLoggingConfiguration",
+        "wafv2:PutLoggingConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WAFv2LoggingConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "wafv2:GetLoggingConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WAFv2LoggingConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "firehose:ListDeliveryStreams",
+        "iam:CreateServiceLinkedRole",
+        "iam:DescribeOrganization",
+        "logs:CreateLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:PutResourcePolicy",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy",
+        "wafv2:GetLoggingConfiguration",
+        "wafv2:PutLoggingConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WAFv2LoggingConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "logs:DeleteLogDelivery",
+        "wafv2:DeleteLoggingConfiguration",
+        "wafv2:GetLoggingConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

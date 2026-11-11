@@ -1,0 +1,79 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkFirewallLoggingConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFirewallLoggingConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "firehose:TagDeliveryStream",
+        "iam:CreateServiceLinkedRole",
+        "logs:CreateLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "network-firewall:DescribeLoggingConfiguration",
+        "network-firewall:UpdateLoggingConfiguration",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFirewallLoggingConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "network-firewall:DescribeLoggingConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFirewallLoggingConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "firehose:TagDeliveryStream",
+        "iam:CreateServiceLinkedRole",
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "logs:UpdateLogDelivery",
+        "network-firewall:DescribeLoggingConfiguration",
+        "network-firewall:UpdateLoggingConfiguration",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFirewallLoggingConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "logs:DeleteLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "network-firewall:DescribeLoggingConfiguration",
+        "network-firewall:UpdateLoggingConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
