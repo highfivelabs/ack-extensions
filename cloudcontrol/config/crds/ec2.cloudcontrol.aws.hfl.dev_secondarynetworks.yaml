@@ -175,13 +175,6 @@ spec:
                       type: string
                     state:
                       description: The state of the CIDR block association.
-                      enum:
-                      - associating
-                      - associated
-                      - association-failed
-                      - disassociating
-                      - disassociated
-                      - disassociation-failed
                       type: string
                   type: object
                 type: array

@@ -228,13 +228,9 @@ spec:
                 type: array
               dataMigrationArn:
                 description: The property describes an ARN of the data migration.
-                maxLength: 300
-                minLength: 1
                 type: string
               dataMigrationCreateTime:
                 description: The property describes the create time of the data migration.
-                maxLength: 40
-                minLength: 1
                 type: string
             type: object
         required:

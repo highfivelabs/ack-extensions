@@ -179,8 +179,6 @@ spec:
               id:
                 description: The ID that Amazon Route 53 assigned to the traffic policy
                   instance when it was created.
-                maxLength: 36
-                minLength: 1
                 type: string
               state:
                 description: The current state of the traffic policy instance. A steady-state
@@ -190,24 +188,6 @@ spec:
                 description: The DNS type that Amazon Route 53 assigned to all of
                   the resource record sets that it created for this traffic policy
                   instance. Route 53 derives it from the referenced traffic policy.
-                enum:
-                - SOA
-                - A
-                - TXT
-                - NS
-                - CNAME
-                - MX
-                - NAPTR
-                - PTR
-                - SRV
-                - SPF
-                - AAAA
-                - CAA
-                - DS
-                - TLSA
-                - SSHFP
-                - SVCB
-                - HTTPS
                 type: string
             type: object
         required:

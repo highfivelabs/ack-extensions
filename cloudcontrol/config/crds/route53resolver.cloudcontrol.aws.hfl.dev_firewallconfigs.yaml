@@ -149,14 +149,10 @@ spec:
                 type: array
               id:
                 description: The ID of the firewall configuration.
-                maxLength: 64
-                minLength: 1
                 type: string
               ownerId:
                 description: The Amazon Web Services account ID of the owner of the
                   VPC that this firewall configuration applies to.
-                maxLength: 32
-                minLength: 12
                 type: string
             type: object
         required:

@@ -188,16 +188,12 @@ spec:
               identityCenterApplicationArn:
                 description: The ARN of the Identity Center application. Absent for
                   IAM-only domains.
-                maxLength: 2048
-                minLength: 1
                 type: string
               region:
                 description: The Region where this domain was created.
                 type: string
               status:
                 description: Current status of the domain.
-                enum:
-                - ACTIVE
                 type: string
               updatedAt:
                 description: The timestamp when the domain was last updated.

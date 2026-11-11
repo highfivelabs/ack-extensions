@@ -168,12 +168,8 @@ spec:
                   type: object
                 type: array
               queryArn:
-                maxLength: 500
-                minLength: 1
                 type: string
               queryId:
-                maxLength: 36
-                minLength: 1
                 type: string
             type: object
         required:

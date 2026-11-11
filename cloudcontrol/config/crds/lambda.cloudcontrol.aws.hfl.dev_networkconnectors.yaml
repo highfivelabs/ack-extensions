@@ -173,8 +173,6 @@ spec:
                 type: object
               arn:
                 description: The Amazon Resource Name (ARN) of the network connector.
-                maxLength: 140
-                minLength: 1
                 type: string
               cloudControl:
                 description: Cloud Control's view of the resource.
@@ -231,24 +229,14 @@ spec:
                 description: The version number of the network connector's latest
                   version. Updates to the connector's configuration create a new immutable
                   version; this attribute exposes the most recent one.
-                minimum: 1
                 type: integer
               latestVersionArn:
                 description: The qualified Amazon Resource Name (ARN) of the network
                   connector's latest version. Includes the immutable version suffix
                   and can be used to pin to a specific version.
-                maxLength: 140
-                minLength: 1
                 type: string
               state:
                 description: The current state of the network connector.
-                enum:
-                - PENDING
-                - ACTIVE
-                - INACTIVE
-                - FAILED
-                - DELETING
-                - DELETE_FAILED
                 type: string
             type: object
         required:

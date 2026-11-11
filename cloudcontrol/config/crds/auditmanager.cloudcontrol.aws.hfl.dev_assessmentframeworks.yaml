@@ -139,8 +139,6 @@ spec:
                 type: object
               arn:
                 description: The Amazon Resource Name (ARN) of the framework.
-                maxLength: 2048
-                minLength: 20
                 type: string
               cloudControl:
                 description: Cloud Control's view of the resource.
@@ -198,28 +196,19 @@ spec:
                 type: string
               createdBy:
                 description: The user or role that created the framework.
-                maxLength: 100
-                minLength: 1
                 type: string
               frameworkId:
                 description: The unique identifier for the framework.
-                maxLength: 36
-                minLength: 36
                 type: string
               lastUpdatedAt:
                 description: The time when the framework was most recently updated.
                 type: string
               lastUpdatedBy:
                 description: The user or role that most recently updated the framework.
-                maxLength: 100
-                minLength: 1
                 type: string
               type:
                 description: The framework type, such as a standard framework or a
                   custom framework.
-                enum:
-                - Standard
-                - Custom
                 type: string
             type: object
         required:

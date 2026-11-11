@@ -982,8 +982,6 @@ spec:
                 type: object
               arn:
                 description: Findings filter ARN.
-                maxLength: 128
-                minLength: 1
                 type: string
               cloudControl:
                 description: Cloud Control's view of the resource.

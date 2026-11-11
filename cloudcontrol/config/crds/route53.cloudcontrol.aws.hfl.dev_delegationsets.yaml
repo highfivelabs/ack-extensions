@@ -71,8 +71,6 @@ spec:
                 description: A unique string that identifies the request and allows
                   retrying failed CreateReusableDelegationSet requests without risk
                   of executing the operation twice.
-                maxLength: 128
-                minLength: 1
                 type: string
               cloudControl:
                 description: Cloud Control's view of the resource.
@@ -128,13 +126,11 @@ spec:
               id:
                 description: The ID that Amazon Route 53 assigns to a reusable delegation
                   set.
-                maxLength: 32
                 type: string
               nameServers:
                 description: A list of the authoritative name servers for the delegation
                   set.
                 items:
-                  maxLength: 1024
                   type: string
                 type: array
             type: object

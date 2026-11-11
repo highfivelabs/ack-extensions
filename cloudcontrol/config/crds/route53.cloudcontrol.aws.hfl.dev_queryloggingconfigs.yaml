@@ -149,8 +149,6 @@ spec:
               id:
                 description: The ID that Amazon Route 53 assigns to the configuration
                   for DNS query logging.
-                maxLength: 36
-                minLength: 1
                 type: string
             type: object
         required:

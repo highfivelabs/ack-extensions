@@ -193,12 +193,8 @@ spec:
                 type: string
               vpcEndpointAssociationArn:
                 description: A resource ARN.
-                maxLength: 256
-                minLength: 1
                 type: string
               vpcEndpointAssociationId:
-                maxLength: 36
-                minLength: 36
                 type: string
             type: object
         required:

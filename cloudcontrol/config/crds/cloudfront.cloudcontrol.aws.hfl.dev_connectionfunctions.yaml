@@ -215,17 +215,8 @@ spec:
               lastModifiedTime:
                 type: string
               stage:
-                enum:
-                - DEVELOPMENT
-                - LIVE
                 type: string
               status:
-                enum:
-                - UNPUBLISHED
-                - DEPLOYED
-                - UNASSOCIATED
-                - PUBLISHING
-                - IN_PROGRESS
                 type: string
             type: object
         required:

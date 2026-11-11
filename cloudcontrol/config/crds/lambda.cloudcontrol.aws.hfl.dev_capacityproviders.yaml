@@ -323,8 +323,6 @@ spec:
                 - region
                 type: object
               arn:
-                maxLength: 140
-                minLength: 1
                 type: string
               cloudControl:
                 description: Cloud Control's view of the resource.
@@ -381,11 +379,6 @@ spec:
                 description: The current state of the capacity provider. Indicates
                   whether the provider is being created, is active and ready for use,
                   has failed, or is being deleted.
-                enum:
-                - Pending
-                - Active
-                - Failed
-                - Deleting
                 type: string
             type: object
         required:

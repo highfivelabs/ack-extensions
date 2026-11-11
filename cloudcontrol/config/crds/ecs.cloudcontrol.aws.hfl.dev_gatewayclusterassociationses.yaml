@@ -153,9 +153,6 @@ spec:
               status:
                 description: The status of the association between the gateway and
                   the cluster.
-                enum:
-                - ACTIVE
-                - DISASSOCIATING
                 type: string
             type: object
         required:

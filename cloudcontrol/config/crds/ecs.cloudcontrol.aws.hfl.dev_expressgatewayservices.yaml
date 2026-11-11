@@ -221,9 +221,6 @@ spec:
                       items:
                         properties:
                           accessType:
-                            enum:
-                            - PUBLIC
-                            - PRIVATE
                             type: string
                           endpoint:
                             type: string
@@ -286,10 +283,6 @@ spec:
                     scalingTarget:
                       properties:
                         autoScalingMetric:
-                          enum:
-                          - AVERAGE_CPU
-                          - AVERAGE_MEMORY
-                          - REQUEST_COUNT_PER_TARGET
                           type: string
                         autoScalingTargetValue:
                           type: integer
@@ -409,10 +402,6 @@ spec:
               status:
                 properties:
                   statusCode:
-                    enum:
-                    - ACTIVE
-                    - DRAINING
-                    - INACTIVE
                     type: string
                 type: object
               updatedAt:

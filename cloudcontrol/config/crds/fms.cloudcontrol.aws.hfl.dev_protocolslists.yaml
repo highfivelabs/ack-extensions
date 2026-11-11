@@ -109,8 +109,6 @@ spec:
                 type: object
               arn:
                 description: The Amazon Resource Name (ARN) of the protocols list.
-                maxLength: 1024
-                minLength: 1
                 type: string
               cloudControl:
                 description: Cloud Control's view of the resource.
@@ -173,8 +171,6 @@ spec:
                 type: string
               listId:
                 description: The ID of the Firewall Manager protocols list.
-                maxLength: 36
-                minLength: 36
                 type: string
             type: object
         required:

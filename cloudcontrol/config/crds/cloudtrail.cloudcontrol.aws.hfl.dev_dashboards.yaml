@@ -220,18 +220,9 @@ spec:
               status:
                 description: The status of the dashboard. Values are CREATING, CREATED,
                   UPDATING, UPDATED and DELETING.
-                enum:
-                - CREATING
-                - CREATED
-                - UPDATING
-                - UPDATED
-                - DELETING
                 type: string
               type:
                 description: The type of the dashboard. Values are CUSTOM and MANAGED.
-                enum:
-                - MANAGED
-                - CUSTOM
                 type: string
               updatedTimestamp:
                 type: string

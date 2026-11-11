@@ -169,8 +169,6 @@ spec:
               applicationArn:
                 description: The Application ARN that is returned upon creation of
                   the Identity Center (SSO) Application
-                maxLength: 1224
-                minLength: 10
                 type: string
               cloudControl:
                 description: Cloud Control's view of the resource.
@@ -226,8 +224,6 @@ spec:
               identityStoreArn:
                 description: The ARN of the identity store associated with the Identity
                   Center instance
-                maxLength: 1224
-                minLength: 10
                 type: string
             type: object
         required:

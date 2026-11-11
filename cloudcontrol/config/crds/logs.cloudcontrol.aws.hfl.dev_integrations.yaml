@@ -186,10 +186,6 @@ spec:
                 type: array
               integrationStatus:
                 description: Status of creation for the Integration and its resources
-                enum:
-                - PROVISIONING
-                - ACTIVE
-                - FAILED
                 type: string
             type: object
         required:

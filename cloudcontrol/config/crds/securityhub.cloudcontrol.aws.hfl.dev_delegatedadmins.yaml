@@ -133,9 +133,6 @@ spec:
               delegatedAdminIdentifier:
                 type: string
               status:
-                enum:
-                - ENABLED
-                - DISABLE_IN_PROGRESS
                 type: string
             type: object
         required:

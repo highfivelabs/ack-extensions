@@ -142,9 +142,6 @@ spec:
                 properties:
                   isPublic:
                     description: Specifies whether the policy is public or not.
-                    enum:
-                    - "true"
-                    - "false"
                     type: string
                 type: object
             type: object

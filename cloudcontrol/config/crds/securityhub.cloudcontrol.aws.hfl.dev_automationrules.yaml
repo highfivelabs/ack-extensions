@@ -1460,8 +1460,6 @@ spec:
                 description: The date and time, in UTC and ISO 8601 format.
                 type: string
               createdBy:
-                maxLength: 256
-                minLength: 1
                 type: string
               ruleArn:
                 type: string

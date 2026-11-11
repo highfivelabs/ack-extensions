@@ -160,16 +160,9 @@ spec:
                 type: string
               functionArn:
                 description: The Amazon Resource Name (ARN) of the function.
-                maxLength: 2048
-                minLength: 1
                 type: string
               state:
                 description: The current state of the function.
-                enum:
-                - Pending
-                - Active
-                - Failed
-                - Deleting
                 type: string
               stateReason:
                 description: The reason for the function's current state.

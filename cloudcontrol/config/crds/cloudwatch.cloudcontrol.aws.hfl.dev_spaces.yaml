@@ -154,8 +154,6 @@ spec:
                 type: object
               arn:
                 description: The Amazon Resource Name (ARN) of the space.
-                maxLength: 2048
-                minLength: 1
                 type: string
               cloudControl:
                 description: Cloud Control's view of the resource.
@@ -213,8 +211,6 @@ spec:
                 type: string
               ownerAccountId:
                 description: AWS account ID that owns this space.
-                maxLength: 12
-                minLength: 12
                 type: string
               region:
                 description: The region where this space was created.
@@ -224,10 +220,6 @@ spec:
                 type: string
               status:
                 description: The status of the space.
-                enum:
-                - ACTIVE
-                - SUSPENDED
-                - MOVING
                 type: string
               updatedAt:
                 description: The timestamp when the space was last updated.

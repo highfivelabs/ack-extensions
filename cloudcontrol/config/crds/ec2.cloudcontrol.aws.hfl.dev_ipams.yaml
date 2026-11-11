@@ -214,7 +214,6 @@ spec:
               publicDefaultScopeId:
                 description: The Id of the default scope for publicly routable IP
                   space, created with this IPAM.
-                maxLength: 255
                 type: string
               resourceDiscoveryAssociationCount:
                 description: The count of resource discoveries associated with this

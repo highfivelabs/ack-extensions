@@ -178,17 +178,6 @@ spec:
               relationshipStatus:
                 description: The current status of the relationship between the account
                   and the Amazon Macie administrator account.
-                enum:
-                - Enabled
-                - Paused
-                - Invited
-                - Created
-                - Removed
-                - Resigned
-                - EmailVerificationInProgress
-                - EmailVerificationFailed
-                - RegionDisabled
-                - AccountSuspended
                 type: string
               updatedAt:
                 description: The date and time, in UTC and extended ISO 8601 format,

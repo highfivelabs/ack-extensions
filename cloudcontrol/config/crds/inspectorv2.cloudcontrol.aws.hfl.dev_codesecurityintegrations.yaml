@@ -193,12 +193,6 @@ spec:
                 description: Last update timestamp
                 type: string
               status:
-                enum:
-                - PENDING
-                - IN_PROGRESS
-                - ACTIVE
-                - INACTIVE
-                - DISABLING
                 type: string
               statusReason:
                 description: Reason for the current status

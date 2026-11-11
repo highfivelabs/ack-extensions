@@ -186,9 +186,6 @@ spec:
                 type: array
               status:
                 description: Current status of OTel enrichment (RUNNING or STOPPED).
-                enum:
-                - RUNNING
-                - STOPPED
                 type: string
             type: object
         required:

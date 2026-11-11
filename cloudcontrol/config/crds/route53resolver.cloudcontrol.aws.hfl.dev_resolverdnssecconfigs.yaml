@@ -129,22 +129,13 @@ spec:
                 type: array
               id:
                 description: Id
-                maxLength: 64
-                minLength: 1
                 type: string
               ownerId:
                 description: AccountId
-                maxLength: 32
-                minLength: 12
                 type: string
               validationStatus:
                 description: ResolverDNSSECValidationStatus, possible values are ENABLING,
                   ENABLED, DISABLING AND DISABLED.
-                enum:
-                - ENABLING
-                - ENABLED
-                - DISABLING
-                - DISABLED
                 type: string
             type: object
         required:

@@ -412,14 +412,9 @@ spec:
                 type: string
               userId:
                 description: The identifier for a user in the identity store.
-                maxLength: 47
-                minLength: 1
                 type: string
               userStatus:
                 description: The current status of the user account.
-                enum:
-                - ENABLED
-                - DISABLED
                 type: string
             type: object
         required:

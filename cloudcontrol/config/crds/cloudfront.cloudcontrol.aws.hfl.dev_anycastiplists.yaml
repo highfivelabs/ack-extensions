@@ -168,9 +168,6 @@ spec:
                     description: The ID of the Anycast static IP list.
                     type: string
                   ipAddressType:
-                    enum:
-                    - ipv4
-                    - dualstack
                     type: string
                   ipCount:
                     description: The number of IP addresses in the Anycast static
@@ -203,8 +200,6 @@ spec:
                     type: string
                   name:
                     description: The name of the Anycast static IP list.
-                    maxLength: 64
-                    minLength: 1
                     type: string
                   status:
                     description: 'The status of the Anycast static IP list. Valid

@@ -227,8 +227,6 @@ spec:
                 type: array
               permissionSetArn:
                 description: The permission set that the policy will be attached to
-                maxLength: 1224
-                minLength: 10
                 type: string
             type: object
         required:

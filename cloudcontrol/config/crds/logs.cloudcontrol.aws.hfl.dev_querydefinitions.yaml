@@ -182,8 +182,6 @@ spec:
                 type: array
               queryDefinitionId:
                 description: Unique identifier of a query definition
-                maxLength: 256
-                minLength: 0
                 type: string
             type: object
         required:

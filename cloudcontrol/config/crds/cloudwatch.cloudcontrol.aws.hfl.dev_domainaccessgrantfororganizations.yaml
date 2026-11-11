@@ -186,8 +186,6 @@ spec:
                 type: object
               arn:
                 description: The Amazon Resource Name (ARN) of the access grant.
-                maxLength: 2048
-                minLength: 1
                 type: string
               cloudControl:
                 description: Cloud Control's view of the resource.
@@ -251,9 +249,6 @@ spec:
                 type: string
               grantType:
                 description: Who manages the grant.
-                enum:
-                - SERVICE_MANAGED
-                - CUSTOMER_MANAGED
                 type: string
               updatedAt:
                 description: The timestamp when the grant was last updated.

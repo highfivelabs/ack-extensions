@@ -236,16 +236,6 @@ spec:
                 type: object
               state:
                 description: The current state of the EC2 Instance Connect Endpoint
-                enum:
-                - create-in-progress
-                - create-complete
-                - create-failed
-                - delete-in-progress
-                - delete-complete
-                - delete-failed
-                - update-in-progress
-                - update-complete
-                - update-failed
                 type: string
               stateMessage:
                 description: The message for the current state of the EC2 Instance

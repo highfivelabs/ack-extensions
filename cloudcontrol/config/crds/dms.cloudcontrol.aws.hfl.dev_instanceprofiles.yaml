@@ -197,14 +197,10 @@ spec:
                 type: array
               instanceProfileArn:
                 description: The property describes an ARN of the instance profile.
-                maxLength: 255
-                minLength: 1
                 type: string
               instanceProfileCreationTime:
                 description: The property describes a creating time of the instance
                   profile.
-                maxLength: 40
-                minLength: 1
                 type: string
             type: object
         required:

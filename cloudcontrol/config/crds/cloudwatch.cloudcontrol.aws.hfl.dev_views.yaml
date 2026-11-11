@@ -173,9 +173,6 @@ spec:
                 description: The ownership category of the view. Views created through
                   CloudFormation are always USER views; MANAGED views are provisioned
                   by AWS.
-                enum:
-                - USER
-                - MANAGED
                 type: string
               updatedAt:
                 description: The timestamp when the view was last updated.

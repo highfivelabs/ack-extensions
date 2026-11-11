@@ -165,15 +165,6 @@ spec:
                 type: string
               status:
                 description: The status for the AllowList
-                enum:
-                - OK
-                - S3_OBJECT_NOT_FOUND
-                - S3_USER_ACCESS_DENIED
-                - S3_OBJECT_ACCESS_DENIED
-                - S3_THROTTLED
-                - S3_OBJECT_OVERSIZE
-                - S3_OBJECT_EMPTY
-                - UNKNOWN_ERROR
                 type: string
             type: object
         required:

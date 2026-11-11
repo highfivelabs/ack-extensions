@@ -145,10 +145,6 @@ spec:
               status:
                 description: Describes whether central configuration could be enabled
                   as the ConfigurationType for the organization.
-                enum:
-                - PENDING
-                - ENABLED
-                - FAILED
                 type: string
               statusMessage:
                 description: Provides an explanation if the value of Status is equal

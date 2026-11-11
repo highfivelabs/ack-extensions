@@ -82,9 +82,6 @@ spec:
               automatedDiscoveryStatus:
                 description: The status of automated sensitive data discovery for
                   the Macie session.
-                enum:
-                - ENABLED
-                - DISABLED
                 type: string
               awsAccountId:
                 description: AWS account ID of customer

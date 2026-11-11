@@ -202,24 +202,13 @@ spec:
                 type: string
               integrationArn:
                 description: The ARN of the integration. arn:aws:cloudwatch:{region}:{account}:integration/{integrationId}.
-                maxLength: 2048
-                minLength: 1
                 type: string
               integrationId:
                 description: The service-generated unique identifier (UUID) of the
                   integration.
-                maxLength: 128
-                minLength: 1
                 type: string
               status:
                 description: Lifecycle status of the integration.
-                enum:
-                - PENDING
-                - PENDING_OAUTH
-                - ACTIVE
-                - ERROR
-                - FAILED
-                - DELETED
                 type: string
               updatedAt:
                 description: The time at which the integration was last updated.

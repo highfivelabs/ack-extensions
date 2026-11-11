@@ -150,13 +150,9 @@ spec:
                 type: array
               ipamArn:
                 description: The ARN of the IPAM that created the token.
-                maxLength: 1283
-                minLength: 1
                 type: string
               ipamExternalResourceVerificationTokenArn:
                 description: The ARN of the IPAM external resource verification token.
-                maxLength: 1283
-                minLength: 1
                 type: string
               ipamExternalResourceVerificationTokenId:
                 description: The ID of the token.
@@ -169,19 +165,9 @@ spec:
                 type: string
               state:
                 description: The token state.
-                enum:
-                - create-in-progress
-                - create-complete
-                - create-failed
-                - delete-in-progress
-                - delete-complete
-                - delete-failed
                 type: string
               status:
                 description: The token status.
-                enum:
-                - valid
-                - expired
                 type: string
               tokenName:
                 description: The token name.

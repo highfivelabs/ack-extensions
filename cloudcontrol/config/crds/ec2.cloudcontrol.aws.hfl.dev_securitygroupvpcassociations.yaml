@@ -141,13 +141,6 @@ spec:
                   type: object
                 type: array
               state:
-                enum:
-                - associating
-                - associated
-                - association-failed
-                - disassociating
-                - disassociated
-                - disassociation-failed
                 type: string
               stateReason:
                 description: The reason for the state of the security group vpc association.

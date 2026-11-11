@@ -180,18 +180,9 @@ spec:
                 type: string
               state:
                 description: The snapshot state.
-                enum:
-                - pending
-                - completed
-                - error
-                - recoverable
-                - recovering
                 type: string
               storageTier:
                 description: The storage tier in which the snapshot is stored.
-                enum:
-                - archive
-                - standard
                 type: string
               volumeSize:
                 description: The size of the volume, in GiB.

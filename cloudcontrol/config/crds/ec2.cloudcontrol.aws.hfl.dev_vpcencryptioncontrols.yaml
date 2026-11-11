@@ -270,16 +270,6 @@ spec:
                 type: object
               state:
                 description: The current state of the VPC encryption control.
-                enum:
-                - creating
-                - available
-                - monitor-in-progress
-                - enforce-in-progress
-                - monitor-failed
-                - enforce-failed
-                - deleting
-                - deleted
-                - delete-failed
                 type: string
               stateMessage:
                 description: Provides additional context on the state of the VPC encryption

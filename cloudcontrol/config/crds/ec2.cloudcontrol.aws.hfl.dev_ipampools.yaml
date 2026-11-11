@@ -338,9 +338,6 @@ spec:
               ipamScopeType:
                 description: Determines whether this scope contains publicly routable
                   space or space for a private network
-                enum:
-                - public
-                - private
                 type: string
               poolDepth:
                 description: The depth of this pool in the source pool hierarchy.
@@ -349,13 +346,6 @@ spec:
                 description: 'The state of this pool. This can be one of the following
                   values: "create-in-progress", "create-complete", "modify-in-progress",
                   "modify-complete", "delete-in-progress", or "delete-complete"'
-                enum:
-                - create-in-progress
-                - create-complete
-                - modify-in-progress
-                - modify-complete
-                - delete-in-progress
-                - delete-complete
                 type: string
               stateMessage:
                 description: An explanation of how the pool arrived at it current
