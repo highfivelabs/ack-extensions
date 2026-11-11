@@ -188,3 +188,18 @@ resources:
   - ec2.cloudcontrol.aws.hfl.dev_vpcencryptioncontrols.yaml
   - ec2.cloudcontrol.aws.hfl.dev_vpcendpointconnectionnotifications.yaml
   - ec2.cloudcontrol.aws.hfl.dev_vpnconcentrators.yaml
+  - cloudwatch.cloudcontrol.aws.hfl.dev_compositealarms.yaml
+  - cloudwatch.cloudcontrol.aws.hfl.dev_insightrules.yaml
+  - logs.cloudcontrol.aws.hfl.dev_accountpolicies.yaml
+  - logs.cloudcontrol.aws.hfl.dev_destinations.yaml
+  - logs.cloudcontrol.aws.hfl.dev_integrations.yaml
+  - logs.cloudcontrol.aws.hfl.dev_loganomalydetectors.yaml
+  - logs.cloudcontrol.aws.hfl.dev_querydefinitions.yaml
+  - logs.cloudcontrol.aws.hfl.dev_scheduledqueries.yaml
+  - logs.cloudcontrol.aws.hfl.dev_storagetierpolicies.yaml
+  - logs.cloudcontrol.aws.hfl.dev_subscriptionfilters.yaml
+  - logs.cloudcontrol.aws.hfl.dev_transformers.yaml
+  - rds.cloudcontrol.aws.hfl.dev_eventsubscriptions.yaml
+  - rolesanywhere.cloudcontrol.aws.hfl.dev_crls.yaml
+  - rolesanywhere.cloudcontrol.aws.hfl.dev_profiles.yaml
+  - rolesanywhere.cloudcontrol.aws.hfl.dev_trustanchors.yaml

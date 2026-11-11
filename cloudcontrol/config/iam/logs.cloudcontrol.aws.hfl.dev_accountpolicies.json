@@ -1,0 +1,85 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLogsAccountPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsAccountPolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "firehose:TagDeliveryStream",
+        "iam:PassRole",
+        "logs:CreateLogDelivery",
+        "logs:DeleteSubscriptionFilter",
+        "logs:DescribeAccountPolicies",
+        "logs:PutAccountPolicy",
+        "logs:PutDataProtectionPolicy",
+        "logs:PutIndexPolicy",
+        "logs:PutMetricExtractionPolicy",
+        "logs:PutSubscriptionFilter",
+        "logs:PutTransformer",
+        "s3:REST.PUT.OBJECT"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsAccountPolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "logs:DescribeAccountPolicies",
+        "logs:GetMetricExtractionPolicy",
+        "logs:GetTransformer"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsAccountPolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "firehose:TagDeliveryStream",
+        "iam:PassRole",
+        "logs:CreateLogDelivery",
+        "logs:DeleteAccountPolicy",
+        "logs:DeleteDataProtectionPolicy",
+        "logs:DeleteIndexPolicy",
+        "logs:DeleteMetricExtractionPolicy",
+        "logs:DeleteSubscriptionFilter",
+        "logs:DeleteTransformer",
+        "logs:DescribeAccountPolicies",
+        "logs:PutAccountPolicy",
+        "logs:PutDataProtectionPolicy",
+        "logs:PutIndexPolicy",
+        "logs:PutMetricExtractionPolicy",
+        "logs:PutSubscriptionFilter",
+        "logs:PutTransformer",
+        "s3:REST.PUT.OBJECT"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsAccountPolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "logs:DeleteAccountPolicy",
+        "logs:DeleteDataProtectionPolicy",
+        "logs:DeleteIndexPolicy",
+        "logs:DeleteMetricExtractionPolicy",
+        "logs:DeleteSubscriptionFilter",
+        "logs:DeleteTransformer",
+        "logs:DescribeAccountPolicies"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

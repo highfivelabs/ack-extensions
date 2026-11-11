@@ -3071,3 +3071,22 @@ Before it can run on a real cluster:
     organization's settings, and a tag is not one); listing takes an entry
     on, as built, since that is what importing it means. Not changed until
     the builder answers.
+
+20. **Validation on Cloud Control kinds' status** (found by
+    `TestEveryKindOnSchemaFake`, 2026-11-11). The generated CRDs keep the
+    registry schema's `enum`, `minLength` and `maxLength` on read-only
+    properties in `status` (`status.status` of Security Hub's
+    `DelegatedAdmin`: `ENABLED`, `DISABLE_IN_PROGRESS`). When AWS returns
+    a value the pinned schema does not list (a new state, a longer
+    string), the API server refuses the manager's status patch, and the
+    object stays unsynced until the schema zip is updated and the CRD
+    regenerated. The schema fake showed it for seven types (it filled
+    read-only values outside the enums; it now keeps to them).
+    Options: drop value validation (`enum`, lengths, bounds, patterns
+    already dropped) from `status` in `crdgen`, keeping types; or keep it
+    as documentation and accept the risk.
+
+    Recommended: drop it from `status` only. Cloud Control is the source
+    of a status value, not the user, so validating it can only wedge an
+    object; `spec` keeps its validation. Not changed until the builder
+    answers.

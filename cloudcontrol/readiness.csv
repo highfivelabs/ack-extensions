@@ -330,12 +330,12 @@ AWS::CloudWatch::AccessProfile,cloudwatch,AccessProfile,application,FULLY_MUTABL
 AWS::CloudWatch::Alarm,cloudwatch,Alarm,application,FULLY_MUTABLE,MetricAlarm,,ok,0,0,0,0,0,true
 AWS::CloudWatch::AlarmMuteRule,cloudwatch,AlarmMuteRule,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::CloudWatch::AnomalyDetector,cloudwatch,AnomalyDetector,application,NON_PROVISIONABLE,,,not provisionable,0,0,0,0,0,false
-AWS::CloudWatch::CompositeAlarm,cloudwatch,CompositeAlarm,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::CloudWatch::CompositeAlarm,cloudwatch,CompositeAlarm,application,FULLY_MUTABLE,,CompositeAlarm (Cloud Control),ok,0,0,0,0,0,true
 AWS::CloudWatch::Dashboard,cloudwatch,Dashboard,application,FULLY_MUTABLE,Dashboard,,ok,0,0,0,0,0,true
 AWS::CloudWatch::Domain,cloudwatch,Domain,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::CloudWatch::DomainAccessGrantForOrganization,cloudwatch,DomainAccessGrantForOrganization,application,IMMUTABLE,,,ok,0,0,0,0,0,true
 AWS::CloudWatch::DomainForOrganization,cloudwatch,DomainForOrganization,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::CloudWatch::InsightRule,cloudwatch,InsightRule,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::CloudWatch::InsightRule,cloudwatch,InsightRule,application,FULLY_MUTABLE,,InsightRule (Cloud Control),ok,0,0,0,0,0,true
 AWS::CloudWatch::Integration,cloudwatch,Integration,application,FULLY_MUTABLE,,,ok,0,0,0,1,1,true
 AWS::CloudWatch::LogAlarm,cloudwatch,LogAlarm,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::CloudWatch::MetricStream,cloudwatch,MetricStream,application,FULLY_MUTABLE,MetricStream,,ok,0,0,0,0,1,true
@@ -1111,22 +1111,22 @@ AWS::Location::PlaceIndex,location,PlaceIndex,other,FULLY_MUTABLE,,,ok,0,0,0,0,0
 AWS::Location::RouteCalculator,location,RouteCalculator,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::Location::Tracker,location,Tracker,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::Location::TrackerConsumer,location,TrackerConsumer,other,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::Logs::AccountPolicy,logs,AccountPolicy,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
+AWS::Logs::AccountPolicy,logs,AccountPolicy,application,FULLY_MUTABLE,,AccountPolicy (Cloud Control),ok,0,0,0,0,1,true
 AWS::Logs::Delivery,logs,Delivery,application,FULLY_MUTABLE,Delivery,,ok,0,0,0,0,0,true
 AWS::Logs::DeliveryDestination,logs,DeliveryDestination,application,FULLY_MUTABLE,DeliveryDestination,,ok,0,0,0,1,0,true
 AWS::Logs::DeliverySource,logs,DeliverySource,application,FULLY_MUTABLE,DeliverySource,,ok,0,0,1,1,0,true
-AWS::Logs::Destination,logs,Destination,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::Logs::Integration,logs,Integration,application,IMMUTABLE,,,ok,0,0,0,1,4,true
-AWS::Logs::LogAnomalyDetector,logs,LogAnomalyDetector,application,FULLY_MUTABLE,,,ok,0,0,1,1,1,true
+AWS::Logs::Destination,logs,Destination,application,FULLY_MUTABLE,,Destination (Cloud Control),ok,0,0,0,0,1,true
+AWS::Logs::Integration,logs,Integration,application,IMMUTABLE,,Integration (Cloud Control),ok,0,0,0,1,4,true
+AWS::Logs::LogAnomalyDetector,logs,LogAnomalyDetector,application,FULLY_MUTABLE,,LogAnomalyDetector (Cloud Control),ok,0,0,1,1,1,true
 AWS::Logs::LogGroup,logs,LogGroup,application,FULLY_MUTABLE,LogGroup,,ok,0,0,0,0,0,true
 AWS::Logs::LogStream,logs,LogStream,application,IMMUTABLE,,,ok,0,0,0,0,0,true
 AWS::Logs::MetricFilter,logs,MetricFilter,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::Logs::QueryDefinition,logs,QueryDefinition,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::Logs::QueryDefinition,logs,QueryDefinition,application,FULLY_MUTABLE,,QueryDefinition (Cloud Control),ok,0,0,0,0,0,true
 AWS::Logs::ResourcePolicy,logs,ResourcePolicy,application,FULLY_MUTABLE,ResourcePolicy,,ok,1,0,0,0,0,true
-AWS::Logs::ScheduledQuery,logs,ScheduledQuery,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::Logs::StorageTierPolicy,logs,StorageTierPolicy,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::Logs::SubscriptionFilter,logs,SubscriptionFilter,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::Logs::Transformer,logs,Transformer,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::Logs::ScheduledQuery,logs,ScheduledQuery,application,FULLY_MUTABLE,,ScheduledQuery (Cloud Control),ok,0,0,0,0,1,true
+AWS::Logs::StorageTierPolicy,logs,StorageTierPolicy,application,FULLY_MUTABLE,,StorageTierPolicy (Cloud Control),ok,0,0,0,0,0,true
+AWS::Logs::SubscriptionFilter,logs,SubscriptionFilter,application,FULLY_MUTABLE,,SubscriptionFilter (Cloud Control),ok,0,0,0,0,1,true
+AWS::Logs::Transformer,logs,Transformer,application,FULLY_MUTABLE,,Transformer (Cloud Control),ok,0,0,0,0,0,true
 AWS::LookoutEquipment::InferenceScheduler,lookoutequipment,InferenceScheduler,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::M2::Application,m2,Application,other,FULLY_MUTABLE,,,ok,0,0,0,1,2,true
 AWS::M2::Deployment,m2,Deployment,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
@@ -1426,7 +1426,7 @@ AWS::RDS::DBShardGroup,rds,DBShardGroup,application,FULLY_MUTABLE,,,ok,0,0,0,1,0
 AWS::RDS::DBSnapshot,rds,DBSnapshot,application,FULLY_MUTABLE,DBSnapshot,,ok,0,0,0,0,0,true
 AWS::RDS::DBSubnetGroup,rds,DBSubnetGroup,application,FULLY_MUTABLE,DBSubnetGroup,,ok,0,0,0,0,1,true
 AWS::RDS::Deployment,rds,Deployment,application,FULLY_MUTABLE,,,ok,0,0,5,9,1,true
-AWS::RDS::EventSubscription,rds,EventSubscription,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
+AWS::RDS::EventSubscription,rds,EventSubscription,application,FULLY_MUTABLE,,EventSubscription (Cloud Control),ok,0,0,0,0,1,true
 AWS::RDS::GlobalCluster,rds,GlobalCluster,application,FULLY_MUTABLE,GlobalCluster,,ok,0,0,0,0,0,true
 AWS::RDS::Integration,rds,Integration,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::RDS::OptionGroup,rds,OptionGroup,application,FULLY_MUTABLE,,OptionGroup,ok,0,0,0,0,1,true
@@ -1475,9 +1475,9 @@ AWS::RoboMaker::RobotApplication,robomaker,RobotApplication,other,FULLY_MUTABLE,
 AWS::RoboMaker::RobotApplicationVersion,robomaker,RobotApplicationVersion,other,IMMUTABLE,,,ok,0,0,0,0,0,false
 AWS::RoboMaker::SimulationApplication,robomaker,SimulationApplication,other,FULLY_MUTABLE,,,ok,0,0,2,4,0,true
 AWS::RoboMaker::SimulationApplicationVersion,robomaker,SimulationApplicationVersion,other,IMMUTABLE,,,ok,0,0,0,0,0,false
-AWS::RolesAnywhere::CRL,rolesanywhere,CRL,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::RolesAnywhere::Profile,rolesanywhere,Profile,application,FULLY_MUTABLE,,,ok,0,0,0,1,1,true
-AWS::RolesAnywhere::TrustAnchor,rolesanywhere,TrustAnchor,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
+AWS::RolesAnywhere::CRL,rolesanywhere,CRL,application,FULLY_MUTABLE,,CRL (Cloud Control),ok,0,0,0,0,0,true
+AWS::RolesAnywhere::Profile,rolesanywhere,Profile,application,FULLY_MUTABLE,,Profile (Cloud Control),ok,0,0,0,1,1,true
+AWS::RolesAnywhere::TrustAnchor,rolesanywhere,TrustAnchor,application,FULLY_MUTABLE,,TrustAnchor (Cloud Control),ok,0,0,0,0,1,true
 AWS::Route53::CidrCollection,route53,CidrCollection,platform-foundation,FULLY_MUTABLE,,CidrCollection (Cloud Control),ok,0,0,0,0,0,true
 AWS::Route53::DelegationSet,route53,DelegationSet,platform-foundation,IMMUTABLE,,DelegationSet (Cloud Control),ok,0,0,0,0,0,true
 AWS::Route53::DNSSEC,route53,DNSSEC,platform-foundation,IMMUTABLE,,DNSSEC (Cloud Control),ok,0,0,0,0,1,true

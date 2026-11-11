@@ -89,4 +89,14 @@ Filled in as batches land (types, coverage before and after).
 
 | Batch | Pull request | Types | Resources ours beyond ACK (foundation + security) |
 | --- | --- | ---: | --- |
-| before | | 51 Cloud Control | 65 |
+| before | | 51 Cloud Control | 74 (foundation 35 of 241, security 30 of 112) |
+| 9, security | #71 | 46 | 120 (security 76 of 112) |
+| 10, foundation beyond EC2 | #72 | 25 | 145 |
+| 11, EC2 networking | #73 | 66 | 211 (foundation 126 of 241) |
+| 12, logging and identity | #74 | 15 | 226 |
+
+Written in one session on 2026-11-11: 152 types in four pull requests,
+against 51 in the two days before. What is left of the foundation and
+security gap is in `cloudcontrol/excluded.yaml` (each with its reason),
+not provisionable through Cloud Control, or has a lossy CRD
+(`AWS::CloudTrail::ResourcePolicy`, `AWS::Organizations::ResourcePolicy`).

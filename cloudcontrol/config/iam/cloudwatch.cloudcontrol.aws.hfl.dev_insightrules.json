@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudWatchInsightRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchInsightRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DescribeInsightRules",
+        "cloudwatch:PutInsightRule",
+        "cloudwatch:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchInsightRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DescribeInsightRules",
+        "cloudwatch:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchInsightRuleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DescribeInsightRules",
+        "cloudwatch:PutInsightRule",
+        "cloudwatch:TagResource",
+        "cloudwatch:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchInsightRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DeleteInsightRules",
+        "cloudwatch:DescribeInsightRules"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

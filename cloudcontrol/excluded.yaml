@@ -25,6 +25,7 @@ types:
   # Upstream has it close to merging (CLAUDE.md: upstream first).
   AWS::EC2::KeyPair: "ACK ec2-controller pull request #396"
   AWS::SecretsManager::RotationSchedule: "ACK secretsmanager-controller pull request #69"
+  AWS::Logs::MetricFilter: "ACK cloudwatchlogs-controller pull request #61, a field on LogGroup (plan section 5, rank 9)"
   AWS::NetworkManager::GlobalNetwork: "wait for ACK networkmanager-controller pull requests #3, #4, #16 (foundation F13)"
   AWS::NetworkManager::CoreNetwork: "wait for ACK networkmanager-controller pull requests #3, #4, #16 (foundation F13)"
   AWS::NetworkManager::VpcAttachment: "wait for ACK networkmanager-controller pull requests #3, #4, #16 (foundation F13)"

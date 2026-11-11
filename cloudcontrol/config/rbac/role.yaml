@@ -141,6 +141,28 @@ rules:
   - patch
   - update
 - apiGroups:
+  - cloudwatch.cloudcontrol.aws.hfl.dev
+  resources:
+  - compositealarms
+  - insightrules
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cloudwatch.cloudcontrol.aws.hfl.dev
+  resources:
+  - compositealarms/status
+  - insightrules/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - config.cloudcontrol.aws.hfl.dev
   resources:
   - aggregationauthorizations
@@ -599,6 +621,42 @@ rules:
   - patch
   - update
 - apiGroups:
+  - logs.cloudcontrol.aws.hfl.dev
+  resources:
+  - accountpolicies
+  - destinations
+  - integrations
+  - loganomalydetectors
+  - querydefinitions
+  - scheduledqueries
+  - storagetierpolicies
+  - subscriptionfilters
+  - transformers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - logs.cloudcontrol.aws.hfl.dev
+  resources:
+  - accountpolicies/status
+  - destinations/status
+  - integrations/status
+  - loganomalydetectors/status
+  - querydefinitions/status
+  - scheduledqueries/status
+  - storagetierpolicies/status
+  - subscriptionfilters/status
+  - transformers/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - macie.cloudcontrol.aws.hfl.dev
   resources:
   - allowlists
@@ -674,6 +732,50 @@ rules:
   - principalassociations/status
   - resourceassociations/status
   - sourceassociations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - rds.cloudcontrol.aws.hfl.dev
+  resources:
+  - eventsubscriptions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - rds.cloudcontrol.aws.hfl.dev
+  resources:
+  - eventsubscriptions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - rolesanywhere.cloudcontrol.aws.hfl.dev
+  resources:
+  - crls
+  - profiles
+  - trustanchors
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - rolesanywhere.cloudcontrol.aws.hfl.dev
+  resources:
+  - crls/status
+  - profiles/status
+  - trustanchors/status
   verbs:
   - get
   - patch

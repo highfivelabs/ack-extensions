@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLogsStorageTierPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsStorageTierPolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "logs:GetStorageTierPolicy",
+        "logs:PutStorageTierPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsStorageTierPolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "logs:GetStorageTierPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsStorageTierPolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "logs:GetStorageTierPolicy",
+        "logs:PutStorageTierPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsStorageTierPolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "logs:GetStorageTierPolicy",
+        "logs:PutStorageTierPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
