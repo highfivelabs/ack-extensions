@@ -16,8 +16,14 @@ dotenv: ['.env']
 set: [errexit, pipefail]
 
 includes:
+  # The tasks the extension repositories share (go:install-tool,
+  # go:fmt-check, go:committed, go:test-envtest), from factory at a tag,
+  # pinned by checksum (factory taskfiles/README.md). Task fetches it with
+  # your git credentials and caches it in .task/remote/ (.taskrc.yml);
+  # offload packs that cache for its VMs.
   go:
-    taskfile: ./taskfiles/go.yml
+    taskfile: https://github.com/highfivelabs/factory.git//taskfiles/go.yml?ref=taskfiles/v1.0.0
+    checksum: 4e300f59230b59ea875e8409e786064dd76cc3c28d5de37ec46bb856d7366f32
     vars:
       BIN: '{{.ROOT_DIR}}/bin'
 
