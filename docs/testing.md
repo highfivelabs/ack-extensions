@@ -47,7 +47,7 @@ oldest live row first, so every backend is rechecked over time.
 
 ## The merge gate
 
-GitHub Actions is off in the organization (the builder, 2026-11-11); the
+GitHub Actions is off in the organization (decided 2026-11-11); the
 workflows in `.github/workflows/` stay, disabled. Their pull-request jobs
 run before the push instead, on an offload Spot VM:
 

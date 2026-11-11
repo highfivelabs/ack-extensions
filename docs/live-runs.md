@@ -84,11 +84,11 @@ then set `AWS_SANDBOX_ACCOUNT_ID` to the account ID in the `.env` of
 whoever starts live runs (never in the repository).
 
 **Found on the first deploy (2026-11-10, run `ackx-11101802-5696`):** the
-trust works. The VM's ID token for `offload-runner@our-chassis-514316-r0`
+trust works. The VM's ID token for `$OFFLOAD_SA`
 carries `iss` `https://accounts.google.com`, `aud`
-`ack-extensions-live-tests`, and `azp` = `sub` = `102306610785199453342`;
+`ack-extensions-live-tests`, and `azp` = `sub` = the service account's unique ID;
 `AssumeRoleWithWebIdentity` into `ack-extensions-live-tests` succeeded and
-STS named account `830550549114`. The provider lists both the audience
+STS named account `$AWS_SANDBOX_ACCOUNT_ID`. The provider lists both the audience
 and the unique ID, so this run cannot tell which claim IAM compares with
 the list; removing one of the two client IDs and running again would
 tell. The role's permissions had a gap: the template's sweeper and fixture
@@ -160,4 +160,4 @@ policy letting Route 53 write to it, which the test does not make yet. Each is a
 
 | Date | Run | Commit | Account | Tests | Fake | Live | Found |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2026-11-10 | `ackx-11101802-5696` | `a448a3d` + the account | 830550549114 | TestDetector | PASS | not run | Trust passed. The sweep before the run was refused `cloudformation:ListResources` (the template dropped `LiveRunSweeperAndFixtures`); the run stopped there, nothing created |
+| 2026-11-10 | `ackx-11101802-5696` | `a448a3d` + the account | `$AWS_SANDBOX_ACCOUNT_ID` | TestDetector | PASS | not run | Trust passed. The sweep before the run was refused `cloudformation:ListResources` (the template dropped `LiveRunSweeperAndFixtures`); the run stopped there, nothing created |
