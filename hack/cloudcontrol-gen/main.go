@@ -51,7 +51,10 @@ type config struct {
 	// LiveTestActions are what the end-to-end tests do themselves on a
 	// live run (fixtures and checks), for the sandbox account's template.
 	LiveTestActions []string `json:"liveTestActions"`
-	Types           []struct {
+	// LiveKinds are the types sampled on live runs: the sandbox account's
+	// role holds their permissions only (plan question 21).
+	LiveKinds []string `json:"liveKinds"`
+	Types     []struct {
 		TypeName string   `json:"typeName"`
 		Kind     string   `json:"kind"`
 		Secrets  []string `json:"secrets"`
@@ -248,6 +251,7 @@ type generated struct {
 	Secrets                             []string
 	Unproven                            string
 	NeverDelete                         bool
+	Live                                bool
 	Report                              *crdgen.Report
 	IAM                                 iamgen.Result
 }
@@ -259,6 +263,10 @@ func generate(root string, files map[string][]byte, cfg config) error {
 		if err := os.RemoveAll(filepath.Join(out, d)); err != nil {
 			return err
 		}
+	}
+	live, err := liveKinds(cfg)
+	if err != nil {
+		return err
 	}
 	var gens []generated
 	for _, t := range cfg.Types {
@@ -302,7 +310,7 @@ func generate(root string, files map[string][]byte, cfg config) error {
 		if err := writeFile(filepath.Join(out, "config/iam", base+".json"), append(pj, '\n')); err != nil {
 			return err
 		}
-		gens = append(gens, generated{TypeName: t.TypeName, Group: group, Kind: kind, Plural: crd.Spec.Names.Plural, File: file, Secrets: t.Secrets, Unproven: t.Unproven, NeverDelete: t.NeverDelete, Report: rep, IAM: pol})
+		gens = append(gens, generated{TypeName: t.TypeName, Group: group, Kind: kind, Plural: crd.Spec.Names.Plural, File: file, Secrets: t.Secrets, Unproven: t.Unproven, NeverDelete: t.NeverDelete, Live: live[t.TypeName], Report: rep, IAM: pol})
 	}
 	if err := writeRBAC(out, gens); err != nil {
 		return err
@@ -401,6 +409,9 @@ func writeRegistry(out string, cfg config, gens []generated) error {
 		}
 		if g.NeverDelete {
 			secrets += ", NeverDelete: true"
+		}
+		if g.Live {
+			secrets += ", Live: true"
 		}
 		fmt.Fprintf(&b, "\t{Group: %q, Version: %q, Kind: %q, Plural: %q, TypeName: %q, SchemaFile: %q%s},\n",
 			g.Group, cfg.Version, g.Kind, g.Plural, g.TypeName, "schemas/"+g.File, secrets)

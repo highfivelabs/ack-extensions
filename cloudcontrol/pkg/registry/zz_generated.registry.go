@@ -7,11 +7,11 @@ package registry
 
 // Types are the kinds served, from cloudcontrol/types.yaml.
 var Types = []*Type{
-	{Group: "iam.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "SAMLProvider", Plural: "samlproviders", TypeName: "AWS::IAM::SAMLProvider", SchemaFile: "schemas/aws-iam-samlprovider.json", Secrets: []string{"/properties/AddPrivateKey"}},
+	{Group: "iam.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "SAMLProvider", Plural: "samlproviders", TypeName: "AWS::IAM::SAMLProvider", SchemaFile: "schemas/aws-iam-samlprovider.json", Secrets: []string{"/properties/AddPrivateKey"}, Live: true},
 	{Group: "ec2.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "TransitGatewayRouteTable", Plural: "transitgatewayroutetables", TypeName: "AWS::EC2::TransitGatewayRouteTable", SchemaFile: "schemas/aws-ec2-transitgatewayroutetable.json"},
 	{Group: "guardduty.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "Detector", Plural: "detectors", TypeName: "AWS::GuardDuty::Detector", SchemaFile: "schemas/aws-guardduty-detector.json"},
-	{Group: "sso.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "PermissionSet", Plural: "permissionsets", TypeName: "AWS::SSO::PermissionSet", SchemaFile: "schemas/aws-sso-permissionset.json"},
-	{Group: "sso.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "Assignment", Plural: "assignments", TypeName: "AWS::SSO::Assignment", SchemaFile: "schemas/aws-sso-assignment.json"},
+	{Group: "sso.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "PermissionSet", Plural: "permissionsets", TypeName: "AWS::SSO::PermissionSet", SchemaFile: "schemas/aws-sso-permissionset.json", Live: true},
+	{Group: "sso.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "Assignment", Plural: "assignments", TypeName: "AWS::SSO::Assignment", SchemaFile: "schemas/aws-sso-assignment.json", Live: true},
 	{Group: "sso.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "InstanceAccessControlAttributeConfiguration", Plural: "instanceaccesscontrolattributeconfigurations", TypeName: "AWS::SSO::InstanceAccessControlAttributeConfiguration", SchemaFile: "schemas/aws-sso-instanceaccesscontrolattributeconfiguration.json", Unproven: "moto 5.2.5 has no Create/Describe/Update/DeleteInstanceAccessControlAttributeConfiguration"},
 	{Group: "ec2.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "TransitGatewayRoute", Plural: "transitgatewayroutes", TypeName: "AWS::EC2::TransitGatewayRoute", SchemaFile: "schemas/aws-ec2-transitgatewayroute.json"},
 	{Group: "ec2.cloudcontrol.aws.hfl.dev", Version: "v1alpha1", Kind: "TransitGatewayRouteTableAssociation", Plural: "transitgatewayroutetableassociations", TypeName: "AWS::EC2::TransitGatewayRouteTableAssociation", SchemaFile: "schemas/aws-ec2-transitgatewayroutetableassociation.json"},

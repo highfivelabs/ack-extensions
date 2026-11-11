@@ -1,0 +1,5 @@
+# Task's remote-Taskfile cache: the factory include is pinned to a tag and
+# a checksum, so a cached copy never goes stale; a new tag is a new URL and
+# is fetched once (factory taskfiles/README.md).
+remote:
+  cache-expiry: 8760h
