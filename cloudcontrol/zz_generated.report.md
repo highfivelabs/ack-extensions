@@ -56,6 +56,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::SecurityHub::PolicyAssociation` | `PolicyAssociation.securityhub.cloudcontrol.aws.hfl.dev` | 3 | 5 | 4 | 0 | 0 | 1 |
 | `AWS::SecurityHub::AutomationRule` | `AutomationRule.securityhub.cloudcontrol.aws.hfl.dev` | 8 | 4 | 0 | 0 | 2 | 15 |
 | `AWS::SecurityHub::ActionTarget` | `ActionTarget.securityhub.cloudcontrol.aws.hfl.dev` | 3 | 1 | 2 | 0 | 0 | 3 |
+| `AWS::SecretsManager::ResourcePolicy` | `ResourcePolicy.secretsmanager.cloudcontrol.aws.hfl.dev` | 3 | 1 | 2 | 0 | 1 | 0 |
 
 ## `AWS::IAM::SAMLProvider`
 
@@ -656,3 +657,15 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - IAM actions (9): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `securityhub:CreateActionTarget`, `securityhub:DeleteActionTarget`, `securityhub:DescribeActionTargets`, `securityhub:UpdateActionTarget`
 - Sensitive IAM actions: none
 - Left out (list handler only): none
+
+## `AWS::SecretsManager::ResourcePolicy`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/BlockPublicPolicy`
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: `/properties/ResourcePolicy (several types string|object)`
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (8): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `secretsmanager:DeleteResourcePolicy`, `secretsmanager:GetResourcePolicy`, `secretsmanager:PutResourcePolicy`
+- Sensitive IAM actions: none
+- Left out (list handler only): `secretsmanager:ListSecrets`

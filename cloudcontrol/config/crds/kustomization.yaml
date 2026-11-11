@@ -50,3 +50,4 @@ resources:
   - securityhub.cloudcontrol.aws.hfl.dev_policyassociations.yaml
   - securityhub.cloudcontrol.aws.hfl.dev_automationrules.yaml
   - securityhub.cloudcontrol.aws.hfl.dev_actiontargets.yaml
+  - secretsmanager.cloudcontrol.aws.hfl.dev_resourcepolicies.yaml

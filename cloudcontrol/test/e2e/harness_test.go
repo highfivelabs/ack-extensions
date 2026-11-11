@@ -262,6 +262,8 @@ func startFake(t *testing.T, root string) (*fake.Server, string, aws.Config) {
 			b = fake.NewHub(motoCfg)
 		case "AWS::SecurityHub::OrganizationConfiguration":
 			b = fake.NewOrganizationConfiguration(motoCfg, motoAccount, region)
+		case "AWS::SecretsManager::ResourcePolicy":
+			b = fake.NewSecretPolicy(motoCfg)
 		case "AWS::SSO::PermissionSet":
 			b = fake.NewPermissionSet(motoCfg)
 		case "AWS::SSO::Assignment":

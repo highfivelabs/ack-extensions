@@ -196,8 +196,12 @@ reconciler does the rest. Nothing in it names a type.
   the user writes is read by that name, as ACK's generated kinds do.
 - **Client tokens.** Every request carries a token derived from the object,
   the operation and the input: a request retried because its status could
-  not be written is not made twice. A failed request's token is mixed in,
-  so a retry after a failure is a new request. ACK's generated code sets a
+  not be written is not made twice. The last finished request's token
+  (succeeded or failed) is mixed in, so a retry after a failure is a new
+  request, and so is a later update with the same patch as an earlier one
+  (a drift put back with the value of an earlier change), which Cloud
+  Control would otherwise answer with the earlier request and change
+  nothing (found by `TestSecretResourcePolicy`, 2026-11-10; `TestToken`). ACK's generated code sets a
   client token only where a kind's hooks do.
 - **Errors.** A handler's `InvalidRequest`, `NotUpdatable`, `AlreadyExists`
   and the API's validation-type exceptions are terminal; everything else
@@ -671,6 +675,30 @@ are, gets none, and the live sweeper cannot find it by its run tag. The
 test client is `aws-sdk-go-v2/service/securityhub` v1.55.6, of the same
 SDK release as the GuardDuty client pinned here.
 
+**Batch 8: F17, Secrets Manager's resource policy.** ACK's
+secretsmanager-controller (v1.8.2, 2026-11-02) serves `Secret` and not its
+policy, with no pull request for one; rotation waits for its pull request
+#69 (`docs/coverage/foundation.md` F17), so `RotationSchedule` is not
+served. `AWS::SecretsManager::ResourcePolicy` (identified by the secret's
+ARN; the policy is `string` or `object` in the schema, so free-form and
+compared whole) runs on moto: `TestSecretResourcePolicy` makes a secret
+through moto's own API, puts a policy on it, checks resyncs make no update,
+changes the principal (one replace of `/ResourcePolicy`), puts back a
+policy changed in Secrets Manager, refuses a new `secretId` (create-only),
+and deletes the policy, leaving the secret. moto does not implement
+`BlockPublicPolicy` (accepted, not checked). What the backend takes the
+read handler to return, `SecretId` as the ARN and the policy as an object,
+is not known for real AWS: a `secretId` written as a name may read back as
+the ARN, a create-only difference the reconciler would call terminal, so
+the test names the secret by ARN and the live run must check a name. A
+`secretRef` to ACK's `Secret` waits for the overlay (section 12, item 4).
+The test's own secret needs `secretsmanager:CreateSecret` and
+`DeleteSecret` on a live run (`liveTestActions`). The test's drift check
+found a reconciler bug, fixed here: a put-back whose patch equals an
+earlier successful update's reused that update's client token, so the
+fake (as Cloud Control does) replayed the old request and the drift stayed
+(section 3, "Client tokens").
+
 **Not shown by the fake** (section 11): anything about real AWS.
 
 `task check` (the whole repository) is reported in the pull request.
@@ -945,6 +973,9 @@ with limits":
    proven on moto), batch 6 (F15, seven GuardDuty types, `Filter`
    proven on moto) and batch 7 (F16, nine Security Hub types, `Hub` and
    `OrganizationConfiguration` proven on moto).
+   batch 2 (F04, four Transit Gateway routing types) and
+   batch 3 (F07, two Control Tower types, unproven on the fake), and
+   batch 8 (F17, Secrets Manager's `ResourcePolicy`, proven on moto).
    Next: the rest of F03 to F18 by `docs/coverage/foundation.md`.
 3. The live-test switch (`task test-live`, a sweeper, the ledger
    `docs/live-runs.md`) and the CloudFormation template for the sandbox
