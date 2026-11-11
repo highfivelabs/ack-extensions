@@ -698,8 +698,8 @@ ec2,VPNGatewayRoutePropagation,2,,0,VPNGatewayRoutePropagation,1,1,false,ours_un
 ecr,PublicRepository,9,Repository,3,,0,6,false,
 ecr,PullThroughCacheRule,6,PullThroughCacheRule,6,,0,0,false,official_unmapped=1
 ecr,PullTimeUpdateExclusion,1,,0,PullTimeUpdateExclusion (Cloud Control),1,0,false,ours PullTimeUpdateExclusion (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ecr); on the schema fake only
-ecr,RegistryPolicy,1,,0,RegistryPolicy (Cloud Control),1,0,false,ours RegistryPolicy (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ecr); on the schema fake only
-ecr,RegistryScanningConfiguration,4,,0,RegistryScanningConfiguration (Cloud Control),4,0,false,ours RegistryScanningConfiguration (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ecr); on the schema fake only
+ecr,RegistryPolicy,1,,0,RegistryPolicy (Cloud Control),1,0,false,
+ecr,RegistryScanningConfiguration,4,,0,RegistryScanningConfiguration (Cloud Control),4,0,false,
 ecr,ReplicationConfiguration,4,,0,ReplicationConfiguration,4,0,true,ours ReplicationConfiguration copied from ecr-controller#121;ours_unmapped=1
 ecr,Repository,13,Repository,12,,0,1,false,
 ecr,RepositoryCreationTemplate,13,RepositoryCreationTemplate,13,,0,0,false,
@@ -921,8 +921,8 @@ iam,User,11,User,7,LoginProfile;UserGroupMembership,3,1,false,ours LoginProfile 
 iam,UserPolicy,3,,0,,0,3,false,
 iam,UserToGroupAddition,2,,0,,0,2,false,
 iam,VirtualMFADevice,5,,0,VirtualMFADevice,2,3,false,ours_unmapped=1
-identitystore,Group,3,,0,Group (Cloud Control),3,0,false,ours Group (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has identitystore); on the schema fake only
-identitystore,GroupMembership,3,,0,GroupMembership (Cloud Control),3,0,false,ours GroupMembership (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has identitystore); on the schema fake only
+identitystore,Group,3,,0,Group (Cloud Control),3,0,false,
+identitystore,GroupMembership,3,,0,GroupMembership (Cloud Control),3,0,false,
 identitystore,User,39,,0,User (Cloud Control),39,0,false,ours User (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has identitystore); on the schema fake only
 imagebuilder,Component,10,,0,,0,10,false,
 imagebuilder,ContainerRecipe,29,,0,,0,29,false,
