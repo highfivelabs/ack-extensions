@@ -1,0 +1,77 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlFMSPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FMSPolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeAvailabilityZones",
+        "fms:PutPolicy",
+        "fms:TagResource",
+        "network-firewall:DescribeRuleGroup",
+        "network-firewall:DescribeRuleGroupMetadata",
+        "route53resolver:ListFirewallRuleGroups",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy",
+        "waf-regional:ListRuleGroups",
+        "wafv2:CheckCapacity",
+        "wafv2:ListAvailableManagedRuleGroupVersions",
+        "wafv2:ListAvailableManagedRuleGroups",
+        "wafv2:ListRuleGroups"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FMSPolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "fms:GetPolicy",
+        "fms:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FMSPolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeAvailabilityZones",
+        "fms:GetPolicy",
+        "fms:ListTagsForResource",
+        "fms:PutPolicy",
+        "fms:TagResource",
+        "fms:UntagResource",
+        "network-firewall:DescribeRuleGroup",
+        "network-firewall:DescribeRuleGroupMetadata",
+        "route53resolver:ListFirewallRuleGroups",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy",
+        "waf-regional:ListRuleGroups",
+        "wafv2:CheckCapacity",
+        "wafv2:ListAvailableManagedRuleGroupVersions",
+        "wafv2:ListAvailableManagedRuleGroups",
+        "wafv2:ListRuleGroups"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FMSPolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "fms:DeletePolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

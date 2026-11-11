@@ -75,6 +75,53 @@ Resources:
       PolicyDocument:
         Statement:
         - Action:
+          - access-analyzer:CreateAnalyzer
+          - access-analyzer:CreateArchiveRule
+          - access-analyzer:DeleteAnalyzer
+          - access-analyzer:DeleteArchiveRule
+          - access-analyzer:GetAnalyzer
+          - access-analyzer:GetArchiveRule
+          - access-analyzer:ListAnalyzers
+          - access-analyzer:ListArchiveRules
+          - access-analyzer:TagResource
+          - access-analyzer:UntagResource
+          - access-analyzer:UpdateAnalyzer
+          - access-analyzer:UpdateArchiveRule
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceAccessanalyzer
+        - Action:
+          - acm:GetAccountConfiguration
+          - acm:PutAccountConfiguration
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceAcm
+        - Action:
+          - acm-pca:CreatePermission
+          - acm-pca:DeletePermission
+          - acm-pca:ListPermissions
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceAcmpca
+        - Action:
+          - auditmanager:BatchCreateDelegationByAssessment
+          - auditmanager:BatchDeleteDelegationByAssessment
+          - auditmanager:CreateAssessment
+          - auditmanager:CreateAssessmentFramework
+          - auditmanager:DeleteAssessment
+          - auditmanager:DeleteAssessmentFramework
+          - auditmanager:GetAssessment
+          - auditmanager:GetAssessmentFramework
+          - auditmanager:ListTagsForResource
+          - auditmanager:TagResource
+          - auditmanager:UntagResource
+          - auditmanager:UpdateAssessment
+          - auditmanager:UpdateAssessmentFramework
+          - auditmanager:UpdateAssessmentStatus
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceAuditmanager
+        - Action:
           - cloudformation:CreateResource
           - cloudformation:DeleteResource
           - cloudformation:GetResource
@@ -112,6 +159,7 @@ Resources:
           - config:GetOrganizationConformancePackDetailedStatus
           - config:GetOrganizationCustomRulePolicy
           - config:GetStoredQuery
+          - config:ListConnectors
           - config:ListTagsForResource
           - config:PutAggregationAuthorization
           - config:PutConfigRule
@@ -150,18 +198,47 @@ Resources:
           Resource: '*'
           Sid: ServiceControltower
         - Action:
+          - detective:CreateGraph
+          - detective:CreateMembers
+          - detective:DeleteGraph
+          - detective:DeleteMembers
+          - detective:DescribeOrganizationConfiguration
+          - detective:DisableOrganizationAdminAccount
+          - detective:EnableOrganizationAdminAccount
+          - detective:GetMembers
+          - detective:ListGraphs
+          - detective:ListOrganizationAdminAccount
+          - detective:ListTagsForResource
+          - detective:TagResource
+          - detective:UntagResource
+          - detective:UpdateOrganizationConfiguration
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceDetective
+        - Action:
+          - docdb-elastic:GetCluster
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceDocdbelastic
+        - Action:
           - ec2:AssociateTransitGatewayRouteTable
           - ec2:CreateTags
           - ec2:CreateTransitGatewayPeeringAttachment
           - ec2:CreateTransitGatewayRoute
           - ec2:CreateTransitGatewayRouteTable
+          - ec2:CreateVpcEndpoint
           - ec2:DeleteTags
           - ec2:DeleteTransitGatewayPeeringAttachment
           - ec2:DeleteTransitGatewayRoute
           - ec2:DeleteTransitGatewayRouteTable
+          - ec2:DeleteVpcEndpoints
+          - ec2:DescribeAvailabilityZones
+          - ec2:DescribeRouteTables
+          - ec2:DescribeSubnets
           - ec2:DescribeTags
           - ec2:DescribeTransitGatewayPeeringAttachments
           - ec2:DescribeTransitGatewayRouteTables
+          - ec2:DescribeVpcEndpoints
           - ec2:DescribeVpcs
           - ec2:DisableTransitGatewayRouteTablePropagation
           - ec2:DisassociateTransitGatewayRouteTable
@@ -174,31 +251,118 @@ Resources:
           Resource: '*'
           Sid: ServiceEc2
         - Action:
+          - ecs:DescribeClusters
+          - ecs:ListContainerInstances
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceEcs
+        - Action:
+          - eks:DescribeCluster
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceEks
+        - Action:
+          - events:*
+          - events:CreateApiDestination
+          - events:CreateConnection
+          - events:CreateRule
+          - events:DeleteApiDestination
+          - events:DeleteConnection
+          - events:DeleteRule
+          - events:DescribeRule
+          - events:ListApiDestinations
+          - events:ListConnections
+          - events:ListTargetsByRule
+          - events:PutRule
+          - events:PutTargets
+          - events:RemoveTargets
+          - events:UpdateApiDestination
+          - events:UpdateConnection
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceEvents
+        - Action:
+          - firehose:ListDeliveryStreams
+          - firehose:TagDeliveryStream
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceFirehose
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy2:
+    Properties:
+      Description: ack-extensions live tests, part 2
+      PolicyDocument:
+        Statement:
+        - Action:
+          - fms:BatchAssociateResource
+          - fms:BatchDisassociateResource
+          - fms:DeleteAppsList
+          - fms:DeleteNotificationChannel
+          - fms:DeletePolicy
+          - fms:DeleteProtocolsList
+          - fms:DeleteResourceSet
+          - fms:GetAppsList
+          - fms:GetNotificationChannel
+          - fms:GetPolicy
+          - fms:GetProtocolsList
+          - fms:GetResourceSet
+          - fms:ListResourceSetResources
+          - fms:ListTagsForResource
+          - fms:PutAppsList
+          - fms:PutNotificationChannel
+          - fms:PutPolicy
+          - fms:PutProtocolsList
+          - fms:PutResourceSet
+          - fms:TagResource
+          - fms:UntagResource
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceFms
+        - Action:
+          - glue:*
+          - glue:CreateDatabase
+          - glue:CreateTable
+          - glue:GetDatabase
+          - glue:GetTable
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceGlue
+        - Action:
           - guardduty:AcceptInvitation
+          - guardduty:CreateCustomDetectionRuleAssociation
           - guardduty:CreateDetector
           - guardduty:CreateFilter
           - guardduty:CreateIPSet
           - guardduty:CreateMalwareProtectionPlan
           - guardduty:CreateMembers
           - guardduty:CreatePublishingDestination
+          - guardduty:CreateThreatEntitySet
           - guardduty:CreateThreatIntelSet
+          - guardduty:CreateTrustedEntitySet
+          - guardduty:DeleteCustomDetectionRuleAssociation
           - guardduty:DeleteDetector
           - guardduty:DeleteFilter
           - guardduty:DeleteIPSet
           - guardduty:DeleteMalwareProtectionPlan
           - guardduty:DeleteMembers
           - guardduty:DeletePublishingDestination
+          - guardduty:DeleteThreatEntitySet
           - guardduty:DeleteThreatIntelSet
+          - guardduty:DeleteTrustedEntitySet
           - guardduty:DescribePublishingDestination
           - guardduty:DisassociateFromMasterAccount
           - guardduty:DisassociateMembers
+          - guardduty:GetCustomDetectionRuleAssociation
           - guardduty:GetDetector
           - guardduty:GetFilter
           - guardduty:GetIPSet
           - guardduty:GetMalwareProtectionPlan
           - guardduty:GetMasterAccount
           - guardduty:GetMembers
+          - guardduty:GetThreatEntitySet
           - guardduty:GetThreatIntelSet
+          - guardduty:GetTrustedEntitySet
           - guardduty:InviteMembers
           - guardduty:ListDetectors
           - guardduty:ListFilters
@@ -206,17 +370,22 @@ Resources:
           - guardduty:ListInvitations
           - guardduty:ListMembers
           - guardduty:ListTagsForResource
+          - guardduty:ListThreatEntitySets
           - guardduty:ListThreatIntelSets
+          - guardduty:ListTrustedEntitySets
           - guardduty:StartMonitoringMembers
           - guardduty:StopMonitoringMembers
           - guardduty:TagResource
           - guardduty:UntagResource
+          - guardduty:UpdateCustomDetectionRuleAssociation
           - guardduty:UpdateDetector
           - guardduty:UpdateFilter
           - guardduty:UpdateIPSet
           - guardduty:UpdateMalwareProtectionPlan
           - guardduty:UpdatePublishingDestination
+          - guardduty:UpdateThreatEntitySet
           - guardduty:UpdateThreatIntelSet
+          - guardduty:UpdateTrustedEntitySet
           Effect: Allow
           Resource: '*'
           Sid: ServiceGuardduty
@@ -225,10 +394,14 @@ Resources:
           - iam:CreateRole
           - iam:CreateSAMLProvider
           - iam:CreateServiceLinkedRole
+          - iam:DeleteRole
           - iam:DeleteRolePolicy
           - iam:DeleteSAMLProvider
+          - iam:DescribeOrganization
           - iam:GetRole
+          - iam:GetRolePolicy
           - iam:GetSAMLProvider
+          - iam:ListAttachedRolePolicies
           - iam:ListRolePolicies
           - iam:ListSAMLProviderTags
           - iam:PassRole
@@ -240,14 +413,128 @@ Resources:
           Resource: '*'
           Sid: ServiceIam
         - Action:
+          - inspector2:CreateCisScanConfiguration
+          - inspector2:CreateCodeSecurityIntegration
+          - inspector2:CreateCodeSecurityScanConfiguration
+          - inspector2:CreateConnector
+          - inspector2:CreateFilter
+          - inspector2:DeleteCisScanConfiguration
+          - inspector2:DeleteCodeSecurityIntegration
+          - inspector2:DeleteCodeSecurityScanConfiguration
+          - inspector2:DeleteConnector
+          - inspector2:DeleteFilter
+          - inspector2:GetCodeSecurityIntegration
+          - inspector2:GetCodeSecurityScanConfiguration
+          - inspector2:ListCisScanConfigurations
+          - inspector2:ListCodeSecurityScanConfigurations
+          - inspector2:ListConnectors
+          - inspector2:ListFilters
+          - inspector2:ListTagsForResource
+          - inspector2:TagResource
+          - inspector2:UntagResource
+          - inspector2:UpdateCisScanConfiguration
+          - inspector2:UpdateCodeSecurityIntegration
+          - inspector2:UpdateCodeSecurityScanConfiguration
+          - inspector2:UpdateConnector
+          - inspector2:UpdateFilter
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceInspector2
+        - Action:
           - kms:CreateGrant
+          - kms:Decrypt
           - kms:DescribeKey
+          - kms:GenerateDataKey
           - kms:GetPublicKey
           - kms:Sign
           Effect: Allow
           Resource: '*'
           Sid: ServiceKms
         - Action:
+          - lakeformation:*
+          - lakeformation:GrantPermissions
+          - lakeformation:ListPermissions
+          - lakeformation:RegisterResource
+          - lakeformation:RevokePermissions
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceLakeformation
+        - Action:
+          - lambda:*
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceLambda
+        - Action:
+          - logs:CreateLogDelivery
+          - logs:DeleteLogDelivery
+          - logs:DescribeLogGroups
+          - logs:DescribeResourcePolicies
+          - logs:GetLogDelivery
+          - logs:ListLogDeliveries
+          - logs:PutResourcePolicy
+          - logs:UpdateLogDelivery
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceLogs
+        - Action:
+          - macie2:CreateAllowList
+          - macie2:CreateCustomDataIdentifier
+          - macie2:CreateFindingsFilter
+          - macie2:CreateMember
+          - macie2:DeleteAllowList
+          - macie2:DeleteCustomDataIdentifier
+          - macie2:DeleteFindingsFilter
+          - macie2:DeleteMember
+          - macie2:DisableMacie
+          - macie2:EnableMacie
+          - macie2:GetAllowList
+          - macie2:GetCustomDataIdentifier
+          - macie2:GetFindingsFilter
+          - macie2:GetMacieSession
+          - macie2:GetMember
+          - macie2:ListAutomatedDiscoveryAccounts
+          - macie2:ListTagsForResource
+          - macie2:TagResource
+          - macie2:UntagResource
+          - macie2:UpdateAllowList
+          - macie2:UpdateFindingsFilter
+          - macie2:UpdateMacieSession
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceMacie2
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy3:
+    Properties:
+      Description: ack-extensions live tests, part 3
+      PolicyDocument:
+        Statement:
+        - Action:
+          - network-firewall:CreateContainerAssociation
+          - network-firewall:CreateTLSInspectionConfiguration
+          - network-firewall:CreateVpcEndpointAssociation
+          - network-firewall:DeleteContainerAssociation
+          - network-firewall:DeleteTLSInspectionConfiguration
+          - network-firewall:DeleteVpcEndpointAssociation
+          - network-firewall:DescribeContainerAssociation
+          - network-firewall:DescribeLoggingConfiguration
+          - network-firewall:DescribeRuleGroup
+          - network-firewall:DescribeRuleGroupMetadata
+          - network-firewall:DescribeTLSInspectionConfiguration
+          - network-firewall:DescribeVpcEndpointAssociation
+          - network-firewall:ListFirewalls
+          - network-firewall:ListTagsForResource
+          - network-firewall:ListTagsForResources
+          - network-firewall:TagResource
+          - network-firewall:UntagResource
+          - network-firewall:UpdateContainerAssociation
+          - network-firewall:UpdateLoggingConfiguration
+          - network-firewall:UpdateTLSInspectionConfiguration
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceNetworkfirewall
+        - Action:
+          - organizations:*
           - organizations:AttachPolicy
           - organizations:CreateOrganization
           - organizations:CreateOrganizationalUnit
@@ -258,6 +545,8 @@ Resources:
           - organizations:DetachPolicy
           - organizations:EnableAWSServiceAccess
           - organizations:EnablePolicyType
+          - organizations:ListAWSServiceAccessForOrganization
+          - organizations:ListAccounts
           - organizations:ListDelegatedAdministrators
           - organizations:ListPoliciesForTarget
           - organizations:ListRoots
@@ -268,19 +557,38 @@ Resources:
           Resource: '*'
           Sid: ServiceOrganizations
         - Action:
+          - ram:CreateResourceShare
+          - ram:DeleteResourceShare
+          - ram:GetResourceShareAssociations
+          - ram:GetResourceShares
+          - ram:UpdateResourceShare
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceRam
+        - Action:
+          - rds:DescribeDBClusters
+          - rds:DescribeDBInstances
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceRds
+        - Action:
+          - redshift:DescribeClusters
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceRedshift
+        - Action:
+          - redshift-serverless:GetNamespace
+          - redshift-serverless:ListWorkgroups
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceRedshiftserverless
+        - Action:
           - resolverdnssec:CreateConfig
           - resolverdnssec:DeleteConfig
           - resolverdnssec:GetConfig
           Effect: Allow
           Resource: '*'
           Sid: ServiceResolverdnssec
-        Version: "2012-10-17"
-    Type: AWS::IAM::ManagedPolicy
-  LiveTestPolicy2:
-    Properties:
-      Description: ack-extensions live tests, part 2
-      PolicyDocument:
-        Statement:
         - Action:
           - route53:ActivateKeySigningKey
           - route53:ChangeCidrCollection
@@ -316,6 +624,7 @@ Resources:
           - route53resolver:GetResolverConfig
           - route53resolver:GetResolverDnssecConfig
           - route53resolver:ImportFirewallDomains
+          - route53resolver:ListFirewallRuleGroups
           - route53resolver:ListFirewallRules
           - route53resolver:ListResolverConfigs
           - route53resolver:ListResolverDnssecConfigs
@@ -332,44 +641,86 @@ Resources:
           Resource: '*'
           Sid: ServiceRoute53resolver
         - Action:
+          - s3:*
           - s3:GetBucketAcl
+          - s3:GetBucketNotification
+          - s3:GetBucketNotificationConfiguration
+          - s3:GetBucketPolicy
           - s3:GetObject
+          - s3:PutBucketNotification
+          - s3:PutBucketNotificationConfiguration
+          - s3:PutBucketPolicy
           Effect: Allow
           Resource: '*'
           Sid: ServiceS3
         - Action:
+          - secretsmanager:CreateSecret
           - secretsmanager:DeleteResourcePolicy
           - secretsmanager:GetResourcePolicy
+          - secretsmanager:GetSecretValue
           - secretsmanager:PutResourcePolicy
+          - secretsmanager:PutSecretValue
           Effect: Allow
           Resource: '*'
           Sid: ServiceSecretsmanager
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy4:
+    Properties:
+      Description: ack-extensions live tests, part 4
+      PolicyDocument:
+        Statement:
         - Action:
           - securityhub:BatchDeleteAutomationRules
           - securityhub:BatchDisableStandards
           - securityhub:BatchEnableStandards
           - securityhub:BatchGetAutomationRules
+          - securityhub:BatchGetSecurityControls
           - securityhub:BatchUpdateAutomationRules
           - securityhub:CreateActionTarget
+          - securityhub:CreateAggregatorV2
           - securityhub:CreateAutomationRule
+          - securityhub:CreateAutomationRuleV2
           - securityhub:CreateConfigurationPolicy
+          - securityhub:CreateConnector
+          - securityhub:CreateConnectorV2
           - securityhub:CreateFindingAggregator
+          - securityhub:CreateInsight
           - securityhub:DeleteActionTarget
+          - securityhub:DeleteAggregatorV2
+          - securityhub:DeleteAutomationRuleV2
           - securityhub:DeleteConfigurationPolicy
+          - securityhub:DeleteConnector
+          - securityhub:DeleteConnectorV2
           - securityhub:DeleteFindingAggregator
+          - securityhub:DeleteInsight
           - securityhub:DescribeActionTargets
           - securityhub:DescribeHub
           - securityhub:DescribeOrganizationConfiguration
+          - securityhub:DescribeSecurityHubV2
           - securityhub:DescribeStandardsControls
+          - securityhub:DisableImportFindingsForProduct
           - securityhub:DisableOrganizationAdminAccount
           - securityhub:DisableSecurityHub
+          - securityhub:DisableSecurityHubFeatureV2
+          - securityhub:DisableSecurityHubV2
+          - securityhub:EnableImportFindingsForProduct
           - securityhub:EnableOrganizationAdminAccount
           - securityhub:EnableSecurityHub
+          - securityhub:EnableSecurityHubFeatureV2
+          - securityhub:EnableSecurityHubV2
+          - securityhub:GetAggregatorV2
+          - securityhub:GetAutomationRuleV2
           - securityhub:GetConfigurationPolicy
           - securityhub:GetConfigurationPolicyAssociation
+          - securityhub:GetConnector
+          - securityhub:GetConnectorV2
           - securityhub:GetEnabledStandards
           - securityhub:GetFindingAggregator
+          - securityhub:GetInsights
           - securityhub:ListAutomationRules
+          - securityhub:ListConnectorsV2
+          - securityhub:ListEnabledProductsForImport
           - securityhub:ListFindingAggregators
           - securityhub:ListOrganizationAdminAccounts
           - securityhub:ListTagsForResource
@@ -378,14 +729,43 @@ Resources:
           - securityhub:TagResource
           - securityhub:UntagResource
           - securityhub:UpdateActionTarget
+          - securityhub:UpdateAggregatorV2
+          - securityhub:UpdateAutomationRuleV2
           - securityhub:UpdateConfigurationPolicy
+          - securityhub:UpdateConnector
+          - securityhub:UpdateConnectorV2
           - securityhub:UpdateFindingAggregator
+          - securityhub:UpdateInsight
           - securityhub:UpdateOrganizationConfiguration
+          - securityhub:UpdateSecurityControl
           - securityhub:UpdateSecurityHubConfiguration
           - securityhub:UpdateStandardsControl
           Effect: Allow
           Resource: '*'
           Sid: ServiceSecurityhub
+        - Action:
+          - securitylake:CreateAwsLogSource
+          - securitylake:CreateCustomLogSource
+          - securitylake:CreateDataLake
+          - securitylake:CreateSubscriber
+          - securitylake:CreateSubscriberNotification
+          - securitylake:DeleteAwsLogSource
+          - securitylake:DeleteDataLake
+          - securitylake:DeleteSubscriber
+          - securitylake:DeleteSubscriberNotification
+          - securitylake:GetSubscriber
+          - securitylake:List*
+          - securitylake:ListLogSources
+          - securitylake:ListSubscribers
+          - securitylake:ListTagsForResource
+          - securitylake:TagResource
+          - securitylake:UntagResource
+          - securitylake:UpdateDataLake
+          - securitylake:UpdateSubscriber
+          - securitylake:UpdateSubscriberNotification
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceSecuritylake
         - Action:
           - servicecatalog:AssociatePrincipalWithPortfolio
           - servicecatalog:AssociateProductWithPortfolio
@@ -402,6 +782,16 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ServiceServicecatalog
+        - Action:
+          - sqs:*
+          - sqs:CreateQueue
+          - sqs:DeleteQueue
+          - sqs:GetQueueAttributes
+          - sqs:GetQueueUrl
+          - sqs:SetQueueAttributes
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceSqs
         - Action:
           - sso:AttachCustomerManagedPolicyReferenceToPermissionSet
           - sso:AttachManagedPolicyToPermissionSet
@@ -437,6 +827,29 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ServiceSso
+        - Action:
+          - waf-regional:ListRuleGroups
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceWafregional
+        - Action:
+          - wafv2:CheckCapacity
+          - wafv2:CreateRegexPatternSet
+          - wafv2:DeleteLoggingConfiguration
+          - wafv2:DeleteRegexPatternSet
+          - wafv2:GetLoggingConfiguration
+          - wafv2:GetRegexPatternSet
+          - wafv2:ListAvailableManagedRuleGroupVersions
+          - wafv2:ListAvailableManagedRuleGroups
+          - wafv2:ListRuleGroups
+          - wafv2:ListTagsForResource
+          - wafv2:PutLoggingConfiguration
+          - wafv2:TagResource
+          - wafv2:UntagResource
+          - wafv2:UpdateRegexPatternSet
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceWafv2
         Version: "2012-10-17"
     Type: AWS::IAM::ManagedPolicy
   LiveTestRole:
@@ -459,6 +872,8 @@ Resources:
       ManagedPolicyArns:
       - Ref: LiveTestPolicy1
       - Ref: LiveTestPolicy2
+      - Ref: LiveTestPolicy3
+      - Ref: LiveTestPolicy4
       MaxSessionDuration: 3600
       RoleName: ack-extensions-live-tests
       Tags:

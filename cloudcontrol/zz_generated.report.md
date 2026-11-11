@@ -57,6 +57,52 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::SecurityHub::AutomationRule` | `AutomationRule.securityhub.cloudcontrol.aws.hfl.dev` | 8 | 4 | 0 | 0 | 2 | 15 |
 | `AWS::SecurityHub::ActionTarget` | `ActionTarget.securityhub.cloudcontrol.aws.hfl.dev` | 3 | 1 | 2 | 0 | 0 | 3 |
 | `AWS::SecretsManager::ResourcePolicy` | `ResourcePolicy.secretsmanager.cloudcontrol.aws.hfl.dev` | 3 | 1 | 2 | 0 | 1 | 0 |
+| `AWS::AccessAnalyzer::Analyzer` | `Analyzer.accessanalyzer.cloudcontrol.aws.hfl.dev` | 5 | 1 | 4 | 0 | 0 | 1 |
+| `AWS::AccessAnalyzer::ArchiveRule` | `ArchiveRule.accessanalyzer.cloudcontrol.aws.hfl.dev` | 3 | 3 | 4 | 0 | 0 | 2 |
+| `AWS::ACMPCA::Permission` | `Permission.acmpca.cloudcontrol.aws.hfl.dev` | 4 | 0 | 8 | 0 | 0 | 0 |
+| `AWS::AuditManager::Assessment` | `Assessment.auditmanager.cloudcontrol.aws.hfl.dev` | 10 | 3 | 4 | 0 | 0 | 18 |
+| `AWS::AuditManager::AssessmentFramework` | `AssessmentFramework.auditmanager.cloudcontrol.aws.hfl.dev` | 5 | 7 | 0 | 0 | 0 | 10 |
+| `AWS::CertificateManager::Account` | `Account.certificatemanager.cloudcontrol.aws.hfl.dev` | 1 | 1 | 0 | 0 | 0 | 0 |
+| `AWS::Detective::Graph` | `Graph.detective.cloudcontrol.aws.hfl.dev` | 2 | 1 | 0 | 0 | 0 | 0 |
+| `AWS::Detective::MemberInvitation` | `MemberInvitation.detective.cloudcontrol.aws.hfl.dev` | 5 | 0 | 4 | 0 | 0 | 3 |
+| `AWS::Detective::OrganizationAdmin` | `OrganizationAdmin.detective.cloudcontrol.aws.hfl.dev` | 1 | 1 | 2 | 0 | 0 | 1 |
+| `AWS::FMS::ApplicationsList` | `ApplicationsList.fms.cloudcontrol.aws.hfl.dev` | 3 | 4 | 0 | 0 | 0 | 7 |
+| `AWS::FMS::NotificationChannel` | `NotificationChannel.fms.cloudcontrol.aws.hfl.dev` | 2 | 0 | 2 | 0 | 0 | 2 |
+| `AWS::FMS::Policy` | `Policy.fms.cloudcontrol.aws.hfl.dev` | 15 | 2 | 0 | 0 | 0 | 19 |
+| `AWS::FMS::ProtocolsList` | `ProtocolsList.fms.cloudcontrol.aws.hfl.dev` | 3 | 4 | 0 | 0 | 0 | 6 |
+| `AWS::FMS::ResourceSet` | `ResourceSet.fms.cloudcontrol.aws.hfl.dev` | 5 | 1 | 0 | 0 | 0 | 7 |
+| `AWS::GuardDuty::CustomDetectionRuleAssociation` | `CustomDetectionRuleAssociation.guardduty.cloudcontrol.aws.hfl.dev` | 3 | 5 | 2 | 0 | 0 | 3 |
+| `AWS::GuardDuty::ThreatEntitySet` | `ThreatEntitySet.guardduty.cloudcontrol.aws.hfl.dev` | 7 | 5 | 4 | 0 | 0 | 0 |
+| `AWS::GuardDuty::TrustedEntitySet` | `TrustedEntitySet.guardduty.cloudcontrol.aws.hfl.dev` | 7 | 5 | 4 | 0 | 0 | 0 |
+| `AWS::InspectorV2::CisScanConfiguration` | `CisScanConfiguration.inspectorv2.cloudcontrol.aws.hfl.dev` | 5 | 1 | 0 | 0 | 0 | 5 |
+| `AWS::InspectorV2::CodeSecurityIntegration` | `CodeSecurityIntegration.inspectorv2.cloudcontrol.aws.hfl.dev` | 5 | 6 | 2 | 0 | 0 | 5 |
+| `AWS::InspectorV2::CodeSecurityScanConfiguration` | `CodeSecurityScanConfiguration.inspectorv2.cloudcontrol.aws.hfl.dev` | 5 | 1 | 6 | 0 | 0 | 3 |
+| `AWS::InspectorV2::Connector` | `Connector.inspectorv2.cloudcontrol.aws.hfl.dev` | 5 | 6 | 6 | 0 | 0 | 5 |
+| `AWS::InspectorV2::Filter` | `Filter.inspectorv2.cloudcontrol.aws.hfl.dev` | 5 | 1 | 0 | 0 | 0 | 1 |
+| `AWS::Macie::AllowList` | `AllowList.macie.cloudcontrol.aws.hfl.dev` | 4 | 3 | 0 | 0 | 0 | 0 |
+| `AWS::Macie::CustomDataIdentifier` | `CustomDataIdentifier.macie.cloudcontrol.aws.hfl.dev` | 7 | 2 | 12 | 0 | 0 | 0 |
+| `AWS::Macie::FindingsFilter` | `FindingsFilter.macie.cloudcontrol.aws.hfl.dev` | 6 | 2 | 0 | 0 | 0 | 0 |
+| `AWS::Macie::Member` | `Member.macie.cloudcontrol.aws.hfl.dev` | 3 | 4 | 4 | 0 | 0 | 1 |
+| `AWS::Macie::Session` | `Session.macie.cloudcontrol.aws.hfl.dev` | 2 | 3 | 0 | 0 | 0 | 0 |
+| `AWS::NetworkFirewall::ContainerAssociation` | `ContainerAssociation.networkfirewall.cloudcontrol.aws.hfl.dev` | 5 | 3 | 4 | 0 | 0 | 8 |
+| `AWS::NetworkFirewall::LoggingConfiguration` | `LoggingConfiguration.networkfirewall.cloudcontrol.aws.hfl.dev` | 4 | 0 | 4 | 0 | 0 | 2 |
+| `AWS::NetworkFirewall::TLSInspectionConfiguration` | `TLSInspectionConfiguration.networkfirewall.cloudcontrol.aws.hfl.dev` | 4 | 2 | 2 | 0 | 0 | 10 |
+| `AWS::NetworkFirewall::VpcEndpointAssociation` | `VpcEndpointAssociation.networkfirewall.cloudcontrol.aws.hfl.dev` | 5 | 3 | 8 | 0 | 0 | 7 |
+| `AWS::SecretsManager::SecretTargetAttachment` | `SecretTargetAttachment.secretsmanager.cloudcontrol.aws.hfl.dev` | 3 | 1 | 2 | 0 | 0 | 0 |
+| `AWS::SecurityHub::AggregatorV2` | `AggregatorV2.securityhub.cloudcontrol.aws.hfl.dev` | 3 | 2 | 0 | 0 | 0 | 3 |
+| `AWS::SecurityHub::AutomationRuleV2` | `AutomationRuleV2.securityhub.cloudcontrol.aws.hfl.dev` | 7 | 4 | 0 | 0 | 0 | 10 |
+| `AWS::SecurityHub::Connector` | `Connector.securityhub.cloudcontrol.aws.hfl.dev` | 4 | 10 | 4 | 0 | 0 | 5 |
+| `AWS::SecurityHub::ConnectorV2` | `ConnectorV2.securityhub.cloudcontrol.aws.hfl.dev` | 5 | 10 | 8 | 0 | 0 | 9 |
+| `AWS::SecurityHub::HubV2` | `HubV2.securityhub.cloudcontrol.aws.hfl.dev` | 2 | 2 | 0 | 0 | 0 | 2 |
+| `AWS::SecurityHub::Insight` | `Insight.securityhub.cloudcontrol.aws.hfl.dev` | 3 | 1 | 0 | 0 | 0 | 23 |
+| `AWS::SecurityHub::ProductSubscription` | `ProductSubscription.securityhub.cloudcontrol.aws.hfl.dev` | 1 | 1 | 2 | 0 | 0 | 2 |
+| `AWS::SecurityHub::SecurityControl` | `SecurityControl.securityhub.cloudcontrol.aws.hfl.dev` | 4 | 0 | 2 | 0 | 0 | 7 |
+| `AWS::SecurityLake::AwsLogSource` | `AwsLogSource.securitylake.cloudcontrol.aws.hfl.dev` | 4 | 0 | 6 | 0 | 0 | 2 |
+| `AWS::SecurityLake::DataLake` | `DataLake.securitylake.cloudcontrol.aws.hfl.dev` | 5 | 2 | 0 | 0 | 0 | 3 |
+| `AWS::SecurityLake::Subscriber` | `Subscriber.securitylake.cloudcontrol.aws.hfl.dev` | 7 | 5 | 2 | 0 | 0 | 6 |
+| `AWS::SecurityLake::SubscriberNotification` | `SubscriberNotification.securitylake.cloudcontrol.aws.hfl.dev` | 2 | 1 | 2 | 1 | 0 | 3 |
+| `AWS::WAFv2::LoggingConfiguration` | `LoggingConfiguration.wafv2.cloudcontrol.aws.hfl.dev` | 4 | 1 | 2 | 0 | 0 | 0 |
+| `AWS::WAFv2::RegexPatternSet` | `RegexPatternSet.wafv2.cloudcontrol.aws.hfl.dev` | 5 | 2 | 4 | 0 | 0 | 3 |
 
 ## `AWS::IAM::SAMLProvider`
 
@@ -669,3 +715,555 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - IAM actions (8): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `secretsmanager:DeleteResourcePolicy`, `secretsmanager:GetResourcePolicy`, `secretsmanager:PutResourcePolicy`
 - Sensitive IAM actions: none
 - Left out (list handler only): `secretsmanager:ListSecrets`
+
+## `AWS::AccessAnalyzer::Analyzer`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (19): `access-analyzer:CreateAnalyzer`, `access-analyzer:CreateArchiveRule`, `access-analyzer:DeleteAnalyzer`, `access-analyzer:DeleteArchiveRule`, `access-analyzer:GetAnalyzer`, `access-analyzer:ListAnalyzers`, `access-analyzer:ListArchiveRules`, `access-analyzer:TagResource`, `access-analyzer:UntagResource`, `access-analyzer:UpdateAnalyzer`, `access-analyzer:UpdateArchiveRule`, `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `iam:CreateServiceLinkedRole`, `organizations:ListAWSServiceAccessForOrganization`, `organizations:ListDelegatedAdministrators`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`
+- Left out (list handler only): none
+
+## `AWS::AccessAnalyzer::ArchiveRule`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (9): `access-analyzer:CreateArchiveRule`, `access-analyzer:DeleteArchiveRule`, `access-analyzer:GetArchiveRule`, `access-analyzer:UpdateArchiveRule`, `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`
+- Sensitive IAM actions: none
+- Left out (list handler only): `access-analyzer:ListArchiveRules`
+
+## `AWS::ACMPCA::Permission`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (8): `acm-pca:CreatePermission`, `acm-pca:DeletePermission`, `acm-pca:ListPermissions`, `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::AuditManager::Assessment`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/Name`, `/properties/Description`, `/properties/Scope/AwsAccounts/*/Name`, `/properties/Scope/AwsAccounts/*/EmailAddress`, `/properties/Scope/AwsServices`, `/properties/AwsAccount/Name`, `/properties/AwsAccount/EmailAddress`, `/properties/Delegations/*/AssessmentId`, `/properties/Delegations/*/AssessmentName`
+- Of those, write-only strings that could be opted in if they are secrets: `/properties/AwsAccount/EmailAddress`, `/properties/AwsAccount/Name`, `/properties/Description`, `/properties/Name`
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (16): `auditmanager:BatchCreateDelegationByAssessment`, `auditmanager:BatchDeleteDelegationByAssessment`, `auditmanager:CreateAssessment`, `auditmanager:DeleteAssessment`, `auditmanager:GetAssessment`, `auditmanager:ListTagsForResource`, `auditmanager:TagResource`, `auditmanager:UntagResource`, `auditmanager:UpdateAssessment`, `auditmanager:UpdateAssessmentStatus`, `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `iam:PassRole`
+- Sensitive IAM actions: `iam:PassRole`
+- Left out (list handler only): `auditmanager:ListAssessments`
+
+## `AWS::AuditManager::AssessmentFramework`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (11): `auditmanager:CreateAssessmentFramework`, `auditmanager:DeleteAssessmentFramework`, `auditmanager:GetAssessmentFramework`, `auditmanager:TagResource`, `auditmanager:UntagResource`, `auditmanager:UpdateAssessmentFramework`, `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`
+- Sensitive IAM actions: none
+- Left out (list handler only): `auditmanager:ListAssessmentFrameworks`
+
+## `AWS::CertificateManager::Account`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (7): `acm:GetAccountConfiguration`, `acm:PutAccountConfiguration`, `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::Detective::Graph`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (14): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `detective:CreateGraph`, `detective:DeleteGraph`, `detective:DescribeOrganizationConfiguration`, `detective:ListGraphs`, `detective:ListTagsForResource`, `detective:TagResource`, `detective:UntagResource`, `detective:UpdateOrganizationConfiguration`, `organizations:DescribeOrganization`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::Detective::MemberInvitation`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/Message`, `/properties/DisableEmailNotification`
+- Of those, write-only strings that could be opted in if they are secrets: `/properties/Message`
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (8): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `detective:CreateMembers`, `detective:DeleteMembers`, `detective:GetMembers`
+- Sensitive IAM actions: none
+- Left out (list handler only): `detective:ListGraphs`, `detective:ListMembers`
+
+## `AWS::Detective::OrganizationAdmin`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (13): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `detective:DisableOrganizationAdminAccount`, `detective:EnableOrganizationAdminAccount`, `detective:ListOrganizationAdminAccount`, `iam:CreateServiceLinkedRole`, `organizations:DescribeOrganization`, `organizations:EnableAWSServiceAccess`, `organizations:ListAccounts`, `organizations:RegisterDelegatedAdministrator`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`
+- Left out (list handler only): none
+
+## `AWS::FMS::ApplicationsList`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (11): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `fms:DeleteAppsList`, `fms:GetAppsList`, `fms:ListTagsForResource`, `fms:PutAppsList`, `fms:TagResource`, `fms:UntagResource`
+- Sensitive IAM actions: none
+- Left out (list handler only): `fms:ListAppsLists`
+
+## `AWS::FMS::NotificationChannel`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (9): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `fms:DeleteNotificationChannel`, `fms:GetNotificationChannel`, `fms:PutNotificationChannel`, `iam:PassRole`
+- Sensitive IAM actions: `iam:PassRole`
+- Left out (list handler only): none
+
+## `AWS::FMS::Policy`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/DeleteAllPolicyResources`
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (22): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:DescribeAvailabilityZones`, `fms:DeletePolicy`, `fms:GetPolicy`, `fms:ListTagsForResource`, `fms:PutPolicy`, `fms:TagResource`, `fms:UntagResource`, `network-firewall:DescribeRuleGroup`, `network-firewall:DescribeRuleGroupMetadata`, `route53resolver:ListFirewallRuleGroups`, `s3:GetBucketPolicy`, `s3:PutBucketPolicy`, `waf-regional:ListRuleGroups`, `wafv2:CheckCapacity`, `wafv2:ListAvailableManagedRuleGroupVersions`, `wafv2:ListAvailableManagedRuleGroups`, `wafv2:ListRuleGroups`
+- Sensitive IAM actions: none
+- Left out (list handler only): `fms:ListPolicies`
+
+## `AWS::FMS::ProtocolsList`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (11): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `fms:DeleteProtocolsList`, `fms:GetProtocolsList`, `fms:ListTagsForResource`, `fms:PutProtocolsList`, `fms:TagResource`, `fms:UntagResource`
+- Sensitive IAM actions: none
+- Left out (list handler only): `fms:ListProtocolsLists`
+
+## `AWS::FMS::ResourceSet`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (14): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `fms:BatchAssociateResource`, `fms:BatchDisassociateResource`, `fms:DeleteResourceSet`, `fms:GetResourceSet`, `fms:ListResourceSetResources`, `fms:ListTagsForResource`, `fms:PutResourceSet`, `fms:TagResource`, `fms:UntagResource`
+- Sensitive IAM actions: none
+- Left out (list handler only): `fms:ListResourceSets`
+
+## `AWS::GuardDuty::CustomDetectionRuleAssociation`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (11): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `guardduty:CreateCustomDetectionRuleAssociation`, `guardduty:DeleteCustomDetectionRuleAssociation`, `guardduty:GetCustomDetectionRuleAssociation`, `guardduty:TagResource`, `guardduty:UntagResource`, `guardduty:UpdateCustomDetectionRuleAssociation`
+- Sensitive IAM actions: none
+- Left out (list handler only): `guardduty:ListCustomDetectionRuleAssociations`
+
+## `AWS::GuardDuty::ThreatEntitySet`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/Activate`
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (14): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `guardduty:CreateThreatEntitySet`, `guardduty:DeleteThreatEntitySet`, `guardduty:GetThreatEntitySet`, `guardduty:ListDetectors`, `guardduty:ListThreatEntitySets`, `guardduty:TagResource`, `guardduty:UntagResource`, `guardduty:UpdateThreatEntitySet`, `s3:GetObject`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::GuardDuty::TrustedEntitySet`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/Activate`
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (14): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `guardduty:CreateTrustedEntitySet`, `guardduty:DeleteTrustedEntitySet`, `guardduty:GetTrustedEntitySet`, `guardduty:ListDetectors`, `guardduty:ListTrustedEntitySets`, `guardduty:TagResource`, `guardduty:UntagResource`, `guardduty:UpdateTrustedEntitySet`, `s3:GetObject`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::InspectorV2::CisScanConfiguration`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (12): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `inspector2:CreateCisScanConfiguration`, `inspector2:DeleteCisScanConfiguration`, `inspector2:ListCisScanConfigurations`, `inspector2:ListTagsForResource`, `inspector2:TagResource`, `inspector2:UntagResource`, `inspector2:UpdateCisScanConfiguration`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::InspectorV2::CodeSecurityIntegration`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/CreateIntegrationDetails`, `/properties/UpdateIntegrationDetails`
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (12): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `inspector2:CreateCodeSecurityIntegration`, `inspector2:DeleteCodeSecurityIntegration`, `inspector2:GetCodeSecurityIntegration`, `inspector2:ListTagsForResource`, `inspector2:TagResource`, `inspector2:UntagResource`, `inspector2:UpdateCodeSecurityIntegration`
+- Sensitive IAM actions: none
+- Left out (list handler only): `inspector2:ListCodeSecurityIntegrations`
+
+## `AWS::InspectorV2::CodeSecurityScanConfiguration`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (13): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `inspector2:CreateCodeSecurityScanConfiguration`, `inspector2:DeleteCodeSecurityScanConfiguration`, `inspector2:GetCodeSecurityScanConfiguration`, `inspector2:ListCodeSecurityScanConfigurations`, `inspector2:ListTagsForResource`, `inspector2:TagResource`, `inspector2:UntagResource`, `inspector2:UpdateCodeSecurityScanConfiguration`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::InspectorV2::Connector`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): `/properties/ProviderConfiguration/Azure/ScopeConfiguration/ContainerImageScanning/State`, `/properties/ProviderConfiguration/Azure/ScopeConfiguration/ContainerImageScanning/StateReason`, `/properties/ProviderConfiguration/Azure/ScopeConfiguration/ServerlessScanning/State`, `/properties/ProviderConfiguration/Azure/ScopeConfiguration/ServerlessScanning/StateReason`, `/properties/ProviderConfiguration/Azure/ScopeConfiguration/VmScanning/State`, `/properties/ProviderConfiguration/Azure/ScopeConfiguration/VmScanning/StateReason`
+- IAM actions (15): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `config:GetConnector`, `config:ListConnectors`, `iam:CreateServiceLinkedRole`, `inspector2:CreateConnector`, `inspector2:DeleteConnector`, `inspector2:ListConnectors`, `inspector2:ListTagsForResource`, `inspector2:TagResource`, `inspector2:UntagResource`, `inspector2:UpdateConnector`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`
+- Left out (list handler only): none
+
+## `AWS::InspectorV2::Filter`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (12): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `inspector2:CreateFilter`, `inspector2:DeleteFilter`, `inspector2:ListFilters`, `inspector2:ListTagsForResource`, `inspector2:TagResource`, `inspector2:UntagResource`, `inspector2:UpdateFilter`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::Macie::AllowList`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (11): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `macie2:CreateAllowList`, `macie2:DeleteAllowList`, `macie2:GetAllowList`, `macie2:TagResource`, `macie2:UntagResource`, `macie2:UpdateAllowList`
+- Sensitive IAM actions: none
+- Left out (list handler only): `macie2:ListAllowLists`
+
+## `AWS::Macie::CustomDataIdentifier`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (10): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `macie2:CreateCustomDataIdentifier`, `macie2:DeleteCustomDataIdentifier`, `macie2:GetCustomDataIdentifier`, `macie2:TagResource`, `macie2:UntagResource`
+- Sensitive IAM actions: none
+- Left out (list handler only): `macie2:ListCustomDataIdentifiers`
+
+## `AWS::Macie::FindingsFilter`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (11): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `macie2:CreateFindingsFilter`, `macie2:DeleteFindingsFilter`, `macie2:GetFindingsFilter`, `macie2:TagResource`, `macie2:UntagResource`, `macie2:UpdateFindingsFilter`
+- Sensitive IAM actions: none
+- Left out (list handler only): `macie2:ListFindingsFilters`
+
+## `AWS::Macie::Member`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/Email`
+- Of those, write-only strings that could be opted in if they are secrets: `/properties/Email`
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (11): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `macie2:CreateMember`, `macie2:DeleteMember`, `macie2:GetMember`, `macie2:ListTagsForResource`, `macie2:TagResource`, `macie2:UntagResource`
+- Sensitive IAM actions: none
+- Left out (list handler only): `macie2:ListMembers`
+
+## `AWS::Macie::Session`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (10): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `macie2:DisableMacie`, `macie2:EnableMacie`, `macie2:GetMacieSession`, `macie2:ListAutomatedDiscoveryAccounts`, `macie2:UpdateMacieSession`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::NetworkFirewall::ContainerAssociation`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (19): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ecs:DescribeClusters`, `ecs:ListContainerInstances`, `eks:DescribeCluster`, `events:DeleteRule`, `events:PutRule`, `events:PutTargets`, `events:RemoveTargets`, `iam:CreateServiceLinkedRole`, `network-firewall:CreateContainerAssociation`, `network-firewall:DeleteContainerAssociation`, `network-firewall:DescribeContainerAssociation`, `network-firewall:TagResource`, `network-firewall:UntagResource`, `network-firewall:UpdateContainerAssociation`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`
+- Left out (list handler only): `network-firewall:ListContainerAssociations`
+
+## `AWS::NetworkFirewall::LoggingConfiguration`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (19): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `firehose:TagDeliveryStream`, `iam:CreateServiceLinkedRole`, `logs:CreateLogDelivery`, `logs:DeleteLogDelivery`, `logs:DescribeLogGroups`, `logs:DescribeResourcePolicies`, `logs:GetLogDelivery`, `logs:ListLogDeliveries`, `logs:PutResourcePolicy`, `logs:UpdateLogDelivery`, `network-firewall:DescribeLoggingConfiguration`, `network-firewall:UpdateLoggingConfiguration`, `s3:GetBucketPolicy`, `s3:PutBucketPolicy`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`
+- Left out (list handler only): none
+
+## `AWS::NetworkFirewall::TLSInspectionConfiguration`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (13): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `iam:CreateServiceLinkedRole`, `network-firewall:CreateTLSInspectionConfiguration`, `network-firewall:DeleteTLSInspectionConfiguration`, `network-firewall:DescribeTLSInspectionConfiguration`, `network-firewall:ListTagsForResources`, `network-firewall:TagResource`, `network-firewall:UntagResource`, `network-firewall:UpdateTLSInspectionConfiguration`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`
+- Left out (list handler only): `network-firewall:ListTLSInspectionConfigurations`
+
+## `AWS::NetworkFirewall::VpcEndpointAssociation`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (19): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:CreateVpcEndpoint`, `ec2:DeleteVpcEndpoints`, `ec2:DescribeRouteTables`, `ec2:DescribeSubnets`, `ec2:DescribeVpcEndpoints`, `ec2:DescribeVpcs`, `iam:CreateServiceLinkedRole`, `network-firewall:CreateVpcEndpointAssociation`, `network-firewall:DeleteVpcEndpointAssociation`, `network-firewall:DescribeVpcEndpointAssociation`, `network-firewall:ListFirewalls`, `network-firewall:ListTagsForResource`, `network-firewall:TagResource`, `network-firewall:UntagResource`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`
+- Left out (list handler only): `network-firewall:ListVpcEndpointAssociations`
+
+## `AWS::SecretsManager::SecretTargetAttachment`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (13): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `docdb-elastic:GetCluster`, `rds:DescribeDBClusters`, `rds:DescribeDBInstances`, `redshift-serverless:GetNamespace`, `redshift-serverless:ListWorkgroups`, `redshift:DescribeClusters`, `secretsmanager:GetSecretValue`, `secretsmanager:PutSecretValue`
+- Sensitive IAM actions: none
+- Left out (list handler only): `secretsmanager:ListSecrets`
+
+## `AWS::SecurityHub::AggregatorV2`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (12): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `securityhub:CreateAggregatorV2`, `securityhub:DeleteAggregatorV2`, `securityhub:GetAggregatorV2`, `securityhub:ListTagsForResource`, `securityhub:TagResource`, `securityhub:UntagResource`, `securityhub:UpdateAggregatorV2`
+- Sensitive IAM actions: none
+- Left out (list handler only): `securityhub:ListAggregatorsV2`
+
+## `AWS::SecurityHub::AutomationRuleV2`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (12): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `securityhub:CreateAutomationRuleV2`, `securityhub:DeleteAutomationRuleV2`, `securityhub:GetAutomationRuleV2`, `securityhub:ListTagsForResource`, `securityhub:TagResource`, `securityhub:UntagResource`, `securityhub:UpdateAutomationRuleV2`
+- Sensitive IAM actions: none
+- Left out (list handler only): `securityhub:ListAutomationRulesV2`
+
+## `AWS::SecurityHub::Connector`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (12): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `securityhub:CreateConnector`, `securityhub:DeleteConnector`, `securityhub:GetConnector`, `securityhub:ListTagsForResource`, `securityhub:TagResource`, `securityhub:UntagResource`, `securityhub:UpdateConnector`
+- Sensitive IAM actions: none
+- Left out (list handler only): `securityhub:ListConnectors`
+
+## `AWS::SecurityHub::ConnectorV2`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (16): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `kms:Decrypt`, `kms:DescribeKey`, `kms:GenerateDataKey`, `securityhub:CreateConnectorV2`, `securityhub:DeleteConnectorV2`, `securityhub:GetConnectorV2`, `securityhub:ListConnectorsV2`, `securityhub:ListTagsForResource`, `securityhub:TagResource`, `securityhub:UntagResource`, `securityhub:UpdateConnectorV2`
+- Sensitive IAM actions: `kms:Decrypt`
+- Left out (list handler only): none
+
+## `AWS::SecurityHub::HubV2`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (14): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `iam:CreateServiceLinkedRole`, `securityhub:DescribeSecurityHubV2`, `securityhub:DisableSecurityHubFeatureV2`, `securityhub:DisableSecurityHubV2`, `securityhub:EnableSecurityHubFeatureV2`, `securityhub:EnableSecurityHubV2`, `securityhub:ListTagsForResource`, `securityhub:TagResource`, `securityhub:UntagResource`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`
+- Left out (list handler only): none
+
+## `AWS::SecurityHub::Insight`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (9): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `securityhub:CreateInsight`, `securityhub:DeleteInsight`, `securityhub:GetInsights`, `securityhub:UpdateInsight`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::SecurityHub::ProductSubscription`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (8): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `securityhub:DisableImportFindingsForProduct`, `securityhub:EnableImportFindingsForProduct`, `securityhub:ListEnabledProductsForImport`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::SecurityHub::SecurityControl`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (9): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `securityhub:BatchGetSecurityControls`, `securityhub:DescribeStandardsControls`, `securityhub:UpdateSecurityControl`, `securityhub:UpdateStandardsControl`
+- Sensitive IAM actions: none
+- Left out (list handler only): `securityhub:ListSecurityControlDefinitions`
+
+## `AWS::SecurityLake::AwsLogSource`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (16): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `glue:CreateDatabase`, `glue:CreateTable`, `glue:GetDatabase`, `glue:GetTable`, `iam:CreateServiceLinkedRole`, `kms:CreateGrant`, `kms:DescribeKey`, `securitylake:CreateAwsLogSource`, `securitylake:CreateDataLake`, `securitylake:DeleteAwsLogSource`, `securitylake:ListLogSources`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`, `kms:CreateGrant`
+- Left out (list handler only): none
+
+## `AWS::SecurityLake::DataLake`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/MetaStoreManagerRoleArn`
+- Of those, write-only strings that could be opted in if they are secrets: `/properties/MetaStoreManagerRoleArn`
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (26): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `events:*`, `glue:*`, `iam:CreateServiceLinkedRole`, `iam:DeleteRolePolicy`, `iam:GetRole`, `iam:ListAttachedRolePolicies`, `iam:PassRole`, `iam:PutRolePolicy`, `kms:CreateGrant`, `kms:DescribeKey`, `lakeformation:*`, `lambda:*`, `organizations:*`, `s3:*`, `securitylake:CreateDataLake`, `securitylake:DeleteDataLake`, `securitylake:List*`, `securitylake:TagResource`, `securitylake:UntagResource`, `securitylake:UpdateDataLake`, `sqs:*`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`, `iam:PassRole`, `iam:PutRolePolicy`, `kms:CreateGrant`
+- Left out (list handler only): none
+
+## `AWS::SecurityLake::Subscriber`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (51): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `events:CreateApiDestination`, `events:CreateConnection`, `events:DeleteApiDestination`, `events:DeleteConnection`, `events:DeleteRule`, `events:DescribeRule`, `events:ListApiDestinations`, `events:ListConnections`, `events:ListTargetsByRule`, `events:PutRule`, `events:PutTargets`, `events:RemoveTargets`, `events:UpdateApiDestination`, `events:UpdateConnection`, `glue:GetDatabase`, `glue:GetTable`, `iam:CreateRole`, `iam:CreateServiceLinkedRole`, `iam:DeleteRole`, `iam:DeleteRolePolicy`, `iam:GetRole`, `iam:GetRolePolicy`, `iam:ListAttachedRolePolicies`, `iam:ListRolePolicies`, `iam:PutRolePolicy`, `lakeformation:GrantPermissions`, `lakeformation:ListPermissions`, `lakeformation:RegisterResource`, `lakeformation:RevokePermissions`, `ram:CreateResourceShare`, `ram:DeleteResourceShare`, `ram:GetResourceShareAssociations`, `ram:GetResourceShares`, `ram:UpdateResourceShare`, `securitylake:CreateCustomLogSource`, `securitylake:CreateDataLake`, `securitylake:CreateSubscriber`, `securitylake:DeleteSubscriber`, `securitylake:GetSubscriber`, `securitylake:ListSubscribers`, `securitylake:ListTagsForResource`, `securitylake:TagResource`, `securitylake:UntagResource`, `securitylake:UpdateSubscriber`, `sqs:DeleteQueue`, `sqs:GetQueueUrl`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`, `iam:PutRolePolicy`
+- Left out (list handler only): none
+
+## `AWS::SecurityLake::SubscriberNotification`
+
+- Secret references (opted in, `secrets` in types.yaml): `/properties/NotificationConfiguration/HttpsNotificationConfiguration/AuthorizationApiKeyValue`
+- Write-only kept as plain fields: `/properties/NotificationConfiguration/HttpsNotificationConfiguration/AuthorizationApiKeyName`, `/properties/NotificationConfiguration/HttpsNotificationConfiguration/Endpoint`, `/properties/NotificationConfiguration/HttpsNotificationConfiguration/HttpMethod`, `/properties/NotificationConfiguration/HttpsNotificationConfiguration/TargetRoleArn`
+- Of those, write-only strings that could be opted in if they are secrets: `/properties/NotificationConfiguration/HttpsNotificationConfiguration/AuthorizationApiKeyName`, `/properties/NotificationConfiguration/HttpsNotificationConfiguration/Endpoint`, `/properties/NotificationConfiguration/HttpsNotificationConfiguration/HttpMethod`, `/properties/NotificationConfiguration/HttpsNotificationConfiguration/TargetRoleArn`
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (41): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `events:CreateApiDestination`, `events:CreateConnection`, `events:CreateRule`, `events:DeleteApiDestination`, `events:DeleteConnection`, `events:DeleteRule`, `events:DescribeRule`, `events:ListApiDestinations`, `events:ListConnections`, `events:ListTargetsByRule`, `events:PutRule`, `events:PutTargets`, `events:RemoveTargets`, `events:UpdateApiDestination`, `events:UpdateConnection`, `iam:CreateServiceLinkedRole`, `iam:DeleteRole`, `iam:DeleteRolePolicy`, `iam:PassRole`, `iam:PutRolePolicy`, `s3:GetBucketNotification`, `s3:GetBucketNotificationConfiguration`, `s3:PutBucketNotification`, `s3:PutBucketNotificationConfiguration`, `secretsmanager:CreateSecret`, `securitylake:CreateDataLake`, `securitylake:CreateSubscriber`, `securitylake:CreateSubscriberNotification`, `securitylake:DeleteSubscriberNotification`, `securitylake:GetSubscriber`, `securitylake:UpdateSubscriberNotification`, `sqs:CreateQueue`, `sqs:DeleteQueue`, `sqs:GetQueueAttributes`, `sqs:GetQueueUrl`, `sqs:SetQueueAttributes`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`, `iam:PassRole`, `iam:PutRolePolicy`
+- Left out (list handler only): `securitylake:ListSubscribers`
+
+## `AWS::WAFv2::LoggingConfiguration`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (18): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `firehose:ListDeliveryStreams`, `iam:CreateServiceLinkedRole`, `iam:DescribeOrganization`, `logs:CreateLogDelivery`, `logs:DeleteLogDelivery`, `logs:DescribeLogGroups`, `logs:DescribeResourcePolicies`, `logs:PutResourcePolicy`, `s3:GetBucketPolicy`, `s3:PutBucketPolicy`, `wafv2:DeleteLoggingConfiguration`, `wafv2:GetLoggingConfiguration`, `wafv2:PutLoggingConfiguration`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`
+- Left out (list handler only): `wafv2:ListLoggingConfigurations`
+
+## `AWS::WAFv2::RegexPatternSet`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (12): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `wafv2:CreateRegexPatternSet`, `wafv2:DeleteRegexPatternSet`, `wafv2:GetRegexPatternSet`, `wafv2:ListTagsForResource`, `wafv2:TagResource`, `wafv2:UntagResource`, `wafv2:UpdateRegexPatternSet`
+- Sensitive IAM actions: none
+- Left out (list handler only): `wafv2:listRegexPatternSets`

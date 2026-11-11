@@ -1,0 +1,50 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityHubInsight",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubInsightCreate",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:CreateInsight"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubInsightRead",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:GetInsights"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubInsightUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:UpdateInsight"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubInsightDelete",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:DeleteInsight",
+        "securityhub:GetInsights"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

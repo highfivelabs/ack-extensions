@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAccessAnalyzerAnalyzer",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AccessAnalyzerAnalyzerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "access-analyzer:CreateAnalyzer",
+        "access-analyzer:TagResource",
+        "iam:CreateServiceLinkedRole",
+        "organizations:ListAWSServiceAccessForOrganization",
+        "organizations:ListDelegatedAdministrators"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AccessAnalyzerAnalyzerRead",
+      "Effect": "Allow",
+      "Action": [
+        "access-analyzer:GetAnalyzer",
+        "access-analyzer:ListAnalyzers",
+        "access-analyzer:ListArchiveRules"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AccessAnalyzerAnalyzerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "access-analyzer:CreateArchiveRule",
+        "access-analyzer:DeleteArchiveRule",
+        "access-analyzer:ListAnalyzers",
+        "access-analyzer:TagResource",
+        "access-analyzer:UntagResource",
+        "access-analyzer:UpdateAnalyzer",
+        "access-analyzer:UpdateArchiveRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AccessAnalyzerAnalyzerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "access-analyzer:DeleteAnalyzer"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

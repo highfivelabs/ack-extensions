@@ -13,7 +13,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | Category | Services | Resources | ACK | Ours beyond | None | Attributes | ACK | Ours beyond | Uncovered |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | platform-foundation | 16 | 241 | 55 (22.8%) | 35 (14.5%) | 151 | 2,400 | 28.2% | 8.5% | 63.3% |
-| security-adjacent | 18 | 112 | 14 (12.5%) | 30 (26.8%) | 68 | 2,082 | 37.6% | 16.0% | 46.4% |
+| security-adjacent | 18 | 112 | 14 (12.5%) | 76 (67.9%) | 22 | 2,082 | 37.6% | 50.9% | 11.6% |
 | application | 33 | 262 | 106 (40.5%) | 9 (3.4%) | 147 | 4,766 | 48.2% | 4.2% | 47.6% |
 | other | 238 | 1260 | 91 (7.2%) | 0 (0.0%) | 1169 | 76,525 | 3.0% | 0.0% | 97.0% |
 
@@ -43,20 +43,20 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | # | Service | Resources | ACK | Ours beyond | None | Attributes ACK / ours / uncovered | ACK controller (latest release) |
 | ---: | --- | ---: | ---: | ---: | ---: | --- | --- |
 | 1 | `config` | 11 | 0 | 11 | 0 | 0.0% / 100.0% / 0.0% | none |
-| 2 | `guardduty` | 11 | 0 | 8 | 3 | 0.0% / 77.5% / 22.5% | none |
-| 3 | `securityhub` | 17 | 0 | 9 | 8 | 0.0% / 31.7% / 68.3% | none |
-| 4 | `secretsmanager` | 4 | 1 | 1 | 2 | 17.8% / 6.7% / 75.6% | `secretsmanager-controller` v1.8.2 |
-| 5 | `wafv2` | 6 | 3 | 1 | 2 | 82.6% / 0.3% / 17.0% | `wafv2-controller` v1.8.1 |
-| 6 | `certificatemanager` | 5 | 4 | 0 | 1 | 88.2% / 0.0% / 11.8% | `acm-controller` v1.11.0 |
-| 7 | `accessanalyzer` | 2 | 0 | 0 | 2 | 0.0% / 0.0% / 100.0% | none |
-| 8 | `macie` | 5 | 0 | 0 | 5 | 0.0% / 0.0% / 100.0% | none |
-| 9 | `inspectorv2` | 5 | 0 | 0 | 5 | 0.0% / 0.0% / 100.0% | none |
-| 10 | `detective` | 3 | 0 | 0 | 3 | 0.0% / 0.0% / 100.0% | none |
-| 11 | `fms` | 5 | 0 | 0 | 5 | 0.0% / 0.0% / 100.0% | none |
-| 12 | `auditmanager` | 2 | 0 | 0 | 2 | 0.0% / 0.0% / 100.0% | none |
-| 13 | `securitylake` | 4 | 0 | 0 | 4 | 0.0% / 0.0% / 100.0% | none |
-| 14 | `acmpca` | 4 | 3 | 0 | 1 | 95.1% / 0.0% / 4.9% | `acmpca-controller` v1.7.0 |
-| 15 | `networkfirewall` | 7 | 3 | 0 | 4 | 56.0% / 0.0% / 44.0% | `networkfirewall-controller` v1.7.0 |
+| 2 | `guardduty` | 11 | 0 | 11 | 0 | 0.0% / 100.0% / 0.0% | none |
+| 3 | `securityhub` | 17 | 0 | 17 | 0 | 0.0% / 100.0% / 0.0% | none |
+| 4 | `secretsmanager` | 4 | 1 | 2 | 1 | 17.8% / 13.3% / 68.9% | `secretsmanager-controller` v1.8.2 |
+| 5 | `wafv2` | 6 | 3 | 3 | 0 | 82.6% / 2.9% / 14.5% | `wafv2-controller` v1.8.1 |
+| 6 | `certificatemanager` | 5 | 4 | 1 | 0 | 88.2% / 2.9% / 8.8% | `acm-controller` v1.11.0 |
+| 7 | `accessanalyzer` | 2 | 0 | 2 | 0 | 0.0% / 100.0% / 0.0% | none |
+| 8 | `macie` | 5 | 0 | 5 | 0 | 0.0% / 100.0% / 0.0% | none |
+| 9 | `inspectorv2` | 5 | 0 | 5 | 0 | 0.0% / 100.0% / 0.0% | none |
+| 10 | `detective` | 3 | 0 | 3 | 0 | 0.0% / 100.0% / 0.0% | none |
+| 11 | `fms` | 5 | 0 | 5 | 0 | 0.0% / 100.0% / 0.0% | none |
+| 12 | `auditmanager` | 2 | 0 | 2 | 0 | 0.0% / 100.0% / 0.0% | none |
+| 13 | `securitylake` | 4 | 0 | 4 | 0 | 0.0% / 100.0% / 0.0% | none |
+| 14 | `acmpca` | 4 | 3 | 1 | 0 | 95.1% / 2.8% / 2.1% | `acmpca-controller` v1.7.0 |
+| 15 | `networkfirewall` | 7 | 3 | 4 | 0 | 56.0% / 31.0% / 12.9% | `networkfirewall-controller` v1.7.0 |
 | 16 | `inspector` | 3 | 0 | 0 | 3 | 0.0% / 0.0% / 100.0% | none |
 | 17 | `waf` | 7 | 0 | 0 | 7 | 0.0% / 0.0% / 100.0% | none |
 | 18 | `wafregional` | 11 | 0 | 0 | 11 | 0.0% / 0.0% / 100.0% | none |
@@ -83,8 +83,8 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 | [F14](#f14) | Config: recorder, delivery channel, rules, aggregators, organization rules and conformance packs | security-adjacent | 11 | 0 / 118 / 0 | L (new service, eleven resources); S each after the first | Good for the first six: `PutConfigRule`, `PutConfigurationRecorder`, `PutDeliveryChannel`,... |
 | [F15](#f15) | GuardDuty: detector, filters, IP and threat intel sets, members | security-adjacent | 8 | 0 / 69 / 0 | L (new service) | Partial: `CreateDetector`, `UpdateDetector`, `CreateFilter`, `EnableOrganizationAdminAccou... |
 | [F16](#f16) | Security Hub: hub, standards, organization configuration, aggregator, automation rules | security-adjacent | 9 | 0 / 141 / 0 | L (new service; `AutomationRule` has 105 attributes and `Insight` 238) | Partial: `EnableSecurityHub`, `EnableOrganizationAdminAccount`, `UpdateOrganizationConfigu... |
-| [F17](#f17) | Secrets Manager: resource policy and rotation (wait for ACK on rotation) | security-adjacent | 4 | 8 / 3 / 34 | S | Good: `CreateSecret`, `RotateSecret`, `PutResourcePolicy` are implemented (21 of 23 operat... |
-| [F18](#f18) | Access Analyzer, Macie, Inspector, Detective, Firewall Manager, Audit Manager, Security Lake | security-adjacent | 9 | 0 / 0 / 224 | L each for a new service | Macie, Inspector2: partial |
+| [F17](#f17) | Secrets Manager: resource policy and rotation (wait for ACK on rotation) | security-adjacent | 4 | 8 / 6 / 31 | S | Good: `CreateSecret`, `RotateSecret`, `PutResourcePolicy` are implemented (21 of 23 operat... |
+| [F18](#f18) | Access Analyzer, Macie, Inspector, Detective, Firewall Manager, Audit Manager, Security Lake | security-adjacent | 9 | 0 / 224 / 0 | L each for a new service | Macie, Inspector2: partial |
 
 ### F01 AWS Organizations: SCPs and the other policy types, attachment, delegated administrators, organization features, account placement
 
@@ -294,7 +294,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F17 Secrets Manager: resource policy and rotation (wait for ACK on rotation)
 
-- **Resources:** `secretsmanager/ResourcePolicy`, `secretsmanager/RotationSchedule`, `secretsmanager/Secret`, `secretsmanager/SecretTargetAttachment`. Today ACK covers 8, ours 3, nothing covers 34 of 45 attributes.
+- **Resources:** `secretsmanager/ResourcePolicy`, `secretsmanager/RotationSchedule`, `secretsmanager/Secret`, `secretsmanager/SecretTargetAttachment`. Today ACK covers 8, ours 6, nothing covers 31 of 45 attributes.
 - **Why first:** Secrets are the security team's first ask after keys; ACK covers `Secret` (8 of 19 attributes). Rotation and a resource policy are the gaps; the catalog ranks them 2nd and 'next'.
 - **Proposed kinds:** `secretsmanager.aws.hfl.dev/ResourcePolicy`, hand-written put/delete (`PutResourcePolicy`/`DeleteResourcePolicy`, `BlockPublicPolicy`). Rotation: wait for ACK PR #69 (open since 2026-06-26).
 - **Upstream:** ACK PR #69 rotation management on `Secret`; PR #68 `secretString` updates.
@@ -306,7 +306,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F18 Access Analyzer, Macie, Inspector, Detective, Firewall Manager, Audit Manager, Security Lake
 
-- **Resources:** `accessanalyzer/Analyzer`, `accessanalyzer/ArchiveRule`, `macie/Session`, `macie/FindingsFilter`, `inspectorv2/Filter`, `detective/Graph`, `fms/Policy`, `auditmanager/Assessment`, `securitylake/DataLake`. Today ACK covers 0, ours 0, nothing covers 224 of 224 attributes.
+- **Resources:** `accessanalyzer/Analyzer`, `accessanalyzer/ArchiveRule`, `macie/Session`, `macie/FindingsFilter`, `inspectorv2/Filter`, `detective/Graph`, `fms/Policy`, `auditmanager/Assessment`, `securitylake/DataLake`. Today ACK covers 0, ours 224, nothing covers 0 of 224 attributes.
 - **Why first:** The rest of the security-adjacent set the builder named. Each is a new service with no controller, no issue and (for five of them) no emulator.
 - **Proposed kinds:** One new service manager each, generated where the API has a Create/Describe/Delete shape. Order by what moto can prove: Macie (`macie2` 13 of 81 operations) and Inspector (`inspector2` 19 of 81) first; Access Analyzer, Detective, Firewall Manager, Audit Manager and Security Lake have no moto service.
 - **Upstream:** No ACK repository, issue or pull request for any of them.
@@ -742,16 +742,16 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `CustomDetectionRuleAssociation` | none | - | whole resource (4 attrs) | no released controller | 0 | service-level only: moto `guardduty`: 12 of 102 operations: `CreateDetector`, `UpdateDetector`, `CreateFilter`... | S | `guardduty.aws.hfl.dev/CustomDetectionRuleAssociation`, in a new service manager |  |
-| `ThreatEntitySet` | none | - | whole resource (8 attrs) | no released controller | 0 | service-level only: moto `guardduty`: 12 of 102 operations: `CreateDetector`, `UpdateDetector`, `CreateFilter`... | S | `guardduty.aws.hfl.dev/ThreatEntitySet`, in a new service manager |  |
-| `TrustedEntitySet` | none | - | whole resource (8 attrs) | no released controller | 0 | service-level only: moto `guardduty`: 12 of 102 operations: `CreateDetector`, `UpdateDetector`, `CreateFilter`... | S | `guardduty.aws.hfl.dev/TrustedEntitySet`, in a new service manager |  |
+| `CustomDetectionRuleAssociation` | none | `CustomDetectionRuleAssociation (Cloud Control)`: +4 | none | no released controller | 0 | service-level only: moto `guardduty`: 12 of 102 operations: `CreateDetector`, `UpdateDetector`, `CreateFilter`... | - | none (covered) |  |
 | `Detector` | none | `Detector (Cloud Control)`: +11 | none | no released controller | 0 | yes: `CreateDetector`, `UpdateDetector` | - | none (covered) | [F15](#f15) |
 | `IPSet` | none | `IPSet (Cloud Control)`: +8 | none | no released controller | 0 | no: `CreateIPSet` is not in moto | - | none (covered) | [F15](#f15) |
 | `MalwareProtectionPlan` | none | `MalwareProtectionPlan (Cloud Control)`: +6 | none | no released controller | 0 | no: `CreateMalwareProtectionPlan` is not in moto | - | none (covered) | [F15](#f15) |
 | `Master` | none | `Master (Cloud Control)`: +3 | none | no released controller | 0 | service-level only: moto `guardduty`: 12 of 102 operations: `CreateDetector`, `UpdateDetector`, `CreateFilter`... | - | none (covered) | [F15](#f15) |
 | `Member` | none | `Member (Cloud Control)`: +6 | none | no released controller | 0 | no: `CreateMembers` is not in moto | - | none (covered) | [F15](#f15) |
 | `PublishingDestination` | none | `PublishingDestination (Cloud Control)`: +6 | none | no released controller | 0 | no: `CreatePublishingDestination` is not in moto | - | none (covered) | [F15](#f15) |
+| `ThreatEntitySet` | none | `ThreatEntitySet (Cloud Control)`: +8 | none | no released controller | 0 | service-level only: moto `guardduty`: 12 of 102 operations: `CreateDetector`, `UpdateDetector`, `CreateFilter`... | - | none (covered) |  |
 | `ThreatIntelSet` | none | `ThreatIntelSet (Cloud Control)`: +8 | none | no released controller | 0 | no: `CreateThreatIntelSet` is not in moto | - | none (covered) | [F15](#f15) |
+| `TrustedEntitySet` | none | `TrustedEntitySet (Cloud Control)`: +8 | none | no released controller | 0 | service-level only: moto `guardduty`: 12 of 102 operations: `CreateDetector`, `UpdateDetector`, `CreateFilter`... | - | none (covered) |  |
 | `Filter` | none | `Filter (Cloud Control)`: +21 | none | no released controller | 0 | yes: `CreateFilter` | - | none (covered) | [F15](#f15) |
 ### security-adjacent: `securityhub`
 
@@ -762,23 +762,23 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `AggregatorV2` | none | - | whole resource (3 attrs) | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | S | `securityhub.aws.hfl.dev/AggregatorV2`, in a new service manager |  |
-| `Connector` | none | - | whole resource (7 attrs) | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | S | `securityhub.aws.hfl.dev/Connector`, in a new service manager |  |
-| `ConnectorV2` | none | - | whole resource (11 attrs) | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | S | `securityhub.aws.hfl.dev/ConnectorV2`, in a new service manager |  |
-| `HubV2` | none | - | whole resource (2 attrs) | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | S | `securityhub.aws.hfl.dev/HubV2`, in a new service manager |  |
-| `ProductSubscription` | none | - | whole resource (1 attr) | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | S | `securityhub.aws.hfl.dev/ProductSubscription`, in a new service manager |  |
-| `SecurityControl` | none | - | whole resource (12 attrs) | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | S | `securityhub.aws.hfl.dev/SecurityControl`, in a new service manager |  |
-| `AutomationRuleV2` | none | - | whole resource (30 attrs) | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | M | `securityhub.aws.hfl.dev/AutomationRuleV2`, in a new service manager |  |
-| `Insight` | none | - | whole resource (238 attrs) | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | L | `securityhub.aws.hfl.dev/Insight`, in a new service manager |  |
 | `ActionTarget` | none | `ActionTarget (Cloud Control)`: +3 | none | no released controller | 0 | no: `CreateActionTarget` is not in moto | - | none (covered) | [F16](#f16) |
+| `AggregatorV2` | none | `AggregatorV2 (Cloud Control)`: +3 | none | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | - | none (covered) |  |
+| `Connector` | none | `Connector (Cloud Control)`: +7 | none | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | - | none (covered) |  |
+| `ConnectorV2` | none | `ConnectorV2 (Cloud Control)`: +11 | none | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | - | none (covered) |  |
 | `DelegatedAdmin` | none | `DelegatedAdmin (Cloud Control)`: +1 | none | no released controller | 0 | yes: `EnableOrganizationAdminAccount` is implemented | - | none (covered) | [F16](#f16) |
 | `FindingAggregator` | none | `FindingAggregator (Cloud Control)`: +2 | none | no released controller | 0 | no: `CreateFindingAggregator` is not in moto | - | none (covered) | [F16](#f16) |
 | `Hub` | none | `Hub (Cloud Control)`: +4 | none | no released controller | 0 | yes: `EnableSecurityHub` is implemented | - | none (covered) | [F16](#f16) |
+| `HubV2` | none | `HubV2 (Cloud Control)`: +2 | none | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | - | none (covered) |  |
 | `OrganizationConfiguration` | none | `OrganizationConfiguration (Cloud Control)`: +3 | none | no released controller | 0 | yes: `UpdateOrganizationConfiguration` is implemented | - | none (covered) | [F16](#f16) |
 | `PolicyAssociation` | none | `PolicyAssociation (Cloud Control)`: +3 | none | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | - | none (covered) | [F16](#f16) |
+| `ProductSubscription` | none | `ProductSubscription (Cloud Control)`: +1 | none | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | - | none (covered) |  |
+| `SecurityControl` | none | `SecurityControl (Cloud Control)`: +12 | none | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | - | none (covered) |  |
 | `Standard` | none | `Standard (Cloud Control)`: +3 | none | no released controller | 0 | no: `BatchEnableStandards` is not in moto | - | none (covered) | [F16](#f16) |
+| `AutomationRuleV2` | none | `AutomationRuleV2 (Cloud Control)`: +30 | none | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | - | none (covered) |  |
 | `ConfigurationPolicy` | none | `ConfigurationPolicy (Cloud Control)`: +17 | none | no released controller | 0 | no: `CreateConfigurationPolicy` is not in moto | - | none (covered) | [F16](#f16) |
 | `AutomationRule` | none | `AutomationRule (Cloud Control)`: +105 | none | no released controller | 0 | no: `CreateAutomationRule` is not in moto | - | none (covered) | [F16](#f16) |
+| `Insight` | none | `Insight (Cloud Control)`: +238 | none | no released controller | 0 | service-level only: moto `securityhub`: 13 of 123 operations: `EnableSecurityHub`, `EnableOrganizationAdminAcc... | - | none (covered) |  |
 ### security-adjacent: `secretsmanager`
 
 - **ACK controller:** `secretsmanager-controller` v1.8.2: `Secret`
@@ -789,8 +789,8 @@ One section per service in queue order; inside a service, resources that still n
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
 | `RotationSchedule` | none | - | whole resource (20 attrs) | ACK PR #69 (open since 2026-06-26): wait | 3 | yes: `RotateSecret` is implemented | M | none: wait for ACK PR #69 | [F17](#f17) |
 | `Secret` | `Secret` v1.8.2: 8/19 | - | 11 of 19 attrs: `GenerateSecretString.* (a generated password)`, `Type` and 9 more | kind released; the rest is not in it | 1 | service-level only: moto `secretsmanager`: 21 of 23 operations, including `CreateSecret`, `RotateSecret`, `Put... | M | the fields upstream (ACK PR #69 is rotation) | [F17](#f17) |
-| `SecretTargetAttachment` | none | - | whole resource (3 attrs) | controller exists; resource not in it | 0 | service-level only: moto `secretsmanager`: 21 of 23 operations, including `CreateSecret`, `RotateSecret`, `Put... | S | `secretsmanager.aws.hfl.dev/SecretTargetAttachment`; low priority (writes the target's connection details into the secret) | [F17](#f17) |
 | `ResourcePolicy` | none | `ResourcePolicy (Cloud Control)`: +3 | none | controller exists; resource not in it | 1 | yes: `PutResourcePolicy` is implemented | - | `secretsmanager.aws.hfl.dev/ResourcePolicy`, hand-written (`PutResourcePolicy`/`DeleteResourcePolicy`), F17 | [F17](#f17) |
+| `SecretTargetAttachment` | none | `SecretTargetAttachment (Cloud Control)`: +3 | none | controller exists; resource not in it | 0 | service-level only: moto `secretsmanager`: 21 of 23 operations, including `CreateSecret`, `RotateSecret`, `Put... | - | `secretsmanager.aws.hfl.dev/SecretTargetAttachment`; low priority (writes the target's connection details into the secret) | [F17](#f17) |
 ### security-adjacent: `wafv2`
 
 - **ACK controller:** `wafv2-controller` v1.8.1: `IPSet`, `RuleGroup`, `WebACL`
@@ -799,12 +799,12 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `LoggingConfiguration` | none | - | whole resource (11 attrs) | controller exists; resource not in it | 0 | service-level only: moto `wafv2`: 30 of 59 operations, including `CreateWebACL`, `AssociateWebACL`, `CreateRul... | S | `wafv2.aws.hfl.dev/LoggingConfiguration`, generated |  |
-| `RegexPatternSet` | none | - | whole resource (6 attrs) | controller exists; resource not in it | 0 | service-level only: moto `wafv2`: 30 of 59 operations, including `CreateWebACL`, `AssociateWebACL`, `CreateRul... | S | `wafv2.aws.hfl.dev/RegexPatternSet`, generated |  |
 | `RuleGroup` | `RuleGroup` v1.8.1: 226/266 | - | 40 of 266 attrs: `MonetizationConfig.CurrencyMode`, `MonetizationConfig.CryptoConfig.PaymentNetworks[].Chain`, `MonetizationConfig.CryptoConfig.PaymentNetworks[].WalletAddress`, `Rules[].Action.Monetize.PriceMultiplier`, `Rules[].Statement.ByteMatchStatement.SearchStringBase64`, `Rules[].Statement.NotStatement.Statement` and 34 more | kind released; the rest is not in it | 0 | service-level only: moto `wafv2`: 30 of 59 operations, including `CreateWebACL`, `AssociateWebACL`, `CreateRul... | L | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
 | `WebACL` | `WebACL` v1.8.1: 310/365 | - | 55 of 365 attrs: `AssociationConfig.ChallengeJavascriptSdkInjection{}`, `MonetizationConfig.CurrencyMode`, `OnSourceDDoSProtectionConfig.ALBLowReputationMode`, `ApplicationConfig.Attributes[].Name`, `DataProtectionConfig.DataProtections[].Action`, `DataProtectionConfig.DataProtections[].ExcludeRateBasedDetails` and 49 more | kind released; the rest is not in it | 0 | service-level only: moto `wafv2`: 30 of 59 operations, including `CreateWebACL`, `AssociateWebACL`, `CreateRul... | L | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
 | `WebACLAssociation` | none | `WebACLAssociation`: +2 | none | controller exists; resource not in it | 1 | service-level only: moto `wafv2`: 30 of 59 operations, including `CreateWebACL`, `AssociateWebACL`, `CreateRul... | - | none (covered) |  |
 | `IPSet` | `IPSet` v1.8.1: 7/7 | - | none | released | 0 | service-level only: moto `wafv2`: 30 of 59 operations, including `CreateWebACL`, `AssociateWebACL`, `CreateRul... | - | none (covered) |  |
+| `LoggingConfiguration` | none | `LoggingConfiguration (Cloud Control)`: +11 | none | controller exists; resource not in it | 0 | service-level only: moto `wafv2`: 30 of 59 operations, including `CreateWebACL`, `AssociateWebACL`, `CreateRul... | - | none (covered) |  |
+| `RegexPatternSet` | none | `RegexPatternSet (Cloud Control)`: +6 | none | controller exists; resource not in it | 0 | service-level only: moto `wafv2`: 30 of 59 operations, including `CreateWebACL`, `AssociateWebACL`, `CreateRul... | - | none (covered) |  |
 ### security-adjacent: `certificatemanager`
 
 - **ACK controller:** `acm-controller` v1.11.0: `Certificate`, `AcmeDomainValidation`, `AcmeEndpoint`, `AcmeExternalAccountBinding`
@@ -814,7 +814,7 @@ One section per service in queue order; inside a service, resources that still n
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
 | `Certificate` | `Certificate` v1.11.0: 9/12 | - | 3 of 12 attrs: `ValidationMethod`, `CertificateExport`, `DomainValidationOptions[].HostedZoneId` | ACK PR #104 (import from a TLS Secret) is open; ACK ignores `ValidationMethod` in generator.yaml | 1 | service-level only: moto `acm`: 13 of 40 operations, including `RequestCertificate`, `ImportCertificate` | S | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
-| `Account` | none | - | whole resource (1 attr) | controller exists; resource not in it | 0 | service-level only: moto `acm`: 13 of 40 operations, including `RequestCertificate`, `ImportCertificate` | S | `certificatemanager.aws.hfl.dev/Account`, generated |  |
+| `Account` | none | `Account (Cloud Control)`: +1 | none | controller exists; resource not in it | 0 | service-level only: moto `acm`: 13 of 40 operations, including `RequestCertificate`, `ImportCertificate` | - | none (covered) |  |
 | `AcmeDomainValidation` | `AcmeDomainValidation` v1.11.0: 8/8 | - | none | released | 0 | service-level only: moto `acm`: 13 of 40 operations, including `RequestCertificate`, `ImportCertificate` | - | none (covered) |  |
 | `AcmeEndpoint` | `AcmeEndpoint` v1.11.0: 7/7 | - | none | released | 0 | service-level only: moto `acm`: 13 of 40 operations, including `RequestCertificate`, `ImportCertificate` | - | none (covered) |  |
 | `AcmeExternalAccountBinding` | `AcmeExternalAccountBinding` v1.11.0: 6/6 | - | none | released | 0 | service-level only: moto `acm`: 13 of 40 operations, including `RequestCertificate`, `ImportCertificate` | - | none (covered) |  |
@@ -827,8 +827,8 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `ArchiveRule` | none | - | whole resource (6 attrs) | no released controller | 0 | service-level only: none: moto 5 | S | `accessanalyzer.aws.hfl.dev/ArchiveRule`, in a new service manager | [F18](#f18) |
-| `Analyzer` | none | - | whole resource (17 attrs) | no released controller | 0 | service-level only: none: moto 5 | M | `accessanalyzer.aws.hfl.dev/Analyzer`, in a new service manager | [F18](#f18) |
+| `ArchiveRule` | none | `ArchiveRule (Cloud Control)`: +6 | none | no released controller | 0 | service-level only: none: moto 5 | - | none (covered) | [F18](#f18) |
+| `Analyzer` | none | `Analyzer (Cloud Control)`: +17 | none | no released controller | 0 | service-level only: none: moto 5 | - | none (covered) | [F18](#f18) |
 ### security-adjacent: `macie`
 
 - **ACK controller:** none
@@ -838,11 +838,11 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `FindingsFilter` | none | - | whole resource (12 attrs) | no released controller | 0 | service-level only: moto `macie2`: 13 of 81 operations (CloudFormation's `Macie` service is the same API) | S | `macie.aws.hfl.dev/FindingsFilter`, in a new service manager | [F18](#f18) |
-| `Session` | none | - | whole resource (2 attrs) | no released controller | 0 | service-level only: moto `macie2`: 13 of 81 operations (CloudFormation's `Macie` service is the same API) | S | `macie.aws.hfl.dev/Session`, in a new service manager | [F18](#f18) |
-| `AllowList` | none | - | whole resource (7 attrs) | no released controller | 0 | service-level only: moto `macie2`: 13 of 81 operations (CloudFormation's `Macie` service is the same API) | S | `macie.aws.hfl.dev/AllowList`, in a new service manager |  |
-| `CustomDataIdentifier` | none | - | whole resource (8 attrs) | no released controller | 0 | service-level only: moto `macie2`: 13 of 81 operations (CloudFormation's `Macie` service is the same API) | S | `macie.aws.hfl.dev/CustomDataIdentifier`, in a new service manager |  |
-| `Member` | none | - | whole resource (4 attrs) | no released controller | 0 | service-level only: moto `macie2`: 13 of 81 operations (CloudFormation's `Macie` service is the same API) | S | `macie.aws.hfl.dev/Member`, in a new service manager |  |
+| `AllowList` | none | `AllowList (Cloud Control)`: +7 | none | no released controller | 0 | service-level only: moto `macie2`: 13 of 81 operations (CloudFormation's `Macie` service is the same API) | - | none (covered) |  |
+| `CustomDataIdentifier` | none | `CustomDataIdentifier (Cloud Control)`: +8 | none | no released controller | 0 | service-level only: moto `macie2`: 13 of 81 operations (CloudFormation's `Macie` service is the same API) | - | none (covered) |  |
+| `FindingsFilter` | none | `FindingsFilter (Cloud Control)`: +12 | none | no released controller | 0 | service-level only: moto `macie2`: 13 of 81 operations (CloudFormation's `Macie` service is the same API) | - | none (covered) | [F18](#f18) |
+| `Member` | none | `Member (Cloud Control)`: +4 | none | no released controller | 0 | service-level only: moto `macie2`: 13 of 81 operations (CloudFormation's `Macie` service is the same API) | - | none (covered) |  |
+| `Session` | none | `Session (Cloud Control)`: +2 | none | no released controller | 0 | service-level only: moto `macie2`: 13 of 81 operations (CloudFormation's `Macie` service is the same API) | - | none (covered) | [F18](#f18) |
 ### security-adjacent: `inspectorv2`
 
 - **ACK controller:** none
@@ -852,11 +852,11 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `Filter` | none | - | whole resource (105 attrs) | no released controller | 0 | service-level only: moto `inspector2`: 19 of 81 operations | L | `inspectorv2.aws.hfl.dev/Filter`, in a new service manager | [F18](#f18) |
-| `CisScanConfiguration` | none | - | whole resource (14 attrs) | no released controller | 0 | service-level only: moto `inspector2`: 19 of 81 operations | S | `inspectorv2.aws.hfl.dev/CisScanConfiguration`, in a new service manager |  |
-| `CodeSecurityIntegration` | none | - | whole resource (8 attrs) | no released controller | 0 | service-level only: moto `inspector2`: 19 of 81 operations | S | `inspectorv2.aws.hfl.dev/CodeSecurityIntegration`, in a new service manager |  |
-| `CodeSecurityScanConfiguration` | none | - | whole resource (8 attrs) | no released controller | 0 | service-level only: moto `inspector2`: 19 of 81 operations | S | `inspectorv2.aws.hfl.dev/CodeSecurityScanConfiguration`, in a new service manager |  |
-| `Connector` | none | - | whole resource (14 attrs) | no released controller | 0 | service-level only: moto `inspector2`: 19 of 81 operations | S | `inspectorv2.aws.hfl.dev/Connector`, in a new service manager |  |
+| `CisScanConfiguration` | none | `CisScanConfiguration (Cloud Control)`: +14 | none | no released controller | 0 | service-level only: moto `inspector2`: 19 of 81 operations | - | none (covered) |  |
+| `CodeSecurityIntegration` | none | `CodeSecurityIntegration (Cloud Control)`: +8 | none | no released controller | 0 | service-level only: moto `inspector2`: 19 of 81 operations | - | none (covered) |  |
+| `CodeSecurityScanConfiguration` | none | `CodeSecurityScanConfiguration (Cloud Control)`: +8 | none | no released controller | 0 | service-level only: moto `inspector2`: 19 of 81 operations | - | none (covered) |  |
+| `Connector` | none | `Connector (Cloud Control)`: +14 | none | no released controller | 0 | service-level only: moto `inspector2`: 19 of 81 operations | - | none (covered) |  |
+| `Filter` | none | `Filter (Cloud Control)`: +105 | none | no released controller | 0 | service-level only: moto `inspector2`: 19 of 81 operations | - | none (covered) | [F18](#f18) |
 ### security-adjacent: `detective`
 
 - **ACK controller:** none
@@ -866,9 +866,9 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `Graph` | none | - | whole resource (3 attrs) | no released controller | 0 | service-level only: none: moto 5 | S | `detective.aws.hfl.dev/Graph`, in a new service manager | [F18](#f18) |
-| `MemberInvitation` | none | - | whole resource (5 attrs) | no released controller | 0 | service-level only: none: moto 5 | S | `detective.aws.hfl.dev/MemberInvitation`, in a new service manager |  |
-| `OrganizationAdmin` | none | - | whole resource (1 attr) | no released controller | 0 | service-level only: none: moto 5 | S | `detective.aws.hfl.dev/OrganizationAdmin`, in a new service manager |  |
+| `Graph` | none | `Graph (Cloud Control)`: +3 | none | no released controller | 0 | service-level only: none: moto 5 | - | none (covered) | [F18](#f18) |
+| `MemberInvitation` | none | `MemberInvitation (Cloud Control)`: +5 | none | no released controller | 0 | service-level only: none: moto 5 | - | none (covered) |  |
+| `OrganizationAdmin` | none | `OrganizationAdmin (Cloud Control)`: +1 | none | no released controller | 0 | service-level only: none: moto 5 | - | none (covered) |  |
 ### security-adjacent: `fms`
 
 - **ACK controller:** none
@@ -878,11 +878,11 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `Policy` | none | - | whole resource (42 attrs) | no released controller | 0 | service-level only: none: moto 5 | M | `fms.aws.hfl.dev/Policy`, in a new service manager | [F18](#f18) |
-| `ApplicationsList` | none | - | whole resource (6 attrs) | no released controller | 0 | service-level only: none: moto 5 | S | `fms.aws.hfl.dev/ApplicationsList`, in a new service manager |  |
-| `NotificationChannel` | none | - | whole resource (2 attrs) | no released controller | 0 | service-level only: none: moto 5 | S | `fms.aws.hfl.dev/NotificationChannel`, in a new service manager |  |
-| `ProtocolsList` | none | - | whole resource (4 attrs) | no released controller | 0 | service-level only: none: moto 5 | S | `fms.aws.hfl.dev/ProtocolsList`, in a new service manager |  |
-| `ResourceSet` | none | - | whole resource (6 attrs) | no released controller | 0 | service-level only: none: moto 5 | S | `fms.aws.hfl.dev/ResourceSet`, in a new service manager |  |
+| `ApplicationsList` | none | `ApplicationsList (Cloud Control)`: +6 | none | no released controller | 0 | service-level only: none: moto 5 | - | none (covered) |  |
+| `NotificationChannel` | none | `NotificationChannel (Cloud Control)`: +2 | none | no released controller | 0 | service-level only: none: moto 5 | - | none (covered) |  |
+| `ProtocolsList` | none | `ProtocolsList (Cloud Control)`: +4 | none | no released controller | 0 | service-level only: none: moto 5 | - | none (covered) |  |
+| `ResourceSet` | none | `ResourceSet (Cloud Control)`: +6 | none | no released controller | 0 | service-level only: none: moto 5 | - | none (covered) |  |
+| `Policy` | none | `Policy (Cloud Control)`: +42 | none | no released controller | 0 | service-level only: none: moto 5 | - | none (covered) | [F18](#f18) |
 ### security-adjacent: `auditmanager`
 
 - **ACK controller:** none
@@ -892,8 +892,8 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `Assessment` | none | - | whole resource (28 attrs) | no released controller | 0 | service-level only: none: moto 5 | M | `auditmanager.aws.hfl.dev/Assessment`, in a new service manager | [F18](#f18) |
-| `AssessmentFramework` | none | - | whole resource (7 attrs) | no released controller | 0 | service-level only: none: moto 5 | S | `auditmanager.aws.hfl.dev/AssessmentFramework`, in a new service manager |  |
+| `AssessmentFramework` | none | `AssessmentFramework (Cloud Control)`: +7 | none | no released controller | 0 | service-level only: none: moto 5 | - | none (covered) |  |
+| `Assessment` | none | `Assessment (Cloud Control)`: +28 | none | no released controller | 0 | service-level only: none: moto 5 | - | none (covered) | [F18](#f18) |
 ### security-adjacent: `securitylake`
 
 - **ACK controller:** none
@@ -903,10 +903,10 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `DataLake` | none | - | whole resource (9 attrs) | no released controller | 0 | service-level only: none: moto 5 | S | `securitylake.aws.hfl.dev/DataLake`, in a new service manager | [F18](#f18) |
-| `AwsLogSource` | none | - | whole resource (4 attrs) | no released controller | 0 | service-level only: none: moto 5 | S | `securitylake.aws.hfl.dev/AwsLogSource`, in a new service manager |  |
-| `Subscriber` | none | - | whole resource (12 attrs) | no released controller | 0 | service-level only: none: moto 5 | S | `securitylake.aws.hfl.dev/Subscriber`, in a new service manager |  |
-| `SubscriberNotification` | none | - | whole resource (7 attrs) | no released controller | 0 | service-level only: none: moto 5 | S | `securitylake.aws.hfl.dev/SubscriberNotification`, in a new service manager |  |
+| `AwsLogSource` | none | `AwsLogSource (Cloud Control)`: +4 | none | no released controller | 0 | service-level only: none: moto 5 | - | none (covered) |  |
+| `DataLake` | none | `DataLake (Cloud Control)`: +9 | none | no released controller | 0 | service-level only: none: moto 5 | - | none (covered) | [F18](#f18) |
+| `Subscriber` | none | `Subscriber (Cloud Control)`: +12 | none | no released controller | 0 | service-level only: none: moto 5 | - | none (covered) |  |
+| `SubscriberNotification` | none | `SubscriberNotification (Cloud Control)`: +7 | none | no released controller | 0 | service-level only: none: moto 5 | - | none (covered) |  |
 ### security-adjacent: `acmpca`
 
 - **ACK controller:** `acmpca-controller` v1.7.0: `Certificate`, `CertificateAuthority`, `CertificateAuthorityActivation`
@@ -915,9 +915,9 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `Permission` | none | - | whole resource (4 attrs) | controller exists; resource not in it | 0 | service-level only: moto `acm-pca`: 17 of 23 operations | S | `acmpca.aws.hfl.dev/Permission`, generated |  |
 | `CertificateAuthority` | `CertificateAuthority` v1.7.0: 66/69 | - | 3 of 69 attrs: `RevocationConfiguration.CrlConfiguration.CrlType`, `RevocationConfiguration.CrlConfiguration.CustomPath`, `RevocationConfiguration.CrlConfiguration.CrlDistributionPointExtensionConfiguration.OmitExtension` | kind released; the rest is not in it | 0 | service-level only: moto `acm-pca`: 17 of 23 operations | L | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
 | `CertificateAuthorityActivation` | `CertificateAuthorityActivation` v1.7.0: 4/4 | - | none | released | 0 | service-level only: moto `acm-pca`: 17 of 23 operations | - | none (covered) |  |
+| `Permission` | none | `Permission (Cloud Control)`: +4 | none | controller exists; resource not in it | 0 | service-level only: moto `acm-pca`: 17 of 23 operations | - | none (covered) |  |
 | `Certificate` | `Certificate` v1.7.0: 66/66 | - | none | released | 0 | service-level only: moto `acm-pca`: 17 of 23 operations | - | none (covered) |  |
 ### security-adjacent: `networkfirewall`
 
@@ -927,13 +927,13 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `LoggingConfiguration` | none | - | whole resource (6 attrs) | controller exists; resource not in it | 1 | service-level only: moto `network-firewall`: 5 of 85 operations | S | `networkfirewall.aws.hfl.dev/LoggingConfiguration`, generated |  |
 | `Firewall` | `Firewall` v1.7.0: 11/22 | - | 11 of 22 attrs: `AvailabilityZoneChangeProtection`, `NoSourcePreservation`, `TransitGatewayId`, `EnabledAnalysisTypes[]`, `VpcEndpoint.VpcId`, `AvailabilityZoneMappings[].AvailabilityZone` and 5 more | kind released; the rest is not in it | 1 | service-level only: moto `network-firewall`: 5 of 85 operations | M | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
 | `FirewallPolicy` | `FirewallPolicy` v1.7.0: 18/21 | - | 3 of 21 attrs: `FirewallPolicy.EnableTLSSessionHolding`, `FirewallPolicy.StatefulEngineOptions.FlowTimeouts.TcpIdleTimeoutSeconds`, `FirewallPolicy.StatefulRuleGroupReferences[].DeepThreatInspection` | kind released; the rest is not in it | 1 | service-level only: moto `network-firewall`: 5 of 85 operations | M | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
 | `RuleGroup` | `RuleGroup` v1.7.0: 36/37 | - | 1 of 37 attrs: `SummaryConfiguration.RuleOptions[]` | kind released; the rest is not in it | 1 | service-level only: moto `network-firewall`: 5 of 85 operations | M | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
-| `ContainerAssociation` | none | - | whole resource (8 attrs) | controller exists; resource not in it | 0 | service-level only: moto `network-firewall`: 5 of 85 operations | S | `networkfirewall.aws.hfl.dev/ContainerAssociation`, generated |  |
-| `TLSInspectionConfiguration` | none | - | whole resource (15 attrs) | controller exists; resource not in it | 0 | service-level only: moto `network-firewall`: 5 of 85 operations | S | `networkfirewall.aws.hfl.dev/TLSInspectionConfiguration`, generated |  |
-| `VpcEndpointAssociation` | none | - | whole resource (7 attrs) | controller exists; resource not in it | 0 | service-level only: moto `network-firewall`: 5 of 85 operations | S | `networkfirewall.aws.hfl.dev/VpcEndpointAssociation`, generated |  |
+| `LoggingConfiguration` | none | `LoggingConfiguration (Cloud Control)`: +6 | none | controller exists; resource not in it | 1 | service-level only: moto `network-firewall`: 5 of 85 operations | - | none (covered) |  |
+| `ContainerAssociation` | none | `ContainerAssociation (Cloud Control)`: +8 | none | controller exists; resource not in it | 0 | service-level only: moto `network-firewall`: 5 of 85 operations | - | none (covered) |  |
+| `TLSInspectionConfiguration` | none | `TLSInspectionConfiguration (Cloud Control)`: +15 | none | controller exists; resource not in it | 0 | service-level only: moto `network-firewall`: 5 of 85 operations | - | none (covered) |  |
+| `VpcEndpointAssociation` | none | `VpcEndpointAssociation (Cloud Control)`: +7 | none | controller exists; resource not in it | 0 | service-level only: moto `network-firewall`: 5 of 85 operations | - | none (covered) |  |
 ### security-adjacent: `inspector`
 
 - **ACK controller:** none

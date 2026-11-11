@@ -1,0 +1,50 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDetectiveOrganizationAdmin",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DetectiveOrganizationAdminCreate",
+      "Effect": "Allow",
+      "Action": [
+        "detective:EnableOrganizationAdminAccount",
+        "detective:ListOrganizationAdminAccount",
+        "iam:CreateServiceLinkedRole",
+        "organizations:DescribeOrganization",
+        "organizations:EnableAWSServiceAccess",
+        "organizations:ListAccounts",
+        "organizations:RegisterDelegatedAdministrator"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DetectiveOrganizationAdminRead",
+      "Effect": "Allow",
+      "Action": [
+        "detective:ListOrganizationAdminAccount",
+        "organizations:DescribeOrganization"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DetectiveOrganizationAdminDelete",
+      "Effect": "Allow",
+      "Action": [
+        "detective:DisableOrganizationAdminAccount",
+        "detective:ListOrganizationAdminAccount",
+        "organizations:DescribeOrganization"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

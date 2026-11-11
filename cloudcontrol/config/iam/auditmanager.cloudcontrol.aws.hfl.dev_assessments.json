@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAuditManagerAssessment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AuditManagerAssessmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "auditmanager:BatchCreateDelegationByAssessment",
+        "auditmanager:CreateAssessment",
+        "auditmanager:ListTagsForResource",
+        "auditmanager:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AuditManagerAssessmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "auditmanager:GetAssessment",
+        "auditmanager:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AuditManagerAssessmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "auditmanager:BatchCreateDelegationByAssessment",
+        "auditmanager:BatchDeleteDelegationByAssessment",
+        "auditmanager:ListTagsForResource",
+        "auditmanager:TagResource",
+        "auditmanager:UntagResource",
+        "auditmanager:UpdateAssessment",
+        "auditmanager:UpdateAssessmentStatus"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AuditManagerAssessmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "auditmanager:DeleteAssessment",
+        "auditmanager:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

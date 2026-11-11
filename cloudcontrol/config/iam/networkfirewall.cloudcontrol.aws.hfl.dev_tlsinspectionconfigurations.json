@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkFirewallTLSInspectionConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFirewallTLSInspectionConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "network-firewall:CreateTLSInspectionConfiguration",
+        "network-firewall:DescribeTLSInspectionConfiguration",
+        "network-firewall:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFirewallTLSInspectionConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "network-firewall:DescribeTLSInspectionConfiguration",
+        "network-firewall:ListTagsForResources"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFirewallTLSInspectionConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "network-firewall:DescribeTLSInspectionConfiguration",
+        "network-firewall:TagResource",
+        "network-firewall:UntagResource",
+        "network-firewall:UpdateTLSInspectionConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFirewallTLSInspectionConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "network-firewall:DeleteTLSInspectionConfiguration",
+        "network-firewall:DescribeTLSInspectionConfiguration",
+        "network-firewall:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCertificateManagerAccount",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CertificateManagerAccountCreate",
+      "Effect": "Allow",
+      "Action": [
+        "acm:GetAccountConfiguration",
+        "acm:PutAccountConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CertificateManagerAccountRead",
+      "Effect": "Allow",
+      "Action": [
+        "acm:GetAccountConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CertificateManagerAccountUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "acm:GetAccountConfiguration",
+        "acm:PutAccountConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CertificateManagerAccountDelete",
+      "Effect": "Allow",
+      "Action": [
+        "acm:GetAccountConfiguration",
+        "acm:PutAccountConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
