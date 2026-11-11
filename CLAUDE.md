@@ -67,12 +67,24 @@ itself lives in its own repository and is never changed from here.
   a recommendation, and stop. Direction calls are the builder's: licence,
   names, API groups, identity defaults, a new upstream dependency,
   anything that makes the repository public.
+- Test against real AWS (a live run, under the rule in "Never") in
+  two cases (builder, 2026-11-11):
+  1. where moto cannot give the signal: the service or behaviour is not
+     faked, or the case depends on real permissions, quotas, defaults or
+     eventual consistency; and
+  2. on a regular basis, to check that moto still agrees with real
+     AWS, starting with kinds that cost nothing to create.
+  Moto stays the test of record for `task check`. Record each live
+  result in `docs/live-runs.md`.
 
 ## Never
 
-- Never use real cloud credentials, projects, accounts or subscriptions.
-  Only the fake cloud. A change that needs the real cloud is written up,
-  not tested.
+- Never reach real AWS except through a live run: sandbox account
+  `830550549114` only, through role `ack-extensions-live-tests` only, from
+  an offload Spot VM only, with `ACK_EXT_LIVE` set (`docs/live-runs.md`).
+  Never on a laptop, never with stored keys, never in any other account,
+  and never from `task check`. Every live resource carries the run's name
+  and is deleted by the test or the sweeper.
 - Never open, comment on, review or react to upstream pull requests or
   issues. Reading them (`gh` read-only, `git fetch`) is fine.
 - Never force-push, rewrite pushed history, or change the repository's
