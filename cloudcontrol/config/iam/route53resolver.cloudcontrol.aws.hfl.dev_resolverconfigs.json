@@ -1,0 +1,46 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoute53ResolverResolverConfig",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ResolverResolverConfigCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcs",
+        "route53resolver:GetResolverConfig",
+        "route53resolver:UpdateResolverConfig"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ResolverResolverConfigRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcs",
+        "route53resolver:GetResolverConfig"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ResolverResolverConfigDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcs",
+        "route53resolver:ListResolverConfigs",
+        "route53resolver:UpdateResolverConfig"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

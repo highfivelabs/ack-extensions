@@ -451,7 +451,7 @@ connectcampaigns,Campaign,14,,0,,0,14,false,
 connectcampaignsv2,Campaign,70,,0,,0,70,false,
 controltower,EnabledBaseline,7,,0,EnabledBaseline (Cloud Control),7,0,false,"ours EnabledBaseline (Cloud Control) unproven on fake: moto 5.2.5 has no controltower, and no other emulator exists"
 controltower,EnabledControl,6,,0,EnabledControl (Cloud Control),6,0,false,"ours EnabledControl (Cloud Control) unproven on fake: moto 5.2.5 has no controltower, and no other emulator exists"
-controltower,LandingZone,5,,0,,0,5,false,
+controltower,LandingZone,5,,0,LandingZone (Cloud Control),5,0,false,
 cur,ReportDefinition,14,,0,,0,14,false,
 customerprofiles,CalculatedAttributeDefinition,23,,0,,0,23,false,
 customerprofiles,Domain,29,,0,,0,29,false,
@@ -889,14 +889,14 @@ groundstation,DataflowEndpointGroupV2,20,,0,,0,20,false,
 groundstation,MissionProfile,14,,0,,0,14,false,
 guardduty,CustomDetectionRuleAssociation,4,,0,,0,4,false,
 guardduty,Detector,11,,0,Detector (Cloud Control),11,0,false,
-guardduty,Filter,21,,0,,0,21,false,
-guardduty,IPSet,8,,0,,0,8,false,
-guardduty,MalwareProtectionPlan,6,,0,,0,6,false,
-guardduty,Master,3,,0,,0,3,false,
-guardduty,Member,6,,0,,0,6,false,
-guardduty,PublishingDestination,6,,0,,0,6,false,
+guardduty,Filter,21,,0,Filter (Cloud Control),21,0,false,
+guardduty,IPSet,8,,0,IPSet (Cloud Control),8,0,false,ours IPSet (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Get/Update/DeleteIPSet
+guardduty,MalwareProtectionPlan,6,,0,MalwareProtectionPlan (Cloud Control),6,0,false,ours MalwareProtectionPlan (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Get/Update/DeleteMalwareProtectionPlan
+guardduty,Master,3,,0,Master (Cloud Control),3,0,false,ours Master (Cloud Control) unproven on fake: moto 5.2.5 has no AcceptAdministratorInvitation or DisassociateFromAdministratorAccount
+guardduty,Member,6,,0,Member (Cloud Control),6,0,false,ours Member (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Get/DeleteMembers or InviteMembers
+guardduty,PublishingDestination,6,,0,PublishingDestination (Cloud Control),6,0,false,ours PublishingDestination (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Describe/Update/DeletePublishingDestination
 guardduty,ThreatEntitySet,8,,0,,0,8,false,
-guardduty,ThreatIntelSet,8,,0,,0,8,false,
+guardduty,ThreatIntelSet,8,,0,ThreatIntelSet (Cloud Control),8,0,false,ours ThreatIntelSet (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Get/Update/DeleteThreatIntelSet
 guardduty,TrustedEntitySet,8,,0,,0,8,false,
 healthagent,Domain,3,,0,,0,3,false,
 healthimaging,Datastore,3,,0,,0,3,false,
@@ -1498,13 +1498,13 @@ robomaker,SimulationApplicationVersion,2,,0,,0,2,false,
 rolesanywhere,CRL,6,,0,,0,6,false,
 rolesanywhere,Profile,12,,0,,0,12,false,
 rolesanywhere,TrustAnchor,11,,0,,0,11,false,
-route53,CidrCollection,3,,0,,0,3,false,
+route53,CidrCollection,3,,0,CidrCollection (Cloud Control),3,0,false,ours CidrCollection (Cloud Control) unproven on fake: moto 5.2.5 has no Create/List/Change/DeleteCidrCollection
 route53,DelegationSet,0,,0,,0,0,false,
-route53,DNSSEC,1,,0,,0,1,false,
+route53,DNSSEC,1,,0,DNSSEC (Cloud Control),1,0,false,ours DNSSEC (Cloud Control) unproven on fake: moto 5.2.5 has no EnableHostedZoneDNSSEC or DisableHostedZoneDNSSEC
 route53,HealthCheck,20,HealthCheck,20,,0,0,false,official_unmapped=1
 route53,HostedZone,9,HostedZone,7,,0,2,false,official_unmapped=3
-route53,KeySigningKey,4,,0,,0,4,false,
-route53,QueryLoggingConfig,2,,0,,0,2,false,
+route53,KeySigningKey,4,,0,KeySigningKey (Cloud Control),4,0,false,ours KeySigningKey (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Activate/Deactivate/DeleteKeySigningKey
+route53,QueryLoggingConfig,2,,0,QueryLoggingConfig (Cloud Control),2,0,false,
 route53,RecordSet,21,RecordSet,19,,0,2,false,
 route53,RecordSetGroup,28,,0,,0,28,false,
 route53,TrafficPolicy,3,,0,,0,3,false,
@@ -1527,13 +1527,13 @@ route53recoveryreadiness,Cell,4,,0,,0,4,false,
 route53recoveryreadiness,ReadinessCheck,4,,0,,0,4,false,
 route53recoveryreadiness,RecoveryGroup,4,,0,,0,4,false,
 route53recoveryreadiness,ResourceSet,14,,0,,0,14,false,
-route53resolver,FirewallConfig,2,,0,,0,2,false,
-route53resolver,FirewallDomainList,5,,0,,0,5,false,
-route53resolver,FirewallRuleGroup,17,,0,,0,17,false,
-route53resolver,FirewallRuleGroupAssociation,7,,0,,0,7,false,
+route53resolver,FirewallConfig,2,,0,FirewallConfig (Cloud Control),2,0,false,ours FirewallConfig (Cloud Control) unproven on fake: moto 5.2.5 has no GetFirewallConfig or UpdateFirewallConfig
+route53resolver,FirewallDomainList,5,,0,FirewallDomainList (Cloud Control),5,0,false,ours FirewallDomainList (Cloud Control) unproven on fake: moto 5.2.5 has none of Route 53 Resolver's DNS Firewall calls
+route53resolver,FirewallRuleGroup,17,,0,FirewallRuleGroup (Cloud Control),17,0,false,ours FirewallRuleGroup (Cloud Control) unproven on fake: moto 5.2.5 has none of Route 53 Resolver's DNS Firewall calls
+route53resolver,FirewallRuleGroupAssociation,7,,0,FirewallRuleGroupAssociation (Cloud Control),7,0,false,ours FirewallRuleGroupAssociation (Cloud Control) unproven on fake: moto 5.2.5 has none of Route 53 Resolver's DNS Firewall calls
 route53resolver,OutpostResolver,6,,0,,0,6,false,
-route53resolver,ResolverConfig,2,,0,,0,2,false,
-route53resolver,ResolverDNSSECConfig,1,,0,,0,1,false,
+route53resolver,ResolverConfig,2,,0,ResolverConfig (Cloud Control),2,0,false,ours ResolverConfig (Cloud Control) unproven on fake: moto 5.2.5 has no GetResolverConfig or UpdateResolverConfig
+route53resolver,ResolverDNSSECConfig,1,,0,ResolverDNSSECConfig (Cloud Control),1,0,false,
 route53resolver,ResolverEndpoint,16,ResolverEndpoint,9,,0,7,false,
 route53resolver,ResolverQueryLoggingConfig,4,ResolverQueryLogConfig,4,,0,0,false,
 route53resolver,ResolverQueryLoggingConfigAssociation,2,ResolverQueryLogConfigAssociation,2,,0,0,false,
@@ -1637,7 +1637,7 @@ scn,Dataset,13,,0,,0,13,false,
 scn,Instance,5,,0,,0,5,false,
 scn,Namespace,5,,0,,0,5,false,
 sdb,Domain,1,,0,,0,1,false,
-secretsmanager,ResourcePolicy,3,,0,,0,3,false,
+secretsmanager,ResourcePolicy,3,,0,ResourcePolicy (Cloud Control),3,0,false,
 secretsmanager,RotationSchedule,20,,0,,0,20,false,
 secretsmanager,Secret,19,Secret,8,,0,11,false,official_unmapped=2
 secretsmanager,SecretTargetAttachment,3,,0,,0,3,false,
@@ -1649,23 +1649,23 @@ securityagent,Pentest,47,,0,,0,47,false,
 securityagent,PrivateConnection,13,,0,,0,13,false,
 securityagent,SecurityRequirementPack,11,,0,,0,11,false,
 securityagent,TargetDomain,4,,0,,0,4,false,
-securityhub,ActionTarget,3,,0,,0,3,false,
+securityhub,ActionTarget,3,,0,ActionTarget (Cloud Control),3,0,false,ours ActionTarget (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Describe/Update/DeleteActionTarget(s)
 securityhub,AggregatorV2,3,,0,,0,3,false,
-securityhub,AutomationRule,105,,0,,0,105,false,
+securityhub,AutomationRule,105,,0,AutomationRule (Cloud Control),105,0,false,ours AutomationRule (Cloud Control) unproven on fake: moto 5.2.5 has no CreateAutomationRule or BatchGet/Update/DeleteAutomationRules
 securityhub,AutomationRuleV2,30,,0,,0,30,false,
-securityhub,ConfigurationPolicy,17,,0,,0,17,false,
+securityhub,ConfigurationPolicy,17,,0,ConfigurationPolicy (Cloud Control),17,0,false,ours ConfigurationPolicy (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Get/Update/DeleteConfigurationPolicy
 securityhub,Connector,7,,0,,0,7,false,
 securityhub,ConnectorV2,11,,0,,0,11,false,
-securityhub,DelegatedAdmin,1,,0,,0,1,false,
-securityhub,FindingAggregator,2,,0,,0,2,false,
-securityhub,Hub,4,,0,,0,4,false,
+securityhub,DelegatedAdmin,1,,0,DelegatedAdmin (Cloud Control),1,0,false,ours DelegatedAdmin (Cloud Control) unproven on fake: moto 5.2.5 has EnableOrganizationAdminAccount but no ListOrganizationAdminAccounts or DisableOrganizationAdminAccount
+securityhub,FindingAggregator,2,,0,FindingAggregator (Cloud Control),2,0,false,ours FindingAggregator (Cloud Control) unproven on fake: moto 5.2.5 has no Create/Get/Update/DeleteFindingAggregator
+securityhub,Hub,4,,0,Hub (Cloud Control),4,0,false,
 securityhub,HubV2,2,,0,,0,2,false,
 securityhub,Insight,238,,0,,0,238,false,
-securityhub,OrganizationConfiguration,3,,0,,0,3,false,
-securityhub,PolicyAssociation,3,,0,,0,3,false,
+securityhub,OrganizationConfiguration,3,,0,OrganizationConfiguration (Cloud Control),3,0,false,
+securityhub,PolicyAssociation,3,,0,PolicyAssociation (Cloud Control),3,0,false,ours PolicyAssociation (Cloud Control) unproven on fake: moto 5.2.5 has no StartConfigurationPolicyAssociation or GetConfigurationPolicyAssociation
 securityhub,ProductSubscription,1,,0,,0,1,false,
 securityhub,SecurityControl,12,,0,,0,12,false,
-securityhub,Standard,3,,0,,0,3,false,
+securityhub,Standard,3,,0,Standard (Cloud Control),3,0,false,"ours Standard (Cloud Control) unproven on fake: moto 5.2.5 has no BatchEnableStandards, GetEnabledStandards or BatchDisableStandards"
 securitylake,AwsLogSource,4,,0,,0,4,false,
 securitylake,DataLake,9,,0,,0,9,false,
 securitylake,Subscriber,12,,0,,0,12,false,

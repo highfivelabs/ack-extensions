@@ -79,6 +79,7 @@ rules:
   resources:
   - enabledbaselines
   - enabledcontrols
+  - landingzones
   verbs:
   - create
   - delete
@@ -92,6 +93,7 @@ rules:
   resources:
   - enabledbaselines/status
   - enabledcontrols/status
+  - landingzones/status
   verbs:
   - get
   - patch
@@ -128,6 +130,13 @@ rules:
   - guardduty.cloudcontrol.aws.hfl.dev
   resources:
   - detectors
+  - filters
+  - ipsets
+  - malwareprotectionplans
+  - masters
+  - members
+  - publishingdestinations
+  - threatintelsets
   verbs:
   - create
   - delete
@@ -140,6 +149,13 @@ rules:
   - guardduty.cloudcontrol.aws.hfl.dev
   resources:
   - detectors/status
+  - filters/status
+  - ipsets/status
+  - malwareprotectionplans/status
+  - masters/status
+  - members/status
+  - publishingdestinations/status
+  - threatintelsets/status
   verbs:
   - get
   - patch
@@ -160,6 +176,118 @@ rules:
   - iam.cloudcontrol.aws.hfl.dev
   resources:
   - samlproviders/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - route53.cloudcontrol.aws.hfl.dev
+  resources:
+  - cidrcollections
+  - dnssecs
+  - keysigningkeys
+  - queryloggingconfigs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - route53.cloudcontrol.aws.hfl.dev
+  resources:
+  - cidrcollections/status
+  - dnssecs/status
+  - keysigningkeys/status
+  - queryloggingconfigs/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - route53resolver.cloudcontrol.aws.hfl.dev
+  resources:
+  - firewallconfigs
+  - firewalldomainlists
+  - firewallrulegroupassociations
+  - firewallrulegroups
+  - resolverconfigs
+  - resolverdnssecconfigs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - route53resolver.cloudcontrol.aws.hfl.dev
+  resources:
+  - firewallconfigs/status
+  - firewalldomainlists/status
+  - firewallrulegroupassociations/status
+  - firewallrulegroups/status
+  - resolverconfigs/status
+  - resolverdnssecconfigs/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - secretsmanager.cloudcontrol.aws.hfl.dev
+  resources:
+  - resourcepolicies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - secretsmanager.cloudcontrol.aws.hfl.dev
+  resources:
+  - resourcepolicies/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - securityhub.cloudcontrol.aws.hfl.dev
+  resources:
+  - actiontargets
+  - automationrules
+  - configurationpolicies
+  - delegatedadmins
+  - findingaggregators
+  - hubs
+  - organizationconfigurations
+  - policyassociations
+  - standards
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - securityhub.cloudcontrol.aws.hfl.dev
+  resources:
+  - actiontargets/status
+  - automationrules/status
+  - configurationpolicies/status
+  - delegatedadmins/status
+  - findingaggregators/status
+  - hubs/status
+  - organizationconfigurations/status
+  - policyassociations/status
+  - standards/status
   verbs:
   - get
   - patch

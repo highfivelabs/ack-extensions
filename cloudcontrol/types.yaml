@@ -29,8 +29,9 @@
 #             annotations say. The reconciler never calls DeleteResource
 #             for the type, its IAM policy has no delete permissions, and
 #             its CRD carries cloudcontrol.aws.hfl.dev/never-delete. Default
-#             false; no type served sets it yet (docs/cloudcontrol.md,
-#             section 3).
+#             false (docs/cloudcontrol.md, section 3). Such a type also
+#             joins config/admission/retain-only.yaml, is left out of the
+#             live-test role and is never swept.
 groupSuffix: cloudcontrol.aws.hfl.dev
 version: v1alpha1
 # What the end-to-end tests do themselves on a live run, beside the kinds'
@@ -55,11 +56,21 @@ liveTestActions:
   - ec2:GetTransitGatewayRouteTableAssociations
   - ec2:GetTransitGatewayRouteTablePropagations
   - ec2:DescribeTransitGatewayPeeringAttachments
+  - route53:CreateHostedZone
+  - route53:DeleteHostedZone
+  - route53:GetQueryLoggingConfig
+  - logs:CreateLogGroup
+  - logs:DeleteLogGroup
+  - logs:DescribeLogGroups
+  - ec2:DescribeVpcs
+  - route53resolver:ListResolverDnssecConfigs
   - iam:CreateRole
   - iam:DeleteRole
   - s3:CreateBucket
   - s3:DeleteBucket
   - config:DescribeConfigurationRecorderStatus
+  - secretsmanager:CreateSecret
+  - secretsmanager:DeleteSecret
 types:
   # F03: IAM SAML providers. ACK's iam-controller ignores SAMLProvider.
   - typeName: AWS::IAM::SAMLProvider
@@ -86,14 +97,49 @@ types:
   - typeName: AWS::EC2::TransitGatewayRouteTableAssociation
   - typeName: AWS::EC2::TransitGatewayRouteTablePropagation
   - typeName: AWS::EC2::TransitGatewayPeeringAttachment
-  # F07: Control Tower's enabled controls and baselines on an OU. ACK has no
-  # Control Tower controller, issue or pull request. LandingZone waits for
-  # the builder (plan section 9, question 15): deleting one decommissions
-  # the landing zone.
+  # F07: Control Tower. ACK has no Control Tower controller, issue or pull
+  # request. Enabled controls and baselines on an OU: a delete only
+  # disables one.
   - typeName: AWS::ControlTower::EnabledControl
     unproven: "moto 5.2.5 has no controltower, and no other emulator exists"
   - typeName: AWS::ControlTower::EnabledBaseline
     unproven: "moto 5.2.5 has no controltower, and no other emulator exists"
+  # F07: the landing zone. Deleting one decommissions it (the guardrails,
+  # the log archive and audit accounts' setup, every enabled control), so
+  # it is never deleted, and the retain-only admission policy makes every
+  # object carry deletion-policy: retain (the builder, 2026-11-10; plan
+  # section 9, question 15). No emulator has Control Tower: the fake's
+  # backend is a test double of ours (the builder, 2026-11-10).
+  - typeName: AWS::ControlTower::LandingZone
+    neverDelete: true
+  # F08: Route 53 beyond ACK's route53-controller v1.8.0 (HealthCheck,
+  # HostedZone, RecordSet). DNSSEC signing for a hosted zone (a delete
+  # disables signing: remove the zone's DS record at the parent first) and
+  # its key-signing key; query logging; CIDR collections for IP-based
+  # routing.
+  - typeName: AWS::Route53::QueryLoggingConfig
+  - typeName: AWS::Route53::DNSSEC
+    unproven: "moto 5.2.5 has no EnableHostedZoneDNSSEC or DisableHostedZoneDNSSEC"
+  - typeName: AWS::Route53::KeySigningKey
+    unproven: "moto 5.2.5 has no Create/Activate/Deactivate/DeleteKeySigningKey"
+  - typeName: AWS::Route53::CidrCollection
+    unproven: "moto 5.2.5 has no Create/List/Change/DeleteCidrCollection"
+  # F09: Route 53 Resolver beyond ACK's route53resolver-controller v1.11.0
+  # (endpoints, rules, query log configurations and their associations):
+  # DNS Firewall (domain lists, rule groups with their rules as a field,
+  # rule group associations to VPCs, a VPC's fail-open setting) and a VPC's
+  # DNSSEC validation and reverse-lookup autodefined rules.
+  - typeName: AWS::Route53Resolver::ResolverDNSSECConfig
+  - typeName: AWS::Route53Resolver::ResolverConfig
+    unproven: "moto 5.2.5 has no GetResolverConfig or UpdateResolverConfig"
+  - typeName: AWS::Route53Resolver::FirewallDomainList
+    unproven: "moto 5.2.5 has none of Route 53 Resolver's DNS Firewall calls"
+  - typeName: AWS::Route53Resolver::FirewallRuleGroup
+    unproven: "moto 5.2.5 has none of Route 53 Resolver's DNS Firewall calls"
+  - typeName: AWS::Route53Resolver::FirewallRuleGroupAssociation
+    unproven: "moto 5.2.5 has none of Route 53 Resolver's DNS Firewall calls"
+  - typeName: AWS::Route53Resolver::FirewallConfig
+    unproven: "moto 5.2.5 has no GetFirewallConfig or UpdateFirewallConfig"
   # F14: AWS Config. ACK has no Config controller and no pull request
   # (community issue 2445 asks for one, rechecked 2026-11-09). The
   # recorder, its delivery channel, managed and custom rules, an
@@ -115,3 +161,47 @@ types:
     unproven: "moto 5.2.5 has no PutStoredQuery"
   - typeName: AWS::Config::Connector
     unproven: "moto 5.2.5 has no Config connectors"
+  # F15: GuardDuty beside the detector. ACK has no GuardDuty controller
+  # (community issue #2916, no pull request). moto 5.2.5 has filters; it
+  # has none of the IP and threat intel sets, members, publishing
+  # destinations, malware protection plans or invitations.
+  - typeName: AWS::GuardDuty::Filter
+  - typeName: AWS::GuardDuty::IPSet
+    unproven: "moto 5.2.5 has no Create/Get/Update/DeleteIPSet"
+  - typeName: AWS::GuardDuty::ThreatIntelSet
+    unproven: "moto 5.2.5 has no Create/Get/Update/DeleteThreatIntelSet"
+  - typeName: AWS::GuardDuty::Member
+    unproven: "moto 5.2.5 has no Create/Get/DeleteMembers or InviteMembers"
+  - typeName: AWS::GuardDuty::PublishingDestination
+    unproven: "moto 5.2.5 has no Create/Describe/Update/DeletePublishingDestination"
+  - typeName: AWS::GuardDuty::MalwareProtectionPlan
+    unproven: "moto 5.2.5 has no Create/Get/Update/DeleteMalwareProtectionPlan"
+  - typeName: AWS::GuardDuty::Master
+    unproven: "moto 5.2.5 has no AcceptAdministratorInvitation or DisassociateFromAdministratorAccount"
+  # F16: Security Hub. ACK has no Security Hub controller, issue or pull
+  # request. moto 5.2.5 has the hub (enable, describe, disable) and the
+  # organization configuration; it has enabling a delegated administrator
+  # but not listing or disabling one, and none of standards, aggregators,
+  # configuration policies, automation rules or action targets.
+  - typeName: AWS::SecurityHub::Hub
+  - typeName: AWS::SecurityHub::OrganizationConfiguration
+  - typeName: AWS::SecurityHub::DelegatedAdmin
+    unproven: "moto 5.2.5 has EnableOrganizationAdminAccount but no ListOrganizationAdminAccounts or DisableOrganizationAdminAccount"
+  - typeName: AWS::SecurityHub::Standard
+    unproven: "moto 5.2.5 has no BatchEnableStandards, GetEnabledStandards or BatchDisableStandards"
+  - typeName: AWS::SecurityHub::FindingAggregator
+    unproven: "moto 5.2.5 has no Create/Get/Update/DeleteFindingAggregator"
+  - typeName: AWS::SecurityHub::ConfigurationPolicy
+    unproven: "moto 5.2.5 has no Create/Get/Update/DeleteConfigurationPolicy"
+  - typeName: AWS::SecurityHub::PolicyAssociation
+    unproven: "moto 5.2.5 has no StartConfigurationPolicyAssociation or GetConfigurationPolicyAssociation"
+  - typeName: AWS::SecurityHub::AutomationRule
+    unproven: "moto 5.2.5 has no CreateAutomationRule or BatchGet/Update/DeleteAutomationRules"
+  - typeName: AWS::SecurityHub::ActionTarget
+    unproven: "moto 5.2.5 has no Create/Describe/Update/DeleteActionTarget(s)"
+  # F17: Secrets Manager's resource policy on a secret. ACK's
+  # secretsmanager-controller v1.8.2 serves Secret and not its policy (no
+  # pull request); rotation waits for its pull request #69. The secret is
+  # named by ARN or name (secretId); a reference to ACK's Secret waits for
+  # the overlay.
+  - typeName: AWS::SecretsManager::ResourcePolicy

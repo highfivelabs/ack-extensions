@@ -185,7 +185,10 @@ reconciler does the rest. Nothing in it names a type.
   (no delete call, `docs/handoff.md`); a type can add the retain-only
   admission policy (`config/admission/retain-only.yaml`) too, so a
   delete without `deletion-policy: retain` is refused rather than
-  quietly keeping the resource. No type served sets it yet.
+  quietly keeping the resource. `LandingZone` (Control Tower) sets both
+  (section 7, batch 3); a never-deleted type is also left out of the
+  live-test role, and the live sweeper skips it (`TestNeverDeletedAreRetainOnly`
+  and `TestLiveRoleLeavesOutNeverDeleted` in `hack/cloudcontrol-gen`).
 - **Adoption.** ACK's `adoption-policy: adopt` (or `adopt-or-create`) with
   `adoption-fields` naming the primary identifier by field
   (`{"transitGatewayRouteTableId": "tgw-rtb-..."}`) or `{"identifier": ...}`;
@@ -193,8 +196,12 @@ reconciler does the rest. Nothing in it names a type.
   the user writes is read by that name, as ACK's generated kinds do.
 - **Client tokens.** Every request carries a token derived from the object,
   the operation and the input: a request retried because its status could
-  not be written is not made twice. A failed request's token is mixed in,
-  so a retry after a failure is a new request. ACK's generated code sets a
+  not be written is not made twice. The last finished request's token
+  (succeeded or failed) is mixed in, so a retry after a failure is a new
+  request, and so is a later update with the same patch as an earlier one
+  (a drift put back with the value of an earlier change), which Cloud
+  Control would otherwise answer with the earlier request and change
+  nothing (found by `TestSecretResourcePolicy`, 2026-11-10; `TestToken`). ACK's generated code sets a
   client token only where a kind's hooks do.
 - **Errors.** A handler's `InvalidRequest`, `NotUpdatable`, `AlreadyExists`
   and the API's validation-type exceptions are terminal; everything else
@@ -543,9 +550,60 @@ marked `unproven` in `types.yaml`; there is no e2e test. Each parameter's
 handlers' permissions reach into Organizations, Service Catalog and IAM
 (`config/iam/`), and `EnabledControl`'s create may take up to 720 minutes;
 the reconciler polls the request without holding a worker.
-`AWS::ControlTower::LandingZone` is held back: deleting one decommissions
-the landing zone (plan section 9, question 15). ACK has no Control Tower
-controller, issue or pull request.
+ACK has no Control Tower controller, issue or pull request.
+
+`AWS::ControlTower::LandingZone` (the builder, 2026-11-10, plan section 9
+question 15): deleting one decommissions the landing zone, so it is
+`neverDelete` in `types.yaml` and in `config/admission/retain-only.yaml`,
+the same guarantee as the ACK-generated `Organization`: no
+`DeleteResource` call, no delete permissions in its IAM policy, and every
+object must carry `deletion-policy: retain`. Its `Manifest` has no type in
+the schema, so it is free-form and compared whole. **Proven on a test
+double** (the builder, 2026-11-10: a test double or recordings for Control
+Tower): `cloudcontrol/test/fake/controltower.go` keeps the landing zone in
+memory, one per account, with the ARN, status and drift status Control
+Tower's API reference describes, none of it checked on real AWS.
+`TestLandingZone` creates one, changes its manifest (one replace of
+`/Manifest`), deletes the object without the annotation under a manager
+whose default is delete (the landing zone stays, no `DeleteResource`),
+installs the policy (an object without the annotation, or with `delete`, is
+refused; a change or removal of the annotation is refused), adopts the
+kept landing zone again by `landingZoneIdentifier` and deletes that object
+too. The test skips on a live run, and the live-test role has none of its
+permissions: a test cannot delete a landing zone it made.
+
+**Batch 4: F08 and F09, DNS** (`TestDNS`). Ten types; ACK's
+route53-controller v1.8.0 (`HealthCheck`, `HostedZone`, `RecordSet`) and
+route53resolver-controller v1.11.0 (endpoints, rules, query log
+configurations and their associations) have none of them, and no open
+pull request for them (rechecked 2026-11-09). Two are proven on moto
+(`cloudcontrol/test/fake/moto_dns.go`): `AWS::Route53::QueryLoggingConfig`
+(a public hosted zone's query logs to a log group) and
+`AWS::Route53Resolver::ResolverDNSSECConfig` (a VPC's DNSSEC
+validation). The fixture (a hosted zone, a log group in us-east-1, where Route 53
+requires it and moto checks it, and a VPC) is made with the SDKs. The query logging configuration gets its ARN as identifier and
+its ID in status and is in Route 53's `GetQueryLoggingConfig`; the DNSSEC
+configuration gets its `rdsc-` ID and `ENABLED`; resyncs of both make no
+update; a create-only change to each is refused (both are `IMMUTABLE`);
+deleting the first removes it, deleting the second turns validation off
+(`DISABLED`), which reads as gone. moto differs from AWS in two ways the
+backends make up for: Route 53 has no ARN for a query logging
+configuration (CloudFormation's handler makes
+`arn:aws:route53:::queryloggingconfig/<id>`; so does the backend), and
+moto enables validation for a VPC that does not exist (the backend looks
+the VPC up first, as the handler's `ec2:DescribeVpcs` permission
+suggests). **Unproven on the fake** (moto 5.2.5 has none of their API):
+`AWS::Route53::DNSSEC` (deleting it disables signing: remove the zone's
+DS record at the parent first, or the zone stops resolving for
+validating resolvers), `AWS::Route53::KeySigningKey`,
+`AWS::Route53::CidrCollection`, `AWS::Route53Resolver::ResolverConfig`,
+and the four DNS Firewall types (`FirewallDomainList`,
+`FirewallRuleGroup` with its rules as a field, `FirewallRuleGroupAssociation`,
+`FirewallConfig`). Left out: `TrafficPolicy` and `TrafficPolicyInstance`
+(traffic flow, low priority in `docs/coverage/foundation.md`) and a hosted
+zone's second VPC (no CloudFormation type: a field of
+`AWS::Route53::HostedZone`, ACK's). References (`hostedZoneRef`,
+`vpcRef`, a KMS key's ARN for the key-signing key) wait for the overlay.
 
 **Batch 5: F14, AWS Config** (`TestConfig`). Eleven types; ACK has no
 Config controller and no pull request (community issue 2445 asks for one;
@@ -572,6 +630,74 @@ has no tags for an organization conformance pack; the backends keep them.
 **Unproven on the fake** (moto 5.2.5 has none of their API):
 `OrganizationConfigRule`, `ConformancePack`, `RemediationConfiguration`,
 `StoredQuery`, `Connector`.
+
+**Batch 6: F15, GuardDuty beside the detector.** ACK has no GuardDuty
+controller (community issue #2916, no pull request). `AWS::GuardDuty::Filter`
+(identified `<detector>|<name>`) runs on moto: `TestGuardDutyFilter` makes a
+detector and a filter whose criteria are a map of conditions keyed by
+finding field (`patternProperties`, served as a map with the user's keys),
+checks that resyncs of an unchanged filter make no update, changes the
+action and a criterion (replaces of `/Action` and `/FindingCriteria`), puts
+back a description changed in GuardDuty, refuses a new name (create-only)
+and deletes both. moto has no filter tags, so the backend keeps them, and
+it overwrites a filter of the same name where GuardDuty refuses one, so the
+backend checks first; the SDK pinned here has no `Matches`/`NotMatches`
+conditions, so those two are not proven. `IPSet`, `ThreatIntelSet`,
+`Member`, `PublishingDestination`, `MalwareProtectionPlan` and `Master` are
+**unproven on the fake**: moto 5.2.5 has none of their API. Left out of the
+batch: `ThreatEntitySet` and `TrustedEntitySet` (GuardDuty's newer
+replacements of the two sets) and `CustomDetectionRuleAssociation`, which
+`docs/coverage/foundation.md` F15 does not list.
+
+**Batch 7: F16, Security Hub.** ACK has no Security Hub controller, issue
+or pull request. Two types run on moto, in `TestSecurityHub`:
+`AWS::SecurityHub::Hub` (identified by its ARN, `hub/default`; its tags are
+a map) is enabled, resynced without an update, has `AutoEnableControls`
+changed (one replace) and is disabled by its delete; moto has no
+`UpdateSecurityHubConfiguration` or `TagResource` and always answers the
+two settings with its own values, so the backend keeps
+`ControlFindingGenerator`, `AutoEnableControls` and `Tags`, and only the
+create and the delete reach moto. `AWS::SecurityHub::OrganizationConfiguration`
+(identified `<account>/<region>/securityhub-organization-configuration`,
+the schema's pattern) is set by the delegated administrator, so the test
+makes an organization and designates its account through moto's own APIs
+first; it is changed (one replace of `/AutoEnable`), and its delete turns
+auto-enable off (`AutoEnable` false, `AutoEnableStandards` `NONE`, what the
+backend takes the handler's delete to do; not checked on real AWS). The
+test skips on a live run, since the sandbox account has no organization.
+`DelegatedAdmin` (moto can enable one but not list or disable it),
+`Standard`, `FindingAggregator`, `ConfigurationPolicy`,
+`PolicyAssociation`, `AutomationRule` and `ActionTarget` are **unproven on
+the fake**. **A gap found:** ACK's default tags (`--resource-tags`) are
+added only to a tag property that is a list of `Key`/`Value` objects
+(`cfn.Schema.TagProperty`), so a type whose tags are a map, as the hub's
+are, gets none, and the live sweeper cannot find it by its run tag. The
+test client is `aws-sdk-go-v2/service/securityhub` v1.55.6, of the same
+SDK release as the GuardDuty client pinned here.
+
+**Batch 8: F17, Secrets Manager's resource policy.** ACK's
+secretsmanager-controller (v1.8.2, 2026-11-02) serves `Secret` and not its
+policy, with no pull request for one; rotation waits for its pull request
+#69 (`docs/coverage/foundation.md` F17), so `RotationSchedule` is not
+served. `AWS::SecretsManager::ResourcePolicy` (identified by the secret's
+ARN; the policy is `string` or `object` in the schema, so free-form and
+compared whole) runs on moto: `TestSecretResourcePolicy` makes a secret
+through moto's own API, puts a policy on it, checks resyncs make no update,
+changes the principal (one replace of `/ResourcePolicy`), puts back a
+policy changed in Secrets Manager, refuses a new `secretId` (create-only),
+and deletes the policy, leaving the secret. moto does not implement
+`BlockPublicPolicy` (accepted, not checked). What the backend takes the
+read handler to return, `SecretId` as the ARN and the policy as an object,
+is not known for real AWS: a `secretId` written as a name may read back as
+the ARN, a create-only difference the reconciler would call terminal, so
+the test names the secret by ARN and the live run must check a name. A
+`secretRef` to ACK's `Secret` waits for the overlay (section 12, item 4).
+The test's own secret needs `secretsmanager:CreateSecret` and
+`DeleteSecret` on a live run (`liveTestActions`). The test's drift check
+found a reconciler bug, fixed here: a put-back whose patch equals an
+earlier successful update's reused that update's client token, so the
+fake (as Cloud Control does) replayed the old request and the drift stayed
+(section 3, "Client tokens").
 
 **Not shown by the fake** (section 11): anything about real AWS.
 
@@ -840,9 +966,16 @@ with limits":
    fake-backed test where moto has the service, else marked "unproven on
    fake" in the coverage data; `task coverage` counts them as ours. Done:
    the coverage change, batch 1 (F02, three Identity Center types) and
+   batch 2 (F04, four Transit Gateway routing types), batch 3 (F07, two
+   Control Tower types, unproven on the fake), F07's `LandingZone`, never
+   deleted and retain-only, on a test double, batch 4 (F08, F09: ten DNS
+   types, two proven on moto), batch 5 (F14, eleven Config types, six
+   proven on moto), batch 6 (F15, seven GuardDuty types, `Filter`
+   proven on moto) and batch 7 (F16, nine Security Hub types, `Hub` and
+   `OrganizationConfiguration` proven on moto).
    batch 2 (F04, four Transit Gateway routing types) and
-   batch 3 (F07, two Control Tower types, unproven on the fake) and
-   batch 5 (F14, eleven Config types, six proven on moto).
+   batch 3 (F07, two Control Tower types, unproven on the fake), and
+   batch 8 (F17, Secrets Manager's `ResourcePolicy`, proven on moto).
    Next: the rest of F03 to F18 by `docs/coverage/foundation.md`.
 3. The live-test switch (`task test-live`, a sweeper, the ledger
    `docs/live-runs.md`) and the CloudFormation template for the sandbox

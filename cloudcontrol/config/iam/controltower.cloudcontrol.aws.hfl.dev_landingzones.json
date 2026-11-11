@@ -1,0 +1,111 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlControlTowerLandingZone",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ControlTowerLandingZoneCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DescribeOrganizationsAccess",
+        "cloudformation:EnableOrganizationsAccess",
+        "controltower:CreateLandingZone",
+        "controltower:GetLandingZone",
+        "controltower:GetLandingZoneOperation",
+        "controltower:ListTagsForResource",
+        "controltower:TagResource",
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole",
+        "organizations:AttachPolicy",
+        "organizations:CreateOrganization",
+        "organizations:CreateOrganizationalUnit",
+        "organizations:CreatePolicy",
+        "organizations:DeletePolicy",
+        "organizations:DescribeAccount",
+        "organizations:DescribeOrganization",
+        "organizations:DetachPolicy",
+        "organizations:EnableAWSServiceAccess",
+        "organizations:EnablePolicyType",
+        "organizations:ListRoots",
+        "organizations:UpdatePolicy",
+        "servicecatalog:AssociatePrincipalWithPortfolio",
+        "servicecatalog:AssociateProductWithPortfolio",
+        "servicecatalog:CreatePortfolio",
+        "servicecatalog:CreateProduct",
+        "servicecatalog:CreateProvisioningArtifact",
+        "servicecatalog:ListPortfolios",
+        "servicecatalog:ListPrincipalsForPortfolio",
+        "servicecatalog:ListProvisioningArtifacts",
+        "servicecatalog:SearchProductsAsAdmin",
+        "servicecatalog:UpdatePortfolio",
+        "servicecatalog:UpdateProvisioningArtifact",
+        "sso:GetPeregrineStatus",
+        "sso:ListDirectoryAssociations",
+        "sso:RegisterRegion",
+        "sso:StartPeregrine"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ControlTowerLandingZoneRead",
+      "Effect": "Allow",
+      "Action": [
+        "controltower:GetLandingZone",
+        "controltower:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ControlTowerLandingZoneUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DescribeOrganizationsAccess",
+        "cloudformation:EnableOrganizationsAccess",
+        "controltower:GetLandingZone",
+        "controltower:GetLandingZoneOperation",
+        "controltower:ListTagsForResource",
+        "controltower:TagResource",
+        "controltower:UntagResource",
+        "controltower:UpdateLandingZone",
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole",
+        "organizations:AttachPolicy",
+        "organizations:CreateOrganizationalUnit",
+        "organizations:CreatePolicy",
+        "organizations:DeletePolicy",
+        "organizations:DescribeAccount",
+        "organizations:DescribeOrganization",
+        "organizations:DetachPolicy",
+        "organizations:EnableAWSServiceAccess",
+        "organizations:EnablePolicyType",
+        "organizations:ListRoots",
+        "organizations:UpdatePolicy",
+        "servicecatalog:AssociatePrincipalWithPortfolio",
+        "servicecatalog:AssociateProductWithPortfolio",
+        "servicecatalog:CreatePortfolio",
+        "servicecatalog:CreateProduct",
+        "servicecatalog:CreateProvisioningArtifact",
+        "servicecatalog:DeleteProvisioningArtifact",
+        "servicecatalog:ListPortfolios",
+        "servicecatalog:ListProvisioningArtifacts",
+        "servicecatalog:SearchProductsAsAdmin",
+        "servicecatalog:UpdatePortfolio",
+        "servicecatalog:UpdateProvisioningArtifact",
+        "sso:GetPeregrineStatus",
+        "sso:ListDirectoryAssociations",
+        "sso:RegisterRegion",
+        "sso:StartPeregrine"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -52,6 +52,9 @@ import (
 
 const region = "us-west-2"
 
+// motoAccount is the account moto answers as.
+const motoAccount = "123456789012"
+
 // envNS is the environment the manager serves; otherNS is a namespace it
 // must leave alone.
 const (
@@ -253,6 +256,14 @@ func startFake(t *testing.T, root string) (*fake.Server, string, aws.Config) {
 			b = fake.NewTransitGatewayRouteTable(motoCfg)
 		case "AWS::GuardDuty::Detector":
 			b = fake.NewDetector(motoCfg)
+		case "AWS::GuardDuty::Filter":
+			b = fake.NewFilter(motoCfg)
+		case "AWS::SecurityHub::Hub":
+			b = fake.NewHub(motoCfg)
+		case "AWS::SecurityHub::OrganizationConfiguration":
+			b = fake.NewOrganizationConfiguration(motoCfg, motoAccount, region)
+		case "AWS::SecretsManager::ResourcePolicy":
+			b = fake.NewSecretPolicy(motoCfg)
 		case "AWS::SSO::PermissionSet":
 			b = fake.NewPermissionSet(motoCfg)
 		case "AWS::SSO::Assignment":
@@ -265,6 +276,13 @@ func startFake(t *testing.T, root string) (*fake.Server, string, aws.Config) {
 			b = fake.NewTransitGatewayRouteTablePropagation(motoCfg)
 		case "AWS::EC2::TransitGatewayPeeringAttachment":
 			b = fake.NewTransitGatewayPeeringAttachment(motoCfg)
+		case "AWS::ControlTower::LandingZone":
+			// No emulator has Control Tower: a test double of ours.
+			b = fake.NewLandingZone(motoAccount, region)
+		case "AWS::Route53::QueryLoggingConfig":
+			b = fake.NewQueryLoggingConfig(motoCfg)
+		case "AWS::Route53Resolver::ResolverDNSSECConfig":
+			b = fake.NewResolverDNSSECConfig(motoCfg)
 		case "AWS::Config::ConfigurationRecorder":
 			b = fake.NewConfigurationRecorder(motoCfg)
 		case "AWS::Config::DeliveryChannel":
@@ -309,7 +327,7 @@ func start(t *testing.T) *env {
 		cc        callLog
 		ccURL     string
 		motoCfg   aws.Config
-		account   = "123456789012" // moto's
+		account   = motoAccount
 		extraArgs []string
 	)
 	live := target(t) == "real"

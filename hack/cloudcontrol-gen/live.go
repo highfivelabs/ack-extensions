@@ -27,12 +27,18 @@ import (
 //     and cloudformation:ListResources for the sweeper, and the tests' own
 //     fixtures (liveTestActions in types.yaml), split into managed
 //     policies of at most 6,144 characters;
+//   - no permissions for a type marked neverDelete (a landing zone): no
+//     live test makes one, since a test cannot delete what it made, and
+//     the sweeper never deletes one;
 //   - a monthly cost budget with e-mail alerts at 80% of actual and 100%
 //     of forecast spend.
 func writeLiveTemplate(out string, cfg config, gens []generated) error {
 	var results []iamgen.Result
 	extra := map[string]bool{"cloudformation:ListResources": true}
 	for _, g := range gens {
+		if g.NeverDelete {
+			continue
+		}
 		results = append(results, g.IAM)
 		for _, a := range g.IAM.ListOnly {
 			extra[a] = true

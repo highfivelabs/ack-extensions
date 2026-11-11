@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoute53ResolverFirewallConfig",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ResolverFirewallConfigCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcs",
+        "route53resolver:GetFirewallConfig",
+        "route53resolver:UpdateFirewallConfig"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ResolverFirewallConfigRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcs",
+        "route53resolver:GetFirewallConfig"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ResolverFirewallConfigUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcs",
+        "route53resolver:GetFirewallConfig",
+        "route53resolver:UpdateFirewallConfig"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ResolverFirewallConfigDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcs",
+        "route53resolver:GetFirewallConfig",
+        "route53resolver:UpdateFirewallConfig"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

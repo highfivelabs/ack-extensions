@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityHubAutomationRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubAutomationRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:CreateAutomationRule",
+        "securityhub:ListTagsForResource",
+        "securityhub:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubAutomationRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:BatchGetAutomationRules",
+        "securityhub:ListAutomationRules",
+        "securityhub:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubAutomationRuleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:BatchUpdateAutomationRules",
+        "securityhub:ListTagsForResource",
+        "securityhub:TagResource",
+        "securityhub:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubAutomationRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:BatchDeleteAutomationRules",
+        "securityhub:BatchGetAutomationRules"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
