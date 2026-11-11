@@ -100,7 +100,8 @@ func NewRegistryScanningConfiguration(cfg aws.Config) *RegistryScanningConfigura
 }
 
 func (b *RegistryScanningConfiguration) put(ctx context.Context, m map[string]any) (string, error) {
-	in := &ecr.PutRegistryScanningConfigurationInput{ScanType: ecrtypes.ScanType(str(m, "ScanType"))}
+	// Rules always sent, empty for none: moto 5.2.5 fails (500) without them.
+	in := &ecr.PutRegistryScanningConfigurationInput{ScanType: ecrtypes.ScanType(str(m, "ScanType")), Rules: []ecrtypes.RegistryScanningRule{}}
 	rules, _ := m["Rules"].([]any)
 	for _, r := range rules {
 		rm, _ := r.(map[string]any)
