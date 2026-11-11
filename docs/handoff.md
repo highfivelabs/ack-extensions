@@ -277,7 +277,9 @@ git makes has no sign-off: amend it.
   `fakeaws.Config`, processes from `fakeaws.Command`, Python on kind through
   `fake_py`. `task noaws` (in `task check`) fails otherwise; never add an
   exemption to it.
-- Never use real cloud credentials, projects or accounts: moto only. Never
+- Real AWS only through a live run (sandbox account `830550549114`, role
+  `ack-extensions-live-tests`, offload VMs, `ACK_EXT_LIVE`; `docs/live-runs.md`);
+  everything else is moto only. Never
   catch an error and report success. Never claim a check passed that did not run.
 - Never open, comment on or review upstream PRs or issues; reading them is
   fine. Never create or change a GitHub repository's visibility.
