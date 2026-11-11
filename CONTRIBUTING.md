@@ -21,11 +21,12 @@ Everything runs against a fake AWS (moto in server mode); no AWS account
 or credentials are needed, and tests must never use them.
 
 The commands are tasks in `Taskfile.yml`, run with
-[Task](https://taskfile.dev) 3.x (`brew install go-task`, or
+[Task](https://taskfile.dev) 3.54 or later (`brew install go-task`, or
 `go install github.com/go-task/task/v3/cmd/task@latest`); `task` lists them.
 The tasks any Go repository could use (installing a pinned tool, gofmt
-and generated-output checks, envtest) are in `taskfiles/go.yml`, which
-`taskfiles/README.md` says how to share. Every directory under `services/`
+and generated-output checks, envtest) are factory's `taskfiles/go.yml`,
+included remotely at a tag and checksum and fetched with your git
+credentials on the first run (factory `taskfiles/README.md`). Every directory under `services/`
 is a service, so adding one needs no edit to the Taskfile.
 
 ```sh

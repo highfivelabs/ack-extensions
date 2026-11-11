@@ -3110,3 +3110,16 @@ Before it can run on a real cluster:
     moto recheck) and the free kinds the next live runs sample; the
     template then shrinks to a few policies. Until the builder answers,
     no more types are added (the moto upgrades go on).
+
+    **Answered** (builder, 2026-11-11): the first option. The live-test
+    role holds permissions only for the kinds sampled on live runs,
+    starting with the free ones; every other kind is proven on the fakes
+    only. Built as `liveKinds`, a list beside `liveTestActions` in
+    `cloudcontrol/types.yaml` (first: `AWS::IAM::SAMLProvider`,
+    `AWS::SSO::PermissionSet`, `AWS::SSO::Assignment`, the kinds with an
+    end-to-end test that AWS does not charge for); the registry marks them
+    `Live`, the sandbox template is built from them alone (one managed
+    policy) and the sweeper lists them alone. The limit stays IAM's
+    default of 10 managed policies: the generator fails beyond it and
+    `TestLiveRoleWithinManagedPolicyLimit` checks the committed template.
+    The type freeze above is lifted.
