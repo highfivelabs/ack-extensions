@@ -68,6 +68,10 @@ func sweep(ctx context.Context, run string, list bool, older time.Duration) erro
 	now := time.Now().UTC()
 	found, deleted, failed := 0, 0, 0
 	for _, ty := range registry.Types {
+		if ty.NeverDelete {
+			fmt.Printf("sweep: %s is never deleted; not swept\n", ty.TypeName)
+			continue
+		}
 		tp := ty.Schema().TagProperty()
 		if tp == "" {
 			fmt.Printf("sweep: %s takes no tags; a run's tests delete their own\n", ty.TypeName)

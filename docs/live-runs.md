@@ -134,7 +134,11 @@ transit gateways, a VPC with a subnet, a VPC attachment and a route table
 with the EC2 SDK, untagged, and deletes them at the end; on AWS the
 gateways and the attachment take minutes to become `available` (the test
 does not wait for that yet), the attachment is billed hourly, and the
-peering request between the two gateways stays `pendingAcceptance`. Each is a fixture change, made with the first run of that test.
+peering request between the two gateways stays `pendingAcceptance`.
+`TestDNS` makes a public hosted zone, a log group and a VPC, untagged,
+and deletes them at the end; on AWS a query
+logging configuration needs the log group in us-east-1 with a resource
+policy letting Route 53 write to it, which the test does not make yet. Each is a fixture change, made with the first run of that test.
 
 ## Ledger
 

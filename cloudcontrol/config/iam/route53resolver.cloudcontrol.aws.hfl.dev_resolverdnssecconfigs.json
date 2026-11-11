@@ -1,0 +1,48 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoute53ResolverResolverDNSSECConfig",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ResolverResolverDNSSECConfigCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcs",
+        "resolverdnssec:CreateConfig",
+        "route53resolver:GetResolverDnssecConfig",
+        "route53resolver:UpdateResolverDnssecConfig"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ResolverResolverDNSSECConfigRead",
+      "Effect": "Allow",
+      "Action": [
+        "resolverdnssec:GetConfig",
+        "route53resolver:ListResolverDnssecConfigs"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ResolverResolverDNSSECConfigDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcs",
+        "resolverdnssec:DeleteConfig",
+        "route53resolver:ListResolverDnssecConfigs",
+        "route53resolver:UpdateResolverDnssecConfig"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGuardDutyMember",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyMemberCreate",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:CreateMembers",
+        "guardduty:GetMembers"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyMemberRead",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:GetMembers"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyMemberUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:CreateMembers",
+        "guardduty:DisassociateMembers",
+        "guardduty:GetMembers",
+        "guardduty:InviteMembers",
+        "guardduty:StartMonitoringMembers",
+        "guardduty:StopMonitoringMembers"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyMemberDelete",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:DeleteMembers",
+        "guardduty:DisassociateMembers",
+        "guardduty:GetMembers",
+        "guardduty:ListMembers"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

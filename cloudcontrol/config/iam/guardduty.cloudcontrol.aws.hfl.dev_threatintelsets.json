@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGuardDutyThreatIntelSet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyThreatIntelSetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:CreateThreatIntelSet",
+        "guardduty:GetThreatIntelSet",
+        "guardduty:TagResource",
+        "iam:PutRolePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyThreatIntelSetRead",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:GetThreatIntelSet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyThreatIntelSetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:GetThreatIntelSet",
+        "guardduty:ListThreatIntelSets",
+        "guardduty:TagResource",
+        "guardduty:UntagResource",
+        "guardduty:UpdateThreatIntelSet",
+        "iam:PutRolePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyThreatIntelSetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:DeleteThreatIntelSet",
+        "guardduty:GetThreatIntelSet",
+        "guardduty:ListDetectors",
+        "guardduty:ListThreatIntelSets",
+        "iam:DeleteRolePolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
