@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2ClientVpnAuthorizationRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2ClientVpnAuthorizationRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AuthorizeClientVpnIngress",
+        "ec2:DescribeClientVpnAuthorizationRules"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2ClientVpnAuthorizationRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeClientVpnAuthorizationRules"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2ClientVpnAuthorizationRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeClientVpnAuthorizationRules",
+        "ec2:RevokeClientVpnIngress"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

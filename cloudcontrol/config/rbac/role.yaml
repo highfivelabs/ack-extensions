@@ -253,11 +253,77 @@ rules:
 - apiGroups:
   - ec2.cloudcontrol.aws.hfl.dev
   resources:
+  - applicationstatuschecks
+  - capacitymanagerdataexports
+  - clientvpnauthorizationrules
+  - clientvpnendpoints
+  - clientvpnroutes
+  - clientvpntargetnetworkassociations
+  - eipassociations
+  - enclavecertificateiamroleassociations
+  - gatewayroutetableassociations
+  - instanceconnectendpoints
+  - instanceeventwindows
+  - ipamallocations
+  - ipamexternalresourceverificationtokens
+  - ipaminternetregistryassociations
+  - ipampoolcidrs
+  - ipampools
+  - ipamprefixlistresolvers
+  - ipamprefixlistresolvertargets
+  - ipamresourcediscoveries
+  - ipamresourcediscoveryassociations
+  - ipams
+  - ipamscopes
+  - ippoolroutetableassociations
+  - networkinsightsaccessscopeanalysises
+  - networkinsightsaccessscopes
+  - networkinsightsanalysises
+  - networkinsightspaths
+  - networkinterfaceattachments
+  - networkinterfaces
+  - networkperformancemetricsubscriptions
+  - placementgroups
+  - routeserverassociations
+  - routeserverendpoints
+  - routeserverpeers
+  - routeserverpropagations
+  - routeservers
+  - secondarynetworks
+  - securitygroupvpcassociations
+  - snapshotblockpublicaccesses
+  - snapshots
+  - subnetcidrreservations
+  - trafficmirrorfilterrules
+  - trafficmirrorfilters
+  - trafficmirrorsessions
+  - trafficmirrortargets
+  - transitgatewayattachmentnatconfigurations
+  - transitgatewayconnectpeers
+  - transitgatewayconnects
+  - transitgatewaymeteringpolicies
+  - transitgatewaymeteringpolicyentries
+  - transitgatewaymulticastdomainassociations
+  - transitgatewaymulticastdomains
+  - transitgatewaymulticastgroupmembers
+  - transitgatewaymulticastgroupsources
   - transitgatewaypeeringattachments
+  - transitgatewaypolicytableassociations
+  - transitgatewaypolicytableentries
+  - transitgatewaypolicytables
   - transitgatewayroutes
   - transitgatewayroutetableassociations
   - transitgatewayroutetablepropagations
   - transitgatewayroutetables
+  - verifiedaccessendpoints
+  - verifiedaccessgroups
+  - verifiedaccessinstances
+  - verifiedaccesstrustproviders
+  - vpcblockpublicaccessexclusions
+  - vpcblockpublicaccessoptionses
+  - vpcencryptioncontrols
+  - vpcendpointconnectionnotifications
+  - vpnconcentrators
   verbs:
   - create
   - delete
@@ -269,11 +335,77 @@ rules:
 - apiGroups:
   - ec2.cloudcontrol.aws.hfl.dev
   resources:
+  - applicationstatuschecks/status
+  - capacitymanagerdataexports/status
+  - clientvpnauthorizationrules/status
+  - clientvpnendpoints/status
+  - clientvpnroutes/status
+  - clientvpntargetnetworkassociations/status
+  - eipassociations/status
+  - enclavecertificateiamroleassociations/status
+  - gatewayroutetableassociations/status
+  - instanceconnectendpoints/status
+  - instanceeventwindows/status
+  - ipamallocations/status
+  - ipamexternalresourceverificationtokens/status
+  - ipaminternetregistryassociations/status
+  - ipampoolcidrs/status
+  - ipampools/status
+  - ipamprefixlistresolvers/status
+  - ipamprefixlistresolvertargets/status
+  - ipamresourcediscoveries/status
+  - ipamresourcediscoveryassociations/status
+  - ipams/status
+  - ipamscopes/status
+  - ippoolroutetableassociations/status
+  - networkinsightsaccessscopeanalysises/status
+  - networkinsightsaccessscopes/status
+  - networkinsightsanalysises/status
+  - networkinsightspaths/status
+  - networkinterfaceattachments/status
+  - networkinterfaces/status
+  - networkperformancemetricsubscriptions/status
+  - placementgroups/status
+  - routeserverassociations/status
+  - routeserverendpoints/status
+  - routeserverpeers/status
+  - routeserverpropagations/status
+  - routeservers/status
+  - secondarynetworks/status
+  - securitygroupvpcassociations/status
+  - snapshotblockpublicaccesses/status
+  - snapshots/status
+  - subnetcidrreservations/status
+  - trafficmirrorfilterrules/status
+  - trafficmirrorfilters/status
+  - trafficmirrorsessions/status
+  - trafficmirrortargets/status
+  - transitgatewayattachmentnatconfigurations/status
+  - transitgatewayconnectpeers/status
+  - transitgatewayconnects/status
+  - transitgatewaymeteringpolicies/status
+  - transitgatewaymeteringpolicyentries/status
+  - transitgatewaymulticastdomainassociations/status
+  - transitgatewaymulticastdomains/status
+  - transitgatewaymulticastgroupmembers/status
+  - transitgatewaymulticastgroupsources/status
   - transitgatewaypeeringattachments/status
+  - transitgatewaypolicytableassociations/status
+  - transitgatewaypolicytableentries/status
+  - transitgatewaypolicytables/status
   - transitgatewayroutes/status
   - transitgatewayroutetableassociations/status
   - transitgatewayroutetablepropagations/status
   - transitgatewayroutetables/status
+  - verifiedaccessendpoints/status
+  - verifiedaccessgroups/status
+  - verifiedaccessinstances/status
+  - verifiedaccesstrustproviders/status
+  - vpcblockpublicaccessexclusions/status
+  - vpcblockpublicaccessoptionses/status
+  - vpcencryptioncontrols/status
+  - vpcendpointconnectionnotifications/status
+  - vpnconcentrators/status
   verbs:
   - get
   - patch

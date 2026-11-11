@@ -1,0 +1,113 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2VerifiedAccessInstance",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VerifiedAccessInstanceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AttachVerifiedAccessTrustProvider",
+        "ec2:CreateTags",
+        "ec2:CreateVerifiedAccessInstance",
+        "ec2:DeleteVerifiedAccessInstance",
+        "ec2:DescribeTags",
+        "ec2:DescribeVerifiedAccessInstanceLoggingConfigurations",
+        "ec2:DescribeVerifiedAccessInstances",
+        "ec2:DetachVerifiedAccessTrustProvider",
+        "ec2:ModifyVerifiedAccessInstanceLoggingConfiguration",
+        "firehose:TagDeliveryStream",
+        "iam:CreateServiceLinkedRole",
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeLogStreams",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutDestination",
+        "logs:PutLogEvents",
+        "logs:PutResourcePolicy",
+        "logs:UpdateLogDelivery",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy",
+        "s3:PutObject",
+        "s3:listBuckets",
+        "verified-access:AllowVerifiedAccess"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VerifiedAccessInstanceRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeTags",
+        "ec2:DescribeVerifiedAccessInstanceLoggingConfigurations",
+        "ec2:DescribeVerifiedAccessInstances",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VerifiedAccessInstanceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AttachVerifiedAccessTrustProvider",
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeTags",
+        "ec2:DescribeVerifiedAccessInstanceLoggingConfigurations",
+        "ec2:DescribeVerifiedAccessInstances",
+        "ec2:DetachVerifiedAccessTrustProvider",
+        "ec2:ModifyVerifiedAccessInstance",
+        "ec2:ModifyVerifiedAccessInstanceLoggingConfiguration",
+        "firehose:TagDeliveryStream",
+        "iam:CreateServiceLinkedRole",
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeLogStreams",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutDestination",
+        "logs:PutLogEvents",
+        "logs:PutResourcePolicy",
+        "logs:UpdateLogDelivery",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy",
+        "s3:PutObject",
+        "s3:listBuckets"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VerifiedAccessInstanceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteTags",
+        "ec2:DeleteVerifiedAccessInstance",
+        "ec2:DescribeTags",
+        "ec2:DescribeVerifiedAccessInstanceLoggingConfigurations",
+        "ec2:DescribeVerifiedAccessInstances",
+        "ec2:DetachVerifiedAccessTrustProvider",
+        "ec2:GetVerifiedAccessGroupPolicy",
+        "logs:DeleteLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

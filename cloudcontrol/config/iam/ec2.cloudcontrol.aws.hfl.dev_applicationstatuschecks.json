@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2ApplicationStatusCheck",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2ApplicationStatusCheckCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateApplicationStatusCheck",
+        "ec2:CreateTags",
+        "ec2:DescribeApplicationStatusChecks",
+        "ec2:DescribeTags",
+        "iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2ApplicationStatusCheckRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeApplicationStatusChecks",
+        "ec2:DescribeTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2ApplicationStatusCheckUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeApplicationStatusChecks",
+        "ec2:DescribeTags",
+        "ec2:ModifyApplicationStatusCheck"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2ApplicationStatusCheckDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteApplicationStatusCheck",
+        "ec2:DescribeApplicationStatusChecks",
+        "ec2:DescribeTags"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

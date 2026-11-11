@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2RouteServerEndpoint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2RouteServerEndpointCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AuthorizeSecurityGroupIngress",
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateNetworkInterfacePermission",
+        "ec2:CreateRouteServerEndpoint",
+        "ec2:CreateSecurityGroup",
+        "ec2:CreateTags",
+        "ec2:DescribeRouteServerEndpoints",
+        "ec2:DescribeSecurityGroups"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2RouteServerEndpointRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRouteServerEndpoints",
+        "ec2:DescribeTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2RouteServerEndpointUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeRouteServerEndpoints",
+        "ec2:DescribeTags",
+        "ec2:ModifyRouteServerEndpoint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2RouteServerEndpointDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteNetworkInterface",
+        "ec2:DeleteRouteServerEndpoint",
+        "ec2:DeleteSecurityGroup",
+        "ec2:DeleteTags",
+        "ec2:DescribeRouteServerEndpoints",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeTags",
+        "ec2:RevokeSecurityGroupIngress"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

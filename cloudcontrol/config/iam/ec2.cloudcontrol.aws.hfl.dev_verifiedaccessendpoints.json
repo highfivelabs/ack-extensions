@@ -1,0 +1,112 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2VerifiedAccessEndpoint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VerifiedAccessEndpointCreate",
+      "Effect": "Allow",
+      "Action": [
+        "acm:DescribeCertificate",
+        "ec2:CreateTags",
+        "ec2:CreateVerifiedAccessEndpoint",
+        "ec2:DescribeAccountAttributes",
+        "ec2:DescribeAvailabilityZones",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeTags",
+        "ec2:DescribeVerifiedAccessEndpoints",
+        "ec2:DescribeVpcEndpointServiceConfigurations",
+        "ec2:DescribeVpcs",
+        "ec2:GetVerifiedAccessEndpointPolicy",
+        "elasticloadbalancing:DescribeListenerCertificates",
+        "elasticloadbalancing:DescribeListeners",
+        "elasticloadbalancing:DescribeLoadBalancers",
+        "iam:CreateServiceLinkedRole",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant",
+        "rds:DescribeDbClusters",
+        "rds:DescribeDbInstances",
+        "rds:DescribeDbProxies",
+        "sso:CreateManagedApplicationInstance",
+        "sso:DeleteManagedApplicationInstance",
+        "sso:GetSharedSsoConfiguration",
+        "sso:PutApplicationAccessScope"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VerifiedAccessEndpointRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeTags",
+        "ec2:DescribeVerifiedAccessEndpoints",
+        "ec2:GetVerifiedAccessEndpointPolicy",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VerifiedAccessEndpointUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeTags",
+        "ec2:DescribeVerifiedAccessEndpoints",
+        "ec2:DescribeVpcs",
+        "ec2:GetVerifiedAccessEndpointPolicy",
+        "ec2:ModifyVerifiedAccessEndpoint",
+        "ec2:ModifyVerifiedAccessEndpointPolicy",
+        "elasticloadbalancing:DescribeListenerCertificates",
+        "elasticloadbalancing:DescribeListeners",
+        "elasticloadbalancing:DescribeLoadBalancers",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant",
+        "rds:DescribeDbClusters",
+        "rds:DescribeDbInstances",
+        "rds:DescribeDbProxies"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VerifiedAccessEndpointDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteTags",
+        "ec2:DeleteVerifiedAccessEndpoint",
+        "ec2:DescribeTags",
+        "ec2:DescribeVerifiedAccessEndpoints",
+        "ec2:GetVerifiedAccessEndpointPolicy",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant",
+        "sso:DeleteManagedApplicationInstance"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

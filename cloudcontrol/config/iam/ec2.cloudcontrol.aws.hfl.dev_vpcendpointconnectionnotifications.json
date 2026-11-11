@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2VPCEndpointConnectionNotification",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VPCEndpointConnectionNotificationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateVpcEndpointConnectionNotification",
+        "ec2:DescribeVpcEndpointConnectionNotifications"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VPCEndpointConnectionNotificationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcEndpointConnectionNotifications"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VPCEndpointConnectionNotificationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcEndpointConnectionNotifications",
+        "ec2:ModifyVpcEndpointConnectionNotification"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VPCEndpointConnectionNotificationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteVpcEndpointConnectionNotifications",
+        "ec2:DescribeVpcEndpointConnectionNotifications"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

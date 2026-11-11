@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2TransitGatewayPolicyTable",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayPolicyTableCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:CreateTransitGatewayPolicyTable",
+        "ec2:DescribeTransitGatewayPolicyTables"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayPolicyTableRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeTransitGatewayPolicyTables"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayPolicyTableUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeTransitGatewayPolicyTables"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TransitGatewayPolicyTableDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteTags",
+        "ec2:DeleteTransitGatewayPolicyTable",
+        "ec2:DescribeTransitGatewayPolicyTables"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

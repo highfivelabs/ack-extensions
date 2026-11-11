@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2TrafficMirrorTarget",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TrafficMirrorTargetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:CreateTrafficMirrorTarget"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TrafficMirrorTargetRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeTags",
+        "ec2:DescribeTrafficMirrorTargets"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TrafficMirrorTargetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeTags",
+        "ec2:DescribeTrafficMirrorTargets"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TrafficMirrorTargetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteTags",
+        "ec2:DeleteTrafficMirrorTarget"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

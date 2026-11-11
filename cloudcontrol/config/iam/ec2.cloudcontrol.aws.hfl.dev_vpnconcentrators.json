@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2VPNConcentrator",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VPNConcentratorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:CreateVpnConcentrator",
+        "ec2:DescribeVpnConcentrators"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VPNConcentratorRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpnConcentrators"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VPNConcentratorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeVpnConcentrators"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VPNConcentratorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteVpnConcentrator",
+        "ec2:DescribeVpnConcentrators"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

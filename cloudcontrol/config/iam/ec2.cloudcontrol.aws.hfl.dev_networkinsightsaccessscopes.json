@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2NetworkInsightsAccessScope",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2NetworkInsightsAccessScopeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateNetworkInsightsAccessScope",
+        "ec2:CreateTags",
+        "tiros:CreateQuery"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2NetworkInsightsAccessScopeRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeNetworkInsightsAccessScopes",
+        "ec2:GetNetworkInsightsAccessScopeContent"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2NetworkInsightsAccessScopeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeNetworkInsightsAccessScopes",
+        "ec2:GetNetworkInsightsAccessScopeContent"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2NetworkInsightsAccessScopeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteNetworkInsightsAccessScope",
+        "ec2:DeleteTags"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2VPCEncryptionControl",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VPCEncryptionControlCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:CreateVpcEncryptionControl",
+        "ec2:DescribeVpcEncryptionControls"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VPCEncryptionControlRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeTags",
+        "ec2:DescribeVpcEncryptionControls"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VPCEncryptionControlUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeVpcEncryptionControls",
+        "ec2:ModifyVpcEncryptionControl"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VPCEncryptionControlDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteTags",
+        "ec2:DeleteVpcEncryptionControl",
+        "ec2:DescribeVpcEncryptionControls"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

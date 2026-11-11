@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2VPCBlockPublicAccessExclusion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VPCBlockPublicAccessExclusionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:CreateVpcBlockPublicAccessExclusion",
+        "ec2:DescribeVpcBlockPublicAccessExclusions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VPCBlockPublicAccessExclusionRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcBlockPublicAccessExclusions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VPCBlockPublicAccessExclusionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeVpcBlockPublicAccessExclusions",
+        "ec2:ModifyVpcBlockPublicAccessExclusion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VPCBlockPublicAccessExclusionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteVpcBlockPublicAccessExclusion",
+        "ec2:DescribeVpcBlockPublicAccessExclusions"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

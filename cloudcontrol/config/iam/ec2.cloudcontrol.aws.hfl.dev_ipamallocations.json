@@ -1,0 +1,42 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2IPAMAllocation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMAllocationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AllocateIpamPoolCidr",
+        "ec2:GetIpamPoolAllocations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMAllocationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:GetIpamPoolAllocations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IPAMAllocationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:ReleaseIpamPoolAllocation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

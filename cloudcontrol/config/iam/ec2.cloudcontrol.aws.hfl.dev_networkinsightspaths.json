@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2NetworkInsightsPath",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2NetworkInsightsPathCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateNetworkInsightsPath",
+        "ec2:CreateTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2NetworkInsightsPathRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeNetworkInsightsPaths"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2NetworkInsightsPathUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeNetworkInsightsPaths"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2NetworkInsightsPathDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteNetworkInsightsPath",
+        "ec2:DeleteTags"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

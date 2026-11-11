@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2TrafficMirrorFilter",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TrafficMirrorFilterCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:CreateTrafficMirrorFilter",
+        "ec2:DescribeTags",
+        "ec2:DescribeTrafficMirrorFilters",
+        "ec2:ModifyTrafficMirrorFilterNetworkServices"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TrafficMirrorFilterRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeTags",
+        "ec2:DescribeTrafficMirrorFilters"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TrafficMirrorFilterUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeTags",
+        "ec2:DescribeTrafficMirrorFilters",
+        "ec2:ModifyTrafficMirrorFilterNetworkServices"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2TrafficMirrorFilterDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteTags",
+        "ec2:DeleteTrafficMirrorFilter",
+        "ec2:DescribeTags",
+        "ec2:DescribeTrafficMirrorFilters"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
