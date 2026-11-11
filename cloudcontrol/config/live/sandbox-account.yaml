@@ -151,6 +151,8 @@ Resources:
           - auditmanager:DeleteAssessmentFramework
           - auditmanager:GetAssessment
           - auditmanager:GetAssessmentFramework
+          - auditmanager:ListAssessmentFrameworks
+          - auditmanager:ListAssessments
           - auditmanager:ListTagsForResource
           - auditmanager:TagResource
           - auditmanager:UntagResource
@@ -165,6 +167,7 @@ Resources:
           - cloudformation:DeleteResource
           - cloudformation:GetResource
           - cloudformation:GetResourceRequestStatus
+          - cloudformation:ListResources
           - cloudformation:UpdateResource
           Effect: Allow
           Resource: '*'
@@ -198,6 +201,7 @@ Resources:
           - config:DescribeComplianceByConfigRule
           - config:DescribeConfigRules
           - config:DescribeConfigurationAggregators
+          - config:DescribeConfigurationRecorderStatus
           - config:DescribeConfigurationRecorders
           - config:DescribeConformancePackStatus
           - config:DescribeConformancePacks
@@ -211,7 +215,9 @@ Resources:
           - config:GetOrganizationConformancePackDetailedStatus
           - config:GetOrganizationCustomRulePolicy
           - config:GetStoredQuery
+          - config:ListConfigurationRecorders
           - config:ListConnectors
+          - config:ListStoredQueries
           - config:ListTagsForResource
           - config:PutAggregationAuthorization
           - config:PutConfigRule
@@ -259,6 +265,7 @@ Resources:
           - detective:EnableOrganizationAdminAccount
           - detective:GetMembers
           - detective:ListGraphs
+          - detective:ListMembers
           - detective:ListOrganizationAdminAccount
           - detective:ListTagsForResource
           - detective:TagResource
@@ -338,12 +345,14 @@ Resources:
           - ec2:CreateSecondaryNetwork
           - ec2:CreateSecurityGroup
           - ec2:CreateSnapshot
+          - ec2:CreateSubnet
           - ec2:CreateSubnetCidrReservation
           - ec2:CreateTags
           - ec2:CreateTrafficMirrorFilter
           - ec2:CreateTrafficMirrorFilterRule
           - ec2:CreateTrafficMirrorSession
           - ec2:CreateTrafficMirrorTarget
+          - ec2:CreateTransitGateway
           - ec2:CreateTransitGatewayConnect
           - ec2:CreateTransitGatewayConnectPeer
           - ec2:CreateTransitGatewayMeteringPolicy
@@ -354,10 +363,12 @@ Resources:
           - ec2:CreateTransitGatewayPolicyTableEntry
           - ec2:CreateTransitGatewayRoute
           - ec2:CreateTransitGatewayRouteTable
+          - ec2:CreateTransitGatewayVpcAttachment
           - ec2:CreateVerifiedAccessEndpoint
           - ec2:CreateVerifiedAccessGroup
           - ec2:CreateVerifiedAccessInstance
           - ec2:CreateVerifiedAccessTrustProvider
+          - ec2:CreateVpc
           - ec2:CreateVpcBlockPublicAccessExclusion
           - ec2:CreateVpcEncryptionControl
           - ec2:CreateVpcEndpoint
@@ -390,12 +401,14 @@ Resources:
           - ec2:DeleteSecondaryNetwork
           - ec2:DeleteSecurityGroup
           - ec2:DeleteSnapshot
+          - ec2:DeleteSubnet
           - ec2:DeleteSubnetCidrReservation
           - ec2:DeleteTags
           - ec2:DeleteTrafficMirrorFilter
           - ec2:DeleteTrafficMirrorFilterRule
           - ec2:DeleteTrafficMirrorSession
           - ec2:DeleteTrafficMirrorTarget
+          - ec2:DeleteTransitGateway
           - ec2:DeleteTransitGatewayConnect
           - ec2:DeleteTransitGatewayConnectPeer
           - ec2:DeleteTransitGatewayMeteringPolicy
@@ -406,13 +419,9 @@ Resources:
           - ec2:DeleteTransitGatewayPolicyTableEntry
           - ec2:DeleteTransitGatewayRoute
           - ec2:DeleteTransitGatewayRouteTable
+          - ec2:DeleteTransitGatewayVpcAttachment
           - ec2:DeleteVerifiedAccessEndpoint
           - ec2:DeleteVerifiedAccessGroup
-          - ec2:DeleteVerifiedAccessInstance
-          - ec2:DeleteVerifiedAccessTrustProvider
-          - ec2:DeleteVpcBlockPublicAccessExclusion
-          - ec2:DeleteVpcEncryptionControl
-          - ec2:DeleteVpcEndpointConnectionNotifications
           Effect: Allow
           Resource: '*'
           Sid: ServiceEc21
@@ -424,6 +433,12 @@ Resources:
       PolicyDocument:
         Statement:
         - Action:
+          - ec2:DeleteVerifiedAccessInstance
+          - ec2:DeleteVerifiedAccessTrustProvider
+          - ec2:DeleteVpc
+          - ec2:DeleteVpcBlockPublicAccessExclusion
+          - ec2:DeleteVpcEncryptionControl
+          - ec2:DeleteVpcEndpointConnectionNotifications
           - ec2:DeleteVpcEndpoints
           - ec2:DeleteVpnConcentrator
           - ec2:DeprovisionIpamPoolCidr
@@ -478,6 +493,8 @@ Resources:
           - ec2:DescribeTransitGatewayPeeringAttachments
           - ec2:DescribeTransitGatewayPolicyTables
           - ec2:DescribeTransitGatewayRouteTables
+          - ec2:DescribeTransitGatewayVpcAttachments
+          - ec2:DescribeTransitGateways
           - ec2:DescribeVerifiedAccessEndpoints
           - ec2:DescribeVerifiedAccessGroups
           - ec2:DescribeVerifiedAccessInstanceLoggingConfigurations
@@ -523,6 +540,17 @@ Resources:
           - ec2:GetSnapshotBlockPublicAccessState
           - ec2:GetSubnetCidrReservations
           - ec2:GetTransitGatewayAttachmentNatConfiguration
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceEc22
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy4:
+    Properties:
+      Description: ack-extensions live tests, part 4
+      PolicyDocument:
+        Statement:
+        - Action:
           - ec2:GetTransitGatewayMeteringPolicyEntries
           - ec2:GetTransitGatewayMulticastDomainAssociations
           - ec2:GetTransitGatewayPolicyTableAssociations
@@ -530,10 +558,6 @@ Resources:
           - ec2:GetTransitGatewayRouteTableAssociations
           - ec2:GetTransitGatewayRouteTablePropagations
           - ec2:GetVerifiedAccessEndpointPolicy
-          Effect: Allow
-          Resource: '*'
-          Sid: ServiceEc22
-        - Action:
           - ec2:GetVerifiedAccessGroupPolicy
           - ec2:ModifyApplicationStatusCheck
           - ec2:ModifyClientVpnEndpoint
@@ -585,13 +609,6 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ServiceEc23
-        Version: "2012-10-17"
-    Type: AWS::IAM::ManagedPolicy
-  LiveTestPolicy4:
-    Properties:
-      Description: ack-extensions live tests, part 4
-      PolicyDocument:
-        Statement:
         - Action:
           - ecr:DeleteRegistryPolicy
           - ecr:DeleteSigningConfiguration
@@ -683,7 +700,11 @@ Resources:
           - fms:GetPolicy
           - fms:GetProtocolsList
           - fms:GetResourceSet
+          - fms:ListAppsLists
+          - fms:ListPolicies
+          - fms:ListProtocolsLists
           - fms:ListResourceSetResources
+          - fms:ListResourceSets
           - fms:ListTagsForResource
           - fms:PutAppsList
           - fms:PutNotificationChannel
@@ -704,6 +725,13 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ServiceGlue
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy5:
+    Properties:
+      Description: ack-extensions live tests, part 5
+      PolicyDocument:
+        Statement:
         - Action:
           - guardduty:AcceptInvitation
           - guardduty:CreateCustomDetectionRuleAssociation
@@ -740,11 +768,14 @@ Resources:
           - guardduty:GetThreatIntelSet
           - guardduty:GetTrustedEntitySet
           - guardduty:InviteMembers
+          - guardduty:ListCustomDetectionRuleAssociations
           - guardduty:ListDetectors
           - guardduty:ListFilters
           - guardduty:ListIPSets
           - guardduty:ListInvitations
+          - guardduty:ListMalwareProtectionPlans
           - guardduty:ListMembers
+          - guardduty:ListPublishingDestinations
           - guardduty:ListTagsForResource
           - guardduty:ListThreatEntitySets
           - guardduty:ListThreatIntelSets
@@ -784,7 +815,9 @@ Resources:
           - iam:ListAttachedRolePolicies
           - iam:ListRolePolicies
           - iam:ListSAMLProviderTags
+          - iam:ListSAMLProviders
           - iam:ListServerCertificateTags
+          - iam:ListServerCertificates
           - iam:PassRole
           - iam:PutRolePolicy
           - iam:TagSAMLProvider
@@ -806,18 +839,14 @@ Resources:
           - identitystore:DescribeGroup
           - identitystore:DescribeGroupMembership
           - identitystore:DescribeUser
+          - identitystore:ListGroupMemberships
+          - identitystore:ListGroups
+          - identitystore:ListUsers
           - identitystore:UpdateGroup
           - identitystore:UpdateUser
           Effect: Allow
           Resource: '*'
           Sid: ServiceIdentitystore
-        Version: "2012-10-17"
-    Type: AWS::IAM::ManagedPolicy
-  LiveTestPolicy5:
-    Properties:
-      Description: ack-extensions live tests, part 5
-      PolicyDocument:
-        Statement:
         - Action:
           - inspector2:CreateCisScanConfiguration
           - inspector2:CreateCodeSecurityIntegration
@@ -835,6 +864,7 @@ Resources:
           - inspector2:GetCodeSecurityScanConfiguration
           - inspector2:ListAccountPermissions
           - inspector2:ListCisScanConfigurations
+          - inspector2:ListCodeSecurityIntegrations
           - inspector2:ListCodeSecurityScanConfigurations
           - inspector2:ListConnectors
           - inspector2:ListFilters
@@ -875,9 +905,17 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ServiceLambda
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy6:
+    Properties:
+      Description: ack-extensions live tests, part 6
+      PolicyDocument:
+        Statement:
         - Action:
           - logs:CreateLogAnomalyDetector
           - logs:CreateLogDelivery
+          - logs:CreateLogGroup
           - logs:CreateScheduledQuery
           - logs:DeleteAccountPolicy
           - logs:DeleteDataProtectionPolicy
@@ -886,6 +924,7 @@ Resources:
           - logs:DeleteIntegration
           - logs:DeleteLogAnomalyDetector
           - logs:DeleteLogDelivery
+          - logs:DeleteLogGroup
           - logs:DeleteMetricExtractionPolicy
           - logs:DeleteQueryDefinition
           - logs:DeleteScheduledQuery
@@ -905,7 +944,10 @@ Resources:
           - logs:GetScheduledQuery
           - logs:GetStorageTierPolicy
           - logs:GetTransformer
+          - logs:ListIntegrations
+          - logs:ListLogAnomalyDetectors
           - logs:ListLogDeliveries
+          - logs:ListScheduledQueries
           - logs:ListTagsForResource
           - logs:PutAccountPolicy
           - logs:PutDataProtectionPolicy
@@ -945,7 +987,11 @@ Resources:
           - macie2:GetFindingsFilter
           - macie2:GetMacieSession
           - macie2:GetMember
+          - macie2:ListAllowLists
           - macie2:ListAutomatedDiscoveryAccounts
+          - macie2:ListCustomDataIdentifiers
+          - macie2:ListFindingsFilters
+          - macie2:ListMembers
           - macie2:ListTagsForResource
           - macie2:TagResource
           - macie2:UntagResource
@@ -968,9 +1014,12 @@ Resources:
           - network-firewall:DescribeRuleGroupMetadata
           - network-firewall:DescribeTLSInspectionConfiguration
           - network-firewall:DescribeVpcEndpointAssociation
+          - network-firewall:ListContainerAssociations
           - network-firewall:ListFirewalls
+          - network-firewall:ListTLSInspectionConfigurations
           - network-firewall:ListTagsForResource
           - network-firewall:ListTagsForResources
+          - network-firewall:ListVpcEndpointAssociations
           - network-firewall:TagResource
           - network-firewall:UntagResource
           - network-firewall:UpdateContainerAssociation
@@ -1017,13 +1066,6 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ServiceOrganizations
-        Version: "2012-10-17"
-    Type: AWS::IAM::ManagedPolicy
-  LiveTestPolicy6:
-    Properties:
-      Description: ack-extensions live tests, part 6
-      PolicyDocument:
-        Statement:
         - Action:
           - ram:AssociateResourceShare
           - ram:AssociateResourceSharePermission
@@ -1073,9 +1115,17 @@ Resources:
           - resolverdnssec:CreateConfig
           - resolverdnssec:DeleteConfig
           - resolverdnssec:GetConfig
+          - resolverdnssec:ListConfig
           Effect: Allow
           Resource: '*'
           Sid: ServiceResolverdnssec
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy7:
+    Properties:
+      Description: ack-extensions live tests, part 7
+      PolicyDocument:
+        Statement:
         - Action:
           - rolesanywhere:CreateProfile
           - rolesanywhere:CreateTrustAnchor
@@ -1093,7 +1143,10 @@ Resources:
           - rolesanywhere:GetProfile
           - rolesanywhere:GetTrustAnchor
           - rolesanywhere:ImportCrl
+          - rolesanywhere:ListCrls
+          - rolesanywhere:ListProfiles
           - rolesanywhere:ListTagsForResource
+          - rolesanywhere:ListTrustAnchors
           - rolesanywhere:PutAttributeMapping
           - rolesanywhere:PutNotificationSettings
           - rolesanywhere:ResetNotificationSettings
@@ -1109,6 +1162,7 @@ Resources:
           - route53:ActivateKeySigningKey
           - route53:ChangeCidrCollection
           - route53:CreateCidrCollection
+          - route53:CreateHostedZone
           - route53:CreateKeySigningKey
           - route53:CreateQueryLoggingConfig
           - route53:CreateReusableDelegationSet
@@ -1116,6 +1170,7 @@ Resources:
           - route53:CreateTrafficPolicyInstance
           - route53:DeactivateKeySigningKey
           - route53:DeleteCidrCollection
+          - route53:DeleteHostedZone
           - route53:DeleteKeySigningKey
           - route53:DeleteQueryLoggingConfig
           - route53:DeleteReusableDelegationSet
@@ -1130,6 +1185,11 @@ Resources:
           - route53:GetTrafficPolicyInstance
           - route53:ListCidrBlocks
           - route53:ListCidrCollections
+          - route53:ListHostedZones
+          - route53:ListQueryLoggingConfigs
+          - route53:ListReusableDelegationSets
+          - route53:ListTrafficPolicies
+          - route53:ListTrafficPolicyInstances
           - route53:ListTrafficPolicyVersions
           - route53:UpdateTrafficPolicyComment
           - route53:UpdateTrafficPolicyInstance
@@ -1148,6 +1208,7 @@ Resources:
           - route53profiles:GetProfileResourceAssociation
           - route53profiles:ListProfileAssociations
           - route53profiles:ListProfileResourceAssociations
+          - route53profiles:ListProfiles
           - route53profiles:ListTagsForResource
           - route53profiles:TagResource
           - route53profiles:UntagResource
@@ -1174,6 +1235,9 @@ Resources:
           - route53resolver:GetResolverQueryLogConfig
           - route53resolver:GetResolverRule
           - route53resolver:ImportFirewallDomains
+          - route53resolver:ListFirewallConfigs
+          - route53resolver:ListFirewallDomainLists
+          - route53resolver:ListFirewallRuleGroupAssociations
           - route53resolver:ListFirewallRuleGroups
           - route53resolver:ListFirewallRules
           - route53resolver:ListResolverConfigs
@@ -1192,6 +1256,8 @@ Resources:
           Sid: ServiceRoute53resolver
         - Action:
           - s3:*
+          - s3:CreateBucket
+          - s3:DeleteBucket
           - s3:GetBucketAcl
           - s3:GetBucketNotification
           - s3:GetBucketNotificationConfiguration
@@ -1209,8 +1275,10 @@ Resources:
         - Action:
           - secretsmanager:CreateSecret
           - secretsmanager:DeleteResourcePolicy
+          - secretsmanager:DeleteSecret
           - secretsmanager:GetResourcePolicy
           - secretsmanager:GetSecretValue
+          - secretsmanager:ListSecrets
           - secretsmanager:PutResourcePolicy
           - secretsmanager:PutSecretValue
           Effect: Allow
@@ -1218,9 +1286,9 @@ Resources:
           Sid: ServiceSecretsmanager
         Version: "2012-10-17"
     Type: AWS::IAM::ManagedPolicy
-  LiveTestPolicy7:
+  LiveTestPolicy8:
     Properties:
-      Description: ack-extensions live tests, part 7
+      Description: ack-extensions live tests, part 8
       PolicyDocument:
         Statement:
         - Action:
@@ -1271,11 +1339,17 @@ Resources:
           - securityhub:GetEnabledStandards
           - securityhub:GetFindingAggregator
           - securityhub:GetInsights
+          - securityhub:ListAggregatorsV2
           - securityhub:ListAutomationRules
+          - securityhub:ListAutomationRulesV2
+          - securityhub:ListConfigurationPolicies
+          - securityhub:ListConfigurationPolicyAssociations
+          - securityhub:ListConnectors
           - securityhub:ListConnectorsV2
           - securityhub:ListEnabledProductsForImport
           - securityhub:ListFindingAggregators
           - securityhub:ListOrganizationAdminAccounts
+          - securityhub:ListSecurityControlDefinitions
           - securityhub:ListTagsForResource
           - securityhub:StartConfigurationPolicyAssociation
           - securityhub:StartConfigurationPolicyDisassociation
@@ -1351,6 +1425,13 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ServiceSqs
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy9:
+    Properties:
+      Description: ack-extensions live tests, part 9
+      PolicyDocument:
+        Statement:
         - Action:
           - sso:AttachCustomerManagedPolicyReferenceToPermissionSet
           - sso:AttachManagedPolicyToPermissionSet
@@ -1381,8 +1462,12 @@ Resources:
           - sso:GetPermissionsBoundaryForPermissionSet
           - sso:GetSharedSsoConfiguration
           - sso:ListAccountAssignments
+          - sso:ListApplicationAssignments
+          - sso:ListApplications
           - sso:ListCustomerManagedPolicyReferencesInPermissionSet
+          - sso:ListInstances
           - sso:ListManagedPoliciesInPermissionSet
+          - sso:ListPermissionSets
           - sso:ListTagsForResource
           - sso:ProvisionPermissionSet
           - sso:PutApplicationAccessScope
@@ -1409,13 +1494,6 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ServiceTiros
-        Version: "2012-10-17"
-    Type: AWS::IAM::ManagedPolicy
-  LiveTestPolicy8:
-    Properties:
-      Description: ack-extensions live tests, part 8
-      PolicyDocument:
-        Statement:
         - Action:
           - verified-access:AllowVerifiedAccess
           Effect: Allow
@@ -1435,12 +1513,14 @@ Resources:
           - wafv2:GetRegexPatternSet
           - wafv2:ListAvailableManagedRuleGroupVersions
           - wafv2:ListAvailableManagedRuleGroups
+          - wafv2:ListLoggingConfigurations
           - wafv2:ListRuleGroups
           - wafv2:ListTagsForResource
           - wafv2:PutLoggingConfiguration
           - wafv2:TagResource
           - wafv2:UntagResource
           - wafv2:UpdateRegexPatternSet
+          - wafv2:listRegexPatternSets
           Effect: Allow
           Resource: '*'
           Sid: ServiceWafv2
@@ -1472,6 +1552,7 @@ Resources:
       - Ref: LiveTestPolicy6
       - Ref: LiveTestPolicy7
       - Ref: LiveTestPolicy8
+      - Ref: LiveTestPolicy9
       MaxSessionDuration: 3600
       RoleName: ack-extensions-live-tests
       Tags:

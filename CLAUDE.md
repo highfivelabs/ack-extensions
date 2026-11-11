@@ -60,6 +60,9 @@ itself lives in its own repository and is never changed from here.
 ## Always
 
 - Sign off every commit (`git commit -s`, DCO).
+- Merge only when the `offload/ci` status on the PR head is success
+  (`task ci`, which the pre-push hook runs; `docs/testing.md`, "The
+  merge gate").
 - Commit as this repository's configured author (a GitHub no-reply
   address). Never change `user.email`.
 - Keep one change per commit, described plainly.
