@@ -44,6 +44,11 @@ type Type struct {
 	// (cloudcontrol/types.yaml, for a resource whose delete cannot be
 	// undone).
 	NeverDelete bool
+	// Live, when set, says the type is sampled on live runs (liveKinds in
+	// cloudcontrol/types.yaml): the sandbox account's role holds its
+	// permissions and the sweeper lists it. Every other type is proven on
+	// the fakes only.
+	Live bool
 
 	once    sync.Once
 	schema  *cfn.Schema

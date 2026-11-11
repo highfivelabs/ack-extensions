@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSSMMaintenanceWindow",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMMaintenanceWindowCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:AddTagsToResource",
+        "ssm:CreateMaintenanceWindow"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMMaintenanceWindowRead",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetMaintenanceWindow",
+        "ssm:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMMaintenanceWindowUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:AddTagsToResource",
+        "ssm:RemoveTagsFromResource",
+        "ssm:UpdateMaintenanceWindow"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMMaintenanceWindowDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:DeleteMaintenanceWindow",
+        "ssm:GetMaintenanceWindow"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

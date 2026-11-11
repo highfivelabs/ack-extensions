@@ -68,6 +68,11 @@ func sweep(ctx context.Context, run string, list bool, older time.Duration) erro
 	now := time.Now().UTC()
 	found, deleted, failed := 0, 0, 0
 	for _, ty := range registry.Types {
+		// The live-test role holds only the live kinds' permissions (plan
+		// question 21), and no live run makes any other kind.
+		if !ty.Live {
+			continue
+		}
 		if ty.NeverDelete {
 			fmt.Printf("sweep: %s is never deleted; not swept\n", ty.TypeName)
 			continue

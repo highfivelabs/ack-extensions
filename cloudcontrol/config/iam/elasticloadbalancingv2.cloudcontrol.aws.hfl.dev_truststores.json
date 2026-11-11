@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlElasticLoadBalancingV2TrustStore",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElasticLoadBalancingV2TrustStoreCreate",
+      "Effect": "Allow",
+      "Action": [
+        "elasticloadbalancing:AddTags",
+        "elasticloadbalancing:CreateTrustStore",
+        "elasticloadbalancing:DescribeTrustStores",
+        "s3:GetObject",
+        "s3:GetObjectVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElasticLoadBalancingV2TrustStoreRead",
+      "Effect": "Allow",
+      "Action": [
+        "elasticloadbalancing:DescribeTags",
+        "elasticloadbalancing:DescribeTrustStores"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElasticLoadBalancingV2TrustStoreUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "elasticloadbalancing:AddTags",
+        "elasticloadbalancing:ModifyTrustStore",
+        "elasticloadbalancing:RemoveTags",
+        "s3:GetObject",
+        "s3:GetObjectVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElasticLoadBalancingV2TrustStoreDelete",
+      "Effect": "Allow",
+      "Action": [
+        "elasticloadbalancing:DeleteTrustStore",
+        "elasticloadbalancing:DescribeTrustStores"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

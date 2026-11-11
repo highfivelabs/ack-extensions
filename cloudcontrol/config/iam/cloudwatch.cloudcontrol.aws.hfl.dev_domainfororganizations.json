@@ -1,0 +1,66 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudWatchDomainForOrganization",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchDomainForOrganizationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:CreateDomainForOrganization",
+        "cloudwatch:TagResource",
+        "iam:PassRole",
+        "sso:CreateApplication",
+        "sso:CreateApplicationAssignment",
+        "sso:DescribeInstance",
+        "sso:ListRegions",
+        "sso:PutApplicationAccessScope",
+        "sso:PutApplicationAssignmentConfiguration",
+        "sso:PutApplicationAuthenticationMethod",
+        "sso:PutApplicationGrant"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchDomainForOrganizationRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetDomainForOrganization",
+        "cloudwatch:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchDomainForOrganizationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:TagResource",
+        "cloudwatch:UntagResource",
+        "cloudwatch:UpdateDomainForOrganization"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchDomainForOrganizationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DeleteDomainForOrganization",
+        "cloudwatch:GetDomainForOrganization",
+        "cloudwatch:ListTagsForResource",
+        "sso:DeleteApplication",
+        "sso:DeleteApplicationAssignment"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

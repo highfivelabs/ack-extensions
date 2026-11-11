@@ -43,18 +43,18 @@ AWS::ApiGateway::UsagePlan,apigateway,UsagePlan,other,FULLY_MUTABLE,,,ok,0,0,0,0
 AWS::ApiGateway::UsagePlanKey,apigateway,UsagePlanKey,other,IMMUTABLE,,,ok,0,0,0,0,0,true
 AWS::ApiGateway::VpcLink,apigateway,VpcLink,other,FULLY_MUTABLE,VPCLink,,ok,0,0,0,0,0,true
 AWS::ApiGatewayV2::Api,apigatewayv2,Api,application,FULLY_MUTABLE,API,,ok,0,0,8,12,0,true
-AWS::ApiGatewayV2::ApiGatewayManagedOverrides,apigatewayv2,ApiGatewayManagedOverrides,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,false
+AWS::ApiGatewayV2::ApiGatewayManagedOverrides,apigatewayv2,ApiGatewayManagedOverrides,application,FULLY_MUTABLE,,ApiGatewayManagedOverrides (Cloud Control),ok,0,0,0,0,0,false
 AWS::ApiGatewayV2::ApiMapping,apigatewayv2,ApiMapping,application,FULLY_MUTABLE,APIMapping,,ok,0,0,0,0,0,true
 AWS::ApiGatewayV2::Authorizer,apigatewayv2,Authorizer,application,FULLY_MUTABLE,Authorizer,,ok,0,0,3,5,1,true
 AWS::ApiGatewayV2::Deployment,apigatewayv2,Deployment,application,FULLY_MUTABLE,Deployment,,ok,0,0,1,1,0,true
 AWS::ApiGatewayV2::DomainName,apigatewayv2,DomainName,application,FULLY_MUTABLE,DomainName,,ok,0,0,0,0,0,true
 AWS::ApiGatewayV2::Integration,apigatewayv2,Integration,application,FULLY_MUTABLE,Integration,,ok,0,0,0,0,1,true
-AWS::ApiGatewayV2::IntegrationResponse,apigatewayv2,IntegrationResponse,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::ApiGatewayV2::Model,apigatewayv2,Model,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::ApiGatewayV2::PortalProduct,apigatewayv2,PortalProduct,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::ApiGatewayV2::IntegrationResponse,apigatewayv2,IntegrationResponse,application,FULLY_MUTABLE,,IntegrationResponse (Cloud Control),ok,0,0,0,0,0,true
+AWS::ApiGatewayV2::Model,apigatewayv2,Model,application,FULLY_MUTABLE,,Model (Cloud Control),ok,0,0,0,0,0,true
+AWS::ApiGatewayV2::PortalProduct,apigatewayv2,PortalProduct,application,FULLY_MUTABLE,,PortalProduct (Cloud Control),ok,0,0,0,0,0,true
 AWS::ApiGatewayV2::Route,apigatewayv2,Route,application,FULLY_MUTABLE,Route,,ok,0,0,1,2,0,true
-AWS::ApiGatewayV2::RouteResponse,apigatewayv2,RouteResponse,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::ApiGatewayV2::RoutingRule,apigatewayv2,RoutingRule,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::ApiGatewayV2::RouteResponse,apigatewayv2,RouteResponse,application,FULLY_MUTABLE,,RouteResponse (Cloud Control),ok,0,0,0,0,0,true
+AWS::ApiGatewayV2::RoutingRule,apigatewayv2,RoutingRule,application,FULLY_MUTABLE,,RoutingRule (Cloud Control),ok,0,0,0,0,0,true
 AWS::ApiGatewayV2::Stage,apigatewayv2,Stage,application,FULLY_MUTABLE,Stage,,ok,0,0,0,0,0,true
 AWS::ApiGatewayV2::VpcLink,apigatewayv2,VpcLink,application,FULLY_MUTABLE,VPCLink,,ok,0,0,0,0,1,true
 AWS::AppConfig::Application,appconfig,Application,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
@@ -123,8 +123,8 @@ AWS::AppSync::Resolver,appsync,Resolver,other,FULLY_MUTABLE,,,ok,0,0,3,3,0,true
 AWS::AppSync::SourceApiAssociation,appsync,SourceApiAssociation,other,FULLY_MUTABLE,,,ok,0,0,2,2,0,true
 AWS::AppSync::Type,appsync,Type,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::AppTest::TestCase,apptest,TestCase,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::APS::AnomalyDetector,aps,AnomalyDetector,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::APS::ResourcePolicy,aps,ResourcePolicy,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::APS::AnomalyDetector,aps,AnomalyDetector,application,FULLY_MUTABLE,,AnomalyDetector (Cloud Control),ok,0,0,0,0,0,true
+AWS::APS::ResourcePolicy,aps,ResourcePolicy,application,FULLY_MUTABLE,,ResourcePolicy (Cloud Control),ok,0,0,0,0,0,true
 AWS::APS::RuleGroupsNamespace,aps,RuleGroupsNamespace,application,FULLY_MUTABLE,RuleGroupsNamespace,,ok,0,0,0,0,0,true
 AWS::APS::Scraper,aps,Scraper,application,FULLY_MUTABLE,,,ok,0,0,0,0,2,true
 AWS::APS::Workspace,aps,Workspace,application,FULLY_MUTABLE,Workspace,,ok,0,0,0,0,2,true
@@ -140,10 +140,10 @@ AWS::AuditManager::Assessment,auditmanager,Assessment,security-adjacent,FULLY_MU
 AWS::AuditManager::AssessmentFramework,auditmanager,AssessmentFramework,security-adjacent,FULLY_MUTABLE,,AssessmentFramework (Cloud Control),ok,0,0,0,0,0,true
 AWS::AutoScaling::AutoScalingGroup,autoscaling,AutoScalingGroup,application,FULLY_MUTABLE,AutoScalingGroup,,ok,2,0,1,2,2,true
 AWS::AutoScaling::LaunchConfiguration,autoscaling,LaunchConfiguration,application,IMMUTABLE,,,ok,0,0,4,5,1,true
-AWS::AutoScaling::LifecycleHook,autoscaling,LifecycleHook,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
+AWS::AutoScaling::LifecycleHook,autoscaling,LifecycleHook,application,FULLY_MUTABLE,,LifecycleHook (Cloud Control),ok,0,0,0,0,1,true
 AWS::AutoScaling::ScalingPolicy,autoscaling,ScalingPolicy,application,FULLY_MUTABLE,,ScalingPolicy,ok,0,0,0,0,0,true
 AWS::AutoScaling::ScheduledAction,autoscaling,ScheduledAction,application,FULLY_MUTABLE,,ScheduledAction,ok,0,0,0,0,0,true
-AWS::AutoScaling::WarmPool,autoscaling,WarmPool,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::AutoScaling::WarmPool,autoscaling,WarmPool,application,FULLY_MUTABLE,,WarmPool (Cloud Control),ok,0,0,0,0,0,true
 AWS::AutoScalingPlans::ScalingPlan,autoscalingplans,ScalingPlan,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::AWSExternalAnthropic::Workspace,awsexternalanthropic,Workspace,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::B2BI::Capability,b2bi,Capability,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
@@ -297,27 +297,27 @@ AWS::CloudFormation::StackSet,cloudformation,StackSet,other,FULLY_MUTABLE,,,ok,0
 AWS::CloudFormation::TypeActivation,cloudformation,TypeActivation,other,FULLY_MUTABLE,,,ok,0,0,4,6,1,true
 AWS::CloudFormation::WaitCondition,cloudformation,WaitCondition,other,NON_PROVISIONABLE,,,not provisionable,0,0,0,0,0,false
 AWS::CloudFormation::WaitConditionHandle,cloudformation,WaitConditionHandle,other,NON_PROVISIONABLE,,,not provisionable,0,0,0,0,0,false
-AWS::CloudFront::AnycastIpList,cloudfront,AnycastIpList,application,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
+AWS::CloudFront::AnycastIpList,cloudfront,AnycastIpList,application,FULLY_MUTABLE,,AnycastIpList (Cloud Control),ok,0,0,0,1,0,true
 AWS::CloudFront::CachePolicy,cloudfront,CachePolicy,application,FULLY_MUTABLE,CachePolicy,,ok,0,0,0,0,0,true
-AWS::CloudFront::CloudFrontOriginAccessIdentity,cloudfront,CloudFrontOriginAccessIdentity,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::CloudFront::ConnectionFunction,cloudfront,ConnectionFunction,application,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
+AWS::CloudFront::CloudFrontOriginAccessIdentity,cloudfront,CloudFrontOriginAccessIdentity,application,FULLY_MUTABLE,,CloudFrontOriginAccessIdentity (Cloud Control),ok,0,0,0,0,0,true
+AWS::CloudFront::ConnectionFunction,cloudfront,ConnectionFunction,application,FULLY_MUTABLE,,ConnectionFunction (Cloud Control),ok,0,0,0,1,0,true
 AWS::CloudFront::ConnectionGroup,cloudfront,ConnectionGroup,application,FULLY_MUTABLE,ConnectionGroup,,ok,0,0,0,0,0,true
-AWS::CloudFront::ContinuousDeploymentPolicy,cloudfront,ContinuousDeploymentPolicy,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::CloudFront::ContinuousDeploymentPolicy,cloudfront,ContinuousDeploymentPolicy,application,FULLY_MUTABLE,,ContinuousDeploymentPolicy (Cloud Control),ok,0,0,0,0,0,true
 AWS::CloudFront::Distribution,cloudfront,Distribution,application,FULLY_MUTABLE,Distribution,,ok,0,0,0,0,0,true
 AWS::CloudFront::DistributionTenant,cloudfront,DistributionTenant,application,FULLY_MUTABLE,DistributionTenant,,ok,0,0,0,1,0,true
-AWS::CloudFront::FieldLevelEncryptionConfig,cloudfront,FieldLevelEncryptionConfig,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::CloudFront::FieldLevelEncryptionProfile,cloudfront,FieldLevelEncryptionProfile,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::CloudFront::FieldLevelEncryptionConfig,cloudfront,FieldLevelEncryptionConfig,application,FULLY_MUTABLE,,FieldLevelEncryptionConfig (Cloud Control),ok,0,0,0,0,0,true
+AWS::CloudFront::FieldLevelEncryptionProfile,cloudfront,FieldLevelEncryptionProfile,application,FULLY_MUTABLE,,FieldLevelEncryptionProfile (Cloud Control),ok,0,0,0,0,0,true
 AWS::CloudFront::Function,cloudfront,Function,application,FULLY_MUTABLE,Function,,ok,0,0,0,1,0,true
-AWS::CloudFront::KeyGroup,cloudfront,KeyGroup,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::CloudFront::KeyValueStore,cloudfront,KeyValueStore,application,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
-AWS::CloudFront::MonitoringSubscription,cloudfront,MonitoringSubscription,application,IMMUTABLE,,,ok,0,0,0,0,0,false
+AWS::CloudFront::KeyGroup,cloudfront,KeyGroup,application,FULLY_MUTABLE,,KeyGroup (Cloud Control),ok,0,0,0,0,0,true
+AWS::CloudFront::KeyValueStore,cloudfront,KeyValueStore,application,FULLY_MUTABLE,,KeyValueStore (Cloud Control),ok,0,0,0,1,0,true
+AWS::CloudFront::MonitoringSubscription,cloudfront,MonitoringSubscription,application,IMMUTABLE,,MonitoringSubscription (Cloud Control),ok,0,0,0,0,0,false
 AWS::CloudFront::OriginAccessControl,cloudfront,OriginAccessControl,application,FULLY_MUTABLE,OriginAccessControl,,ok,0,0,0,0,0,true
 AWS::CloudFront::OriginRequestPolicy,cloudfront,OriginRequestPolicy,application,FULLY_MUTABLE,OriginRequestPolicy,,ok,0,0,0,0,0,true
-AWS::CloudFront::PublicKey,cloudfront,PublicKey,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::CloudFront::RealtimeLogConfig,cloudfront,RealtimeLogConfig,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
+AWS::CloudFront::PublicKey,cloudfront,PublicKey,application,FULLY_MUTABLE,,PublicKey (Cloud Control),ok,0,0,0,0,0,true
+AWS::CloudFront::RealtimeLogConfig,cloudfront,RealtimeLogConfig,application,FULLY_MUTABLE,,RealtimeLogConfig (Cloud Control),ok,0,0,0,0,1,true
 AWS::CloudFront::ResponseHeadersPolicy,cloudfront,ResponseHeadersPolicy,application,FULLY_MUTABLE,ResponseHeadersPolicy,,ok,0,0,0,0,0,true
 AWS::CloudFront::StreamingDistribution,cloudfront,StreamingDistribution,application,NON_PROVISIONABLE,,,not provisionable,0,0,0,0,0,false
-AWS::CloudFront::TrustStore,cloudfront,TrustStore,application,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
+AWS::CloudFront::TrustStore,cloudfront,TrustStore,application,FULLY_MUTABLE,,TrustStore (Cloud Control),ok,0,0,0,1,0,true
 AWS::CloudFront::VpcOrigin,cloudfront,VpcOrigin,application,FULLY_MUTABLE,VPCOrigin,,ok,0,0,0,0,2,true
 AWS::CloudHSM::Cluster,cloudhsm,Cluster,other,FULLY_MUTABLE,,,ok,0,0,0,1,1,true
 AWS::CloudTrail::Channel,cloudtrail,Channel,platform-foundation,FULLY_MUTABLE,,Channel (Cloud Control),ok,0,0,0,0,0,true
@@ -325,26 +325,26 @@ AWS::CloudTrail::Dashboard,cloudtrail,Dashboard,platform-foundation,FULLY_MUTABL
 AWS::CloudTrail::EventDataStore,cloudtrail,EventDataStore,platform-foundation,FULLY_MUTABLE,EventDataStore,,ok,0,0,0,0,3,true
 AWS::CloudTrail::ResourcePolicy,cloudtrail,ResourcePolicy,platform-foundation,FULLY_MUTABLE,,,ok,1,0,0,0,0,false
 AWS::CloudTrail::Trail,cloudtrail,Trail,platform-foundation,FULLY_MUTABLE,Trail,,ok,0,0,0,0,2,true
-AWS::CloudWatch::AccessGrant,cloudwatch,AccessGrant,application,IMMUTABLE,,,ok,0,0,0,1,0,true
-AWS::CloudWatch::AccessProfile,cloudwatch,AccessProfile,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::CloudWatch::AccessGrant,cloudwatch,AccessGrant,application,IMMUTABLE,,AccessGrant (Cloud Control),ok,0,0,0,1,0,true
+AWS::CloudWatch::AccessProfile,cloudwatch,AccessProfile,application,FULLY_MUTABLE,,AccessProfile (Cloud Control),ok,0,0,0,0,0,true
 AWS::CloudWatch::Alarm,cloudwatch,Alarm,application,FULLY_MUTABLE,MetricAlarm,,ok,0,0,0,0,0,true
-AWS::CloudWatch::AlarmMuteRule,cloudwatch,AlarmMuteRule,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::CloudWatch::Alert,cloudwatch,Alert,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::CloudWatch::AlarmMuteRule,cloudwatch,AlarmMuteRule,application,FULLY_MUTABLE,,AlarmMuteRule (Cloud Control),ok,0,0,0,0,0,true
+AWS::CloudWatch::Alert,cloudwatch,Alert,application,FULLY_MUTABLE,,Alert (Cloud Control),ok,0,0,0,0,0,true
 AWS::CloudWatch::AnomalyDetector,cloudwatch,AnomalyDetector,application,NON_PROVISIONABLE,,,not provisionable,0,0,0,0,0,false
 AWS::CloudWatch::CompositeAlarm,cloudwatch,CompositeAlarm,application,FULLY_MUTABLE,,CompositeAlarm (Cloud Control),ok,0,0,0,0,0,true
 AWS::CloudWatch::Dashboard,cloudwatch,Dashboard,application,FULLY_MUTABLE,Dashboard,,ok,0,0,0,0,0,true
-AWS::CloudWatch::Domain,cloudwatch,Domain,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::CloudWatch::DomainAccessGrantForOrganization,cloudwatch,DomainAccessGrantForOrganization,application,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::CloudWatch::DomainForOrganization,cloudwatch,DomainForOrganization,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
+AWS::CloudWatch::Domain,cloudwatch,Domain,application,FULLY_MUTABLE,,Domain (Cloud Control),ok,0,0,0,0,0,true
+AWS::CloudWatch::DomainAccessGrantForOrganization,cloudwatch,DomainAccessGrantForOrganization,application,IMMUTABLE,,DomainAccessGrantForOrganization (Cloud Control),ok,0,0,0,0,0,true
+AWS::CloudWatch::DomainForOrganization,cloudwatch,DomainForOrganization,application,FULLY_MUTABLE,,DomainForOrganization (Cloud Control),ok,0,0,0,0,1,true
 AWS::CloudWatch::InsightRule,cloudwatch,InsightRule,application,FULLY_MUTABLE,,InsightRule (Cloud Control),ok,0,0,0,0,0,true
-AWS::CloudWatch::Integration,cloudwatch,Integration,application,FULLY_MUTABLE,,,ok,0,0,0,1,1,true
-AWS::CloudWatch::LogAlarm,cloudwatch,LogAlarm,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
+AWS::CloudWatch::Integration,cloudwatch,Integration,application,FULLY_MUTABLE,,Integration (Cloud Control),ok,0,0,0,1,1,true
+AWS::CloudWatch::LogAlarm,cloudwatch,LogAlarm,application,FULLY_MUTABLE,,LogAlarm (Cloud Control),ok,0,0,0,0,1,true
 AWS::CloudWatch::MetricStream,cloudwatch,MetricStream,application,FULLY_MUTABLE,MetricStream,,ok,0,0,0,0,1,true
-AWS::CloudWatch::OmniDashboard,cloudwatch,OmniDashboard,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::CloudWatch::OTelEnrichment,cloudwatch,OTelEnrichment,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::CloudWatch::ResourceMetricsConfiguration,cloudwatch,ResourceMetricsConfiguration,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::CloudWatch::Space,cloudwatch,Space,application,FULLY_MUTABLE,,,ok,0,0,0,0,2,true
-AWS::CloudWatch::View,cloudwatch,View,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::CloudWatch::OmniDashboard,cloudwatch,OmniDashboard,application,FULLY_MUTABLE,,OmniDashboard (Cloud Control),ok,0,0,0,0,0,true
+AWS::CloudWatch::OTelEnrichment,cloudwatch,OTelEnrichment,application,FULLY_MUTABLE,,OTelEnrichment (Cloud Control),ok,0,0,0,0,0,true
+AWS::CloudWatch::ResourceMetricsConfiguration,cloudwatch,ResourceMetricsConfiguration,application,FULLY_MUTABLE,,ResourceMetricsConfiguration (Cloud Control),ok,0,0,0,0,0,true
+AWS::CloudWatch::Space,cloudwatch,Space,application,FULLY_MUTABLE,,Space (Cloud Control),ok,0,0,0,0,2,true
+AWS::CloudWatch::View,cloudwatch,View,application,FULLY_MUTABLE,,View (Cloud Control),ok,0,0,0,0,0,true
 AWS::CodeArtifact::Domain,codeartifact,Domain,other,FULLY_MUTABLE,Domain,,ok,0,0,0,0,0,true
 AWS::CodeArtifact::PackageGroup,codeartifact,PackageGroup,other,FULLY_MUTABLE,PackageGroup,,ok,0,0,0,0,0,true
 AWS::CodeArtifact::Repository,codeartifact,Repository,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
@@ -355,9 +355,9 @@ AWS::CodeBuild::SourceCredential,codebuild,SourceCredential,other,FULLY_MUTABLE,
 AWS::CodeCommit::Repository,codecommit,Repository,other,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
 AWS::CodeConnections::Connection,codeconnections,Connection,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::CodeConnections::Host,codeconnections,Host,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::CodeDeploy::Application,codedeploy,Application,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::CodeDeploy::DeploymentConfig,codedeploy,DeploymentConfig,application,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::CodeDeploy::DeploymentGroup,codedeploy,DeploymentGroup,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
+AWS::CodeDeploy::Application,codedeploy,Application,application,FULLY_MUTABLE,,Application (Cloud Control),ok,0,0,0,0,0,true
+AWS::CodeDeploy::DeploymentConfig,codedeploy,DeploymentConfig,application,IMMUTABLE,,DeploymentConfig (Cloud Control),ok,0,0,0,0,0,true
+AWS::CodeDeploy::DeploymentGroup,codedeploy,DeploymentGroup,application,FULLY_MUTABLE,,DeploymentGroup (Cloud Control),ok,0,0,0,0,1,true
 AWS::CodeGuruProfiler::ProfilingGroup,codeguruprofiler,ProfilingGroup,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::CodeGuruReviewer::RepositoryAssociation,codegurureviewer,RepositoryAssociation,other,IMMUTABLE,,,ok,0,0,2,2,1,true
 AWS::CodePipeline::CustomActionType,codepipeline,CustomActionType,other,FULLY_MUTABLE,,,ok,0,0,1,2,0,true
@@ -538,13 +538,13 @@ AWS::DirectoryService::MicrosoftAD,directoryservice,MicrosoftAD,other,FULLY_MUTA
 AWS::DirectoryService::SimpleAD,directoryservice,SimpleAD,other,FULLY_MUTABLE,,,ok,0,0,1,1,0,true
 AWS::DLM::LifecyclePolicy,dlm,LifecyclePolicy,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::DMS::Certificate,dms,Certificate,application,IMMUTABLE,Certificate,,ok,0,0,2,2,0,true
-AWS::DMS::DataMigration,dms,DataMigration,application,FULLY_MUTABLE,,,ok,0,0,1,1,1,true
-AWS::DMS::DataProvider,dms,DataProvider,application,FULLY_MUTABLE,,,ok,0,0,1,2,1,true
+AWS::DMS::DataMigration,dms,DataMigration,application,FULLY_MUTABLE,,DataMigration (Cloud Control),ok,0,0,1,1,1,true
+AWS::DMS::DataProvider,dms,DataProvider,application,FULLY_MUTABLE,,DataProvider (Cloud Control),ok,0,0,1,2,1,true
 AWS::DMS::Endpoint,dms,Endpoint,application,FULLY_MUTABLE,Endpoint,,ok,0,0,15,16,3,true
 AWS::DMS::EventSubscription,dms,EventSubscription,application,FULLY_MUTABLE,EventSubscription,,ok,0,0,0,0,0,true
-AWS::DMS::InstanceProfile,dms,InstanceProfile,application,FULLY_MUTABLE,,,ok,0,0,1,1,0,true
-AWS::DMS::MigrationProject,dms,MigrationProject,application,FULLY_MUTABLE,,,ok,0,0,2,4,1,true
-AWS::DMS::ReplicationConfig,dms,ReplicationConfig,application,FULLY_MUTABLE,,,ok,0,0,1,1,3,true
+AWS::DMS::InstanceProfile,dms,InstanceProfile,application,FULLY_MUTABLE,,InstanceProfile (Cloud Control),ok,0,0,1,1,0,true
+AWS::DMS::MigrationProject,dms,MigrationProject,application,FULLY_MUTABLE,,MigrationProject (Cloud Control),ok,0,0,2,4,1,true
+AWS::DMS::ReplicationConfig,dms,ReplicationConfig,application,FULLY_MUTABLE,,ReplicationConfig (Cloud Control),ok,0,0,1,1,3,true
 AWS::DMS::ReplicationInstance,dms,ReplicationInstance,application,NON_PROVISIONABLE,ReplicationInstance,,not provisionable,0,0,0,0,0,false
 AWS::DMS::ReplicationSubnetGroup,dms,ReplicationSubnetGroup,application,FULLY_MUTABLE,ReplicationSubnetGroup,,ok,0,0,0,0,0,true
 AWS::DMS::ReplicationTask,dms,ReplicationTask,application,FULLY_MUTABLE,ReplicationTask,,ok,0,0,0,1,0,true
@@ -701,15 +701,15 @@ AWS::ECR::SigningConfiguration,ecr,SigningConfiguration,platform-foundation,FULL
 AWS::ECS::CapacityProvider,ecs,CapacityProvider,application,FULLY_MUTABLE,CapacityProvider,,ok,0,0,0,0,2,true
 AWS::ECS::Cluster,ecs,Cluster,application,FULLY_MUTABLE,Cluster,,ok,0,0,0,1,1,true
 AWS::ECS::ClusterCapacityProviderAssociations,ecs,ClusterCapacityProviderAssociations,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::ECS::Daemon,ecs,Daemon,application,FULLY_MUTABLE,,,ok,0,0,3,8,1,true
-AWS::ECS::DaemonTaskDefinition,ecs,DaemonTaskDefinition,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::ECS::ExpressGatewayService,ecs,ExpressGatewayService,application,FULLY_MUTABLE,,,ok,0,0,6,9,1,false
-AWS::ECS::Gateway,ecs,Gateway,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::ECS::GatewayClusterAssociations,ecs,GatewayClusterAssociations,application,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::ECS::PrimaryTaskSet,ecs,PrimaryTaskSet,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,false
+AWS::ECS::Daemon,ecs,Daemon,application,FULLY_MUTABLE,,Daemon (Cloud Control),ok,0,0,3,8,1,true
+AWS::ECS::DaemonTaskDefinition,ecs,DaemonTaskDefinition,application,FULLY_MUTABLE,,DaemonTaskDefinition (Cloud Control),ok,0,0,0,0,1,true
+AWS::ECS::ExpressGatewayService,ecs,ExpressGatewayService,application,FULLY_MUTABLE,,ExpressGatewayService (Cloud Control),ok,0,0,6,9,1,false
+AWS::ECS::Gateway,ecs,Gateway,application,FULLY_MUTABLE,,Gateway (Cloud Control),ok,0,0,0,0,1,true
+AWS::ECS::GatewayClusterAssociations,ecs,GatewayClusterAssociations,application,IMMUTABLE,,GatewayClusterAssociations (Cloud Control),ok,0,0,0,0,0,true
+AWS::ECS::PrimaryTaskSet,ecs,PrimaryTaskSet,application,FULLY_MUTABLE,,PrimaryTaskSet (Cloud Control),ok,0,0,0,0,0,false
 AWS::ECS::Service,ecs,Service,application,FULLY_MUTABLE,Service,,ok,1,0,0,5,1,true
 AWS::ECS::TaskDefinition,ecs,TaskDefinition,application,FULLY_MUTABLE,TaskDefinition,,ok,0,0,0,0,1,true
-AWS::ECS::TaskSet,ecs,TaskSet,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,false
+AWS::ECS::TaskSet,ecs,TaskSet,application,FULLY_MUTABLE,,TaskSet (Cloud Control),ok,0,0,0,0,0,false
 AWS::EFS::AccessPoint,efs,AccessPoint,application,FULLY_MUTABLE,AccessPoint,,ok,0,4,0,0,0,true
 AWS::EFS::FileSystem,efs,FileSystem,application,FULLY_MUTABLE,FileSystem,,ok,0,0,0,3,3,true
 AWS::EFS::MountTarget,efs,MountTarget,application,FULLY_MUTABLE,MountTarget,,ok,0,0,1,1,0,true
@@ -744,8 +744,8 @@ AWS::ElasticLoadBalancingV2::ListenerCertificate,elasticloadbalancingv2,Listener
 AWS::ElasticLoadBalancingV2::ListenerRule,elasticloadbalancingv2,ListenerRule,application,FULLY_MUTABLE,Rule,,ok,0,0,1,2,0,true
 AWS::ElasticLoadBalancingV2::LoadBalancer,elasticloadbalancingv2,LoadBalancer,application,FULLY_MUTABLE,LoadBalancer,,ok,0,0,0,1,0,true
 AWS::ElasticLoadBalancingV2::TargetGroup,elasticloadbalancingv2,TargetGroup,application,FULLY_MUTABLE,TargetGroup,,ok,0,0,0,0,0,true
-AWS::ElasticLoadBalancingV2::TrustStore,elasticloadbalancingv2,TrustStore,application,FULLY_MUTABLE,,,ok,0,0,3,3,0,true
-AWS::ElasticLoadBalancingV2::TrustStoreRevocation,elasticloadbalancingv2,TrustStoreRevocation,application,IMMUTABLE,,,ok,0,0,0,1,0,true
+AWS::ElasticLoadBalancingV2::TrustStore,elasticloadbalancingv2,TrustStore,application,FULLY_MUTABLE,,TrustStore (Cloud Control),ok,0,0,3,3,0,true
+AWS::ElasticLoadBalancingV2::TrustStoreRevocation,elasticloadbalancingv2,TrustStoreRevocation,application,IMMUTABLE,,TrustStoreRevocation (Cloud Control),ok,0,0,0,1,0,true
 AWS::Elasticsearch::Domain,elasticsearch,Domain,other,NON_PROVISIONABLE,ElasticsearchDomain,,not provisionable,0,0,0,0,0,false
 AWS::ElementalInference::Dictionary,elementalinference,Dictionary,other,FULLY_MUTABLE,,,ok,0,0,1,1,0,true
 AWS::ElementalInference::Feed,elementalinference,Feed,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
@@ -774,10 +774,10 @@ AWS::Events::Endpoint,events,Endpoint,application,FULLY_MUTABLE,Endpoint,,ok,0,0
 AWS::Events::EventBus,events,EventBus,application,FULLY_MUTABLE,EventBus,,ok,1,0,1,1,1,true
 AWS::Events::EventBusPolicy,events,EventBusPolicy,application,FULLY_MUTABLE,,,ok,0,0,2,3,0,true
 AWS::Events::Rule,events,Rule,application,FULLY_MUTABLE,Rule,,ok,1,0,0,0,1,true
-AWS::EventSchemas::Discoverer,eventschemas,Discoverer,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::EventSchemas::Registry,eventschemas,Registry,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::EventSchemas::RegistryPolicy,eventschemas,RegistryPolicy,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,false
-AWS::EventSchemas::Schema,eventschemas,Schema,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::EventSchemas::Discoverer,eventschemas,Discoverer,application,FULLY_MUTABLE,,Discoverer (Cloud Control),ok,0,0,0,0,1,true
+AWS::EventSchemas::Registry,eventschemas,Registry,application,FULLY_MUTABLE,,Registry (Cloud Control),ok,0,0,0,0,0,true
+AWS::EventSchemas::RegistryPolicy,eventschemas,RegistryPolicy,application,FULLY_MUTABLE,,RegistryPolicy (Cloud Control),ok,0,0,0,0,0,false
+AWS::EventSchemas::Schema,eventschemas,Schema,application,FULLY_MUTABLE,,Schema (Cloud Control),ok,0,0,0,0,0,true
 AWS::EventsV2::EventBus,eventsv2,EventBus,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::EventsV2::EventSource,eventsv2,EventSource,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::EventsV2::ResourcePolicy,eventsv2,ResourcePolicy,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
@@ -1059,22 +1059,22 @@ AWS::LakeFormation::Resource,lakeformation,Resource,other,FULLY_MUTABLE,,,ok,0,0
 AWS::LakeFormation::Tag,lakeformation,Tag,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::LakeFormation::TagAssociation,lakeformation,TagAssociation,other,IMMUTABLE,,,ok,0,0,0,0,0,true
 AWS::Lambda::Alias,lambda,Alias,application,FULLY_MUTABLE,Alias,,ok,0,0,0,0,0,true
-AWS::Lambda::CapacityProvider,lambda,CapacityProvider,application,FULLY_MUTABLE,,,ok,0,0,0,0,2,true
+AWS::Lambda::CapacityProvider,lambda,CapacityProvider,application,FULLY_MUTABLE,,CapacityProvider (Cloud Control),ok,0,0,0,0,2,true
 AWS::Lambda::CodeSigningConfig,lambda,CodeSigningConfig,application,FULLY_MUTABLE,CodeSigningConfig,,ok,0,0,0,0,0,true
 AWS::Lambda::EventInvokeConfig,lambda,EventInvokeConfig,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::Lambda::EventSourceMapping,lambda,EventSourceMapping,application,FULLY_MUTABLE,EventSourceMapping,,ok,0,0,0,0,1,true
 AWS::Lambda::Function,lambda,Function,application,FULLY_MUTABLE,Function,,ok,0,0,8,10,3,true
 AWS::Lambda::LayerVersion,lambda,LayerVersion,application,IMMUTABLE,LayerVersion,,ok,0,0,0,1,0,true
-AWS::Lambda::LayerVersionPermission,lambda,LayerVersionPermission,application,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::Lambda::MicrovmImage,lambda,MicrovmImage,application,FULLY_MUTABLE,,,ok,0,0,5,13,1,true
-AWS::Lambda::NetworkConnector,lambda,NetworkConnector,application,FULLY_MUTABLE,,,ok,0,0,0,0,2,true
+AWS::Lambda::LayerVersionPermission,lambda,LayerVersionPermission,application,IMMUTABLE,,LayerVersionPermission (Cloud Control),ok,0,0,0,0,0,true
+AWS::Lambda::MicrovmImage,lambda,MicrovmImage,application,FULLY_MUTABLE,,MicrovmImage (Cloud Control),ok,0,0,5,13,1,true
+AWS::Lambda::NetworkConnector,lambda,NetworkConnector,application,FULLY_MUTABLE,,NetworkConnector (Cloud Control),ok,0,0,0,0,2,true
 AWS::Lambda::Permission,lambda,Permission,application,IMMUTABLE,,Permission,ok,0,0,0,0,0,true
 AWS::Lambda::ResourcePolicy,lambda,ResourcePolicy,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,false
 AWS::Lambda::Url,lambda,Url,application,FULLY_MUTABLE,FunctionURLConfig,,ok,0,0,0,0,0,true
 AWS::Lambda::Version,lambda,Version,application,FULLY_MUTABLE,Version,,ok,0,0,0,0,0,true
-AWS::Lambda::WebFunction,lambda,WebFunction,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::Lambda::WebFunctionEndpoint,lambda,WebFunctionEndpoint,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::Lambda::WebFunctionRevision,lambda,WebFunctionRevision,application,IMMUTABLE,,,ok,0,0,0,0,3,true
+AWS::Lambda::WebFunction,lambda,WebFunction,application,FULLY_MUTABLE,,WebFunction (Cloud Control),ok,0,0,0,0,0,true
+AWS::Lambda::WebFunctionEndpoint,lambda,WebFunctionEndpoint,application,FULLY_MUTABLE,,WebFunctionEndpoint (Cloud Control),ok,0,0,0,0,0,true
+AWS::Lambda::WebFunctionRevision,lambda,WebFunctionRevision,application,IMMUTABLE,,WebFunctionRevision (Cloud Control),ok,0,0,0,0,3,true
 AWS::LaunchWizard::Deployment,launchwizard,Deployment,other,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
 AWS::Lex::Bot,lex,Bot,other,FULLY_MUTABLE,,,ok,57,0,0,7,3,true
 AWS::Lex::BotAlias,lex,BotAlias,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
@@ -1120,7 +1120,7 @@ AWS::Logs::Destination,logs,Destination,application,FULLY_MUTABLE,,Destination (
 AWS::Logs::Integration,logs,Integration,application,IMMUTABLE,,Integration (Cloud Control),ok,0,0,0,1,4,true
 AWS::Logs::LogAnomalyDetector,logs,LogAnomalyDetector,application,FULLY_MUTABLE,,LogAnomalyDetector (Cloud Control),ok,0,0,1,1,1,true
 AWS::Logs::LogGroup,logs,LogGroup,application,FULLY_MUTABLE,LogGroup,,ok,0,0,0,0,0,true
-AWS::Logs::LogStream,logs,LogStream,application,IMMUTABLE,,,ok,0,0,0,0,0,true
+AWS::Logs::LogStream,logs,LogStream,application,IMMUTABLE,,LogStream (Cloud Control),ok,0,0,0,0,0,true
 AWS::Logs::MetricFilter,logs,MetricFilter,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::Logs::QueryDefinition,logs,QueryDefinition,application,FULLY_MUTABLE,,QueryDefinition (Cloud Control),ok,0,0,0,0,0,true
 AWS::Logs::ResourcePolicy,logs,ResourcePolicy,application,FULLY_MUTABLE,ResourcePolicy,,ok,1,0,0,0,0,true
@@ -1209,14 +1209,14 @@ AWS::MGN::ReplicationConfigurationTemplate,mgn,ReplicationConfigurationTemplate,
 AWS::MGN::Wave,mgn,Wave,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::MPA::ApprovalTeam,mpa,ApprovalTeam,other,FULLY_MUTABLE,,,ok,0,1,0,0,0,true
 AWS::MPA::IdentitySource,mpa,IdentitySource,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::MSK::BatchScramSecret,msk,BatchScramSecret,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
+AWS::MSK::BatchScramSecret,msk,BatchScramSecret,application,FULLY_MUTABLE,,BatchScramSecret (Cloud Control),ok,0,0,0,0,1,true
 AWS::MSK::Channel,msk,Channel,application,FULLY_MUTABLE,,,ok,0,6,1,1,4,true
 AWS::MSK::Cluster,msk,Cluster,application,FULLY_MUTABLE,Cluster,,ok,0,0,0,1,4,true
-AWS::MSK::ClusterPolicy,msk,ClusterPolicy,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::MSK::ClusterPolicy,msk,ClusterPolicy,application,FULLY_MUTABLE,,ClusterPolicy (Cloud Control),ok,0,0,0,0,0,true
 AWS::MSK::Configuration,msk,Configuration,application,FULLY_MUTABLE,Configuration,,ok,0,0,1,1,0,true
 AWS::MSK::Replicator,msk,Replicator,application,FULLY_MUTABLE,,,ok,0,8,0,0,2,true
 AWS::MSK::ServerlessCluster,msk,ServerlessCluster,application,IMMUTABLE,ServerlessCluster,,ok,0,0,0,0,0,true
-AWS::MSK::Topic,msk,Topic,application,FULLY_MUTABLE,,,ok,0,0,1,1,0,true
+AWS::MSK::Topic,msk,Topic,application,FULLY_MUTABLE,,Topic (Cloud Control),ok,0,0,1,1,0,true
 AWS::MSK::VpcConnection,msk,VpcConnection,application,FULLY_MUTABLE,VPCConnection,,ok,0,0,0,0,4,true
 AWS::MWAA::Environment,mwaa,Environment,other,FULLY_MUTABLE,Environment,,ok,0,0,1,1,4,true
 AWS::MWAAServerless::Workflow,mwaaserverless,Workflow,other,FULLY_MUTABLE,Workflow,,ok,0,0,0,0,4,true
@@ -1411,25 +1411,25 @@ AWS::RAM::ResourceAssociation,ram,ResourceAssociation,platform-foundation,IMMUTA
 AWS::RAM::ResourceShare,ram,ResourceShare,platform-foundation,FULLY_MUTABLE,ResourceShare,,ok,0,0,0,4,0,true
 AWS::RAM::SourceAssociation,ram,SourceAssociation,platform-foundation,IMMUTABLE,,SourceAssociation (Cloud Control),ok,0,0,0,0,0,true
 AWS::Rbin::Rule,rbin,Rule,other,FULLY_MUTABLE,Rule,,ok,0,0,1,3,1,true
-AWS::RDS::ClusterSnapshot,rds,ClusterSnapshot,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::RDS::CustomDBEngineVersion,rds,CustomDBEngineVersion,application,FULLY_MUTABLE,,,ok,0,0,2,3,3,true
+AWS::RDS::ClusterSnapshot,rds,ClusterSnapshot,application,FULLY_MUTABLE,,ClusterSnapshot (Cloud Control),ok,0,0,0,0,0,true
+AWS::RDS::CustomDBEngineVersion,rds,CustomDBEngineVersion,application,FULLY_MUTABLE,,CustomDBEngineVersion (Cloud Control),ok,0,0,2,3,3,true
 AWS::RDS::DBCluster,rds,DBCluster,application,FULLY_MUTABLE,DBCluster,DBRoleAssociation,ok,0,0,10,13,2,true
 AWS::RDS::DBClusterEndpoint,rds,DBClusterEndpoint,application,FULLY_MUTABLE,DBClusterEndpoint,,ok,0,0,0,0,0,true
 AWS::RDS::DBClusterParameterGroup,rds,DBClusterParameterGroup,application,FULLY_MUTABLE,DBClusterParameterGroup,,ok,0,0,0,0,1,true
 AWS::RDS::DBInstance,rds,DBInstance,application,FULLY_MUTABLE,DBInstance,DBRoleAssociation,ok,0,0,10,16,3,true
 AWS::RDS::DBParameterGroup,rds,DBParameterGroup,application,FULLY_MUTABLE,DBParameterGroup,,ok,0,0,0,0,1,true
 AWS::RDS::DBProxy,rds,DBProxy,application,FULLY_MUTABLE,DBProxy,,ok,0,0,0,0,1,true
-AWS::RDS::DBProxyEndpoint,rds,DBProxyEndpoint,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::RDS::DBProxyEndpoint,rds,DBProxyEndpoint,application,FULLY_MUTABLE,,DBProxyEndpoint (Cloud Control),ok,0,0,0,0,0,true
 AWS::RDS::DBProxyTargetGroup,rds,DBProxyTargetGroup,application,FULLY_MUTABLE,,DBProxyTarget,ok,0,0,0,0,0,true
 AWS::RDS::DBSecurityGroup,rds,DBSecurityGroup,application,NON_PROVISIONABLE,,,not provisionable,0,0,0,0,0,false
 AWS::RDS::DBSecurityGroupIngress,rds,DBSecurityGroupIngress,application,NON_PROVISIONABLE,,,not provisionable,0,0,0,0,0,false
-AWS::RDS::DBShardGroup,rds,DBShardGroup,application,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
+AWS::RDS::DBShardGroup,rds,DBShardGroup,application,FULLY_MUTABLE,,DBShardGroup (Cloud Control),ok,0,0,0,1,0,true
 AWS::RDS::DBSnapshot,rds,DBSnapshot,application,FULLY_MUTABLE,DBSnapshot,,ok,0,0,0,0,0,true
 AWS::RDS::DBSubnetGroup,rds,DBSubnetGroup,application,FULLY_MUTABLE,DBSubnetGroup,,ok,0,0,0,0,1,true
-AWS::RDS::Deployment,rds,Deployment,application,FULLY_MUTABLE,,,ok,0,0,5,9,1,true
+AWS::RDS::Deployment,rds,Deployment,application,FULLY_MUTABLE,,Deployment (Cloud Control),ok,0,0,5,9,1,true
 AWS::RDS::EventSubscription,rds,EventSubscription,application,FULLY_MUTABLE,,EventSubscription (Cloud Control),ok,0,0,0,0,1,true
 AWS::RDS::GlobalCluster,rds,GlobalCluster,application,FULLY_MUTABLE,GlobalCluster,,ok,0,0,0,0,0,true
-AWS::RDS::Integration,rds,Integration,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
+AWS::RDS::Integration,rds,Integration,application,FULLY_MUTABLE,,Integration (Cloud Control),ok,0,0,0,0,1,true
 AWS::RDS::OptionGroup,rds,OptionGroup,application,FULLY_MUTABLE,,OptionGroup,ok,0,0,0,0,1,true
 AWS::Redshift::Cluster,redshift,Cluster,application,FULLY_MUTABLE,,,ok,0,0,2,6,4,true
 AWS::Redshift::ClusterParameterGroup,redshift,ClusterParameterGroup,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
@@ -1527,22 +1527,22 @@ AWS::RTBFabric::OutboundExternalLink,rtbfabric,OutboundExternalLink,other,FULLY_
 AWS::RTBFabric::RequesterGateway,rtbfabric,RequesterGateway,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::RTBFabric::ResponderGateway,rtbfabric,ResponderGateway,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::RUM::AppMonitor,rum,AppMonitor,other,FULLY_MUTABLE,,,ok,0,0,0,0,2,true
-AWS::S3::AccessGrant,s3,AccessGrant,application,FULLY_MUTABLE,,,ok,0,0,1,1,0,true
-AWS::S3::AccessGrantsInstance,s3,AccessGrantsInstance,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::S3::AccessGrantsLocation,s3,AccessGrantsLocation,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
+AWS::S3::AccessGrant,s3,AccessGrant,application,FULLY_MUTABLE,,AccessGrant (Cloud Control),ok,0,0,1,1,0,true
+AWS::S3::AccessGrantsInstance,s3,AccessGrantsInstance,application,FULLY_MUTABLE,,AccessGrantsInstance (Cloud Control),ok,0,0,0,0,0,true
+AWS::S3::AccessGrantsLocation,s3,AccessGrantsLocation,application,FULLY_MUTABLE,,AccessGrantsLocation (Cloud Control),ok,0,0,0,0,1,true
 AWS::S3::AccessPoint,s3,AccessPoint,application,FULLY_MUTABLE,AccessPoint,,ok,0,0,0,0,0,true
 AWS::S3::Bucket,s3,Bucket,application,FULLY_MUTABLE,Bucket,,ok,0,0,3,11,1,true
 AWS::S3::BucketPolicy,s3,BucketPolicy,application,FULLY_MUTABLE,,,ok,1,0,0,0,0,true
-AWS::S3::MultiRegionAccessPoint,s3,MultiRegionAccessPoint,application,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::S3::MultiRegionAccessPointPolicy,s3,MultiRegionAccessPointPolicy,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::S3::StorageLens,s3,StorageLens,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::S3::StorageLensGroup,s3,StorageLensGroup,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::S3::MultiRegionAccessPoint,s3,MultiRegionAccessPoint,application,IMMUTABLE,,MultiRegionAccessPoint (Cloud Control),ok,0,0,0,0,0,true
+AWS::S3::MultiRegionAccessPointPolicy,s3,MultiRegionAccessPointPolicy,application,FULLY_MUTABLE,,MultiRegionAccessPointPolicy (Cloud Control),ok,0,0,0,0,0,true
+AWS::S3::StorageLens,s3,StorageLens,application,FULLY_MUTABLE,,StorageLens (Cloud Control),ok,0,0,0,0,1,true
+AWS::S3::StorageLensGroup,s3,StorageLensGroup,application,FULLY_MUTABLE,,StorageLensGroup (Cloud Control),ok,0,0,0,0,0,true
 AWS::S3Express::AccessPoint,s3express,AccessPoint,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::S3Express::BucketPolicy,s3express,BucketPolicy,other,FULLY_MUTABLE,,,ok,1,0,0,0,0,true
 AWS::S3Express::DirectoryBucket,s3express,DirectoryBucket,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::S3Files::AccessPoint,s3files,AccessPoint,application,FULLY_MUTABLE,AccessPoint,,ok,0,0,0,0,0,true
 AWS::S3Files::FileSystem,s3files,FileSystem,application,FULLY_MUTABLE,FileSystem,,ok,0,0,0,1,2,true
-AWS::S3Files::FileSystemPolicy,s3files,FileSystemPolicy,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::S3Files::FileSystemPolicy,s3files,FileSystemPolicy,application,FULLY_MUTABLE,,FileSystemPolicy (Cloud Control),ok,0,0,0,0,0,true
 AWS::S3Files::MountTarget,s3files,MountTarget,application,FULLY_MUTABLE,MountTarget,,ok,0,0,0,0,0,true
 AWS::S3ObjectLambda::AccessPoint,s3objectlambda,AccessPoint,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::S3ObjectLambda::AccessPointPolicy,s3objectlambda,AccessPointPolicy,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,false
@@ -1721,17 +1721,17 @@ AWS::SQS::Queue,sqs,Queue,application,FULLY_MUTABLE,Queue,,ok,2,0,0,0,0,true
 AWS::SQS::QueueInlinePolicy,sqs,QueueInlinePolicy,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,false
 AWS::SQS::QueuePolicy,sqs,QueuePolicy,application,NON_PROVISIONABLE,,,not provisionable,0,0,0,0,0,false
 AWS::SSM::Association,ssm,Association,application,FULLY_MUTABLE,,,ok,0,0,0,1,2,true
-AWS::SSM::CloudConnector,ssm,CloudConnector,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
+AWS::SSM::CloudConnector,ssm,CloudConnector,application,FULLY_MUTABLE,,CloudConnector (Cloud Control),ok,0,0,0,0,1,true
 AWS::SSM::Document,ssm,Document,application,FULLY_MUTABLE,Document,,ok,1,0,1,2,1,true
-AWS::SSM::MaintenanceWindow,ssm,MaintenanceWindow,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::SSM::MaintenanceWindowTarget,ssm,MaintenanceWindowTarget,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::SSM::MaintenanceWindowTask,ssm,MaintenanceWindowTask,application,FULLY_MUTABLE,,,ok,0,0,0,0,2,true
-AWS::SSM::OpsItem,ssm,OpsItem,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::SSM::MaintenanceWindow,ssm,MaintenanceWindow,application,FULLY_MUTABLE,,MaintenanceWindow (Cloud Control),ok,0,0,0,0,0,true
+AWS::SSM::MaintenanceWindowTarget,ssm,MaintenanceWindowTarget,application,FULLY_MUTABLE,,MaintenanceWindowTarget (Cloud Control),ok,0,0,0,0,0,true
+AWS::SSM::MaintenanceWindowTask,ssm,MaintenanceWindowTask,application,FULLY_MUTABLE,,MaintenanceWindowTask (Cloud Control),ok,0,0,0,0,2,true
+AWS::SSM::OpsItem,ssm,OpsItem,application,FULLY_MUTABLE,,OpsItem (Cloud Control),ok,0,0,0,0,0,true
 AWS::SSM::Parameter,ssm,Parameter,application,FULLY_MUTABLE,Parameter,,ok,0,0,4,4,0,true
 AWS::SSM::PatchBaseline,ssm,PatchBaseline,application,FULLY_MUTABLE,PatchBaseline,,ok,0,0,0,0,0,true
 AWS::SSM::ResourceDataSync,ssm,ResourceDataSync,application,FULLY_MUTABLE,ResourceDataSync,,ok,0,0,0,0,0,true
 AWS::SSM::ResourcePolicy,ssm,ResourcePolicy,application,FULLY_MUTABLE,,,ok,1,0,0,0,0,true
-AWS::SSM::ServiceSetting,ssm,ServiceSetting,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::SSM::ServiceSetting,ssm,ServiceSetting,application,FULLY_MUTABLE,,ServiceSetting (Cloud Control),ok,0,0,0,0,0,true
 AWS::SSMContacts::Contact,ssmcontacts,Contact,other,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
 AWS::SSMContacts::ContactChannel,ssmcontacts,ContactChannel,other,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
 AWS::SSMContacts::Plan,ssmcontacts,Plan,other,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
@@ -1750,7 +1750,7 @@ AWS::SSO::PermissionSet,sso,PermissionSet,platform-foundation,FULLY_MUTABLE,,Per
 AWS::StepFunctions::Activity,stepfunctions,Activity,application,FULLY_MUTABLE,Activity,,ok,0,0,0,0,0,true
 AWS::StepFunctions::StateMachine,stepfunctions,StateMachine,application,FULLY_MUTABLE,StateMachine,,ok,1,0,0,3,2,true
 AWS::StepFunctions::StateMachineAlias,stepfunctions,StateMachineAlias,application,FULLY_MUTABLE,StateMachineAlias,,ok,0,0,0,1,0,true
-AWS::StepFunctions::StateMachineVersion,stepfunctions,StateMachineVersion,application,IMMUTABLE,,,ok,0,0,0,0,0,true
+AWS::StepFunctions::StateMachineVersion,stepfunctions,StateMachineVersion,application,IMMUTABLE,,StateMachineVersion (Cloud Control),ok,0,0,0,0,0,true
 AWS::StorageGateway::NFSFileShare,storagegateway,NFSFileShare,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::StorageGateway::SMBFileShare,storagegateway,SMBFileShare,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::StorageGateway::Tape,storagegateway,Tape,other,FULLY_MUTABLE,,,ok,0,0,0,1,1,true

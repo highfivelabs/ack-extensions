@@ -517,8 +517,13 @@ func (s *Server) update(ctx context.Context, typeName, id, patch, clientToken st
 		doc := withWriteOnly(cur, s.writeOnly[key])
 		prev := withWriteOnly(cur, s.writeOnly[key])
 		s.mu.Unlock()
-		for _, ro := range sets.ReadOnly.TopLevel() {
-			delete(doc, ro)
+		// Read-only values out of the document the patch applies to: a
+		// nested pointer (/properties/StorageLensConfiguration/StorageLensArn)
+		// removes only that value, not the property around it.
+		for _, ptr := range sc.ReadOnlyProperties {
+			if p := strings.Split(strings.TrimPrefix(ptr, "/properties/"), "/"); !strings.Contains(ptr, "/*") {
+				takePath(doc, p)
+			}
 		}
 		db, _ := json.Marshal(doc)
 		p, err := jsonpatch.DecodePatch([]byte(patch))

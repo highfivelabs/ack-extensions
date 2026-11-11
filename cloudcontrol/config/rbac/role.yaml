@@ -77,6 +77,58 @@ rules:
   - patch
   - update
 - apiGroups:
+  - apigatewayv2.cloudcontrol.aws.hfl.dev
+  resources:
+  - apigatewaymanagedoverrideses
+  - integrationresponses
+  - models
+  - portalproducts
+  - routeresponses
+  - routingrules
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apigatewayv2.cloudcontrol.aws.hfl.dev
+  resources:
+  - apigatewaymanagedoverrideses/status
+  - integrationresponses/status
+  - models/status
+  - portalproducts/status
+  - routeresponses/status
+  - routingrules/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - aps.cloudcontrol.aws.hfl.dev
+  resources:
+  - anomalydetectors
+  - resourcepolicies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - aps.cloudcontrol.aws.hfl.dev
+  resources:
+  - anomalydetectors/status
+  - resourcepolicies/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - auditmanager.cloudcontrol.aws.hfl.dev
   resources:
   - assessmentframeworks
@@ -99,6 +151,28 @@ rules:
   - patch
   - update
 - apiGroups:
+  - autoscaling.cloudcontrol.aws.hfl.dev
+  resources:
+  - lifecyclehooks
+  - warmpools
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - autoscaling.cloudcontrol.aws.hfl.dev
+  resources:
+  - lifecyclehooks/status
+  - warmpools/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - certificatemanager.cloudcontrol.aws.hfl.dev
   resources:
   - accounts
@@ -114,6 +188,48 @@ rules:
   - certificatemanager.cloudcontrol.aws.hfl.dev
   resources:
   - accounts/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - cloudfront.cloudcontrol.aws.hfl.dev
+  resources:
+  - anycastiplists
+  - cloudfrontoriginaccessidentities
+  - connectionfunctions
+  - continuousdeploymentpolicies
+  - fieldlevelencryptionconfigs
+  - fieldlevelencryptionprofiles
+  - keygroups
+  - keyvaluestores
+  - monitoringsubscriptions
+  - publickeys
+  - realtimelogconfigs
+  - truststores
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cloudfront.cloudcontrol.aws.hfl.dev
+  resources:
+  - anycastiplists/status
+  - cloudfrontoriginaccessidentities/status
+  - connectionfunctions/status
+  - continuousdeploymentpolicies/status
+  - fieldlevelencryptionconfigs/status
+  - fieldlevelencryptionprofiles/status
+  - keygroups/status
+  - keyvaluestores/status
+  - monitoringsubscriptions/status
+  - publickeys/status
+  - realtimelogconfigs/status
+  - truststores/status
   verbs:
   - get
   - patch
@@ -143,8 +259,22 @@ rules:
 - apiGroups:
   - cloudwatch.cloudcontrol.aws.hfl.dev
   resources:
+  - accessgrants
+  - accessprofiles
+  - alarmmuterules
+  - alerts
   - compositealarms
+  - domainaccessgrantfororganizations
+  - domainfororganizations
+  - domains
   - insightrules
+  - integrations
+  - logalarms
+  - omnidashboards
+  - otelenrichments
+  - resourcemetricsconfigurations
+  - spaces
+  - views
   verbs:
   - create
   - delete
@@ -156,8 +286,46 @@ rules:
 - apiGroups:
   - cloudwatch.cloudcontrol.aws.hfl.dev
   resources:
+  - accessgrants/status
+  - accessprofiles/status
+  - alarmmuterules/status
+  - alerts/status
   - compositealarms/status
+  - domainaccessgrantfororganizations/status
+  - domainfororganizations/status
+  - domains/status
   - insightrules/status
+  - integrations/status
+  - logalarms/status
+  - omnidashboards/status
+  - otelenrichments/status
+  - resourcemetricsconfigurations/status
+  - spaces/status
+  - views/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - codedeploy.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications
+  - deploymentconfigs
+  - deploymentgroups
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - codedeploy.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications/status
+  - deploymentconfigs/status
+  - deploymentgroups/status
   verbs:
   - get
   - patch
@@ -268,6 +436,34 @@ rules:
   resources:
   - directconnectgatewayassociations/status
   - directconnectgateways/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - dms.cloudcontrol.aws.hfl.dev
+  resources:
+  - datamigrations
+  - dataproviders
+  - instanceprofiles
+  - migrationprojects
+  - replicationconfigs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - dms.cloudcontrol.aws.hfl.dev
+  resources:
+  - datamigrations/status
+  - dataproviders/status
+  - instanceprofiles/status
+  - migrationprojects/status
+  - replicationconfigs/status
   verbs:
   - get
   - patch
@@ -459,6 +655,38 @@ rules:
   - patch
   - update
 - apiGroups:
+  - ecs.cloudcontrol.aws.hfl.dev
+  resources:
+  - daemons
+  - daemontaskdefinitions
+  - expressgatewayservices
+  - gatewayclusterassociationses
+  - gateways
+  - primarytasksets
+  - tasksets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ecs.cloudcontrol.aws.hfl.dev
+  resources:
+  - daemons/status
+  - daemontaskdefinitions/status
+  - expressgatewayservices/status
+  - gatewayclusterassociationses/status
+  - gateways/status
+  - primarytasksets/status
+  - tasksets/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - eks.cloudcontrol.aws.hfl.dev
   resources:
   - certificateauthorities
@@ -474,6 +702,54 @@ rules:
   - eks.cloudcontrol.aws.hfl.dev
   resources:
   - certificateauthorities/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - elasticloadbalancingv2.cloudcontrol.aws.hfl.dev
+  resources:
+  - truststorerevocations
+  - truststores
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - elasticloadbalancingv2.cloudcontrol.aws.hfl.dev
+  resources:
+  - truststorerevocations/status
+  - truststores/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - eventschemas.cloudcontrol.aws.hfl.dev
+  resources:
+  - discoverers
+  - registries
+  - registrypolicies
+  - schemas
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - eventschemas.cloudcontrol.aws.hfl.dev
+  resources:
+  - discoverers/status
+  - registries/status
+  - registrypolicies/status
+  - schemas/status
   verbs:
   - get
   - patch
@@ -621,12 +897,45 @@ rules:
   - patch
   - update
 - apiGroups:
+  - lambda.cloudcontrol.aws.hfl.dev
+  resources:
+  - capacityproviders
+  - layerversionpermissions
+  - microvmimages
+  - networkconnectors
+  - webfunctionendpoints
+  - webfunctionrevisions
+  - webfunctions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - lambda.cloudcontrol.aws.hfl.dev
+  resources:
+  - capacityproviders/status
+  - layerversionpermissions/status
+  - microvmimages/status
+  - networkconnectors/status
+  - webfunctionendpoints/status
+  - webfunctionrevisions/status
+  - webfunctions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - logs.cloudcontrol.aws.hfl.dev
   resources:
   - accountpolicies
   - destinations
   - integrations
   - loganomalydetectors
+  - logstreams
   - querydefinitions
   - scheduledqueries
   - storagetierpolicies
@@ -647,6 +956,7 @@ rules:
   - destinations/status
   - integrations/status
   - loganomalydetectors/status
+  - logstreams/status
   - querydefinitions/status
   - scheduledqueries/status
   - storagetierpolicies/status
@@ -680,6 +990,30 @@ rules:
   - findingsfilters/status
   - members/status
   - sessions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - msk.cloudcontrol.aws.hfl.dev
+  resources:
+  - batchscramsecrets
+  - clusterpolicies
+  - topics
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - msk.cloudcontrol.aws.hfl.dev
+  resources:
+  - batchscramsecrets/status
+  - clusterpolicies/status
+  - topics/status
   verbs:
   - get
   - patch
@@ -739,7 +1073,13 @@ rules:
 - apiGroups:
   - rds.cloudcontrol.aws.hfl.dev
   resources:
+  - clustersnapshots
+  - customdbengineversions
+  - dbproxyendpoints
+  - dbshardgroups
+  - deployments
   - eventsubscriptions
+  - integrations
   verbs:
   - create
   - delete
@@ -751,7 +1091,13 @@ rules:
 - apiGroups:
   - rds.cloudcontrol.aws.hfl.dev
   resources:
+  - clustersnapshots/status
+  - customdbengineversions/status
+  - dbproxyendpoints/status
+  - dbshardgroups/status
+  - deployments/status
   - eventsubscriptions/status
+  - integrations/status
   verbs:
   - get
   - patch
@@ -867,6 +1213,58 @@ rules:
   - patch
   - update
 - apiGroups:
+  - s3.cloudcontrol.aws.hfl.dev
+  resources:
+  - accessgrants
+  - accessgrantsinstances
+  - accessgrantslocations
+  - multiregionaccesspointpolicies
+  - multiregionaccesspoints
+  - storagelenses
+  - storagelensgroups
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - s3.cloudcontrol.aws.hfl.dev
+  resources:
+  - accessgrants/status
+  - accessgrantsinstances/status
+  - accessgrantslocations/status
+  - multiregionaccesspointpolicies/status
+  - multiregionaccesspoints/status
+  - storagelenses/status
+  - storagelensgroups/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - s3files.cloudcontrol.aws.hfl.dev
+  resources:
+  - filesystempolicies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - s3files.cloudcontrol.aws.hfl.dev
+  resources:
+  - filesystempolicies/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - secretsmanager.cloudcontrol.aws.hfl.dev
   resources:
   - resourcepolicies
@@ -967,6 +1365,36 @@ rules:
   - patch
   - update
 - apiGroups:
+  - ssm.cloudcontrol.aws.hfl.dev
+  resources:
+  - cloudconnectors
+  - maintenancewindows
+  - maintenancewindowtargets
+  - maintenancewindowtasks
+  - opsitems
+  - servicesettings
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ssm.cloudcontrol.aws.hfl.dev
+  resources:
+  - cloudconnectors/status
+  - maintenancewindows/status
+  - maintenancewindowtargets/status
+  - maintenancewindowtasks/status
+  - opsitems/status
+  - servicesettings/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - sso.cloudcontrol.aws.hfl.dev
   resources:
   - applicationassignments
@@ -990,6 +1418,26 @@ rules:
   - assignments/status
   - instanceaccesscontrolattributeconfigurations/status
   - permissionsets/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - stepfunctions.cloudcontrol.aws.hfl.dev
+  resources:
+  - statemachineversions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - stepfunctions.cloudcontrol.aws.hfl.dev
+  resources:
+  - statemachineversions/status
   verbs:
   - get
   - patch

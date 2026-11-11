@@ -1,0 +1,71 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlS3StorageLens",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3StorageLensCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "organizations:DescribeOrganization",
+        "organizations:ListAWSServiceAccessForOrganization",
+        "organizations:ListAccounts",
+        "organizations:ListDelegatedAdministrators",
+        "s3:GetStorageLensConfiguration",
+        "s3:GetStorageLensConfigurationTagging",
+        "s3:PutStorageLensConfiguration",
+        "s3:PutStorageLensConfigurationTagging",
+        "s3tables:CreateTableBucket",
+        "s3tables:PutTableBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3StorageLensRead",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetStorageLensConfiguration",
+        "s3:GetStorageLensConfigurationTagging"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3StorageLensUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "organizations:DescribeOrganization",
+        "organizations:ListAWSServiceAccessForOrganization",
+        "organizations:ListAccounts",
+        "organizations:ListDelegatedAdministrators",
+        "s3:GetStorageLensConfiguration",
+        "s3:GetStorageLensConfigurationTagging",
+        "s3:PutStorageLensConfiguration",
+        "s3:PutStorageLensConfigurationTagging",
+        "s3tables:CreateTableBucket",
+        "s3tables:PutTableBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3StorageLensDelete",
+      "Effect": "Allow",
+      "Action": [
+        "s3:DeleteStorageLensConfiguration",
+        "s3:DeleteStorageLensConfigurationTagging"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

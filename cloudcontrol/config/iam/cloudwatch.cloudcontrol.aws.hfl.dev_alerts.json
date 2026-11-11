@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudWatchAlert",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchAlertCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:AssumeAccessProfile",
+        "cloudwatch:CreateAlert",
+        "cloudwatch:InvokeIntegration",
+        "cloudwatch:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchAlertRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetAlert",
+        "cloudwatch:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchAlertUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:AssumeAccessProfile",
+        "cloudwatch:InvokeIntegration",
+        "cloudwatch:TagResource",
+        "cloudwatch:UntagResource",
+        "cloudwatch:UpdateAlert"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchAlertDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DeleteAlert",
+        "cloudwatch:GetAlert",
+        "cloudwatch:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

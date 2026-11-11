@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudFrontPublicKey",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontPublicKeyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:CreatePublicKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontPublicKeyRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:GetPublicKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontPublicKeyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:GetPublicKey",
+        "cloudfront:UpdatePublicKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontPublicKeyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:DeletePublicKey",
+        "cloudfront:GetPublicKey"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

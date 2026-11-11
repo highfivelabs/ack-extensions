@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSSMMaintenanceWindowTask",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMMaintenanceWindowTaskCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "ssm:GetMaintenanceWindowTask",
+        "ssm:RegisterTaskWithMaintenanceWindow"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMMaintenanceWindowTaskRead",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetMaintenanceWindowTask"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMMaintenanceWindowTaskUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "ssm:UpdateMaintenanceWindowTask"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMMaintenanceWindowTaskDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:DeregisterTaskFromMaintenanceWindow",
+        "ssm:GetMaintenanceWindowTask"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

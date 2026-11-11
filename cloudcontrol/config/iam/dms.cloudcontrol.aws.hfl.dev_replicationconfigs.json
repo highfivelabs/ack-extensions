@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDMSReplicationConfig",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DMSReplicationConfigCreate",
+      "Effect": "Allow",
+      "Action": [
+        "dms:AddTagsToResource",
+        "dms:CreateReplicationConfig",
+        "dms:DescribeReplicationConfigs",
+        "dms:ListTagsForResource",
+        "iam:AttachRolePolicy",
+        "iam:CreateServiceLinkedRole",
+        "iam:PutRolePolicy",
+        "iam:UpdateRoleDescription"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DMSReplicationConfigRead",
+      "Effect": "Allow",
+      "Action": [
+        "dms:DescribeReplicationConfigs",
+        "dms:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DMSReplicationConfigUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "dms:AddTagsToResource",
+        "dms:ListTagsForResource",
+        "dms:ModifyReplicationConfig",
+        "dms:RemoveTagsFromResource",
+        "iam:AttachRolePolicy",
+        "iam:CreateServiceLinkedRole",
+        "iam:PutRolePolicy",
+        "iam:UpdateRoleDescription"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DMSReplicationConfigDelete",
+      "Effect": "Allow",
+      "Action": [
+        "dms:DeleteReplicationConfig",
+        "dms:DescribeReplicationConfigs",
+        "dms:ListTagsForResource",
+        "iam:DeleteServiceLinkedRole",
+        "iam:GetServiceLinkedRoleDeletionStatus"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

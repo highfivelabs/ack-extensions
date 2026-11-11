@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEventSchemasRegistry",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventSchemasRegistryCreate",
+      "Effect": "Allow",
+      "Action": [
+        "schemas:CreateRegistry",
+        "schemas:DescribeRegistry",
+        "schemas:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventSchemasRegistryRead",
+      "Effect": "Allow",
+      "Action": [
+        "schemas:DescribeRegistry"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventSchemasRegistryUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "schemas:DescribeRegistry",
+        "schemas:ListTagsForResource",
+        "schemas:TagResource",
+        "schemas:UntagResource",
+        "schemas:UpdateRegistry"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventSchemasRegistryDelete",
+      "Effect": "Allow",
+      "Action": [
+        "schemas:DeleteRegistry",
+        "schemas:DescribeRegistry"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

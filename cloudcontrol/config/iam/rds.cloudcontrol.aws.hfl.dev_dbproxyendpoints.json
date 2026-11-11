@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRDSDBProxyEndpoint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSDBProxyEndpointCreate",
+      "Effect": "Allow",
+      "Action": [
+        "rds:AddTagsToResource",
+        "rds:CreateDBProxyEndpoint",
+        "rds:DescribeDBProxyEndpoints"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSDBProxyEndpointRead",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DescribeDBProxyEndpoints",
+        "rds:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSDBProxyEndpointUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "rds:AddTagsToResource",
+        "rds:DescribeDBProxyEndpoints",
+        "rds:ModifyDBProxyEndpoint",
+        "rds:RemoveTagsFromResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSDBProxyEndpointDelete",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DeleteDBProxyEndpoint",
+        "rds:DescribeDBProxyEndpoints"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

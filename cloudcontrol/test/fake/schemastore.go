@@ -133,7 +133,14 @@ func (b *SchemaStore) Create(_ context.Context, model map[string]any) (string, e
 	for _, ptr := range b.Schema.PrimaryIdentifier {
 		name := topLevel(ptr)
 		if name == "" {
-			return "", InvalidRequest("primary identifier %s is not a top-level property", ptr)
+			// A nested identifier (S3 Storage Lens:
+			// /properties/StorageLensConfiguration/Id) is the caller's.
+			v, ok := takePath(copyModel(m), strings.Split(strings.TrimPrefix(ptr, "/properties/"), "/"))
+			if !ok {
+				return "", InvalidRequest("primary identifier %s has no value", ptr)
+			}
+			parts = append(parts, fmt.Sprint(v))
+			continue
 		}
 		if _, ok := m[name]; !ok {
 			if v := b.value(name, b.n); v != nil {

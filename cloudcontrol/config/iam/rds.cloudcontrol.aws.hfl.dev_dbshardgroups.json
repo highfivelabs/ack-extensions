@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRDSDBShardGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSDBShardGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "rds:AddTagsToResource",
+        "rds:CreateDBShardGroup",
+        "rds:DescribeDBClusters",
+        "rds:DescribeDBShardGroups",
+        "rds:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSDBShardGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DescribeDBShardGroups",
+        "rds:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSDBShardGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "rds:AddTagsToResource",
+        "rds:DescribeDBClusters",
+        "rds:DescribeDBShardGroups",
+        "rds:ListTagsForResource",
+        "rds:ModifyDBShardGroup",
+        "rds:RemoveTagsFromResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSDBShardGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DeleteDBShardGroup",
+        "rds:DescribeDBClusters",
+        "rds:DescribeDbShardGroups"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

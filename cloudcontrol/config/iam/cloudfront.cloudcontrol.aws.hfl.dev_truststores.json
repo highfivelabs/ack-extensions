@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudFrontTrustStore",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontTrustStoreCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:CreateTrustStore",
+        "cloudfront:GetTrustStore",
+        "cloudfront:ListTagsForResource",
+        "cloudfront:TagResource",
+        "s3:GetObject",
+        "s3:GetObjectVersion",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontTrustStoreRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:GetTrustStore",
+        "cloudfront:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontTrustStoreUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:GetTrustStore",
+        "cloudfront:ListTagsForResource",
+        "cloudfront:TagResource",
+        "cloudfront:UntagResource",
+        "cloudfront:UpdateTrustStore",
+        "s3:GetObject",
+        "s3:GetObjectVersion",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontTrustStoreDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:DeleteTrustStore",
+        "cloudfront:GetTrustStore"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

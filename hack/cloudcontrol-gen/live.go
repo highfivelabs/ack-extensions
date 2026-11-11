@@ -13,6 +13,35 @@ import (
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/pkg/iamgen"
 )
 
+// maxLivePolicies is IAM's default quota of managed policies per role.
+const maxLivePolicies = 10
+
+// liveKinds checks types.yaml's liveKinds (each a served type, named
+// once, not neverDelete) and returns them as a set.
+func liveKinds(cfg config) (map[string]bool, error) {
+	served := map[string]bool{}
+	for _, t := range cfg.Types {
+		served[t.TypeName] = !t.NeverDelete
+	}
+	live := map[string]bool{}
+	for _, k := range cfg.LiveKinds {
+		deletable, ok := served[k]
+		switch {
+		case !ok:
+			return nil, fmt.Errorf("liveKinds: %s is not a served type", k)
+		case !deletable:
+			return nil, fmt.Errorf("liveKinds: %s is neverDelete; no live test may make one", k)
+		case live[k]:
+			return nil, fmt.Errorf("liveKinds: %s is listed twice", k)
+		}
+		live[k] = true
+	}
+	if len(live) == 0 {
+		return nil, fmt.Errorf("liveKinds: empty; the sandbox role needs at least one kind")
+	}
+	return live, nil
+}
+
 // The sandbox account's CloudFormation template (docs/live-runs.md), for
 // the builder to deploy; nothing here deploys it. Generated so its
 // permissions follow cloudcontrol/types.yaml:
@@ -21,23 +50,24 @@ import (
 //     is the audience the offload VM asks Google's metadata server for;
 //   - the live-test role, assumable only with AssumeRoleWithWebIdentity
 //     by that one Google service account (its unique ID, the token's sub),
-//     for an hour at most; its permissions: every served type's handler
-//     permissions and Cloud Control actions (as task cloudcontrol:iam
-//     writes for an environment, here for all types), the list handlers'
-//     and cloudformation:ListResources for the sweeper, and the tests' own
-//     fixtures (liveTestActions in types.yaml), one statement per
-//     service (iamgen.Compact), split into managed policies of at most
-//     6,144 characters;
+//     for an hour at most; its permissions: the handler permissions and
+//     Cloud Control actions of the kinds sampled on live runs (liveKinds
+//     in types.yaml, as task cloudcontrol:iam writes for an environment),
+//     their list handlers' and cloudformation:ListResources for the
+//     sweeper, and the tests' own fixtures (liveTestActions), one
+//     statement per service (iamgen.Compact), split into managed policies
+//     of at most 6,144 characters, ten at most (IAM's default per role);
+//     every other kind is proven on the fakes only (plan question 21);
 //   - no permissions for a type marked neverDelete (a landing zone): no
 //     live test makes one, since a test cannot delete what it made, and
-//     the sweeper never deletes one;
+//     the sweeper never deletes one (liveKinds may not name one);
 //   - a monthly cost budget with e-mail alerts at 80% of actual and 100%
 //     of forecast spend.
 func writeLiveTemplate(out string, cfg config, gens []generated) error {
 	var results []iamgen.Result
 	extra := map[string]bool{"cloudformation:ListResources": true}
 	for _, g := range gens {
-		if g.NeverDelete {
+		if !g.Live || g.NeverDelete {
 			continue
 		}
 		results = append(results, g.IAM)
@@ -66,8 +96,8 @@ func writeLiveTemplate(out string, cfg config, gens []generated) error {
 	if err != nil {
 		return err
 	}
-	if len(policies) > 10 {
-		return fmt.Errorf("the live-test role needs %d managed policies, over IAM's default of 10 per role", len(policies))
+	if len(policies) > maxLivePolicies {
+		return fmt.Errorf("the live-test role needs %d managed policies, over IAM's default of %d per role: sample fewer liveKinds in cloudcontrol/types.yaml", len(policies), maxLivePolicies)
 	}
 	ref := func(n string) map[string]any { return map[string]any{"Ref": n} }
 	resources := map[string]any{
