@@ -21,8 +21,8 @@
 #             with a commit (the pin) changed
 #   group G   services/G/ (service G: ./services/G/... and the tests in
 #             tests/e2e/ files that import it); tests/e2e/F_test.go with
-#             tests (group e2e:F: that file's tests); cloudcontrol/ and
-#             hack/cloudcontrol-gen/ (group cloudcontrol); hack/coverage/
+#             tests (group e2e:F: that file's tests); cloudcontrol/,
+#             hack/cloudcontrol-gen/ and hack/cloudcontrol-batch/ (group cloudcontrol); hack/coverage/
 #             (group coverage)
 #   adjacent  what a service's pull request also touches and check:static
 #             or the operator e2e covers: config/crds/, config/rbac/,
@@ -56,7 +56,7 @@ classify() {
       else
         echo full
       fi ;;
-    cloudcontrol/*|hack/cloudcontrol-gen/*) echo "group cloudcontrol" ;;
+    cloudcontrol/*|hack/cloudcontrol-gen/*|hack/cloudcontrol-batch/*) echo "group cloudcontrol" ;;
     hack/coverage/*) echo "group coverage" ;;
     config/crds/*|config/rbac/*|tests/operator/*) echo adjacent ;;
     *) echo full ;;
@@ -67,7 +67,7 @@ classify() {
 pkgs() {
   case "$1" in
     e2e:*) ;;
-    cloudcontrol) echo ./cloudcontrol/... ./hack/cloudcontrol-gen/... ;;
+    cloudcontrol) echo ./cloudcontrol/... ./hack/cloudcontrol-gen/... ./hack/cloudcontrol-batch/... ;;
     coverage) echo ./hack/coverage/... ;;
     *) [[ -d "services/$1" ]] && echo "./services/$1/..." ;;
   esac
