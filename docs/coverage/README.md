@@ -10,8 +10,8 @@ This directory measures how much of AWS is covered by Kubernetes kinds: by the c
 | --- | ---: | ---: |
 | In the CloudFormation schemas (the denominator) | 1,875 | 85,773 |
 | Covered by an official ACK kind | 266 | 6,033 (7.0%) |
-| Covered by ours, beyond official | 72 | 731 (0.9%) |
-| Covered by neither | 1,537 | 79,009 (92.1%) |
+| Covered by ours, beyond official | 73 | 736 (0.9%) |
+| Covered by neither | 1,536 | 79,004 (92.1%) |
 | Matched by the Terraform `aws` provider (estimate, [below](#terraform)) | | about 55,279 (64.4%), at least 41,864 (48.8%) |
 
 ## Files
@@ -55,14 +55,14 @@ Services do not matter equally: `quicksight` alone has more attributes than all 
 
 | Category | Services | Resources | ACK | Ours beyond | Attributes | ACK | Ours beyond | Terraform (estimate) |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 16 | 241 | 22.8% | 14.1% | 2,400 | 28.2% | 8.3% | ~51.5% (≥43.5%) |
+| platform-foundation | 16 | 241 | 22.8% | 14.5% | 2,400 | 28.2% | 8.5% | ~51.5% (≥43.5%) |
 | security-adjacent | 18 | 112 | 12.5% | 25.9% | 2,082 | 37.6% | 15.9% | ~74.1% (≥72.0%) |
 | application | 33 | 262 | 40.5% | 3.4% | 4,766 | 48.2% | 4.2% | ~50.8% (≥46.4%) |
 | other | 238 | 1,260 | 7.2% | 0.0% | 76,525 | 3.0% | 0.0% | ~65.4% (≥48.5%) |
 
 | Tier | Services | Resources | ACK | Ours beyond | Attributes | ACK | Ours beyond | Terraform (estimate) |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | 16 | 241 | 22.8% | 14.1% | 2,400 | 28.2% | 8.3% | ~51.5% (≥43.5%) |
+| 1 | 16 | 241 | 22.8% | 14.5% | 2,400 | 28.2% | 8.5% | ~51.5% (≥43.5%) |
 | 2 | 51 | 374 | 32.1% | 10.2% | 6,848 | 44.9% | 7.8% | ~57.9% (≥54.2%) |
 | 3 | 238 | 1,260 | 7.2% | 0.0% | 76,525 | 3.0% | 0.0% | ~65.4% (≥48.5%) |
 
@@ -88,7 +88,7 @@ Services do not matter equally: `quicksight` alone has more attributes than all 
 
 | Tier | Rule | Official | Ours |
 | --- | --- | ---: | ---: |
-| `exact` | the same path, names compared lower-cased without punctuation, `[]` and `{}` kept (`DBInstanceClass` and `dbInstanceClass`; ACK's `{quantity, items[]}` wrappers count as the list) | 5,174 | 676 |
+| `exact` | the same path, names compared lower-cased without punctuation, `[]` and `{}` kept (`DBInstanceClass` and `dbInstanceClass`; ACK's `{quantity, items[]}` wrappers count as the list) | 5,174 | 681 |
 | `alias` | a path-prefix rename written by hand in `mappings.yaml` (`ingressRules[]` is `SecurityGroupIngress[]`) | 145 | 25 |
 | `tags-map` | CloudFormation's `Tags[].Key` and `Tags[].Value` against ACK's `tags{}` map | 74 | 0 |
 | `free-form` | the CRD takes a free-form value (`x-kubernetes-preserve-unknown-fields`) above the CloudFormation path, so it covers everything under it | 0 | 0 |
@@ -211,7 +211,7 @@ This repository's own pins (`UPSTREAM.md`) cover only a few of these controllers
 
 ## Known error and caveats
 
-- **Unmapped.** Of the 7,536 spec paths in the 266 official CRDs mapped to a CloudFormation resource, 1,524 matched no CloudFormation property (**unmapped = 1,524**). Some are ACK-only fields (`clientRequestToken`, cross-resource helpers, fields ACK takes from the SDK that CloudFormation lacks); the rest are renames the matcher missed. Ours: 29 of 770 spec paths unmapped. Both are listed per resource as `official_unmapped` and `ours_unmapped` in `resources.csv` and per attribute by `-explain`.
+- **Unmapped.** Of the 7,536 spec paths in the 266 official CRDs mapped to a CloudFormation resource, 1,524 matched no CloudFormation property (**unmapped = 1,524**). Some are ACK-only fields (`clientRequestToken`, cross-resource helpers, fields ACK takes from the SDK that CloudFormation lacks); the rest are renames the matcher missed. Ours: 29 of 775 spec paths unmapped. Both are listed per resource as `official_unmapped` and `ours_unmapped` in `resources.csv` and per attribute by `-explain`.
 - **Upper bound on the understatement.** Where ACK covers a property under a name the matcher cannot pair, official coverage is under-counted. A resource's misses cannot exceed the smaller of its unmatched CloudFormation attributes and its unmapped spec paths; summed over every official kind that is **499 attributes (0.6% of the denominator, 8.3% of what is counted as official)**. The real figure is far lower, because most unmapped paths have no CloudFormation counterpart: the spot checks below found about 2% of covered attributes missed.
 - **No false credit from the denominator's shape.** An attribute is a leaf, so a resource with a very deep schema weighs more than a flat one. The largest services by attributes are `quicksight` (51,640, 60.2% of the total), `lex` (2,018, 2.4% of the total), `ec2` (1,495, 1.7% of the total), `sagemaker` (1,469, 1.7% of the total), `medialive` (1,115, 1.3% of the total). Percentages by *resource* are in `services.csv` too (`resources_official / resources_total`). A resource with ACK coverage of one field of a hundred still counts as one official resource.
 - **CloudFormation is not the API.** The denominator is CloudFormation's view of each service. Operations CloudFormation does not model (jobs, executions, one-shot actions, data-plane calls) are not in it, and neither is anything an ACK kind covers that CloudFormation lacks; that is why some kinds are outside it (below). A service ACK covers that CloudFormation has no resource for is not penalised, but it is not credited either.

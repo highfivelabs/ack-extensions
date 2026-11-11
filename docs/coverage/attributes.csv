@@ -8752,11 +8752,11 @@ controltower,EnabledControl,Parameters[].Value,object,false,ours,,spec.parameter
 controltower,EnabledControl,Tags[].Key,string,false,ours,,spec.tags[].key
 controltower,EnabledControl,Tags[].Value,string,false,ours,,spec.tags[].value
 controltower,EnabledControl,TargetIdentifier,string,true,ours,,spec.targetIdentifier
-controltower,LandingZone,Manifest,object,true,none,,
-controltower,LandingZone,RemediationTypes[],string,false,none,,
-controltower,LandingZone,Tags[].Key,string,false,none,,
-controltower,LandingZone,Tags[].Value,string,false,none,,
-controltower,LandingZone,Version,string,true,none,,
+controltower,LandingZone,Manifest,object,true,ours,,spec.manifest
+controltower,LandingZone,RemediationTypes[],string,false,ours,,spec.remediationTypes[]
+controltower,LandingZone,Tags[].Key,string,false,ours,,spec.tags[].key
+controltower,LandingZone,Tags[].Value,string,false,ours,,spec.tags[].value
+controltower,LandingZone,Version,string,true,ours,,spec.version
 cur,ReportDefinition,AdditionalArtifacts[],string,false,none,,
 cur,ReportDefinition,AdditionalSchemaElements[],string,false,none,,
 cur,ReportDefinition,BillingViewArn,string,false,none,,

@@ -29,8 +29,9 @@
 #             annotations say. The reconciler never calls DeleteResource
 #             for the type, its IAM policy has no delete permissions, and
 #             its CRD carries cloudcontrol.aws.hfl.dev/never-delete. Default
-#             false; no type served sets it yet (docs/cloudcontrol.md,
-#             section 3).
+#             false (docs/cloudcontrol.md, section 3). Such a type also
+#             joins config/admission/retain-only.yaml, is left out of the
+#             live-test role and is never swept.
 groupSuffix: cloudcontrol.aws.hfl.dev
 version: v1alpha1
 # What the end-to-end tests do themselves on a live run, beside the kinds'
@@ -94,14 +95,21 @@ types:
   - typeName: AWS::EC2::TransitGatewayRouteTableAssociation
   - typeName: AWS::EC2::TransitGatewayRouteTablePropagation
   - typeName: AWS::EC2::TransitGatewayPeeringAttachment
-  # F07: Control Tower's enabled controls and baselines on an OU. ACK has no
-  # Control Tower controller, issue or pull request. LandingZone waits for
-  # the builder (plan section 9, question 15): deleting one decommissions
-  # the landing zone.
+  # F07: Control Tower. ACK has no Control Tower controller, issue or pull
+  # request. Enabled controls and baselines on an OU: a delete only
+  # disables one.
   - typeName: AWS::ControlTower::EnabledControl
     unproven: "moto 5.2.5 has no controltower, and no other emulator exists"
   - typeName: AWS::ControlTower::EnabledBaseline
     unproven: "moto 5.2.5 has no controltower, and no other emulator exists"
+  # F07: the landing zone. Deleting one decommissions it (the guardrails,
+  # the log archive and audit accounts' setup, every enabled control), so
+  # it is never deleted, and the retain-only admission policy makes every
+  # object carry deletion-policy: retain (the builder, 2026-11-10; plan
+  # section 9, question 15). No emulator has Control Tower: the fake's
+  # backend is a test double of ours (the builder, 2026-11-10).
+  - typeName: AWS::ControlTower::LandingZone
+    neverDelete: true
   # F08: Route 53 beyond ACK's route53-controller v1.8.0 (HealthCheck,
   # HostedZone, RecordSet). DNSSEC signing for a hosted zone (a delete
   # disables signing: remove the zone's DS record at the parent first) and

@@ -274,6 +274,9 @@ func startFake(t *testing.T, root string) (*fake.Server, string, aws.Config) {
 			b = fake.NewTransitGatewayRouteTablePropagation(motoCfg)
 		case "AWS::EC2::TransitGatewayPeeringAttachment":
 			b = fake.NewTransitGatewayPeeringAttachment(motoCfg)
+		case "AWS::ControlTower::LandingZone":
+			// No emulator has Control Tower: a test double of ours.
+			b = fake.NewLandingZone(motoAccount, region)
 		case "AWS::Route53::QueryLoggingConfig":
 			b = fake.NewQueryLoggingConfig(motoCfg)
 		case "AWS::Route53Resolver::ResolverDNSSECConfig":

@@ -6,11 +6,11 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 
 | Category | Types | Provisionable | FULLY_MUTABLE | IMMUTABLE | CRD accepted | Clean | Gap types | Gap, provisionable | Gap, CRD accepted | Gap, clean |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 152 | 148 | 148 | 145 |
+| platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 151 | 147 | 147 | 145 |
 | security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 69 | 51 | 51 | 50 |
 | application | 262 | 250 | 232 | 18 | 250 | 230 | 147 | 136 | 136 | 128 |
 | other | 1260 | 1188 | 1084 | 104 | 1188 | 1137 | 1169 | 1101 | 1101 | 1059 |
-| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1537 | 1436 | 1436 | 1382 |
+| all | 1875 | 1766 | 1589 | 177 | 1766 | 1672 | 1536 | 1435 | 1435 | 1382 |
 
 ## Foundation gaps (platform-foundation and security-adjacent types with no kind)
 
@@ -25,7 +25,6 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::CloudTrail::Channel` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::CloudTrail::Dashboard` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::CloudTrail::ResourcePolicy` | platform-foundation | FULLY_MUTABLE | ok | 1 | 0 | 0 | 0 |
-| `AWS::ControlTower::LandingZone` | platform-foundation | FULLY_MUTABLE | ok | 1 | 0 | 0 | 1 |
 | `AWS::Detective::Graph` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Detective::MemberInvitation` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
 | `AWS::Detective::OrganizationAdmin` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |

@@ -18,6 +18,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::EC2::TransitGatewayPeeringAttachment` | `TransitGatewayPeeringAttachment.ec2.cloudcontrol.aws.hfl.dev` | 5 | 4 | 8 | 0 | 0 | 0 |
 | `AWS::ControlTower::EnabledControl` | `EnabledControl.controltower.cloudcontrol.aws.hfl.dev` | 4 | 0 | 4 | 0 | 1 | 2 |
 | `AWS::ControlTower::EnabledBaseline` | `EnabledBaseline.controltower.cloudcontrol.aws.hfl.dev` | 5 | 1 | 4 | 0 | 1 | 4 |
+| `AWS::ControlTower::LandingZone` | `LandingZone.controltower.cloudcontrol.aws.hfl.dev` | 4 | 5 | 0 | 0 | 1 | 3 |
 | `AWS::Route53::QueryLoggingConfig` | `QueryLoggingConfig.route53.cloudcontrol.aws.hfl.dev` | 2 | 2 | 4 | 0 | 0 | 1 |
 | `AWS::Route53::DNSSEC` | `DNSSEC.route53.cloudcontrol.aws.hfl.dev` | 1 | 0 | 2 | 0 | 0 | 1 |
 | `AWS::Route53::KeySigningKey` | `KeySigningKey.route53.cloudcontrol.aws.hfl.dev` | 4 | 0 | 6 | 0 | 0 | 2 |
@@ -199,6 +200,18 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - IAM actions (36): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `controltower:DisableBaseline`, `controltower:EnableBaseline`, `controltower:GetBaselineOperation`, `controltower:GetEnabledBaseline`, `controltower:ListEnabledBaselines`, `controltower:ListTagsForResource`, `controltower:TagResource`, `controltower:UntagResource`, `controltower:UpdateEnabledBaseline`, `organizations:AttachPolicy`, `organizations:CreateOrganization`, `organizations:CreateOrganizationalUnit`, `organizations:CreatePolicy`, `organizations:DeletePolicy`, `organizations:DetachPolicy`, `organizations:EnableAWSServiceAccess`, `organizations:EnablePolicyType`, `organizations:ListRoots`, `organizations:UpdatePolicy`, `servicecatalog:AssociatePrincipalWithPortfolio`, `servicecatalog:AssociateProductWithPortfolio`, `servicecatalog:CreatePortfolio`, `servicecatalog:CreateProduct`, `servicecatalog:CreateProvisioningArtifact`, `servicecatalog:DeleteProvisioningArtifact`, `servicecatalog:ListPortfolios`, `servicecatalog:ListPrincipalsForPortfolio`, `servicecatalog:ListProvisioningArtifacts`, `servicecatalog:SearchProductsAsAdmin`, `servicecatalog:UpdatePortfolio`, `servicecatalog:UpdateProvisioningArtifact`
 - Sensitive IAM actions: none
 - Left out (list handler only): none
+
+## `AWS::ControlTower::LandingZone`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: `/properties/Manifest (no type)`
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (43): `cloudformation:CreateResource`, `cloudformation:DescribeOrganizationsAccess`, `cloudformation:EnableOrganizationsAccess`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `controltower:CreateLandingZone`, `controltower:GetLandingZone`, `controltower:GetLandingZoneOperation`, `controltower:ListTagsForResource`, `controltower:TagResource`, `controltower:UntagResource`, `controltower:UpdateLandingZone`, `iam:CreateServiceLinkedRole`, `iam:GetRole`, `organizations:AttachPolicy`, `organizations:CreateOrganization`, `organizations:CreateOrganizationalUnit`, `organizations:CreatePolicy`, `organizations:DeletePolicy`, `organizations:DescribeAccount`, `organizations:DescribeOrganization`, `organizations:DetachPolicy`, `organizations:EnableAWSServiceAccess`, `organizations:EnablePolicyType`, `organizations:ListRoots`, `organizations:UpdatePolicy`, `servicecatalog:AssociatePrincipalWithPortfolio`, `servicecatalog:AssociateProductWithPortfolio`, `servicecatalog:CreatePortfolio`, `servicecatalog:CreateProduct`, `servicecatalog:CreateProvisioningArtifact`, `servicecatalog:DeleteProvisioningArtifact`, `servicecatalog:ListPortfolios`, `servicecatalog:ListPrincipalsForPortfolio`, `servicecatalog:ListProvisioningArtifacts`, `servicecatalog:SearchProductsAsAdmin`, `servicecatalog:UpdatePortfolio`, `servicecatalog:UpdateProvisioningArtifact`, `sso:GetPeregrineStatus`, `sso:ListDirectoryAssociations`, `sso:RegisterRegion`, `sso:StartPeregrine`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`
+- Left out (list handler only): `controltower:ListLandingZones`
 
 ## `AWS::Route53::QueryLoggingConfig`
 

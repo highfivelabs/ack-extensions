@@ -12,6 +12,7 @@ resources:
   - ec2.cloudcontrol.aws.hfl.dev_transitgatewaypeeringattachments.yaml
   - controltower.cloudcontrol.aws.hfl.dev_enabledcontrols.yaml
   - controltower.cloudcontrol.aws.hfl.dev_enabledbaselines.yaml
+  - controltower.cloudcontrol.aws.hfl.dev_landingzones.yaml
   - route53.cloudcontrol.aws.hfl.dev_queryloggingconfigs.yaml
   - route53.cloudcontrol.aws.hfl.dev_dnssecs.yaml
   - route53.cloudcontrol.aws.hfl.dev_keysigningkeys.yaml

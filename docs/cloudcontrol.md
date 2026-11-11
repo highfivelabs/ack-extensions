@@ -185,7 +185,10 @@ reconciler does the rest. Nothing in it names a type.
   (no delete call, `docs/handoff.md`); a type can add the retain-only
   admission policy (`config/admission/retain-only.yaml`) too, so a
   delete without `deletion-policy: retain` is refused rather than
-  quietly keeping the resource. No type served sets it yet.
+  quietly keeping the resource. `LandingZone` (Control Tower) sets both
+  (section 7, batch 3); a never-deleted type is also left out of the
+  live-test role, and the live sweeper skips it (`TestNeverDeletedAreRetainOnly`
+  and `TestLiveRoleLeavesOutNeverDeleted` in `hack/cloudcontrol-gen`).
 - **Adoption.** ACK's `adoption-policy: adopt` (or `adopt-or-create`) with
   `adoption-fields` naming the primary identifier by field
   (`{"transitGatewayRouteTableId": "tgw-rtb-..."}`) or `{"identifier": ...}`;
@@ -543,9 +546,27 @@ marked `unproven` in `types.yaml`; there is no e2e test. Each parameter's
 handlers' permissions reach into Organizations, Service Catalog and IAM
 (`config/iam/`), and `EnabledControl`'s create may take up to 720 minutes;
 the reconciler polls the request without holding a worker.
-`AWS::ControlTower::LandingZone` is held back: deleting one decommissions
-the landing zone (plan section 9, question 15). ACK has no Control Tower
-controller, issue or pull request.
+ACK has no Control Tower controller, issue or pull request.
+
+`AWS::ControlTower::LandingZone` (the builder, 2026-11-10, plan section 9
+question 15): deleting one decommissions the landing zone, so it is
+`neverDelete` in `types.yaml` and in `config/admission/retain-only.yaml`,
+the same guarantee as the ACK-generated `Organization`: no
+`DeleteResource` call, no delete permissions in its IAM policy, and every
+object must carry `deletion-policy: retain`. Its `Manifest` has no type in
+the schema, so it is free-form and compared whole. **Proven on a test
+double** (the builder, 2026-11-10: a test double or recordings for Control
+Tower): `cloudcontrol/test/fake/controltower.go` keeps the landing zone in
+memory, one per account, with the ARN, status and drift status Control
+Tower's API reference describes, none of it checked on real AWS.
+`TestLandingZone` creates one, changes its manifest (one replace of
+`/Manifest`), deletes the object without the annotation under a manager
+whose default is delete (the landing zone stays, no `DeleteResource`),
+installs the policy (an object without the annotation, or with `delete`, is
+refused; a change or removal of the annotation is refused), adopts the
+kept landing zone again by `landingZoneIdentifier` and deletes that object
+too. The test skips on a live run, and the live-test role has none of its
+permissions: a test cannot delete a landing zone it made.
 
 **Batch 4: F08 and F09, DNS** (`TestDNS`). Ten types; ACK's
 route53-controller v1.8.0 (`HealthCheck`, `HostedZone`, `RecordSet`) and
@@ -918,7 +939,8 @@ with limits":
    fake" in the coverage data; `task coverage` counts them as ours. Done:
    the coverage change, batch 1 (F02, three Identity Center types) and
    batch 2 (F04, four Transit Gateway routing types), batch 3 (F07, two
-   Control Tower types, unproven on the fake), batch 4 (F08, F09: ten DNS
+   Control Tower types, unproven on the fake), F07's `LandingZone`, never
+   deleted and retain-only, on a test double, batch 4 (F08, F09: ten DNS
    types, two proven on moto), batch 5 (F14, eleven Config types, six
    proven on moto), batch 6 (F15, seven GuardDuty types, `Filter`
    proven on moto) and batch 7 (F16, nine Security Hub types, `Hub` and
