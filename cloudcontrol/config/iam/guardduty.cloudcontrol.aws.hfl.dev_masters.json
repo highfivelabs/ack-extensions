@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGuardDutyMaster",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyMasterCreate",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:AcceptInvitation",
+        "guardduty:GetMasterAccount",
+        "guardduty:ListInvitations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyMasterRead",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:GetMasterAccount"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyMasterDelete",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:DisassociateFromMasterAccount"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

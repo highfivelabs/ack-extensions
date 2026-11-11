@@ -1,0 +1,49 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityHubFindingAggregator",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubFindingAggregatorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:CreateFindingAggregator"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubFindingAggregatorRead",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:GetFindingAggregator"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubFindingAggregatorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:UpdateFindingAggregator"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubFindingAggregatorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:DeleteFindingAggregator"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityHubActionTarget",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubActionTargetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:CreateActionTarget",
+        "securityhub:DescribeActionTargets"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubActionTargetRead",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:DescribeActionTargets"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubActionTargetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:UpdateActionTarget"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubActionTargetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:DeleteActionTarget"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

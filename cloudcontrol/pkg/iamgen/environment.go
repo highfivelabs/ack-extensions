@@ -21,7 +21,13 @@ const MaxManagedPolicySize = 6144
 // or two. The builder (2026-11-09): "the scoping should be at the
 // environment level, so each environment gets an identity attached".
 func Environment(results []Result, limit int) ([]Policy, error) {
-	merged := Merge(results)
+	return Split(Merge(results), limit)
+}
+
+// Split is a policy's statements, in order, in as few documents as IAM's
+// size limit allows; a statement is never split. The ACK-generated
+// managers' environment policies (pkg/ackiam) use it too.
+func Split(merged Policy, limit int) ([]Policy, error) {
 	var out []Policy
 	cur := Policy{Version: "2012-10-17"}
 	for _, st := range merged.Statement {
@@ -75,13 +81,25 @@ type Trust struct {
 // another cluster, cannot use the role. The tags are also in CloudTrail,
 // so every call is attributed to the environment's manager.
 func TrustPolicy(t Trust) map[string]any {
+	return PodIdentityTrust(t, "EKSPodIdentityCloudControlManager", v1alpha1.ManagerName(t.Environment))
+}
+
+// PodIdentityTrust is a trust policy for EKS Pod Identity that lets only
+// the ServiceAccounts named, in the operator's namespace of the cluster
+// named, use the role (t.Environment is not read). One ServiceAccount is
+// a string, several a list, as IAM writes them.
+func PodIdentityTrust(t Trust, sid string, serviceAccounts ...string) map[string]any {
 	if t.SystemNamespace == "" {
 		t.SystemNamespace = v1alpha1.DefaultSystemNamespace
+	}
+	var sa any = serviceAccounts
+	if len(serviceAccounts) == 1 {
+		sa = serviceAccounts[0]
 	}
 	return map[string]any{
 		"Version": "2012-10-17",
 		"Statement": []any{map[string]any{
-			"Sid":       "EKSPodIdentityCloudControlManager",
+			"Sid":       sid,
 			"Effect":    "Allow",
 			"Principal": map[string]any{"Service": "pods.eks.amazonaws.com"},
 			"Action":    []string{"sts:AssumeRole", "sts:TagSession"},
@@ -89,7 +107,7 @@ func TrustPolicy(t Trust) map[string]any {
 				"StringEquals": map[string]any{
 					"aws:SourceAccount":                         t.AccountID,
 					"aws:RequestTag/kubernetes-namespace":       t.SystemNamespace,
-					"aws:RequestTag/kubernetes-service-account": v1alpha1.ManagerName(t.Environment),
+					"aws:RequestTag/kubernetes-service-account": sa,
 				},
 				"ArnEquals": map[string]any{"aws:SourceArn": t.ClusterARN},
 			},

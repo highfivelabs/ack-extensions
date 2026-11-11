@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGuardDutyIPSet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyIPSetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:CreateIPSet",
+        "guardduty:GetIPSet",
+        "guardduty:TagResource",
+        "iam:PutRolePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyIPSetRead",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:GetIPSet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyIPSetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:GetIPSet",
+        "guardduty:ListIPSets",
+        "guardduty:TagResource",
+        "guardduty:UntagResource",
+        "guardduty:UpdateIPSet",
+        "iam:PutRolePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GuardDutyIPSetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "guardduty:DeleteIPSet",
+        "guardduty:GetDetector",
+        "guardduty:GetIPSet",
+        "guardduty:ListDetectors",
+        "guardduty:ListIPSets",
+        "iam:DeleteRolePolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
