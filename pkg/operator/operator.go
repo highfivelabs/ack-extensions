@@ -150,8 +150,8 @@ func (r *Reconciler) SetupWithManager(mgr ctrl.Manager) error {
 
 // Beside maps a service ACK has no controller for to the ACK service whose
 // controller its manager runs beside, taking that controller's identity
-// (docs/plan.md, open question 8: the builder, 2026-11-09, "Just build
-// the thing. I trust your judgment."). That controller's role then needs
+// (docs/plan.md, open question 8, answered 2026-11-09: build it, at the
+// implementer's judgment). That controller's role then needs
 // the service's rights too (README, "AWS identity").
 var Beside = map[string]string{"scheduler": "eventbridge"}
 

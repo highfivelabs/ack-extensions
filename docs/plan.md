@@ -1423,7 +1423,7 @@ resource the generator reads.
 
 An EventBridge Scheduler schedule group. ACK has no Scheduler controller
 (`community` issue #2784). The manager runs beside ACK's EventBridge
-controller with its identity (open question 8, answered by the builder;
+controller with its identity (open question 8, answered;
 section 8, item 12).
 
 **Generated** from `CreateScheduleGroup`, `GetScheduleGroup` and
@@ -1473,8 +1473,8 @@ controller (section 6.23).
 
 An AWS Organizations policy: a service control policy, resource control
 policy, tag policy, backup policy or AI services opt-out policy. This is
-the first item of `docs/coverage/foundation.md` (F01), the builder's first
-ask: declare an SCP. ACK's organizations-controller `v1.7.0` has `Account`
+the first item of `docs/coverage/foundation.md` (F01), the first
+priority: declare an SCP. ACK's organizations-controller `v1.7.0` has `Account`
 and `OrganizationalUnit` and ignores `Policy`, `Organization` and
 `GovCloudAccount`. Rechecked read-only on 2026-11-09: no release after
 `v1.7.0` (2026-10-23), no open pull request (the two OU-reference pull
@@ -1630,7 +1630,7 @@ templates, and the admission policy.
   the existing organization (its lists synced to the spec) and calls
   `CreateOrganization` only when the account has none. Two objects adopt
   the same organization and fight over the lists; make one.
-- **Never deleted** (the builder, question 12): `DeleteOrganization` is
+- **Never deleted** (question 12, answered): `DeleteOrganization` is
   ignored in `generator.yaml`, so the controller has no code that calls it
   and deleting the object, whatever its deletion policy, only stops
   managing the organization. The policy types and trusted access stay as
@@ -1657,13 +1657,12 @@ templates, and the admission policy.
   `DisablePolicyType`, read with `ListRoots`; `PENDING_ENABLE` counts as
   enabled) and **`awsServiceAccessPrincipals`** (`EnableAWSServiceAccess`,
   `DisableAWSServiceAccess`, read with
-  `ListAWSServiceAccessForOrganization`) are **additive** (the builder,
+  `ListAWSServiceAccessForOrganization`) are **additive** (decision
   A3, 2026-11-10; this reverses the exclusive lists first built): compared
   as sets, what is listed and missing is enabled, and an entry enabled
   outside Kubernetes is kept, never disabled, and reported for import.
-  The builder's words: "I think we should treat the out of band action as
-  additive and something we should flag for import when taking an asset
-  inventory and giving adoption recommendations". A listed entry disabled
+  An out-of-band action is treated as additive and flagged for import
+  when taking an asset inventory and giving adoption recommendations. A listed entry disabled
   outside Kubernetes is still put back.
   - **Ownership.** The object disables only what it owns:
     `status.ownedEnabledPolicyTypes` and
@@ -1764,7 +1763,7 @@ ARN.
   parent, and moving it back to the root on delete would take it out
   from under its OU's policies, which is the opposite of what deleting a
   placement is for. **Assumed, for the builder to confirm:** the
-  builder's answer to question 12 (an organization is not deletable, so
+  answer to question 12 (an organization is not deletable, so
   it is not treated as such) applied to a placement; likely and cheap.
   Following it, the kind joins the retain-only admission policy (6.28,
   `config/admission/retain-only.yaml`), so every object carries
@@ -1796,7 +1795,7 @@ the management account (AWS lets it move between OUs); real AWS.
 
 ### 6.30 `iam.aws.hfl.dev` `AccessKey`
 
-An IAM user's access key (F03; rank 15). Built on the builder's answer to
+An IAM user's access key (F03; rank 15). Built on the answer to
 open question 10. Upstream rechecked 2026-11-09: iam-controller `v1.11.3`
 ignores `AccessKey` in its `generator.yaml`; no pull request adds it;
 community #1879 asks for a way to get a key's secret. Cloud Control cannot
@@ -1847,7 +1846,7 @@ refuses every change.
 - **Delete** deletes the key, then the Secret if the object owns it (the
   owner reference does the same where garbage collection runs). A Secret
   deleted by hand is not made again; the key's secret is gone, so rotate.
-- **Assumed, likely and cheap** (the builder named a spec field with a
+- **Assumed, likely and cheap** (the answer named a spec field with a
   default, not the default): the default Secret name is the object's
   name, and the Secret's keys are `AWS_ACCESS_KEY_ID` and
   `AWS_SECRET_ACCESS_KEY`.
@@ -1872,7 +1871,7 @@ explicit delete is what the test shows); real AWS.
 
 ### 6.31 `iam.aws.hfl.dev` `VirtualMFADevice`
 
-A virtual MFA device (F03). Built on the builder's decision of 2026-11-09,
+A virtual MFA device (F03). Built on the decision of 2026-11-09,
 closing PR #44: Cloud Control never returns a device's seed or QR code,
 so a device made through it cannot be enrolled; this kind writes the seed
 into a Kubernetes Secret, on `AccessKey`'s pattern (section 6.30).
@@ -1920,7 +1919,7 @@ refuses every change.
   retried, and the error says why, until the device is deactivated.
   Tags are not managed (the list does not return them, and moto has no
   MFA device tag calls).
-- **Assumed, likely and cheap** (the builder named the seed and the QR
+- **Assumed, likely and cheap** (the decision named the seed and the QR
   code, not the names): the default Secret name is the object's name, and
   the Secret's keys are `serialNumber`, `base32StringSeed` and `qrCodePNG`.
 
@@ -2312,9 +2311,9 @@ identity scoped to it, and nothing else does:
   manager only ever takes the identity of the ACK controller beside it,
   and the operator refuses to run the Organizations manager while any
   other ACK controller shares that namespace (section 7.2, item 7).
-- **The role is bound with EKS Pod Identity, not IRSA** (the builder,
-  2026-11-09: "not through Workload Identity but instead through Pod
-  Identity. Important distinction there, Pod Identity is newer"). ACK's
+- **The role is bound with EKS Pod Identity, not IRSA** (decided
+  2026-11-09: through Pod Identity rather than Workload Identity, an
+  important distinction since Pod Identity is newer). ACK's
   ServiceAccount carries no `eks.amazonaws.com/role-arn` annotation (do
   not set `serviceAccount.annotations` in ACK's chart); the role is bound
   outside the cluster, by one Pod Identity association per
@@ -2397,10 +2396,10 @@ identity scoped to it, and nothing else does:
 
 ### 7.6 Per environment: `ACKContext` (open question 5, answered)
 
-The builder (2026-11-10): "ACK's per-controller managers should follow the
-same environment-scoped Pod Identity model" as Cloud Control
-(`docs/cloudcontrol.md` section 10), and confirmed one manager per
-controller per namespace. So an environment (a namespace) enables the
+Decided 2026-11-10: ACK's per-controller managers follow the same
+environment-scoped Pod Identity model as Cloud Control
+(`docs/cloudcontrol.md` section 10), with one manager per controller per
+namespace. So an environment (a namespace) enables the
 ACK-generated managers it uses, and each runs as the environment's role:
 
 ```yaml
@@ -2567,7 +2566,7 @@ kinds follow the environment's role.
 ## 3a. The coverage dashboard
 
 How far ACK and this repository reach is measured, not guessed
-(builder's ask, 2026-11-09): `hack/coverage/` reads the CloudFormation
+(asked for 2026-11-09): `hack/coverage/` reads the CloudFormation
 resource schemas (the denominator: every writable property of every
 resource, per service), every ACK controller's latest released CRDs
 (official) and our `config/crds/bases/` (ours), matches CRD spec paths
@@ -2678,7 +2677,7 @@ Before it can run on a real cluster:
 ## 9. Open questions
 
 1. **Fields on existing ACK kinds** (Secrets Manager rotation in PR #69,
-   ACM import in PR #104). gaps-gcp's rule (builder, 2026-11-07): wait
+   ACM import in PR #104). gaps-gcp's rule (2026-11-07): wait
    for the release; ship our own copy of the kind, in our group, only when
    a package cannot work without the field and the release is not near.
    Does the same rule hold for ACK? Proposed: yes.
@@ -2687,9 +2686,8 @@ Before it can run on a real cluster:
    ACK's `DBInstance`, credentials from Secrets Manager)? Proposed: out of
    scope for this repository.
 
-   **Answered** (builder, 2026-11-10): "RDS database users and roles are
-   not necessarily out of scope; if those exist in the API we should
-   include them." Checked 2026-11-10 (read-only):
+   **Answered** (2026-11-10): RDS database users and roles are not
+   necessarily out of scope; if they exist in the API, include them. Checked 2026-11-10 (read-only):
    - **The RDS API** (aws-sdk-go-v2 `service/rds` v1.93.8, every
      operation): nothing makes, changes or lists a database user or role.
      They live inside the engine (`CREATE USER`, `CREATE ROLE`, `GRANT`
@@ -2742,7 +2740,7 @@ Before it can run on a real cluster:
 4. **Identity default.** `own` is the default (narrower Kubernetes
    rights, one AWS grant per role); `ack` needs no AWS step. Keep `own`?
 
-   **Answered** by question 5's answer (builder, 2026-11-10): for the
+   **Answered** by question 5's answer (2026-11-10): for the
    account-level kinds the identity is now the environment's, per
    manager: each runs as its own ServiceAccount, bound by EKS Pod
    Identity to the environment's role (section 7.6). Beside ACK's
@@ -2751,10 +2749,9 @@ Before it can run on a real cluster:
 5. **One manager per ACK controller** (per service, per namespace). That
    follows ACK's model, and with the operator it is automatic. Confirm.
 
-   **Answered** (builder, 2026-11-10): "ACK's per-controller managers
-   should follow the same environment-scoped Pod Identity model" as
-   Cloud Control, and one manager per controller per namespace is
-   confirmed. Built (section 7.6): an `ACKContext` per namespace lists
+   **Answered** (2026-11-10): ACK's per-controller managers follow the
+   same environment-scoped Pod Identity model as Cloud Control, and one
+   manager per controller per namespace is confirmed. Built (section 7.6): an `ACKContext` per namespace lists
    the controllers; the operator runs one manager per controller, in its
    own namespace as `ack-extensions-<service>-<namespace>`, watching only
    that namespace, its IAM policy generated from the kinds enabled
@@ -2802,8 +2799,8 @@ Before it can run on a real cluster:
    Proposed: the first, beside EventBridge's controller, documented as
    needing `scheduler:*` on that role.
 
-   **Answered** (builder, 2026-11-09): "Just build the thing. I trust your
-   judgment." Built as proposed: `pkg/operator` runs the scheduler
+   **Answered** (2026-11-09): build it, at the implementer's judgment.
+   Built as proposed: `pkg/operator` runs the scheduler
    manager beside ACK's EventBridge controller (`Beside`), copying its
    identity; section 8, item 12, says what that asks of the role.
 9. **IAM group membership: exclusive or not** (rank 15). Terraform has
@@ -2817,7 +2814,7 @@ Before it can run on a real cluster:
    2026-11-09); the builder to confirm. An exclusive group-side kind can
    be added later beside it.
 
-   **Answered** (builder, 2026-11-09): group membership stays
+   **Answered** (2026-11-09): group membership stays
    non-exclusive, as built.
 10. **IAM `AccessKey`** (rank 15). `CreateAccessKey` returns the secret
     access key once, and never again. A kind has to put it somewhere,
@@ -2834,14 +2831,14 @@ Before it can run on a real cluster:
     Recommended: leave it out. A static key is a long-lived credential
     for a user, where the identity in this repository is a workload's
     role (IRSA or EKS Pod Identity, section 7), and the coordinator
-    reports the builder's direction for identity points the same way.
+    reports that the direction for identity points the same way.
     Each of the other options would make this repository a writer of
     credentials, which nothing else here is. If a package needs one
     later, the first option is the smallest. `LoginProfile`,
     `SSHPublicKey`, the account alias and the password policy do not
     depend on the answer and go ahead.
 
-    **Answered** (builder, 2026-11-09): build it, writing a Kubernetes
+    **Answered** (2026-11-09): build it, writing a Kubernetes
     Secret. The secret key, returned only by the create, goes into a
     Secret in the object's namespace, named by a spec field with a default,
     owned by the `AccessKey` object; it is never overwritten on a resync,
@@ -2877,15 +2874,15 @@ Before it can run on a real cluster:
     README, not a code check. The builder to confirm. Not blocking the
     kinds.
 
-    **Answered** (builder, 2026-11-09): "The scope of permissions attached
-    to any given identity in a namespace should be commensurate with what
-    it's trying to manage. So, if it's organization-level things, it should
-    be org-level constrained. If the identity manages a GCP project it
-    shouldn't have org-level roles. The principal and its permission scopes
-    should align to what it operates against. That means cross-project or
-    cross-account role grants or resource builds are trickier but not
-    impossible. We just need a careful way for the identities to be managed
-    and to request more access when needed from that owner team."
+    **Answered** (2026-11-09): the scope of permissions attached to any
+    identity in a namespace is commensurate with what it manages. An
+    identity for organization-level things is constrained at the
+    organization level; an identity that manages a GCP project has no
+    org-level roles. A principal's permission scopes align with what it
+    operates against. Cross-project or cross-account role grants or
+    resource builds are therefore trickier but not impossible: identities
+    need careful management and a way to request more access from the
+    owning team when needed.
 
     So the Organizations kinds get an organization-scoped identity of their
     own (the management account's, or a delegated administrator's), in a
@@ -2900,11 +2897,10 @@ Before it can run on a real cluster:
     undone. Recommended: deleting the object never deletes the
     organization, it only stops managing it.
 
-    **Answered** (builder, 2026-11-09): "this organization isn't a
-    deletable thing, so we should not treat it as such. And maybe that
-    means we force the annotation to be abandoned, just because that will
-    reflect the operational reality of it anyway. And just make that
-    immutable. I don't know what enforces that. A webhook, a schema, both."
+    **Answered** (2026-11-09): an organization is not deletable, so it is
+    not treated as such. The deletion-policy annotation is forced to
+    retain (abandon), which reflects the operational reality anyway, and
+    made immutable, enforced by a webhook, a schema or both.
     Built (section 6.28): the controller has no `DeleteOrganization` call
     at all (the guarantee), and a ValidatingAdmissionPolicy requires
     `services.k8s.aws/deletion-policy: retain` on every Organization and
@@ -2938,9 +2934,8 @@ Before it can run on a real cluster:
     `docs/cloudcontrol.md` section 12 (go or not, the API group, the
     default for write-only properties, a sandbox account for real-AWS runs).
 
-    **Answered** (builder, 2026-11-09), all five Cloud Control decisions,
-    recorded in the builder's words in `docs/cloudcontrol.md` ("The
-    builder's decisions"):
+    **Answered** (2026-11-09), all five Cloud Control decisions,
+    recorded in `docs/cloudcontrol.md` ("Decisions"):
     1. go, with limits: productionize the generic manager, roll types out
        in foundation order, each proven on the fake and marked untested
        on real AWS until it has a real run; ACK-generated kinds where
@@ -2969,7 +2964,7 @@ Before it can run on a real cluster:
        builder creates it); the live-test switch and the account's
        CloudFormation template are prepared, credentials by federation
        from the offload VMs' Google service account, never stored keys.
-14. **IAM `VirtualMFADevice`** (F03). **Decided** (builder, 2026-11-09):
+14. **IAM `VirtualMFADevice`** (F03). **Decided** (2026-11-09):
     built here on ACK's generator (hand-written if it must be), not on
     Cloud Control, since Cloud Control never returns the seed (the Cloud
     Control `VirtualMFADevice`, PR #44, is closed). `CreateVirtualMFADevice`
@@ -3001,7 +2996,7 @@ Before it can run on a real cluster:
     control or baseline on an OU, which a delete only disables) are served
     without it, unproven on the fake (no emulator has Control Tower).
 
-    **Answered** (builder, 2026-11-10): the first, retain-only like
+    **Answered** (2026-11-10): the first, retain-only like
     `Organization`, with `neverDelete` and the retain-only admission
     policy; and for the fake, a test double or recordings for Control
     Tower. Built (`docs/cloudcontrol.md` section 7, batch 3):
@@ -3053,7 +3048,7 @@ Before it can run on a real cluster:
     role and one place that says what it runs. Not built until the
     builder answers.
 
-19. **Do other list-like fields follow A3?** The builder made
+19. **Do other list-like fields follow A3?** Decision A3 made
     `Organization`'s two lists additive (A3, 2026-11-10; section 6.28):
     what is enabled outside Kubernetes is kept and reported in
     `status.unmanaged<List>`. Two cases A3 does not settle:
@@ -3111,7 +3106,7 @@ Before it can run on a real cluster:
     template then shrinks to a few policies. Until the builder answers,
     no more types are added (the moto upgrades go on).
 
-    **Answered** (builder, 2026-11-11): the first option. The live-test
+    **Answered** (2026-11-11): the first option. The live-test
     role holds permissions only for the kinds sampled on live runs,
     starting with the free ones; every other kind is proven on the fakes
     only. Built as `liveKinds`, a list beside `liveTestActions` in

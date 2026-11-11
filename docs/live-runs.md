@@ -1,27 +1,26 @@
 # Live runs: the Cloud Control kinds against a real AWS account
 
 Every Cloud Control kind is **untested on real AWS** until it has a row in
-the ledger below (`docs/cloudcontrol.md`, the builder's decision 1). This
+the ledger below (`docs/cloudcontrol.md`, decision 1). This
 file says how a live run is made, what keeps it apart from everything else,
 and what each run found. The GCP repository's `docs/live-runs.md` is the
 model.
 
-**Status, 2026-11-10:** the sandbox account is `830550549114` (the
-builder's O5 sandbox). The builder deployed the stack
+**Status, 2026-11-10:** the sandbox account is `$AWS_SANDBOX_ACCOUNT_ID`
+(the O5 sandbox). The builder deployed the stack
 `ack-extensions-live-tests` there (in us-east-2; IAM is global, the tests
-run in us-west-2), trusting `offload-runner@our-chassis-514316-r0`
-(unique ID `102306610785199453342`), so live runs start offload VMs in
-`our-chassis-514316-r0`:
+run in us-west-2), trusting the offload runner service account
+`$OFFLOAD_SA` in the new organization's dev project, so live runs start
+offload VMs in that project. The identifiers come from the environment
+(a git-ignored `.env`; `.env.example` lists them), never from the
+repository:
 
 ```sh
-OFFLOAD_PROJECT=our-chassis-514316-r0 \
-OFFLOAD_BUCKET=gs://our-chassis-514316-r0-offload \
-OFFLOAD_SA=offload-runner@our-chassis-514316-r0.iam.gserviceaccount.com \
-../offload/offload run --machine e2-standard-8 \
-  --sa offload-runner@our-chassis-514316-r0.iam.gserviceaccount.com ...
+set -a; . ./.env; set +a   # AWS_SANDBOX_ACCOUNT_ID, OFFLOAD_PROJECT, OFFLOAD_BUCKET, OFFLOAD_SA
+../offload/offload run --machine e2-standard-8 --sa "$OFFLOAD_SA" ...
 ```
 
-our-chassis has 12 vCPUs of quota: one 8-vCPU VM at a time.
+That project has 12 vCPUs of quota: one 8-vCPU VM at a time.
 
 ## What keeps it apart
 
@@ -34,7 +33,7 @@ cannot take it:
 | No task but `test-live`, `live-sweep` and `live-list` mentions `hack/live`, `-tags live` or the real target, and none calls them; `task check` compiles the live code with `go vet` and runs none of it | `hack/noaws` rules L1 and L2, in `task check` |
 | The Taskfile sets `CLOUDCONTROL_E2E_TARGET=fake` for every task; built without `-tags live`, `real` fails | `Taskfile.yml`, `cloudcontrol/test/e2e/harness_test.go` |
 | An explicit opt-in on every run: `ACK_EXT_LIVE=create-real-aws-resources` | `hack/live/run.sh`, `cloudcontrol/test/live` |
-| The account must be in `hack/live/accounts.txt`, a reviewed change, and STS must say the credentials are that account's | the same |
+| The account must be `AWS_SANDBOX_ACCOUNT_ID` (from the environment; unset refuses the run), and STS must say the credentials are that account's | the same |
 | Federated credentials only; stored keys, a profile or an endpoint override in the environment refuse the run | `hack/live/credentials.sh`, `cloudcontrol/test/live` |
 | The manager never holds real credentials: it still runs under `pkg/fakeaws` (fake keys, dead proxy, a loopback endpoint), and a recorder in the test process signs its requests again with the run's credentials and forwards only Cloud Control and STS `GetCallerIdentity` | `cloudcontrol/test/live/recorder.go` |
 
@@ -87,14 +86,15 @@ aws cloudformation deploy --stack-name ack-extensions-live-tests \
   --parameter-overrides GoogleServiceAccountUniqueId=<unique ID> AlertEmail=<address>
 ```
 
-then add the account ID to `hack/live/accounts.txt` in a pull request.
+then set `AWS_SANDBOX_ACCOUNT_ID` to the account ID in the `.env` of
+whoever starts live runs (never in the repository).
 
 **Found on the first deploy (2026-11-10, run `ackx-11101802-5696`):** the
-trust works. The VM's ID token for `offload-runner@our-chassis-514316-r0`
+trust works. The VM's ID token for `$OFFLOAD_SA`
 carries `iss` `https://accounts.google.com`, `aud`
-`ack-extensions-live-tests`, and `azp` = `sub` = `102306610785199453342`;
+`ack-extensions-live-tests`, and `azp` = `sub` = the service account's unique ID;
 `AssumeRoleWithWebIdentity` into `ack-extensions-live-tests` succeeded and
-STS named account `830550549114`. The provider lists both the audience
+STS named account `$AWS_SANDBOX_ACCOUNT_ID`. The provider lists both the audience
 and the unique ID, so this run cannot tell which claim IAM compares with
 the list; removing one of the two client IDs and running again would
 tell. The role's permissions had a gap: the template's sweeper and fixture
@@ -108,7 +108,7 @@ regenerated template.
 
 - IAM also accepts `accounts.google.com` as a built-in federated principal
   without an OIDC provider resource; the template makes the provider, as
-  the builder asked. Which token claim IAM compares with the provider's
+  required. Which token claim IAM compares with the provider's
   client ID list for Google (`aud`, the audience, or `azp`, the service
   account's unique ID) is why both are listed. For the built-in principal
   AWS documents `accounts.google.com:aud` as the `azp` claim,
@@ -123,9 +123,10 @@ regenerated template.
 On an offload VM (credentials need its service account):
 
 ```sh
-../offload/offload run --sa <service account> --prep 'task tools' -- \
-  env ACK_EXT_LIVE=create-real-aws-resources \
-  task test-live ACCOUNT=<id> ROLE_ARN=arn:aws:iam::<id>:role/ack-extensions-live-tests TESTS=TestDetector
+../offload/offload run --sa "$OFFLOAD_SA" --prep 'task tools' -- \
+  env ACK_EXT_LIVE=create-real-aws-resources AWS_SANDBOX_ACCOUNT_ID="$AWS_SANDBOX_ACCOUNT_ID" \
+  task test-live ACCOUNT="$AWS_SANDBOX_ACCOUNT_ID" \
+  ROLE_ARN="arn:aws:iam::$AWS_SANDBOX_ACCOUNT_ID:role/ack-extensions-live-tests" TESTS=TestDetector
 ```
 
 `hack/live/run.sh` runs the tests against the fake, then against the
@@ -166,4 +167,4 @@ policy letting Route 53 write to it, which the test does not make yet. Each is a
 
 | Date | Run | Commit | Account | Tests | Fake | Live | Found |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2026-11-10 | `ackx-11101802-5696` | `a448a3d` + the account | 830550549114 | TestDetector | PASS | not run | Trust passed. The sweep before the run was refused `cloudformation:ListResources` (the template dropped `LiveRunSweeperAndFixtures`); the run stopped there, nothing created |
+| 2026-11-10 | `ackx-11101802-5696` | `a448a3d` + the account | `$AWS_SANDBOX_ACCOUNT_ID` | TestDetector | PASS | not run | Trust passed. The sweep before the run was refused `cloudformation:ListResources` (the template dropped `LiveRunSweeperAndFixtures`); the run stopped there, nothing created |

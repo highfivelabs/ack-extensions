@@ -31,10 +31,10 @@ import (
 	corev1alpha1 "github.com/highfivelabs/ack-extensions/apis/core/v1alpha1"
 )
 
-// ACK-generated managers: one per controller per environment (the
-// builder, 2026-11-10: "ACK's per-controller managers should follow the
-// same environment-scoped Pod Identity model", one manager per controller
-// per namespace).
+// ACK-generated managers: one per controller per environment (decided
+// 2026-11-10: ACK's per-controller managers follow the same
+// environment-scoped Pod Identity model, one manager per controller per
+// namespace).
 //
 // An ACKContext in a namespace (an environment) lists controllers
 // (services). For each, the operator makes, as for a CloudControlContext:

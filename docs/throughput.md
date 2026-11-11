@@ -1,7 +1,7 @@
 # Throughput: why generation was not further along, and what changed
 
-Written 2026-11-11 after the builder: "I would have expected the machinery
-to generate code here to get further along." Numbers are from `git log`,
+Written 2026-11-11 because the generation machinery was expected to be
+further along than it was. Numbers are from `git log`,
 `gh pr list`, `cloudcontrol/readiness.csv` and `docs/coverage/` at main
 `044c3ea`.
 
@@ -75,7 +75,7 @@ pull request, and a serial human merge.
 6. **The live role compacted** (`iamgen.Compact`): the same allowed actions
    in one statement per service, 43,966 characters down to 11,952 at 51
    types (applied to the live template once pull request #68 is in).
-7. **Self-merge on green** (the builder, 2026-11-11): batch pull requests
+7. **Self-merge on green** (decided 2026-11-11): batch pull requests
    are merged by the agent that wrote them once CI passes, a service group
    or several per pull request.
 

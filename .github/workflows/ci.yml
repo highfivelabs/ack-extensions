@@ -1,7 +1,7 @@
 # Copyright 2026 High Five Labs
 # SPDX-License-Identifier: Apache-2.0
 #
-# Pull requests (the builder's decisions of 2026-11-10, O22 and "selective"):
+# Pull requests (decisions of 2026-11-10, O22 and selective runs):
 #
 #   plan    hack/ci/select.sh maps the changed paths to what must run:
 #           none (docs only), groups (check:static, build and the changed

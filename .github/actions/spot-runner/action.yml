@@ -1,14 +1,14 @@
 # Copyright 2026 High Five Labs
 # SPDX-License-Identifier: Apache-2.0
 #
-# Start an offload Spot VM in hfl-dev-514205 that registers itself as a
+# Start an offload Spot VM in the offload project (vars.GCP_PROJECT) that registers itself as a
 # just-in-time GitHub Actions runner for one job (runs-on: the label), and
 # wait until GitHub sees it online. The job on it costs no Actions minutes.
 #
 # 1. Google Cloud through workload identity federation, as
-#    factory-offload@hfl-dev-514205 (it may create offload VMs).
+#    vars.FACTORY_OFFLOAD_SERVICE_ACCOUNT (it may create offload VMs).
 # 2. The factory App's private key from Secret Manager
-#    (factory-app-private-key in hfl-dev-514205; only factory-offload@ may
+#    (factory-app-private-key in vars.GCP_PROJECT; only that account may
 #    read it), and from it an installation token that may only read the
 #    factory repository and register organization runners. GitHub Free
 #    gives private repositories no organization secrets, so the key lives
@@ -40,15 +40,18 @@ runs:
   steps:
     - uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
       with:
-        workload_identity_provider: projects/361760340954/locations/global/workloadIdentityPools/github/providers/factory
-        service_account: factory-offload@hfl-dev-514205.iam.gserviceaccount.com
+        workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+        service_account: ${{ vars.FACTORY_OFFLOAD_SERVICE_ACCOUNT }}
 
     - name: The factory App's key
       id: key
       shell: bash
+      env:
+        GCP_PROJECT: ${{ vars.GCP_PROJECT }}
       run: |
         set -euo pipefail
-        key="$(gcloud secrets versions access latest --secret factory-app-private-key --project hfl-dev-514205)"
+        : "${GCP_PROJECT:?set the repository variable GCP_PROJECT}"
+        key="$(gcloud secrets versions access latest --secret factory-app-private-key --project "${GCP_PROJECT}")"
         while IFS= read -r line; do [[ -n "${line}" ]] && echo "::add-mask::${line}"; done <<<"${key}"
         { echo "pem<<PEM_END"; echo "${key}"; echo "PEM_END"; } >> "${GITHUB_OUTPUT}"
 

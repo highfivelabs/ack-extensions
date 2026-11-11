@@ -7,7 +7,7 @@
 # keep the resolved install manifest as the run's `install` artifact.
 #
 # The registry is written through Workload Identity Federation as
-# hfl-release@hfl-dev-514205 (only artifactregistry.writer on hfl-oci; it cannot create VMs); no key is stored here. It runs only when
+# vars.RELEASE_SERVICE_ACCOUNT (only artifactregistry.writer on hfl-oci in vars.GCP_PROJECT; it cannot create VMs); no key is stored here. It runs only when
 # the repository variable RELEASE_ENABLED is "true", which is set once the
 # WIF provider admits this repository (the PR that added this file says
 # what to change).
@@ -34,7 +34,7 @@ jobs:
       id-token: write
     env:
       REGISTRY: us-central1-docker.pkg.dev
-      KO_DOCKER_REPO: us-central1-docker.pkg.dev/hfl-dev-514205/hfl-oci/ack-extensions
+      KO_DOCKER_REPO: us-central1-docker.pkg.dev/${{ vars.GCP_PROJECT }}/hfl-oci/ack-extensions
       TAG: ${{ github.ref_name }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -44,8 +44,8 @@ jobs:
       - id: auth
         uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
         with:
-          workload_identity_provider: projects/361760340954/locations/global/workloadIdentityPools/github/providers/factory
-          service_account: hfl-release@hfl-dev-514205.iam.gserviceaccount.com
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.RELEASE_SERVICE_ACCOUNT }}
           token_format: access_token
       - name: Build and push the images
         env:

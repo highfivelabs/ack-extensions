@@ -9,8 +9,8 @@
 // it refuses to do anything unless:
 //
 //   - ACK_EXT_LIVE is exactly OptIn (an explicit opt-in, per run);
-//   - LIVE_ACCOUNT_ID is listed in hack/live/accounts.txt (a reviewed
-//     change; empty until the builder's sandbox account exists);
+//   - LIVE_ACCOUNT_ID is the sandbox account, AWS_SANDBOX_ACCOUNT_ID
+//     (from the environment, never from the repository; .env.example);
 //   - the credentials are federated (AWS_ROLE_ARN and
 //     AWS_WEB_IDENTITY_TOKEN_FILE, from the offload VM's Google service
 //     account; hack/live/credentials.sh), never stored keys or a profile;
@@ -18,11 +18,9 @@
 package live
 
 import (
-	"bufio"
 	"context"
 	"fmt"
 	"os"
-	"path/filepath"
 	"regexp"
 	"strings"
 
@@ -47,24 +45,18 @@ type Run struct {
 	Config              aws.Config
 }
 
-// Allowed reports whether account is in the allowlist file.
-func Allowed(root, account string) (bool, error) {
-	f, err := os.Open(filepath.Join(root, "hack", "live", "accounts.txt"))
-	if err != nil {
-		return false, err
+// SandboxAccountEnv names the environment variable that holds the only
+// AWS account live tests may touch.
+const SandboxAccountEnv = "AWS_SANDBOX_ACCOUNT_ID"
+
+// Allowed reports whether account is the sandbox account named by
+// AWS_SANDBOX_ACCOUNT_ID; it is an error when that variable is unset.
+func Allowed(account string) (bool, error) {
+	want := strings.TrimSpace(os.Getenv(SandboxAccountEnv))
+	if want == "" {
+		return false, fmt.Errorf("%s is not set: the sandbox account's 12-digit ID (see .env.example)", SandboxAccountEnv)
 	}
-	defer f.Close()
-	sc := bufio.NewScanner(f)
-	for sc.Scan() {
-		l := strings.TrimSpace(sc.Text())
-		if i := strings.Index(l, "#"); i >= 0 {
-			l = strings.TrimSpace(l[:i])
-		}
-		if l != "" && l == account {
-			return true, nil
-		}
-	}
-	return false, sc.Err()
+	return account != "" && account == want, nil
 }
 
 // Check refuses unless every condition in the package comment holds and
@@ -83,17 +75,17 @@ func Check(ctx context.Context, root string) (*Run, error) {
 }
 
 // Account is Check without a run (the sweeper's).
-func Account(ctx context.Context, root string) (*Run, error) {
+func Account(ctx context.Context, _ string) (*Run, error) {
 	if v := os.Getenv("ACK_EXT_LIVE"); v != OptIn {
 		return nil, fmt.Errorf("live: ACK_EXT_LIVE is %q; a live run creates real AWS resources and needs ACK_EXT_LIVE=%s", v, OptIn)
 	}
 	acct := os.Getenv("LIVE_ACCOUNT_ID")
-	ok, err := Allowed(root, acct)
+	ok, err := Allowed(acct)
 	if err != nil {
-		return nil, fmt.Errorf("live: reading the allowlist: %w", err)
+		return nil, fmt.Errorf("live: %w", err)
 	}
-	if acct == "" || !ok {
-		return nil, fmt.Errorf("live: account %q is not in hack/live/accounts.txt", acct)
+	if !ok {
+		return nil, fmt.Errorf("live: account %q is not %s", acct, SandboxAccountEnv)
 	}
 	for _, k := range []string{"AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_SESSION_TOKEN", "AWS_PROFILE", "AWS_ENDPOINT_URL"} {
 		if os.Getenv(k) != "" {

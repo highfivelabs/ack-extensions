@@ -15,7 +15,7 @@ import (
 // CloudFormation property paths from the top (["AddPrivateKey"], or
 // ["Auth", "Password"] for a nested one).
 //
-// Secret references are opt-in per field (the builder, 2026-11-09): many
+// Secret references are opt-in per field (decided 2026-11-09): many
 // write-only properties are not secrets (an IPAM pool's netmask, a
 // GuardDuty member's email, a SAML provider's key ID to remove), and those
 // stay plain fields. A pointer that is not a write-only string reachable

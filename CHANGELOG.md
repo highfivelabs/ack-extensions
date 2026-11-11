@@ -8,7 +8,7 @@ design and the reasons are in `docs/plan.md`.
 ### Changed
 
 - **`organizations.aws.hfl.dev` `Organization`: `enabledPolicyTypes` and
-  `awsServiceAccessPrincipals` are additive** (the builder, A3,
+  `awsServiceAccessPrincipals` are additive** (decision A3,
   2026-11-10; `docs/plan.md` section 6.28). Before, each list was the
   whole truth and anything enabled outside Kubernetes was disabled. Now
   an entry enabled outside Kubernetes is kept and reported in

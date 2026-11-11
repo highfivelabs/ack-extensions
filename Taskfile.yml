@@ -9,6 +9,10 @@
 # `go install github.com/go-task/task/v3/cmd/task@latest`.
 version: '3'
 
+# Environment identifiers (the sandbox account, ...) come from a
+# git-ignored .env; .env.example lists them.
+dotenv: ['.env']
+
 set: [errexit, pipefail]
 
 includes:
@@ -231,8 +235,8 @@ tasks:
 
   # Live tests against the real sandbox account (docs/live-runs.md). Never
   # run by check or any task it runs (hack/noaws checks that); refuse to
-  # start without ACK_EXT_LIVE=create-real-aws-resources and an account in
-  # hack/live/accounts.txt. Run on an offload VM with --sa (federated
+  # start without ACK_EXT_LIVE=create-real-aws-resources and ACCOUNT equal
+  # to AWS_SANDBOX_ACCOUNT_ID (.env.example). Run on an offload VM with --sa (federated
   # credentials, hack/live/credentials.sh).
   test-live:
     desc: 'The Cloud Control e2e tests against the fake, then the real sandbox account: ACK_EXT_LIVE=create-real-aws-resources task test-live ACCOUNT=<id> ROLE_ARN=<arn> [TESTS="TestDetector"] (docs/live-runs.md).'
@@ -341,7 +345,7 @@ tasks:
     env:
       TAG: '{{.TAG}}'
       REGISTRY: '{{.REGISTRY | default "us-central1-docker.pkg.dev"}}'
-      KO_DOCKER_REPO: '{{.KO_DOCKER_REPO | default "us-central1-docker.pkg.dev/hfl-dev-514205/hfl-oci/ack-extensions"}}'
+      KO_DOCKER_REPO: '{{.KO_DOCKER_REPO}}'
     cmds:
       - hack/release.sh
 

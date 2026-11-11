@@ -28,7 +28,7 @@ import (
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/pkg/registry"
 )
 
-// Cloud Control: one manager per environment (the builder, 2026-11-09).
+// Cloud Control: one manager per environment (decided 2026-11-09).
 //
 // "I think the scoping should be at the environment level, so each
 // environment gets an identity attached, and not through Workload Identity

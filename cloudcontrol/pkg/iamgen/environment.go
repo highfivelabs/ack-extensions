@@ -20,8 +20,8 @@ const MaxManagedPolicySize = 6144
 // Cloud Control actions once, then each enabled type's handler statements
 // (ForType), split into as many managed policy documents as IAM's size
 // limit needs, in order, so a role with a modest set of kinds needs one
-// or two. The builder (2026-11-09): "the scoping should be at the
-// environment level, so each environment gets an identity attached".
+// or two. Permissions are scoped at the environment level: each
+// environment gets an identity of its own (decided 2026-11-09).
 func Environment(results []Result, limit int) ([]Policy, error) {
 	return Split(Merge(results), limit)
 }
