@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlECSTaskSet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSTaskSetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:CreateTaskSet",
+        "ecs:DescribeTaskSets",
+        "ecs:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSTaskSetRead",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:DescribeTaskSets"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSTaskSetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:DescribeTaskSets",
+        "ecs:TagResource",
+        "ecs:UntagResource",
+        "ecs:UpdateTaskSet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSTaskSetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:DeleteTaskSet",
+        "ecs:DescribeTaskSets"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudWatchDomainAccessGrantForOrganization",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchDomainAccessGrantForOrganizationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:CreateDomainAccessGrantForOrganization",
+        "cloudwatch:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchDomainAccessGrantForOrganizationRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetDomainAccessGrantForOrganization",
+        "cloudwatch:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchDomainAccessGrantForOrganizationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DeleteDomainAccessGrantForOrganization",
+        "cloudwatch:GetDomainAccessGrantForOrganization",
+        "cloudwatch:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

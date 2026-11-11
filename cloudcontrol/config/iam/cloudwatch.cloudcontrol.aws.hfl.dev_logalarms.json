@@ -1,0 +1,77 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudWatchLogAlarm",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchLogAlarmCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DescribeAlarms",
+        "cloudwatch:ListTagsForResource",
+        "cloudwatch:PutLogAlarm",
+        "cloudwatch:TagResource",
+        "iam:PassRole",
+        "logs:CreateScheduledQuery",
+        "logs:DeleteScheduledQuery",
+        "logs:GetScheduledQuery",
+        "logs:ListTagsForResource",
+        "logs:TagResource",
+        "logs:UpdateScheduledQuery"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchLogAlarmRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DescribeAlarms",
+        "cloudwatch:ListTagsForResource",
+        "logs:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchLogAlarmUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DescribeAlarms",
+        "cloudwatch:ListTagsForResource",
+        "cloudwatch:PutLogAlarm",
+        "cloudwatch:TagResource",
+        "cloudwatch:UntagResource",
+        "iam:PassRole",
+        "logs:CreateScheduledQuery",
+        "logs:DeleteScheduledQuery",
+        "logs:GetScheduledQuery",
+        "logs:ListTagsForResource",
+        "logs:TagResource",
+        "logs:UntagResource",
+        "logs:UpdateScheduledQuery"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchLogAlarmDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DeleteAlarms",
+        "cloudwatch:DescribeAlarms",
+        "logs:CreateScheduledQuery",
+        "logs:DeleteScheduledQuery",
+        "logs:GetScheduledQuery"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

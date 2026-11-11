@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLambdaNetworkConnector",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaNetworkConnectorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "lambda:CreateNetworkConnector",
+        "lambda:GetNetworkConnector",
+        "lambda:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaNetworkConnectorRead",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:GetNetworkConnector",
+        "lambda:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaNetworkConnectorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "iam:PassRole",
+        "lambda:GetNetworkConnector",
+        "lambda:TagResource",
+        "lambda:UntagResource",
+        "lambda:UpdateNetworkConnector"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaNetworkConnectorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:DeleteNetworkConnector",
+        "lambda:GetNetworkConnector"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

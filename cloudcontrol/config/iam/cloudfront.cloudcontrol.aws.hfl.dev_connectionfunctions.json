@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudFrontConnectionFunction",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontConnectionFunctionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:CreateConnectionFunction",
+        "cloudfront:DescribeConnectionFunction",
+        "cloudfront:PublishConnectionFunction",
+        "cloudfront:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontConnectionFunctionRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:DescribeConnectionFunction",
+        "cloudfront:GetConnectionFunction",
+        "cloudfront:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontConnectionFunctionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:DescribeConnectionFunction",
+        "cloudfront:PublishConnectionFunction",
+        "cloudfront:TagResource",
+        "cloudfront:UntagResource",
+        "cloudfront:UpdateConnectionFunction"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontConnectionFunctionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:DeleteConnectionFunction",
+        "cloudfront:DescribeConnectionFunction"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

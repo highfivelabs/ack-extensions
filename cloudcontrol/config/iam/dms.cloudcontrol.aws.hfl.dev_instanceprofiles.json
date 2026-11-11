@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDMSInstanceProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DMSInstanceProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "dms:AddTagsToResource",
+        "dms:CreateInstanceProfile",
+        "dms:DescribeInstanceProfiles",
+        "dms:ListInstanceProfiles",
+        "dms:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DMSInstanceProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "dms:DescribeInstanceProfiles",
+        "dms:ListInstanceProfiles",
+        "dms:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DMSInstanceProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "dms:AddTagsToResource",
+        "dms:ListTagsForResource",
+        "dms:ModifyInstanceProfile",
+        "dms:RemoveTagsFromResource",
+        "dms:UpdateInstanceProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DMSInstanceProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "dms:DeleteInstanceProfile"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

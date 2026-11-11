@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSSMOpsItem",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMOpsItemCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:AddTagsToResource",
+        "ssm:CreateOpsItem",
+        "ssm:DescribeOpsItems",
+        "ssm:GetOpsItem"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMOpsItemRead",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetOpsItem",
+        "ssm:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMOpsItemUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:AddTagsToResource",
+        "ssm:GetOpsItem",
+        "ssm:ListTagsForResource",
+        "ssm:RemoveTagsFromResource",
+        "ssm:UpdateOpsItem"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMOpsItemDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:DeleteOpsItem",
+        "ssm:GetOpsItem",
+        "ssm:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

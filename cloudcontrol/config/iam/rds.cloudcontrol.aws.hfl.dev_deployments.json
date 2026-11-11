@@ -1,0 +1,70 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRDSDeployment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSDeploymentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "rds:AddTagsToResource",
+        "rds:CreateBlueGreenDeployment",
+        "rds:CreateDBCluster",
+        "rds:CreateDBClusterEndpoint",
+        "rds:CreateDBInstance",
+        "rds:CreateDBInstanceReadReplica",
+        "rds:CreateGlobalCluster",
+        "rds:DescribeBlueGreenDeployments"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSDeploymentRead",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DescribeBlueGreenDeployments",
+        "rds:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSDeploymentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "rds:AddTagsToResource",
+        "rds:DescribeBlueGreenDeployments",
+        "rds:ListTagsForResource",
+        "rds:RemoveTagsFromResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSDeploymentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DeleteBlueGreenDeployment",
+        "rds:DeleteDBCluster",
+        "rds:DeleteDBClusterEndpoint",
+        "rds:DeleteDBInstance",
+        "rds:DeleteGlobalCluster",
+        "rds:DescribeBlueGreenDeployments",
+        "rds:ListTagsForResource",
+        "rds:PromoteReadReplica",
+        "rds:PromoteReadReplicaDBCluster",
+        "rds:RemoveFromGlobalCluster"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

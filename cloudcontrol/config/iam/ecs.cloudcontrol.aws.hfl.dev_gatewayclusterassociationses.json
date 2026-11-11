@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlECSGatewayClusterAssociations",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSGatewayClusterAssociationsCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:AssociateGatewayWithCluster",
+        "ecs:ListGatewayClusterAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSGatewayClusterAssociationsRead",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:ListGatewayClusterAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSGatewayClusterAssociationsDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:DisassociateGatewayFromCluster",
+        "ecs:ListGatewayClusterAssociations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

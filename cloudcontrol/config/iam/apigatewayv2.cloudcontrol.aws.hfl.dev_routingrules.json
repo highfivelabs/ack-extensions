@@ -1,0 +1,49 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlApiGatewayV2RoutingRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayV2RoutingRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:CreateRoutingRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayV2RoutingRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GetRoutingRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayV2RoutingRuleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:UpdateRoutingRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayV2RoutingRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:DeleteRoutingRule"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

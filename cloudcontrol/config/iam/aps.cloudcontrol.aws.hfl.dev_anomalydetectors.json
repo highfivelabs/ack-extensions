@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAPSAnomalyDetector",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "APSAnomalyDetectorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "aps:CreateAnomalyDetector",
+        "aps:DescribeAnomalyDetector",
+        "aps:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "APSAnomalyDetectorRead",
+      "Effect": "Allow",
+      "Action": [
+        "aps:DescribeAnomalyDetector",
+        "aps:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "APSAnomalyDetectorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "aps:DescribeAnomalyDetector",
+        "aps:ListTagsForResource",
+        "aps:PutAnomalyDetector",
+        "aps:TagResource",
+        "aps:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "APSAnomalyDetectorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "aps:DeleteAnomalyDetector",
+        "aps:DescribeAnomalyDetector"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
