@@ -135,7 +135,7 @@ func (b *SchemaStore) Create(_ context.Context, model map[string]any) (string, e
 		if name == "" {
 			// A nested identifier (S3 Storage Lens:
 			// /properties/StorageLensConfiguration/Id) is the caller's.
-			v, ok := takePath(m, strings.Split(strings.TrimPrefix(ptr, "/properties/"), "/"))
+			v, ok := takePath(copyModel(m), strings.Split(strings.TrimPrefix(ptr, "/properties/"), "/"))
 			if !ok {
 				return "", InvalidRequest("primary identifier %s has no value", ptr)
 			}
