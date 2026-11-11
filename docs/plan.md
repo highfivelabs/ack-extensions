@@ -3106,7 +3106,7 @@ Before it can run on a real cluster:
     template then shrinks to a few policies. Until the builder answers,
     no more types are added (the moto upgrades go on).
 
-    **Answered** (builder, 2026-11-11): the first option. The live-test
+    **Answered** (2026-11-11): the first option. The live-test
     role holds permissions only for the kinds sampled on live runs,
     starting with the free ones; every other kind is proven on the fakes
     only. Built as `liveKinds`, a list beside `liveTestActions` in
