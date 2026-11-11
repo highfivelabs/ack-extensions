@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Copyright 2026 High Five Labs
+# SPDX-License-Identifier: Apache-2.0
+#
+# The pre-push hook (task hooks installs it: core.hooksPath=hack/hooks).
+# For every branch commit pushed, hack/ci/gate.sh runs what ci.yml's
+# pull-request jobs run and posts the commit status offload/ci; a failure
+# refuses the push. Skipped: deletions, tags, a commit whose offload/ci is
+# already success, and the gate's own push of a commit it just passed
+# (OFFLOAD_CI_VERIFIED).
+set -euo pipefail
+
+ROOT="$(git rev-parse --show-toplevel)"
+REPO="$(git remote get-url origin | sed -E 's#^(git@github\.com:|https://github\.com/)##; s#\.git$##')"
+ZERO=0000000000000000000000000000000000000000
+fail=0
+while read -r _lref lsha rref _rsha; do
+  [[ "$lsha" != "$ZERO" ]] || continue
+  [[ "$rref" == refs/heads/* ]] || continue
+  [[ "${OFFLOAD_CI_VERIFIED:-}" != "$lsha" ]] || continue
+  # A commit GitHub does not have yet has no status: run the gate.
+  state="$(gh api "repos/$REPO/commits/$lsha/status" \
+    --jq '[.statuses[] | select(.context == "offload/ci") | .state][0] // ""' 2>/dev/null)" || state=""
+  if [[ "$state" == success ]]; then
+    echo "pre-push: $lsha already has offload/ci success"
+    continue
+  fi
+  echo "pre-push: running the gate (task ci) for $lsha -> ${rref#refs/heads/}"
+  if ! "$ROOT/hack/ci/gate.sh" "$lsha" </dev/null; then
+    echo "pre-push: the gate failed for $lsha: push refused" >&2
+    fail=1
+  fi
+done
+exit $fail
