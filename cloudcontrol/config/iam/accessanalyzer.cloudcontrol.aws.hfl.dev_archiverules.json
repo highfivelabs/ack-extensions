@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAccessAnalyzerArchiveRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AccessAnalyzerArchiveRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "access-analyzer:CreateArchiveRule",
+        "access-analyzer:GetArchiveRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AccessAnalyzerArchiveRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "access-analyzer:GetArchiveRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AccessAnalyzerArchiveRuleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "access-analyzer:GetArchiveRule",
+        "access-analyzer:UpdateArchiveRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AccessAnalyzerArchiveRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "access-analyzer:DeleteArchiveRule",
+        "access-analyzer:GetArchiveRule"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

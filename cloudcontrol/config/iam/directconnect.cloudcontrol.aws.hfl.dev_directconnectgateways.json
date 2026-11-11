@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDirectConnectDirectConnectGateway",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DirectConnectDirectConnectGatewayCreate",
+      "Effect": "Allow",
+      "Action": [
+        "directconnect:CreateDirectConnectGateway",
+        "directconnect:DescribeDirectConnectGateways",
+        "directconnect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DirectConnectDirectConnectGatewayRead",
+      "Effect": "Allow",
+      "Action": [
+        "directconnect:DescribeDirectConnectGateways"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DirectConnectDirectConnectGatewayUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "directconnect:DescribeDirectConnectGateways",
+        "directconnect:TagResource",
+        "directconnect:UntagResource",
+        "directconnect:UpdateDirectConnectGateway"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DirectConnectDirectConnectGatewayDelete",
+      "Effect": "Allow",
+      "Action": [
+        "directconnect:DeleteDirectConnectGateway",
+        "directconnect:DescribeDirectConnectGateways"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

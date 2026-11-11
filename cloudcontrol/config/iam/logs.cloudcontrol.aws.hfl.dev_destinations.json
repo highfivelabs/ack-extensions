@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLogsDestination",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsDestinationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "logs:DescribeDestinations",
+        "logs:PutDestination",
+        "logs:PutDestinationPolicy",
+        "logs:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsDestinationRead",
+      "Effect": "Allow",
+      "Action": [
+        "logs:DescribeDestinations",
+        "logs:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsDestinationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "logs:DescribeDestinations",
+        "logs:ListTagsForResource",
+        "logs:PutDestination",
+        "logs:PutDestinationPolicy",
+        "logs:TagResource",
+        "logs:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LogsDestinationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "logs:DeleteDestination"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

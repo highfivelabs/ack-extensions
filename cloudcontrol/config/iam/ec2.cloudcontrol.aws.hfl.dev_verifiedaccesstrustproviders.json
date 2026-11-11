@@ -1,0 +1,79 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2VerifiedAccessTrustProvider",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VerifiedAccessTrustProviderCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:CreateVerifiedAccessTrustProvider",
+        "ec2:DescribeTags",
+        "ec2:DescribeVerifiedAccessTrustProviders",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant",
+        "sso:GetSharedSsoConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VerifiedAccessTrustProviderRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeTags",
+        "ec2:DescribeVerifiedAccessTrustProviders",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VerifiedAccessTrustProviderUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeTags",
+        "ec2:DescribeVerifiedAccessTrustProviders",
+        "ec2:ModifyVerifiedAccessTrustProvider",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VerifiedAccessTrustProviderDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteTags",
+        "ec2:DeleteVerifiedAccessTrustProvider",
+        "ec2:DescribeTags",
+        "ec2:DescribeVerifiedAccessTrustProviders",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

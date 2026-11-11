@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityHubAggregatorV2",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubAggregatorV2Create",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:CreateAggregatorV2",
+        "securityhub:GetAggregatorV2",
+        "securityhub:ListTagsForResource",
+        "securityhub:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubAggregatorV2Read",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:GetAggregatorV2",
+        "securityhub:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubAggregatorV2Update",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:GetAggregatorV2",
+        "securityhub:ListTagsForResource",
+        "securityhub:TagResource",
+        "securityhub:UntagResource",
+        "securityhub:UpdateAggregatorV2"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubAggregatorV2Delete",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:DeleteAggregatorV2"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2PlacementGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2PlacementGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreatePlacementGroup",
+        "ec2:CreateTags",
+        "ec2:DescribePlacementGroups"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2PlacementGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribePlacementGroups"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2PlacementGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeletePlacementGroup",
+        "ec2:DescribePlacementGroups"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

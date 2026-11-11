@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2RouteServerAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2RouteServerAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AssociateRouteServer",
+        "ec2:GetRouteServerAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2RouteServerAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:GetRouteServerAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2RouteServerAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DisassociateRouteServer",
+        "ec2:GetRouteServerAssociations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2SnapshotBlockPublicAccess",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2SnapshotBlockPublicAccessCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:EnableSnapshotBlockPublicAccess",
+        "ec2:GetSnapshotBlockPublicAccessState"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2SnapshotBlockPublicAccessRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:GetSnapshotBlockPublicAccessState"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2SnapshotBlockPublicAccessUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:EnableSnapshotBlockPublicAccess",
+        "ec2:GetSnapshotBlockPublicAccessState"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2SnapshotBlockPublicAccessDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DisableSnapshotBlockPublicAccess",
+        "ec2:GetSnapshotBlockPublicAccessState"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

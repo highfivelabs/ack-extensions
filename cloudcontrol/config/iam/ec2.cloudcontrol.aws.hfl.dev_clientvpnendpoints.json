@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2ClientVpnEndpoint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2ClientVpnEndpointCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateClientVpnEndpoint",
+        "ec2:CreateTags",
+        "ec2:DescribeClientVpnEndpoints",
+        "ec2:GetClientVpnEndpointAuthorizationPolicy",
+        "ec2:ModifyClientVpnEndpointAuthorizationPolicy",
+        "iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2ClientVpnEndpointRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeClientVpnEndpoints",
+        "ec2:GetClientVpnEndpointAuthorizationPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2ClientVpnEndpointUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteClientVpnEndpointAuthorizationPolicy",
+        "ec2:DescribeClientVpnEndpoints",
+        "ec2:GetClientVpnEndpointAuthorizationPolicy",
+        "ec2:ModifyClientVpnEndpoint",
+        "ec2:ModifyClientVpnEndpointAuthorizationPolicy",
+        "iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2ClientVpnEndpointDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteClientVpnEndpoint",
+        "ec2:DescribeClientVpnEndpoints"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

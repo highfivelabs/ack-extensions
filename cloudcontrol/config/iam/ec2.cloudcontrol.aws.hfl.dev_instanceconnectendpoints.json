@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2InstanceConnectEndpoint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2InstanceConnectEndpointCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateInstanceConnectEndpoint",
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateTags",
+        "ec2:DescribeInstanceConnectEndpoints",
+        "iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2InstanceConnectEndpointRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeInstanceConnectEndpoints"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2InstanceConnectEndpointUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeInstanceConnectEndpoints"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2InstanceConnectEndpointDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteInstanceConnectEndpoint",
+        "ec2:DescribeInstanceConnectEndpoints"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

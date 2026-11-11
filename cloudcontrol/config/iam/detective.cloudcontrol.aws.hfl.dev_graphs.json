@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDetectiveGraph",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DetectiveGraphCreate",
+      "Effect": "Allow",
+      "Action": [
+        "detective:CreateGraph",
+        "detective:ListGraphs",
+        "detective:TagResource",
+        "detective:UpdateOrganizationConfiguration",
+        "organizations:DescribeOrganization"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DetectiveGraphRead",
+      "Effect": "Allow",
+      "Action": [
+        "detective:DescribeOrganizationConfiguration",
+        "detective:ListGraphs",
+        "detective:ListTagsForResource",
+        "organizations:DescribeOrganization"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DetectiveGraphUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "detective:ListGraphs",
+        "detective:ListTagsForResource",
+        "detective:TagResource",
+        "detective:UntagResource",
+        "detective:UpdateOrganizationConfiguration",
+        "organizations:DescribeOrganization"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DetectiveGraphDelete",
+      "Effect": "Allow",
+      "Action": [
+        "detective:DeleteGraph",
+        "detective:ListGraphs"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

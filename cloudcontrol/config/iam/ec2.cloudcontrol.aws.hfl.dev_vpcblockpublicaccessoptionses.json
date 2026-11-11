@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2VPCBlockPublicAccessOptions",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VPCBlockPublicAccessOptionsCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcBlockPublicAccessOptions",
+        "ec2:ModifyVpcBlockPublicAccessOptions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VPCBlockPublicAccessOptionsRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcBlockPublicAccessOptions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VPCBlockPublicAccessOptionsUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcBlockPublicAccessOptions",
+        "ec2:ModifyVpcBlockPublicAccessOptions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2VPCBlockPublicAccessOptionsDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcBlockPublicAccessOptions",
+        "ec2:ModifyVpcBlockPublicAccessOptions"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

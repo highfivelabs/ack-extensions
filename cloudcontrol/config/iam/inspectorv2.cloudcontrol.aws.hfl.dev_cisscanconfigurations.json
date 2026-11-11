@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlInspectorV2CisScanConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InspectorV2CisScanConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "inspector2:CreateCisScanConfiguration",
+        "inspector2:ListCisScanConfigurations",
+        "inspector2:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InspectorV2CisScanConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "inspector2:ListCisScanConfigurations",
+        "inspector2:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InspectorV2CisScanConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "inspector2:ListCisScanConfigurations",
+        "inspector2:ListTagsForResource",
+        "inspector2:TagResource",
+        "inspector2:UntagResource",
+        "inspector2:UpdateCisScanConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InspectorV2CisScanConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "inspector2:DeleteCisScanConfiguration",
+        "inspector2:ListCisScanConfigurations",
+        "inspector2:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -25,8 +25,9 @@ import (
 //     permissions and Cloud Control actions (as task cloudcontrol:iam
 //     writes for an environment, here for all types), the list handlers'
 //     and cloudformation:ListResources for the sweeper, and the tests' own
-//     fixtures (liveTestActions in types.yaml), split into managed
-//     policies of at most 6,144 characters;
+//     fixtures (liveTestActions in types.yaml), one statement per
+//     service (iamgen.Compact), split into managed policies of at most
+//     6,144 characters;
 //   - no permissions for a type marked neverDelete (a landing zone): no
 //     live test makes one, since a test cannot delete what it made, and
 //     the sweeper never deletes one;
@@ -53,7 +54,10 @@ func writeLiveTemplate(out string, cfg config, gens []generated) error {
 	}
 	sort.Strings(acts)
 	results = append(results, iamgen.Result{Policy: iamgen.Policy{Statement: []iamgen.Statement{{Sid: "LiveRunSweeperAndFixtures", Effect: "Allow", Action: acts, Resource: "*"}}}})
-	policies, err := iamgen.Environment(results, 6144)
+	// Compacted (one statement per service, the same actions): every type's
+	// handler statements kept apart would pass IAM's ten managed policies
+	// per role at about 70 types (docs/throughput.md).
+	policies, err := iamgen.Split(iamgen.Compact(iamgen.Merge(results)), 6144)
 	if err != nil {
 		return err
 	}

@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlInspectorV2Connector",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InspectorV2ConnectorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "config:GetConnector",
+        "config:ListConnectors",
+        "iam:CreateServiceLinkedRole",
+        "inspector2:CreateConnector",
+        "inspector2:ListConnectors",
+        "inspector2:ListTagsForResource",
+        "inspector2:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InspectorV2ConnectorRead",
+      "Effect": "Allow",
+      "Action": [
+        "inspector2:ListConnectors",
+        "inspector2:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InspectorV2ConnectorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "config:GetConnector",
+        "config:ListConnectors",
+        "inspector2:ListConnectors",
+        "inspector2:ListTagsForResource",
+        "inspector2:TagResource",
+        "inspector2:UntagResource",
+        "inspector2:UpdateConnector"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InspectorV2ConnectorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "inspector2:DeleteConnector",
+        "inspector2:ListConnectors"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

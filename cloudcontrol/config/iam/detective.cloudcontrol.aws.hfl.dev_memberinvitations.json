@@ -1,0 +1,42 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDetectiveMemberInvitation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DetectiveMemberInvitationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "detective:CreateMembers",
+        "detective:GetMembers"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DetectiveMemberInvitationRead",
+      "Effect": "Allow",
+      "Action": [
+        "detective:GetMembers"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DetectiveMemberInvitationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "detective:DeleteMembers"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

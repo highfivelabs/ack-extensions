@@ -1,0 +1,42 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlECRPullTimeUpdateExclusion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECRPullTimeUpdateExclusionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:ListPullTimeUpdateExclusions",
+        "ecr:RegisterPullTimeUpdateExclusion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECRPullTimeUpdateExclusionRead",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:ListPullTimeUpdateExclusions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECRPullTimeUpdateExclusionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:DeregisterPullTimeUpdateExclusion"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2IpamInternetRegistryAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IpamInternetRegistryAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateIpamInternetRegistryAssociation",
+        "ec2:CreateTags",
+        "ec2:DescribeIpamInternetRegistryAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IpamInternetRegistryAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeIpamInternetRegistryAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IpamInternetRegistryAssociationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DeleteTags",
+        "ec2:DescribeIpamInternetRegistryAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2IpamInternetRegistryAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteIpamInternetRegistryAssociation",
+        "ec2:DeleteTags",
+        "ec2:DescribeIpamInternetRegistryAssociations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSSOApplication",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSOApplicationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sso:CreateApplication",
+        "sso:DescribeApplication",
+        "sso:ListTagsForResource",
+        "sso:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSOApplicationRead",
+      "Effect": "Allow",
+      "Action": [
+        "sso:DescribeApplication",
+        "sso:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSOApplicationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sso:DescribeApplication",
+        "sso:ListTagsForResource",
+        "sso:TagResource",
+        "sso:UntagResource",
+        "sso:UpdateApplication"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSOApplicationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sso:DeleteApplication"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

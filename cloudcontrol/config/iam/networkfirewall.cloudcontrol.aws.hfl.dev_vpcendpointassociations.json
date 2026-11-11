@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkFirewallVpcEndpointAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFirewallVpcEndpointAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateVpcEndpoint",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcEndpoints",
+        "ec2:DescribeVpcs",
+        "iam:CreateServiceLinkedRole",
+        "network-firewall:CreateVpcEndpointAssociation",
+        "network-firewall:DescribeVpcEndpointAssociation",
+        "network-firewall:ListFirewalls",
+        "network-firewall:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFirewallVpcEndpointAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "network-firewall:DescribeVpcEndpointAssociation",
+        "network-firewall:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFirewallVpcEndpointAssociationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "network-firewall:DescribeVpcEndpointAssociation",
+        "network-firewall:TagResource",
+        "network-firewall:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFirewallVpcEndpointAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteVpcEndpoints",
+        "ec2:DescribeRouteTables",
+        "network-firewall:DeleteVpcEndpointAssociation",
+        "network-firewall:DescribeVpcEndpointAssociation",
+        "network-firewall:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

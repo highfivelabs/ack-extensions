@@ -5,6 +5,7 @@ package iamgen_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 	"testing"
 
@@ -142,5 +143,60 @@ func TestNeverDeletePolicy(t *testing.T) {
 	}
 	if !has(iamgen.Merge([]iamgen.Result{never, iamgen.ForType(s)})) {
 		t.Error("an environment with a deletable type lacks cloudformation:DeleteResource")
+	}
+}
+
+// Compact keeps exactly the allowed actions (all on "*") and makes the
+// document smaller.
+func TestCompact(t *testing.T) {
+	var results []iamgen.Result
+	for _, ty := range registry.Types {
+		results = append(results, iamgen.ForType(ty.Schema()))
+	}
+	merged := iamgen.Merge(results)
+	merged.Statement = append(merged.Statement, iamgen.Statement{Sid: "Other", Effect: "Allow", Action: []string{"s3:GetObject"}, Resource: "arn:aws:s3:::b/*"})
+	compact := iamgen.Compact(merged)
+	set := func(p iamgen.Policy) map[string]bool {
+		out := map[string]bool{}
+		for _, st := range p.Statement {
+			for _, a := range st.Action {
+				out[st.Effect+" "+a+" "+st.Resource] = true
+			}
+		}
+		return out
+	}
+	before, after := set(merged), set(compact)
+	if len(before) != len(after) {
+		t.Errorf("%d allowed (action, resource) pairs before, %d after", len(before), len(after))
+	}
+	for k := range before {
+		if !after[k] {
+			t.Errorf("Compact dropped %s", k)
+		}
+	}
+	size := func(p iamgen.Policy) int { b, _ := json.Marshal(p); return len(b) }
+	if size(compact) >= size(merged) {
+		t.Errorf("Compact made %d characters of %d", size(compact), size(merged))
+	}
+	t.Logf("%d types: %d characters merged, %d compact", len(registry.Types), size(merged), size(compact))
+
+	// A service with more actions than one policy holds is cut.
+	var many []string
+	for i := 0; i < 400; i++ {
+		many = append(many, fmt.Sprintf("ec2:DescribeSomethingLong%03d", i))
+	}
+	big := iamgen.Compact(iamgen.Policy{Version: "2012-10-17", Statement: []iamgen.Statement{{Sid: "A", Effect: "Allow", Action: many, Resource: "*"}}})
+	if len(big.Statement) < 2 {
+		t.Fatalf("400 actions in %d statement(s)", len(big.Statement))
+	}
+	n := 0
+	for _, st := range big.Statement {
+		n += len(st.Action)
+		if b, _ := json.Marshal(iamgen.Policy{Version: "2012-10-17", Statement: []iamgen.Statement{st}}); len(b) > iamgen.MaxManagedPolicySize {
+			t.Errorf("statement %s is %d characters", st.Sid, len(b))
+		}
+	}
+	if n != 400 {
+		t.Errorf("%d actions after the cut, want 400", n)
 	}
 }

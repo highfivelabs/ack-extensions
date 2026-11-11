@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIAMServerCertificate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IAMServerCertificateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetServerCertificate",
+        "iam:TagServerCertificate",
+        "iam:UploadServerCertificate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IAMServerCertificateRead",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetServerCertificate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IAMServerCertificateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetServerCertificate",
+        "iam:ListServerCertificateTags",
+        "iam:TagServerCertificate",
+        "iam:UntagServerCertificate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IAMServerCertificateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iam:DeleteServerCertificate"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

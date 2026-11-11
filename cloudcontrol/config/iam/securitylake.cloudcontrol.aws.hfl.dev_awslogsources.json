@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityLakeAwsLogSource",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityLakeAwsLogSourceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateDatabase",
+        "glue:CreateTable",
+        "glue:GetDatabase",
+        "glue:GetTable",
+        "iam:CreateServiceLinkedRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "securitylake:CreateAwsLogSource",
+        "securitylake:CreateDataLake",
+        "securitylake:ListLogSources"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityLakeAwsLogSourceRead",
+      "Effect": "Allow",
+      "Action": [
+        "securitylake:ListLogSources"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityLakeAwsLogSourceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateDatabase",
+        "glue:CreateTable",
+        "glue:GetDatabase",
+        "glue:GetTable",
+        "iam:CreateServiceLinkedRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "securitylake:CreateAwsLogSource",
+        "securitylake:DeleteAwsLogSource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityLakeAwsLogSourceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "securitylake:DeleteAwsLogSource",
+        "securitylake:ListLogSources"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

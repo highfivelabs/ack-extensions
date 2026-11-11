@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlECRSigningConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECRSigningConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:GetSigningConfiguration",
+        "ecr:PutSigningConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECRSigningConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:GetSigningConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECRSigningConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:GetSigningConfiguration",
+        "ecr:PutSigningConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECRSigningConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:DeleteSigningConfiguration",
+        "ecr:GetSigningConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

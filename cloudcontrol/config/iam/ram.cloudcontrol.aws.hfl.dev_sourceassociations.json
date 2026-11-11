@@ -1,0 +1,44 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRAMSourceAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RAMSourceAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ram:AssociateResourceShare",
+        "ram:GetResourceShares",
+        "ram:ListSourceAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RAMSourceAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ram:ListSourceAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RAMSourceAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ram:DisassociateResourceShare",
+        "ram:ListSourceAssociations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

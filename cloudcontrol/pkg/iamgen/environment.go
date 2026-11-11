@@ -6,6 +6,8 @@ package iamgen
 import (
 	"encoding/json"
 	"fmt"
+	"sort"
+	"strings"
 
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/apis/v1alpha1"
 )
@@ -114,3 +116,62 @@ func PodIdentityTrust(t Trust, sid string, serviceAccounts ...string) map[string
 		}},
 	}
 }
+
+// Compact is the same permissions in fewer characters: every Allow
+// statement on Resource "*" (all ForType writes) folded into one statement
+// per service, its actions deduplicated and sorted; any other statement is
+// kept as it is. Nothing is widened: the set of allowed (action, resource)
+// pairs is unchanged. The live-test role uses it (hack/cloudcontrol-gen,
+// live.go), whose policies cover every type and would otherwise pass IAM's
+// ten managed policies per role.
+func Compact(p Policy) Policy {
+	out := Policy{Version: p.Version}
+	byService := map[string][]string{}
+	var services []string
+	for _, st := range p.Statement {
+		if st.Effect != "Allow" || st.Resource != "*" {
+			out.Statement = append(out.Statement, st)
+			continue
+		}
+		for _, a := range st.Action {
+			svc, _, ok := strings.Cut(a, ":")
+			if !ok || svc == "" {
+				svc = "-"
+			}
+			if _, ok := byService[svc]; !ok {
+				services = append(services, svc)
+			}
+			byService[svc] = append(byService[svc], a)
+		}
+	}
+	sort.Strings(services)
+	for _, svc := range services {
+		name := "Service" + sid(strings.ToUpper(svc[:1])+svc[1:])
+		// A service with many actions (ec2) is cut into statements that
+		// each fit a managed policy with room to spare.
+		var chunks [][]string
+		var cur []string
+		n := 0
+		for _, a := range dedupe(byService[svc]) {
+			if n+len(a)+3 > compactChunk && len(cur) > 0 {
+				chunks = append(chunks, cur)
+				cur, n = nil, 0
+			}
+			cur = append(cur, a)
+			n += len(a) + 3
+		}
+		chunks = append(chunks, cur)
+		for i, c := range chunks {
+			s := name
+			if len(chunks) > 1 {
+				s = fmt.Sprintf("%s%d", name, i+1)
+			}
+			out.Statement = append(out.Statement, Statement{Sid: s, Effect: "Allow", Action: c, Resource: "*"})
+		}
+	}
+	return out
+}
+
+// compactChunk is the most characters of actions Compact puts in one
+// statement: well under MaxManagedPolicySize, so Split can pack them.
+const compactChunk = 4000
