@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlS3MultiRegionAccessPointPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3MultiRegionAccessPointPolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "s3:DescribeMultiRegionAccessPointOperation",
+        "s3:GetMultiRegionAccessPointPolicy",
+        "s3:GetMultiRegionAccessPointPolicyStatus",
+        "s3:PutMultiRegionAccessPointPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3MultiRegionAccessPointPolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetMultiRegionAccessPointPolicy",
+        "s3:GetMultiRegionAccessPointPolicyStatus"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3MultiRegionAccessPointPolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "s3:DescribeMultiRegionAccessPointOperation",
+        "s3:GetMultiRegionAccessPointPolicy",
+        "s3:GetMultiRegionAccessPointPolicyStatus",
+        "s3:PutMultiRegionAccessPointPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3MultiRegionAccessPointPolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "s3:DescribeMultiRegionAccessPointOperation",
+        "s3:GetMultiRegionAccessPoint",
+        "s3:PutMultiRegionAccessPointPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

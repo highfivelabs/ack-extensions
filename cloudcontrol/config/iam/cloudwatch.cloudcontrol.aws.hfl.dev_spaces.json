@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudWatchSpace",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchSpaceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:CreateSpace",
+        "cloudwatch:TagResource",
+        "iam:PassRole",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchSpaceRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetSpace",
+        "cloudwatch:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchSpaceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:TagResource",
+        "cloudwatch:UntagResource",
+        "cloudwatch:UpdateSpace",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchSpaceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DeleteSpace",
+        "cloudwatch:GetSpace",
+        "cloudwatch:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

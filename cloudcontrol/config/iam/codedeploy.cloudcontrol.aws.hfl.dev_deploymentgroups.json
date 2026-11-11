@@ -1,0 +1,75 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCodeDeployDeploymentGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeDeployDeploymentGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "codedeploy:CreateDeployment",
+        "codedeploy:CreateDeploymentGroup",
+        "codedeploy:GetApplicationRevision",
+        "codedeploy:GetDeployment",
+        "codedeploy:GetDeploymentConfig",
+        "codedeploy:GetDeploymentGroup",
+        "codedeploy:ListDeployments",
+        "codedeploy:RegisterApplicationRevision",
+        "codedeploy:RegisterOnPremisesInstance",
+        "codedeploy:TagResource",
+        "codedeploy:UntagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeDeployDeploymentGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "codedeploy:GetDeployment",
+        "codedeploy:GetDeploymentGroup",
+        "codedeploy:ListDeployments",
+        "codedeploy:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeDeployDeploymentGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "codedeploy:CreateDeployment",
+        "codedeploy:GetApplicationRevision",
+        "codedeploy:GetDeployment",
+        "codedeploy:GetDeploymentConfig",
+        "codedeploy:ListDeployments",
+        "codedeploy:RegisterApplicationRevision",
+        "codedeploy:RegisterOnPremisesInstance",
+        "codedeploy:StopDeployment",
+        "codedeploy:TagResource",
+        "codedeploy:UntagResource",
+        "codedeploy:UpdateDeploymentGroup",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeDeployDeploymentGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "codedeploy:DeleteDeploymentGroup",
+        "codedeploy:GetDeploymentGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

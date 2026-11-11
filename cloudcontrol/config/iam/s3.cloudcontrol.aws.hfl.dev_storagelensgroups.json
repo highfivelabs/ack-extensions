@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlS3StorageLensGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3StorageLensGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "s3:CreateStorageLensGroup",
+        "s3:GetStorageLensGroup",
+        "s3:ListTagsForResource",
+        "s3:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3StorageLensGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetStorageLensGroup",
+        "s3:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3StorageLensGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetStorageLensGroup",
+        "s3:ListTagsForResource",
+        "s3:TagResource",
+        "s3:UntagResource",
+        "s3:UpdateStorageLensGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3StorageLensGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "s3:DeleteStorageLensGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

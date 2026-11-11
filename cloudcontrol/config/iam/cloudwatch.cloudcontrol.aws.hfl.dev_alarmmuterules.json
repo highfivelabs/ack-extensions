@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudWatchAlarmMuteRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchAlarmMuteRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetAlarmMuteRule",
+        "cloudwatch:PutAlarmMuteRule",
+        "cloudwatch:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchAlarmMuteRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetAlarmMuteRule",
+        "cloudwatch:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchAlarmMuteRuleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetAlarmMuteRule",
+        "cloudwatch:PutAlarmMuteRule",
+        "cloudwatch:TagResource",
+        "cloudwatch:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchAlarmMuteRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DeleteAlarmMuteRule",
+        "cloudwatch:GetAlarmMuteRule"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

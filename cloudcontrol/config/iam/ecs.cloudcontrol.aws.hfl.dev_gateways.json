@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlECSGateway",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSGatewayCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:CreateGateway",
+        "ecs:DescribeGateway",
+        "ecs:ListGateways",
+        "ecs:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSGatewayRead",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:DescribeGateway",
+        "ecs:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSGatewayUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:DescribeGateway",
+        "ecs:TagResource",
+        "ecs:UntagResource",
+        "ecs:UpdateGateway",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSGatewayDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:DeleteGateway",
+        "ecs:DescribeGateway"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

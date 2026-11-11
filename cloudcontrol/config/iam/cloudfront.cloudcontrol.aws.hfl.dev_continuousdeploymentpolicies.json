@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudFrontContinuousDeploymentPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontContinuousDeploymentPolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:CreateContinuousDeploymentPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontContinuousDeploymentPolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:GetContinuousDeploymentPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontContinuousDeploymentPolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:GetContinuousDeploymentPolicy",
+        "cloudfront:UpdateContinuousDeploymentPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontContinuousDeploymentPolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:DeleteContinuousDeploymentPolicy",
+        "cloudfront:GetContinuousDeploymentPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

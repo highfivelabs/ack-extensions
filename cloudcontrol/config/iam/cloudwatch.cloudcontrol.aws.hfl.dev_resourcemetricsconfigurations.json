@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudWatchResourceMetricsConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchResourceMetricsConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:CreateResourceMetricsConfiguration",
+        "cloudwatch:GetResourceMetricsConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchResourceMetricsConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetResourceMetricsConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchResourceMetricsConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetResourceMetricsConfiguration",
+        "cloudwatch:UpdateResourceMetricsConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchResourceMetricsConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DeleteResourceMetricsConfiguration",
+        "cloudwatch:GetResourceMetricsConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

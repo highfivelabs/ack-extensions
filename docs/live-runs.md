@@ -64,10 +64,16 @@ Nothing is deployed by an agent. It holds:
 - `LiveTestRole` (`ack-extensions-live-tests`): `sts:AssumeRoleWithWebIdentity`
   through that provider, only when `accounts.google.com:sub` is the
   service account's unique ID (a parameter), at most an hour; managed
-  policies with every served type's Cloud Control actions and handler
-  permissions, the list handlers' and `cloudformation:ListResources` for
-  the sweeper, and the tests' own fixtures (`liveTestActions` in
-  `types.yaml`), split to IAM's 6,144-character limit;
+  policies with the Cloud Control actions and handler permissions of the
+  kinds sampled on live runs (`liveKinds` in `types.yaml`), their list
+  handlers' and `cloudformation:ListResources` for the sweeper, and the
+  tests' own fixtures (`liveTestActions`), split to IAM's 6,144-character
+  limit and kept within IAM's default of 10 managed policies per role
+  (the generator fails beyond it, and `TestLiveRoleWithinManagedPolicyLimit`
+  checks the committed template). Every other kind is proven on the fakes
+  only (plan question 21): a live run of a test whose kind is not in
+  `liveKinds` is refused by IAM. Adding a kind to `liveKinds` needs the
+  stack redeployed;
 - `BudgetAlarm`: a monthly cost budget (default USD 50) with e-mail alerts
   at 80% of actual and 100% of forecast spend.
 
@@ -132,8 +138,9 @@ is swept and what is left is listed. Output:
 `left.txt`).
 
 The sweeper (`task live-sweep`, `task live-list`, the same opt-in and
-federated credentials) lists every served type through Cloud Control
-`ListResources` and deletes what carries the run tag. Types that take no
+federated credentials) lists every live kind (`liveKinds`; no live run
+makes another) through Cloud Control `ListResources` and deletes what
+carries the run tag. Types that take no
 tags (`Assignment`, `InstanceAccessControlAttributeConfiguration`) are
 deleted by the tests that made them; a run cut off before then leaves them,
 and `left.txt` cannot show them.
