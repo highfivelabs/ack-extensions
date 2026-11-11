@@ -146,10 +146,32 @@ func Compact(p Policy) Policy {
 	}
 	sort.Strings(services)
 	for _, svc := range services {
-		out.Statement = append(out.Statement, Statement{
-			Sid: "Service" + sid(strings.ToUpper(svc[:1])+svc[1:]), Effect: "Allow",
-			Action: dedupe(byService[svc]), Resource: "*",
-		})
+		name := "Service" + sid(strings.ToUpper(svc[:1])+svc[1:])
+		// A service with many actions (ec2) is cut into statements that
+		// each fit a managed policy with room to spare.
+		var chunks [][]string
+		var cur []string
+		n := 0
+		for _, a := range dedupe(byService[svc]) {
+			if n+len(a)+3 > compactChunk && len(cur) > 0 {
+				chunks = append(chunks, cur)
+				cur, n = nil, 0
+			}
+			cur = append(cur, a)
+			n += len(a) + 3
+		}
+		chunks = append(chunks, cur)
+		for i, c := range chunks {
+			s := name
+			if len(chunks) > 1 {
+				s = fmt.Sprintf("%s%d", name, i+1)
+			}
+			out.Statement = append(out.Statement, Statement{Sid: s, Effect: "Allow", Action: c, Resource: "*"})
+		}
 	}
 	return out
 }
+
+// compactChunk is the most characters of actions Compact puts in one
+// statement: well under MaxManagedPolicySize, so Split can pack them.
+const compactChunk = 4000

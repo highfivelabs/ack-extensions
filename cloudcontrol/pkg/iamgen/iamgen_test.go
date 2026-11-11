@@ -5,6 +5,7 @@ package iamgen_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 	"testing"
 
@@ -178,4 +179,24 @@ func TestCompact(t *testing.T) {
 		t.Errorf("Compact made %d characters of %d", size(compact), size(merged))
 	}
 	t.Logf("%d types: %d characters merged, %d compact", len(registry.Types), size(merged), size(compact))
+
+	// A service with more actions than one policy holds is cut.
+	var many []string
+	for i := 0; i < 400; i++ {
+		many = append(many, fmt.Sprintf("ec2:DescribeSomethingLong%03d", i))
+	}
+	big := iamgen.Compact(iamgen.Policy{Version: "2012-10-17", Statement: []iamgen.Statement{{Sid: "A", Effect: "Allow", Action: many, Resource: "*"}}})
+	if len(big.Statement) < 2 {
+		t.Fatalf("400 actions in %d statement(s)", len(big.Statement))
+	}
+	n := 0
+	for _, st := range big.Statement {
+		n += len(st.Action)
+		if b, _ := json.Marshal(iamgen.Policy{Version: "2012-10-17", Statement: []iamgen.Statement{st}}); len(b) > iamgen.MaxManagedPolicySize {
+			t.Errorf("statement %s is %d characters", st.Sid, len(b))
+		}
+	}
+	if n != 400 {
+		t.Errorf("%d actions after the cut, want 400", n)
+	}
 }
