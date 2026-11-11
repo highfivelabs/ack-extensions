@@ -134,7 +134,7 @@ tasks:
       - task: upstream-check
       - task: upstream:yaml-check
       - task: go:fmt-check
-        vars: {DIRS: services apis pkg cmd tests cloudcontrol hack/cloudcontrol-gen hack/cloudcontrol-batch hack/noaws hack/ack-iam}
+        vars: {DIRS: services apis pkg cmd tests cloudcontrol hack/cloudcontrol-gen hack/noaws hack/ack-iam}
       - task: noaws
       - task: generate
       - task: go:committed
