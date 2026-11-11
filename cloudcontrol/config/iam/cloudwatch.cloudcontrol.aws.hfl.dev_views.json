@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudWatchView",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchViewCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:CreateView",
+        "cloudwatch:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchViewRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetView",
+        "cloudwatch:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchViewUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetView",
+        "cloudwatch:ListTagsForResource",
+        "cloudwatch:TagResource",
+        "cloudwatch:UntagResource",
+        "cloudwatch:UpdateView"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchViewDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DeleteView",
+        "cloudwatch:GetView",
+        "cloudwatch:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

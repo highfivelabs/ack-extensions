@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSSMCloudConnector",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMCloudConnectorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "config:GetConnector",
+        "config:PutThirdPartyServiceLinkedConfigurationRecorder",
+        "iam:PassRole",
+        "ssm:AddTagsToResource",
+        "ssm:CreateCloudConnector",
+        "ssm:GetCloudConnector",
+        "ssm:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMCloudConnectorRead",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetCloudConnector",
+        "ssm:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMCloudConnectorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "config:GetConnector",
+        "config:PutThirdPartyServiceLinkedConfigurationRecorder",
+        "ssm:AddTagsToResource",
+        "ssm:GetCloudConnector",
+        "ssm:ListTagsForResource",
+        "ssm:RemoveTagsFromResource",
+        "ssm:UpdateCloudConnector"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMCloudConnectorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "config:DeleteServiceLinkedConfigurationRecorder",
+        "config:GetConnector",
+        "config:PutThirdPartyServiceLinkedConfigurationRecorder",
+        "ssm:DeleteCloudConnector",
+        "ssm:GetCloudConnector",
+        "ssm:ListAssociations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

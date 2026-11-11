@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMSKClusterPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MSKClusterPolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kafka:GetClusterPolicy",
+        "kafka:PutClusterPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MSKClusterPolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "kafka:GetClusterPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MSKClusterPolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kafka:GetClusterPolicy",
+        "kafka:PutClusterPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MSKClusterPolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kafka:DeleteClusterPolicy",
+        "kafka:GetClusterPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLambdaWebFunctionRevision",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaWebFunctionRevisionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "lambda:CreateWebFunctionRevision",
+        "lambda:GetWebFunctionRevision",
+        "lambda:PassNetworkConnector",
+        "s3:GetObject",
+        "s3:GetObjectVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaWebFunctionRevisionRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "lambda:GetWebFunctionRevision"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaWebFunctionRevisionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "lambda:DeleteWebFunctionRevision",
+        "lambda:GetWebFunctionRevision"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

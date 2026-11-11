@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudWatchOTelEnrichment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchOTelEnrichmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetOTelEnrichment",
+        "cloudwatch:StartOTelEnrichment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchOTelEnrichmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetOTelEnrichment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchOTelEnrichmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetOTelEnrichment",
+        "cloudwatch:UpdateOTelEnrichment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchOTelEnrichmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetOTelEnrichment",
+        "cloudwatch:StopOTelEnrichment"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

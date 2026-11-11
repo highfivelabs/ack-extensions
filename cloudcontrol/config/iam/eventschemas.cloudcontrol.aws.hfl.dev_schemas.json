@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEventSchemasSchema",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventSchemasSchemaCreate",
+      "Effect": "Allow",
+      "Action": [
+        "schemas:CreateSchema",
+        "schemas:DescribeSchema",
+        "schemas:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventSchemasSchemaRead",
+      "Effect": "Allow",
+      "Action": [
+        "schemas:DescribeSchema"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventSchemasSchemaUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "schemas:DescribeSchema",
+        "schemas:ListTagsForResource",
+        "schemas:TagResource",
+        "schemas:UntagResource",
+        "schemas:UpdateSchema"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventSchemasSchemaDelete",
+      "Effect": "Allow",
+      "Action": [
+        "schemas:DeleteSchema",
+        "schemas:DeleteSchemaVersion",
+        "schemas:DescribeSchema"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

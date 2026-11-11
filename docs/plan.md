@@ -3090,3 +3090,23 @@ Before it can run on a real cluster:
     of a status value, not the user, so validating it can only wedge an
     object; `spec` keeps its validation. Not changed until the builder
     answers.
+
+21. **The live-test role at IAM's limit** (2026-11-11). With 292 Cloud
+    Control types the sandbox template's role needs 10 managed policies
+    of 6,144 characters (54,401 characters of actions, already one
+    statement per service, `iamgen.Compact`): IAM's default maximum per
+    role. The next type added makes `task cloudcontrol:generate` fail.
+    Options:
+    - the role holds only the kinds chosen for live runs: a `live: true`
+      per type in `cloudcontrol/types.yaml` (or a list beside
+      `liveTestActions`). Live runs are sampled anyway, and a kind new to
+      the role needs a redeploy of the stack either way;
+    - wildcards per service and verb (`ec2:Describe*`, `guardduty:Get*`),
+      wider than the schemas ask for, in the sandbox account only;
+    - raise the quota on managed policies per role to 20 (Service Quotas,
+      in the sandbox account), which only defers it.
+
+    Recommended: the first, starting with the kinds proven on moto (the
+    moto recheck) and the free kinds the next live runs sample; the
+    template then shrinks to a few policies. Until the builder answers,
+    no more types are added (the moto upgrades go on).

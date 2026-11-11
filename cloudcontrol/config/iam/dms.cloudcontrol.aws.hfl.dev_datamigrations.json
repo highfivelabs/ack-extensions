@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDMSDataMigration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DMSDataMigrationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "dms:AddTagsToResource",
+        "dms:CreateDataMigration",
+        "dms:DescribeDataMigrations",
+        "dms:ListTagsForResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DMSDataMigrationRead",
+      "Effect": "Allow",
+      "Action": [
+        "dms:DescribeDataMigrations",
+        "dms:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DMSDataMigrationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "dms:AddTagsToResource",
+        "dms:ListTagsForResource",
+        "dms:ModifyDataMigration",
+        "dms:RemoveTagsFromResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DMSDataMigrationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "dms:DeleteDataMigration",
+        "dms:RemoveTagsFromResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

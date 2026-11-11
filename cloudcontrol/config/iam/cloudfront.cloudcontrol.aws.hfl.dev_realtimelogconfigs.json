@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudFrontRealtimeLogConfig",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontRealtimeLogConfigCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:CreateRealtimeLogConfig",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontRealtimeLogConfigRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:GetRealtimeLogConfig"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontRealtimeLogConfigUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:GetRealtimeLogConfig",
+        "cloudfront:UpdateRealtimeLogConfig",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontRealtimeLogConfigDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:DeleteRealtimeLogConfig",
+        "cloudfront:GetRealtimeLogConfig"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

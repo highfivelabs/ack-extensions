@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudFrontKeyGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontKeyGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:CreateKeyGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontKeyGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:GetKeyGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontKeyGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:GetKeyGroup",
+        "cloudfront:UpdateKeyGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontKeyGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:DeleteKeyGroup",
+        "cloudfront:GetKeyGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

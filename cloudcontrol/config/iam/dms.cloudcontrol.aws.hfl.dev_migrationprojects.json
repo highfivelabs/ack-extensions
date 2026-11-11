@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDMSMigrationProject",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DMSMigrationProjectCreate",
+      "Effect": "Allow",
+      "Action": [
+        "dms:AddTagsToResource",
+        "dms:CreateMigrationProject",
+        "dms:ListMigrationProjects",
+        "dms:ListTagsForResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DMSMigrationProjectRead",
+      "Effect": "Allow",
+      "Action": [
+        "dms:ListMigrationProjects",
+        "dms:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DMSMigrationProjectUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "dms:AddTagsToResource",
+        "dms:ListTagsForResource",
+        "dms:ModifyMigrationProject",
+        "dms:RemoveTagsFromResource",
+        "dms:UpdateMigrationProject",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DMSMigrationProjectDelete",
+      "Effect": "Allow",
+      "Action": [
+        "dms:DeleteMigrationProject"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

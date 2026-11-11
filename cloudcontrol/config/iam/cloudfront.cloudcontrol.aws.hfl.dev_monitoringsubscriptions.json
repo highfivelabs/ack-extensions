@@ -1,0 +1,41 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudFrontMonitoringSubscription",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontMonitoringSubscriptionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:CreateMonitoringSubscription"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontMonitoringSubscriptionRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:GetMonitoringSubscription"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontMonitoringSubscriptionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:DeleteMonitoringSubscription"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

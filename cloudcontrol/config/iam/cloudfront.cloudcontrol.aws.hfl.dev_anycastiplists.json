@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudFrontAnycastIpList",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontAnycastIpListCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:CreateAnycastIpList",
+        "cloudfront:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontAnycastIpListRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:GetAnycastIpList",
+        "cloudfront:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontAnycastIpListUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:GetAnycastIpList",
+        "cloudfront:ListTagsForResource",
+        "cloudfront:TagResource",
+        "cloudfront:UntagResource",
+        "cloudfront:UpdateAnycastIpList"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontAnycastIpListDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:DeleteAnycastIpList",
+        "cloudfront:GetAnycastIpList"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
