@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityHubConfigurationPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubConfigurationPolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:CreateConfigurationPolicy",
+        "securityhub:ListTagsForResource",
+        "securityhub:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubConfigurationPolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:GetConfigurationPolicy",
+        "securityhub:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubConfigurationPolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:ListTagsForResource",
+        "securityhub:TagResource",
+        "securityhub:UntagResource",
+        "securityhub:UpdateConfigurationPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityHubConfigurationPolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "securityhub:DeleteConfigurationPolicy",
+        "securityhub:GetConfigurationPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -81,4 +81,17 @@ func TestToken(t *testing.T) {
 	if token(r, "create", []byte("x")) == a {
 		t.Errorf("a retry after a failure must get a new token")
 	}
+	// The same patch as an earlier update that succeeded (a drift put
+	// back) is a new request, not a replay of the old one.
+	r.setRequest(request{Token: "t2", Operation: "UPDATE", Status: "SUCCESS"})
+	u1 := token(r, "update", []byte("p"))
+	r.setRequest(request{Token: "t3", Operation: "UPDATE", Status: "SUCCESS"})
+	if u2 := token(r, "update", []byte("p")); u2 == u1 {
+		t.Errorf("the same patch after another successful update got the old token")
+	}
+	// A request retried while its status still holds the one before is
+	// the same request.
+	if token(r, "update", []byte("p")) != token(r, "update", []byte("p")) {
+		t.Errorf("a retry of the same request got a new token")
+	}
 }

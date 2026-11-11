@@ -182,8 +182,24 @@ spec:
 
                   Regex Pattern: `^\d{12}$`
                 type: string
+              ownedAWSServiceAccessPrincipals:
+                items:
+                  type: string
+                type: array
+              ownedEnabledPolicyTypes:
+                items:
+                  type: string
+                type: array
               rootID:
                 type: string
+              unmanagedAWSServiceAccessPrincipals:
+                items:
+                  type: string
+                type: array
+              unmanagedEnabledPolicyTypes:
+                items:
+                  type: string
+                type: array
             type: object
         type: object
     served: true

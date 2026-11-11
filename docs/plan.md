@@ -1657,18 +1657,45 @@ templates, and the admission policy.
   `DisablePolicyType`, read with `ListRoots`; `PENDING_ENABLE` counts as
   enabled) and **`awsServiceAccessPrincipals`** (`EnableAWSServiceAccess`,
   `DisableAWSServiceAccess`, read with
-  `ListAWSServiceAccessForOrganization`) are each the whole list,
-  compared as sets: what is missing is enabled, what is not listed is
-  disabled, and changes outside Kubernetes are put back. An unset or empty
-  list is left alone (an empty list cannot be told from an unset one once
-  it has been through the API types), so the last entry cannot be
-  disabled from here. **Disabling is destructive:** disabling a policy
-  type detaches every policy of that type in the organization, and
-  disabling trusted access stops that service's organization features.
-  Assumed exclusive (likely, and the list is the organization's own
-  setting, which one object owns); the builder to confirm.
+  `ListAWSServiceAccessForOrganization`) are **additive** (the builder,
+  A3, 2026-11-10; this reverses the exclusive lists first built): compared
+  as sets, what is listed and missing is enabled, and an entry enabled
+  outside Kubernetes is kept, never disabled, and reported for import.
+  The builder's words: "I think we should treat the out of band action as
+  additive and something we should flag for import when taking an asset
+  inventory and giving adoption recommendations". A listed entry disabled
+  outside Kubernetes is still put back.
+  - **Ownership.** The object disables only what it owns:
+    `status.ownedEnabledPolicyTypes` and
+    `status.ownedAWSServiceAccessPrincipals`, the entries it enabled or
+    found enabled while they were listed. Listing an entry that is
+    already enabled takes it on (importing it), so taking it off the list
+    later disables it. An owned entry no longer listed is disabled; once
+    gone (or disabled outside Kubernetes) it is let go.
+  - **Reported.** `status.unmanagedEnabledPolicyTypes` and
+    `status.unmanagedAWSServiceAccessPrincipals` list what is enabled and
+    neither listed nor owned: the import candidates Bundt offers. The
+    shape is the same for any list made additive here: beside spec list
+    `X`, `status.owned<X>` and `status.unmanaged<X>`, sorted, left out
+    when empty.
+  - **How.** `planList` (`hooks.go`) is the whole rule. The read puts in
+    the spec's list only the enabled entries that are listed or owned, so
+    the comparison sees what to enable and what to disable and never an
+    unmanaged entry, and the runtime never writes one into the spec.
+  - An unset or empty list manages nothing (an empty list cannot be told
+    from an unset one once it has been through the API types): nothing is
+    enabled or disabled, the object owns nothing, and everything enabled
+    is reported unmanaged. So the last entry cannot be disabled from here.
+    Ownership lives in the status: an object restored without its status
+    owns nothing until the next sync, so it disables nothing it should
+    not (the safe direction).
+  - **Disabling is destructive:** disabling a policy type detaches every
+    policy of that type in the organization, and disabling trusted access
+    stops that service's organization features. Only owned entries are
+    ever disabled.
 - **Status:** `id`, `rootID` (for a `PolicyAttachment` to the root), the
-  management account's ID, ARN and email; `ackResourceMetadata.arn` is
+  management account's ID, ARN and email; the owned and unmanaged lists
+  above; `ackResourceMetadata.arn` is
   the organization's ARN. **Terminal:** `InvalidInputException` (an
   unknown principal or type), `ConstraintViolationException`,
   `AccessDeniedForDependencyException`,
@@ -1683,9 +1710,13 @@ so a `DeleteOrganization` would have shown); with the policy installed,
 an object without the annotation, or with `delete`, is refused; an
 existing organization is adopted, its feature set late-initialized, and
 it settles; a changed or removed annotation and a changed feature set are
-refused; a policy type disabled and a principal enabled outside
-Kubernetes are put back; entries taken off the lists are disabled; delete
-leaves the organization and its settings. The admission policy is also
+refused; the adopted entries are owned; a listed policy type disabled
+outside Kubernetes is put back; a policy type and a principal enabled
+outside Kubernetes are kept across resyncs and reported in the unmanaged
+status lists; listing the unmanaged principal takes it on; owned entries
+taken off the lists are disabled while the unmanaged policy type stays;
+delete leaves the organization and its settings. `planList` is
+unit-tested case by case (`hooks_test.go`). The admission policy is also
 checked on kind (`tests/operator/run.sh`).
 
 **Not proven on moto:** that AWS refuses SCPs and trusted access on a
@@ -2969,6 +3000,15 @@ Before it can run on a real cluster:
     until the builder answers; `EnabledControl` and `EnabledBaseline` (a
     control or baseline on an OU, which a delete only disables) are served
     without it, unproven on the fake (no emulator has Control Tower).
+
+    **Answered** (builder, 2026-11-10): the first, retain-only like
+    `Organization`, with `neverDelete` and the retain-only admission
+    policy; and for the fake, a test double or recordings for Control
+    Tower. Built (`docs/cloudcontrol.md` section 7, batch 3):
+    `neverDelete: true` in `cloudcontrol/types.yaml`, `landingzones` in
+    `config/admission/retain-only.yaml`, an in-memory test double in
+    `cloudcontrol/test/fake/controltower.go` and `TestLandingZone`. A
+    never-deleted type is left out of the live-test role and never swept.
 16. **A reference from `VPNConnection` to ACK's `TransitGateway`** (F05,
     section 6.32). The connection's other end is our `VPNGateway` or a
     transit gateway, which ACK's ec2-controller manages. A
@@ -3012,3 +3052,22 @@ Before it can run on a real cluster:
     Recommended: the first, as the next change, so an environment has one
     role and one place that says what it runs. Not built until the
     builder answers.
+
+19. **Do other list-like fields follow A3?** The builder made
+    `Organization`'s two lists additive (A3, 2026-11-10; section 6.28):
+    what is enabled outside Kubernetes is kept and reported in
+    `status.unmanaged<List>`. Two cases A3 does not settle:
+    - **Tags.** `Policy` (and every ACK kind) syncs tags exclusively:
+      a tag added outside Kubernetes is removed (ACK's `syncTags`, copied
+      from upstream). Making tags additive here would diverge from ACK
+      and from every ACK controller beside ours.
+    - **Taking on by listing.** Built: listing an entry that is already
+      enabled makes the object own it, so taking it off the list later
+      disables it (an import). The alternative is to own only what the
+      object itself enabled, so a found entry is never disabled from
+      Kubernetes even after it is listed.
+
+    Recommended: tags stay as ACK has them (A3 was asked about the
+    organization's settings, and a tag is not one); listing takes an entry
+    on, as built, since that is what importing it means. Not changed until
+    the builder answers.
