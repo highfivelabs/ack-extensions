@@ -1,0 +1,72 @@
+# Copyright 2026 High Five Labs
+# SPDX-License-Identifier: Apache-2.0
+#
+# Gap types hack/cloudcontrol-batch never adds to cloudcontrol/types.yaml,
+# each with the reason (docs/throughput.md). A type here is a decision
+# made, or one waiting on the builder or upstream; remove its line when
+# that changes. Read by hack/cloudcontrol-batch only.
+types:
+  # A field of an ACK kind already: a second kind for the same thing would
+  # have two controllers writing it (docs/plan.md section 9, question 1).
+  AWS::EC2::Route: "ACK's ec2-controller RouteTable has the routes"
+  AWS::EC2::SubnetRouteTableAssociation: "ACK's Subnet has routeTables"
+  AWS::EC2::VPCGatewayAttachment: "ACK's InternetGateway has vpc"
+  AWS::EC2::VPCCidrBlock: "ACK's VPC has cidrBlocks"
+  AWS::EC2::SubnetCidrBlock: "ACK's Subnet has its CIDR blocks"
+  AWS::EC2::VPCDHCPOptionsAssociation: "ACK's DHCPOptions has vpc"
+  AWS::EC2::SubnetNetworkAclAssociation: "ACK's NetworkACL has associations"
+  AWS::EC2::VPCEndpointServicePermissions: "ACK's VPCEndpointServiceConfiguration has allowedPrincipals"
+  AWS::IAM::RolePolicy: "ACK's Role has inlinePolicies (plan question 1)"
+  AWS::IAM::UserPolicy: "ACK's User has inlinePolicies (plan question 1)"
+  AWS::IAM::GroupPolicy: "ACK's Group has inlinePolicies (plan question 1)"
+  AWS::EC2::SecurityGroupIngress: "plan question 7 (security group rules beside ACK's SecurityGroup)"
+  AWS::EC2::SecurityGroupEgress: "plan question 7 (security group rules beside ACK's SecurityGroup)"
+  # Upstream has it close to merging (CLAUDE.md: upstream first).
+  AWS::EC2::KeyPair: "ACK ec2-controller pull request #396"
+  AWS::SecretsManager::RotationSchedule: "ACK secretsmanager-controller pull request #69"
+  AWS::NetworkManager::GlobalNetwork: "wait for ACK networkmanager-controller pull requests #3, #4, #16 (foundation F13)"
+  AWS::NetworkManager::CoreNetwork: "wait for ACK networkmanager-controller pull requests #3, #4, #16 (foundation F13)"
+  AWS::NetworkManager::VpcAttachment: "wait for ACK networkmanager-controller pull requests #3, #4, #16 (foundation F13)"
+  AWS::NetworkManager::ConnectAttachment: "wait for ACK networkmanager-controller (foundation F13)"
+  AWS::NetworkManager::ConnectPeer: "wait for ACK networkmanager-controller (foundation F13)"
+  AWS::NetworkManager::CoreNetworkPrefixListAssociation: "wait for ACK networkmanager-controller (foundation F13)"
+  AWS::NetworkManager::CustomerGatewayAssociation: "wait for ACK networkmanager-controller (foundation F13)"
+  AWS::NetworkManager::Device: "wait for ACK networkmanager-controller (foundation F13)"
+  AWS::NetworkManager::DirectConnectGatewayAttachment: "wait for ACK networkmanager-controller (foundation F13)"
+  AWS::NetworkManager::Link: "wait for ACK networkmanager-controller (foundation F13)"
+  AWS::NetworkManager::LinkAssociation: "wait for ACK networkmanager-controller (foundation F13)"
+  AWS::NetworkManager::Site: "wait for ACK networkmanager-controller (foundation F13)"
+  AWS::NetworkManager::SiteToSiteVpnAttachment: "wait for ACK networkmanager-controller (foundation F13)"
+  AWS::NetworkManager::TransitGatewayPeering: "wait for ACK networkmanager-controller (foundation F13)"
+  AWS::NetworkManager::TransitGatewayRegistration: "wait for ACK networkmanager-controller (foundation F13)"
+  AWS::NetworkManager::TransitGatewayRouteTableAttachment: "wait for ACK networkmanager-controller (foundation F13)"
+  # Decided against a kind (docs/handoff.md).
+  AWS::SSO::Instance: "an organization has one Identity Center instance, made by enabling it; its ARN is a field"
+  AWS::EC2::VPNConnectionRoute: "beside VPNConnection, ACK-generated (handoff, F05)"
+  # Physical circuits, dedicated hardware, Outposts, Wavelength and fleets
+  # of instances: not what a chart creates for a platform foundation.
+  AWS::DirectConnect::Connection: "a physical circuit (foundation F13)"
+  AWS::DirectConnect::Lag: "physical circuits (foundation F13)"
+  AWS::DirectConnect::PrivateVirtualInterface: "on a physical circuit (foundation F13)"
+  AWS::DirectConnect::PublicVirtualInterface: "on a physical circuit (foundation F13)"
+  AWS::DirectConnect::TransitVirtualInterface: "on a physical circuit (foundation F13)"
+  AWS::DirectConnect::ResiliencyGroup: "physical circuits (foundation F13)"
+  AWS::EC2::Host: "a dedicated host, billed while allocated"
+  AWS::EC2::EC2Fleet: "a fleet of instances, not foundation"
+  AWS::EC2::SpotFleet: "a fleet of instances, not foundation"
+  AWS::EC2::CapacityReservationFleet: "capacity reservations, billed while held"
+  AWS::EC2::FpgaImage: "an FPGA image, not foundation"
+  AWS::EC2::LocalGatewayRoute: "Outposts"
+  AWS::EC2::LocalGatewayRouteTable: "Outposts"
+  AWS::EC2::LocalGatewayRouteTableVirtualInterfaceGroupAssociation: "Outposts"
+  AWS::EC2::LocalGatewayRouteTableVPCAssociation: "Outposts"
+  AWS::EC2::LocalGatewayVirtualInterface: "Outposts"
+  AWS::EC2::LocalGatewayVirtualInterfaceGroup: "Outposts"
+  AWS::Route53Resolver::OutpostResolver: "Outposts"
+  AWS::EC2::CarrierGateway: "Wavelength zones"
+  AWS::EC2::SqlHaStandbyDetectedInstance: "SQL Server licensing on an instance, not foundation"
+  AWS::EC2::IPv4Pool: "bring-your-own addresses, set up with AWS outside a chart"
+  # Amazon Inspector Classic: end of support; InspectorV2 is served.
+  AWS::Inspector::AssessmentTarget: "Inspector Classic, end of support (InspectorV2 is served)"
+  AWS::Inspector::AssessmentTemplate: "Inspector Classic, end of support (InspectorV2 is served)"
+  AWS::Inspector::ResourceGroup: "Inspector Classic, end of support (InspectorV2 is served)"

@@ -6,6 +6,8 @@ package iamgen
 import (
 	"encoding/json"
 	"fmt"
+	"sort"
+	"strings"
 
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/apis/v1alpha1"
 )
@@ -113,4 +115,41 @@ func PodIdentityTrust(t Trust, sid string, serviceAccounts ...string) map[string
 			},
 		}},
 	}
+}
+
+// Compact is the same permissions in fewer characters: every Allow
+// statement on Resource "*" (all ForType writes) folded into one statement
+// per service, its actions deduplicated and sorted; any other statement is
+// kept as it is. Nothing is widened: the set of allowed (action, resource)
+// pairs is unchanged. The live-test role uses it (hack/cloudcontrol-gen,
+// live.go), whose policies cover every type and would otherwise pass IAM's
+// ten managed policies per role.
+func Compact(p Policy) Policy {
+	out := Policy{Version: p.Version}
+	byService := map[string][]string{}
+	var services []string
+	for _, st := range p.Statement {
+		if st.Effect != "Allow" || st.Resource != "*" {
+			out.Statement = append(out.Statement, st)
+			continue
+		}
+		for _, a := range st.Action {
+			svc, _, ok := strings.Cut(a, ":")
+			if !ok || svc == "" {
+				svc = "-"
+			}
+			if _, ok := byService[svc]; !ok {
+				services = append(services, svc)
+			}
+			byService[svc] = append(byService[svc], a)
+		}
+	}
+	sort.Strings(services)
+	for _, svc := range services {
+		out.Statement = append(out.Statement, Statement{
+			Sid: "Service" + sid(strings.ToUpper(svc[:1])+svc[1:]), Effect: "Allow",
+			Action: dedupe(byService[svc]), Resource: "*",
+		})
+	}
+	return out
 }

@@ -144,3 +144,38 @@ func TestNeverDeletePolicy(t *testing.T) {
 		t.Error("an environment with a deletable type lacks cloudformation:DeleteResource")
 	}
 }
+
+// Compact keeps exactly the allowed actions (all on "*") and makes the
+// document smaller.
+func TestCompact(t *testing.T) {
+	var results []iamgen.Result
+	for _, ty := range registry.Types {
+		results = append(results, iamgen.ForType(ty.Schema()))
+	}
+	merged := iamgen.Merge(results)
+	merged.Statement = append(merged.Statement, iamgen.Statement{Sid: "Other", Effect: "Allow", Action: []string{"s3:GetObject"}, Resource: "arn:aws:s3:::b/*"})
+	compact := iamgen.Compact(merged)
+	set := func(p iamgen.Policy) map[string]bool {
+		out := map[string]bool{}
+		for _, st := range p.Statement {
+			for _, a := range st.Action {
+				out[st.Effect+" "+a+" "+st.Resource] = true
+			}
+		}
+		return out
+	}
+	before, after := set(merged), set(compact)
+	if len(before) != len(after) {
+		t.Errorf("%d allowed (action, resource) pairs before, %d after", len(before), len(after))
+	}
+	for k := range before {
+		if !after[k] {
+			t.Errorf("Compact dropped %s", k)
+		}
+	}
+	size := func(p iamgen.Policy) int { b, _ := json.Marshal(p); return len(b) }
+	if size(compact) >= size(merged) {
+		t.Errorf("Compact made %d characters of %d", size(compact), size(merged))
+	}
+	t.Logf("%d types: %d characters merged, %d compact", len(registry.Types), size(merged), size(compact))
+}
