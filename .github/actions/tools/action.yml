@@ -1,10 +1,8 @@
 # Copyright 2026 High Five Labs
 # SPDX-License-Identifier: Apache-2.0
 #
-# Go from go.mod, and the command-line tools the tasks call, at the
-# versions the offload VM image pins (highfivelabs/offload, vm-startup.sh:
-# kind v0.33.0, ko v0.19.1). Where that image takes "latest" (task, crane,
-# kubectl, helm 3), the release current on 2026-11-10 is pinned here.
+# Go from go.mod, and the command-line tools the tasks call at the pins in
+# hack/ci/tools.sh (task ci:tools runs the same script).
 # Tools are cached by version; Go's module and build caches by job and
 # go.sum.
 name: tools
@@ -37,32 +35,12 @@ runs:
       uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
         path: ~/ci-tools/bin
-        key: ci-tools-${{ runner.os }}-${{ env.TOOLS_KEY }}
-      env:
-        TOOLS_KEY: task-v3.54.0_kind-v0.33.0_ko-v0.19.1_crane-v0.22.1_kubectl-v1.37.2_helm-v3.22.1
+        key: ci-tools-${{ runner.os }}-${{ hashFiles('hack/ci/tools.sh') }}
 
+    # The same script and pins as task ci:tools and the merge gate.
     - name: Install tools
-      if: steps.tools-cache.outputs.cache-hit != 'true'
       shell: bash
       run: |
-        set -euo pipefail
-        dir="${HOME}/ci-tools/bin"
-        mkdir -p "${dir}"
-        # Release binaries, not `go install`: task v3.54.0 needs a newer Go
-        # than go.mod's, and the binaries do not depend on it.
-        gh_dl=https://github.com
-        curl -sfL "${gh_dl}/go-task/task/releases/download/v3.54.0/task_linux_amd64.tar.gz" | tar -xz -C "${dir}" task
-        curl -sfLo "${dir}/kind" "${gh_dl}/kubernetes-sigs/kind/releases/download/v0.33.0/kind-linux-amd64"
-        chmod +x "${dir}/kind"
-        curl -sfL "${gh_dl}/ko-build/ko/releases/download/v0.19.1/ko_0.19.1_Linux_x86_64.tar.gz" | tar -xz -C "${dir}" ko
-        curl -sfL "${gh_dl}/google/go-containerregistry/releases/download/v0.22.1/go-containerregistry_Linux_x86_64.tar.gz" | tar -xz -C "${dir}" crane
-        curl -sfLo "${dir}/kubectl" https://dl.k8s.io/release/v1.37.2/bin/linux/amd64/kubectl
-        chmod +x "${dir}/kubectl"
-        curl -sfL https://get.helm.sh/helm-v3.22.1-linux-amd64.tar.gz | tar -xz -C "${dir}" --strip-components=1 linux-amd64/helm
-
-    - name: Put the tools on PATH
-      shell: bash
-      run: |
+        CI_TOOLS_DIR="${HOME}/ci-tools/bin" hack/ci/tools.sh
+        echo "CI_TOOLS_DIR=${HOME}/ci-tools/bin" >> "${GITHUB_ENV}"
         echo "${HOME}/ci-tools/bin" >> "${GITHUB_PATH}"
-        "${HOME}/ci-tools/bin/task" --version
-        "${HOME}/ci-tools/bin/kind" version

@@ -25,6 +25,10 @@ includes:
 
 env:
   GOTOOLCHAIN: '{{.GOTOOLCHAIN | default "local"}}'
+  # The pinned command-line tools (hack/ci/tools.sh, task ci:tools) come
+  # first on PATH, so every task runs the versions CI runs.
+  PATH:
+    sh: echo "$(hack/ci/tools.sh --dir):$PATH"
   # Every task's end-to-end tests run against the fake; only
   # hack/live/run.sh (task test-live) sets "real" for its own go test.
   CLOUDCONTROL_E2E_TARGET: fake
@@ -73,8 +77,9 @@ tasks:
         vars: {NAME: go-licenses, PKG: '{{.GO_LICENSES}}'}
 
   tools:
-    desc: ACK's generator at the pin plus patches/, the other tools, and the fake AWS (moto).
+    desc: The pinned command-line tools (ci:tools), ACK's generator at the pin plus patches/, the Go tools, and the fake AWS (moto).
     cmds:
+      - task: ci:tools
       - task: upstream
       - task: controller-gen
       - task: goimports
@@ -260,6 +265,35 @@ tasks:
     cmds:
       - hack/ci/gate.sh {{.SHA | default "HEAD"}}
 
+  "ci:tools":
+    desc: task, kind, ko, crane, kubectl and helm at CI's pins into bin/ci (hack/ci/tools.sh; CI_TOOLS_DIR), first on every task's PATH.
+    cmds:
+      - hack/ci/tools.sh
+
+  # ci.yml's check job: what the plan (hack/ci/select.sh plan) selects.
+  "ci:check":
+    desc: 'ci.yml''s check job for a plan: task ci:check MODE=full|groups|none [GROUPS="iam cloudcontrol"].'
+    requires:
+      vars: [MODE]
+    cmds:
+      - |
+        case "{{.MODE}}" in
+          full) "{{.TASK_EXE}}" check ;;
+          groups) hack/ci/select.sh run {{.GROUPS}} ;;
+          none) echo "ci:check: docs only, nothing to run" ;;
+          *) echo "ci:check: MODE is full, groups or none, not '{{.MODE}}'"; exit 2 ;;
+        esac
+
+  "ci:remote":
+    desc: Fill this checkout's cache of the remote factory include (.task/remote) under a per-user lock; run it in a new worktree before starting several tasks at once (hack/ci/task-remote.sh).
+    cmds:
+      - hack/ci/task-remote.sh
+
+  "ci:remote-test":
+    desc: 'Start N checkouts with no cache at once (xargs -P): each fills it through ci:remote, then runs task --list; all must pass. Fetches from GitHub, so not part of check: task ci:remote-test [N=3].'
+    cmds:
+      - hack/ci/task-remote-test.sh {{.N | default "3"}}
+
   hooks:
     desc: Install the pre-push hook (hack/hooks/pre-push, which runs task ci) with core.hooksPath.
     cmds:
@@ -291,6 +325,25 @@ tasks:
           "all checks passed"*) ;;
           *) echo "FAIL: $script did not end with 'all checks passed' (last line: '$last')"; exit 1 ;;
         esac
+
+  "operator-e2e:debug":
+    desc: The kind cluster's pods and recent events, after a failed operator-e2e (ci.yml and nightly.yml run it on failure).
+    cmds:
+      # Diagnostics only: the job has failed already; a missing cluster
+      # must not hide that failure behind this step's own.
+      - kubectl get pods -A -o wide || true
+      - kubectl get events -A --sort-by=.lastTimestamp | tail -n 100 || true
+
+  release:
+    desc: 'release.yml''s images job: ko-build every image, push them to KO_DOCKER_REPO tagged TAG, write out/ack-extensions-TAG.yaml. task release TAG=v0.1.0 (needs registry write access).'
+    requires:
+      vars: [TAG]
+    env:
+      TAG: '{{.TAG}}'
+      REGISTRY: '{{.REGISTRY | default "us-central1-docker.pkg.dev"}}'
+      KO_DOCKER_REPO: '{{.KO_DOCKER_REPO | default "us-central1-docker.pkg.dev/hfl-dev-514205/hfl-oci/ack-extensions"}}'
+    cmds:
+      - hack/release.sh
 
   coverage:
     desc: Regenerate docs/coverage/ and the README's Coverage section (hack/coverage/, docs/coverage/README.md).

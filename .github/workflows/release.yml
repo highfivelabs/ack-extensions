@@ -47,24 +47,10 @@ jobs:
           workload_identity_provider: projects/361760340954/locations/global/workloadIdentityPools/github/providers/factory
           service_account: hfl-release@hfl-dev-514205.iam.gserviceaccount.com
           token_format: access_token
-      - name: Log ko in to the registry
-        env:
-          TOKEN: ${{ steps.auth.outputs.access_token }}
-        run: printf '%s' "${TOKEN}" | ko login "${REGISTRY}" --username oauth2accesstoken --password-stdin
       - name: Build and push the images
-        run: |
-          set -euo pipefail
-          mkdir -p out
-          # --preserve-import-paths: every manager's main package is named
-          # cmd/controller, so the import path keeps their images apart.
-          kubectl kustomize config/default \
-            | GOTOOLCHAIN=local ko resolve --preserve-import-paths --tags "${TAG}" \
-                --platform=linux/amd64,linux/arm64 -f - >"out/ack-extensions-${TAG}.yaml"
-          {
-            echo "### Images pushed for ${TAG}"
-            echo
-            grep -o "${KO_DOCKER_REPO}/[^\"' ]*" "out/ack-extensions-${TAG}.yaml" | sort -u | sed 's/^/- /'
-          } >> "${GITHUB_STEP_SUMMARY}"
+        env:
+          REGISTRY_TOKEN: ${{ steps.auth.outputs.access_token }}
+        run: task release TAG="${TAG}" REGISTRY="${REGISTRY}" KO_DOCKER_REPO="${KO_DOCKER_REPO}"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: install

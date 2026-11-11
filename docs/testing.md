@@ -45,6 +45,34 @@ fixed to match AWS (or the difference is written down where moto cannot
 change). Sample at least one moto-proven kind per service each week, the
 oldest live row first, so every backend is rechecked over time.
 
+## Run CI locally
+
+Every workflow job's work is a `task` target or a `hack/ci/` script, so
+CI runs the same way on a laptop, an offload VM or GitHub's runner:
+
+| Workflow job | Locally |
+| --- | --- |
+| tools (every job) | `task tools` (its `ci:tools`: task, kind, ko, crane, kubectl, helm at `hack/ci/tools.sh`'s pins into `bin/ci`, first on every task's `PATH`) |
+| ci.yml plan | `hack/ci/select.sh plan origin/main HEAD` |
+| ci.yml check | `task ci:check MODE=full` (or `MODE=groups GROUPS="iam"`) |
+| ci.yml e2e | `task operator-e2e`; `task operator-e2e:debug` after a failure |
+| nightly.yml full | `task tools`, `task check`, `task operator-e2e` |
+| release.yml images | `task release TAG=v0.1.0` (needs registry write access) |
+| all of ci.yml, as one | `task ci` (below) |
+
+Go is go.mod's version, as `setup-go` picks it; `task ci` sets
+`GOTOOLCHAIN` to it. The GitHub-only steps (choosing Spot runners,
+`hack/ci/runners.sh`; the required `ci` status, `hack/ci/results.sh`; the
+nightly issue, `hack/ci/nightly-report.sh`) have no local counterpart:
+`task ci`'s exit status is the result.
+
+Task fetches the factory include (`Taskfile.yml`) into each checkout's
+`.task/remote` the first time it reads the Taskfile there, through one
+clone directory per user, so two `task` runs started at once in checkouts
+with no cache can fail. In a new worktree, run `task ci:remote` once
+before starting several tasks at once; `task ci` does it for its own
+worktree. `task ci:remote-test` checks it.
+
 ## The merge gate
 
 GitHub Actions is off in the organization (the builder, 2026-11-11); the
