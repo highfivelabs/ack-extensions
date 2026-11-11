@@ -84,6 +84,9 @@ jobs:
     permissions:
       issues: write
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
@@ -93,14 +96,4 @@ jobs:
           E2E: ${{ needs.full.outputs.e2e }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           SHA: ${{ github.sha }}
-        run: |
-          set -euo pipefail
-          issue="$(gh issue list --label ci-nightly --state open --json number --jq '.[0].number // empty')"
-          line="$(date -u +%F) on ${SHA:0:12}: launch ${LAUNCH}, task check ${CHECK:-not run}, task operator-e2e ${E2E:-not run}. ${RUN_URL}"
-          if [[ -n "${issue}" ]]; then
-            gh issue comment "${issue}" --body "Still failing: ${line}"
-          else
-            gh label create ci-nightly --color B60205 --description "The nightly full run on main failed" --force
-            gh issue create --label ci-nightly --title "Nightly full run on main is failing" \
-              --body "The nightly run of \`task check\` and \`task operator-e2e\` on main failed: ${line}"
-          fi
+        run: hack/ci/nightly-report.sh

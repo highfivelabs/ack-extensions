@@ -16,9 +16,14 @@
 # What runs, as ci.yml decides it:
 #   plan    hack/ci/select.sh plan BASE SHA, BASE = the merge base with
 #           origin/main (CI_BASE=<ref> for a stacked pull request)
-#   check   mode=full: task tools, task check; mode=groups: task tools,
-#           hack/ci/select.sh run GROUPS; mode=none (docs only): nothing
+#   check   task tools, then task ci:check MODE GROUPS (mode=full: task
+#           check; mode=groups: hack/ci/select.sh run GROUPS); mode=none
+#           (docs only): nothing
 #   e2e     when the plan says e2e=true: task operator-e2e
+# with ci.yml's versions: the command-line tools (task among them) at
+# hack/ci/tools.sh's pins, which .github/actions/tools installs too, and
+# Go at go.mod's version, as setup-go's go-version-file picks it
+# (GOTOOLCHAIN; the VM image has the latest Go).
 # check and e2e run on one offload Spot VM (16 vCPUs, 64 GB; on a quota
 # error 8 vCPUs, 32 GB, never smaller), against the repository's fake
 # cloud only, as ci.yml's jobs do: no credentials reach a test.
@@ -83,16 +88,25 @@ groups="$(sed -n 's/^groups=//p' "$TMP/plan")"
 e2e="$(sed -n 's/^e2e=//p' "$TMP/plan")"
 echo "gate: $REPO $SHA against $BASE: mode=$mode${groups:+ groups=$groups} e2e=$e2e"
 
+# Go as setup-go picks it from go.mod: the toolchain line, else the go line.
+gover="$(sed -n -E 's/^toolchain go([0-9.]+).*/\1/p' "$SRC/go.mod")"
+[[ -n "$gover" ]] || gover="$(sed -n -E 's/^go ([0-9.]+).*/\1/p' "$SRC/go.mod")"
+[[ -n "$gover" ]] || die "no go version in go.mod"
+# task at hack/ci/tools.sh's pin, in bin/ci once the prep has run.
+task="env GOTOOLCHAIN=go$gover bin/ci/task"
+echo "gate: Go $gover (go.mod), tools $(cd "$SRC" && hack/ci/tools.sh --pins)"
+
 start=$SECONDS
 url="" machine="" rc=0
 case "$mode" in
   none)
     what="docs only (select.sh plan): nothing to run" ;;
   full|groups)
-    if [[ "$mode" == full ]]; then check="task check"; what="task check"
-    else check="hack/ci/select.sh run $groups"; what="check:static, build, tests of $groups"; fi
-    steps=(--prep "task tools" --step-skippable "$check")
-    if [[ "$e2e" == true ]]; then steps+=(--step "task operator-e2e"); what="$what, operator-e2e"; fi
+    if [[ "$mode" == full ]]; then what="task check"
+    else what="check:static, build, tests of $groups"; fi
+    steps=(--prep "hack/ci/tools.sh" --prep "$task tools"
+      --step-skippable "$task ci:check MODE=$mode GROUPS='$groups'")
+    if [[ "$e2e" == true ]]; then steps+=(--step "$task operator-e2e"); what="$what, operator-e2e"; fi
     set +e
     OFFLOAD_FALLBACK="${OFFLOAD_FALLBACK-8}" "$OFFLOAD" run --dir "$SRC" "${steps[@]}" </dev/null 2>&1 | tee "$TMP/log"
     rc=${PIPESTATUS[0]}
