@@ -66,6 +66,13 @@ Go is go.mod's version, as `setup-go` picks it; `task ci` sets
 nightly issue, `hack/ci/nightly-report.sh`) have no local counterpart:
 `task ci`'s exit status is the result.
 
+Task fetches the factory include (`Taskfile.yml`) into each checkout's
+`.task/remote` the first time it reads the Taskfile there, through one
+clone directory per user, so two `task` runs started at once in checkouts
+with no cache can fail. In a new worktree, run `task ci:remote` once
+before starting several tasks at once; `task ci` does it for its own
+worktree. `task ci:remote-test` checks it.
+
 ## The merge gate
 
 GitHub Actions is off in the organization (the builder, 2026-11-11); the

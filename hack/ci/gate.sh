@@ -78,6 +78,10 @@ cleanup() {
 }
 trap cleanup EXIT
 git worktree add -q --detach "$SRC" "$SHA"
+# Task's cache of the remote include, from this checkout (task ci just
+# filled it) and under a per-user lock: offload packs it for the VM, and
+# gates started at once must not fetch it at once (hack/ci/task-remote.sh).
+hack/ci/task-remote.sh --dir "$SRC" --from "$ROOT"
 
 # The plan, as ci.yml's plan job makes it.
 (cd "$SRC" && hack/ci/select.sh plan "$BASE" "$SHA") >"$TMP/plan" 2>"$TMP/summary" \

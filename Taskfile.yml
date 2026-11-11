@@ -284,6 +284,16 @@ tasks:
           *) echo "ci:check: MODE is full, groups or none, not '{{.MODE}}'"; exit 2 ;;
         esac
 
+  "ci:remote":
+    desc: Fill this checkout's cache of the remote factory include (.task/remote) under a per-user lock; run it in a new worktree before starting several tasks at once (hack/ci/task-remote.sh).
+    cmds:
+      - hack/ci/task-remote.sh
+
+  "ci:remote-test":
+    desc: 'Start N checkouts with no cache at once (xargs -P): each fills it through ci:remote, then runs task --list; all must pass. Fetches from GitHub, so not part of check: task ci:remote-test [N=3].'
+    cmds:
+      - hack/ci/task-remote-test.sh {{.N | default "3"}}
+
   hooks:
     desc: Install the pre-push hook (hack/hooks/pre-push, which runs task ci) with core.hooksPath.
     cmds:
