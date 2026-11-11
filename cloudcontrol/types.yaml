@@ -338,9 +338,7 @@ types:
   - typeName: AWS::ECR::PullTimeUpdateExclusion
     unproven: "no moto backend yet (moto 5.2.5 has ecr); on the schema fake only"
   - typeName: AWS::ECR::RegistryPolicy
-    unproven: "no moto backend yet (moto 5.2.5 has ecr); on the schema fake only"
   - typeName: AWS::ECR::RegistryScanningConfiguration
-    unproven: "no moto backend yet (moto 5.2.5 has ecr); on the schema fake only"
   - typeName: AWS::ECR::SigningConfiguration
     unproven: "no moto backend yet (moto 5.2.5 has ecr); on the schema fake only"
   - typeName: AWS::EKS::CertificateAuthority
@@ -350,9 +348,7 @@ types:
     # The private key is a secret; the certificate body and chain are public.
     secrets: [/properties/PrivateKey]
   - typeName: AWS::IdentityStore::Group
-    unproven: "no moto backend yet (moto 5.2.5 has identitystore); on the schema fake only"
   - typeName: AWS::IdentityStore::GroupMembership
-    unproven: "no moto backend yet (moto 5.2.5 has identitystore); on the schema fake only"
   - typeName: AWS::IdentityStore::User
     unproven: "no moto backend yet (moto 5.2.5 has identitystore); on the schema fake only"
   - typeName: AWS::RAM::PermissionAssociation
@@ -442,7 +438,6 @@ types:
   - typeName: AWS::EC2::NetworkInsightsPath
     unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
   - typeName: AWS::EC2::NetworkInterface
-    unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
   - typeName: AWS::EC2::NetworkInterfaceAttachment
     unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
   - typeName: AWS::EC2::NetworkPerformanceMetricSubscription
