@@ -94,6 +94,26 @@ Filled in as batches land (types, coverage before and after).
 | 10, foundation beyond EC2 | #72 | 25 | 145 |
 | 11, EC2 networking | #73 | 66 | 211 (foundation 126 of 241) |
 | 12, logging and identity | #74 | 15 | 226 |
+| pins at the 2026-11-10 ACK releases | #75 | | 226 (denominator 1,878) |
+| 13, application tier | #76 | 89 | 315 (application 113 of 263) |
+
+Then five kinds moved from the schema fake to proven on moto (#77, #78):
+ECR `RegistryPolicy` and `RegistryScanningConfiguration`, Identity Store
+`Group` and `GroupMembership`, EC2 `NetworkInterface`.
+
+Two limits reached on 2026-11-11, for the builder:
+
+- the live-test role holds 10 managed policies, IAM's default maximum
+  (plan question 21): no type is added until it is answered. Answered the
+  same day: the role holds the kinds sampled on live runs only
+  (`liveKinds` in `cloudcontrol/types.yaml`), one managed policy, and
+  types can be added again;
+- GitHub Actions stopped starting jobs ("recent account payments have
+  failed or your spending limit needs to be increased"): #76 to #78
+  passed on an offload VM (`task check`, then `task cloudcontrol:check`
+  after fixes; the run IDs are in each PR) and wait for CI to merge.
+  Actions were then turned off, and the merge gate became the
+  `offload/ci` status that `task ci` posts (#80, docs/testing.md).
 
 Written in one session on 2026-11-11: 152 types in four pull requests,
 against 51 in the two days before. What is left of the foundation and
