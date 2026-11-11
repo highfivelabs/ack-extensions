@@ -36,6 +36,12 @@
 # CI_NO_STATUS=1 (run, post nothing).
 set -euo pipefail
 
+# A git hook runs with GIT_DIR (and GIT_INDEX_FILE ...) set to this
+# repository; a test that runs git in a directory of its own would then
+# commit, branch and configure here instead (it did, 2026-11-11). Unset them.
+# shellcheck disable=SC2046
+unset $(git rev-parse --local-env-vars)
+
 STATUS_CONTEXT=offload/ci
 BUCKET=hfl-dev-514205-offload
 PROJECT=hfl-dev-514205

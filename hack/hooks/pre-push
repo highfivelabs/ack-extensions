@@ -10,6 +10,12 @@
 # (OFFLOAD_CI_VERIFIED).
 set -euo pipefail
 
+# A git hook runs with GIT_DIR (and GIT_INDEX_FILE ...) set to this
+# repository; a test that runs git in a directory of its own would then
+# commit, branch and configure here instead (it did, 2026-11-11). Unset them.
+# shellcheck disable=SC2046
+unset $(git rev-parse --local-env-vars)
+
 ROOT="$(git rev-parse --show-toplevel)"
 REPO="$(git remote get-url origin | sed -E 's#^(git@github\.com:|https://github\.com/)##; s#\.git$##')"
 ZERO=0000000000000000000000000000000000000000
