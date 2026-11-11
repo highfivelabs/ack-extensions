@@ -97,3 +97,28 @@ resources:
   - securitylake.cloudcontrol.aws.hfl.dev_subscribernotifications.yaml
   - wafv2.cloudcontrol.aws.hfl.dev_loggingconfigurations.yaml
   - wafv2.cloudcontrol.aws.hfl.dev_regexpatternsets.yaml
+  - cloudtrail.cloudcontrol.aws.hfl.dev_channels.yaml
+  - cloudtrail.cloudcontrol.aws.hfl.dev_dashboards.yaml
+  - directconnect.cloudcontrol.aws.hfl.dev_directconnectgateways.yaml
+  - directconnect.cloudcontrol.aws.hfl.dev_directconnectgatewayassociations.yaml
+  - ecr.cloudcontrol.aws.hfl.dev_pulltimeupdateexclusions.yaml
+  - ecr.cloudcontrol.aws.hfl.dev_registrypolicies.yaml
+  - ecr.cloudcontrol.aws.hfl.dev_registryscanningconfigurations.yaml
+  - ecr.cloudcontrol.aws.hfl.dev_signingconfigurations.yaml
+  - eks.cloudcontrol.aws.hfl.dev_certificateauthorities.yaml
+  - iam.cloudcontrol.aws.hfl.dev_servercertificates.yaml
+  - identitystore.cloudcontrol.aws.hfl.dev_groups.yaml
+  - identitystore.cloudcontrol.aws.hfl.dev_groupmemberships.yaml
+  - identitystore.cloudcontrol.aws.hfl.dev_users.yaml
+  - ram.cloudcontrol.aws.hfl.dev_permissionassociations.yaml
+  - ram.cloudcontrol.aws.hfl.dev_principalassociations.yaml
+  - ram.cloudcontrol.aws.hfl.dev_resourceassociations.yaml
+  - ram.cloudcontrol.aws.hfl.dev_sourceassociations.yaml
+  - route53.cloudcontrol.aws.hfl.dev_delegationsets.yaml
+  - route53.cloudcontrol.aws.hfl.dev_trafficpolicies.yaml
+  - route53.cloudcontrol.aws.hfl.dev_trafficpolicyinstances.yaml
+  - route53profiles.cloudcontrol.aws.hfl.dev_profiles.yaml
+  - route53profiles.cloudcontrol.aws.hfl.dev_profileassociations.yaml
+  - route53profiles.cloudcontrol.aws.hfl.dev_profileresourceassociations.yaml
+  - sso.cloudcontrol.aws.hfl.dev_applications.yaml
+  - sso.cloudcontrol.aws.hfl.dev_applicationassignments.yaml

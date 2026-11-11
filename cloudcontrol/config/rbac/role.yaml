@@ -119,6 +119,28 @@ rules:
   - patch
   - update
 - apiGroups:
+  - cloudtrail.cloudcontrol.aws.hfl.dev
+  resources:
+  - channels
+  - dashboards
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cloudtrail.cloudcontrol.aws.hfl.dev
+  resources:
+  - channels/status
+  - dashboards/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - config.cloudcontrol.aws.hfl.dev
   resources:
   - aggregationauthorizations
@@ -207,6 +229,28 @@ rules:
   - patch
   - update
 - apiGroups:
+  - directconnect.cloudcontrol.aws.hfl.dev
+  resources:
+  - directconnectgatewayassociations
+  - directconnectgateways
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - directconnect.cloudcontrol.aws.hfl.dev
+  resources:
+  - directconnectgatewayassociations/status
+  - directconnectgateways/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - ec2.cloudcontrol.aws.hfl.dev
   resources:
   - transitgatewaypeeringattachments
@@ -230,6 +274,52 @@ rules:
   - transitgatewayroutetableassociations/status
   - transitgatewayroutetablepropagations/status
   - transitgatewayroutetables/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - ecr.cloudcontrol.aws.hfl.dev
+  resources:
+  - pulltimeupdateexclusions
+  - registrypolicies
+  - registryscanningconfigurations
+  - signingconfigurations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ecr.cloudcontrol.aws.hfl.dev
+  resources:
+  - pulltimeupdateexclusions/status
+  - registrypolicies/status
+  - registryscanningconfigurations/status
+  - signingconfigurations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - eks.cloudcontrol.aws.hfl.dev
+  resources:
+  - certificateauthorities
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - eks.cloudcontrol.aws.hfl.dev
+  resources:
+  - certificateauthorities/status
   verbs:
   - get
   - patch
@@ -306,6 +396,7 @@ rules:
   - iam.cloudcontrol.aws.hfl.dev
   resources:
   - samlproviders
+  - servercertificates
   verbs:
   - create
   - delete
@@ -318,6 +409,31 @@ rules:
   - iam.cloudcontrol.aws.hfl.dev
   resources:
   - samlproviders/status
+  - servercertificates/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - identitystore.cloudcontrol.aws.hfl.dev
+  resources:
+  - groupmemberships
+  - groups
+  - users
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - identitystore.cloudcontrol.aws.hfl.dev
+  resources:
+  - groupmemberships/status
+  - groups/status
+  - users/status
   verbs:
   - get
   - patch
@@ -405,12 +521,41 @@ rules:
   - patch
   - update
 - apiGroups:
+  - ram.cloudcontrol.aws.hfl.dev
+  resources:
+  - permissionassociations
+  - principalassociations
+  - resourceassociations
+  - sourceassociations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ram.cloudcontrol.aws.hfl.dev
+  resources:
+  - permissionassociations/status
+  - principalassociations/status
+  - resourceassociations/status
+  - sourceassociations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - route53.cloudcontrol.aws.hfl.dev
   resources:
   - cidrcollections
+  - delegationsets
   - dnssecs
   - keysigningkeys
   - queryloggingconfigs
+  - trafficpolicies
+  - trafficpolicyinstances
   verbs:
   - create
   - delete
@@ -423,9 +568,36 @@ rules:
   - route53.cloudcontrol.aws.hfl.dev
   resources:
   - cidrcollections/status
+  - delegationsets/status
   - dnssecs/status
   - keysigningkeys/status
   - queryloggingconfigs/status
+  - trafficpolicies/status
+  - trafficpolicyinstances/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - route53profiles.cloudcontrol.aws.hfl.dev
+  resources:
+  - profileassociations
+  - profileresourceassociations
+  - profiles
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - route53profiles.cloudcontrol.aws.hfl.dev
+  resources:
+  - profileassociations/status
+  - profileresourceassociations/status
+  - profiles/status
   verbs:
   - get
   - patch
@@ -563,6 +735,8 @@ rules:
 - apiGroups:
   - sso.cloudcontrol.aws.hfl.dev
   resources:
+  - applicationassignments
+  - applications
   - assignments
   - instanceaccesscontrolattributeconfigurations
   - permissionsets
@@ -577,6 +751,8 @@ rules:
 - apiGroups:
   - sso.cloudcontrol.aws.hfl.dev
   resources:
+  - applicationassignments/status
+  - applications/status
   - assignments/status
   - instanceaccesscontrolattributeconfigurations/status
   - permissionsets/status

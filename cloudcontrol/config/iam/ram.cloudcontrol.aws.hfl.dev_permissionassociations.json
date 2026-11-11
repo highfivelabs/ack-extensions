@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRAMPermissionAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RAMPermissionAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ram:AssociateResourceSharePermission",
+        "ram:GetPermission",
+        "ram:GetResourceShares",
+        "ram:ListPermissionAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RAMPermissionAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ram:ListPermissionAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RAMPermissionAssociationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ram:AssociateResourceSharePermission",
+        "ram:GetPermission",
+        "ram:GetResourceShares",
+        "ram:ListPermissionAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RAMPermissionAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ram:DisassociateResourceSharePermission",
+        "ram:ListPermissionAssociations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -75,6 +75,25 @@ Resources:
       PolicyDocument:
         Statement:
         - Action:
+          - CloudTrail:AddTags
+          - CloudTrail:CreateChannel
+          - CloudTrail:CreateDashboard
+          - CloudTrail:DeleteChannel
+          - CloudTrail:DeleteDashboard
+          - CloudTrail:GetChannel
+          - CloudTrail:GetDashboard
+          - CloudTrail:ListChannels
+          - CloudTrail:ListDashboards
+          - CloudTrail:ListTags
+          - CloudTrail:RemoveTags
+          - CloudTrail:StartDashboardRefresh
+          - CloudTrail:StartQuery
+          - CloudTrail:UpdateChannel
+          - CloudTrail:UpdateDashboard
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceCloudTrail
+        - Action:
           - access-analyzer:CreateAnalyzer
           - access-analyzer:CreateArchiveRule
           - access-analyzer:DeleteAnalyzer
@@ -216,10 +235,32 @@ Resources:
           Resource: '*'
           Sid: ServiceDetective
         - Action:
+          - directconnect:CreateDirectConnectGateway
+          - directconnect:CreateDirectConnectGatewayAssociation
+          - directconnect:CreateDirectConnectGatewayAssociationProposal
+          - directconnect:DeleteDirectConnectGateway
+          - directconnect:DeleteDirectConnectGatewayAssociation
+          - directconnect:DescribeDirectConnectGatewayAssociations
+          - directconnect:DescribeDirectConnectGateways
+          - directconnect:TagResource
+          - directconnect:UntagResource
+          - directconnect:UpdateDirectConnectGateway
+          - directconnect:UpdateDirectConnectGatewayAssociation
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceDirectconnect
+        - Action:
           - docdb-elastic:GetCluster
           Effect: Allow
           Resource: '*'
           Sid: ServiceDocdbelastic
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy2:
+    Properties:
+      Description: ack-extensions live tests, part 2
+      PolicyDocument:
+        Statement:
         - Action:
           - ec2:AssociateTransitGatewayRouteTable
           - ec2:CreateTags
@@ -251,13 +292,33 @@ Resources:
           Resource: '*'
           Sid: ServiceEc2
         - Action:
+          - ecr:DeleteRegistryPolicy
+          - ecr:DeleteSigningConfiguration
+          - ecr:DeregisterPullTimeUpdateExclusion
+          - ecr:GetRegistryPolicy
+          - ecr:GetRegistryScanningConfiguration
+          - ecr:GetSigningConfiguration
+          - ecr:ListPullTimeUpdateExclusions
+          - ecr:PutRegistryPolicy
+          - ecr:PutRegistryScanningConfiguration
+          - ecr:PutSigningConfiguration
+          - ecr:RegisterPullTimeUpdateExclusion
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceEcr
+        - Action:
           - ecs:DescribeClusters
           - ecs:ListContainerInstances
           Effect: Allow
           Resource: '*'
           Sid: ServiceEcs
         - Action:
+          - eks:CreateCertificateAuthority
+          - eks:DeleteCertificateAuthority
+          - eks:DescribeCertificateAuthority
           - eks:DescribeCluster
+          - eks:DescribeUpdate
+          - eks:ListCertificateAuthorities
           Effect: Allow
           Resource: '*'
           Sid: ServiceEks
@@ -287,13 +348,6 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ServiceFirehose
-        Version: "2012-10-17"
-    Type: AWS::IAM::ManagedPolicy
-  LiveTestPolicy2:
-    Properties:
-      Description: ack-extensions live tests, part 2
-      PolicyDocument:
-        Statement:
         - Action:
           - fms:BatchAssociateResource
           - fms:BatchDisassociateResource
@@ -397,21 +451,49 @@ Resources:
           - iam:DeleteRole
           - iam:DeleteRolePolicy
           - iam:DeleteSAMLProvider
+          - iam:DeleteServerCertificate
           - iam:DescribeOrganization
           - iam:GetRole
           - iam:GetRolePolicy
           - iam:GetSAMLProvider
+          - iam:GetServerCertificate
           - iam:ListAttachedRolePolicies
           - iam:ListRolePolicies
           - iam:ListSAMLProviderTags
+          - iam:ListServerCertificateTags
           - iam:PassRole
           - iam:PutRolePolicy
           - iam:TagSAMLProvider
+          - iam:TagServerCertificate
           - iam:UntagSAMLProvider
+          - iam:UntagServerCertificate
           - iam:UpdateSAMLProvider
+          - iam:UploadServerCertificate
           Effect: Allow
           Resource: '*'
           Sid: ServiceIam
+        - Action:
+          - identitystore:CreateGroup
+          - identitystore:CreateGroupMembership
+          - identitystore:CreateUser
+          - identitystore:DeleteGroup
+          - identitystore:DeleteGroupMembership
+          - identitystore:DeleteUser
+          - identitystore:DescribeGroup
+          - identitystore:DescribeGroupMembership
+          - identitystore:DescribeUser
+          - identitystore:UpdateGroup
+          - identitystore:UpdateUser
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceIdentitystore
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy3:
+    Properties:
+      Description: ack-extensions live tests, part 3
+      PolicyDocument:
+        Statement:
         - Action:
           - inspector2:CreateCisScanConfiguration
           - inspector2:CreateCodeSecurityIntegration
@@ -423,8 +505,11 @@ Resources:
           - inspector2:DeleteCodeSecurityScanConfiguration
           - inspector2:DeleteConnector
           - inspector2:DeleteFilter
+          - inspector2:Disable
+          - inspector2:Enable
           - inspector2:GetCodeSecurityIntegration
           - inspector2:GetCodeSecurityScanConfiguration
+          - inspector2:ListAccountPermissions
           - inspector2:ListCisScanConfigurations
           - inspector2:ListCodeSecurityScanConfigurations
           - inspector2:ListConnectors
@@ -502,13 +587,6 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ServiceMacie2
-        Version: "2012-10-17"
-    Type: AWS::IAM::ManagedPolicy
-  LiveTestPolicy3:
-    Properties:
-      Description: ack-extensions live tests, part 3
-      PolicyDocument:
-        Statement:
         - Action:
           - network-firewall:CreateContainerAssociation
           - network-firewall:CreateTLSInspectionConfiguration
@@ -557,10 +635,17 @@ Resources:
           Resource: '*'
           Sid: ServiceOrganizations
         - Action:
+          - ram:AssociateResourceShare
+          - ram:AssociateResourceSharePermission
           - ram:CreateResourceShare
           - ram:DeleteResourceShare
+          - ram:DisassociateResourceShare
+          - ram:DisassociateResourceSharePermission
+          - ram:GetPermission
           - ram:GetResourceShareAssociations
           - ram:GetResourceShares
+          - ram:ListPermissionAssociations
+          - ram:ListSourceAssociations
           - ram:UpdateResourceShare
           Effect: Allow
           Resource: '*'
@@ -595,19 +680,58 @@ Resources:
           - route53:CreateCidrCollection
           - route53:CreateKeySigningKey
           - route53:CreateQueryLoggingConfig
+          - route53:CreateReusableDelegationSet
+          - route53:CreateTrafficPolicy
+          - route53:CreateTrafficPolicyInstance
           - route53:DeactivateKeySigningKey
           - route53:DeleteCidrCollection
           - route53:DeleteKeySigningKey
           - route53:DeleteQueryLoggingConfig
+          - route53:DeleteReusableDelegationSet
+          - route53:DeleteTrafficPolicy
+          - route53:DeleteTrafficPolicyInstance
           - route53:DisableHostedZoneDNSSEC
           - route53:EnableHostedZoneDNSSEC
           - route53:GetDNSSEC
+          - route53:GetHostedZone
           - route53:GetQueryLoggingConfig
+          - route53:GetReusableDelegationSet
+          - route53:GetTrafficPolicyInstance
           - route53:ListCidrBlocks
           - route53:ListCidrCollections
+          - route53:ListTrafficPolicyVersions
+          - route53:UpdateTrafficPolicyComment
+          - route53:UpdateTrafficPolicyInstance
           Effect: Allow
           Resource: '*'
           Sid: ServiceRoute53
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy4:
+    Properties:
+      Description: ack-extensions live tests, part 4
+      PolicyDocument:
+        Statement:
+        - Action:
+          - route53profiles:AssociateProfile
+          - route53profiles:AssociateResourceToProfile
+          - route53profiles:CreateProfile
+          - route53profiles:DeleteProfile
+          - route53profiles:DisassociateProfile
+          - route53profiles:DisassociateResourceFromProfile
+          - route53profiles:GetProfile
+          - route53profiles:GetProfileAssociation
+          - route53profiles:GetProfileResourceAssociation
+          - route53profiles:ListProfileAssociations
+          - route53profiles:ListProfileResourceAssociations
+          - route53profiles:ListTagsForResource
+          - route53profiles:TagResource
+          - route53profiles:UntagResource
+          - route53profiles:UpdateProfileAssociation
+          - route53profiles:UpdateProfileResourceAssociation
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceRoute53profiles
         - Action:
           - route53resolver:AssociateFirewallRuleGroup
           - route53resolver:CreateFirewallDomainList
@@ -623,6 +747,8 @@ Resources:
           - route53resolver:GetFirewallRuleGroupAssociation
           - route53resolver:GetResolverConfig
           - route53resolver:GetResolverDnssecConfig
+          - route53resolver:GetResolverQueryLogConfig
+          - route53resolver:GetResolverRule
           - route53resolver:ImportFirewallDomains
           - route53resolver:ListFirewallRuleGroups
           - route53resolver:ListFirewallRules
@@ -663,13 +789,6 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ServiceSecretsmanager
-        Version: "2012-10-17"
-    Type: AWS::IAM::ManagedPolicy
-  LiveTestPolicy4:
-    Properties:
-      Description: ack-extensions live tests, part 4
-      PolicyDocument:
-        Statement:
         - Action:
           - securityhub:BatchDeleteAutomationRules
           - securityhub:BatchDisableStandards
@@ -766,6 +885,13 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ServiceSecuritylake
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy5:
+    Properties:
+      Description: ack-extensions live tests, part 5
+      PolicyDocument:
+        Statement:
         - Action:
           - servicecatalog:AssociatePrincipalWithPortfolio
           - servicecatalog:AssociateProductWithPortfolio
@@ -796,15 +922,21 @@ Resources:
           - sso:AttachCustomerManagedPolicyReferenceToPermissionSet
           - sso:AttachManagedPolicyToPermissionSet
           - sso:CreateAccountAssignment
+          - sso:CreateApplication
+          - sso:CreateApplicationAssignment
           - sso:CreateInstanceAccessControlAttributeConfiguration
           - sso:CreatePermissionSet
           - sso:DeleteAccountAssignment
+          - sso:DeleteApplication
+          - sso:DeleteApplicationAssignment
           - sso:DeleteInlinePolicyFromPermissionSet
           - sso:DeleteInstanceAccessControlAttributeConfiguration
           - sso:DeletePermissionSet
           - sso:DeletePermissionsBoundaryFromPermissionSet
           - sso:DescribeAccountAssignmentCreationStatus
           - sso:DescribeAccountAssignmentDeletionStatus
+          - sso:DescribeApplication
+          - sso:DescribeApplicationAssignment
           - sso:DescribeInstanceAccessControlAttributeConfiguration
           - sso:DescribePermissionSet
           - sso:DescribePermissionSetProvisioningStatus
@@ -821,12 +953,18 @@ Resources:
           - sso:PutPermissionsBoundaryToPermissionSet
           - sso:TagResource
           - sso:UntagResource
+          - sso:UpdateApplication
           - sso:UpdateApplicationProfileForAWSAccountInstance
           - sso:UpdateInstanceAccessControlAttributeConfiguration
           - sso:UpdatePermissionSet
           Effect: Allow
           Resource: '*'
           Sid: ServiceSso
+        - Action:
+          - sts:AssumeRole
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceSts
         - Action:
           - waf-regional:ListRuleGroups
           Effect: Allow
@@ -874,6 +1012,7 @@ Resources:
       - Ref: LiveTestPolicy2
       - Ref: LiveTestPolicy3
       - Ref: LiveTestPolicy4
+      - Ref: LiveTestPolicy5
       MaxSessionDuration: 3600
       RoleName: ack-extensions-live-tests
       Tags:
