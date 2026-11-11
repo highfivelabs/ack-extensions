@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRDSIntegration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSIntegrationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "rds:AddTagsToResource",
+        "rds:CreateIntegration",
+        "rds:DescribeIntegrations",
+        "redshift:CreateInboundIntegration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSIntegrationRead",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DescribeIntegrations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSIntegrationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "rds:AddTagsToResource",
+        "rds:DescribeIntegrations",
+        "rds:ModifyIntegration",
+        "rds:RemoveTagsFromResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RDSIntegrationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DeleteIntegration",
+        "rds:DescribeIntegrations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

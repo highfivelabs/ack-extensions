@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlApiGatewayV2RouteResponse",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayV2RouteResponseCreate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:POST"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayV2RouteResponseRead",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayV2RouteResponseUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET",
+        "apigateway:PATCH",
+        "apigateway:PUT"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayV2RouteResponseDelete",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:DELETE",
+        "apigateway:GET"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

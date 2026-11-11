@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlS3AccessGrantsLocation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3AccessGrantsLocationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "s3:CreateAccessGrantsLocation",
+        "s3:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3AccessGrantsLocationRead",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetAccessGrantsLocation",
+        "s3:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3AccessGrantsLocationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "s3:TagResource",
+        "s3:UntagResource",
+        "s3:UpdateAccessGrantsLocation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3AccessGrantsLocationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "s3:DeleteAccessGrantsLocation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

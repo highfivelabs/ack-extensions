@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlECSExpressGatewayService",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSExpressGatewayServiceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:CreateCluster",
+        "ecs:CreateExpressGatewayService",
+        "ecs:DescribeExpressGatewayService",
+        "ecs:DescribeServiceDeployments",
+        "ecs:ListServiceDeployments",
+        "ecs:RegisterTaskDefinition",
+        "ecs:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSExpressGatewayServiceRead",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:DescribeExpressGatewayService",
+        "ecs:DescribeServiceRevisions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSExpressGatewayServiceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:DescribeExpressGatewayService",
+        "ecs:DescribeServiceDeployments",
+        "ecs:DescribeServiceRevisions",
+        "ecs:DescribeServices",
+        "ecs:DescribeTaskDefinition",
+        "ecs:ListServiceDeployments",
+        "ecs:RegisterTaskDefinition",
+        "ecs:UpdateExpressGatewayService",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECSExpressGatewayServiceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:DeleteExpressGatewayService",
+        "ecs:DescribeExpressGatewayService",
+        "ecs:DescribeServices"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

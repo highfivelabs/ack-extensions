@@ -1,0 +1,66 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEventSchemasDiscoverer",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventSchemasDiscovererCreate",
+      "Effect": "Allow",
+      "Action": [
+        "events:EnableRule",
+        "events:ListTargetsByRule",
+        "events:PutRule",
+        "events:PutTargets",
+        "iam:CreateServiceLinkedRole",
+        "schemas:CreateDiscoverer",
+        "schemas:DescribeDiscoverer",
+        "schemas:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventSchemasDiscovererRead",
+      "Effect": "Allow",
+      "Action": [
+        "schemas:DescribeDiscoverer"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventSchemasDiscovererUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "events:PutRule",
+        "events:PutTargets",
+        "schemas:DescribeDiscoverer",
+        "schemas:ListTagsForResource",
+        "schemas:TagResource",
+        "schemas:UntagResource",
+        "schemas:UpdateDiscoverer"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventSchemasDiscovererDelete",
+      "Effect": "Allow",
+      "Action": [
+        "events:DeleteRule",
+        "events:DisableRule",
+        "events:RemoveTargets",
+        "schemas:DeleteDiscoverer",
+        "schemas:DescribeDiscoverer"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

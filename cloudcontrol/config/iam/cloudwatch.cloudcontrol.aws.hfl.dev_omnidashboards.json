@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudWatchOmniDashboard",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchOmniDashboardCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:CreateOmniDashboard",
+        "cloudwatch:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchOmniDashboardRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetOmniDashboard",
+        "cloudwatch:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchOmniDashboardUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:ListTagsForResource",
+        "cloudwatch:TagResource",
+        "cloudwatch:UntagResource",
+        "cloudwatch:UpdateOmniDashboard"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudWatchOmniDashboardDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DeleteOmniDashboard",
+        "cloudwatch:GetOmniDashboard",
+        "cloudwatch:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

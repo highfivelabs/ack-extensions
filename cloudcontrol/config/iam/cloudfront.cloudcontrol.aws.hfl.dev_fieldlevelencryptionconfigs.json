@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudFrontFieldLevelEncryptionConfig",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontFieldLevelEncryptionConfigCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:CreateFieldLevelEncryptionConfig"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontFieldLevelEncryptionConfigRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:GetFieldLevelEncryption"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontFieldLevelEncryptionConfigUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:GetFieldLevelEncryption",
+        "cloudfront:UpdateFieldLevelEncryptionConfig"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFrontFieldLevelEncryptionConfigDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:DeleteFieldLevelEncryptionConfig",
+        "cloudfront:GetFieldLevelEncryption"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlS3AccessGrantsInstance",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3AccessGrantsInstanceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "s3:AssociateAccessGrantsIdentityCenter",
+        "s3:CreateAccessGrantsInstance",
+        "s3:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3AccessGrantsInstanceRead",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetAccessGrantsInstance",
+        "s3:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3AccessGrantsInstanceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "s3:TagResource",
+        "s3:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3AccessGrantsInstanceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "s3:DeleteAccessGrantsInstance",
+        "s3:DissociateAccessGrantsIdentityCenter",
+        "s3:GetAccessGrantsInstance"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

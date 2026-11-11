@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLambdaLayerVersionPermission",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaLayerVersionPermissionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:AddLayerVersionPermission",
+        "lambda:GetLayerVersionPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaLayerVersionPermissionRead",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:GetLayerVersionPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LambdaLayerVersionPermissionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:GetLayerVersionPolicy",
+        "lambda:RemoveLayerVersionPermission"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

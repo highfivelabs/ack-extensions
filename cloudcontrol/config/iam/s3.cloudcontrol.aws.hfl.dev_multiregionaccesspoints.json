@@ -1,0 +1,45 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlS3MultiRegionAccessPoint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3MultiRegionAccessPointCreate",
+      "Effect": "Allow",
+      "Action": [
+        "s3:CreateMultiRegionAccessPoint",
+        "s3:DescribeMultiRegionAccessPointOperation",
+        "s3:GetMultiRegionAccessPoint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3MultiRegionAccessPointRead",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetMultiRegionAccessPoint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3MultiRegionAccessPointDelete",
+      "Effect": "Allow",
+      "Action": [
+        "s3:DeleteMultiRegionAccessPoint",
+        "s3:DescribeMultiRegionAccessPointOperation",
+        "s3:GetMultiRegionAccessPoint"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

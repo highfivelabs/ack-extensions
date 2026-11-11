@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAutoScalingLifecycleHook",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AutoScalingLifecycleHookCreate",
+      "Effect": "Allow",
+      "Action": [
+        "autoscaling:DescribeLifecycleHooks",
+        "autoscaling:PutLifecycleHook",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AutoScalingLifecycleHookRead",
+      "Effect": "Allow",
+      "Action": [
+        "autoscaling:DescribeLifecycleHooks"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AutoScalingLifecycleHookUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "autoscaling:DescribeLifecycleHooks",
+        "autoscaling:PutLifecycleHook",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AutoScalingLifecycleHookDelete",
+      "Effect": "Allow",
+      "Action": [
+        "autoscaling:DeleteLifecycleHook",
+        "autoscaling:DescribeLifecycleHooks"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -143,6 +143,40 @@ Resources:
           Resource: '*'
           Sid: ServiceAoss
         - Action:
+          - apigateway:CreatePortalProduct
+          - apigateway:CreateRoutingRule
+          - apigateway:DELETE
+          - apigateway:DeletePortalProduct
+          - apigateway:DeleteRoutingRule
+          - apigateway:GET
+          - apigateway:GetPortalProduct
+          - apigateway:GetRoutingRule
+          - apigateway:GetTags
+          - apigateway:PATCH
+          - apigateway:POST
+          - apigateway:PUT
+          - apigateway:TagResource
+          - apigateway:UntagResource
+          - apigateway:UpdatePortalProduct
+          - apigateway:UpdateRoutingRule
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceApigateway
+        - Action:
+          - aps:CreateAnomalyDetector
+          - aps:DeleteAnomalyDetector
+          - aps:DeleteResourcePolicy
+          - aps:DescribeAnomalyDetector
+          - aps:DescribeResourcePolicy
+          - aps:ListTagsForResource
+          - aps:PutAnomalyDetector
+          - aps:PutResourcePolicy
+          - aps:TagResource
+          - aps:UntagResource
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceAps
+        - Action:
           - auditmanager:BatchCreateDelegationByAssessment
           - auditmanager:BatchDeleteDelegationByAssessment
           - auditmanager:CreateAssessment
@@ -161,6 +195,17 @@ Resources:
           Resource: '*'
           Sid: ServiceAuditmanager
         - Action:
+          - autoscaling:DeleteLifecycleHook
+          - autoscaling:DeleteWarmPool
+          - autoscaling:DescribeAutoScalingGroups
+          - autoscaling:DescribeLifecycleHooks
+          - autoscaling:DescribeWarmPool
+          - autoscaling:PutLifecycleHook
+          - autoscaling:PutWarmPool
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceAutoscaling
+        - Action:
           - cloudformation:CreateResource
           - cloudformation:DeleteResource
           - cloudformation:GetResource
@@ -170,18 +215,157 @@ Resources:
           Resource: '*'
           Sid: ServiceCloudformation
         - Action:
+          - cloudfront:CreateAnycastIpList
+          - cloudfront:CreateCloudFrontOriginAccessIdentity
+          - cloudfront:CreateConnectionFunction
+          - cloudfront:CreateContinuousDeploymentPolicy
+          - cloudfront:CreateFieldLevelEncryptionConfig
+          - cloudfront:CreateFieldLevelEncryptionProfile
+          - cloudfront:CreateKeyGroup
+          - cloudfront:CreateKeyValueStore
+          - cloudfront:CreateMonitoringSubscription
+          - cloudfront:CreatePublicKey
+          - cloudfront:CreateRealtimeLogConfig
+          - cloudfront:CreateTrustStore
+          - cloudfront:DeleteAnycastIpList
+          - cloudfront:DeleteCloudFrontOriginAccessIdentity
+          - cloudfront:DeleteConnectionFunction
+          - cloudfront:DeleteContinuousDeploymentPolicy
+          - cloudfront:DeleteFieldLevelEncryptionConfig
+          - cloudfront:DeleteFieldLevelEncryptionProfile
+          - cloudfront:DeleteKeyGroup
+          - cloudfront:DeleteKeyValueStore
+          - cloudfront:DeleteMonitoringSubscription
+          - cloudfront:DeletePublicKey
+          - cloudfront:DeleteRealtimeLogConfig
+          - cloudfront:DeleteTrustStore
+          - cloudfront:DescribeConnectionFunction
+          - cloudfront:DescribeKeyValueStore
+          - cloudfront:GetAnycastIpList
+          - cloudfront:GetCloudFrontOriginAccessIdentity
+          - cloudfront:GetConnectionFunction
+          - cloudfront:GetContinuousDeploymentPolicy
+          - cloudfront:GetFieldLevelEncryption
+          - cloudfront:GetFieldLevelEncryptionProfile
+          - cloudfront:GetKeyGroup
+          - cloudfront:GetMonitoringSubscription
+          - cloudfront:GetPublicKey
+          - cloudfront:GetRealtimeLogConfig
+          - cloudfront:GetTrustStore
+          - cloudfront:ListTagsForResource
+          - cloudfront:PublishConnectionFunction
+          - cloudfront:TagResource
+          - cloudfront:UntagResource
+          - cloudfront:UpdateAnycastIpList
+          - cloudfront:UpdateCloudFrontOriginAccessIdentity
+          - cloudfront:UpdateConnectionFunction
+          - cloudfront:UpdateContinuousDeploymentPolicy
+          - cloudfront:UpdateFieldLevelEncryptionConfig
+          - cloudfront:UpdateFieldLevelEncryptionProfile
+          - cloudfront:UpdateKeyGroup
+          - cloudfront:UpdateKeyValueStore
+          - cloudfront:UpdatePublicKey
+          - cloudfront:UpdateRealtimeLogConfig
+          - cloudfront:UpdateTrustStore
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceCloudfront
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy2:
+    Properties:
+      Description: ack-extensions live tests, part 2
+      PolicyDocument:
+        Statement:
+        - Action:
+          - cloudwatch:AssumeAccessProfile
+          - cloudwatch:CreateAccessGrant
+          - cloudwatch:CreateAccessProfile
+          - cloudwatch:CreateAlert
+          - cloudwatch:CreateDomain
+          - cloudwatch:CreateDomainAccessGrantForOrganization
+          - cloudwatch:CreateDomainForOrganization
+          - cloudwatch:CreateIntegration
+          - cloudwatch:CreateOmniDashboard
+          - cloudwatch:CreateResourceMetricsConfiguration
+          - cloudwatch:CreateSpace
+          - cloudwatch:CreateView
+          - cloudwatch:DeleteAccessGrant
+          - cloudwatch:DeleteAccessProfile
+          - cloudwatch:DeleteAlarmMuteRule
           - cloudwatch:DeleteAlarms
+          - cloudwatch:DeleteAlert
+          - cloudwatch:DeleteDomain
+          - cloudwatch:DeleteDomainAccessGrantForOrganization
+          - cloudwatch:DeleteDomainForOrganization
           - cloudwatch:DeleteInsightRules
+          - cloudwatch:DeleteIntegration
+          - cloudwatch:DeleteOmniDashboard
+          - cloudwatch:DeleteResourceMetricsConfiguration
+          - cloudwatch:DeleteSpace
+          - cloudwatch:DeleteView
           - cloudwatch:DescribeAlarms
           - cloudwatch:DescribeInsightRules
+          - cloudwatch:GetAccessGrant
+          - cloudwatch:GetAccessProfile
+          - cloudwatch:GetAlarmMuteRule
+          - cloudwatch:GetAlert
+          - cloudwatch:GetDomain
+          - cloudwatch:GetDomainAccessGrantForOrganization
+          - cloudwatch:GetDomainForOrganization
+          - cloudwatch:GetIntegration
+          - cloudwatch:GetOTelEnrichment
+          - cloudwatch:GetOmniDashboard
+          - cloudwatch:GetResourceMetricsConfiguration
+          - cloudwatch:GetSpace
+          - cloudwatch:GetView
+          - cloudwatch:InvokeIntegration
           - cloudwatch:ListTagsForResource
+          - cloudwatch:PutAlarmMuteRule
           - cloudwatch:PutCompositeAlarm
           - cloudwatch:PutInsightRule
+          - cloudwatch:PutLogAlarm
+          - cloudwatch:StartOTelEnrichment
+          - cloudwatch:StopOTelEnrichment
           - cloudwatch:TagResource
           - cloudwatch:UntagResource
+          - cloudwatch:UpdateAccessProfile
+          - cloudwatch:UpdateAlert
+          - cloudwatch:UpdateDomain
+          - cloudwatch:UpdateDomainForOrganization
+          - cloudwatch:UpdateIntegration
+          - cloudwatch:UpdateOTelEnrichment
+          - cloudwatch:UpdateOmniDashboard
+          - cloudwatch:UpdateResourceMetricsConfiguration
+          - cloudwatch:UpdateSpace
+          - cloudwatch:UpdateView
           Effect: Allow
           Resource: '*'
           Sid: ServiceCloudwatch
+        - Action:
+          - codedeploy:CreateApplication
+          - codedeploy:CreateDeployment
+          - codedeploy:CreateDeploymentConfig
+          - codedeploy:CreateDeploymentGroup
+          - codedeploy:DeleteApplication
+          - codedeploy:DeleteDeploymentConfig
+          - codedeploy:DeleteDeploymentGroup
+          - codedeploy:GetApplication
+          - codedeploy:GetApplicationRevision
+          - codedeploy:GetDeployment
+          - codedeploy:GetDeploymentConfig
+          - codedeploy:GetDeploymentGroup
+          - codedeploy:ListDeployments
+          - codedeploy:ListTagsForResource
+          - codedeploy:RegisterApplicationRevision
+          - codedeploy:RegisterOnPremisesInstance
+          - codedeploy:StopDeployment
+          - codedeploy:TagResource
+          - codedeploy:UntagResource
+          - codedeploy:UpdateDeploymentGroup
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceCodedeploy
         - Action:
           - config:DeleteAggregationAuthorization
           - config:DeleteConfigRule
@@ -193,6 +377,7 @@ Resources:
           - config:DeleteOrganizationConfigRule
           - config:DeleteOrganizationConformancePack
           - config:DeleteRemediationConfiguration
+          - config:DeleteServiceLinkedConfigurationRecorder
           - config:DeleteStoredQuery
           - config:DescribeAggregationAuthorizations
           - config:DescribeComplianceByConfigRule
@@ -224,6 +409,7 @@ Resources:
           - config:PutOrganizationConformancePack
           - config:PutRemediationConfigurations
           - config:PutStoredQuery
+          - config:PutThirdPartyServiceLinkedConfigurationRecorder
           - config:StartConfigurationRecorder
           - config:TagResource
           - config:UntagResource
@@ -269,9 +455,9 @@ Resources:
           Sid: ServiceDetective
         Version: "2012-10-17"
     Type: AWS::IAM::ManagedPolicy
-  LiveTestPolicy2:
+  LiveTestPolicy3:
     Properties:
-      Description: ack-extensions live tests, part 2
+      Description: ack-extensions live tests, part 3
       PolicyDocument:
         Statement:
         - Action:
@@ -290,6 +476,38 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ServiceDirectconnect
+        - Action:
+          - dms:AddTagsToResource
+          - dms:CreateDataMigration
+          - dms:CreateDataProvider
+          - dms:CreateInstanceProfile
+          - dms:CreateMigrationProject
+          - dms:CreateReplicationConfig
+          - dms:DeleteDataMigration
+          - dms:DeleteDataProvider
+          - dms:DeleteInstanceProfile
+          - dms:DeleteMigrationProject
+          - dms:DeleteReplicationConfig
+          - dms:DescribeDataMigrations
+          - dms:DescribeDataProviders
+          - dms:DescribeInstanceProfiles
+          - dms:DescribeReplicationConfigs
+          - dms:ListDataProviders
+          - dms:ListInstanceProfiles
+          - dms:ListMigrationProjects
+          - dms:ListTagsForResource
+          - dms:ModifyDataMigration
+          - dms:ModifyDataProvider
+          - dms:ModifyInstanceProfile
+          - dms:ModifyMigrationProject
+          - dms:ModifyReplicationConfig
+          - dms:RemoveTagsFromResource
+          - dms:UpdateDataProvider
+          - dms:UpdateInstanceProfile
+          - dms:UpdateMigrationProject
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceDms
         - Action:
           - docdb-elastic:GetCluster
           Effect: Allow
@@ -313,6 +531,7 @@ Resources:
           - ec2:AttachVerifiedAccessTrustProvider
           - ec2:AuthorizeClientVpnIngress
           - ec2:AuthorizeSecurityGroupIngress
+          - ec2:CopySnapshot
           - ec2:CreateApplicationStatusCheck
           - ec2:CreateCapacityManagerDataExport
           - ec2:CreateClientVpnEndpoint
@@ -418,9 +637,9 @@ Resources:
           Sid: ServiceEc21
         Version: "2012-10-17"
     Type: AWS::IAM::ManagedPolicy
-  LiveTestPolicy3:
+  LiveTestPolicy4:
     Properties:
-      Description: ack-extensions live tests, part 3
+      Description: ack-extensions live tests, part 4
       PolicyDocument:
         Statement:
         - Action:
@@ -440,6 +659,7 @@ Resources:
           - ec2:DescribeClientVpnEndpoints
           - ec2:DescribeClientVpnRoutes
           - ec2:DescribeClientVpnTargetNetworks
+          - ec2:DescribeImages
           - ec2:DescribeInstanceConnectEndpoints
           - ec2:DescribeInstanceEventWindows
           - ec2:DescribeIpamExternalResourceVerificationTokens
@@ -529,11 +749,11 @@ Resources:
           - ec2:GetTransitGatewayPolicyTableEntries
           - ec2:GetTransitGatewayRouteTableAssociations
           - ec2:GetTransitGatewayRouteTablePropagations
-          - ec2:GetVerifiedAccessEndpointPolicy
           Effect: Allow
           Resource: '*'
           Sid: ServiceEc22
         - Action:
+          - ec2:GetVerifiedAccessEndpointPolicy
           - ec2:GetVerifiedAccessGroupPolicy
           - ec2:ModifyApplicationStatusCheck
           - ec2:ModifyClientVpnEndpoint
@@ -587,9 +807,9 @@ Resources:
           Sid: ServiceEc23
         Version: "2012-10-17"
     Type: AWS::IAM::ManagedPolicy
-  LiveTestPolicy4:
+  LiveTestPolicy5:
     Properties:
-      Description: ack-extensions live tests, part 4
+      Description: ack-extensions live tests, part 5
       PolicyDocument:
         Statement:
         - Action:
@@ -608,8 +828,44 @@ Resources:
           Resource: '*'
           Sid: ServiceEcr
         - Action:
+          - ecs:AssociateGatewayWithCluster
+          - ecs:CreateCluster
+          - ecs:CreateDaemon
+          - ecs:CreateExpressGatewayService
+          - ecs:CreateGateway
+          - ecs:CreateTaskSet
+          - ecs:DeleteDaemon
+          - ecs:DeleteDaemonTaskDefinition
+          - ecs:DeleteExpressGatewayService
+          - ecs:DeleteGateway
+          - ecs:DeleteTaskSet
           - ecs:DescribeClusters
+          - ecs:DescribeDaemon
+          - ecs:DescribeDaemonDeployments
+          - ecs:DescribeDaemonTaskDefinition
+          - ecs:DescribeExpressGatewayService
+          - ecs:DescribeGateway
+          - ecs:DescribeServiceDeployments
+          - ecs:DescribeServiceRevisions
+          - ecs:DescribeServices
+          - ecs:DescribeTaskDefinition
+          - ecs:DescribeTaskSets
+          - ecs:DisassociateGatewayFromCluster
           - ecs:ListContainerInstances
+          - ecs:ListDaemonDeployments
+          - ecs:ListGatewayClusterAssociations
+          - ecs:ListGateways
+          - ecs:ListServiceDeployments
+          - ecs:ListTagsForResource
+          - ecs:RegisterDaemonTaskDefinition
+          - ecs:RegisterTaskDefinition
+          - ecs:TagResource
+          - ecs:UntagResource
+          - ecs:UpdateDaemon
+          - ecs:UpdateExpressGatewayService
+          - ecs:UpdateGateway
+          - ecs:UpdateServicePrimaryTaskSet
+          - ecs:UpdateTaskSet
           Effect: Allow
           Resource: '*'
           Sid: ServiceEcs
@@ -624,10 +880,20 @@ Resources:
           Resource: '*'
           Sid: ServiceEks
         - Action:
+          - elasticloadbalancing:AddTags
+          - elasticloadbalancing:AddTrustStoreRevocations
+          - elasticloadbalancing:CreateTrustStore
+          - elasticloadbalancing:DeleteTrustStore
           - elasticloadbalancing:Describe*
           - elasticloadbalancing:DescribeListenerCertificates
           - elasticloadbalancing:DescribeListeners
           - elasticloadbalancing:DescribeLoadBalancers
+          - elasticloadbalancing:DescribeTags
+          - elasticloadbalancing:DescribeTrustStoreRevocations
+          - elasticloadbalancing:DescribeTrustStores
+          - elasticloadbalancing:ModifyTrustStore
+          - elasticloadbalancing:RemoveTags
+          - elasticloadbalancing:RemoveTrustStoreRevocations
           Effect: Allow
           Resource: '*'
           Sid: ServiceElasticloadbalancing
@@ -653,6 +919,8 @@ Resources:
           - events:DeleteConnection
           - events:DeleteRule
           - events:DescribeRule
+          - events:DisableRule
+          - events:EnableRule
           - events:ListApiDestinations
           - events:ListConnections
           - events:ListTargetsByRule
@@ -765,6 +1033,13 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ServiceGuardduty
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy6:
+    Properties:
+      Description: ack-extensions live tests, part 6
+      PolicyDocument:
+        Statement:
         - Action:
           - iam:AttachRolePolicy
           - iam:AttachUserPolicy
@@ -775,12 +1050,14 @@ Resources:
           - iam:DeleteRolePolicy
           - iam:DeleteSAMLProvider
           - iam:DeleteServerCertificate
+          - iam:DeleteServiceLinkedRole
           - iam:DescribeOrganization
           - iam:GetPolicy
           - iam:GetRole
           - iam:GetRolePolicy
           - iam:GetSAMLProvider
           - iam:GetServerCertificate
+          - iam:GetServiceLinkedRoleDeletionStatus
           - iam:ListAttachedRolePolicies
           - iam:ListRolePolicies
           - iam:ListSAMLProviderTags
@@ -791,6 +1068,7 @@ Resources:
           - iam:TagServerCertificate
           - iam:UntagSAMLProvider
           - iam:UntagServerCertificate
+          - iam:UpdateRoleDescription
           - iam:UpdateSAMLProvider
           - iam:UploadServerCertificate
           Effect: Allow
@@ -811,13 +1089,6 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ServiceIdentitystore
-        Version: "2012-10-17"
-    Type: AWS::IAM::ManagedPolicy
-  LiveTestPolicy5:
-    Properties:
-      Description: ack-extensions live tests, part 5
-      PolicyDocument:
-        Statement:
         - Action:
           - inspector2:CreateCisScanConfiguration
           - inspector2:CreateCodeSecurityIntegration
@@ -850,12 +1121,34 @@ Resources:
           Resource: '*'
           Sid: ServiceInspector2
         - Action:
+          - kafka:BatchAssociateScramSecret
+          - kafka:BatchDisassociateScramSecret
+          - kafka:DeleteClusterPolicy
+          - kafka:GetClusterPolicy
+          - kafka:ListScramSecrets
+          - kafka:PutClusterPolicy
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceKafka
+        - Action:
+          - kafka-cluster:AlterTopic
+          - kafka-cluster:AlterTopicDynamicConfiguration
+          - kafka-cluster:Connect
+          - kafka-cluster:CreateTopic
+          - kafka-cluster:DeleteTopic
+          - kafka-cluster:DescribeTopic
+          - kafka-cluster:DescribeTopicDynamicConfiguration
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceKafkacluster
+        - Action:
           - kms:CreateGrant
           - kms:Decrypt
           - kms:DescribeKey
           - kms:Encrypt
           - kms:GenerateDataKey
           - kms:GetPublicKey
+          - kms:ReEncrypt
           - kms:RetireGrant
           - kms:Sign
           Effect: Allow
@@ -872,12 +1165,47 @@ Resources:
           Sid: ServiceLakeformation
         - Action:
           - lambda:*
+          - lambda:AddLayerVersionPermission
+          - lambda:CreateCapacityProvider
+          - lambda:CreateMicrovmImage
+          - lambda:CreateNetworkConnector
+          - lambda:CreateWebFunction
+          - lambda:CreateWebFunctionEndpoint
+          - lambda:CreateWebFunctionRevision
+          - lambda:DeleteCapacityProvider
+          - lambda:DeleteMicrovmImage
+          - lambda:DeleteMicrovmImageVersion
+          - lambda:DeleteNetworkConnector
+          - lambda:DeleteWebFunction
+          - lambda:DeleteWebFunctionEndpoint
+          - lambda:DeleteWebFunctionRevision
+          - lambda:GetCapacityProvider
+          - lambda:GetLayerVersionPolicy
+          - lambda:GetMicrovmImage
+          - lambda:GetMicrovmImageVersion
+          - lambda:GetNetworkConnector
+          - lambda:GetWebFunction
+          - lambda:GetWebFunctionEndpoint
+          - lambda:GetWebFunctionRevision
+          - lambda:ListTags
+          - lambda:PassNetworkConnector
+          - lambda:RemoveLayerVersionPermission
+          - lambda:TagResource
+          - lambda:TagResource20170331v2
+          - lambda:UntagResource
+          - lambda:UntagResource20170331v2
+          - lambda:UpdateCapacityProvider
+          - lambda:UpdateMicrovmImage
+          - lambda:UpdateNetworkConnector
+          - lambda:UpdateWebFunctionEndpoint
           Effect: Allow
           Resource: '*'
           Sid: ServiceLambda
         - Action:
           - logs:CreateLogAnomalyDetector
           - logs:CreateLogDelivery
+          - logs:CreateLogGroup
+          - logs:CreateLogStream
           - logs:CreateScheduledQuery
           - logs:DeleteAccountPolicy
           - logs:DeleteDataProtectionPolicy
@@ -886,8 +1214,10 @@ Resources:
           - logs:DeleteIntegration
           - logs:DeleteLogAnomalyDetector
           - logs:DeleteLogDelivery
+          - logs:DeleteLogStream
           - logs:DeleteMetricExtractionPolicy
           - logs:DeleteQueryDefinition
+          - logs:DeleteResourcePolicy
           - logs:DeleteScheduledQuery
           - logs:DeleteSubscriptionFilter
           - logs:DeleteTransformer
@@ -929,6 +1259,13 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ServiceLogs
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy7:
+    Properties:
+      Description: ack-extensions live tests, part 7
+      PolicyDocument:
+        Statement:
         - Action:
           - macie2:CreateAllowList
           - macie2:CreateCustomDataIdentifier
@@ -955,6 +1292,11 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ServiceMacie2
+        - Action:
+          - mediaimport:CreateDatabaseBinarySnapshot
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceMediaimport
         - Action:
           - network-firewall:CreateContainerAssociation
           - network-firewall:CreateTLSInspectionConfiguration
@@ -1017,13 +1359,6 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ServiceOrganizations
-        Version: "2012-10-17"
-    Type: AWS::IAM::ManagedPolicy
-  LiveTestPolicy6:
-    Properties:
-      Description: ack-extensions live tests, part 6
-      PolicyDocument:
-        Statement:
         - Action:
           - ram:AssociateResourceShare
           - ram:AssociateResourceSharePermission
@@ -1043,22 +1378,58 @@ Resources:
         - Action:
           - rds:AddSourceIdentifierToSubscription
           - rds:AddTagsToResource
+          - rds:CreateBlueGreenDeployment
+          - rds:CreateCustomDBEngineVersion
+          - rds:CreateDBCluster
+          - rds:CreateDBClusterEndpoint
+          - rds:CreateDBClusterSnapshot
+          - rds:CreateDBInstance
+          - rds:CreateDBInstanceReadReplica
+          - rds:CreateDBProxyEndpoint
+          - rds:CreateDBShardGroup
           - rds:CreateEventSubscription
+          - rds:CreateGlobalCluster
+          - rds:CreateIntegration
+          - rds:DeleteBlueGreenDeployment
+          - rds:DeleteCustomDBEngineVersion
+          - rds:DeleteDBCluster
+          - rds:DeleteDBClusterEndpoint
+          - rds:DeleteDBClusterSnapshot
+          - rds:DeleteDBInstance
+          - rds:DeleteDBProxyEndpoint
+          - rds:DeleteDBShardGroup
           - rds:DeleteEventSubscription
+          - rds:DeleteGlobalCluster
+          - rds:DeleteIntegration
+          - rds:DescribeBlueGreenDeployments
+          - rds:DescribeDBClusterSnapshots
           - rds:DescribeDBClusters
+          - rds:DescribeDBEngineVersions
           - rds:DescribeDBInstances
+          - rds:DescribeDBProxyEndpoints
+          - rds:DescribeDBShardGroups
           - rds:DescribeDbClusters
           - rds:DescribeDbInstances
           - rds:DescribeDbProxies
+          - rds:DescribeDbShardGroups
           - rds:DescribeEventSubscriptions
+          - rds:DescribeIntegrations
           - rds:ListTagsForResource
+          - rds:ModifyCustomDBEngineVersion
+          - rds:ModifyDBProxyEndpoint
+          - rds:ModifyDBShardGroup
           - rds:ModifyEventSubscription
+          - rds:ModifyIntegration
+          - rds:PromoteReadReplica
+          - rds:PromoteReadReplicaDBCluster
+          - rds:RemoveFromGlobalCluster
           - rds:RemoveSourceIdentifierFromSubscription
           - rds:RemoveTagsFromResource
           Effect: Allow
           Resource: '*'
           Sid: ServiceRds
         - Action:
+          - redshift:CreateInboundIntegration
           - redshift:DescribeClusters
           Effect: Allow
           Resource: '*'
@@ -1105,6 +1476,13 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ServiceRolesanywhere
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy8:
+    Properties:
+      Description: ack-extensions live tests, part 8
+      PolicyDocument:
+        Statement:
         - Action:
           - route53:ActivateKeySigningKey
           - route53:ChangeCidrCollection
@@ -1192,20 +1570,97 @@ Resources:
           Sid: ServiceRoute53resolver
         - Action:
           - s3:*
+          - s3:AssociateAccessGrantsIdentityCenter
+          - s3:CreateAccessGrant
+          - s3:CreateAccessGrantsInstance
+          - s3:CreateAccessGrantsLocation
+          - s3:CreateBucket
+          - s3:CreateMultiRegionAccessPoint
+          - s3:CreateStorageLensGroup
+          - s3:DeleteAccessGrant
+          - s3:DeleteAccessGrantsInstance
+          - s3:DeleteAccessGrantsLocation
+          - s3:DeleteMultiRegionAccessPoint
+          - s3:DeleteStorageLensConfiguration
+          - s3:DeleteStorageLensConfigurationTagging
+          - s3:DeleteStorageLensGroup
+          - s3:DescribeMultiRegionAccessPointOperation
+          - s3:DissociateAccessGrantsIdentityCenter
+          - s3:GetAccessGrant
+          - s3:GetAccessGrantsInstance
+          - s3:GetAccessGrantsLocation
           - s3:GetBucketAcl
+          - s3:GetBucketLocation
           - s3:GetBucketNotification
           - s3:GetBucketNotificationConfiguration
           - s3:GetBucketPolicy
+          - s3:GetMultiRegionAccessPoint
+          - s3:GetMultiRegionAccessPointPolicy
+          - s3:GetMultiRegionAccessPointPolicyStatus
           - s3:GetObject
+          - s3:GetObjectAcl
+          - s3:GetObjectTagging
+          - s3:GetObjectVersion
+          - s3:GetStorageLensConfiguration
+          - s3:GetStorageLensConfigurationTagging
+          - s3:GetStorageLensGroup
+          - s3:HeadObject
+          - s3:ListBucket
+          - s3:ListTagsForResource
           - s3:PutBucketNotification
           - s3:PutBucketNotificationConfiguration
+          - s3:PutBucketObjectLockConfiguration
           - s3:PutBucketPolicy
+          - s3:PutBucketVersioning
+          - s3:PutMultiRegionAccessPointPolicy
           - s3:PutObject
+          - s3:PutStorageLensConfiguration
+          - s3:PutStorageLensConfigurationTagging
           - s3:REST.PUT.OBJECT
+          - s3:TagResource
+          - s3:UntagResource
+          - s3:UpdateAccessGrantsLocation
+          - s3:UpdateStorageLensGroup
           - s3:listBuckets
           Effect: Allow
           Resource: '*'
           Sid: ServiceS3
+        - Action:
+          - s3files:DeleteFileSystemPolicy
+          - s3files:GetFileSystemPolicy
+          - s3files:PutFileSystemPolicy
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceS3files
+        - Action:
+          - s3tables:CreateTableBucket
+          - s3tables:PutTableBucketPolicy
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceS3tables
+        - Action:
+          - schemas:CreateDiscoverer
+          - schemas:CreateRegistry
+          - schemas:CreateSchema
+          - schemas:DeleteDiscoverer
+          - schemas:DeleteRegistry
+          - schemas:DeleteResourcePolicy
+          - schemas:DeleteSchema
+          - schemas:DeleteSchemaVersion
+          - schemas:DescribeDiscoverer
+          - schemas:DescribeRegistry
+          - schemas:DescribeSchema
+          - schemas:GetResourcePolicy
+          - schemas:ListTagsForResource
+          - schemas:PutResourcePolicy
+          - schemas:TagResource
+          - schemas:UntagResource
+          - schemas:UpdateDiscoverer
+          - schemas:UpdateRegistry
+          - schemas:UpdateSchema
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceSchemas
         - Action:
           - secretsmanager:CreateSecret
           - secretsmanager:DeleteResourcePolicy
@@ -1218,9 +1673,9 @@ Resources:
           Sid: ServiceSecretsmanager
         Version: "2012-10-17"
     Type: AWS::IAM::ManagedPolicy
-  LiveTestPolicy7:
+  LiveTestPolicy9:
     Properties:
-      Description: ack-extensions live tests, part 7
+      Description: ack-extensions live tests, part 9
       PolicyDocument:
         Statement:
         - Action:
@@ -1352,6 +1807,45 @@ Resources:
           Resource: '*'
           Sid: ServiceSqs
         - Action:
+          - ssm:AddTagsToResource
+          - ssm:CreateCloudConnector
+          - ssm:CreateMaintenanceWindow
+          - ssm:CreateOpsItem
+          - ssm:DeleteCloudConnector
+          - ssm:DeleteMaintenanceWindow
+          - ssm:DeleteOpsItem
+          - ssm:DeregisterTargetFromMaintenanceWindow
+          - ssm:DeregisterTaskFromMaintenanceWindow
+          - ssm:DescribeMaintenanceWindowTargets
+          - ssm:DescribeOpsItems
+          - ssm:GetCloudConnector
+          - ssm:GetMaintenanceWindow
+          - ssm:GetMaintenanceWindowTask
+          - ssm:GetOpsItem
+          - ssm:GetServiceSetting
+          - ssm:ListAssociations
+          - ssm:ListTagsForResource
+          - ssm:RegisterTargetWithMaintenanceWindow
+          - ssm:RegisterTaskWithMaintenanceWindow
+          - ssm:RemoveTagsFromResource
+          - ssm:ResetServiceSetting
+          - ssm:UpdateCloudConnector
+          - ssm:UpdateMaintenanceWindow
+          - ssm:UpdateMaintenanceWindowTarget
+          - ssm:UpdateMaintenanceWindowTask
+          - ssm:UpdateOpsItem
+          - ssm:UpdateServiceSetting
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceSsm
+        Version: "2012-10-17"
+    Type: AWS::IAM::ManagedPolicy
+  LiveTestPolicy10:
+    Properties:
+      Description: ack-extensions live tests, part 10
+      PolicyDocument:
+        Statement:
+        - Action:
           - sso:AttachCustomerManagedPolicyReferenceToPermissionSet
           - sso:AttachManagedPolicyToPermissionSet
           - sso:CreateAccountAssignment
@@ -1372,6 +1866,7 @@ Resources:
           - sso:DescribeAccountAssignmentDeletionStatus
           - sso:DescribeApplication
           - sso:DescribeApplicationAssignment
+          - sso:DescribeInstance
           - sso:DescribeInstanceAccessControlAttributeConfiguration
           - sso:DescribePermissionSet
           - sso:DescribePermissionSetProvisioningStatus
@@ -1383,9 +1878,13 @@ Resources:
           - sso:ListAccountAssignments
           - sso:ListCustomerManagedPolicyReferencesInPermissionSet
           - sso:ListManagedPoliciesInPermissionSet
+          - sso:ListRegions
           - sso:ListTagsForResource
           - sso:ProvisionPermissionSet
           - sso:PutApplicationAccessScope
+          - sso:PutApplicationAssignmentConfiguration
+          - sso:PutApplicationAuthenticationMethod
+          - sso:PutApplicationGrant
           - sso:PutInlinePolicyToPermissionSet
           - sso:PutPermissionsBoundaryToPermissionSet
           - sso:TagResource
@@ -1398,6 +1897,14 @@ Resources:
           Resource: '*'
           Sid: ServiceSso
         - Action:
+          - states:DeleteStateMachineVersion
+          - states:DescribeStateMachine
+          - states:ListStateMachineVersions
+          - states:PublishStateMachineVersion
+          Effect: Allow
+          Resource: '*'
+          Sid: ServiceStates
+        - Action:
           - sts:AssumeRole
           Effect: Allow
           Resource: '*'
@@ -1409,13 +1916,6 @@ Resources:
           Effect: Allow
           Resource: '*'
           Sid: ServiceTiros
-        Version: "2012-10-17"
-    Type: AWS::IAM::ManagedPolicy
-  LiveTestPolicy8:
-    Properties:
-      Description: ack-extensions live tests, part 8
-      PolicyDocument:
-        Statement:
         - Action:
           - verified-access:AllowVerifiedAccess
           Effect: Allow
@@ -1472,6 +1972,8 @@ Resources:
       - Ref: LiveTestPolicy6
       - Ref: LiveTestPolicy7
       - Ref: LiveTestPolicy8
+      - Ref: LiveTestPolicy9
+      - Ref: LiveTestPolicy10
       MaxSessionDuration: 3600
       RoleName: ack-extensions-live-tests
       Tags:
