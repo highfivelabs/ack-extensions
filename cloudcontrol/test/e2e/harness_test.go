@@ -297,8 +297,10 @@ func startFake(t *testing.T, root string) (*fake.Server, string, aws.Config) {
 			b = fake.NewOrganizationConformancePack(motoCfg)
 		default:
 			if ty.Unproven != "" {
-				// Marked in types.yaml: moto lacks the API.
-				continue
+				// Marked in types.yaml: moto lacks the API, so the type
+				// runs on the schema fake (TestEveryKindOnSchemaFake).
+				b = fake.NewSchemaStore(ty.Schema(), motoAccount, region)
+				break
 			}
 			t.Fatalf("no fake backend for %s (or mark it unproven in cloudcontrol/types.yaml)", ty.TypeName)
 		}

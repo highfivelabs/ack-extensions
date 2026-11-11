@@ -194,6 +194,13 @@ Control API by one generic manager on ACK's runtime, in
 against a fake Cloud Control over moto; **untested on real AWS** until
 each has had a real run.
 
+The full list is `cloudcontrol/types.yaml` (its generation report,
+`cloudcontrol/zz_generated.report.md`, has each kind's fields). A type
+marked `unproven` there has no moto backend: it is tested on the schema
+fake only (`TestEveryKindOnSchemaFake`; `docs/testing.md`), and the
+coverage data notes it. The table below lists the kinds with a note of
+their own.
+
 | Kind | CloudFormation type |
 | --- | --- |
 | `iam.cloudcontrol.aws.hfl.dev/v1alpha1` `SAMLProvider` | `AWS::IAM::SAMLProvider` (the private key from a Secret) |

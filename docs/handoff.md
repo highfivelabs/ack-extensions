@@ -51,10 +51,15 @@ fake and marked untested on real AWS until a real run. Adding a type:
 2. Add `typeName` to `cloudcontrol/types.yaml`; opt in `secrets` only for
    write-only strings that are secrets (the generation report lists the
    candidates); `task cloudcontrol:generate`. No Go per type.
-3. A moto backend in `cloudcontrol/test/fake/moto.go` and an end-to-end
-   test in `cloudcontrol/test/e2e` when moto has the service; otherwise
-   mark it "unproven on fake" (PR 2 adds the column to the coverage data).
-4. `tests/operator/run.sh` checks the CRD list; add the new CRD there.
+3. Add types a service group at a time with `go run ./hack/cloudcontrol-batch
+   --services <a,b> --note "..."` (`docs/throughput.md`): it skips what
+   `cloudcontrol/excluded.yaml` excludes and marks each type unproven, so
+   it runs on the schema fake in `TestEveryKindOnSchemaFake` with no
+   per-type code. A moto backend in `cloudcontrol/test/fake` and a test in
+   `cloudcontrol/test/e2e` upgrade a type to proven on moto (then drop its
+   `unproven:`); `docs/testing.md` has the levels.
+4. `tests/operator/run.sh` reads the CRD list from the generated
+   kustomization; nothing to add there.
 5. Never weaken the guard against real AWS (`pkg/fakeaws`, checked by
    `task noaws`; `docs/cloudcontrol.md` section 6).
 
