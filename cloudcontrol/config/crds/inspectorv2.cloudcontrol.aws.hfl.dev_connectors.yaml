@@ -269,21 +269,11 @@ spec:
                 type: array
               connectorArn:
                 description: The Amazon Resource Name (ARN) of the connector.
-                maxLength: 128
                 type: string
               createdAt:
                 description: Timestamp when the connector was created.
                 type: string
               enablementStatus:
-                enum:
-                - ENABLED
-                - PENDING_ENABLEMENT
-                - FAILED_TO_ENABLE
-                - PENDING_UPDATE
-                - FAILED_TO_UPDATE
-                - PENDING_DELETION
-                - DELETED
-                - FAILED_TO_DELETE
                 type: string
               enablementStatusReason:
                 description: Reason for the current enablement status, if applicable.
@@ -291,13 +281,6 @@ spec:
               health:
                 properties:
                   connectorStatus:
-                    enum:
-                    - CONNECTED
-                    - DEGRADED
-                    - FAILED_TO_CONNECT
-                    - PENDING_AUTHORIZATION
-                    - PENDING_CONFIGURATION
-                    - UNKNOWN
                     type: string
                   lastCheckedAt:
                     type: string

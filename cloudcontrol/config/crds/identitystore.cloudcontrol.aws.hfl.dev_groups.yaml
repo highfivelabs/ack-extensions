@@ -142,8 +142,6 @@ spec:
                 type: array
               groupId:
                 description: The unique identifier for a group in the identity store.
-                maxLength: 47
-                minLength: 1
                 type: string
             type: object
         required:

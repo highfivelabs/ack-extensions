@@ -196,10 +196,6 @@ spec:
               numberOfCaCertificates:
                 type: integer
               status:
-                enum:
-                - PENDING
-                - ACTIVE
-                - FAILED
                 type: string
             type: object
         required:

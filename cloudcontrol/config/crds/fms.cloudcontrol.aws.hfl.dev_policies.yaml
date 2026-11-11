@@ -377,8 +377,6 @@ spec:
                 type: object
               arn:
                 description: A resource ARN.
-                maxLength: 1024
-                minLength: 1
                 type: string
               cloudControl:
                 description: Cloud Control's view of the resource.
@@ -432,8 +430,6 @@ spec:
                   type: object
                 type: array
               id:
-                maxLength: 36
-                minLength: 36
                 type: string
             type: object
         required:

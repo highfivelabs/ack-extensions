@@ -280,12 +280,8 @@ spec:
                 type: object
               arn:
                 description: The Amazon Resource Name (ARN) of the assessment.
-                maxLength: 2048
-                minLength: 20
                 type: string
               assessmentId:
-                maxLength: 36
-                minLength: 36
                 type: string
               cloudControl:
                 description: Cloud Control's view of the resource.

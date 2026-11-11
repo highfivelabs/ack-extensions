@@ -93,8 +93,6 @@ spec:
                 - region
                 type: object
               arn:
-                maxLength: 2048
-                minLength: 20
                 type: string
               cloudControl:
                 description: Cloud Control's view of the resource.
@@ -148,21 +146,12 @@ spec:
                   type: object
                 type: array
               driftStatus:
-                enum:
-                - DRIFTED
-                - IN_SYNC
                 type: string
               landingZoneIdentifier:
                 type: string
               latestAvailableVersion:
-                maxLength: 10
-                minLength: 3
                 type: string
               status:
-                enum:
-                - ACTIVE
-                - PROCESSING
-                - FAILED
                 type: string
             type: object
         required:

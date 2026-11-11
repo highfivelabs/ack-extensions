@@ -286,25 +286,15 @@ spec:
                 type: string
               functionArn:
                 description: The Amazon Resource Name (ARN) of the function.
-                maxLength: 2048
-                minLength: 1
                 type: string
               revisionArn:
                 description: The Amazon Resource Name (ARN) of the revision.
-                maxLength: 2048
-                minLength: 1
                 type: string
               revisionId:
                 description: The unique identifier of the revision.
-                maxLength: 256
-                minLength: 1
                 type: string
               state:
                 description: The current state of the revision.
-                enum:
-                - Pending
-                - Active
-                - Failed
                 type: string
               stateReason:
                 description: The reason for the revision's current state.

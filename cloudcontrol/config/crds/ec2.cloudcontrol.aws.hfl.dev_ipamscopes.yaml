@@ -188,9 +188,6 @@ spec:
               ipamScopeType:
                 description: Determines whether this scope contains publicly routable
                   space or space for a private network
-                enum:
-                - public
-                - private
                 type: string
               isDefault:
                 description: Is this one of the default scopes created with the IPAM.

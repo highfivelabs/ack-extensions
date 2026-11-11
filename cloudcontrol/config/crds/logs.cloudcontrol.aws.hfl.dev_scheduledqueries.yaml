@@ -200,12 +200,6 @@ spec:
               creationTime:
                 type: number
               lastExecutionStatus:
-                enum:
-                - Pending
-                - InvalidQuery
-                - Complete
-                - Failed
-                - Timeout
                 type: string
               lastTriggeredTime:
                 type: number

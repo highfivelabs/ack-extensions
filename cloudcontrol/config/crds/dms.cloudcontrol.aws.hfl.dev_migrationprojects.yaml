@@ -214,25 +214,17 @@ spec:
               instanceProfileArn:
                 description: The property describes an instance profile arn for the
                   migration project. For read
-                maxLength: 255
-                minLength: 1
                 type: string
               instanceProfileName:
                 description: The property describes an instance profile name for the
                   migration project. For read
-                maxLength: 255
-                minLength: 1
                 type: string
               migrationProjectArn:
                 description: The property describes an ARN of the migration project.
-                maxLength: 255
-                minLength: 1
                 type: string
               migrationProjectCreationTime:
                 description: The property describes a creating time of the migration
                   project.
-                maxLength: 40
-                minLength: 1
                 type: string
             type: object
         required:

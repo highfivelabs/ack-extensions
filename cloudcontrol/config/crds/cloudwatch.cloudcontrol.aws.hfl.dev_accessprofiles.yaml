@@ -112,15 +112,10 @@ spec:
                 type: object
               arn:
                 description: The Amazon Resource Name (ARN) of the access profile.
-                maxLength: 2048
-                minLength: 1
                 type: string
               assumeStatus:
                 description: Whether the calling principal is authorized to assume
                   the access profile.
-                enum:
-                - ALLOWED
-                - DENIED
                 type: string
               cloudControl:
                 description: Cloud Control's view of the resource.
@@ -178,15 +173,10 @@ spec:
                 type: string
               profileId:
                 description: The unique identifier of the access profile.
-                maxLength: 64
-                minLength: 1
                 type: string
               profileType:
                 description: Whether the access profile is managed by the service
                   or by the customer.
-                enum:
-                - SERVICE_MANAGED
-                - CUSTOMER_MANAGED
                 type: string
               updatedAt:
                 description: The time the access profile was last updated.

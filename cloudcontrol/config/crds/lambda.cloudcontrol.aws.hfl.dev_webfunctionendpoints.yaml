@@ -248,18 +248,12 @@ spec:
                 type: string
               domainName:
                 description: The domain name of the endpoint.
-                maxLength: 256
-                minLength: 4
                 type: string
               endpointArn:
                 description: The Amazon Resource Name (ARN) of the endpoint.
-                maxLength: 2048
-                minLength: 1
                 type: string
               functionArn:
                 description: The Amazon Resource Name (ARN) of the function.
-                maxLength: 2048
-                minLength: 1
                 type: string
               regionalEndpoints:
                 additionalProperties:
@@ -267,9 +261,6 @@ spec:
                   properties:
                     authType:
                       description: The authentication type for the endpoint.
-                      enum:
-                      - ApplicationManaged
-                      - IamAuth
                       type: string
                     domainName:
                       description: The domain name of the endpoint.
@@ -281,13 +272,9 @@ spec:
                         properties:
                           revisionId:
                             description: The revision identifier.
-                            maxLength: 256
-                            minLength: 1
                             type: string
                           weight:
                             description: The traffic weight for this revision.
-                            maximum: 100
-                            minimum: 1
                             type: integer
                         type: object
                       type: array
@@ -301,16 +288,10 @@ spec:
                             environments for the endpoint. This optional limit further
                             constrains the endpoint's scaling. When omitted, the endpoint's
                             scaling is limited only by your account's vCPU quota.
-                          minimum: 2
                           type: integer
                       type: object
                     state:
                       description: The current state of the endpoint.
-                      enum:
-                      - Pending
-                      - Active
-                      - Failed
-                      - Deleting
                       type: string
                     stateReason:
                       description: The reason for the current state of the endpoint.
@@ -331,15 +312,10 @@ spec:
                             Supported values can vary by Region; if you specify an
                             unsupported value, the error lists the values available
                             in that Region.
-                          minimum: 0
                           type: integer
                       type: object
                     updateStatus:
                       description: The status of the most recent update to the endpoint.
-                      enum:
-                      - InProgress
-                      - Successful
-                      - Failed
                       type: string
                     updateStatusReason:
                       description: The reason for the current update status of the
@@ -350,21 +326,12 @@ spec:
                 type: object
               state:
                 description: The current state of the endpoint.
-                enum:
-                - Pending
-                - Active
-                - Failed
-                - Deleting
                 type: string
               stateReason:
                 description: The reason for the endpoint's current state.
                 type: string
               updateStatus:
                 description: The status of the last update operation.
-                enum:
-                - InProgress
-                - Successful
-                - Failed
                 type: string
               updateStatusReason:
                 description: The reason for the update status.

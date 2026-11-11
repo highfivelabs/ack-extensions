@@ -164,8 +164,6 @@ spec:
               membershipId:
                 description: The identifier for a GroupMembership in the identity
                   store.
-                maxLength: 47
-                minLength: 1
                 type: string
             type: object
         required:

@@ -112,8 +112,6 @@ spec:
                 type: string
               clientToken:
                 description: The id of the creator request
-                maxLength: 64
-                minLength: 1
                 type: string
               cloudControl:
                 description: Cloud Control's view of the resource.
@@ -171,10 +169,6 @@ spec:
                 type: string
               shareStatus:
                 description: The sharing status of the profile.
-                enum:
-                - NOT_SHARED
-                - SHARED_WITH_ME
-                - SHARED_BY_ME
                 type: string
             type: object
         required:

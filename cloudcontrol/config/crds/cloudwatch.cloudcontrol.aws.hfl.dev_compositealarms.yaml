@@ -210,8 +210,6 @@ spec:
                 type: object
               arn:
                 description: Amazon Resource Name (ARN) of the alarm
-                maxLength: 1600
-                minLength: 1
                 type: string
               cloudControl:
                 description: Cloud Control's view of the resource.

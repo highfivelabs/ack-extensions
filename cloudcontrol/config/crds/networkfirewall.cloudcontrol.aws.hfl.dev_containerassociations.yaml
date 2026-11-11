@@ -228,22 +228,13 @@ spec:
                 type: array
               containerAssociationArn:
                 description: The Amazon Resource Name (ARN) of the container association.
-                maxLength: 256
-                minLength: 1
                 type: string
               resolvedCidrCount:
                 description: The number of CIDR blocks resolved from the monitored
                   containers.
-                maximum: 1000000
-                minimum: 0
                 type: integer
               status:
                 description: The current status of the container association.
-                enum:
-                - ACTIVE
-                - CREATING
-                - DELETING
-                - UPDATING
                 type: string
             type: object
         required:

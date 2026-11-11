@@ -146,10 +146,6 @@ spec:
               endDate:
                 type: string
               findingsFound:
-                enum:
-                - "true"
-                - "false"
-                - unknown
                 type: string
               networkInsightsAccessScopeAnalysisArn:
                 type: string
@@ -158,10 +154,6 @@ spec:
               startDate:
                 type: string
               status:
-                enum:
-                - running
-                - failed
-                - succeeded
                 type: string
               statusMessage:
                 type: string

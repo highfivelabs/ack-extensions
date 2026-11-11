@@ -195,8 +195,6 @@ spec:
               ipamInternetRegistryAssociationArn:
                 description: The Amazon Resource Name (ARN) of the internet registry
                   association.
-                maxLength: 1283
-                minLength: 1
                 type: string
               ipamInternetRegistryAssociationId:
                 description: The ID of the internet registry association.
@@ -210,16 +208,6 @@ spec:
                 type: string
               state:
                 description: The state of the internet registry association.
-                enum:
-                - pending-enable
-                - create-in-progress
-                - create-failed
-                - enable-in-progress
-                - enable-complete
-                - enable-failed
-                - delete-in-progress
-                - delete-complete
-                - delete-failed
                 type: string
             type: object
         required:

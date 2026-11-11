@@ -225,8 +225,6 @@ spec:
                 type: string
               blueGreenDeploymentIdentifier:
                 description: The system-generated identifier of the Blue/Green Deployment.
-                maxLength: 255
-                minLength: 1
                 type: string
               cloudControl:
                 description: Cloud Control's view of the resource.
@@ -293,23 +291,17 @@ spec:
                   properties:
                     sourceMember:
                       description: The source database member in the Blue/Green Deployment.
-                      maxLength: 2048
-                      minLength: 1
                       type: string
                     switchoverDetailStatus:
                       description: The status of this source and target member pair.
                       type: string
                     targetMember:
                       description: The target database member in the Blue/Green Deployment.
-                      maxLength: 2048
-                      minLength: 1
                       type: string
                   type: object
                 type: array
               target:
                 description: The ARN of the target database in the green environment.
-                maxLength: 2048
-                minLength: 1
                 type: string
               tasks:
                 description: The provisioning tasks for the Blue/Green Deployment.

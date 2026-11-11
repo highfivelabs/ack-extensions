@@ -108,11 +108,6 @@ spec:
               associationStatus:
                 description: The current status of the association between the specified
                   target and the configuration
-                enum:
-                - SUCCESS
-                - PENDING
-                - FAILED
-                - DISABLED
                 type: string
               associationStatusMessage:
                 description: An explanation for a FAILED value for AssociationStatus
@@ -121,9 +116,6 @@ spec:
                 description: Indicates whether the association between the specified
                   target and the configuration was directly applied by the Security
                   Hub delegated administrator or inherited from a parent
-                enum:
-                - APPLIED
-                - INHERITED
                 type: string
               cloudControl:
                 description: Cloud Control's view of the resource.

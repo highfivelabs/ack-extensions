@@ -238,9 +238,6 @@ spec:
               daemonArn:
                 type: string
               daemonStatus:
-                enum:
-                - ACTIVE
-                - DELETE_IN_PROGRESS
                 type: string
               deploymentArn:
                 type: string

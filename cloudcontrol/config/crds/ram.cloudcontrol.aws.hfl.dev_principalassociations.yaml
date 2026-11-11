@@ -167,15 +167,6 @@ spec:
                 type: string
               status:
                 description: The current status of the association.
-                enum:
-                - ASSOCIATING
-                - ASSOCIATED
-                - FAILED
-                - DISASSOCIATING
-                - DISASSOCIATED
-                - SUSPENDED
-                - SUSPENDING
-                - RESTORING
                 type: string
             type: object
         required:

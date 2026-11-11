@@ -3086,6 +3086,17 @@ Before it can run on a real cluster:
     object; `spec` keeps its validation. Not changed until the builder
     answers.
 
+    **Answered** (2026-11-11): the recommendation, value checks dropped
+    from `status` only. `crdgen` keeps a status property's type and
+    structure but writes no `enum`, `minLength`/`maxLength`,
+    `minimum`/`maximum` or `minItems`/`maxItems` under `status`
+    (`pattern` was already dropped everywhere); `spec` keeps all of them.
+    Regenerated: 103 of the 292 Cloud Control CRDs changed.
+    `TestNoValueChecksInStatus` fails if any committed CRD (Cloud Control
+    and ACK-generated) has a value check under `status`, and
+    `TestGenerateDropsValueChecksFromStatusOnly` checks the generator
+    itself on every registry type.
+
 21. **The live-test role at IAM's limit** (2026-11-11). With 292 Cloud
     Control types the sandbox template's role needs 10 managed policies
     of 6,144 characters (54,401 characters of actions, already one

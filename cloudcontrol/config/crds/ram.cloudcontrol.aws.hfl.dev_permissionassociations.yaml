@@ -102,15 +102,6 @@ spec:
               associationStatus:
                 description: The current status of the association between the permission
                   and the resource share.
-                enum:
-                - ASSOCIATING
-                - ASSOCIATED
-                - FAILED
-                - DISASSOCIATING
-                - SUSPENDED
-                - SUSPENDING
-                - RESTORING
-                - DISASSOCIATED
                 type: string
               cloudControl:
                 description: Cloud Control's view of the resource.
@@ -165,10 +156,6 @@ spec:
                 type: array
               featureSet:
                 description: The feature set of the resource share.
-                enum:
-                - STANDARD
-                - CREATED_FROM_POLICY
-                - PROMOTING_TO_STANDARD
                 type: string
               isDefault:
                 description: Indicates whether the associated resource share is using

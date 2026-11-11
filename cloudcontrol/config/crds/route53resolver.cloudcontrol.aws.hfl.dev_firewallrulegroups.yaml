@@ -222,8 +222,6 @@ spec:
                 type: object
               arn:
                 description: Arn
-                maxLength: 600
-                minLength: 1
                 type: string
               cloudControl:
                 description: Cloud Control's view of the resource.
@@ -278,28 +276,18 @@ spec:
                 type: array
               creationTime:
                 description: Rfc3339TimeString
-                maxLength: 40
-                minLength: 20
                 type: string
               creatorRequestId:
                 description: The id of the creator request.
-                maxLength: 255
-                minLength: 1
                 type: string
               id:
                 description: ResourceId
-                maxLength: 64
-                minLength: 1
                 type: string
               modificationTime:
                 description: Rfc3339TimeString
-                maxLength: 40
-                minLength: 20
                 type: string
               ownerId:
                 description: AccountId
-                maxLength: 32
-                minLength: 12
                 type: string
               ruleCount:
                 description: Count
@@ -307,19 +295,10 @@ spec:
               shareStatus:
                 description: ShareStatus, possible values are NOT_SHARED, SHARED_WITH_ME,
                   SHARED_BY_ME.
-                enum:
-                - NOT_SHARED
-                - SHARED_WITH_ME
-                - SHARED_BY_ME
                 type: string
               status:
                 description: ResolverFirewallRuleGroupAssociation, possible values
                   are COMPLETE, DELETING, UPDATING, and INACTIVE_OWNER_ACCOUNT_CLOSED.
-                enum:
-                - COMPLETE
-                - DELETING
-                - UPDATING
-                - INACTIVE_OWNER_ACCOUNT_CLOSED
                 type: string
               statusMessage:
                 description: FirewallRuleGroupStatus

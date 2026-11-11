@@ -6,7 +6,9 @@
 //
 //   - writable properties to spec, in lower camel case;
 //   - readOnlyProperties to status (top-level ones; a read-only property
-//     nested inside a writable object is dropped from spec and reported);
+//     nested inside a writable object is dropped from spec and reported),
+//     keeping types and structure but no value checks (enum, lengths,
+//     bounds, item counts): AWS writes status, so only spec is validated;
 //   - createOnlyProperties to CEL transition rules: self == oldSelf on the
 //     field, and has(self.f) == has(oldSelf.f) on its parent, so the API
 //     server refuses the change instead of the cloud (rules cannot reach
@@ -384,6 +386,16 @@ func (g *gen) node(p *cfn.Prop, ptr string, stack map[string]bool, inStatus bool
 		}
 	default:
 		return g.lossy(ptr, "type "+t)
+	}
+	if inStatus {
+		// Status is written from what AWS returns, not by the user: a value
+		// outside the pinned schema (a new enum value, a longer string)
+		// would only make the API server refuse the status update. Types
+		// and structure stay; value checks are spec's alone.
+		out.Enum = nil
+		out.MinLength, out.MaxLength = nil, nil
+		out.Minimum, out.Maximum = nil, nil
+		out.MinItems, out.MaxItems = nil, nil
 	}
 	return out
 }

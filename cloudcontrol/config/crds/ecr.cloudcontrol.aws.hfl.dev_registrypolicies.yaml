@@ -122,8 +122,6 @@ spec:
                 type: array
               registryId:
                 description: The registry id.
-                maxLength: 12
-                minLength: 12
                 type: string
             type: object
         required:

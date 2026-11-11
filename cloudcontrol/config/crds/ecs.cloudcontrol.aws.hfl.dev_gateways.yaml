@@ -254,9 +254,6 @@ spec:
             properties:
               accessType:
                 description: The access type for the gateway.
-                enum:
-                - PUBLIC
-                - PRIVATE
                 type: string
               ackResourceMetadata:
                 description: The resource's ARN (when the type has one), account and
@@ -331,12 +328,6 @@ spec:
                 type: string
               status:
                 description: The status of the gateway.
-                enum:
-                - ACTIVE
-                - UPDATE_IN_PROGRESS
-                - UPDATE_COMPLETE
-                - UPDATE_FAILED
-                - DELETED
                 type: string
               updatedAt:
                 description: The timestamp when the gateway was last updated.

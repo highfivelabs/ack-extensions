@@ -343,16 +343,6 @@ spec:
                 description: The latest failed version of the MicroVM image.
                 type: string
               state:
-                enum:
-                - CREATING
-                - CREATED
-                - CREATE_FAILED
-                - UPDATING
-                - UPDATED
-                - UPDATE_FAILED
-                - DELETING
-                - DELETE_FAILED
-                - DELETED
                 type: string
               updatedAt:
                 description: Timestamp when the MicroVM image was updated.
