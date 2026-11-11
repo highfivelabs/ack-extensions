@@ -2,24 +2,24 @@
 # docs/coverage/ comes from exactly these inputs plus this repository's CRDs.
 ack:
   controllers:
-  - commit: ae641dedff0e907474959e627ebef688c16564dc
+  - commit: 2e79afdeb1a08135115e01b3bc380b4c55a7867c
     crds:
     - helm/crds/acm.services.k8s.aws_acmedomainvalidations.yaml
     - helm/crds/acm.services.k8s.aws_acmeendpoints.yaml
     - helm/crds/acm.services.k8s.aws_acmeexternalaccountbindings.yaml
     - helm/crds/acm.services.k8s.aws_certificates.yaml
     name: acm
-    release: v1.11.0
+    release: v1.12.0
     repo: acm-controller
-  - commit: ff72856735e7aa50ab95e5d4790483d96326b037
+  - commit: 6f341a5f49213013d1b375419c1415e93f428085
     crds:
     - helm/crds/acmpca.services.k8s.aws_certificateauthorities.yaml
     - helm/crds/acmpca.services.k8s.aws_certificateauthorityactivations.yaml
     - helm/crds/acmpca.services.k8s.aws_certificates.yaml
     name: acmpca
-    release: v1.7.0
+    release: v1.8.0
     repo: acmpca-controller
-  - commit: 18216b0feadbe346ba279f148e8405936a71e115
+  - commit: 35139aecd06c5206207198840f7342adb665a65e
     crds:
     - helm/crds/apigateway.services.k8s.aws_apiintegrationresponses.yaml
     - helm/crds/apigateway.services.k8s.aws_apikeys.yaml
@@ -33,9 +33,9 @@ ack:
     - helm/crds/apigateway.services.k8s.aws_stages.yaml
     - helm/crds/apigateway.services.k8s.aws_vpclinks.yaml
     name: apigateway
-    release: v1.11.0
+    release: v1.12.0
     repo: apigateway-controller
-  - commit: caaa3d6be8e7aaf5f171e03385b8cb0375cd7a58
+  - commit: 4e95251285d92491095760729ec61695cd434ead
     crds:
     - helm/crds/apigatewayv2.services.k8s.aws_apimappings.yaml
     - helm/crds/apigatewayv2.services.k8s.aws_apis.yaml
@@ -47,51 +47,51 @@ ack:
     - helm/crds/apigatewayv2.services.k8s.aws_stages.yaml
     - helm/crds/apigatewayv2.services.k8s.aws_vpclinks.yaml
     name: apigatewayv2
-    release: v1.8.0
+    release: v1.9.0
     repo: apigatewayv2-controller
-  - commit: 009baef3a28e7d8a49a61c520eb6c537c674d52b
+  - commit: 9b2c47e3be3d6e7b0afabb6129def95bf9b5df23
     crds:
     - helm/crds/applicationautoscaling.services.k8s.aws_scalabletargets.yaml
     - helm/crds/applicationautoscaling.services.k8s.aws_scalingpolicies.yaml
     name: applicationautoscaling
-    release: v1.9.0
+    release: v1.10.0
     repo: applicationautoscaling-controller
-  - commit: f9c64997c47feb5288b32ea320609440b20d2756
+  - commit: 1ad50a974e0bd76556fa44c1d3ad32e105884aca
     crds:
     - helm/crds/athena.services.k8s.aws_datacatalogs.yaml
     - helm/crds/athena.services.k8s.aws_preparedstatements.yaml
     - helm/crds/athena.services.k8s.aws_workgroups.yaml
     name: athena
-    release: v1.10.0
+    release: v1.11.0
     repo: athena-controller
-  - commit: 56316c75a5da8fdf8079917a16e540be4e84e986
+  - commit: 599c0339c8105c31e24a3d27a0df5ccc504559fa
     crds:
     - helm/crds/autoscaling.services.k8s.aws_autoscalinggroups.yaml
     name: autoscaling
-    release: v1.5.0
+    release: v1.6.0
     repo: autoscaling-controller
-  - commit: a93a17dd5b9d21fde11aa4cb54c5d35bf25145a5
+  - commit: dd3be32dde39e3fa4a8d012848ad0ef05e882822
     crds:
     - helm/crds/backup.services.k8s.aws_backupplans.yaml
     - helm/crds/backup.services.k8s.aws_backupselections.yaml
     - helm/crds/backup.services.k8s.aws_backupvaults.yaml
     - helm/crds/backup.services.k8s.aws_logicallyairgappedbackupvaults.yaml
     name: backup
-    release: v1.5.0
+    release: v1.6.0
     repo: backup-controller
-  - commit: 2cc3a6dc3994a135dc1f7df554c2925822042ca7
+  - commit: cef174b6fc8ae272d70fb4f3c9cd22c3399c406b
     crds:
     - helm/crds/bedrock.services.k8s.aws_inferenceprofiles.yaml
     name: bedrock
-    release: v1.6.1
+    release: v1.7.0
     repo: bedrock-controller
-  - commit: c4f6318d87196312084fcd1ce3358459b9958176
+  - commit: 06721373416e366738c598605905e22653b73780
     crds:
     - helm/crds/bedrockagent.services.k8s.aws_agents.yaml
     name: bedrockagent
-    release: v1.6.1
+    release: v1.7.0
     repo: bedrockagent-controller
-  - commit: 815147e8d9be98977c8dc410a8bbaa1c8359fa02
+  - commit: 889f4d94c4ed331da0b5ef10ae83f8905d212c2a
     crds:
     - helm/crds/bedrockagentcorecontrol.services.k8s.aws_agentruntimeendpoints.yaml
     - helm/crds/bedrockagentcorecontrol.services.k8s.aws_agentruntimes.yaml
@@ -109,9 +109,9 @@ ack:
     - helm/crds/bedrockagentcorecontrol.services.k8s.aws_policyengines.yaml
     - helm/crds/bedrockagentcorecontrol.services.k8s.aws_workloadidentities.yaml
     name: bedrockagentcorecontrol
-    release: v1.19.0
+    release: v1.20.0
     repo: bedrockagentcorecontrol-controller
-  - commit: 6b828699fe89014be6b50b78d61ee28fd16df5ad
+  - commit: 753248487a022254c571746f88180603e5c4c63f
     crds:
     - helm/crds/cloudfront.services.k8s.aws_cachepolicies.yaml
     - helm/crds/cloudfront.services.k8s.aws_connectiongroups.yaml
@@ -123,24 +123,24 @@ ack:
     - helm/crds/cloudfront.services.k8s.aws_responseheaderspolicies.yaml
     - helm/crds/cloudfront.services.k8s.aws_vpcorigins.yaml
     name: cloudfront
-    release: v1.10.1
+    release: v1.11.0
     repo: cloudfront-controller
-  - commit: ff9ac850b74c11e56a43945e29b953156c4b4d44
+  - commit: 2cffdfa083fc390d5d9ad4ddb3ed468417ecd641
     crds:
     - helm/crds/cloudtrail.services.k8s.aws_eventdatastores.yaml
     - helm/crds/cloudtrail.services.k8s.aws_trails.yaml
     name: cloudtrail
-    release: v1.9.1
+    release: v1.10.0
     repo: cloudtrail-controller
-  - commit: 091119726675a1d0d51c574ccca018a32056360f
+  - commit: 0071b37b7092fcfc573bc63741749f5eafc956da
     crds:
     - helm/crds/cloudwatch.services.k8s.aws_dashboards.yaml
     - helm/crds/cloudwatch.services.k8s.aws_metricalarms.yaml
     - helm/crds/cloudwatch.services.k8s.aws_metricstreams.yaml
     name: cloudwatch
-    release: v1.11.0
+    release: v1.12.0
     repo: cloudwatch-controller
-  - commit: 01e3ea012e97a2bb079e8cd4c9c5036bb33ef217
+  - commit: 7f4e9382b1affeb5280724bd7c01a5022fe54f72
     crds:
     - helm/crds/cloudwatchlogs.services.k8s.aws_deliveries.yaml
     - helm/crds/cloudwatchlogs.services.k8s.aws_deliverydestinationpolicies.yaml
@@ -149,24 +149,24 @@ ack:
     - helm/crds/cloudwatchlogs.services.k8s.aws_loggroups.yaml
     - helm/crds/cloudwatchlogs.services.k8s.aws_resourcepolicies.yaml
     name: cloudwatchlogs
-    release: v1.10.0
+    release: v1.11.0
     repo: cloudwatchlogs-controller
-  - commit: b53d3e5b38665166871f61087f4e238b94d5ae46
+  - commit: acacff33f39646e55b81fbd27b747f0a5658ec8e
     crds:
     - helm/crds/codeartifact.services.k8s.aws_domains.yaml
     - helm/crds/codeartifact.services.k8s.aws_packagegroups.yaml
     name: codeartifact
-    release: v1.9.0
+    release: v1.10.0
     repo: codeartifact-controller
-  - commit: fdf136d9cc65bf7f655e230cf16a236a09463d9f
+  - commit: 51377384d67db2783417db2958feaf4c2ae3835c
     crds:
     - helm/crds/cognitoidentityprovider.services.k8s.aws_resourceservers.yaml
     - helm/crds/cognitoidentityprovider.services.k8s.aws_userpoolclients.yaml
     - helm/crds/cognitoidentityprovider.services.k8s.aws_userpools.yaml
     name: cognitoidentityprovider
-    release: v1.9.0
+    release: v1.10.0
     repo: cognitoidentityprovider-controller
-  - commit: 2936ff05b5e1f0aac030957bef137ec2beaa1e3c
+  - commit: 1c0531044d31f09d3b013db6bb853eb1ae67e768
     crds:
     - helm/crds/dms.services.k8s.aws_certificates.yaml
     - helm/crds/dms.services.k8s.aws_endpoints.yaml
@@ -175,31 +175,31 @@ ack:
     - helm/crds/dms.services.k8s.aws_replicationsubnetgroups.yaml
     - helm/crds/dms.services.k8s.aws_replicationtasks.yaml
     name: dms
-    release: v0.4.1
+    release: v0.5.0
     repo: dms-controller
-  - commit: de61ced2d2afdc62241637c34814cd120ecce460
+  - commit: 2be40623f804cb637d31bf26a743f18b09cd256a
     crds:
     - helm/crds/documentdb.services.k8s.aws_dbclusters.yaml
     - helm/crds/documentdb.services.k8s.aws_dbinstances.yaml
     - helm/crds/documentdb.services.k8s.aws_dbsubnetgroups.yaml
     name: documentdb
-    release: v1.9.1
+    release: v1.10.0
     repo: documentdb-controller
-  - commit: 881f8c7b2a79891e79bc9455423599062a68f31a
+  - commit: d3fdc30fbd5fd555ae75282c1a7f6d706899bf30
     crds:
     - helm/crds/dsql.services.k8s.aws_clusters.yaml
     name: dsql
-    release: v1.4.0
+    release: v1.5.0
     repo: dsql-controller
-  - commit: 2fcea71a4f8d6049c9e03d729561a26735245346
+  - commit: 978c36e126003166f9966bb32a90b0190146b61d
     crds:
     - helm/crds/dynamodb.services.k8s.aws_backups.yaml
     - helm/crds/dynamodb.services.k8s.aws_globaltables.yaml
     - helm/crds/dynamodb.services.k8s.aws_tables.yaml
     name: dynamodb
-    release: v1.14.2
+    release: v1.15.0
     repo: dynamodb-controller
-  - commit: 9303654c2cffad05147e4260105439149f7c81bf
+  - commit: 768e23f6dbfe58a97420d924fae8db93f2e49210
     crds:
     - helm/crds/ec2.services.k8s.aws_capacityreservations.yaml
     - helm/crds/ec2.services.k8s.aws_dhcpoptions.yaml
@@ -222,40 +222,40 @@ ack:
     - helm/crds/ec2.services.k8s.aws_vpcpeeringconnections.yaml
     - helm/crds/ec2.services.k8s.aws_vpcs.yaml
     name: ec2
-    release: v1.23.1
+    release: v1.24.0
     repo: ec2-controller
-  - commit: 72590cedeb2a4a92d086175762a97aa2ed2bc979
+  - commit: 5f811463e4fadcd59258682292f6e334f87e1332
     crds:
     - helm/crds/ecr.services.k8s.aws_pullthroughcacherules.yaml
     - helm/crds/ecr.services.k8s.aws_repositories.yaml
     - helm/crds/ecr.services.k8s.aws_repositorycreationtemplates.yaml
     name: ecr
-    release: v1.11.1
+    release: v1.12.0
     repo: ecr-controller
-  - commit: 898fd47a6364d6d3bea6ba61902cee2466525c9f
+  - commit: fb130dc9f7a93669172c0d2ca371fb5e0df76e82
     crds:
     - helm/crds/ecrpublic.services.k8s.aws_repositories.yaml
     name: ecrpublic
-    release: v1.7.0
+    release: v1.8.0
     repo: ecrpublic-controller
-  - commit: 92029ad47285b5a1dd20bd184c2b525708cf21e7
+  - commit: 1bd704ef2761746ab13d7363440a55d78539fcbd
     crds:
     - helm/crds/ecs.services.k8s.aws_capacityproviders.yaml
     - helm/crds/ecs.services.k8s.aws_clusters.yaml
     - helm/crds/ecs.services.k8s.aws_services.yaml
     - helm/crds/ecs.services.k8s.aws_taskdefinitions.yaml
     name: ecs
-    release: v1.9.2
+    release: v1.10.0
     repo: ecs-controller
-  - commit: 1ebcaad2c889cf315a26b2f4925c1dc709655291
+  - commit: 4bea998f5732ab6d21d225824e09588c7248cb67
     crds:
     - helm/crds/efs.services.k8s.aws_accesspoints.yaml
     - helm/crds/efs.services.k8s.aws_filesystems.yaml
     - helm/crds/efs.services.k8s.aws_mounttargets.yaml
     name: efs
-    release: v1.8.0
+    release: v1.9.0
     repo: efs-controller
-  - commit: 2549d1be1a9f1841aaf3a4303a0d5696ea941473
+  - commit: ada5fe1f62d123ad2100bf5dfecb38c13e874c16
     crds:
     - helm/crds/eks.services.k8s.aws_accessentries.yaml
     - helm/crds/eks.services.k8s.aws_addons.yaml
@@ -266,9 +266,9 @@ ack:
     - helm/crds/eks.services.k8s.aws_nodegroups.yaml
     - helm/crds/eks.services.k8s.aws_podidentityassociations.yaml
     name: eks
-    release: v1.26.0
+    release: v1.27.0
     repo: eks-controller
-  - commit: c1c4c0897b82bd77bcc2370aa53b044c23bbfca7
+  - commit: 2c1bbfbc231a32023bed41761760bae7ad088eba
     crds:
     - helm/crds/elasticache.services.k8s.aws_cacheclusters.yaml
     - helm/crds/elasticache.services.k8s.aws_cacheparametergroups.yaml
@@ -280,7 +280,7 @@ ack:
     - helm/crds/elasticache.services.k8s.aws_usergroups.yaml
     - helm/crds/elasticache.services.k8s.aws_users.yaml
     name: elasticache
-    release: v1.12.0
+    release: v1.13.0
     repo: elasticache-controller
   - archived: true
     commit: 3795a9e83b6bc90435d526e2ac3781e01825c296
@@ -289,63 +289,63 @@ ack:
     name: elasticsearchservice
     release: v0.0.2
     repo: elasticsearchservice-controller
-  - commit: 7d61ceb0588916a9ab69ad143e16de2f8b2a7c47
+  - commit: 03c52d6cd1110c5f51e76ac11914deea190d7d88
     crds:
     - helm/crds/elbv2.services.k8s.aws_listeners.yaml
     - helm/crds/elbv2.services.k8s.aws_loadbalancers.yaml
     - helm/crds/elbv2.services.k8s.aws_rules.yaml
     - helm/crds/elbv2.services.k8s.aws_targetgroups.yaml
     name: elbv2
-    release: v1.9.0
+    release: v1.10.0
     repo: elbv2-controller
-  - commit: 1984027b07e9f6a6655f5e0b536d18fec4894acb
+  - commit: c7aa068d46668a611debdee9b5e778fb0ca004b0
     crds:
     - helm/crds/emr.services.k8s.aws_securityconfigurations.yaml
     name: emr
-    release: v0.4.0
+    release: v0.5.0
     repo: emr-controller
-  - commit: 0ab646c9019f9e34a72a000cc98c1631af6f46fb
+  - commit: ba51117a32b84140ded459550613a669ce81473d
     crds:
     - helm/crds/emrcontainers.services.k8s.aws_jobruns.yaml
     - helm/crds/emrcontainers.services.k8s.aws_virtualclusters.yaml
     name: emrcontainers
-    release: v1.9.1
+    release: v1.10.0
     repo: emrcontainers-controller
-  - commit: 5636b587235513583b8e5397891404c208903c09
+  - commit: 9e9ce3ebc925be21b28e91f0661f6192b1e2f47c
     crds:
     - helm/crds/emrserverless.services.k8s.aws_applications.yaml
     name: emrserverless
-    release: v1.4.0
+    release: v1.5.0
     repo: emrserverless-controller
-  - commit: fd084a0bb4d9025f294516d6319b88293be1de8d
+  - commit: 8ac05cf68e68e35b1b06288e2f588fdb7c2b3022
     crds:
     - helm/crds/eventbridge.services.k8s.aws_archives.yaml
     - helm/crds/eventbridge.services.k8s.aws_endpoints.yaml
     - helm/crds/eventbridge.services.k8s.aws_eventbuses.yaml
     - helm/crds/eventbridge.services.k8s.aws_rules.yaml
     name: eventbridge
-    release: v1.9.2
+    release: v1.10.0
     repo: eventbridge-controller
-  - commit: 94370bbdcff77023604709579ed19e8554a93fd0
+  - commit: 2a8582664716a7b54092f201e806fbf3064f3960
     crds:
     - helm/crds/firehose.services.k8s.aws_deliverystreams.yaml
     name: firehose
-    release: v0.8.1
+    release: v0.9.0
     repo: firehose-controller
-  - commit: 9a6169c615d773ccd73a4762bdd885c8a9149eca
+  - commit: 543e06d98e21b177926db8f977c7ad79039556de
     crds:
     - helm/crds/fsx.services.k8s.aws_filesystems.yaml
     name: fsx
-    release: v0.1.0
+    release: v0.2.0
     repo: fsx-controller
-  - commit: 8a15585c298ee9f40b16d330a4d7d64283b14839
+  - commit: 923e6003d80e7d9fac2b53fbfea98a3008dd1691
     crds:
     - helm/crds/glue.services.k8s.aws_databases.yaml
     - helm/crds/glue.services.k8s.aws_jobs.yaml
     name: glue
-    release: v1.5.1
+    release: v1.6.0
     repo: glue-controller
-  - commit: 538aed660e54fc786fea8a386927ac74a12f9c30
+  - commit: b79515035ef3da83269ffe087358db33747632db
     crds:
     - helm/crds/iam.services.k8s.aws_groups.yaml
     - helm/crds/iam.services.k8s.aws_instanceprofiles.yaml
@@ -355,39 +355,39 @@ ack:
     - helm/crds/iam.services.k8s.aws_servicelinkedroles.yaml
     - helm/crds/iam.services.k8s.aws_users.yaml
     name: iam
-    release: v1.11.3
+    release: v1.12.0
     repo: iam-controller
-  - commit: 7264a328ebd2785b59634326450981f9e8e75a1e
+  - commit: dc1556913489aad7f46aa9a8820c469e6eb02b4d
     crds:
     - helm/crds/kafka.services.k8s.aws_clusters.yaml
     - helm/crds/kafka.services.k8s.aws_configurations.yaml
     - helm/crds/kafka.services.k8s.aws_serverlessclusters.yaml
     - helm/crds/kafka.services.k8s.aws_vpcconnections.yaml
     name: kafka
-    release: v1.14.0
+    release: v1.15.0
     repo: kafka-controller
-  - commit: 825adddd48080c4bc16cf4d49868151be72fa33b
+  - commit: 9e6c748d8aea7b036017729972bf567423c78265
     crds:
     - helm/crds/keyspaces.services.k8s.aws_keyspaces.yaml
     - helm/crds/keyspaces.services.k8s.aws_tables.yaml
     name: keyspaces
-    release: v1.8.0
+    release: v1.9.0
     repo: keyspaces-controller
-  - commit: c7db9f4b1ea6e18bc9e81dbbcec9981adbc17dd0
+  - commit: 9d5de374ea5d2c2f0e24c9db3bee4aa87f03010b
     crds:
     - helm/crds/kinesis.services.k8s.aws_streams.yaml
     name: kinesis
-    release: v1.7.1
+    release: v1.8.0
     repo: kinesis-controller
-  - commit: 57250fba83d58aeb84a3ec2770cf3e9b45708895
+  - commit: bcba1ede05117920fa5f6984f253a746482a05f2
     crds:
     - helm/crds/kms.services.k8s.aws_aliases.yaml
     - helm/crds/kms.services.k8s.aws_grants.yaml
     - helm/crds/kms.services.k8s.aws_keys.yaml
     name: kms
-    release: v1.7.0
+    release: v1.8.0
     repo: kms-controller
-  - commit: 86905357482d01538cb00ab28d59c6af5c46e6f4
+  - commit: b668b24f5c31aa5ba8f279532db050c01898445c
     crds:
     - helm/crds/lambda.services.k8s.aws_aliases.yaml
     - helm/crds/lambda.services.k8s.aws_codesigningconfigs.yaml
@@ -397,16 +397,16 @@ ack:
     - helm/crds/lambda.services.k8s.aws_layerversions.yaml
     - helm/crds/lambda.services.k8s.aws_versions.yaml
     name: lambda
-    release: v1.19.0
+    release: v1.20.0
     repo: lambda-controller
-  - commit: 8e1a846d687d042a0a835ea62fefa4ea1554df89
+  - commit: 5a6d93664527689b523e7fd72acfe6c9fbc80330
     crds:
     - helm/crds/lambdamicrovms.services.k8s.aws_microvmimages.yaml
     - helm/crds/lambdamicrovms.services.k8s.aws_microvms.yaml
     name: lambdamicrovms
-    release: v0.5.0
+    release: v0.6.0
     repo: lambdamicrovms-controller
-  - commit: 8b533f3b1260b9fbf842dd50701f3c95c2c9ecbe
+  - commit: f0979d55d66518eee03271c78f81947a1f644d30
     crds:
     - helm/crds/memorydb.services.k8s.aws_acls.yaml
     - helm/crds/memorydb.services.k8s.aws_clusters.yaml
@@ -416,90 +416,91 @@ ack:
     - helm/crds/memorydb.services.k8s.aws_subnetgroups.yaml
     - helm/crds/memorydb.services.k8s.aws_users.yaml
     name: memorydb
-    release: v1.9.0
+    release: v1.10.0
     repo: memorydb-controller
-  - commit: 04843758bdfae3d02dc7f433bcfdc937d9596402
+  - commit: 6322d9eb0a631a38d44d1e3e96b23a0660cc395d
     crds:
     - helm/crds/mq.services.k8s.aws_brokers.yaml
     name: mq
-    release: v1.8.0
+    release: v1.9.0
     repo: mq-controller
-  - commit: 74ae20c95d109025d42d8ec4ac7d46f3b9325631
+  - commit: 1fabf6af793c4e0e4893840595635530278f63dc
     crds:
     - helm/crds/mwaa.services.k8s.aws_environments.yaml
     name: mwaa
-    release: v1.4.0
+    release: v1.5.0
     repo: mwaa-controller
-  - commit: f32be4950789765c883257bf7fd8cfe02ef9d2e9
+  - commit: 67de476911c81407f8e7fa3d4fbdbf34cf9b057e
     crds:
     - helm/crds/mwaaserverless.services.k8s.aws_workflows.yaml
     name: mwaaserverless
-    release: v0.3.0
+    release: v0.4.0
     repo: mwaaserverless-controller
-  - commit: 6d7cec5f894870cd41ea54397f4e6f5898ac8b1f
+  - commit: 4756924349a0880597d19481a1959bfd7777ebf1
     crds:
     - helm/crds/networkfirewall.services.k8s.aws_firewallpolicies.yaml
     - helm/crds/networkfirewall.services.k8s.aws_firewalls.yaml
     - helm/crds/networkfirewall.services.k8s.aws_rulegroups.yaml
     name: networkfirewall
-    release: v1.7.0
+    release: v1.8.0
     repo: networkfirewall-controller
-  - commit: a382e4ea3f73074236622bcf0d6f85ae8acd2274
+  - commit: 97faad3dcddcb4c9fb1cae22ec1acb49e02b3bc2
     crds:
     - helm/crds/opensearchserverless.services.k8s.aws_accesspolicies.yaml
+    - helm/crds/opensearchserverless.services.k8s.aws_collectiongroups.yaml
     - helm/crds/opensearchserverless.services.k8s.aws_collections.yaml
     - helm/crds/opensearchserverless.services.k8s.aws_lifecyclepolicies.yaml
     - helm/crds/opensearchserverless.services.k8s.aws_securitypolicies.yaml
     name: opensearchserverless
-    release: v1.6.0
+    release: v1.7.0
     repo: opensearchserverless-controller
-  - commit: ffa3379859d82f5bbc0e8bbfc4aa365b5cdc9404
+  - commit: a2f082f1ec1d4ab08d3f73a39b9935016d632435
     crds:
     - helm/crds/opensearchservice.services.k8s.aws_domains.yaml
     - helm/crds/opensearchservice.services.k8s.aws_vpcendpointaccesses.yaml
     - helm/crds/opensearchservice.services.k8s.aws_vpcendpoints.yaml
     name: opensearchservice
-    release: v1.9.0
+    release: v1.10.0
     repo: opensearchservice-controller
-  - commit: 5824700fd75e67bfcd38872051276bf0d7064ab3
+  - commit: ee1333179881c7b7a8f7a5928ae4fa302e96b4e8
     crds:
     - helm/crds/organizations.services.k8s.aws_accounts.yaml
     - helm/crds/organizations.services.k8s.aws_organizationalunits.yaml
     name: organizations
-    release: v1.7.0
+    release: v1.8.0
     repo: organizations-controller
-  - commit: 08b598079c257477d9e332353a78a01290454852
+  - commit: f9438aa679d91c9f6351f016b0fb0148d0a2a06f
     crds:
     - helm/crds/pipes.services.k8s.aws_pipes.yaml
     name: pipes
-    release: v1.8.0
+    release: v1.9.0
     repo: pipes-controller
-  - commit: 267b34a7c955b940d78f56fe71d34d39b52d4b84
+  - commit: c9b7d2ea3cc6e260b6477befea78c75a9561dcb6
     crds:
     - helm/crds/prometheusservice.services.k8s.aws_alertmanagerdefinitions.yaml
     - helm/crds/prometheusservice.services.k8s.aws_loggingconfigurations.yaml
     - helm/crds/prometheusservice.services.k8s.aws_rulegroupsnamespaces.yaml
     - helm/crds/prometheusservice.services.k8s.aws_workspaces.yaml
     name: prometheusservice
-    release: v1.9.0
+    release: v1.10.0
     repo: prometheusservice-controller
-  - commit: 789879cdb66e6ed3e1da51992424db0713ab978c
+  - commit: 7bb79d3afd26011368b48fec20728e78e159a69a
     crds:
     - helm/crds/quicksight.services.k8s.aws_analyses.yaml
     - helm/crds/quicksight.services.k8s.aws_dashboards.yaml
     - helm/crds/quicksight.services.k8s.aws_datasets.yaml
     - helm/crds/quicksight.services.k8s.aws_datasources.yaml
     name: quicksight
-    release: v1.3.0
+    release: v1.4.0
     repo: quicksight-controller
-  - commit: 97f62cacffe74dc5c9de2c4c286af901d618630b
+  - commit: 9f807c3c84d8f966e5059642ee53437c18b3fbba
     crds:
     - helm/crds/ram.services.k8s.aws_permissions.yaml
     - helm/crds/ram.services.k8s.aws_resourceshares.yaml
     name: ram
-    release: v1.7.0
+    release: v1.8.0
     repo: ram-controller
-  - commit: 8ee2451cc31ed4c6a1c313d3697437aca7b660e2
+  - commit: b9a72c3e63466cd8b56401e41603aecce712bd76
     crds:
     - helm/crds/rds.services.k8s.aws_dbclusterendpoints.yaml
     - helm/crds/rds.services.k8s.aws_dbclusterparametergroups.yaml
@@ -512,23 +513,23 @@ ack:
     - helm/crds/rds.services.k8s.aws_dbsubnetgroups.yaml
     - helm/crds/rds.services.k8s.aws_globalclusters.yaml
     name: rds
-    release: v1.14.2
+    release: v1.15.0
     repo: rds-controller
-  - commit: 93bb615ab6cfd1d9103966b6502d3e0c916f8e1c
+  - commit: c91585aa037dbf132e0d51fd10782b2c7914269b
     crds:
     - helm/crds/recyclebin.services.k8s.aws_rules.yaml
     name: recyclebin
-    release: v1.7.1
+    release: v1.8.0
     repo: recyclebin-controller
-  - commit: 73c2b0e3ccf4fb8fee64c7dff66a8104f4bf9748
+  - commit: 723b554dd2c89f59ac4ce677fd3be5350afc66c4
     crds:
     - helm/crds/route53.services.k8s.aws_healthchecks.yaml
     - helm/crds/route53.services.k8s.aws_hostedzones.yaml
     - helm/crds/route53.services.k8s.aws_recordsets.yaml
     name: route53
-    release: v1.8.0
+    release: v1.9.0
     repo: route53-controller
-  - commit: 3b7ef2f717c458fe93b0a79426cfcef9ee830e6d
+  - commit: ba0627950af8a6e6a3053fadcb88964feae37bed
     crds:
     - helm/crds/route53resolver.services.k8s.aws_resolverendpoints.yaml
     - helm/crds/route53resolver.services.k8s.aws_resolverquerylogconfigassociations.yaml
@@ -536,44 +537,44 @@ ack:
     - helm/crds/route53resolver.services.k8s.aws_resolverruleassociations.yaml
     - helm/crds/route53resolver.services.k8s.aws_resolverrules.yaml
     name: route53resolver
-    release: v1.11.0
+    release: v1.12.0
     repo: route53resolver-controller
-  - commit: e679633287f9f95ec71f0ce5a26a415636fd5b25
+  - commit: b01d9c1cd40c6ea6c0c7ab1ce3a8db51c6ba1ae4
     crds:
     - helm/crds/s3.services.k8s.aws_buckets.yaml
     name: s3
-    release: v1.15.0
+    release: v1.16.0
     repo: s3-controller
-  - commit: 2ee9ccbfaaaa36ad2105143502a902e03906bfd8
+  - commit: fffb49fc6f75df4abacfad7eae2c05e588345341
     crds:
     - helm/crds/s3control.services.k8s.aws_accesspoints.yaml
     name: s3control
-    release: v1.9.0
+    release: v1.10.0
     repo: s3control-controller
-  - commit: 65bf22917a90fa88612acb050ba6f436d7e80129
+  - commit: 571c86dff5f4959239be125b6d83977b3a0947e9
     crds:
     - helm/crds/s3files.services.k8s.aws_accesspoints.yaml
     - helm/crds/s3files.services.k8s.aws_filesystems.yaml
     - helm/crds/s3files.services.k8s.aws_mounttargets.yaml
     name: s3files
-    release: v1.4.0
+    release: v1.5.0
     repo: s3files-controller
-  - commit: 1b42f56b0091f63cacc9bf8efe625d7e4a9ee28b
+  - commit: cebd6e59a115c64e4e26c9a163c6f7b7a9124f0a
     crds:
     - helm/crds/s3tables.services.k8s.aws_namespaces.yaml
     - helm/crds/s3tables.services.k8s.aws_tablebuckets.yaml
     - helm/crds/s3tables.services.k8s.aws_tables.yaml
     name: s3tables
-    release: v1.4.0
+    release: v1.5.0
     repo: s3tables-controller
-  - commit: 90f3dd3381edaf4ac4931edb829fd37cad58c11f
+  - commit: 904f7cd007e9eb417411959a93b89156be96b0da
     crds:
     - helm/crds/s3vectors.services.k8s.aws_indices.yaml
     - helm/crds/s3vectors.services.k8s.aws_vectorbuckets.yaml
     name: s3vectors
-    release: v1.4.0
+    release: v1.5.0
     repo: s3vectors-controller
-  - commit: 7971daf9fe2c6e67f4700eab07bcd8387540c306
+  - commit: 21eafe41edeb7dfd5cd4934a847bc9309d7bde5d
     crds:
     - helm/crds/sagemaker.services.k8s.aws_apps.yaml
     - helm/crds/sagemaker.services.k8s.aws_dataqualityjobdefinitions.yaml
@@ -602,59 +603,59 @@ ack:
     - helm/crds/sagemaker.services.k8s.aws_transformjobs.yaml
     - helm/crds/sagemaker.services.k8s.aws_userprofiles.yaml
     name: sagemaker
-    release: v1.12.0
+    release: v1.13.0
     repo: sagemaker-controller
-  - commit: dc099cdc08aa51b1914962010afaecbe018395f9
+  - commit: 9430ae61bfcaca23aa517974885af2d0f81f6632
     crds:
     - helm/crds/secretsmanager.services.k8s.aws_secrets.yaml
     name: secretsmanager
-    release: v1.8.2
+    release: v1.9.0
     repo: secretsmanager-controller
-  - commit: 8ff0d7061de01fa749ff01ff0245152706a8834d
+  - commit: 094d46a3303f1c3a4c4cc0cfdc9dee8657d48fbf
     crds:
     - helm/crds/ses.services.k8s.aws_configurationsets.yaml
     name: ses
-    release: v1.7.0
+    release: v1.8.0
     repo: ses-controller
-  - commit: 8de3cc822d99a9fd8682789a21dd65acb0ecc3de
+  - commit: 19ee9fc8ca53e4262ccc34f30202910e5e3ee377
     crds:
     - helm/crds/sfn.services.k8s.aws_activities.yaml
     - helm/crds/sfn.services.k8s.aws_statemachinealiases.yaml
     - helm/crds/sfn.services.k8s.aws_statemachines.yaml
     name: sfn
-    release: v1.9.1
+    release: v1.10.0
     repo: sfn-controller
-  - commit: a1f0e5b19582a199ae3e6fbb071ced23b40d9655
+  - commit: c6109e956053e22b7ea5f4269499b02938f4fd59
     crds:
     - helm/crds/sns.services.k8s.aws_platformapplications.yaml
     - helm/crds/sns.services.k8s.aws_platformendpoints.yaml
     - helm/crds/sns.services.k8s.aws_subscriptions.yaml
     - helm/crds/sns.services.k8s.aws_topics.yaml
     name: sns
-    release: v1.13.0
+    release: v1.14.0
     repo: sns-controller
-  - commit: 0810c99dd5b0c45939727e0ca04e4810ced1fdfa
+  - commit: 3a05c88b64da670a1a8aaea33148279da43fbade
     crds:
     - helm/crds/sqs.services.k8s.aws_queues.yaml
     name: sqs
-    release: v1.9.0
+    release: v1.10.0
     repo: sqs-controller
-  - commit: d07ea0193aef939118ac220a60ff3d3f9d496f46
+  - commit: 85b088d12968c10b3b8de6449acc78e4e646ff87
     crds:
     - helm/crds/ssm.services.k8s.aws_documents.yaml
     - helm/crds/ssm.services.k8s.aws_parameters.yaml
     - helm/crds/ssm.services.k8s.aws_patchbaselines.yaml
     - helm/crds/ssm.services.k8s.aws_resourcedatasyncs.yaml
     name: ssm
-    release: v1.8.0
+    release: v1.9.0
     repo: ssm-controller
-  - commit: d910e96f94d5b860cffc5dde648e87bafe94689c
+  - commit: 59a950a8c80f090c81586c83ba93df416a14d5b5
     crds:
     - helm/crds/wafv2.services.k8s.aws_ipsets.yaml
     - helm/crds/wafv2.services.k8s.aws_rulegroups.yaml
     - helm/crds/wafv2.services.k8s.aws_webacls.yaml
     name: wafv2
-    release: v1.8.1
+    release: v1.9.0
     repo: wafv2-controller
   noRelease:
   - amg-controller
@@ -678,14 +679,14 @@ ack:
   - vpclattice-controller
   - workspacesapplications-controller
   org: aws-controllers-k8s
-  resolved: "2026-11-09"
+  resolved: "2026-11-11"
 cloudformation:
-  bytes: 3320086
-  fetched: "2026-11-09"
+  bytes: 3328898
+  fetched: "2026-11-11"
   file: docs/coverage/inputs/CloudformationSchema.zip
-  lastModified: Mon, 09 Nov 2026 14:29:07 GMT
+  lastModified: Wed, 11 Nov 2026 08:29:08 GMT
   region: us-east-1
-  sha256: 680b184be4a9fc0d936a2efc044388eb2044ea8b402777c2aece1c0449a60f1f
+  sha256: f3b504c11e5941f8608d46b419a68f7044fdad1e8977b25bd6ee80c49532367e
   url: https://schema.cloudformation.us-east-1.amazonaws.com/CloudformationSchema.zip
 terraform:
   commit: 13064af34996c47f1a5498bb17aca16194c4574e
