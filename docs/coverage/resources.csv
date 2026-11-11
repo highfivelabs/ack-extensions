@@ -621,7 +621,7 @@ ec2,NetworkInsightsAccessScope,42,,0,NetworkInsightsAccessScope (Cloud Control),
 ec2,NetworkInsightsAccessScopeAnalysis,3,,0,NetworkInsightsAccessScopeAnalysis (Cloud Control),3,0,false,ours NetworkInsightsAccessScopeAnalysis (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,NetworkInsightsAnalysis,6,,0,NetworkInsightsAnalysis (Cloud Control),6,0,false,ours NetworkInsightsAnalysis (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,NetworkInsightsPath,20,,0,NetworkInsightsPath (Cloud Control),20,0,false,ours NetworkInsightsPath (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
-ec2,NetworkInterface,22,,0,NetworkInterface (Cloud Control),22,0,false,ours NetworkInterface (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,NetworkInterface,22,,0,NetworkInterface (Cloud Control),22,0,false,
 ec2,NetworkInterfaceAttachment,7,,0,NetworkInterfaceAttachment (Cloud Control),7,0,false,ours NetworkInterfaceAttachment (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,NetworkInterfacePermission,3,,0,NetworkInterfacePermission,3,0,false,ours_unmapped=1
 ec2,NetworkPerformanceMetricSubscription,4,,0,NetworkPerformanceMetricSubscription (Cloud Control),4,0,false,ours NetworkPerformanceMetricSubscription (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
