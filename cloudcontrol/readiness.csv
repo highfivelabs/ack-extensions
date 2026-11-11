@@ -320,8 +320,8 @@ AWS::CloudFront::StreamingDistribution,cloudfront,StreamingDistribution,applicat
 AWS::CloudFront::TrustStore,cloudfront,TrustStore,application,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
 AWS::CloudFront::VpcOrigin,cloudfront,VpcOrigin,application,FULLY_MUTABLE,VPCOrigin,,ok,0,0,0,0,2,true
 AWS::CloudHSM::Cluster,cloudhsm,Cluster,other,FULLY_MUTABLE,,,ok,0,0,0,1,1,true
-AWS::CloudTrail::Channel,cloudtrail,Channel,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::CloudTrail::Dashboard,cloudtrail,Dashboard,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::CloudTrail::Channel,cloudtrail,Channel,platform-foundation,FULLY_MUTABLE,,Channel (Cloud Control),ok,0,0,0,0,0,true
+AWS::CloudTrail::Dashboard,cloudtrail,Dashboard,platform-foundation,FULLY_MUTABLE,,Dashboard (Cloud Control),ok,0,0,0,0,0,true
 AWS::CloudTrail::EventDataStore,cloudtrail,EventDataStore,platform-foundation,FULLY_MUTABLE,EventDataStore,,ok,0,0,0,0,3,true
 AWS::CloudTrail::ResourcePolicy,cloudtrail,ResourcePolicy,platform-foundation,FULLY_MUTABLE,,,ok,1,0,0,0,0,false
 AWS::CloudTrail::Trail,cloudtrail,Trail,platform-foundation,FULLY_MUTABLE,Trail,,ok,0,0,0,0,2,true
@@ -526,8 +526,8 @@ AWS::DevOpsGuru::LogAnomalyDetectionIntegration,devopsguru,LogAnomalyDetectionIn
 AWS::DevOpsGuru::NotificationChannel,devopsguru,NotificationChannel,other,IMMUTABLE,,,ok,0,0,0,0,0,true
 AWS::DevOpsGuru::ResourceCollection,devopsguru,ResourceCollection,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::DirectConnect::Connection,directconnect,Connection,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
-AWS::DirectConnect::DirectConnectGateway,directconnect,DirectConnectGateway,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::DirectConnect::DirectConnectGatewayAssociation,directconnect,DirectConnectGatewayAssociation,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,1,1,true
+AWS::DirectConnect::DirectConnectGateway,directconnect,DirectConnectGateway,platform-foundation,FULLY_MUTABLE,,DirectConnectGateway (Cloud Control),ok,0,0,0,0,0,true
+AWS::DirectConnect::DirectConnectGatewayAssociation,directconnect,DirectConnectGatewayAssociation,platform-foundation,FULLY_MUTABLE,,DirectConnectGatewayAssociation (Cloud Control),ok,0,0,1,1,1,true
 AWS::DirectConnect::Lag,directconnect,Lag,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
 AWS::DirectConnect::PrivateVirtualInterface,directconnect,PrivateVirtualInterface,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,1,1,true
 AWS::DirectConnect::PublicVirtualInterface,directconnect,PublicVirtualInterface,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,1,1,true
@@ -690,13 +690,13 @@ AWS::EC2::VPNGateway,ec2,VPNGateway,platform-foundation,FULLY_MUTABLE,,VPNGatewa
 AWS::EC2::VPNGatewayRoutePropagation,ec2,VPNGatewayRoutePropagation,platform-foundation,NON_PROVISIONABLE,,VPNGatewayRoutePropagation,not provisionable,0,0,0,0,0,false
 AWS::ECR::PublicRepository,ecr,PublicRepository,platform-foundation,FULLY_MUTABLE,Repository,,ok,1,0,0,0,0,true
 AWS::ECR::PullThroughCacheRule,ecr,PullThroughCacheRule,platform-foundation,FULLY_MUTABLE,PullThroughCacheRule,,ok,0,0,3,3,2,true
-AWS::ECR::PullTimeUpdateExclusion,ecr,PullTimeUpdateExclusion,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::ECR::RegistryPolicy,ecr,RegistryPolicy,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::ECR::RegistryScanningConfiguration,ecr,RegistryScanningConfiguration,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
+AWS::ECR::PullTimeUpdateExclusion,ecr,PullTimeUpdateExclusion,platform-foundation,IMMUTABLE,,PullTimeUpdateExclusion (Cloud Control),ok,0,0,0,0,0,true
+AWS::ECR::RegistryPolicy,ecr,RegistryPolicy,platform-foundation,FULLY_MUTABLE,,RegistryPolicy (Cloud Control),ok,0,0,0,0,0,true
+AWS::ECR::RegistryScanningConfiguration,ecr,RegistryScanningConfiguration,platform-foundation,FULLY_MUTABLE,,RegistryScanningConfiguration (Cloud Control),ok,0,0,0,0,1,true
 AWS::ECR::ReplicationConfiguration,ecr,ReplicationConfiguration,platform-foundation,FULLY_MUTABLE,,ReplicationConfiguration,ok,0,0,0,0,1,true
 AWS::ECR::Repository,ecr,Repository,platform-foundation,FULLY_MUTABLE,Repository,,ok,1,0,0,1,1,true
 AWS::ECR::RepositoryCreationTemplate,ecr,RepositoryCreationTemplate,platform-foundation,FULLY_MUTABLE,RepositoryCreationTemplate,,ok,0,0,0,0,2,true
-AWS::ECR::SigningConfiguration,ecr,SigningConfiguration,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::ECR::SigningConfiguration,ecr,SigningConfiguration,platform-foundation,FULLY_MUTABLE,,SigningConfiguration (Cloud Control),ok,0,0,0,0,0,true
 AWS::ECS::CapacityProvider,ecs,CapacityProvider,application,FULLY_MUTABLE,CapacityProvider,,ok,0,0,0,0,2,true
 AWS::ECS::Cluster,ecs,Cluster,application,FULLY_MUTABLE,Cluster,,ok,0,0,0,1,1,true
 AWS::ECS::ClusterCapacityProviderAssociations,ecs,ClusterCapacityProviderAssociations,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
@@ -715,7 +715,7 @@ AWS::EFS::MountTarget,efs,MountTarget,application,FULLY_MUTABLE,MountTarget,,ok,
 AWS::EKS::AccessEntry,eks,AccessEntry,platform-foundation,FULLY_MUTABLE,AccessEntry,,ok,0,0,0,0,0,true
 AWS::EKS::Addon,eks,Addon,platform-foundation,FULLY_MUTABLE,Addon,,ok,0,0,1,3,1,true
 AWS::EKS::Capability,eks,Capability,platform-foundation,FULLY_MUTABLE,Capability,,ok,0,0,0,0,1,true
-AWS::EKS::CertificateAuthority,eks,CertificateAuthority,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
+AWS::EKS::CertificateAuthority,eks,CertificateAuthority,platform-foundation,IMMUTABLE,,CertificateAuthority (Cloud Control),ok,0,0,0,0,0,true
 AWS::EKS::Cluster,eks,Cluster,platform-foundation,FULLY_MUTABLE,Cluster,,ok,0,0,1,5,3,true
 AWS::EKS::FargateProfile,eks,FargateProfile,platform-foundation,FULLY_MUTABLE,FargateProfile,,ok,0,0,0,0,2,true
 AWS::EKS::IdentityProviderConfig,eks,IdentityProviderConfig,platform-foundation,FULLY_MUTABLE,IdentityProviderConfig,,ok,0,0,0,0,0,true
@@ -904,15 +904,15 @@ AWS::IAM::Policy,iam,Policy,platform-foundation,NON_PROVISIONABLE,,,not provisio
 AWS::IAM::Role,iam,Role,platform-foundation,FULLY_MUTABLE,Role,RolePolicyAttachment,ok,2,0,0,0,3,true
 AWS::IAM::RolePolicy,iam,RolePolicy,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,1,false
 AWS::IAM::SAMLProvider,iam,SAMLProvider,platform-foundation,FULLY_MUTABLE,,SAMLProvider (Cloud Control),ok,0,0,2,2,0,true
-AWS::IAM::ServerCertificate,iam,ServerCertificate,platform-foundation,FULLY_MUTABLE,,,ok,0,0,3,3,0,true
+AWS::IAM::ServerCertificate,iam,ServerCertificate,platform-foundation,FULLY_MUTABLE,,ServerCertificate (Cloud Control),ok,0,0,3,3,0,true
 AWS::IAM::ServiceLinkedRole,iam,ServiceLinkedRole,platform-foundation,FULLY_MUTABLE,ServiceLinkedRole,,ok,0,0,2,2,1,false
 AWS::IAM::User,iam,User,platform-foundation,FULLY_MUTABLE,User,LoginProfile;UserGroupMembership,ok,1,0,1,1,3,true
 AWS::IAM::UserPolicy,iam,UserPolicy,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,1,false
 AWS::IAM::UserToGroupAddition,iam,UserToGroupAddition,platform-foundation,NON_PROVISIONABLE,,,not provisionable,0,0,0,0,0,false
 AWS::IAM::VirtualMFADevice,iam,VirtualMFADevice,platform-foundation,FULLY_MUTABLE,,VirtualMFADevice,ok,0,1,0,0,0,true
-AWS::IdentityStore::Group,identitystore,Group,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::IdentityStore::GroupMembership,identitystore,GroupMembership,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::IdentityStore::User,identitystore,User,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::IdentityStore::Group,identitystore,Group,platform-foundation,FULLY_MUTABLE,,Group (Cloud Control),ok,0,0,0,0,0,true
+AWS::IdentityStore::GroupMembership,identitystore,GroupMembership,platform-foundation,IMMUTABLE,,GroupMembership (Cloud Control),ok,0,0,0,0,0,true
+AWS::IdentityStore::User,identitystore,User,platform-foundation,FULLY_MUTABLE,,User (Cloud Control),ok,0,0,0,0,0,true
 AWS::ImageBuilder::Component,imagebuilder,Component,other,FULLY_MUTABLE,,,ok,0,0,2,2,2,true
 AWS::ImageBuilder::ContainerRecipe,imagebuilder,ContainerRecipe,other,FULLY_MUTABLE,,,ok,0,0,4,4,2,true
 AWS::ImageBuilder::DistributionConfiguration,imagebuilder,DistributionConfiguration,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
@@ -1404,11 +1404,11 @@ AWS::QuickSight::Topic,quicksight,Topic,other,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
 AWS::QuickSight::TopicV2,quicksight,TopicV2,other,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
 AWS::QuickSight::VPCConnection,quicksight,VPCConnection,other,FULLY_MUTABLE,,,ok,0,0,0,1,1,true
 AWS::RAM::Permission,ram,Permission,platform-foundation,FULLY_MUTABLE,Permission,,ok,0,1,0,0,0,true
-AWS::RAM::PermissionAssociation,ram,PermissionAssociation,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
-AWS::RAM::PrincipalAssociation,ram,PrincipalAssociation,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::RAM::ResourceAssociation,ram,ResourceAssociation,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
+AWS::RAM::PermissionAssociation,ram,PermissionAssociation,platform-foundation,FULLY_MUTABLE,,PermissionAssociation (Cloud Control),ok,0,0,0,1,0,true
+AWS::RAM::PrincipalAssociation,ram,PrincipalAssociation,platform-foundation,IMMUTABLE,,PrincipalAssociation (Cloud Control),ok,0,0,0,0,0,true
+AWS::RAM::ResourceAssociation,ram,ResourceAssociation,platform-foundation,IMMUTABLE,,ResourceAssociation (Cloud Control),ok,0,0,0,0,0,true
 AWS::RAM::ResourceShare,ram,ResourceShare,platform-foundation,FULLY_MUTABLE,ResourceShare,,ok,0,0,0,4,0,true
-AWS::RAM::SourceAssociation,ram,SourceAssociation,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
+AWS::RAM::SourceAssociation,ram,SourceAssociation,platform-foundation,IMMUTABLE,,SourceAssociation (Cloud Control),ok,0,0,0,0,0,true
 AWS::Rbin::Rule,rbin,Rule,other,FULLY_MUTABLE,Rule,,ok,0,0,1,3,1,true
 AWS::RDS::ClusterSnapshot,rds,ClusterSnapshot,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::RDS::CustomDBEngineVersion,rds,CustomDBEngineVersion,application,FULLY_MUTABLE,,,ok,0,0,2,3,3,true
@@ -1479,7 +1479,7 @@ AWS::RolesAnywhere::CRL,rolesanywhere,CRL,application,FULLY_MUTABLE,,,ok,0,0,0,0
 AWS::RolesAnywhere::Profile,rolesanywhere,Profile,application,FULLY_MUTABLE,,,ok,0,0,0,1,1,true
 AWS::RolesAnywhere::TrustAnchor,rolesanywhere,TrustAnchor,application,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::Route53::CidrCollection,route53,CidrCollection,platform-foundation,FULLY_MUTABLE,,CidrCollection (Cloud Control),ok,0,0,0,0,0,true
-AWS::Route53::DelegationSet,route53,DelegationSet,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
+AWS::Route53::DelegationSet,route53,DelegationSet,platform-foundation,IMMUTABLE,,DelegationSet (Cloud Control),ok,0,0,0,0,0,true
 AWS::Route53::DNSSEC,route53,DNSSEC,platform-foundation,IMMUTABLE,,DNSSEC (Cloud Control),ok,0,0,0,0,1,true
 AWS::Route53::HealthCheck,route53,HealthCheck,platform-foundation,FULLY_MUTABLE,HealthCheck,,ok,0,0,0,0,0,true
 AWS::Route53::HostedZone,route53,HostedZone,platform-foundation,FULLY_MUTABLE,HostedZone,,ok,0,0,0,0,0,true
@@ -1487,8 +1487,8 @@ AWS::Route53::KeySigningKey,route53,KeySigningKey,platform-foundation,FULLY_MUTA
 AWS::Route53::QueryLoggingConfig,route53,QueryLoggingConfig,platform-foundation,IMMUTABLE,,QueryLoggingConfig (Cloud Control),ok,0,0,0,0,0,true
 AWS::Route53::RecordSet,route53,RecordSet,platform-foundation,FULLY_MUTABLE,RecordSet,,ok,0,0,2,2,0,true
 AWS::Route53::RecordSetGroup,route53,RecordSetGroup,platform-foundation,NON_PROVISIONABLE,,,not provisionable,0,0,0,0,0,false
-AWS::Route53::TrafficPolicy,route53,TrafficPolicy,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::Route53::TrafficPolicyInstance,route53,TrafficPolicyInstance,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::Route53::TrafficPolicy,route53,TrafficPolicy,platform-foundation,FULLY_MUTABLE,,TrafficPolicy (Cloud Control),ok,0,0,0,0,0,true
+AWS::Route53::TrafficPolicyInstance,route53,TrafficPolicyInstance,platform-foundation,FULLY_MUTABLE,,TrafficPolicyInstance (Cloud Control),ok,0,0,0,0,0,true
 AWS::Route53GlobalResolver::AccessSource,route53globalresolver,AccessSource,other,FULLY_MUTABLE,,,ok,0,0,1,1,0,true
 AWS::Route53GlobalResolver::AccessToken,route53globalresolver,AccessToken,other,FULLY_MUTABLE,,,ok,0,0,1,1,0,true
 AWS::Route53GlobalResolver::DnsView,route53globalresolver,DnsView,other,FULLY_MUTABLE,,,ok,0,0,1,1,0,true
@@ -1496,9 +1496,9 @@ AWS::Route53GlobalResolver::FirewallDomainList,route53globalresolver,FirewallDom
 AWS::Route53GlobalResolver::FirewallRule,route53globalresolver,FirewallRule,other,FULLY_MUTABLE,,,ok,0,0,2,2,0,true
 AWS::Route53GlobalResolver::GlobalResolver,route53globalresolver,GlobalResolver,other,FULLY_MUTABLE,,,ok,0,0,1,1,0,true
 AWS::Route53GlobalResolver::HostedZoneAssociation,route53globalresolver,HostedZoneAssociation,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::Route53Profiles::Profile,route53profiles,Profile,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::Route53Profiles::ProfileAssociation,route53profiles,ProfileAssociation,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,1,0,true
-AWS::Route53Profiles::ProfileResourceAssociation,route53profiles,ProfileResourceAssociation,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::Route53Profiles::Profile,route53profiles,Profile,platform-foundation,FULLY_MUTABLE,,Profile (Cloud Control),ok,0,0,0,0,0,true
+AWS::Route53Profiles::ProfileAssociation,route53profiles,ProfileAssociation,platform-foundation,FULLY_MUTABLE,,ProfileAssociation (Cloud Control),ok,0,0,1,1,0,true
+AWS::Route53Profiles::ProfileResourceAssociation,route53profiles,ProfileResourceAssociation,platform-foundation,FULLY_MUTABLE,,ProfileResourceAssociation (Cloud Control),ok,0,0,0,0,0,true
 AWS::Route53RecoveryControl::Cluster,route53recoverycontrol,Cluster,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::Route53RecoveryControl::ControlPanel,route53recoverycontrol,ControlPanel,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::Route53RecoveryControl::RoutingControl,route53recoverycontrol,RoutingControl,other,FULLY_MUTABLE,,,ok,0,0,1,1,0,true
@@ -1740,8 +1740,8 @@ AWS::SSMIncidents::ReplicationSet,ssmincidents,ReplicationSet,other,FULLY_MUTABL
 AWS::SSMIncidents::ResponsePlan,ssmincidents,ResponsePlan,other,FULLY_MUTABLE,,,ok,0,0,0,0,2,true
 AWS::SSMQuickSetup::ConfigurationManager,ssmquicksetup,ConfigurationManager,other,FULLY_MUTABLE,,,ok,0,2,0,0,2,true
 AWS::SSMQuickSetup::LifecycleAutomation,ssmquicksetup,LifecycleAutomation,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::SSO::Application,sso,Application,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::SSO::ApplicationAssignment,sso,ApplicationAssignment,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
+AWS::SSO::Application,sso,Application,platform-foundation,FULLY_MUTABLE,,Application (Cloud Control),ok,0,0,0,0,0,true
+AWS::SSO::ApplicationAssignment,sso,ApplicationAssignment,platform-foundation,IMMUTABLE,,ApplicationAssignment (Cloud Control),ok,0,0,0,0,0,true
 AWS::SSO::Assignment,sso,Assignment,platform-foundation,IMMUTABLE,,Assignment (Cloud Control),ok,0,0,0,0,2,true
 AWS::SSO::Instance,sso,Instance,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::SSO::InstanceAccessControlAttributeConfiguration,sso,InstanceAccessControlAttributeConfiguration,platform-foundation,FULLY_MUTABLE,,InstanceAccessControlAttributeConfiguration (Cloud Control),ok,0,0,0,0,0,true

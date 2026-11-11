@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIdentityStoreUser",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IdentityStoreUserCreate",
+      "Effect": "Allow",
+      "Action": [
+        "identitystore:CreateUser",
+        "identitystore:DescribeUser"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IdentityStoreUserRead",
+      "Effect": "Allow",
+      "Action": [
+        "identitystore:DescribeUser"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IdentityStoreUserUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "identitystore:DescribeUser",
+        "identitystore:UpdateUser"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IdentityStoreUserDelete",
+      "Effect": "Allow",
+      "Action": [
+        "identitystore:DeleteUser",
+        "identitystore:DescribeUser"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

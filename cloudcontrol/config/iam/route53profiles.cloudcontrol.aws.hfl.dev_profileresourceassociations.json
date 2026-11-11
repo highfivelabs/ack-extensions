@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoute53ProfilesProfileResourceAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ProfilesProfileResourceAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcEndpoints",
+        "route53:GetHostedZone",
+        "route53profiles:AssociateResourceToProfile",
+        "route53profiles:GetProfileResourceAssociation",
+        "route53profiles:ListProfileResourceAssociations",
+        "route53resolver:GetFirewallRuleGroup",
+        "route53resolver:GetResolverQueryLogConfig",
+        "route53resolver:GetResolverRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ProfilesProfileResourceAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "route53profiles:GetProfileResourceAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ProfilesProfileResourceAssociationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "route53profiles:GetProfileResourceAssociation",
+        "route53profiles:UpdateProfileResourceAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53ProfilesProfileResourceAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcEndpoints",
+        "route53:GetHostedZone",
+        "route53profiles:DisassociateResourceFromProfile",
+        "route53profiles:GetProfileResourceAssociation",
+        "route53resolver:GetFirewallRuleGroup",
+        "route53resolver:GetResolverQueryLogConfig",
+        "route53resolver:GetResolverRule"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

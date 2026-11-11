@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlECRRegistryScanningConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECRRegistryScanningConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:GetRegistryScanningConfiguration",
+        "ecr:PutRegistryScanningConfiguration",
+        "iam:CreateServiceLinkedRole",
+        "inspector2:Enable"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECRRegistryScanningConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:GetRegistryScanningConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECRRegistryScanningConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:GetRegistryScanningConfiguration",
+        "ecr:PutRegistryScanningConfiguration",
+        "iam:CreateServiceLinkedRole",
+        "inspector2:Disable",
+        "inspector2:Enable",
+        "inspector2:ListAccountPermissions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ECRRegistryScanningConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:GetRegistryScanningConfiguration",
+        "ecr:PutRegistryScanningConfiguration",
+        "inspector2:Disable",
+        "inspector2:ListAccountPermissions"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

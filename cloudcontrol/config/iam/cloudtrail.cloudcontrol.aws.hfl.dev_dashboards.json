@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudTrailDashboard",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudTrailDashboardCreate",
+      "Effect": "Allow",
+      "Action": [
+        "CloudTrail:AddTags",
+        "CloudTrail:CreateDashboard",
+        "CloudTrail:StartDashboardRefresh",
+        "CloudTrail:StartQuery"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudTrailDashboardRead",
+      "Effect": "Allow",
+      "Action": [
+        "CloudTrail:GetDashboard",
+        "CloudTrail:ListDashboards",
+        "CloudTrail:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudTrailDashboardUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "CloudTrail:AddTags",
+        "CloudTrail:RemoveTags",
+        "CloudTrail:StartDashboardRefresh",
+        "CloudTrail:StartQuery",
+        "CloudTrail:UpdateDashboard"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudTrailDashboardDelete",
+      "Effect": "Allow",
+      "Action": [
+        "CloudTrail:DeleteDashboard",
+        "CloudTrail:UpdateDashboard"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
