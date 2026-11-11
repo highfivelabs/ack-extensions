@@ -103,7 +103,14 @@ func (b *SchemaStore) value(name string, n int) any {
 		}
 		return v
 	case "integer", "number":
-		return float64(n)
+		v := float64(n)
+		if p.Minimum != nil && v < *p.Minimum {
+			v = *p.Minimum
+		}
+		if p.Maximum != nil && v > *p.Maximum {
+			v = *p.Maximum
+		}
+		return v
 	case "boolean":
 		return true
 	}
