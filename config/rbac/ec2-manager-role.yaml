@@ -34,6 +34,7 @@ rules:
   resources:
   - customergateways
   - networkinterfacepermissions
+  - resourcetags
   - volumeattachments
   - volumes
   - vpnconnections
@@ -52,6 +53,7 @@ rules:
   resources:
   - customergateways/status
   - networkinterfacepermissions/status
+  - resourcetags/status
   - volumeattachments/status
   - volumes/status
   - vpnconnections/status

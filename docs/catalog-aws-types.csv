@@ -1,0 +1,322 @@
+terraform_type,modules,class,kind,note
+aws_iam_role,18,ack,iam Role,
+aws_cloudwatch_log_group,16,ack,logs LogGroup,via CloudFormation logs::LogGroup
+aws_iam_role_policy_attachment,16,ack-field,iam Role.spec.policies; ours RolePolicyAttachment,ACK Role lists managed policies exclusively; ours attaches one to a role ACK does not manage
+aws_security_group,12,ack,ec2 SecurityGroup,
+aws_iam_policy,11,ack,iam Policy,via CloudFormation iam::ManagedPolicy
+aws_vpc_security_group_egress_rule,11,neither,"(ec2 SecurityGroup.spec.egressRules, exclusive)",standalone rule kind blocked on plan question 7
+aws_vpc_security_group_ingress_rule,11,neither,"(ec2 SecurityGroup.spec.ingressRules, exclusive)",standalone rule kind blocked on plan question 7
+aws_iam_instance_profile,5,ack,iam InstanceProfile,via CloudFormation iam::InstanceProfile
+aws_iam_role_policy,5,ack-field,iam Role.spec.inlinePolicies,excluded.yaml (question 1)
+aws_appautoscaling_policy,4,ack,applicationautoscaling ScalingPolicy,
+aws_appautoscaling_target,4,ack,applicationautoscaling ScalableTarget,
+aws_ec2_tag,4,ours,ec2 ResourceTag,new 2026-11-12 (#90)
+aws_lambda_permission,4,ours,lambda Permission,via CloudFormation lambda::Permission
+aws_route53_record,4,ack,route53 RecordSet,via CloudFormation route53::RecordSet
+aws_db_subnet_group,3,ack,rds DBSubnetGroup,
+aws_ram_resource_association,3,ours-cc,ram ResourceAssociation (Cloud Control),via CloudFormation ram::ResourceAssociation
+aws_s3_object,3,neither,,plan section 5 rank 17; no CloudFormation type
+aws_secretsmanager_secret_rotation,3,ack-field,"(secretsmanager Secret, pull request #69)",waits for ACK secretsmanager-controller #69 (excluded.yaml)
+aws_sqs_queue_policy,3,ack-field,sqs Queue.spec.policy,field of ACK Queue (question 1)
+aws_autoscaling_group,2,ack,autoscaling AutoScalingGroup,via CloudFormation autoscaling::AutoScalingGroup
+aws_cloudwatch_event_rule,2,ack,eventbridge Rule,
+aws_cloudwatch_event_target,2,ack-field,eventbridge Rule.spec.targets,
+aws_cloudwatch_log_delivery,2,ack,logs Delivery,via CloudFormation logs::Delivery
+aws_cloudwatch_log_delivery_destination,2,ack,logs DeliveryDestination,via CloudFormation logs::DeliveryDestination
+aws_cloudwatch_log_delivery_source,2,ack,logs DeliverySource,via CloudFormation logs::DeliverySource
+aws_db_parameter_group,2,ack,rds DBParameterGroup,
+aws_ecr_lifecycle_policy,2,ack-field,ecr Repository.spec.lifecyclePolicy,
+aws_ecr_repository,2,ack,ecr Repository,via CloudFormation ecr::Repository
+aws_eip,2,ack,ec2 ElasticIPAddress,via CloudFormation ec2::EIP
+aws_eks_pod_identity_association,2,ack,eks PodIdentityAssociation,via CloudFormation eks::PodIdentityAssociation
+aws_elasticache_subnet_group,2,ack,elasticache CacheSubnetGroup,via CloudFormation elasticache::SubnetGroup
+aws_iam_openid_connect_provider,2,ack,iam OpenIDConnectProvider,via CloudFormation iam::OIDCProvider
+aws_iam_policy_attachment,2,ack-field,iam Role/User/Group .spec.policies,exclusive in Terraform too
+aws_lambda_function,2,ack,lambda Function,via CloudFormation lambda::Function
+aws_launch_template,2,ack,ec2 LaunchTemplate,via CloudFormation ec2::LaunchTemplate
+aws_route,2,ack-field,ec2 RouteTable.spec.routes,excluded.yaml
+aws_security_group_rule,2,neither,"(ec2 SecurityGroup rules, exclusive)",plan question 7
+aws_sns_topic,2,ack,sns Topic,via CloudFormation sns::Topic
+aws_sns_topic_policy,2,ack-field,sns Topic.spec.policy,field of ACK Topic (question 1)
+aws_sns_topic_subscription,2,ack,sns Subscription,via CloudFormation sns::Subscription
+aws_sqs_queue,2,ack,sqs Queue,via CloudFormation sqs::Queue
+aws_vpc_endpoint,2,ack,ec2 VPCEndpoint,
+aws_vpn_gateway_attachment,2,ours,ec2 VPNGateway.spec.vpc,
+aws_vpn_gateway_route_propagation,2,ours,ec2 VPNGatewayRoutePropagation,
+aws_acm_certificate,1,ack,certificatemanager Certificate,via CloudFormation certificatemanager::Certificate
+aws_acm_certificate_validation,1,not-a-resource,,"a wait, not a resource"
+aws_apigatewayv2_api,1,ack,apigatewayv2 API,via CloudFormation apigatewayv2::Api
+aws_apigatewayv2_api_mapping,1,ack,apigatewayv2 APIMapping,via CloudFormation apigatewayv2::ApiMapping
+aws_apigatewayv2_authorizer,1,ack,apigatewayv2 Authorizer,via CloudFormation apigatewayv2::Authorizer
+aws_apigatewayv2_deployment,1,ack,apigatewayv2 Deployment,via CloudFormation apigatewayv2::Deployment
+aws_apigatewayv2_domain_name,1,ack,apigatewayv2 DomainName,via CloudFormation apigatewayv2::DomainName
+aws_apigatewayv2_integration,1,ack,apigatewayv2 Integration,via CloudFormation apigatewayv2::Integration
+aws_apigatewayv2_integration_response,1,ours-cc,apigatewayv2 IntegrationResponse (Cloud Control),via CloudFormation apigatewayv2::IntegrationResponse
+aws_apigatewayv2_route,1,ack,apigatewayv2 Route,via CloudFormation apigatewayv2::Route
+aws_apigatewayv2_route_response,1,ours-cc,apigatewayv2 RouteResponse (Cloud Control),via CloudFormation apigatewayv2::RouteResponse
+aws_apigatewayv2_stage,1,ack,apigatewayv2 Stage,via CloudFormation apigatewayv2::Stage
+aws_apigatewayv2_vpc_link,1,ack,apigatewayv2 VPCLink,via CloudFormation apigatewayv2::VpcLink
+aws_appautoscaling_scheduled_action,1,ours,applicationautoscaling ScheduledAction,
+aws_autoscaling_policy,1,ours,autoscaling ScalingPolicy,via CloudFormation autoscaling::ScalingPolicy
+aws_autoscaling_schedule,1,ours,autoscaling ScheduledAction,
+aws_autoscaling_traffic_source_attachment,1,ack-field,autoscaling AutoScalingGroup.spec.trafficSources,
+aws_cloudfront_cache_policy,1,ack,cloudfront CachePolicy,via CloudFormation cloudfront::CachePolicy
+aws_cloudfront_connection_function,1,ours-cc,cloudfront ConnectionFunction (Cloud Control),via CloudFormation cloudfront::ConnectionFunction
+aws_cloudfront_distribution,1,ack,cloudfront Distribution,via CloudFormation cloudfront::Distribution
+aws_cloudfront_function,1,ack,cloudfront Function,via CloudFormation cloudfront::Function
+aws_cloudfront_monitoring_subscription,1,ours-cc,cloudfront MonitoringSubscription (Cloud Control),via CloudFormation cloudfront::MonitoringSubscription
+aws_cloudfront_origin_access_control,1,ack,cloudfront OriginAccessControl,via CloudFormation cloudfront::OriginAccessControl
+aws_cloudfront_origin_request_policy,1,ack,cloudfront OriginRequestPolicy,via CloudFormation cloudfront::OriginRequestPolicy
+aws_cloudfront_response_headers_policy,1,ack,cloudfront ResponseHeadersPolicy,via CloudFormation cloudfront::ResponseHeadersPolicy
+aws_cloudfront_trust_store,1,ours-cc,cloudfront TrustStore (Cloud Control),via CloudFormation cloudfront::TrustStore
+aws_cloudfront_vpc_origin,1,ack,cloudfront VPCOrigin,via CloudFormation cloudfront::VpcOrigin
+aws_cloudwatch_composite_alarm,1,ours-cc,cloudwatch CompositeAlarm (Cloud Control),via CloudFormation cloudwatch::CompositeAlarm
+aws_cloudwatch_event_api_destination,1,ours,events APIDestination,via CloudFormation events::ApiDestination
+aws_cloudwatch_event_archive,1,ack,events Archive,via CloudFormation events::Archive
+aws_cloudwatch_event_bus,1,ack,events EventBus,via CloudFormation events::EventBus
+aws_cloudwatch_event_connection,1,ours,events Connection,via CloudFormation events::Connection
+aws_cloudwatch_event_permission,1,ack-field,eventbridge EventBus.spec.policy,excluded.yaml: AWS::Events::EventBusPolicy
+aws_cloudwatch_log_account_policy,1,ours-cc,logs AccountPolicy (Cloud Control),via CloudFormation logs::AccountPolicy
+aws_cloudwatch_log_anomaly_detector,1,ours-cc,logs LogAnomalyDetector (Cloud Control),via CloudFormation logs::LogAnomalyDetector
+aws_cloudwatch_log_data_protection_policy,1,ack-field,cloudwatchlogs LogGroup (dataProtectionPolicy),
+aws_cloudwatch_log_metric_filter,1,ack-field,"(cloudwatchlogs LogGroup, pull request #61)",excluded.yaml
+aws_cloudwatch_log_resource_policy,1,ack,logs ResourcePolicy,via CloudFormation logs::ResourcePolicy
+aws_cloudwatch_log_stream,1,ours-cc,logs LogStream (Cloud Control),via CloudFormation logs::LogStream
+aws_cloudwatch_log_subscription_filter,1,ours-cc,logs SubscriptionFilter (Cloud Control),via CloudFormation logs::SubscriptionFilter
+aws_cloudwatch_metric_alarm,1,ack,cloudwatch MetricAlarm,via CloudFormation cloudwatch::Alarm
+aws_cloudwatch_metric_stream,1,ack,cloudwatch MetricStream,via CloudFormation cloudwatch::MetricStream
+aws_cloudwatch_query_definition,1,ours-cc,logs QueryDefinition (Cloud Control),via CloudFormation logs::QueryDefinition
+aws_codedeploy_app,1,ours-cc,codedeploy Application (Cloud Control),
+aws_codedeploy_deployment_group,1,ours-cc,codedeploy DeploymentGroup (Cloud Control),via CloudFormation codedeploy::DeploymentGroup
+aws_customer_gateway,1,ours,ec2 CustomerGateway,via CloudFormation ec2::CustomerGateway
+aws_db_instance,1,ack,rds DBInstance,
+aws_db_instance_automated_backups_replication,1,neither,,StartDBInstanceAutomatedBackupsReplication; no CloudFormation type
+aws_db_instance_role_association,1,ours,rds DBRoleAssociation,
+aws_db_option_group,1,ours,rds OptionGroup,via CloudFormation rds::OptionGroup
+aws_db_proxy,1,ack,rds DBProxy,
+aws_db_proxy_default_target_group,1,ack-field,rds DBProxy (targetGroup settings),
+aws_db_proxy_endpoint,1,ours-cc,rds DBProxyEndpoint (Cloud Control),
+aws_db_proxy_target,1,ours,rds DBProxyTarget,
+aws_default_network_acl,1,ack,ec2 NetworkACL,via CloudFormation ec2::NetworkAcl
+aws_default_route_table,1,ack,ec2 RouteTable,via CloudFormation ec2::RouteTable
+aws_default_security_group,1,ack,ec2 SecurityGroup (adopted),
+aws_default_vpc,1,ack,ec2 VPC (adopted),
+aws_dms_certificate,1,ack,dms Certificate,via CloudFormation dms::Certificate
+aws_dms_endpoint,1,ack,dms Endpoint,via CloudFormation dms::Endpoint
+aws_dms_event_subscription,1,ack,dms EventSubscription,via CloudFormation dms::EventSubscription
+aws_dms_replication_config,1,ours-cc,dms ReplicationConfig (Cloud Control),via CloudFormation dms::ReplicationConfig
+aws_dms_replication_instance,1,ack,dms ReplicationInstance,via CloudFormation dms::ReplicationInstance
+aws_dms_replication_subnet_group,1,ack,dms ReplicationSubnetGroup,via CloudFormation dms::ReplicationSubnetGroup
+aws_dms_replication_task,1,ack,dms ReplicationTask,via CloudFormation dms::ReplicationTask
+aws_dms_s3_endpoint,1,ack,dms Endpoint,
+aws_dsql_cluster,1,ack,dsql Cluster,via CloudFormation dsql::Cluster
+aws_dsql_cluster_peering,1,ack-field,dsql Cluster (multiRegionProperties),
+aws_dsql_cluster_policy,1,neither,,PutClusterPolicy; AWS::DSQL::Cluster has no policy
+aws_dynamodb_resource_policy,1,ack-field,dynamodb Table (resourcePolicy),
+aws_dynamodb_table,1,ack,dynamodb Table,via CloudFormation dynamodb::Table
+aws_ebs_volume,1,ours,ec2 Volume,
+aws_ec2_transit_gateway,1,ack,ec2 TransitGateway,via CloudFormation ec2::TransitGateway
+aws_ec2_transit_gateway_route,1,ours-cc,ec2 TransitGatewayRoute (Cloud Control),via CloudFormation ec2::TransitGatewayRoute
+aws_ec2_transit_gateway_route_table,1,ours-cc,ec2 TransitGatewayRouteTable (Cloud Control),
+aws_ec2_transit_gateway_route_table_association,1,ours-cc,ec2 TransitGatewayRouteTableAssociation (Cloud Control),
+aws_ec2_transit_gateway_route_table_propagation,1,ours-cc,ec2 TransitGatewayRouteTablePropagation (Cloud Control),
+aws_ec2_transit_gateway_vpc_attachment,1,ack,ec2 TransitGatewayVPCAttachment,via CloudFormation ec2::TransitGatewayVpcAttachment
+aws_ecr_pull_through_cache_rule,1,ack,ecr PullThroughCacheRule,via CloudFormation ecr::PullThroughCacheRule
+aws_ecr_registry_policy,1,ours-cc,ecr RegistryPolicy (Cloud Control),via CloudFormation ecr::RegistryPolicy
+aws_ecr_registry_scanning_configuration,1,ours-cc,ecr RegistryScanningConfiguration (Cloud Control),via CloudFormation ecr::RegistryScanningConfiguration
+aws_ecr_replication_configuration,1,ours,ecr ReplicationConfiguration,via CloudFormation ecr::ReplicationConfiguration
+aws_ecr_repository_creation_template,1,ack,ecr RepositoryCreationTemplate,via CloudFormation ecr::RepositoryCreationTemplate
+aws_ecr_repository_policy,1,ack-field,ecr Repository.spec.policy,
+aws_ecrpublic_repository,1,ack,ecrpublic Repository,
+aws_ecrpublic_repository_policy,1,ack-field,ecrpublic Repository (policy),
+aws_ecs_capacity_provider,1,ack,ecs CapacityProvider,via CloudFormation ecs::CapacityProvider
+aws_ecs_cluster,1,ack,ecs Cluster,via CloudFormation ecs::Cluster
+aws_ecs_cluster_capacity_providers,1,ack-field,ecs Cluster.spec.capacityProviders,
+aws_ecs_express_gateway_service,1,ours-cc,ecs ExpressGatewayService (Cloud Control),via CloudFormation ecs::ExpressGatewayService
+aws_ecs_service,1,ack,ecs Service,via CloudFormation ecs::Service
+aws_ecs_task_definition,1,ack,ecs TaskDefinition,via CloudFormation ecs::TaskDefinition
+aws_ecs_task_set,1,ours-cc,ecs TaskSet (Cloud Control),via CloudFormation ecs::TaskSet
+aws_efs_access_point,1,ack,efs AccessPoint,via CloudFormation efs::AccessPoint
+aws_efs_backup_policy,1,ack-field,efs FileSystem.spec.backupPolicy,
+aws_efs_file_system,1,ack,efs FileSystem,via CloudFormation efs::FileSystem
+aws_efs_file_system_policy,1,ack-field,efs FileSystem.spec.policy,
+aws_efs_mount_target,1,ack,efs MountTarget,via CloudFormation efs::MountTarget
+aws_efs_replication_configuration,1,neither,,"CreateReplicationConfiguration; AWS::EFS::FileSystem ReplicationConfiguration, not in ACK FileSystem"
+aws_egress_only_internet_gateway,1,ack,ec2 EgressOnlyInternetGateway,
+aws_eks_access_entry,1,ack,eks AccessEntry,via CloudFormation eks::AccessEntry
+aws_eks_access_policy_association,1,ack-field,eks AccessEntry.spec.accessPolicies,
+aws_eks_addon,1,ack,eks Addon,via CloudFormation eks::Addon
+aws_eks_capability,1,ack,eks Capability,via CloudFormation eks::Capability
+aws_eks_cluster,1,ack,eks Cluster,via CloudFormation eks::Cluster
+aws_eks_fargate_profile,1,ack,eks FargateProfile,via CloudFormation eks::FargateProfile
+aws_eks_identity_provider_config,1,ack,eks IdentityProviderConfig,via CloudFormation eks::IdentityProviderConfig
+aws_eks_node_group,1,ack,eks Nodegroup,
+aws_elasticache_cluster,1,ack,elasticache CacheCluster,via CloudFormation elasticache::CacheCluster
+aws_elasticache_global_replication_group,1,neither,,elasticache-controller pull request #237 (plan section 5 rank 13)
+aws_elasticache_parameter_group,1,ack,elasticache CacheParameterGroup,
+aws_elasticache_replication_group,1,ack,elasticache ReplicationGroup,via CloudFormation elasticache::ReplicationGroup
+aws_elasticache_serverless_cache,1,ack,elasticache ServerlessCache,via CloudFormation elasticache::ServerlessCache
+aws_elasticache_user,1,ack,elasticache User,via CloudFormation elasticache::User
+aws_elasticache_user_group,1,ack,elasticache UserGroup,via CloudFormation elasticache::UserGroup
+aws_elasticache_user_group_association,1,ack-field,elasticache UserGroup.spec.userIDs,
+aws_flow_log,1,ack,ec2 FlowLog,via CloudFormation ec2::FlowLog
+aws_glue_registry,1,ours-cc,glue Registry (Cloud Control),new 2026-11-12 (#92)
+aws_glue_schema,1,ours-cc,glue Schema (Cloud Control),new 2026-11-12 (#92)
+aws_iam_access_key,1,ours,iam AccessKey,via CloudFormation iam::AccessKey
+aws_iam_account_alias,1,ours,iam AccountAlias,
+aws_iam_account_password_policy,1,ours,iam AccountPasswordPolicy,via CloudFormation iam::AccountPasswordPolicy
+aws_iam_group,1,ack,iam Group,via CloudFormation iam::Group
+aws_iam_group_membership,1,ours,iam UserGroupMembership (user-centred),
+aws_iam_group_policy_attachment,1,ack-field,iam Group.spec.policies,
+aws_iam_user,1,ack,iam User,
+aws_iam_user_login_profile,1,ours,iam LoginProfile,
+aws_iam_user_policy,1,ack-field,iam User.spec.inlinePolicies,excluded.yaml
+aws_iam_user_policy_attachment,1,ack-field,iam User.spec.policies,
+aws_iam_user_ssh_key,1,ours,iam SSHPublicKey,via CloudFormation iam::SSHPublicKey
+aws_instance,1,ack,ec2 Instance,
+aws_internet_gateway,1,ack,ec2 InternetGateway,via CloudFormation ec2::InternetGateway
+aws_key_pair,1,neither,,ec2-controller pull request #396 (excluded.yaml)
+aws_kms_alias,1,ack,kms Alias,via CloudFormation kms::Alias
+aws_kms_ciphertext,1,not-a-resource,,"an encryption, not a resource"
+aws_kms_external_key,1,ack,kms Key (origin EXTERNAL; key material imported outside),
+aws_kms_grant,1,ack,kms Grant,
+aws_kms_key,1,ack,kms Key,via CloudFormation kms::Key
+aws_kms_replica_external_key,1,ours,kms ReplicaKey,
+aws_kms_replica_key,1,ours,kms ReplicaKey,via CloudFormation kms::ReplicaKey
+aws_lambda_alias,1,ack,lambda Alias,via CloudFormation lambda::Alias
+aws_lambda_event_source_mapping,1,ack,lambda EventSourceMapping,via CloudFormation lambda::EventSourceMapping
+aws_lambda_function_event_invoke_config,1,ack-field,lambda Function.spec.functionEventInvokeConfig,
+aws_lambda_function_recursion_config,1,neither,,PutFunctionRecursionConfig; AWS::Lambda::Function RecursiveLoop
+aws_lambda_function_url,1,ack,lambda FunctionURLConfig,via CloudFormation lambda::Url
+aws_lambda_layer_version,1,ack,lambda LayerVersion,via CloudFormation lambda::LayerVersion
+aws_lambda_provisioned_concurrency_config,1,ack-field,lambda Alias/Version provisionedConcurrencyConfig,
+aws_lb,1,ack,elbv2 LoadBalancer,
+aws_lb_listener,1,ack,elbv2 Listener,
+aws_lb_listener_certificate,1,ack-field,elbv2 Listener.spec.certificates,
+aws_lb_listener_rule,1,ack,elbv2 Rule,
+aws_lb_target_group,1,ack,elasticloadbalancingv2 TargetGroup,via CloudFormation elasticloadbalancingv2::TargetGroup
+aws_lb_target_group_attachment,1,ack-field,elbv2 TargetGroup.spec.targets,
+aws_lb_trust_store,1,ours-cc,elasticloadbalancingv2 TrustStore (Cloud Control),via CloudFormation elasticloadbalancingv2::TrustStore
+aws_lb_trust_store_revocation,1,ours-cc,elasticloadbalancingv2 TrustStoreRevocation (Cloud Control),
+aws_msk_cluster,1,ack,msk Cluster,via CloudFormation msk::Cluster
+aws_msk_cluster_policy,1,ours-cc,msk ClusterPolicy (Cloud Control),via CloudFormation msk::ClusterPolicy
+aws_msk_configuration,1,ack,msk Configuration,via CloudFormation msk::Configuration
+aws_msk_scram_secret_association,1,ours-cc,msk BatchScramSecret (Cloud Control),via CloudFormation msk::BatchScramSecret
+aws_msk_serverless_cluster,1,ack,msk ServerlessCluster,via CloudFormation msk::ServerlessCluster
+aws_msk_topic,1,ours-cc,msk Topic (Cloud Control),via CloudFormation msk::Topic
+aws_msk_vpc_connection,1,ack,msk VPCConnection,via CloudFormation msk::VpcConnection
+aws_mskconnect_custom_plugin,1,ours-cc,kafkaconnect CustomPlugin (Cloud Control),new 2026-11-12 (#92)
+aws_mskconnect_worker_configuration,1,ours-cc,kafkaconnect WorkerConfiguration (Cloud Control),new 2026-11-12 (#92)
+aws_nat_gateway,1,ack,ec2 NATGateway,via CloudFormation ec2::NatGateway
+aws_network_acl,1,ack,ec2 NetworkACL,via CloudFormation ec2::NetworkAcl
+aws_network_acl_rule,1,ack-field,ec2 NetworkACL.spec.entries,
+aws_networkfirewall_firewall,1,ack,networkfirewall Firewall,via CloudFormation networkfirewall::Firewall
+aws_networkfirewall_firewall_policy,1,ack,networkfirewall FirewallPolicy,via CloudFormation networkfirewall::FirewallPolicy
+aws_networkfirewall_logging_configuration,1,ours-cc,networkfirewall LoggingConfiguration (Cloud Control),via CloudFormation networkfirewall::LoggingConfiguration
+aws_networkfirewall_resource_policy,1,neither,,AWS::NetworkFirewall has no resource policy type; PutResourcePolicy
+aws_networkfirewall_rule_group,1,ack,networkfirewall RuleGroup,via CloudFormation networkfirewall::RuleGroup
+aws_opensearch_domain,1,ack,opensearchservice Domain,
+aws_opensearch_domain_policy,1,ack-field,opensearchservice Domain.spec.accessPolicies,
+aws_opensearch_domain_saml_options,1,ack-field,opensearchservice Domain (advancedSecurityOptions.samlOptions),
+aws_opensearch_outbound_connection,1,neither,,CreateOutboundConnection; no CloudFormation type
+aws_opensearch_package_association,1,neither,,AssociatePackage; no CloudFormation type
+aws_opensearch_vpc_endpoint,1,ack,opensearchservice VPCEndpoint,
+aws_opensearchserverless_access_policy,1,ack,opensearchserverless AccessPolicy,
+aws_opensearchserverless_collection,1,ack,opensearchserverless Collection,via CloudFormation opensearchserverless::Collection
+aws_opensearchserverless_collection_group,1,ack,opensearchserverless CollectionGroup,via CloudFormation opensearchserverless::CollectionGroup
+aws_opensearchserverless_lifecycle_policy,1,ack,opensearchserverless LifecyclePolicy,
+aws_opensearchserverless_security_policy,1,ack,opensearchserverless SecurityPolicy,
+aws_pipes_pipe,1,ack,pipes Pipe,via CloudFormation pipes::Pipe
+aws_placement_group,1,ours-cc,ec2 PlacementGroup (Cloud Control),via CloudFormation ec2::PlacementGroup
+aws_prometheus_alert_manager_definition,1,ack,prometheusservice AlertManagerDefinition,
+aws_prometheus_resource_policy,1,ours-cc,aps ResourcePolicy (Cloud Control),
+aws_prometheus_rule_group_namespace,1,ack,aps RuleGroupsNamespace,via CloudFormation aps::RuleGroupsNamespace
+aws_prometheus_workspace,1,ack,prometheusservice Workspace,
+aws_prometheus_workspace_configuration,1,neither,,UpdateWorkspaceConfiguration; AWS::APS::Workspace WorkspaceConfiguration
+aws_ram_principal_association,1,ours-cc,ram PrincipalAssociation (Cloud Control),via CloudFormation ram::PrincipalAssociation
+aws_ram_resource_share,1,ack,ram ResourceShare,via CloudFormation ram::ResourceShare
+aws_ram_resource_share_accepter,1,neither,,AcceptResourceShareInvitation; no CloudFormation type
+aws_rds_cluster,1,ack,rds DBCluster,
+aws_rds_cluster_activity_stream,1,neither,,StartActivityStream; no CloudFormation type
+aws_rds_cluster_endpoint,1,ack,rds DBClusterEndpoint,via CloudFormation rds::DBClusterEndpoint
+aws_rds_cluster_instance,1,ack,rds DBInstance,
+aws_rds_cluster_parameter_group,1,ack,rds DBClusterParameterGroup,via CloudFormation rds::DBClusterParameterGroup
+aws_rds_cluster_role_association,1,ours,rds DBRoleAssociation,
+aws_rds_shard_group,1,ours-cc,rds DBShardGroup (Cloud Control),via CloudFormation rds::DBShardGroup
+aws_redshift_subnet_group,1,neither,,"ACK redshift-controller has it merged, unreleased (excluded.yaml)"
+aws_rolesanywhere_profile,1,ours-cc,rolesanywhere Profile (Cloud Control),via CloudFormation rolesanywhere::Profile
+aws_rolesanywhere_trust_anchor,1,ours-cc,rolesanywhere TrustAnchor (Cloud Control),via CloudFormation rolesanywhere::TrustAnchor
+aws_route53_delegation_set,1,ours-cc,route53 DelegationSet (Cloud Control),
+aws_route53_hosted_zone_dnssec,1,ours-cc,route53 DNSSEC (Cloud Control),via CloudFormation route53::DNSSEC
+aws_route53_key_signing_key,1,ours-cc,route53 KeySigningKey (Cloud Control),via CloudFormation route53::KeySigningKey
+aws_route53_resolver_endpoint,1,ack,route53resolver ResolverEndpoint,via CloudFormation route53resolver::ResolverEndpoint
+aws_route53_resolver_firewall_domain_list,1,ours-cc,route53resolver FirewallDomainList (Cloud Control),via CloudFormation route53resolver::FirewallDomainList
+aws_route53_resolver_firewall_rule,1,ack-field,route53resolver FirewallRuleGroup (Cloud Control).spec.firewallRules,
+aws_route53_resolver_firewall_rule_group,1,ours-cc,route53resolver FirewallRuleGroup (Cloud Control),via CloudFormation route53resolver::FirewallRuleGroup
+aws_route53_resolver_rule,1,ack,route53resolver ResolverRule,via CloudFormation route53resolver::ResolverRule
+aws_route53_resolver_rule_association,1,ack,route53resolver ResolverRuleAssociation,via CloudFormation route53resolver::ResolverRuleAssociation
+aws_route53_vpc_association_authorization,1,neither,,"plan section 5 rank 14; no CloudFormation type, moto has none"
+aws_route53_zone,1,ack,route53 HostedZone,via CloudFormation route53::HostedZone
+aws_route_table,1,ack,ec2 RouteTable,via CloudFormation ec2::RouteTable
+aws_route_table_association,1,ack-field,ec2 Subnet.spec.routeTables; ours GatewayRouteTableAssociation (Cloud Control) for gateways,excluded.yaml: SubnetRouteTableAssociation
+aws_s3_account_public_access_block,1,neither,,plan section 5 rank 17; no CloudFormation type (S3 Control PutPublicAccessBlock)
+aws_s3_bucket,1,ack,s3 Bucket,via CloudFormation s3::Bucket
+aws_s3_bucket_accelerate_configuration,1,ack-field,s3 Bucket.spec (accelerate configuration),
+aws_s3_bucket_acl,1,ack-field,s3 Bucket.spec (acl),
+aws_s3_bucket_analytics_configuration,1,ack-field,s3 Bucket.spec (analytics configuration),
+aws_s3_bucket_cors_configuration,1,ack-field,s3 Bucket.spec (cors configuration),
+aws_s3_bucket_intelligent_tiering_configuration,1,ack-field,s3 Bucket.spec (intelligent tiering configuration),
+aws_s3_bucket_inventory,1,ack-field,s3 Bucket.spec (inventory),
+aws_s3_bucket_lifecycle_configuration,1,ack-field,s3 Bucket.spec (lifecycle configuration),
+aws_s3_bucket_logging,1,ack-field,s3 Bucket.spec (logging),
+aws_s3_bucket_metadata_configuration,1,ack-field,s3 Bucket.spec (metadata configuration),
+aws_s3_bucket_metric,1,ack-field,s3 Bucket.spec (metric),
+aws_s3_bucket_notification,1,ack-field,s3 Bucket.spec (notification),
+aws_s3_bucket_object_lock_configuration,1,ack-field,s3 Bucket.spec (object lock configuration),
+aws_s3_bucket_ownership_controls,1,ack-field,s3 Bucket.spec (ownership controls),
+aws_s3_bucket_policy,1,ack-field,s3 Bucket.spec.policy,
+aws_s3_bucket_public_access_block,1,ack-field,s3 Bucket.spec (public access block),
+aws_s3_bucket_replication_configuration,1,ack-field,s3 Bucket.spec (replication configuration),
+aws_s3_bucket_request_payment_configuration,1,ack-field,s3 Bucket.spec (request payment configuration),
+aws_s3_bucket_server_side_encryption_configuration,1,ack-field,s3 Bucket.spec (server side encryption configuration),
+aws_s3_bucket_versioning,1,ack-field,s3 Bucket.spec (versioning),
+aws_s3_bucket_website_configuration,1,ack-field,s3 Bucket.spec (website configuration),
+aws_s3_directory_bucket,1,ours-cc,s3express DirectoryBucket (Cloud Control),new 2026-11-12 (#92)
+aws_s3files_access_point,1,ack,s3files AccessPoint,via CloudFormation s3files::AccessPoint
+aws_s3files_file_system,1,ack,s3files FileSystem,via CloudFormation s3files::FileSystem
+aws_s3files_file_system_policy,1,ours-cc,s3files FileSystemPolicy (Cloud Control),via CloudFormation s3files::FileSystemPolicy
+aws_s3files_mount_target,1,ack,s3files MountTarget,via CloudFormation s3files::MountTarget
+aws_s3files_synchronization_configuration,1,neither,,not in the pinned CloudFormation schemas
+aws_s3tables_table,1,ack,s3tables Table,via CloudFormation s3tables::Table
+aws_s3tables_table_bucket,1,ack,s3tables TableBucket,via CloudFormation s3tables::TableBucket
+aws_s3tables_table_bucket_policy,1,ack-field,s3tables TableBucket.spec.policy,excluded.yaml
+aws_s3tables_table_policy,1,ours-cc,s3tables TablePolicy (Cloud Control),new 2026-11-12 (#92)
+aws_s3vectors_index,1,ack,s3vectors Index,via CloudFormation s3vectors::Index
+aws_s3vectors_vector_bucket,1,ack,s3vectors VectorBucket,via CloudFormation s3vectors::VectorBucket
+aws_s3vectors_vector_bucket_policy,1,ours-cc,s3vectors VectorBucketPolicy (Cloud Control),new 2026-11-12 (#92)
+aws_scheduler_schedule,1,ours,scheduler Schedule,via CloudFormation scheduler::Schedule
+aws_scheduler_schedule_group,1,ours,scheduler ScheduleGroup,via CloudFormation scheduler::ScheduleGroup
+aws_schemas_discoverer,1,ours-cc,eventschemas Discoverer (Cloud Control),
+aws_secretsmanager_secret,1,ack,secretsmanager Secret,via CloudFormation secretsmanager::Secret
+aws_secretsmanager_secret_policy,1,ours-cc,secretsmanager ResourcePolicy (Cloud Control),
+aws_secretsmanager_secret_version,1,ack-field,secretsmanager Secret.spec.secretString,
+aws_sfn_state_machine,1,ack,stepfunctions StateMachine,via CloudFormation stepfunctions::StateMachine
+aws_sns_topic_data_protection_policy,1,ack-field,sns Topic.spec.dataProtectionPolicy,
+aws_spot_instance_request,1,neither,,RequestSpotInstances (legacy); no CloudFormation type
+aws_sqs_queue_redrive_allow_policy,1,ack-field,sqs Queue.spec.redriveAllowPolicy,
+aws_sqs_queue_redrive_policy,1,ack-field,sqs Queue.spec.redrivePolicy,
+aws_ssm_parameter,1,ack,ssm Parameter,via CloudFormation ssm::Parameter
+aws_subnet,1,ack,ec2 Subnet,via CloudFormation ec2::Subnet
+aws_volume_attachment,1,ours,ec2 VolumeAttachment,via CloudFormation ec2::VolumeAttachment
+aws_vpc,1,ack,ec2 VPC,via CloudFormation ec2::VPC
+aws_vpc_block_public_access_exclusion,1,ours-cc,ec2 VPCBlockPublicAccessExclusion (Cloud Control),
+aws_vpc_block_public_access_options,1,ours-cc,ec2 VPCBlockPublicAccessOptions (Cloud Control),
+aws_vpc_dhcp_options,1,ack,ec2 DHCPOptions,
+aws_vpc_dhcp_options_association,1,ack-field,ec2 DHCPOptions.spec.vpc,
+aws_vpc_ipv4_cidr_block_association,1,ack-field,ec2 VPC.spec.cidrBlocks,
+aws_vpc_security_group_rules_exclusive,1,ack-field,ec2 SecurityGroup rules,
+aws_vpc_security_group_vpc_association,1,ours-cc,ec2 SecurityGroupVpcAssociation (Cloud Control),via CloudFormation ec2::SecurityGroupVpcAssociation
+aws_vpn_connection,1,ours,ec2 VPNConnection,
+aws_vpn_connection_route,1,neither,,"CreateVpnConnectionRoute; beside VPNConnection (handoff), moto has none"
+aws_vpn_gateway,1,ours,ec2 VPNGateway,
+aws_wafv2_web_acl_association,1,ours,wafv2 WebACLAssociation,

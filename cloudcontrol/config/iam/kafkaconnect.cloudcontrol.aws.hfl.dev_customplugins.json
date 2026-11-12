@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlKafkaConnectCustomPlugin",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KafkaConnectCustomPluginCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kafkaconnect:CreateCustomPlugin",
+        "kafkaconnect:DescribeCustomPlugin",
+        "kafkaconnect:ListTagsForResource",
+        "kafkaconnect:TagResource",
+        "s3:GetObject",
+        "s3:GetObjectAttributes",
+        "s3:GetObjectVersion",
+        "s3:GetObjectVersionAttributes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KafkaConnectCustomPluginRead",
+      "Effect": "Allow",
+      "Action": [
+        "kafkaconnect:DescribeCustomPlugin",
+        "kafkaconnect:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KafkaConnectCustomPluginUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kafkaconnect:DescribeCustomPlugin",
+        "kafkaconnect:ListTagsForResource",
+        "kafkaconnect:TagResource",
+        "kafkaconnect:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KafkaConnectCustomPluginDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kafkaconnect:DeleteCustomPlugin",
+        "kafkaconnect:DescribeCustomPlugin"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

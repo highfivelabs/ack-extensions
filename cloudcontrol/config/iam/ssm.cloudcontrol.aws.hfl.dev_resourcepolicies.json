@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSSMResourcePolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMResourcePolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMResourcePolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetResourcePolicies"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMResourcePolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetResourcePolicies",
+        "ssm:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMResourcePolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:DeleteResourcePolicy",
+        "ssm:GetResourcePolicies"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
