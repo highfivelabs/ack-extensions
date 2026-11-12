@@ -39,7 +39,10 @@ harness ("no fake backend"). Nothing in a test path can reach AWS
 - **Today:** the deployed role lacks the sweeper's and the fixtures'
   permissions until the builder redeploys the stack from pull request #68
   (register O26b). `hack/live/run.sh` sweeps first, so a run stops before
-  any test until then.
+  any test until then. On 2026-11-12 the run stopped earlier still:
+  `AssumeRoleWithWebIdentity` into the role was refused
+  (`docs/live-runs.md`, ledger), so no live run can start until the
+  builder checks the role's trust.
 
 ## Rechecking the fake against real AWS
 
