@@ -5,6 +5,11 @@ design and the reasons are in `docs/plan.md`.
 
 ## Unreleased
 
+### Added
+
+- **`ec2.aws.hfl.dev` `ResourceTag`**: one tag on an EC2 resource made
+  elsewhere, Terraform's `aws_ec2_tag` (`docs/plan.md` section 6.35).
+
 ### Fixed
 
 - **`iam.aws.hfl.dev` `AccountAlias`: a new object for the account's
