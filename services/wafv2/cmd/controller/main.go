@@ -42,6 +42,8 @@ import (
 	svctypes "github.com/highfivelabs/ack-extensions/services/wafv2/apis/v1alpha1"
 	svcresource "github.com/highfivelabs/ack-extensions/services/wafv2/pkg/resource"
 
+	_ "github.com/highfivelabs/ack-extensions/services/wafv2/pkg/resource/web_acl_association"
+
 	"github.com/highfivelabs/ack-extensions/services/wafv2/pkg/version"
 )
 

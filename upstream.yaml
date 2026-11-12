@@ -92,7 +92,7 @@ pull_requests:
     head: 78eb350ec61caa74b08e8242380b0545164b5576
     read_on: "2026-11-08"
     role: copied
-    for: RolePolicyAttachment, and the hand-written kind skeleton copied for eleven kinds
+    for: RolePolicyAttachment, and the hand-written kind skeleton copied for ten kinds
   - ref: aws-controllers-k8s/kms-controller#112
     head: eb4057e4
     read_on: "2026-11-08"
@@ -231,13 +231,6 @@ copied:
       - services/ec2/pkg/resource/resource_tag/manager.go
       - services/ec2/pkg/resource/resource_tag/manager_factory.go
       - services/ec2/pkg/resource/resource_tag/resource.go
-    from: *skeleton
-  - here:
-      - services/wafv2/pkg/resource/web_acl_association/descriptor.go
-      - services/wafv2/pkg/resource/web_acl_association/identifiers.go
-      - services/wafv2/pkg/resource/web_acl_association/manager.go
-      - services/wafv2/pkg/resource/web_acl_association/manager_factory.go
-      - services/wafv2/pkg/resource/web_acl_association/resource.go
     from: *skeleton
   - here:
       - services/iam/pkg/resource/user_group_membership/descriptor.go

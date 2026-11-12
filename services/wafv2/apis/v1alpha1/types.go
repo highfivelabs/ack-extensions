@@ -25,3 +25,218 @@ var (
 	_ = &metav1.Time{}
 	_ = ackv1alpha1.AWSAccountID("")
 )
+
+// Contains zero or more IP addresses or blocks of IP addresses specified in
+// Classless Inter-Domain Routing (CIDR) notation. WAF supports all IPv4 and
+// IPv6 CIDR ranges except for /0. For information about CIDR notation, see
+// the Wikipedia entry Classless Inter-Domain Routing (https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing).
+//
+// WAF assigns an ARN to each IPSet that you create. To use an IP set in a rule,
+// you provide the ARN to the Rule statement IPSetReferenceStatement.
+type IPSet struct {
+	ARN *string `json:"arn,omitempty"`
+}
+
+// A rule statement used to detect web requests coming from particular IP addresses
+// or address ranges. To use this, create an IPSet that specifies the addresses
+// you want to detect, then use the ARN of that set in this statement. To create
+// an IP set, see CreateIPSet.
+//
+// Each IP set rule statement references an IP set. You create and maintain
+// the set independent of your rules. This allows you to use the single set
+// in multiple rules. When you update the referenced set, WAF automatically
+// updates all rules that reference it.
+type IPSetReferenceStatement struct {
+	ARN *string `json:"arn,omitempty"`
+}
+
+// High-level information about an IPSet, returned by operations like create
+// and list. This provides information like the ID, that you can use to retrieve
+// and manage an IPSet, and the ARN, that you provide to the IPSetReferenceStatement
+// to use the address set in a Rule.
+type IPSetSummary struct {
+	ARN *string `json:"arn,omitempty"`
+}
+
+// Defines an association between logging destinations and a web ACL resource,
+// for logging from WAF. As part of the association, you can specify parts of
+// the standard logging fields to keep out of the logs and you can specify filters
+// so that you log only a subset of the logging records.
+//
+// You can define one logging destination per web ACL.
+//
+// You can access information about the traffic that WAF inspects using the
+// following steps:
+//
+// Create your logging destination. You can use an Amazon CloudWatch Logs log
+// group, an Amazon Simple Storage Service (Amazon S3) bucket, or an Amazon
+// Kinesis Data Firehose.
+//
+// The name that you give the destination must start with aws-waf-logs-. Depending
+// on the type of destination, you might need to configure additional settings
+// or permissions.
+//
+// For configuration requirements and pricing information for each destination
+// type, see Logging web ACL traffic (https://docs.aws.amazon.com/waf/latest/developerguide/logging.html)
+// in the WAF Developer Guide.
+//
+// Associate your logging destination to your web ACL using a PutLoggingConfiguration
+// request.
+//
+// When you successfully enable logging using a PutLoggingConfiguration request,
+// WAF creates an additional role or policy that is required to write logs to
+// the logging destination. For an Amazon CloudWatch Logs log group, WAF creates
+// a resource policy on the log group. For an Amazon S3 bucket, WAF creates
+// a bucket policy. For an Amazon Kinesis Data Firehose, WAF creates a service-linked
+// role.
+//
+// For additional information about web ACL logging, see Logging web ACL traffic
+// information (https://docs.aws.amazon.com/waf/latest/developerguide/logging.html)
+// in the WAF Developer Guide.
+type LoggingConfiguration struct {
+	ResourceARN *string `json:"resourceARN,omitempty"`
+}
+
+// The properties of a managed product, such as an Amazon Web Services Managed
+// Rules rule group or an Amazon Web Services Marketplace managed rule group.
+type ManagedProductDescriptor struct {
+	SNSTopicARN *string `json:"snsTopicARN,omitempty"`
+}
+
+// A set of rules that is managed by Amazon Web Services and Amazon Web Services
+// Marketplace sellers to provide versioned managed rule groups for customers
+// of WAF.
+//
+// This is intended for use only by vendors of managed rule sets. Vendors are
+// Amazon Web Services and Amazon Web Services Marketplace sellers.
+//
+// Vendors, you can use the managed rule set APIs to provide controlled rollout
+// of your versioned managed rule group offerings for your customers. The APIs
+// are ListManagedRuleSets, GetManagedRuleSet, PutManagedRuleSetVersions, and
+// UpdateManagedRuleSetVersionExpiryDate.
+type ManagedRuleSet struct {
+	ARN *string `json:"arn,omitempty"`
+}
+
+// High-level information for a managed rule set.
+//
+// This is intended for use only by vendors of managed rule sets. Vendors are
+// Amazon Web Services and Amazon Web Services Marketplace sellers.
+//
+// Vendors, you can use the managed rule set APIs to provide controlled rollout
+// of your versioned managed rule group offerings for your customers. The APIs
+// are ListManagedRuleSets, GetManagedRuleSet, PutManagedRuleSetVersions, and
+// UpdateManagedRuleSetVersionExpiryDate.
+type ManagedRuleSetSummary struct {
+	ARN *string `json:"arn,omitempty"`
+}
+
+// Information for a single version of a managed rule set.
+//
+// This is intended for use only by vendors of managed rule sets. Vendors are
+// Amazon Web Services and Amazon Web Services Marketplace sellers.
+//
+// Vendors, you can use the managed rule set APIs to provide controlled rollout
+// of your versioned managed rule group offerings for your customers. The APIs
+// are ListManagedRuleSets, GetManagedRuleSet, PutManagedRuleSetVersions, and
+// UpdateManagedRuleSetVersionExpiryDate.
+type ManagedRuleSetVersion struct {
+	AssociatedRuleGroupARN *string `json:"associatedRuleGroupARN,omitempty"`
+}
+
+// Contains one or more regular expressions.
+//
+// WAF assigns an ARN to each RegexPatternSet that you create. To use a set
+// in a rule, you provide the ARN to the Rule statement RegexPatternSetReferenceStatement.
+type RegexPatternSet struct {
+	ARN *string `json:"arn,omitempty"`
+}
+
+// A rule statement used to search web request components for matches with regular
+// expressions. To use this, create a RegexPatternSet that specifies the expressions
+// that you want to detect, then use the ARN of that set in this statement.
+// A web request matches the pattern set rule statement if the request component
+// matches any of the patterns in the set. To create a regex pattern set, see
+// CreateRegexPatternSet.
+//
+// Each regex pattern set rule statement references a regex pattern set. You
+// create and maintain the set independent of your rules. This allows you to
+// use the single set in multiple rules. When you update the referenced set,
+// WAF automatically updates all rules that reference it.
+type RegexPatternSetReferenceStatement struct {
+	ARN *string `json:"arn,omitempty"`
+}
+
+// High-level information about a RegexPatternSet, returned by operations like
+// create and list. This provides information like the ID, that you can use
+// to retrieve and manage a RegexPatternSet, and the ARN, that you provide to
+// the RegexPatternSetReferenceStatement to use the pattern set in a Rule.
+type RegexPatternSetSummary struct {
+	ARN *string `json:"arn,omitempty"`
+}
+
+// A rule group defines a collection of rules to inspect and control web requests
+// that you can use in a WebACL. When you create a rule group, you define an
+// immutable capacity limit. If you update a rule group, you must stay within
+// the capacity. This allows others to reuse the rule group with confidence
+// in its capacity requirements.
+type RuleGroup struct {
+	ARN *string `json:"arn,omitempty"`
+}
+
+// A rule statement used to run the rules that are defined in a RuleGroup. To
+// use this, create a rule group with your rules, then provide the ARN of the
+// rule group in this statement.
+//
+// You cannot nest a RuleGroupReferenceStatement, for example for use inside
+// a NotStatement or OrStatement. You cannot use a rule group reference statement
+// inside another rule group. You can only reference a rule group as a top-level
+// statement within a rule that you define in a web ACL.
+type RuleGroupReferenceStatement struct {
+	ARN *string `json:"arn,omitempty"`
+}
+
+// High-level information about a RuleGroup, returned by operations like create
+// and list. This provides information like the ID, that you can use to retrieve
+// and manage a RuleGroup, and the ARN, that you provide to the RuleGroupReferenceStatement
+// to use the rule group in a Rule.
+type RuleGroupSummary struct {
+	ARN *string `json:"arn,omitempty"`
+}
+
+// The collection of tagging definitions for an Amazon Web Services resource.
+// Tags are key:value pairs that you can use to categorize and manage your resources,
+// for purposes like billing or other management. Typically, the tag key represents
+// a category, such as "environment", and the tag value represents a specific
+// value within that category, such as "test," "development," or "production".
+// Or you might set the tag key to "customer" and the value to the customer
+// name or ID. You can specify one or more tags to add to each Amazon Web Services
+// resource, up to 50 tags for a resource.
+//
+// You can tag the Amazon Web Services resources that you manage through WAF:
+// web ACLs, rule groups, IP sets, and regex pattern sets. You can't manage
+// or view tags through the WAF console.
+type TagInfoForResource struct {
+	ResourceARN *string `json:"resourceARN,omitempty"`
+}
+
+// A version of the named managed rule group, that the rule group's vendor publishes
+// for use by customers.
+//
+// This is intended for use only by vendors of managed rule sets. Vendors are
+// Amazon Web Services and Amazon Web Services Marketplace sellers.
+//
+// Vendors, you can use the managed rule set APIs to provide controlled rollout
+// of your versioned managed rule group offerings for your customers. The APIs
+// are ListManagedRuleSets, GetManagedRuleSet, PutManagedRuleSetVersions, and
+// UpdateManagedRuleSetVersionExpiryDate.
+type VersionToPublish struct {
+	AssociatedRuleGroupARN *string `json:"associatedRuleGroupARN,omitempty"`
+}
+
+// High-level information about a WebACL, returned by operations like create
+// and list. This provides information like the ID, that you can use to retrieve
+// and manage a WebACL, and the ARN, that you provide to operations like AssociateWebACL.
+type WebACLSummary struct {
+	ARN *string `json:"arn,omitempty"`
+}
