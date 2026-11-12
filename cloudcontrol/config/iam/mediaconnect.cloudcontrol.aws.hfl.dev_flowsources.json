@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaConnectFlowSource",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectFlowSourceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "mediaconnect:AddFlowSources",
+        "mediaconnect:CreateFlow",
+        "mediaconnect:DescribeFlow",
+        "mediaconnect:ListTagsForResource",
+        "mediaconnect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectFlowSourceRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:DescribeFlow",
+        "mediaconnect:ListFlows",
+        "mediaconnect:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectFlowSourceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "mediaconnect:DescribeFlow",
+        "mediaconnect:ListTagsForResource",
+        "mediaconnect:TagResource",
+        "mediaconnect:UntagResource",
+        "mediaconnect:UpdateFlowSource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectFlowSourceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:DescribeFlow",
+        "mediaconnect:ListFlows",
+        "mediaconnect:RemoveFlowSource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

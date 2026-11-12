@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTransferAgreement",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferAgreementCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "transfer:CreateAgreement",
+        "transfer:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferAgreementRead",
+      "Effect": "Allow",
+      "Action": [
+        "transfer:DescribeAgreement"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferAgreementUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "transfer:TagResource",
+        "transfer:UnTagResource",
+        "transfer:UpdateAgreement"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferAgreementDelete",
+      "Effect": "Allow",
+      "Action": [
+        "transfer:DeleteAgreement"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

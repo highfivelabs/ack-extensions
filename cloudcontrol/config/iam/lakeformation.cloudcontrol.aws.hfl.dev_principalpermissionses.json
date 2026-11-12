@@ -1,0 +1,49 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLakeFormationPrincipalPermissions",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LakeFormationPrincipalPermissionsCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetDatabase",
+        "glue:GetTable",
+        "lakeformation:GrantPermissions",
+        "lakeformation:ListPermissions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LakeFormationPrincipalPermissionsRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetDatabase",
+        "glue:GetTable",
+        "lakeformation:ListPermissions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LakeFormationPrincipalPermissionsDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetDatabase",
+        "glue:GetTable",
+        "lakeformation:ListPermissions",
+        "lakeformation:RevokePermissions"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

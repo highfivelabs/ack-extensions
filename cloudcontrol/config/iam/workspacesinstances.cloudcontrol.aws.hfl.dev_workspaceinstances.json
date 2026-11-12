@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWorkspacesInstancesWorkspaceInstance",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkspacesInstancesWorkspaceInstanceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:DescribeImages",
+        "ec2:DescribeInstanceStatus",
+        "ec2:DescribeInstances",
+        "ec2:RunInstances",
+        "iam:PassRole",
+        "workspaces-instances:CreateWorkspaceInstance",
+        "workspaces-instances:GetWorkspaceInstance",
+        "workspaces-instances:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkspacesInstancesWorkspaceInstanceRead",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces-instances:GetWorkspaceInstance",
+        "workspaces-instances:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkspacesInstancesWorkspaceInstanceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces-instances:GetWorkspaceInstance",
+        "workspaces-instances:ListTagsForResource",
+        "workspaces-instances:TagResource",
+        "workspaces-instances:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkspacesInstancesWorkspaceInstanceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeInstanceStatus",
+        "ec2:DescribeInstances",
+        "ec2:TerminateInstances",
+        "workspaces-instances:DeleteWorkspaceInstance",
+        "workspaces-instances:GetWorkspaceInstance"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

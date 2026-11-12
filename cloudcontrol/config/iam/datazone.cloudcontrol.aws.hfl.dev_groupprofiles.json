@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataZoneGroupProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneGroupProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:CreateGroupProfile",
+        "datazone:GetGroupProfile",
+        "datazone:UpdateGroupProfile",
+        "iam:GetRole",
+        "sso:AssociateProfile",
+        "sso:DisassociateProfile",
+        "sso:GetProfile",
+        "sso:ListProfiles"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneGroupProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetGroupProfile",
+        "iam:GetRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneGroupProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetGroupProfile",
+        "datazone:UpdateGroupProfile",
+        "sso:AssociateProfile",
+        "sso:DisassociateProfile",
+        "sso:GetProfile",
+        "sso:ListProfiles"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneGroupProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:DeleteGroupProfile",
+        "datazone:GetGroupProfile",
+        "datazone:UpdateGroupProfile",
+        "sso:AssociateProfile",
+        "sso:DisassociateProfile",
+        "sso:GetProfile",
+        "sso:ListProfiles"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

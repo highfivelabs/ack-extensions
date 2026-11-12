@@ -1,0 +1,74 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlStorageGatewayNFSFileShare",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StorageGatewayNFSFileShareCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:UpdateLogDelivery",
+        "storagegateway:AddTagsToResource",
+        "storagegateway:CreateNFSFileShare",
+        "storagegateway:DescribeNFSFileShares"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StorageGatewayNFSFileShareRead",
+      "Effect": "Allow",
+      "Action": [
+        "storagegateway:DescribeNFSFileShares",
+        "storagegateway:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StorageGatewayNFSFileShareUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:UpdateLogDelivery",
+        "storagegateway:AddTagsToResource",
+        "storagegateway:DescribeNFSFileShares",
+        "storagegateway:ListTagsForResource",
+        "storagegateway:RemoveTagsFromResource",
+        "storagegateway:UpdateNFSFileShare"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StorageGatewayNFSFileShareDelete",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:UpdateLogDelivery",
+        "storagegateway:DeleteFileShare",
+        "storagegateway:DescribeNFSFileShares",
+        "storagegateway:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaConnectDestinationEndpoint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectDestinationEndpointCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateTags",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "mediaconnect:AssociateDestination",
+        "mediaconnect:GetDestinationEndpoint",
+        "mediaconnect:ListDestinationEndpoints",
+        "mediaconnect:RegisterDestinationEndpoint",
+        "mediaconnect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectDestinationEndpointRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:GetDestinationEndpoint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectDestinationEndpointUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:GetDestinationEndpoint",
+        "mediaconnect:ListTagsForResource",
+        "mediaconnect:TagResource",
+        "mediaconnect:UntagResource",
+        "mediaconnect:UpdateDestinationEndpoint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectDestinationEndpointDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:DeregisterDestinationEndpoint",
+        "mediaconnect:DisassociateDestination",
+        "mediaconnect:GetDestinationEndpoint",
+        "mediaconnect:ListDestinationEndpoints"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlVpcLatticeResourcePolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeResourcePolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "vpc-lattice:GetResourcePolicy",
+        "vpc-lattice:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeResourcePolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "vpc-lattice:GetResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeResourcePolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "vpc-lattice:GetResourcePolicy",
+        "vpc-lattice:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeResourcePolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "vpc-lattice:DeleteResourcePolicy",
+        "vpc-lattice:GetResourcePolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

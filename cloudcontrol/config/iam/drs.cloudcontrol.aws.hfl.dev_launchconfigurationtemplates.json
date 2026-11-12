@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDRSLaunchConfigurationTemplate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DRSLaunchConfigurationTemplateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "drs:CreateLaunchConfigurationTemplate",
+        "drs:DescribeLaunchConfigurationTemplates"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DRSLaunchConfigurationTemplateRead",
+      "Effect": "Allow",
+      "Action": [
+        "drs:DescribeLaunchConfigurationTemplates"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DRSLaunchConfigurationTemplateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "drs:DescribeLaunchConfigurationTemplates",
+        "drs:TagResource",
+        "drs:UntagResource",
+        "drs:UpdateLaunchConfigurationTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DRSLaunchConfigurationTemplateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "drs:DeleteLaunchConfigurationTemplate",
+        "drs:DescribeLaunchConfigurationTemplates"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

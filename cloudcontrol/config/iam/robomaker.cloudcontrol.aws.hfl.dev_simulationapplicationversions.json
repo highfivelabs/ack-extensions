@@ -1,0 +1,48 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoboMakerSimulationApplicationVersion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RoboMakerSimulationApplicationVersionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ecr-public:GetAuthorizationToken",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:GetAuthorizationToken",
+        "robomaker:CreateSimulationApplicationVersion",
+        "s3:GetObject",
+        "sts:GetServiceBearerToken"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RoboMakerSimulationApplicationVersionRead",
+      "Effect": "Allow",
+      "Action": [
+        "robomaker:DescribeSimulationApplication"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RoboMakerSimulationApplicationVersionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "robomaker:DeleteSimulationApplication",
+        "robomaker:DescribeSimulationApplication"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

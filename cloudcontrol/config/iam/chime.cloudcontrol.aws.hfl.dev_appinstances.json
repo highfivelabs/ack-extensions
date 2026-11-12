@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlChimeAppInstance",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeAppInstanceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "chime:CreateAppInstance",
+        "chime:DescribeAppInstance",
+        "chime:ListTagsForResource",
+        "chime:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeAppInstanceRead",
+      "Effect": "Allow",
+      "Action": [
+        "chime:DescribeAppInstance",
+        "chime:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeAppInstanceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "chime:DescribeAppInstance",
+        "chime:ListTagsForResource",
+        "chime:TagResource",
+        "chime:UntagResource",
+        "chime:UpdateAppInstance"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeAppInstanceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "chime:DeleteAppInstance",
+        "chime:DescribeAppInstance"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTransferConnector",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferConnectorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "transfer:CreateConnector",
+        "transfer:DescribeConnector",
+        "transfer:TagResource",
+        "vpc-lattice:AssociateViaAWSService",
+        "vpc-lattice:CreateServiceNetworkResourceAssociation",
+        "vpc-lattice:GetResourceConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferConnectorRead",
+      "Effect": "Allow",
+      "Action": [
+        "transfer:DescribeConnector"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferConnectorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "transfer:DescribeConnector",
+        "transfer:TagResource",
+        "transfer:UnTagResource",
+        "transfer:UpdateConnector",
+        "vpc-lattice:AssociateViaAWSService",
+        "vpc-lattice:CreateServiceNetworkResourceAssociation",
+        "vpc-lattice:GetResourceConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferConnectorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "transfer:DeleteConnector"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSageMakerAppImageConfig",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerAppImageConfigCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags",
+        "sagemaker:CreateAppImageConfig",
+        "sagemaker:DescribeAppImageConfig",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerAppImageConfigRead",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribeAppImageConfig",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerAppImageConfigUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags",
+        "sagemaker:DeleteTags",
+        "sagemaker:DescribeAppImageConfig",
+        "sagemaker:ListTags",
+        "sagemaker:UpdateAppImageConfig"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerAppImageConfigDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DeleteAppImageConfig",
+        "sagemaker:DeleteTags",
+        "sagemaker:DescribeAppImageConfig"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

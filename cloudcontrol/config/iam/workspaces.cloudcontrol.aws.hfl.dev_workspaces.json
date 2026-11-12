@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWorkSpacesWorkspace",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWorkspaceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "workspaces:CreateTags",
+        "workspaces:CreateWorkspaces",
+        "workspaces:DescribeWorkspaces"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWorkspaceRead",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces:DescribeTags",
+        "workspaces:DescribeWorkspaces"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWorkspaceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "workspaces:CreateTags",
+        "workspaces:DeleteTags",
+        "workspaces:DescribeTags",
+        "workspaces:DescribeWorkspaceBundles",
+        "workspaces:DescribeWorkspaces",
+        "workspaces:ModifyWorkspaceProperties"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWorkspaceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces:DescribeWorkspaces",
+        "workspaces:TerminateWorkspaces"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataSyncLocationFSxLustre",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationFSxLustreCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:CreateLocationFsxLustre",
+        "datasync:DescribeLocationFsxLustre",
+        "datasync:ListTagsForResource",
+        "datasync:TagResource",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "fsx:DescribeFileSystems"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationFSxLustreRead",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DescribeLocationFsxLustre",
+        "datasync:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationFSxLustreUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DescribeLocationFsxLustre",
+        "datasync:ListTagsForResource",
+        "datasync:TagResource",
+        "datasync:UntagResource",
+        "datasync:UpdateLocationFsxLustre",
+        "ec2:DescribeNetworkInterfaces",
+        "fsx:DescribeFileSystems"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationFSxLustreDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DeleteLocation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

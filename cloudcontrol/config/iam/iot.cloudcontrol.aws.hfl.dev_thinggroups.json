@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTThingGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTThingGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:CreateDynamicThingGroup",
+        "iot:CreateThingGroup",
+        "iot:DescribeThingGroup",
+        "iot:ListTagsForResource",
+        "iot:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTThingGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeThingGroup",
+        "iot:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTThingGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeThingGroup",
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "iot:UntagResource",
+        "iot:UpdateDynamicThingGroup",
+        "iot:UpdateThingGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTThingGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeleteDynamicThingGroup",
+        "iot:DeleteThingGroup",
+        "iot:DescribeThingGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

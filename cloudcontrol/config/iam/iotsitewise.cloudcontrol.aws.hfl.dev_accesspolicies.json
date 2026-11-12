@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTSiteWiseAccessPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseAccessPolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:CreateAccessPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseAccessPolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DescribeAccessPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseAccessPolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DescribeAccessPolicy",
+        "iotsitewise:UpdateAccessPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseAccessPolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DeleteAccessPolicy",
+        "iotsitewise:DescribeAccessPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

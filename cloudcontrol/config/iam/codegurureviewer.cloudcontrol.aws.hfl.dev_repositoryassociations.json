@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCodeGuruReviewerRepositoryAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeGuruReviewerRepositoryAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "codecommit:GitPull",
+        "codecommit:TagResource",
+        "codeguru-reviewer:AssociateRepository",
+        "codeguru-reviewer:DescribeRepositoryAssociation",
+        "codeguru-reviewer:TagResource",
+        "codestar-connections:ListBranches",
+        "codestar-connections:ListRepositories",
+        "codestar-connections:ListTagsForResource",
+        "codestar-connections:PassConnection",
+        "codestar-connections:TagResource",
+        "codestar-connections:UseConnection",
+        "events:PutRule",
+        "events:PutTargets",
+        "iam:CreateServiceLinkedRole",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeGuruReviewerRepositoryAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "codeguru-reviewer:DescribeRepositoryAssociation",
+        "codeguru-reviewer:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeGuruReviewerRepositoryAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "codecommit:UntagResource",
+        "codeguru-reviewer:DescribeRepositoryAssociation",
+        "codeguru-reviewer:DisassociateRepository",
+        "codestar-connections:ListTagsForResource",
+        "codestar-connections:UntagResource",
+        "events:DeleteRule",
+        "events:RemoveTargets"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

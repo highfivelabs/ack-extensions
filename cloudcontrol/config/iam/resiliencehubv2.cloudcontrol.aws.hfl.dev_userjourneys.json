@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlResilienceHubV2UserJourney",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubV2UserJourneyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "resiliencehub:CreateUserJourney",
+        "resiliencehub:GetUserJourney"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubV2UserJourneyRead",
+      "Effect": "Allow",
+      "Action": [
+        "resiliencehub:GetUserJourney"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubV2UserJourneyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "resiliencehub:GetUserJourney",
+        "resiliencehub:UpdateUserJourney"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubV2UserJourneyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "resiliencehub:DeleteUserJourney"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

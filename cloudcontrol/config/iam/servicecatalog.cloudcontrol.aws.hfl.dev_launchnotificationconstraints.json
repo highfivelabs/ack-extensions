@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlServiceCatalogLaunchNotificationConstraint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogLaunchNotificationConstraintCreate",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:CreateConstraint",
+        "servicecatalog:DescribeConstraint",
+        "sns:GetTopicAttributes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogLaunchNotificationConstraintRead",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DescribeConstraint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogLaunchNotificationConstraintUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DescribeConstraint",
+        "servicecatalog:UpdateConstraint",
+        "sns:GetTopicAttributes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogLaunchNotificationConstraintDelete",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DeleteConstraint"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLightsailDistribution",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDistributionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:AttachCertificateToDistribution",
+        "lightsail:CreateDistribution",
+        "lightsail:DetachCertificateFromDistribution",
+        "lightsail:GetCertificateDetails",
+        "lightsail:GetCertificates",
+        "lightsail:GetDistributions",
+        "lightsail:TagResource",
+        "lightsail:UntagResource",
+        "lightsail:UpdateDistribution",
+        "lightsail:UpdateDistributionBundle"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDistributionRead",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetDistributions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDistributionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:AttachCertificateToDistribution",
+        "lightsail:DetachCertificateFromDistribution",
+        "lightsail:GetCertificateDetails",
+        "lightsail:GetCertificates",
+        "lightsail:GetDistributions",
+        "lightsail:TagResource",
+        "lightsail:UntagResource",
+        "lightsail:UpdateDistribution",
+        "lightsail:UpdateDistributionBundle"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDistributionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:DeleteDistribution",
+        "lightsail:GetDistributions"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

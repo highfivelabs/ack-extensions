@@ -1,0 +1,77 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWorkSpacesWebDataProtectionSettings",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebDataProtectionSettingsCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "kms:ReEncryptFrom",
+        "kms:ReEncryptTo",
+        "workspaces-web:CreateDataProtectionSettings",
+        "workspaces-web:GetDataProtectionSettings",
+        "workspaces-web:ListDataProtectionSettings",
+        "workspaces-web:ListTagsForResource",
+        "workspaces-web:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebDataProtectionSettingsRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "workspaces-web:GetDataProtectionSettings",
+        "workspaces-web:ListDataProtectionSettings",
+        "workspaces-web:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebDataProtectionSettingsUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "workspaces-web:GetDataProtectionSettings",
+        "workspaces-web:ListDataProtectionSettings",
+        "workspaces-web:ListTagsForResource",
+        "workspaces-web:TagResource",
+        "workspaces-web:UntagResource",
+        "workspaces-web:UpdateDataProtectionSettings"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebDataProtectionSettingsDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "workspaces-web:DeleteDataProtectionSettings",
+        "workspaces-web:GetDataProtectionSettings",
+        "workspaces-web:ListDataProtectionSettings"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

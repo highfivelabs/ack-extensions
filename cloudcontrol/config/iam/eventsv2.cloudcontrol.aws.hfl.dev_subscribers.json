@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEventsV2Subscriber",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventsV2SubscriberCreate",
+      "Effect": "Allow",
+      "Action": [
+        "events:CreateSubscriber",
+        "events:DescribeSubscriber",
+        "events:ListSubscribers",
+        "events:ListTagsForResource",
+        "events:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventsV2SubscriberRead",
+      "Effect": "Allow",
+      "Action": [
+        "events:DescribeSubscriber",
+        "events:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventsV2SubscriberUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "events:DescribeSubscriber",
+        "events:TagResource",
+        "events:UntagResource",
+        "events:UpdateSubscriber",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventsV2SubscriberDelete",
+      "Effect": "Allow",
+      "Action": [
+        "events:DeleteSubscriber",
+        "events:DescribeSubscriber"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

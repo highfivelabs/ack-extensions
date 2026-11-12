@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlVpcLatticeServiceNetworkServiceAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeServiceNetworkServiceAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "vpc-lattice:CreateServiceNetworkServiceAssociation",
+        "vpc-lattice:GetServiceNetworkServiceAssociation",
+        "vpc-lattice:ListTagsForResource",
+        "vpc-lattice:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeServiceNetworkServiceAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "vpc-lattice:GetServiceNetworkServiceAssociation",
+        "vpc-lattice:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeServiceNetworkServiceAssociationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "vpc-lattice:GetServiceNetworkServiceAssociation",
+        "vpc-lattice:ListTagsForResource",
+        "vpc-lattice:TagResource",
+        "vpc-lattice:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeServiceNetworkServiceAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "vpc-lattice:DeleteServiceNetworkServiceAssociation",
+        "vpc-lattice:GetServiceNetworkServiceAssociation",
+        "vpc-lattice:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

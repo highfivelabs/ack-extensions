@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectUseCase",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectUseCaseCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:CreateUseCase",
+        "connect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectUseCaseRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:ListTagsForResource",
+        "connect:ListUseCases"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectUseCaseUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:ListTagsForResource",
+        "connect:ListUseCases",
+        "connect:TagResource",
+        "connect:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectUseCaseDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteUseCase",
+        "connect:ListTagsForResource",
+        "connect:ListUseCases"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

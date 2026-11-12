@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockKnowledgeBasePolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockKnowledgeBasePolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetResourcePolicy",
+        "bedrock:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockKnowledgeBasePolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockKnowledgeBasePolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetResourcePolicy",
+        "bedrock:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockKnowledgeBasePolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:DeleteResourcePolicy",
+        "bedrock:GetResourcePolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

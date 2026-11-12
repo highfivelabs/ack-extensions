@@ -1,0 +1,72 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWorkSpacesThinClientEnvironment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesThinClientEnvironmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DescribeStacks",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "thinclient:CreateEnvironment",
+        "thinclient:ListTagsForResource",
+        "thinclient:TagResource",
+        "workspaces-web:GetPortal",
+        "workspaces-web:GetUserSettings",
+        "workspaces:DescribeWorkspaceDirectories"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesThinClientEnvironmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "thinclient:GetEnvironment",
+        "thinclient:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesThinClientEnvironmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DescribeStacks",
+        "kms:Decrypt",
+        "kms:GenerateDataKey",
+        "thinclient:TagResource",
+        "thinclient:UntagResource",
+        "thinclient:UpdateEnvironment",
+        "workspaces-web:GetPortal",
+        "workspaces-web:GetUserSettings",
+        "workspaces:DescribeWorkspaceDirectories"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesThinClientEnvironmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:RetireGrant",
+        "thinclient:DeleteEnvironment",
+        "thinclient:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

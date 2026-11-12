@@ -1,0 +1,66 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlObservabilityAdminTelemetryEnrichment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminTelemetryEnrichmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "observabilityadmin:GetTelemetryEnrichmentStatus",
+        "observabilityadmin:StartTelemetryEnrichment",
+        "resource-explorer-2:CreateIndex",
+        "resource-explorer-2:CreateManagedView",
+        "resource-explorer-2:CreateStreamingAccessForService",
+        "resource-explorer-2:DeleteStreamingAccessForService"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminTelemetryEnrichmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "observabilityadmin:GetTelemetryEnrichmentStatus"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminTelemetryEnrichmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "observabilityadmin:GetTelemetryEnrichmentStatus",
+        "observabilityadmin:StartTelemetryEnrichment",
+        "resource-explorer-2:CreateIndex",
+        "resource-explorer-2:CreateManagedView",
+        "resource-explorer-2:CreateStreamingAccessForService",
+        "resource-explorer-2:DeleteStreamingAccessForService"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminTelemetryEnrichmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "observabilityadmin:GetTelemetryEnrichmentStatus",
+        "observabilityadmin:StopTelemetryEnrichment",
+        "resource-explorer-2:CreateIndex",
+        "resource-explorer-2:CreateManagedView",
+        "resource-explorer-2:CreateStreamingAccessForService",
+        "resource-explorer-2:DeleteStreamingAccessForService"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

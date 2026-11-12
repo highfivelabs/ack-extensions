@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTSecurityProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSecurityProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iot:AttachSecurityProfile",
+        "iot:CreateSecurityProfile",
+        "iot:DescribeSecurityProfile",
+        "iot:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSecurityProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeSecurityProfile",
+        "iot:ListTagsForResource",
+        "iot:ListTargetsForSecurityProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSecurityProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iot:AttachSecurityProfile",
+        "iot:DetachSecurityProfile",
+        "iot:ListTagsForResource",
+        "iot:ListTargetsForSecurityProfile",
+        "iot:TagResource",
+        "iot:UntagResource",
+        "iot:UpdateSecurityProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSecurityProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeleteSecurityProfile",
+        "iot:DescribeSecurityProfile"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

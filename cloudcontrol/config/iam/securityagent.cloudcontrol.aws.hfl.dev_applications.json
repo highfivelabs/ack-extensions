@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityAgentApplication",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentApplicationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kms:DescribeKey",
+        "securityagent:CreateApplication",
+        "securityagent:GetApplication",
+        "securityagent:ListTagsForResource",
+        "securityagent:TagResource",
+        "sso:CreateApplication",
+        "sso:DescribeInstance",
+        "sso:PutApplicationAccessScope",
+        "sso:PutApplicationAuthenticationMethod",
+        "sso:PutApplicationGrant"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentApplicationRead",
+      "Effect": "Allow",
+      "Action": [
+        "securityagent:GetApplication",
+        "securityagent:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentApplicationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kms:DescribeKey",
+        "securityagent:GetApplication",
+        "securityagent:ListTagsForResource",
+        "securityagent:TagResource",
+        "securityagent:UntagResource",
+        "securityagent:UpdateApplication"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentApplicationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "securityagent:DeleteApplication",
+        "securityagent:GetApplication",
+        "sso:DeleteApplication"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

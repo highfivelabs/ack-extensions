@@ -1,0 +1,44 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlResourceGroupsTagSyncTask",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResourceGroupsTagSyncTaskCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "resource-groups:CreateGroup",
+        "resource-groups:StartTagSyncTask"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResourceGroupsTagSyncTaskRead",
+      "Effect": "Allow",
+      "Action": [
+        "resource-groups:GetTagSyncTask"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResourceGroupsTagSyncTaskDelete",
+      "Effect": "Allow",
+      "Action": [
+        "resource-groups:CancelTagSyncTask",
+        "resource-groups:DeleteGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

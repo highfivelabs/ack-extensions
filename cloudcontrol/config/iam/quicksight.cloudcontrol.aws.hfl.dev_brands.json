@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlQuickSightBrand",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightBrandCreate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:CreateBrand",
+        "quicksight:DescribeBrand",
+        "quicksight:ListTagsForResource",
+        "quicksight:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightBrandRead",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeBrand",
+        "quicksight:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightBrandUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeBrand",
+        "quicksight:ListTagsForResource",
+        "quicksight:TagResource",
+        "quicksight:UntagResource",
+        "quicksight:UpdateBrand"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightBrandDelete",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DeleteBrand",
+        "quicksight:DescribeBrand",
+        "quicksight:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

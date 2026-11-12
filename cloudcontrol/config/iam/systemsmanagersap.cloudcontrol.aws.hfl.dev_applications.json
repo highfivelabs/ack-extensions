@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSystemsManagerSAPApplication",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SystemsManagerSAPApplicationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "ssm-sap:GetApplication",
+        "ssm-sap:ListTagsForResource",
+        "ssm-sap:RegisterApplication",
+        "ssm-sap:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SystemsManagerSAPApplicationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ssm-sap:GetApplication",
+        "ssm-sap:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SystemsManagerSAPApplicationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ssm-sap:GetApplication",
+        "ssm-sap:ListTagsForResource",
+        "ssm-sap:TagResource",
+        "ssm-sap:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SystemsManagerSAPApplicationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ssm-sap:DeregisterApplication",
+        "ssm-sap:GetApplication"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

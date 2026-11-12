@@ -1,0 +1,48 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWorkspacesInstancesVolumeAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkspacesInstancesVolumeAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AttachVolume",
+        "ec2:DescribeVolumes",
+        "workspaces-instances:AssociateVolume",
+        "workspaces-instances:GetWorkspaceInstance"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkspacesInstancesVolumeAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVolumes",
+        "workspaces-instances:GetWorkspaceInstance"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkspacesInstancesVolumeAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVolumes",
+        "ec2:DetachVolume",
+        "workspaces-instances:DisassociateVolume",
+        "workspaces-instances:GetWorkspaceInstance"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

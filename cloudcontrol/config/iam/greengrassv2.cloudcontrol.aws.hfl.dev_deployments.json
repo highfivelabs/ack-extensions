@@ -1,0 +1,71 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGreengrassV2Deployment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GreengrassV2DeploymentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "greengrass:CreateDeployment",
+        "greengrass:GetDeployment",
+        "greengrass:TagResource",
+        "iot:CancelJob",
+        "iot:CreateJob",
+        "iot:DeleteThingShadow",
+        "iot:DescribeJob",
+        "iot:DescribeThing",
+        "iot:DescribeThingGroup",
+        "iot:GetThingShadow",
+        "iot:UpdateJob",
+        "iot:UpdateThingShadow"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GreengrassV2DeploymentRead",
+      "Effect": "Allow",
+      "Action": [
+        "greengrass:GetDeployment",
+        "iot:DescribeJob",
+        "iot:DescribeThing",
+        "iot:DescribeThingGroup",
+        "iot:GetThingShadow"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GreengrassV2DeploymentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "greengrass:GetDeployment",
+        "greengrass:TagResource",
+        "greengrass:UntagResource",
+        "iot:DescribeJob"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GreengrassV2DeploymentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "greengrass:CancelDeployment",
+        "greengrass:DeleteDeployment",
+        "iot:CancelJob",
+        "iot:DeleteJob",
+        "iot:DescribeJob"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

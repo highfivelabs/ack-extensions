@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDevOpsAgentAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsAgentAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "aidevops:AssociateService",
+        "aidevops:GetAgentSpace",
+        "aidevops:GetAssociation",
+        "aidevops:ListAssociations",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsAgentAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "aidevops:GetAgentSpace",
+        "aidevops:GetAssociation",
+        "aidevops:ListAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsAgentAssociationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "aidevops:GetAgentSpace",
+        "aidevops:GetAssociation",
+        "aidevops:ListAssociations",
+        "aidevops:UpdateAssociation",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsAgentAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "aidevops:DisassociateService",
+        "aidevops:GetAgentSpace",
+        "aidevops:GetAssociation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

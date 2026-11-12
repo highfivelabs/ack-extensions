@@ -1,0 +1,46 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPersonalizeSolution",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeSolutionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:CreateSolution",
+        "personalize:DescribeSolution",
+        "personalize:ListTagsForResource",
+        "personalize:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeSolutionRead",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:DescribeSolution",
+        "personalize:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeSolutionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:DeleteSolution",
+        "personalize:DescribeSolution"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

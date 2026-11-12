@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlOpenSearchServerlessCollectionIndex",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OpenSearchServerlessCollectionIndexCreate",
+      "Effect": "Allow",
+      "Action": [
+        "aoss:APIAccessAll",
+        "aoss:CreateIndex",
+        "aoss:GetIndex"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OpenSearchServerlessCollectionIndexRead",
+      "Effect": "Allow",
+      "Action": [
+        "aoss:APIAccessAll",
+        "aoss:GetIndex"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OpenSearchServerlessCollectionIndexUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "aoss:APIAccessAll",
+        "aoss:GetIndex",
+        "aoss:UpdateIndex"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OpenSearchServerlessCollectionIndexDelete",
+      "Effect": "Allow",
+      "Action": [
+        "aoss:APIAccessAll",
+        "aoss:DeleteIndex",
+        "aoss:GetIndex"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

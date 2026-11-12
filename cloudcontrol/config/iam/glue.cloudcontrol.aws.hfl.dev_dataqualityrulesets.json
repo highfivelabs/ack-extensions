@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlueDataQualityRuleset",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueDataQualityRulesetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateDataQualityRuleset",
+        "glue:GetDataQualityRuleset",
+        "glue:GetTable",
+        "glue:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueDataQualityRulesetRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetDataQualityRuleset",
+        "glue:GetTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueDataQualityRulesetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetDataQualityRuleset",
+        "glue:GetTable",
+        "glue:GetTags",
+        "glue:TagResource",
+        "glue:UntagResource",
+        "glue:UpdateDataQualityRuleset"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueDataQualityRulesetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DeleteDataQualityRuleset",
+        "glue:GetDataQualityRuleset"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

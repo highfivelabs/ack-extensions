@@ -1,0 +1,69 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudHSMCluster",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudHSMClusterCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudhsm:CreateCluster",
+        "cloudhsm:DescribeClusters",
+        "cloudhsm:ListTags",
+        "cloudhsm:TagResource",
+        "ec2:AuthorizeSecurityGroupEgress",
+        "ec2:AuthorizeSecurityGroupIngress",
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateSecurityGroup",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcs",
+        "ec2:RevokeSecurityGroupEgress",
+        "iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudHSMClusterRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudhsm:DescribeClusters",
+        "cloudhsm:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudHSMClusterUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudhsm:DescribeClusters",
+        "cloudhsm:ListTags",
+        "cloudhsm:ModifyCluster",
+        "cloudhsm:TagResource",
+        "cloudhsm:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudHSMClusterDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudhsm:DeleteCluster",
+        "cloudhsm:DescribeClusters",
+        "ec2:DeleteSecurityGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

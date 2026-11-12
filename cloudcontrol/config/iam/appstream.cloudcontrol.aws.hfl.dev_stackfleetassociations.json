@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppStreamStackFleetAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamStackFleetAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:AssociateFleet",
+        "appstream:ListAssociatedStacks"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamStackFleetAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:ListAssociatedStacks"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamStackFleetAssociationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DisassociateFleet",
+        "appstream:ListAssociatedStacks"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamStackFleetAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DisassociateFleet",
+        "appstream:ListAssociatedStacks"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

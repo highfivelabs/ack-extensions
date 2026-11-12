@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoute53RecoveryReadinessCell",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53RecoveryReadinessCellCreate",
+      "Effect": "Allow",
+      "Action": [
+        "route53-recovery-readiness:CreateCell",
+        "route53-recovery-readiness:GetCell",
+        "route53-recovery-readiness:ListTagsForResources",
+        "route53-recovery-readiness:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53RecoveryReadinessCellRead",
+      "Effect": "Allow",
+      "Action": [
+        "route53-recovery-readiness:GetCell",
+        "route53-recovery-readiness:ListTagsForResources"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53RecoveryReadinessCellUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "route53-recovery-readiness:GetCell",
+        "route53-recovery-readiness:ListTagsForResources",
+        "route53-recovery-readiness:TagResource",
+        "route53-recovery-readiness:UntagResource",
+        "route53-recovery-readiness:UpdateCell"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53RecoveryReadinessCellDelete",
+      "Effect": "Allow",
+      "Action": [
+        "route53-recovery-readiness:DeleteCell",
+        "route53-recovery-readiness:GetCell"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

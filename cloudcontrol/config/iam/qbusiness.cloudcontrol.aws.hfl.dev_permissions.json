@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlQBusinessPermission",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QBusinessPermissionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "qbusiness:AssociatePermission",
+        "qbusiness:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QBusinessPermissionRead",
+      "Effect": "Allow",
+      "Action": [
+        "qbusiness:GetPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QBusinessPermissionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "qbusiness:DisassociatePermission",
+        "qbusiness:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

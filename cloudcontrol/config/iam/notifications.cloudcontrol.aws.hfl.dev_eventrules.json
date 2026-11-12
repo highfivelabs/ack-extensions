@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNotificationsEventRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsEventRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "notifications:CreateEventRule",
+        "notifications:GetEventRule",
+        "notifications:UpdateEventRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsEventRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "notifications:GetEventRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsEventRuleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "notifications:GetEventRule",
+        "notifications:UpdateEventRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsEventRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "notifications:DeleteEventRule",
+        "notifications:GetEventRule"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

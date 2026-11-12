@@ -1,0 +1,77 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSMSVOICEPool",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEPoolCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "sms-voice:AssociateOriginationIdentity",
+        "sms-voice:CreatePool",
+        "sms-voice:DescribeKeywords",
+        "sms-voice:DescribePhoneNumbers",
+        "sms-voice:DescribePools",
+        "sms-voice:ListPoolOriginationIdentities",
+        "sms-voice:ListTagsForResource",
+        "sms-voice:PutKeyword",
+        "sms-voice:TagResource",
+        "sms-voice:UpdatePool"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEPoolRead",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DescribeKeywords",
+        "sms-voice:DescribePools",
+        "sms-voice:ListPoolOriginationIdentities",
+        "sms-voice:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEPoolUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "sms-voice:AssociateOriginationIdentity",
+        "sms-voice:DeleteKeyword",
+        "sms-voice:DescribeKeywords",
+        "sms-voice:DescribePhoneNumbers",
+        "sms-voice:DescribePools",
+        "sms-voice:DisassociateOriginationIdentity",
+        "sms-voice:ListPoolOriginationIdentities",
+        "sms-voice:ListTagsForResource",
+        "sms-voice:PutKeyword",
+        "sms-voice:TagResource",
+        "sms-voice:UntagResource",
+        "sms-voice:UpdatePool"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEPoolDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DeletePool",
+        "sms-voice:DescribePools",
+        "sms-voice:DisassociateOriginationIdentity",
+        "sms-voice:ListPoolOriginationIdentities"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

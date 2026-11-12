@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTTwinMakerScene",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTTwinMakerSceneCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iottwinmaker:CreateScene",
+        "iottwinmaker:GetScene",
+        "iottwinmaker:GetWorkspace",
+        "iottwinmaker:ListTagsForResource",
+        "iottwinmaker:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTTwinMakerSceneRead",
+      "Effect": "Allow",
+      "Action": [
+        "iottwinmaker:GetScene",
+        "iottwinmaker:GetWorkspace",
+        "iottwinmaker:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTTwinMakerSceneUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iottwinmaker:GetScene",
+        "iottwinmaker:GetWorkspace",
+        "iottwinmaker:ListTagsForResource",
+        "iottwinmaker:TagResource",
+        "iottwinmaker:UntagResource",
+        "iottwinmaker:UpdateScene"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTTwinMakerSceneDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iottwinmaker:DeleteScene",
+        "iottwinmaker:GetScene",
+        "iottwinmaker:GetWorkspace"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

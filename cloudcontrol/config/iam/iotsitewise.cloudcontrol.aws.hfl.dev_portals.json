@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTSiteWisePortal",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWisePortalCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iotsitewise:CreatePortal",
+        "iotsitewise:DescribePortal",
+        "iotsitewise:ListTagsForResource",
+        "iotsitewise:TagResource",
+        "sso:CreateManagedApplicationInstance",
+        "sso:DescribeRegisteredRegions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWisePortalRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DescribePortal",
+        "iotsitewise:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWisePortalUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iotsitewise:DescribePortal",
+        "iotsitewise:ListTagsForResource",
+        "iotsitewise:TagResource",
+        "iotsitewise:UntagResource",
+        "iotsitewise:UpdatePortal",
+        "sso:GetManagedApplicationInstance",
+        "sso:UpdateApplicationInstanceDisplayData"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWisePortalDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DeletePortal",
+        "iotsitewise:DescribePortal",
+        "sso:DeleteManagedApplicationInstance"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

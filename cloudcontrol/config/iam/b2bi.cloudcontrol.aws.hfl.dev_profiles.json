@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlB2BIProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "B2BIProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "b2bi:CreateProfile",
+        "b2bi:TagResource",
+        "logs:CreateLogDelivery",
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:DescribeLogGroups",
+        "logs:DescribeLogStreams",
+        "logs:DescribeResourcePolicies",
+        "logs:ListLogDeliveries",
+        "logs:PutLogEvents",
+        "logs:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "B2BIProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "b2bi:GetProfile",
+        "b2bi:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "B2BIProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "b2bi:TagResource",
+        "b2bi:UntagResource",
+        "b2bi:UpdateProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "B2BIProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "b2bi:DeleteProfile",
+        "logs:DeleteLogDelivery",
+        "logs:ListLogDeliveries"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

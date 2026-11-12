@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlueIdentityCenterConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueIdentityCenterConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateGlueIdentityCenterConfiguration",
+        "glue:GetGlueIdentityCenterConfiguration",
+        "sso:CreateApplication",
+        "sso:ListApplications",
+        "sso:ListInstances",
+        "sso:PutApplicationAccessScope",
+        "sso:PutApplicationAssignmentConfiguration",
+        "sso:PutApplicationAuthenticationMethod",
+        "sso:PutApplicationGrant",
+        "sso:PutApplicationSessionConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueIdentityCenterConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetGlueIdentityCenterConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueIdentityCenterConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetGlueIdentityCenterConfiguration",
+        "glue:UpdateGlueIdentityCenterConfiguration",
+        "sso:DeleteApplicationAccessScope",
+        "sso:PutApplicationAccessScope",
+        "sso:PutApplicationAssignmentConfiguration",
+        "sso:PutApplicationAuthenticationMethod",
+        "sso:PutApplicationGrant",
+        "sso:PutApplicationSessionConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueIdentityCenterConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DeleteGlueIdentityCenterConfiguration",
+        "glue:GetGlueIdentityCenterConfiguration",
+        "sso:DeleteApplication"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

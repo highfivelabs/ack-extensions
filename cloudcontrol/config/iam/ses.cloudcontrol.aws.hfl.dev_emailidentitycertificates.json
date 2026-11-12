@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSESEmailIdentityCertificate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESEmailIdentityCertificateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:AssociateEmailIdentityCertificate",
+        "ses:ListEmailIdentityCertificates"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESEmailIdentityCertificateRead",
+      "Effect": "Allow",
+      "Action": [
+        "ses:ListEmailIdentityCertificates"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESEmailIdentityCertificateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:ListEmailIdentityCertificates"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESEmailIdentityCertificateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ses:DisassociateEmailIdentityCertificate",
+        "ses:ListEmailIdentityCertificates"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

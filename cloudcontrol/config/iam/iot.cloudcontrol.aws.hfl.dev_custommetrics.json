@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTCustomMetric",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTCustomMetricCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:CreateCustomMetric",
+        "iot:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTCustomMetricRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeCustomMetric",
+        "iot:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTCustomMetricUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "iot:UntagResource",
+        "iot:UpdateCustomMetric"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTCustomMetricDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeleteCustomMetric",
+        "iot:DescribeCustomMetric"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

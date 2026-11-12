@@ -1,0 +1,116 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlODBOdbNetwork",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ODBOdbNetworkCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AttachResourcesToPlacementGroup",
+        "ec2:CreateOdbNetworkPeering",
+        "ec2:CreatePlacementGroup",
+        "ec2:CreateTags",
+        "ec2:CreateVpcEndpoint",
+        "ec2:DescribeAvailabilityZones",
+        "ec2:DescribeVpcEndpointAssociations",
+        "ec2:DescribeVpcEndpoints",
+        "ec2:DescribeVpcs",
+        "ec2:ModifyOdbNetworkPeering",
+        "iam:CreateServiceLinkedRole",
+        "odb:CreateOdbNetwork",
+        "odb:GetOdbNetwork",
+        "odb:ListOdbNetworks",
+        "odb:ListTagsForResource",
+        "odb:TagResource",
+        "odb:UpdateOdbNetwork",
+        "redshiftchannelmanagement:CreateChannel",
+        "sts:GetCallerIdentity",
+        "vpc-lattice:CreateResourceGateway",
+        "vpc-lattice:CreateServiceNetwork",
+        "vpc-lattice:CreateServiceNetworkResourceAssociation",
+        "vpc-lattice:CreateServiceNetworkVpcEndpointAssociation",
+        "vpc-lattice:GetResourceGateway",
+        "vpc-lattice:GetServiceNetwork",
+        "vpc-lattice:GetServiceNetworkResourceAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ODBOdbNetworkRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcEndpointAssociations",
+        "ec2:DescribeVpcEndpoints",
+        "odb:GetOdbNetwork",
+        "odb:ListOdbNetworks",
+        "odb:ListTagsForResource",
+        "sts:GetCallerIdentity",
+        "vpc-lattice:GetResourceGateway",
+        "vpc-lattice:GetServiceNetwork",
+        "vpc-lattice:GetServiceNetworkResourceAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ODBOdbNetworkUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateOdbNetworkPeering",
+        "ec2:DeleteOdbNetworkPeering",
+        "ec2:DescribeVpcEndpointAssociations",
+        "ec2:DescribeVpcEndpoints",
+        "ec2:DescribeVpcs",
+        "odb:GetOdbNetwork",
+        "odb:ListOdbNetworks",
+        "odb:ListTagsForResource",
+        "odb:TagResource",
+        "odb:UntagResource",
+        "odb:UpdateOdbNetwork",
+        "sts:GetCallerIdentity",
+        "vpc-lattice:CreateServiceNetworkResourceAssociation",
+        "vpc-lattice:DeleteServiceNetworkResourceAssociation",
+        "vpc-lattice:GetResourceGateway",
+        "vpc-lattice:GetServiceNetwork",
+        "vpc-lattice:GetServiceNetworkResourceAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ODBOdbNetworkDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteOdbNetworkPeering",
+        "ec2:DeletePlacementGroup",
+        "ec2:DeleteVpcEndpoints",
+        "ec2:DescribeVpcEndpointAssociations",
+        "ec2:DescribeVpcEndpoints",
+        "ec2:DescribeVpcs",
+        "ec2:DetachResourcesFromPlacementGroup",
+        "ec2:ModifyOdbNetworkPeering",
+        "odb:DeleteOdbNetwork",
+        "odb:GetOdbNetwork",
+        "odb:ListOdbNetworks",
+        "odb:ListTagsForResource",
+        "sts:GetCallerIdentity",
+        "vpc-lattice:DeleteResourceGateway",
+        "vpc-lattice:DeleteServiceNetwork",
+        "vpc-lattice:DeleteServiceNetworkResourceAssociation",
+        "vpc-lattice:GetResourceGateway",
+        "vpc-lattice:GetServiceNetwork",
+        "vpc-lattice:GetServiceNetworkResourceAssociation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

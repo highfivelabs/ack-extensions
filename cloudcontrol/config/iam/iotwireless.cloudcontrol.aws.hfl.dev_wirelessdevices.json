@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTWirelessWirelessDevice",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessWirelessDeviceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:CreateWirelessDevice",
+        "iotwireless:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessWirelessDeviceRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:GetWirelessDevice",
+        "iotwireless:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessWirelessDeviceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:AssociateWirelessDeviceWithThing",
+        "iotwireless:GetWirelessDevice",
+        "iotwireless:TagResource",
+        "iotwireless:UntagResource",
+        "iotwireless:UpdateWirelessDevice"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessWirelessDeviceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:DeleteWirelessDevice",
+        "iotwireless:DisassociateWirelessDeviceFromThing"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

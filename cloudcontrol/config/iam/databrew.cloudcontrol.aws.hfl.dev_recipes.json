@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataBrewRecipe",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewRecipeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:CreateRecipe",
+        "databrew:DescribeRecipe",
+        "databrew:TagResource",
+        "databrew:UntagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewRecipeRead",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:DescribeRecipe",
+        "databrew:ListTagsForResource",
+        "iam:ListRoles"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewRecipeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:TagResource",
+        "databrew:UntagResource",
+        "databrew:UpdateRecipe"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewRecipeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:DeleteRecipeVersion"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

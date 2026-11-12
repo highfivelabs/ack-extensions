@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTFleetWiseCampaign",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetWiseCampaignCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iotfleetwise:CreateCampaign",
+        "iotfleetwise:GetCampaign",
+        "iotfleetwise:ListTagsForResource",
+        "iotfleetwise:TagResource",
+        "timestream:DescribeEndpoints",
+        "timestream:DescribeTable"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetWiseCampaignRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotfleetwise:GetCampaign",
+        "iotfleetwise:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetWiseCampaignUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotfleetwise:GetCampaign",
+        "iotfleetwise:ListTagsForResource",
+        "iotfleetwise:TagResource",
+        "iotfleetwise:UntagResource",
+        "iotfleetwise:UpdateCampaign"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetWiseCampaignDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotfleetwise:DeleteCampaign",
+        "iotfleetwise:GetCampaign"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

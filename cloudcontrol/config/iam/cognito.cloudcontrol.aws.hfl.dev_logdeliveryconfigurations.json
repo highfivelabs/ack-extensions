@@ -1,0 +1,97 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCognitoLogDeliveryConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoLogDeliveryConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:GetLogDeliveryConfiguration",
+        "cognito-idp:SetLogDeliveryConfiguration",
+        "firehose:TagDeliveryStream",
+        "iam:CreateServiceLinkedRole",
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "logs:UpdateLogDelivery",
+        "s3:GetBucketAcl",
+        "s3:GetBucketPolicy",
+        "s3:ListBucket",
+        "s3:PutBucketPolicy",
+        "s3:PutObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoLogDeliveryConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:GetLogDeliveryConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoLogDeliveryConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:GetLogDeliveryConfiguration",
+        "cognito-idp:SetLogDeliveryConfiguration",
+        "firehose:TagDeliveryStream",
+        "iam:CreateServiceLinkedRole",
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "logs:UpdateLogDelivery",
+        "s3:GetBucketAcl",
+        "s3:GetBucketPolicy",
+        "s3:ListBucket",
+        "s3:PutBucketPolicy",
+        "s3:PutObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoLogDeliveryConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:GetLogDeliveryConfiguration",
+        "cognito-idp:SetLogDeliveryConfiguration",
+        "firehose:TagDeliveryStream",
+        "iam:CreateServiceLinkedRole",
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "logs:UpdateLogDelivery",
+        "s3:GetBucketAcl",
+        "s3:GetBucketPolicy",
+        "s3:ListBucket",
+        "s3:PutBucketPolicy",
+        "s3:PutObject"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

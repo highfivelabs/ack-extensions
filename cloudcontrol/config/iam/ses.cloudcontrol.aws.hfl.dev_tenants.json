@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSESTenant",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESTenantCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:CreateTenant",
+        "ses:CreateTenantResourceAssociation",
+        "ses:GetReputationEntity",
+        "ses:GetTenant",
+        "ses:ListTenantResources",
+        "ses:TagResource",
+        "ses:UntagResource",
+        "ses:UpdateReputationEntityPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESTenantRead",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetReputationEntity",
+        "ses:GetTenant",
+        "ses:ListTenantResources"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESTenantUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:CreateTenantResourceAssociation",
+        "ses:DeleteTenantResourceAssociation",
+        "ses:GetReputationEntity",
+        "ses:GetTenant",
+        "ses:ListTenantResources",
+        "ses:PutTenantSuppressionAttributes",
+        "ses:TagResource",
+        "ses:UntagResource",
+        "ses:UpdateReputationEntityPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESTenantDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ses:DeleteTenant",
+        "ses:GetTenant"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

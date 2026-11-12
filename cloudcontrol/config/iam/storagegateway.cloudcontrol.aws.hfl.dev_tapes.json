@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlStorageGatewayTape",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StorageGatewayTapeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "storagegateway:AddTagsToResource",
+        "storagegateway:CreateTapeWithBarcode",
+        "storagegateway:DescribeTapes",
+        "storagegateway:ListTagsForResource",
+        "storagegateway:ListTapes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StorageGatewayTapeRead",
+      "Effect": "Allow",
+      "Action": [
+        "storagegateway:DescribeTapes",
+        "storagegateway:ListTagsForResource",
+        "storagegateway:ListTapes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StorageGatewayTapeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "storagegateway:AddTagsToResource",
+        "storagegateway:DescribeTapes",
+        "storagegateway:ListTagsForResource",
+        "storagegateway:ListTapes",
+        "storagegateway:RemoveTagsFromResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StorageGatewayTapeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "storagegateway:DeleteTape",
+        "storagegateway:DescribeTapes",
+        "storagegateway:ListTagsForResource",
+        "storagegateway:ListTapes"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

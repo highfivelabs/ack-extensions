@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlResilienceHubResiliencyPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubResiliencyPolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "resiliencehub:CreateResiliencyPolicy",
+        "resiliencehub:DescribeResiliencyPolicy",
+        "resiliencehub:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubResiliencyPolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "resiliencehub:DescribeResiliencyPolicy",
+        "resiliencehub:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubResiliencyPolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "resiliencehub:DescribeResiliencyPolicy",
+        "resiliencehub:ListTagsForResource",
+        "resiliencehub:TagResource",
+        "resiliencehub:UntagResource",
+        "resiliencehub:UpdateResiliencyPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubResiliencyPolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "resiliencehub:DeleteResiliencyPolicy",
+        "resiliencehub:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

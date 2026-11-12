@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlObservabilityAdminS3TableIntegration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminS3TableIntegrationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kms:DescribeKey",
+        "logs:AssociateSourceToS3TableIntegration",
+        "logs:ListSourcesForS3TableIntegration",
+        "observabilityadmin:CreateS3TableIntegration",
+        "observabilityadmin:GetS3TableIntegration",
+        "observabilityadmin:ListTagsForResource",
+        "observabilityadmin:TagResource",
+        "s3tables:CreateTableBucket",
+        "s3tables:PutTableBucketEncryption",
+        "s3tables:PutTableBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminS3TableIntegrationRead",
+      "Effect": "Allow",
+      "Action": [
+        "logs:ListSourcesForS3TableIntegration",
+        "observabilityadmin:GetS3TableIntegration",
+        "observabilityadmin:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminS3TableIntegrationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "logs:AssociateSourceToS3TableIntegration",
+        "logs:DisassociateSourceFromS3TableIntegration",
+        "logs:ListSourcesForS3TableIntegration",
+        "observabilityadmin:GetS3TableIntegration",
+        "observabilityadmin:ListTagsForResource",
+        "observabilityadmin:TagResource",
+        "observabilityadmin:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminS3TableIntegrationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "observabilityadmin:DeleteS3TableIntegration",
+        "observabilityadmin:GetS3TableIntegration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

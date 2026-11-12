@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoute53RecoveryReadinessReadinessCheck",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53RecoveryReadinessReadinessCheckCreate",
+      "Effect": "Allow",
+      "Action": [
+        "route53-recovery-readiness:CreateReadinessCheck",
+        "route53-recovery-readiness:GetReadinessCheck",
+        "route53-recovery-readiness:GetResourceSet",
+        "route53-recovery-readiness:ListTagsForResources",
+        "route53-recovery-readiness:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53RecoveryReadinessReadinessCheckRead",
+      "Effect": "Allow",
+      "Action": [
+        "route53-recovery-readiness:GetReadinessCheck",
+        "route53-recovery-readiness:ListTagsForResources"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53RecoveryReadinessReadinessCheckUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "route53-recovery-readiness:GetReadinessCheck",
+        "route53-recovery-readiness:GetResourceSet",
+        "route53-recovery-readiness:ListTagsForResources",
+        "route53-recovery-readiness:TagResource",
+        "route53-recovery-readiness:UntagResource",
+        "route53-recovery-readiness:UpdateReadinessCheck"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53RecoveryReadinessReadinessCheckDelete",
+      "Effect": "Allow",
+      "Action": [
+        "route53-recovery-readiness:DeleteReadinessCheck",
+        "route53-recovery-readiness:GetReadinessCheck"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

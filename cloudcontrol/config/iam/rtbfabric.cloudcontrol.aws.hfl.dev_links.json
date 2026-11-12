@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRTBFabricLink",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RTBFabricLinkCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "rtbfabric:CreateLink",
+        "rtbfabric:GetLink",
+        "rtbfabric:ListTagsForResource",
+        "rtbfabric:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RTBFabricLinkRead",
+      "Effect": "Allow",
+      "Action": [
+        "rtbfabric:GetLink",
+        "rtbfabric:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RTBFabricLinkUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "rtbfabric:GetLink",
+        "rtbfabric:ListTagsForResource",
+        "rtbfabric:TagResource",
+        "rtbfabric:UntagResource",
+        "rtbfabric:UpdateLink",
+        "rtbfabric:UpdateLinkModuleFlow"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RTBFabricLinkDelete",
+      "Effect": "Allow",
+      "Action": [
+        "rtbfabric:DeleteLink",
+        "rtbfabric:GetLink"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

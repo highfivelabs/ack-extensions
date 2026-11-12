@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlQuickSightAssignment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightAssignmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:CreateIAMPolicyAssignment",
+        "quicksight:DescribeIAMPolicyAssignment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightAssignmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeIAMPolicyAssignment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightAssignmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeIAMPolicyAssignment",
+        "quicksight:UpdateIAMPolicyAssignment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightAssignmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DeleteIAMPolicyAssignment",
+        "quicksight:DescribeIAMPolicyAssignment"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

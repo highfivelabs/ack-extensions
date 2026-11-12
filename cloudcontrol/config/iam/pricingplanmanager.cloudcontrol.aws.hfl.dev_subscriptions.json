@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPricingPlanManagerSubscription",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PricingPlanManagerSubscriptionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetMetricData",
+        "pricingplanmanager:CancelSubscriptionChange",
+        "pricingplanmanager:CreateSubscription",
+        "pricingplanmanager:GetSubscription",
+        "pricingplanmanager:ListSubscriptions",
+        "shield:ListProtections"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PricingPlanManagerSubscriptionRead",
+      "Effect": "Allow",
+      "Action": [
+        "pricingplanmanager:GetSubscription"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PricingPlanManagerSubscriptionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:GetMetricData",
+        "pricingplanmanager:AssociateResourcesToSubscription",
+        "pricingplanmanager:CancelSubscriptionChange",
+        "pricingplanmanager:DisassociateResourcesFromSubscription",
+        "pricingplanmanager:GetSubscription",
+        "pricingplanmanager:UpdateSubscription",
+        "shield:ListProtections"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PricingPlanManagerSubscriptionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "pricingplanmanager:CancelSubscription",
+        "pricingplanmanager:CancelSubscriptionChange",
+        "pricingplanmanager:GetSubscription"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataZoneFormType",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneFormTypeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:CreateFormType",
+        "datazone:GetFormType"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneFormTypeRead",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetFormType"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneFormTypeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:CreateFormType",
+        "datazone:GetFormType"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneFormTypeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:DeleteFormType",
+        "datazone:GetFormType"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCognitoManagedLoginBranding",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoManagedLoginBrandingCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:CreateManagedLoginBranding",
+        "cognito-idp:DescribeManagedLoginBrandingByClient"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoManagedLoginBrandingRead",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DescribeManagedLoginBranding"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoManagedLoginBrandingUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:UpdateManagedLoginBranding"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoManagedLoginBrandingDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DeleteManagedLoginBranding"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTimestreamScheduledQuery",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamScheduledQueryCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "timestream:CreateScheduledQuery",
+        "timestream:DescribeEndpoints",
+        "timestream:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamScheduledQueryRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey",
+        "timestream:DescribeEndpoints",
+        "timestream:DescribeScheduledQuery",
+        "timestream:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamScheduledQueryUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "timestream:DescribeEndpoints",
+        "timestream:TagResource",
+        "timestream:UntagResource",
+        "timestream:UpdateScheduledQuery"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamScheduledQueryDelete",
+      "Effect": "Allow",
+      "Action": [
+        "timestream:DeleteScheduledQuery",
+        "timestream:DescribeEndpoints",
+        "timestream:DescribeScheduledQuery"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

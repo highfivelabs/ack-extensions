@@ -1,0 +1,74 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDirectoryServiceMicrosoftAD",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DirectoryServiceMicrosoftADCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ds:CreateAlias",
+        "ds:CreateMicrosoftAD",
+        "ds:DescribeDirectories",
+        "ds:DisableSso",
+        "ds:EnableSso",
+        "ec2:AuthorizeSecurityGroupEgress",
+        "ec2:AuthorizeSecurityGroupIngress",
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateSecurityGroup",
+        "ec2:CreateTags",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcs",
+        "ec2:RevokeSecurityGroupEgress",
+        "ec2:RevokeSecurityGroupIngress"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DirectoryServiceMicrosoftADRead",
+      "Effect": "Allow",
+      "Action": [
+        "ds:DescribeDirectories"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DirectoryServiceMicrosoftADUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ds:CheckStabilizationForSso",
+        "ds:DescribeDirectories",
+        "ds:DisableSso",
+        "ds:EnableSso"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DirectoryServiceMicrosoftADDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ds:CheckStabilizationForDelete",
+        "ds:DeleteDirectory",
+        "ds:DescribeDirectories",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DeleteSecurityGroup",
+        "ec2:DeleteTags",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:RevokeSecurityGroupEgress",
+        "ec2:RevokeSecurityGroupIngress"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

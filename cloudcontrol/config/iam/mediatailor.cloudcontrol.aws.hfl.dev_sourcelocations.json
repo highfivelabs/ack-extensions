@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaTailorSourceLocation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorSourceLocationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "mediatailor:CreateSourceLocation",
+        "mediatailor:DescribeSourceLocation",
+        "mediatailor:TagResource",
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorSourceLocationRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediatailor:DescribeSourceLocation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorSourceLocationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "mediatailor:DescribeSourceLocation",
+        "mediatailor:TagResource",
+        "mediatailor:UntagResource",
+        "mediatailor:UpdateSourceLocation",
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorSourceLocationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediatailor:DeleteSourceLocation",
+        "mediatailor:DescribeSourceLocation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

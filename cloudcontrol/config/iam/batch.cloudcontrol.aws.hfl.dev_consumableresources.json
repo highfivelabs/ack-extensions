@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBatchConsumableResource",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchConsumableResourceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:CreateConsumableResource",
+        "Batch:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchConsumableResourceRead",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:DescribeConsumableResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchConsumableResourceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:TagResource",
+        "Batch:UntagResource",
+        "Batch:UpdateConsumableResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchConsumableResourceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:DeleteConsumableResource",
+        "Batch:DescribeConsumableResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

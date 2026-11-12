@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppFabricAppAuthorization",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFabricAppAuthorizationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appfabric:CreateAppAuthorization",
+        "appfabric:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFabricAppAuthorizationRead",
+      "Effect": "Allow",
+      "Action": [
+        "appfabric:GetAppAuthorization",
+        "appfabric:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFabricAppAuthorizationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appfabric:GetAppAuthorization",
+        "appfabric:ListTagsForResource",
+        "appfabric:TagResource",
+        "appfabric:UntagResource",
+        "appfabric:UpdateAppAuthorization"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFabricAppAuthorizationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appfabric:DeleteAppAuthorization"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

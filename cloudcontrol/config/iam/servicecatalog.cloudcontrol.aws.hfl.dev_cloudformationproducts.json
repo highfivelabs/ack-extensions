@@ -1,0 +1,82 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlServiceCatalogCloudFormationProduct",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogCloudFormationProductCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:GetTemplate",
+        "cloudformation:ValidateTemplate",
+        "codestar-connections:GetConnection",
+        "codestar-connections:PassConnection",
+        "codestar-connections:UseConnection",
+        "s3:GetObject",
+        "servicecatalog:CreateProduct",
+        "servicecatalog:CreateProvisioningArtifact",
+        "servicecatalog:DescribeProductAsAdmin",
+        "servicecatalog:DescribeProvisioningArtifact",
+        "servicecatalog:ListProvisioningArtifacts",
+        "servicecatalog:ListTagsForResource",
+        "servicecatalog:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogCloudFormationProductRead",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "servicecatalog:DescribeProductAsAdmin",
+        "servicecatalog:DescribeProvisioningArtifact",
+        "servicecatalog:ListProvisioningArtifacts",
+        "servicecatalog:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogCloudFormationProductUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:GetTemplate",
+        "cloudformation:ValidateTemplate",
+        "codestar-connections:GetConnection",
+        "codestar-connections:PassConnection",
+        "codestar-connections:UseConnection",
+        "s3:GetObject",
+        "servicecatalog:CreateProvisioningArtifact",
+        "servicecatalog:DeleteProvisioningArtifact",
+        "servicecatalog:DescribeProductAsAdmin",
+        "servicecatalog:DescribeProvisioningArtifact",
+        "servicecatalog:DisassociateServiceActionFromProvisioningArtifact",
+        "servicecatalog:ListProvisioningArtifacts",
+        "servicecatalog:ListServiceActionsForProvisioningArtifact",
+        "servicecatalog:TagResource",
+        "servicecatalog:UntagResource",
+        "servicecatalog:UpdateProduct",
+        "servicecatalog:UpdateProvisioningArtifact"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogCloudFormationProductDelete",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "servicecatalog:DeleteProduct"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

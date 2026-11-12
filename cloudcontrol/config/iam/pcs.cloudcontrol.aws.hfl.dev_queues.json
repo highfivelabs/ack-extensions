@@ -1,0 +1,66 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPCSQueue",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCSQueueCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateNetworkInterface",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcs",
+        "ec2:GetSecurityGroupsForVpc",
+        "iam:CreateServiceLinkedRole",
+        "pcs:CreateQueue",
+        "pcs:GetQueue",
+        "pcs:ListTagsForResource",
+        "pcs:TagResource",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCSQueueRead",
+      "Effect": "Allow",
+      "Action": [
+        "pcs:GetQueue",
+        "pcs:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCSQueueUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "pcs:GetQueue",
+        "pcs:ListTagsForResource",
+        "pcs:TagResource",
+        "pcs:UntagResource",
+        "pcs:UpdateQueue"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCSQueueDelete",
+      "Effect": "Allow",
+      "Action": [
+        "pcs:DeleteQueue",
+        "pcs:GetQueue"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

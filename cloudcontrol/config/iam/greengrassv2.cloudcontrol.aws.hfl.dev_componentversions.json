@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGreengrassV2ComponentVersion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GreengrassV2ComponentVersionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "greengrass:CreateComponentVersion",
+        "greengrass:DescribeComponent",
+        "greengrass:ListTagsForResource",
+        "greengrass:TagResource",
+        "lambda:GetFunction",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GreengrassV2ComponentVersionRead",
+      "Effect": "Allow",
+      "Action": [
+        "greengrass:DescribeComponent",
+        "greengrass:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GreengrassV2ComponentVersionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "greengrass:DescribeComponent",
+        "greengrass:ListTagsForResource",
+        "greengrass:TagResource",
+        "greengrass:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GreengrassV2ComponentVersionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "greengrass:DeleteComponent",
+        "greengrass:DescribeComponent"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

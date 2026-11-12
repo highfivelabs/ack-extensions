@@ -1,0 +1,73 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlOmicsWorkflowVersion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsWorkflowVersionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "codeconnections:GetConnection",
+        "codeconnections:GetHost",
+        "codeconnections:PassConnection",
+        "codeconnections:UseConnection",
+        "kms:Decrypt",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyPair",
+        "kms:GenerateDataKeyPairWithoutPlaintext",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "omics:CreateWorkflow",
+        "omics:CreateWorkflowVersion",
+        "omics:GetWorkflow",
+        "omics:GetWorkflowVersion",
+        "omics:TagResource",
+        "s3:GetEncryptionConfiguration",
+        "s3:GetObject",
+        "s3:GetObjectAttributes",
+        "s3:HeadObject",
+        "s3:PutObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsWorkflowVersionRead",
+      "Effect": "Allow",
+      "Action": [
+        "omics:GetWorkflowVersion",
+        "omics:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsWorkflowVersionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "omics:GetWorkflowVersion",
+        "omics:ListTagsForResource",
+        "omics:TagResource",
+        "omics:UntagResource",
+        "omics:UpdateWorkflowVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsWorkflowVersionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "omics:DeleteWorkflowVersion",
+        "omics:GetWorkflowVersion"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

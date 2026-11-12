@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSDBDomain",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SDBDomainCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sdb:CreateDomain",
+        "sdb:DomainMetadata"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SDBDomainRead",
+      "Effect": "Allow",
+      "Action": [
+        "sdb:DomainMetadata"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SDBDomainDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sdb:DeleteDomain",
+        "sdb:DomainMetadata"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlImageBuilderWorkflow",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderWorkflowCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetRole",
+        "imagebuilder:CreateWorkflow",
+        "imagebuilder:GetWorkflow",
+        "imagebuilder:TagResource",
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyPair",
+        "kms:GenerateDataKeyPairWithoutPlaintext",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "s3:GetBucketLocation",
+        "s3:GetObject",
+        "s3:HeadBucket"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderWorkflowRead",
+      "Effect": "Allow",
+      "Action": [
+        "imagebuilder:GetWorkflow",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderWorkflowUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "imagebuilder:TagResource",
+        "imagebuilder:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderWorkflowDelete",
+      "Effect": "Allow",
+      "Action": [
+        "imagebuilder:DeleteWorkflow",
+        "imagebuilder:GetWorkflow",
+        "imagebuilder:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSageMakerWorkteam",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerWorkteamCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:AdminListGroupsForUser",
+        "cognito-idp:DescribeUserPool",
+        "cognito-idp:DescribeUserPoolClient",
+        "cognito-idp:ListGroups",
+        "cognito-idp:UpdateUserPoolClient",
+        "sagemaker:AddTags",
+        "sagemaker:CreateWorkteam",
+        "sagemaker:ListWorkforces"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerWorkteamRead",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribeWorkteam",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerWorkteamUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:AdminListGroupsForUser",
+        "cognito-idp:DescribeUserPool",
+        "cognito-idp:DescribeUserPoolClient",
+        "cognito-idp:ListGroups",
+        "cognito-idp:UpdateUserPoolClient",
+        "sagemaker:AddTags",
+        "sagemaker:DeleteTags",
+        "sagemaker:ListWorkforces",
+        "sagemaker:UpdateWorkteam"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerWorkteamDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DeleteWorkteam"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

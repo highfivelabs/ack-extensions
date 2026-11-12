@@ -1,0 +1,69 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCodeArtifactRepository",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeArtifactRepositoryCreate",
+      "Effect": "Allow",
+      "Action": [
+        "codeartifact:AssociateExternalConnection",
+        "codeartifact:AssociateWithDownstreamRepository",
+        "codeartifact:CreateRepository",
+        "codeartifact:DescribeRepository",
+        "codeartifact:GetRepositoryPermissionsPolicy",
+        "codeartifact:ListTagsForResource",
+        "codeartifact:PutRepositoryPermissionsPolicy",
+        "codeartifact:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeArtifactRepositoryRead",
+      "Effect": "Allow",
+      "Action": [
+        "codeartifact:DescribeRepository",
+        "codeartifact:GetRepositoryPermissionsPolicy",
+        "codeartifact:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeArtifactRepositoryUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "codeartifact:AssociateExternalConnection",
+        "codeartifact:AssociateWithDownstreamRepository",
+        "codeartifact:DeleteRepositoryPermissionsPolicy",
+        "codeartifact:DescribeRepository",
+        "codeartifact:DisassociateExternalConnection",
+        "codeartifact:GetRepositoryPermissionsPolicy",
+        "codeartifact:ListTagsForResource",
+        "codeartifact:PutRepositoryPermissionsPolicy",
+        "codeartifact:TagResource",
+        "codeartifact:UntagResource",
+        "codeartifact:UpdateRepository"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeArtifactRepositoryDelete",
+      "Effect": "Allow",
+      "Action": [
+        "codeartifact:DeleteRepository",
+        "codeartifact:DescribeRepository"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

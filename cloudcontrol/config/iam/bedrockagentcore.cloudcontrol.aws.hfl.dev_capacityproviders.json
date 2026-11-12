@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockAgentCoreCapacityProvider",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCoreCapacityProviderCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:CreateCapacityProvider",
+        "bedrock-agentcore:GetCapacityProvider",
+        "bedrock-agentcore:ListTagsForResource",
+        "bedrock-agentcore:TagResource",
+        "ec2:DescribeSnapshots",
+        "iam:CreateServiceLinkedRole",
+        "iam:GetInstanceProfile",
+        "iam:PassRole",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCoreCapacityProviderRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:GetCapacityProvider",
+        "bedrock-agentcore:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCoreCapacityProviderUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:GetCapacityProvider",
+        "bedrock-agentcore:ListTagsForResource",
+        "bedrock-agentcore:TagResource",
+        "bedrock-agentcore:UntagResource",
+        "bedrock-agentcore:UpdateCapacityProvider"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCoreCapacityProviderDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:DeleteCapacityProvider",
+        "bedrock-agentcore:GetCapacityProvider",
+        "bedrock-agentcore:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWorkSpacesWebUserAccessLoggingSettings",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebUserAccessLoggingSettingsCreate",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces-web:CreateUserAccessLoggingSettings",
+        "workspaces-web:GetUserAccessLoggingSettings",
+        "workspaces-web:ListTagsForResource",
+        "workspaces-web:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebUserAccessLoggingSettingsRead",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces-web:GetUserAccessLoggingSettings",
+        "workspaces-web:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebUserAccessLoggingSettingsUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kinesis:PutRecord",
+        "kinesis:PutRecords",
+        "workspaces-web:GetUserAccessLoggingSettings",
+        "workspaces-web:ListTagsForResource",
+        "workspaces-web:TagResource",
+        "workspaces-web:UntagResource",
+        "workspaces-web:UpdateUserAccessLoggingSettings"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebUserAccessLoggingSettingsDelete",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces-web:DeleteUserAccessLoggingSettings",
+        "workspaces-web:GetUserAccessLoggingSettings"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

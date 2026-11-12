@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDLMLifecyclePolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DLMLifecyclePolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "dlm:CreateLifecyclePolicy",
+        "dlm:GetLifecyclePolicy",
+        "dlm:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DLMLifecyclePolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "dlm:GetLifecyclePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DLMLifecyclePolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "dlm:GetLifecyclePolicy",
+        "dlm:TagResource",
+        "dlm:UntagResource",
+        "dlm:UpdateLifecyclePolicy",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DLMLifecyclePolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "dlm:DeleteLifecyclePolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

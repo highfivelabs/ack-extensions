@@ -1,0 +1,73 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityAgentAgentSpace",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentAgentSpaceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "kms:ReEncryptFrom",
+        "kms:ReEncryptTo",
+        "securityagent:BatchGetAgentSpaces",
+        "securityagent:CreateAgentSpace",
+        "securityagent:ListIntegratedResources",
+        "securityagent:ListTagsForResource",
+        "securityagent:TagResource",
+        "securityagent:UpdateIntegratedResources"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentAgentSpaceRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "securityagent:BatchGetAgentSpaces",
+        "securityagent:ListIntegratedResources",
+        "securityagent:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentAgentSpaceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kms:Decrypt",
+        "securityagent:BatchGetAgentSpaces",
+        "securityagent:ListIntegratedResources",
+        "securityagent:ListTagsForResource",
+        "securityagent:TagResource",
+        "securityagent:UntagResource",
+        "securityagent:UpdateAgentSpace",
+        "securityagent:UpdateIntegratedResources"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentAgentSpaceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "securityagent:BatchGetAgentSpaces",
+        "securityagent:DeleteAgentSpace"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

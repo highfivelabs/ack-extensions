@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlServiceDiscoveryPublicDnsNamespace",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceDiscoveryPublicDnsNamespaceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "route53:CreateHostedZone",
+        "servicediscovery:CreatePublicDnsNamespace",
+        "servicediscovery:GetNamespace",
+        "servicediscovery:GetOperation",
+        "servicediscovery:ListTagsForResource",
+        "servicediscovery:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceDiscoveryPublicDnsNamespaceRead",
+      "Effect": "Allow",
+      "Action": [
+        "servicediscovery:GetNamespace",
+        "servicediscovery:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceDiscoveryPublicDnsNamespaceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "route53:ChangeResourceRecordSets",
+        "servicediscovery:GetNamespace",
+        "servicediscovery:GetOperation",
+        "servicediscovery:ListTagsForResource",
+        "servicediscovery:TagResource",
+        "servicediscovery:UntagResource",
+        "servicediscovery:UpdatePublicDnsNamespace"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceDiscoveryPublicDnsNamespaceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "servicediscovery:DeleteNamespace",
+        "servicediscovery:GetOperation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

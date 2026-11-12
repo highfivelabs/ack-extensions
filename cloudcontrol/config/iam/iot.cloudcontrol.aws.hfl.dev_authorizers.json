@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTAuthorizer",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTAuthorizerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:CreateAuthorizer",
+        "iot:DescribeAuthorizer",
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTAuthorizerRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeAuthorizer",
+        "iot:ListTagsForResource",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTAuthorizerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeAuthorizer",
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "iot:UntagResource",
+        "iot:UpdateAuthorizer",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTAuthorizerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeleteAuthorizer",
+        "iot:DescribeAuthorizer",
+        "iot:UpdateAuthorizer",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

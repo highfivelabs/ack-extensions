@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDevOpsGuruResourceCollection",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsGuruResourceCollectionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "devops-guru:GetResourceCollection",
+        "devops-guru:UpdateResourceCollection"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsGuruResourceCollectionRead",
+      "Effect": "Allow",
+      "Action": [
+        "devops-guru:GetResourceCollection"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsGuruResourceCollectionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "devops-guru:GetResourceCollection",
+        "devops-guru:UpdateResourceCollection"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsGuruResourceCollectionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "devops-guru:GetResourceCollection",
+        "devops-guru:UpdateResourceCollection"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

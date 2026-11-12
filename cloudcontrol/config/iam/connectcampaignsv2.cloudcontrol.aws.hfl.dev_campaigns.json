@@ -1,0 +1,82 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectCampaignsV2Campaign",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectCampaignsV2CampaignCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect-campaigns:CreateCampaign",
+        "connect-campaigns:DescribeCampaign",
+        "connect-campaigns:TagResource",
+        "connect:DescribeContactFlow",
+        "connect:DescribeEmailAddress",
+        "connect:DescribeInstance",
+        "connect:DescribePhoneNumber",
+        "connect:DescribeQueue",
+        "profile:GetSegmentDefinition",
+        "wisdom:GetMessageTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectCampaignsV2CampaignRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect-campaigns:DescribeCampaign"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectCampaignsV2CampaignUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect-campaigns:DeleteCampaignChannelSubtypeConfig",
+        "connect-campaigns:DeleteCampaignCommunicationLimits",
+        "connect-campaigns:DeleteCampaignCommunicationTime",
+        "connect-campaigns:DeleteCampaignEntryLimits",
+        "connect-campaigns:DescribeCampaign",
+        "connect-campaigns:TagResource",
+        "connect-campaigns:UntagResource",
+        "connect-campaigns:UpdateCampaignChannelSubtypeConfig",
+        "connect-campaigns:UpdateCampaignCommunicationLimits",
+        "connect-campaigns:UpdateCampaignCommunicationTime",
+        "connect-campaigns:UpdateCampaignEntryLimits",
+        "connect-campaigns:UpdateCampaignFlowAssociation",
+        "connect-campaigns:UpdateCampaignName",
+        "connect-campaigns:UpdateCampaignSchedule",
+        "connect-campaigns:UpdateCampaignSource",
+        "connect:DescribeContactFlow",
+        "connect:DescribeEmailAddress",
+        "connect:DescribePhoneNumber",
+        "connect:DescribeQueue",
+        "profile:GetSegmentDefinition",
+        "wisdom:GetMessageTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectCampaignsV2CampaignDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect-campaigns:DeleteCampaign",
+        "connect-campaigns:DeleteCampaignChannelSubtypeConfig",
+        "connect-campaigns:DeleteCampaignCommunicationLimits",
+        "connect-campaigns:DeleteCampaignCommunicationTime",
+        "connect-campaigns:DeleteCampaignEntryLimits"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

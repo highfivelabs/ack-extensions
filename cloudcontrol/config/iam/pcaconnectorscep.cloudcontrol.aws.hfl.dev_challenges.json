@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPCAConnectorSCEPChallenge",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCAConnectorSCEPChallengeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "pca-connector-scep:CreateChallenge",
+        "pca-connector-scep:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCAConnectorSCEPChallengeRead",
+      "Effect": "Allow",
+      "Action": [
+        "pca-connector-scep:GetChallengeMetadata",
+        "pca-connector-scep:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCAConnectorSCEPChallengeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "pca-connector-scep:ListTagsForResource",
+        "pca-connector-scep:TagResource",
+        "pca-connector-scep:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCAConnectorSCEPChallengeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "pca-connector-scep:DeleteChallenge",
+        "pca-connector-scep:GetChallengeMetadata",
+        "pca-connector-scep:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectDataTable",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectDataTableCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:CreateDataTable",
+        "connect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectDataTableRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeDataTable"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectDataTableUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:TagResource",
+        "connect:UntagResource",
+        "connect:UpdateDataTableMetadata"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectDataTableDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteDataTable",
+        "connect:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

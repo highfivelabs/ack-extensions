@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSESMailManagerAddressList",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMailManagerAddressListCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:CreateAddressList",
+        "ses:GetAddressList",
+        "ses:ListTagsForResource",
+        "ses:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMailManagerAddressListRead",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetAddressList",
+        "ses:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMailManagerAddressListUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetAddressList",
+        "ses:ListTagsForResource",
+        "ses:TagResource",
+        "ses:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMailManagerAddressListDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ses:DeleteAddressList",
+        "ses:GetAddressList"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

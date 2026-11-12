@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppFlowConnector",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFlowConnectorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appflow:RegisterConnector",
+        "lambda:InvokeFunction"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFlowConnectorRead",
+      "Effect": "Allow",
+      "Action": [
+        "appflow:DescribeConnector"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFlowConnectorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appflow:UpdateConnectorRegistration",
+        "lambda:InvokeFunction"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFlowConnectorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appflow:UnRegisterConnector"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

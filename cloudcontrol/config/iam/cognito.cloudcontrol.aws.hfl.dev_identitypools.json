@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCognitoIdentityPool",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoIdentityPoolCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-identity:CreateIdentityPool",
+        "cognito-identity:TagResource",
+        "cognito-sync:SetCognitoEvents",
+        "cognito-sync:SetIdentityPoolConfiguration",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoIdentityPoolRead",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-identity:DescribeIdentityPool",
+        "cognito-identity:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoIdentityPoolUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-identity:DescribeIdentityPool",
+        "cognito-identity:TagResource",
+        "cognito-identity:UntagResource",
+        "cognito-identity:UpdateIdentityPool",
+        "cognito-sync:SetCognitoEvents",
+        "cognito-sync:SetIdentityPoolConfiguration",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoIdentityPoolDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-identity:DeleteIdentityPool"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

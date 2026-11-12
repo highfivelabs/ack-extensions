@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaTailorPlaybackConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorPlaybackConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "mediatailor:ConfigureLogsForPlaybackConfiguration",
+        "mediatailor:GetPlaybackConfiguration",
+        "mediatailor:PutPlaybackConfiguration",
+        "mediatailor:TagResource",
+        "mediatailor:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorPlaybackConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediatailor:GetPlaybackConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorPlaybackConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "mediatailor:ConfigureLogsForPlaybackConfiguration",
+        "mediatailor:GetPlaybackConfiguration",
+        "mediatailor:PutPlaybackConfiguration",
+        "mediatailor:TagResource",
+        "mediatailor:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorPlaybackConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediatailor:DeletePlaybackConfiguration",
+        "mediatailor:GetPlaybackConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

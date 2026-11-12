@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCodePipelineCustomActionType",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodePipelineCustomActionTypeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "codepipeline:CreateCustomActionType",
+        "codepipeline:ListActionTypes",
+        "codepipeline:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodePipelineCustomActionTypeRead",
+      "Effect": "Allow",
+      "Action": [
+        "codepipeline:ListActionTypes",
+        "codepipeline:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodePipelineCustomActionTypeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "codepipeline:ListActionTypes",
+        "codepipeline:TagResource",
+        "codepipeline:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodePipelineCustomActionTypeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "codepipeline:DeleteCustomActionType",
+        "codepipeline:ListActionTypes"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

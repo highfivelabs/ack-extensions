@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSupportAppSlackWorkspaceConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SupportAppSlackWorkspaceConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "supportapp:ListSlackWorkspaceConfigurations",
+        "supportapp:RegisterSlackWorkspaceForOrganization"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SupportAppSlackWorkspaceConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "supportapp:ListSlackWorkspaceConfigurations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SupportAppSlackWorkspaceConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "supportapp:ListSlackWorkspaceConfigurations",
+        "supportapp:RegisterSlackWorkspaceForOrganization"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SupportAppSlackWorkspaceConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "supportapp:DeleteSlackWorkspaceConfiguration",
+        "supportapp:ListSlackWorkspaceConfigurations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

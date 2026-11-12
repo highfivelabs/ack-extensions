@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBillingConductorPricingPlan",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BillingConductorPricingPlanCreate",
+      "Effect": "Allow",
+      "Action": [
+        "billingconductor:AssociatePricingRules",
+        "billingconductor:CreatePricingPlan",
+        "billingconductor:ListPricingPlans",
+        "billingconductor:ListTagsForResource",
+        "billingconductor:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BillingConductorPricingPlanRead",
+      "Effect": "Allow",
+      "Action": [
+        "billingconductor:ListPricingPlans",
+        "billingconductor:ListPricingRulesAssociatedToPricingPlan",
+        "billingconductor:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BillingConductorPricingPlanUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "billingconductor:AssociatePricingRules",
+        "billingconductor:DisassociatePricingRules",
+        "billingconductor:ListPricingPlans",
+        "billingconductor:ListPricingRulesAssociatedToPricingPlan",
+        "billingconductor:TagResource",
+        "billingconductor:UntagResource",
+        "billingconductor:UpdatePricingPlan"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BillingConductorPricingPlanDelete",
+      "Effect": "Allow",
+      "Action": [
+        "billingconductor:DeletePricingPlan",
+        "billingconductor:ListPricingPlans",
+        "billingconductor:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

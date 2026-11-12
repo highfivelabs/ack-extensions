@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataBrewJob",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewJobCreate",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:CreateProfileJob",
+        "databrew:CreateRecipeJob",
+        "databrew:DescribeJob",
+        "databrew:TagResource",
+        "databrew:UntagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewJobRead",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:DescribeJob",
+        "iam:ListRoles"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewJobUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:TagResource",
+        "databrew:UntagResource",
+        "databrew:UpdateProfileJob",
+        "databrew:UpdateRecipeJob",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewJobDelete",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:DeleteJob"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

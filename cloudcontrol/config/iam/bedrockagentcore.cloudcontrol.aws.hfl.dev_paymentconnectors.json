@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockAgentCorePaymentConnector",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCorePaymentConnectorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:CreatePaymentConnector",
+        "bedrock-agentcore:GetPaymentConnector",
+        "bedrock-agentcore:GetPaymentCredentialProvider"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCorePaymentConnectorRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:GetPaymentConnector"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCorePaymentConnectorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:GetPaymentConnector",
+        "bedrock-agentcore:GetPaymentCredentialProvider",
+        "bedrock-agentcore:UpdatePaymentConnector"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCorePaymentConnectorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:DeletePaymentConnector",
+        "bedrock-agentcore:GetPaymentConnector"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

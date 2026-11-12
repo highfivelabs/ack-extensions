@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLexResourcePolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LexResourcePolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lex:CreateResourcePolicy",
+        "lex:CreateResourcePolicyStatement",
+        "lex:DescribeResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LexResourcePolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "lex:DescribeResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LexResourcePolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lex:CreateResourcePolicy",
+        "lex:CreateResourcePolicyStatement",
+        "lex:DeleteResourcePolicy",
+        "lex:DeleteResourcePolicyStatement",
+        "lex:DescribeResourcePolicy",
+        "lex:UpdateResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LexResourcePolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lex:DeleteResourcePolicy",
+        "lex:DeleteResourcePolicyStatement",
+        "lex:DescribeResourcePolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

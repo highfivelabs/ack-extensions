@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSageMakerCodeRepository",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerCodeRepositoryCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags",
+        "sagemaker:CreateCodeRepository"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerCodeRepositoryRead",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribeCodeRepository",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerCodeRepositoryUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags",
+        "sagemaker:DeleteTags",
+        "sagemaker:UpdateCodeRepository"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerCodeRepositoryDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DeleteCodeRepository"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

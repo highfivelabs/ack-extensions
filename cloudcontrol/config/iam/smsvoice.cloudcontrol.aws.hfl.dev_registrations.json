@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSMSVOICERegistration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICERegistrationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:CreateRegistration",
+        "sms-voice:DescribeRegistrations",
+        "sms-voice:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICERegistrationRead",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DescribeRegistrations",
+        "sms-voice:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICERegistrationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DescribeRegistrations",
+        "sms-voice:ListTagsForResource",
+        "sms-voice:TagResource",
+        "sms-voice:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICERegistrationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DeleteRegistration",
+        "sms-voice:DescribeRegistrations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

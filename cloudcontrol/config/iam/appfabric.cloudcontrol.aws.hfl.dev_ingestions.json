@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppFabricIngestion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFabricIngestionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appfabric:CreateIngestion",
+        "appfabric:GetIngestion",
+        "appfabric:ListTagsForResource",
+        "appfabric:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFabricIngestionRead",
+      "Effect": "Allow",
+      "Action": [
+        "appfabric:GetIngestion",
+        "appfabric:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFabricIngestionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appfabric:GetIngestion",
+        "appfabric:ListTagsForResource",
+        "appfabric:TagResource",
+        "appfabric:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFabricIngestionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appfabric:DeleteIngestion",
+        "appfabric:GetIngestion",
+        "appfabric:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

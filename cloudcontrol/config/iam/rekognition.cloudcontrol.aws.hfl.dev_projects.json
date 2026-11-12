@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRekognitionProject",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RekognitionProjectCreate",
+      "Effect": "Allow",
+      "Action": [
+        "rekognition:CreateProject",
+        "rekognition:ListTagsForResource",
+        "rekognition:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RekognitionProjectRead",
+      "Effect": "Allow",
+      "Action": [
+        "rekognition:DescribeProjects",
+        "rekognition:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RekognitionProjectUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "rekognition:DescribeProjects",
+        "rekognition:ListTagsForResource",
+        "rekognition:TagResource",
+        "rekognition:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RekognitionProjectDelete",
+      "Effect": "Allow",
+      "Action": [
+        "rekognition:DeleteProject",
+        "rekognition:DescribeProjects"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

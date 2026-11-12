@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlServiceCatalogResourceUpdateConstraint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogResourceUpdateConstraintCreate",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:CreateConstraint",
+        "servicecatalog:DescribeConstraint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogResourceUpdateConstraintRead",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DescribeConstraint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogResourceUpdateConstraintUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DescribeConstraint",
+        "servicecatalog:UpdateConstraint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogResourceUpdateConstraintDelete",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DeleteConstraint"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

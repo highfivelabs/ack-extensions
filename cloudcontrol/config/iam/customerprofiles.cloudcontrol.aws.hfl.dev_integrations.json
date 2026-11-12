@@ -1,0 +1,84 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCustomerProfilesIntegration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesIntegrationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "app-integrations:CreateEventIntegrationAssociation",
+        "app-integrations:GetEventIntegration",
+        "appflow:CreateFlow",
+        "connect:DescribeInstance",
+        "ds:DescribeDirectories",
+        "events:ListTargetsByRule",
+        "events:PutEvents",
+        "events:PutRule",
+        "events:PutTargets",
+        "profile:GetIntegration",
+        "profile:PutIntegration",
+        "profile:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesIntegrationRead",
+      "Effect": "Allow",
+      "Action": [
+        "profile:GetIntegration",
+        "profile:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesIntegrationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "app-integrations:CreateEventIntegrationAssociation",
+        "app-integrations:DeleteEventIntegrationAssociation",
+        "app-integrations:GetEventIntegration",
+        "app-integrations:ListEventIntegrationAssociations",
+        "appflow:CreateFlow",
+        "connect:DescribeInstance",
+        "ds:DescribeDirectories",
+        "events:DeleteRule",
+        "events:ListTargetsByRule",
+        "events:PutEvents",
+        "events:PutRule",
+        "events:PutTargets",
+        "events:RemoveTargets",
+        "profile:GetIntegration",
+        "profile:ListTagsForResource",
+        "profile:PutIntegration",
+        "profile:TagResource",
+        "profile:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesIntegrationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "app-integrations:DeleteEventIntegrationAssociation",
+        "app-integrations:ListEventIntegrationAssociations",
+        "appflow:DeleteFlow",
+        "events:DeleteRule",
+        "events:ListTargetsByRule",
+        "events:RemoveTargets",
+        "profile:DeleteIntegration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSageMakerHub",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerHubCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags",
+        "sagemaker:CreateHub",
+        "sagemaker:DescribeHub",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerHubRead",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribeHub",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerHubUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags",
+        "sagemaker:DeleteTags",
+        "sagemaker:DescribeHub",
+        "sagemaker:ListTags",
+        "sagemaker:UpdateHub"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerHubDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DeleteHub",
+        "sagemaker:DescribeHub"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

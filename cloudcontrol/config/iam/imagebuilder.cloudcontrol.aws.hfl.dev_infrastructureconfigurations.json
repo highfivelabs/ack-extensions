@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlImageBuilderInfrastructureConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderInfrastructureConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "autoscaling:DescribeAutoScalingGroups",
+        "iam:CreateServiceLinkedRole",
+        "iam:GetInstanceProfile",
+        "iam:GetRole",
+        "iam:PassRole",
+        "imagebuilder:CreateInfrastructureConfiguration",
+        "imagebuilder:GetInfrastructureConfiguration",
+        "imagebuilder:TagResource",
+        "sns:Publish"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderInfrastructureConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "imagebuilder:GetInfrastructureConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderInfrastructureConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "autoscaling:DescribeAutoScalingGroups",
+        "iam:PassRole",
+        "imagebuilder:GetInfrastructureConfiguration",
+        "imagebuilder:TagResource",
+        "imagebuilder:UntagResource",
+        "imagebuilder:UpdateInfrastructureConfiguration",
+        "sns:Publish"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderInfrastructureConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "imagebuilder:DeleteInfrastructureConfiguration",
+        "imagebuilder:GetInfrastructureConfiguration",
+        "imagebuilder:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

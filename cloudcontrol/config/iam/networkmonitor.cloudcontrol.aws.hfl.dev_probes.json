@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkMonitorProbe",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkMonitorProbeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateSecurityGroup",
+        "ec2:CreateTags",
+        "networkmonitor:CreateProbe",
+        "networkmonitor:GetProbe",
+        "networkmonitor:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkMonitorProbeRead",
+      "Effect": "Allow",
+      "Action": [
+        "networkmonitor:GetProbe"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkMonitorProbeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "networkmonitor:GetProbe",
+        "networkmonitor:TagResource",
+        "networkmonitor:UntagResource",
+        "networkmonitor:UpdateProbe"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkMonitorProbeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "networkmonitor:DeleteProbe",
+        "networkmonitor:GetProbe"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

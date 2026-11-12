@@ -1,0 +1,71 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSSMQuickSetupLifecycleAutomation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMQuickSetupLifecycleAutomationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "ssm:AddTagsToResource",
+        "ssm:CreateAssociation",
+        "ssm:DescribeAssociation",
+        "ssm:DescribeAssociationExecutionTargets",
+        "ssm:DescribeAssociationExecutions",
+        "ssm:GetAutomationExecution",
+        "ssm:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMQuickSetupLifecycleAutomationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:DescribeAssociation",
+        "ssm:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMQuickSetupLifecycleAutomationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "ssm:AddTagsToResource",
+        "ssm:DescribeAssociation",
+        "ssm:DescribeAssociationExecutionTargets",
+        "ssm:DescribeAssociationExecutions",
+        "ssm:GetAutomationExecution",
+        "ssm:ListTagsForResource",
+        "ssm:RemoveTagsFromResource",
+        "ssm:UpdateAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMQuickSetupLifecycleAutomationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "ssm:DeleteAssociation",
+        "ssm:DescribeAssociation",
+        "ssm:DescribeAssociationExecutionTargets",
+        "ssm:DescribeAssociationExecutions",
+        "ssm:GetAutomationExecution",
+        "ssm:UpdateAssociation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlQuickSightTopicV2",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightTopicV2Create",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:CreateFolderMembership",
+        "quicksight:CreateTopic",
+        "quicksight:ListFoldersForResource",
+        "quicksight:PassDataSet",
+        "quicksight:TagResource",
+        "quicksight:UpdateTopicPermissions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightTopicV2Read",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeTopic",
+        "quicksight:DescribeTopicPermissions",
+        "quicksight:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightTopicV2Update",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:CreateFolderMembership",
+        "quicksight:DeleteFolderMembership",
+        "quicksight:DescribeTopicPermissions",
+        "quicksight:ListFoldersForResource",
+        "quicksight:PassDataSet",
+        "quicksight:UpdateTopic",
+        "quicksight:UpdateTopicPermissions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightTopicV2Delete",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DeleteTopic"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

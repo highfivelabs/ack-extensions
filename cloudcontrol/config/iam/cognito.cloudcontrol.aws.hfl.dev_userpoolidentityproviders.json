@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCognitoUserPoolIdentityProvider",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoUserPoolIdentityProviderCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:CreateIdentityProvider",
+        "cognito-idp:DescribeIdentityProvider"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoUserPoolIdentityProviderRead",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DescribeIdentityProvider"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoUserPoolIdentityProviderUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DescribeIdentityProvider",
+        "cognito-idp:UpdateIdentityProvider"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoUserPoolIdentityProviderDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DeleteIdentityProvider",
+        "cognito-idp:DescribeIdentityProvider"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

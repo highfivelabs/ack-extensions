@@ -1,0 +1,44 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLakeFormationDataCellsFilter",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LakeFormationDataCellsFilterCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetTable",
+        "lakeformation:CreateDataCellsFilter",
+        "lakeformation:ListDataCellsFilter"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LakeFormationDataCellsFilterRead",
+      "Effect": "Allow",
+      "Action": [
+        "lakeformation:ListDataCellsFilter"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LakeFormationDataCellsFilterDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lakeformation:DeleteDataCellsFilter",
+        "lakeformation:ListDataCellsFilter"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTCommand",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTCommandCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iot:CreateCommand",
+        "iot:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTCommandRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:GetCommand",
+        "iot:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTCommandUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iot:GetCommand",
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "iot:UntagResource",
+        "iot:UpdateCommand"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTCommandDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeleteCommand",
+        "iot:GetCommand",
+        "iot:UpdateCommand"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

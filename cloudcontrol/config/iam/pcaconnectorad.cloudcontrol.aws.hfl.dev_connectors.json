@@ -1,0 +1,66 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPCAConnectorADConnector",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCAConnectorADConnectorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "acm-pca:DescribeCertificateAuthority",
+        "acm-pca:GetCertificate",
+        "acm-pca:GetCertificateAuthorityCertificate",
+        "acm-pca:IssueCertificate",
+        "ds:DescribeDirectories",
+        "ec2:CreateTags",
+        "ec2:CreateVpcEndpoint",
+        "ec2:DescribeVpcEndpoints",
+        "pca-connector-ad:CreateConnector",
+        "pca-connector-ad:GetConnector",
+        "pca-connector-ad:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCAConnectorADConnectorRead",
+      "Effect": "Allow",
+      "Action": [
+        "pca-connector-ad:GetConnector",
+        "pca-connector-ad:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCAConnectorADConnectorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "pca-connector-ad:ListTagsForResource",
+        "pca-connector-ad:TagResource",
+        "pca-connector-ad:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCAConnectorADConnectorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteVpcEndpoints",
+        "ec2:DescribeVpcEndpoints",
+        "pca-connector-ad:DeleteConnector",
+        "pca-connector-ad:GetConnector",
+        "pca-connector-ad:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

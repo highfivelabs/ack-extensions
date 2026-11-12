@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCleanRoomsMLTrainingDataset",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsMLTrainingDatasetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms-ml:CreateTrainingDataset",
+        "cleanrooms-ml:GetTrainingDataset",
+        "cleanrooms-ml:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsMLTrainingDatasetRead",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms-ml:GetTrainingDataset"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsMLTrainingDatasetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms-ml:TagResource",
+        "cleanrooms-ml:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsMLTrainingDatasetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms-ml:DeleteTrainingDataset"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

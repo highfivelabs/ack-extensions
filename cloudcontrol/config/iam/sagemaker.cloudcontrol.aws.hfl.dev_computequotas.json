@@ -1,0 +1,74 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSageMakerComputeQuota",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerComputeQuotaCreate",
+      "Effect": "Allow",
+      "Action": [
+        "eks:AssociateAccessPolicy",
+        "eks:DescribeCluster",
+        "eks:ListAssociatedAccessPolicies",
+        "sagemaker:AddTags",
+        "sagemaker:CreateComputeQuota",
+        "sagemaker:DescribeCluster",
+        "sagemaker:DescribeComputeQuota",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerComputeQuotaRead",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribeComputeQuota",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerComputeQuotaUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "eks:AssociateAccessPolicy",
+        "eks:DescribeAccessEntry",
+        "eks:DescribeCluster",
+        "eks:DisassociateAccessPolicy",
+        "eks:ListAssociatedAccessPolicies",
+        "sagemaker:AddTags",
+        "sagemaker:DeleteTags",
+        "sagemaker:DescribeCluster",
+        "sagemaker:DescribeComputeQuota",
+        "sagemaker:ListTags",
+        "sagemaker:UpdateComputeQuota"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerComputeQuotaDelete",
+      "Effect": "Allow",
+      "Action": [
+        "eks:DescribeAccessEntry",
+        "eks:DescribeCluster",
+        "eks:DisassociateAccessPolicy",
+        "eks:ListAssociatedAccessPolicies",
+        "sagemaker:DeleteComputeQuota",
+        "sagemaker:DescribeCluster",
+        "sagemaker:DescribeComputeQuota",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

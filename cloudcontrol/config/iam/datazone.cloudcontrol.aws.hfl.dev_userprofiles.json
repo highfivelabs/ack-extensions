@@ -1,0 +1,73 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataZoneUserProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneUserProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:CreateUserProfile",
+        "datazone:GetDomain",
+        "datazone:GetUserProfile",
+        "datazone:UpdateUserProfile",
+        "iam:GetRole",
+        "iam:GetUser",
+        "sso:AssociateProfile",
+        "sso:DisassociateProfile",
+        "sso:GetProfile",
+        "sso:ListProfiles"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneUserProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetUserProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneUserProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetUserProfile",
+        "datazone:UpdateUserProfile",
+        "iam:GetRole",
+        "iam:GetUser",
+        "sso:AssociateProfile",
+        "sso:DisassociateProfile",
+        "sso:GetProfile",
+        "sso:ListProfiles"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneUserProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:DeleteUserProfile",
+        "datazone:GetUserProfile",
+        "datazone:UpdateUserProfile",
+        "iam:GetRole",
+        "iam:GetUser",
+        "sso:AssociateProfile",
+        "sso:DisassociateProfile",
+        "sso:GetProfile",
+        "sso:ListProfiles"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

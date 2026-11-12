@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWellArchitectedAgentGoal",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedAgentGoalCreate",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:CreateAgentGoal",
+        "wellarchitected:GetAgentGoal"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedAgentGoalRead",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:GetAgentGoal"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedAgentGoalUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:GetAgentGoal",
+        "wellarchitected:UpdateAgentGoal"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedAgentGoalDelete",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:DeleteAgentGoal",
+        "wellarchitected:GetAgentGoal"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

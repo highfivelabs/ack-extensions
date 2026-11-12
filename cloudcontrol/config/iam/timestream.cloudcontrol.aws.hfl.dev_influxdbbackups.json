@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTimestreamInfluxDBBackup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamInfluxDBBackupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "timestream-influxdb:CreateDbBackup",
+        "timestream-influxdb:GetDbBackup",
+        "timestream-influxdb:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamInfluxDBBackupRead",
+      "Effect": "Allow",
+      "Action": [
+        "timestream-influxdb:GetDbBackup",
+        "timestream-influxdb:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamInfluxDBBackupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "timestream-influxdb:GetDbBackup",
+        "timestream-influxdb:ListTagsForResource",
+        "timestream-influxdb:TagResource",
+        "timestream-influxdb:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamInfluxDBBackupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "timestream-influxdb:DeleteDbBackup",
+        "timestream-influxdb:GetDbBackup",
+        "timestream-influxdb:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

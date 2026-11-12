@@ -1,0 +1,49 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectPredefinedAttribute",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectPredefinedAttributeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:CreatePredefinedAttribute"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectPredefinedAttributeRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribePredefinedAttribute"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectPredefinedAttributeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:UpdatePredefinedAttribute"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectPredefinedAttributeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeletePredefinedAttribute"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

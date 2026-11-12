@@ -1,0 +1,77 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDRSReplicationConfigurationTemplate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DRSReplicationConfigurationTemplateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "drs:CreateReplicationConfigurationTemplate",
+        "drs:DescribeReplicationConfigurationTemplates",
+        "drs:ListTagsForResource",
+        "drs:TagResource",
+        "ec2:CreateSecurityGroup",
+        "ec2:CreateTags",
+        "ec2:DescribeInstanceTypeOfferings",
+        "ec2:DescribeInstanceTypes",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:GetEbsDefaultKmsKeyId",
+        "ec2:GetEbsEncryptionByDefault",
+        "kms:CreateGrant",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DRSReplicationConfigurationTemplateRead",
+      "Effect": "Allow",
+      "Action": [
+        "drs:DescribeReplicationConfigurationTemplates",
+        "drs:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DRSReplicationConfigurationTemplateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "drs:DescribeReplicationConfigurationTemplates",
+        "drs:ListTagsForResource",
+        "drs:TagResource",
+        "drs:UntagResource",
+        "drs:UpdateReplicationConfigurationTemplate",
+        "ec2:CreateSecurityGroup",
+        "ec2:CreateTags",
+        "ec2:DescribeInstanceTypeOfferings",
+        "ec2:DescribeInstanceTypes",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:GetEbsDefaultKmsKeyId",
+        "ec2:GetEbsEncryptionByDefault",
+        "kms:CreateGrant",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DRSReplicationConfigurationTemplateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "drs:DeleteReplicationConfigurationTemplate"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

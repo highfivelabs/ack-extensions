@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlShieldProactiveEngagement",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ShieldProactiveEngagementCreate",
+      "Effect": "Allow",
+      "Action": [
+        "shield:AssociateProactiveEngagementDetails",
+        "shield:DescribeEmergencyContactSettings",
+        "shield:DescribeSubscription",
+        "shield:EnableProactiveEngagement",
+        "shield:UpdateEmergencyContactSettings"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ShieldProactiveEngagementRead",
+      "Effect": "Allow",
+      "Action": [
+        "shield:DescribeEmergencyContactSettings",
+        "shield:DescribeSubscription"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ShieldProactiveEngagementUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "shield:DescribeEmergencyContactSettings",
+        "shield:DescribeSubscription",
+        "shield:DisableProactiveEngagement",
+        "shield:EnableProactiveEngagement",
+        "shield:UpdateEmergencyContactSettings"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ShieldProactiveEngagementDelete",
+      "Effect": "Allow",
+      "Action": [
+        "shield:DescribeEmergencyContactSettings",
+        "shield:DescribeSubscription",
+        "shield:DisableProactiveEngagement",
+        "shield:UpdateEmergencyContactSettings"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

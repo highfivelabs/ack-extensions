@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlS3OutpostsBucketPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3OutpostsBucketPolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "s3-outposts:GetBucketPolicy",
+        "s3-outposts:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3OutpostsBucketPolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "s3-outposts:GetBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3OutpostsBucketPolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "s3-outposts:GetBucketPolicy",
+        "s3-outposts:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3OutpostsBucketPolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "s3-outposts:DeleteBucketPolicy",
+        "s3-outposts:GetBucketPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

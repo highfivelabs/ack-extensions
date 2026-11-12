@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlS3OutpostsAccessPoint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3OutpostsAccessPointCreate",
+      "Effect": "Allow",
+      "Action": [
+        "s3-outposts:CreateAccessPoint",
+        "s3-outposts:GetAccessPoint",
+        "s3-outposts:GetAccessPointPolicy",
+        "s3-outposts:PutAccessPointPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3OutpostsAccessPointRead",
+      "Effect": "Allow",
+      "Action": [
+        "s3-outposts:GetAccessPoint",
+        "s3-outposts:GetAccessPointPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3OutpostsAccessPointUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "s3-outposts:DeleteAccessPointPolicy",
+        "s3-outposts:GetAccessPoint",
+        "s3-outposts:GetAccessPointPolicy",
+        "s3-outposts:PutAccessPointPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3OutpostsAccessPointDelete",
+      "Effect": "Allow",
+      "Action": [
+        "s3-outposts:DeleteAccessPoint",
+        "s3-outposts:DeleteAccessPointPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

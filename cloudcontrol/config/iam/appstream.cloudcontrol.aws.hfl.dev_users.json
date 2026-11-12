@@ -1,0 +1,42 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppStreamUser",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamUserCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:CreateUser",
+        "appstream:DescribeUsers"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamUserRead",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DescribeUsers"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamUserDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DeleteUser"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

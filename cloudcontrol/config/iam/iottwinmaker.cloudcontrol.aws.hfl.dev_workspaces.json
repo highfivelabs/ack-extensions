@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTTwinMakerWorkspace",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTTwinMakerWorkspaceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iottwinmaker:CreateWorkspace",
+        "iottwinmaker:GetWorkspace",
+        "iottwinmaker:ListTagsForResource",
+        "iottwinmaker:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTTwinMakerWorkspaceRead",
+      "Effect": "Allow",
+      "Action": [
+        "iottwinmaker:GetWorkspace",
+        "iottwinmaker:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTTwinMakerWorkspaceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iottwinmaker:GetWorkspace",
+        "iottwinmaker:ListTagsForResource",
+        "iottwinmaker:TagResource",
+        "iottwinmaker:UntagResource",
+        "iottwinmaker:UpdateWorkspace"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTTwinMakerWorkspaceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iottwinmaker:DeleteWorkspace",
+        "iottwinmaker:GetWorkspace"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

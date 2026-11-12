@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoute53GlobalResolverHostedZoneAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53GlobalResolverHostedZoneAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "route53:GetHostedZone",
+        "route53globalresolver:AssociateHostedZone",
+        "route53globalresolver:GetHostedZoneAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53GlobalResolverHostedZoneAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "route53:GetHostedZone",
+        "route53globalresolver:GetHostedZoneAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53GlobalResolverHostedZoneAssociationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "route53:GetHostedZone",
+        "route53globalresolver:GetHostedZoneAssociation",
+        "route53globalresolver:UpdateHostedZoneAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53GlobalResolverHostedZoneAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "route53:GetHostedZone",
+        "route53globalresolver:DisassociateHostedZone",
+        "route53globalresolver:GetHostedZoneAssociation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

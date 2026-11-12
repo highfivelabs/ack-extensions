@@ -1,0 +1,110 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAutoScalingPlansScalingPlan",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AutoScalingPlansScalingPlanCreate",
+      "Effect": "Allow",
+      "Action": [
+        "application-autoscaling:DeleteScalingPolicy",
+        "application-autoscaling:DeregisterScalableTarget",
+        "application-autoscaling:DescribeScalingPolicies",
+        "application-autoscaling:PutScalingPolicy",
+        "application-autoscaling:RegisterScalableTarget",
+        "autoscaling-plans:CreateScalingPlan",
+        "autoscaling-plans:DescribeScalingPlanResources",
+        "autoscaling-plans:DescribeScalingPlans",
+        "autoscaling:BatchDeleteScheduledAction",
+        "autoscaling:BatchPutScheduledUpdateGroupAction",
+        "autoscaling:DeletePolicy",
+        "autoscaling:DescribeAutoScalingGroups",
+        "autoscaling:DescribePolicies",
+        "autoscaling:DescribeScheduledActions",
+        "autoscaling:PutScalingPolicy",
+        "autoscaling:UpdateAutoScalingGroup",
+        "cloudwatch:DeleteAlarms",
+        "cloudwatch:DescribeAlarms",
+        "cloudwatch:GetMetricData",
+        "cloudwatch:PutMetricAlarm",
+        "dynamodb:DescribeTable",
+        "dynamodb:UpdateTable",
+        "ec2:DescribeSpotFleetRequests",
+        "ec2:ModifySpotFleetRequest",
+        "ecs:DescribeServices",
+        "ecs:UpdateService",
+        "iam:CreateServiceLinkedRole",
+        "rds:AddTagsToResource",
+        "rds:CreateDBInstance",
+        "rds:DeleteDBInstance",
+        "rds:DescribeDBClusters",
+        "rds:DescribeDBInstances"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AutoScalingPlansScalingPlanRead",
+      "Effect": "Allow",
+      "Action": [
+        "autoscaling-plans:DescribeScalingPlans"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AutoScalingPlansScalingPlanUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "application-autoscaling:DeleteScalingPolicy",
+        "application-autoscaling:DeregisterScalableTarget",
+        "application-autoscaling:DescribeScalingPolicies",
+        "application-autoscaling:PutScalingPolicy",
+        "application-autoscaling:RegisterScalableTarget",
+        "autoscaling-plans:DescribeScalingPlanResources",
+        "autoscaling-plans:DescribeScalingPlans",
+        "autoscaling-plans:UpdateScalingPlan",
+        "autoscaling:BatchDeleteScheduledAction",
+        "autoscaling:BatchPutScheduledUpdateGroupAction",
+        "autoscaling:DeletePolicy",
+        "autoscaling:DescribeAutoScalingGroups",
+        "autoscaling:DescribePolicies",
+        "autoscaling:DescribeScheduledActions",
+        "autoscaling:PutScalingPolicy",
+        "autoscaling:UpdateAutoScalingGroup",
+        "cloudwatch:DeleteAlarms",
+        "cloudwatch:DescribeAlarms",
+        "cloudwatch:GetMetricData",
+        "cloudwatch:PutMetricAlarm",
+        "dynamodb:DescribeTable",
+        "dynamodb:UpdateTable"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AutoScalingPlansScalingPlanDelete",
+      "Effect": "Allow",
+      "Action": [
+        "application-autoscaling:DeleteScalingPolicy",
+        "application-autoscaling:DeregisterScalableTarget",
+        "application-autoscaling:DescribeScalingPolicies",
+        "autoscaling-plans:DeleteScalingPlan",
+        "autoscaling-plans:DescribeScalingPlans",
+        "autoscaling:DeletePolicy",
+        "autoscaling:DescribePolicies",
+        "autoscaling:DescribeScheduledActions",
+        "cloudwatch:DeleteAlarms",
+        "cloudwatch:DescribeAlarms"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

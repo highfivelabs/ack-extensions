@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockMantleProject",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockMantleProjectCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-mantle:CreateProject",
+        "bedrock-mantle:GetProject",
+        "bedrock-mantle:ListTagsForResource",
+        "bedrock-mantle:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockMantleProjectRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-mantle:GetProject",
+        "bedrock-mantle:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockMantleProjectUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-mantle:GetProject",
+        "bedrock-mantle:ListTagsForResource",
+        "bedrock-mantle:TagResource",
+        "bedrock-mantle:UntagResource",
+        "bedrock-mantle:UpdateProject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockMantleProjectDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-mantle:ArchiveProject",
+        "bedrock-mantle:GetProject",
+        "bedrock-mantle:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

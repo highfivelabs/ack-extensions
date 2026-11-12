@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlElasticBeanstalkApplicationVersion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElasticBeanstalkApplicationVersionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "elasticbeanstalk:CreateApplicationVersion",
+        "elasticbeanstalk:DescribeApplicationVersions",
+        "s3:GetObject",
+        "s3:PutObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElasticBeanstalkApplicationVersionRead",
+      "Effect": "Allow",
+      "Action": [
+        "elasticbeanstalk:DescribeApplicationVersions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElasticBeanstalkApplicationVersionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "elasticbeanstalk:DescribeApplicationVersions",
+        "elasticbeanstalk:UpdateApplicationVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElasticBeanstalkApplicationVersionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "elasticbeanstalk:DeleteApplicationVersion",
+        "elasticbeanstalk:DescribeApplicationVersions"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

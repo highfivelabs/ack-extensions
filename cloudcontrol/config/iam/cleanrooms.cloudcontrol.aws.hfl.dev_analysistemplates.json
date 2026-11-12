@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCleanRoomsAnalysisTemplate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsAnalysisTemplateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:CreateAnalysisTemplate",
+        "cleanrooms:GetAnalysisTemplate",
+        "cleanrooms:ListAnalysisTemplates",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsAnalysisTemplateRead",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:GetAnalysisTemplate",
+        "cleanrooms:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsAnalysisTemplateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:GetAnalysisTemplate",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:TagResource",
+        "cleanrooms:UntagResource",
+        "cleanrooms:UpdateAnalysisTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsAnalysisTemplateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:DeleteAnalysisTemplate",
+        "cleanrooms:GetAnalysisTemplate",
+        "cleanrooms:ListAnalysisTemplates",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

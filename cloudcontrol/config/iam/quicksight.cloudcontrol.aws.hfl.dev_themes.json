@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlQuickSightTheme",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightThemeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:CreateTheme",
+        "quicksight:DescribeTheme",
+        "quicksight:DescribeThemePermissions",
+        "quicksight:ListTagsForResource",
+        "quicksight:TagResource",
+        "quicksight:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightThemeRead",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeTheme",
+        "quicksight:DescribeThemePermissions",
+        "quicksight:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightThemeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeTheme",
+        "quicksight:DescribeThemePermissions",
+        "quicksight:ListTagsForResource",
+        "quicksight:TagResource",
+        "quicksight:UntagResource",
+        "quicksight:UpdateTheme",
+        "quicksight:UpdateThemePermissions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightThemeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DeleteTheme",
+        "quicksight:DescribeTheme"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

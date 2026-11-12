@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTSiteWiseTask",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseTaskCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iotsitewise:CreateTask",
+        "iotsitewise:DescribeTask",
+        "iotsitewise:ListTagsForResource",
+        "iotsitewise:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseTaskRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DescribeTask",
+        "iotsitewise:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseTaskUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iotsitewise:DescribeTask",
+        "iotsitewise:ListTagsForResource",
+        "iotsitewise:TagResource",
+        "iotsitewise:UntagResource",
+        "iotsitewise:UpdateTask"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseTaskDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DeleteTask",
+        "iotsitewise:DescribeTask",
+        "iotsitewise:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataZoneOwner",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneOwnerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:AddEntityOwner",
+        "datazone:GetGroupProfile",
+        "datazone:GetUserProfile",
+        "datazone:ListEntityOwners",
+        "iam:GetRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneOwnerRead",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:ListEntityOwners",
+        "iam:GetRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneOwnerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetUserProfile",
+        "datazone:RemoveEntityOwner",
+        "iam:GetRole"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

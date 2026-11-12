@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlChimeSipMediaApplication",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeSipMediaApplicationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "chime:CreateSipMediaApplication",
+        "chime:GetSipMediaApplication",
+        "chime:ListTagsForResource",
+        "chime:TagResource",
+        "lambda:AddPermission",
+        "lambda:GetPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeSipMediaApplicationRead",
+      "Effect": "Allow",
+      "Action": [
+        "chime:GetSipMediaApplication",
+        "chime:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeSipMediaApplicationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "chime:GetSipMediaApplication",
+        "chime:ListTagsForResource",
+        "chime:TagResource",
+        "chime:UntagResource",
+        "chime:UpdateSipMediaApplication",
+        "lambda:AddPermission",
+        "lambda:GetPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeSipMediaApplicationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "chime:DeleteSipMediaApplication",
+        "chime:GetSipMediaApplication"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

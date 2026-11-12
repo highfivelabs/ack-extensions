@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDeadlineStorageProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineStorageProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:CreateStorageProfile",
+        "deadline:GetStorageProfile",
+        "identitystore:ListGroupMembershipsForMember"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineStorageProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:GetStorageProfile",
+        "identitystore:ListGroupMembershipsForMember"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineStorageProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:GetStorageProfile",
+        "deadline:UpdateStorageProfile",
+        "identitystore:ListGroupMembershipsForMember"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineStorageProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:DeleteStorageProfile",
+        "deadline:GetStorageProfile",
+        "identitystore:ListGroupMembershipsForMember"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

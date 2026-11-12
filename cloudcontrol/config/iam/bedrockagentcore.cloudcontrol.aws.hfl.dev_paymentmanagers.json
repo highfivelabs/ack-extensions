@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockAgentCorePaymentManager",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCorePaymentManagerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:CreatePaymentManager",
+        "bedrock-agentcore:CreateWorkloadIdentity",
+        "bedrock-agentcore:GetPaymentManager",
+        "bedrock-agentcore:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCorePaymentManagerRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:GetPaymentManager",
+        "bedrock-agentcore:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCorePaymentManagerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:GetPaymentManager",
+        "bedrock-agentcore:ListTagsForResource",
+        "bedrock-agentcore:TagResource",
+        "bedrock-agentcore:UntagResource",
+        "bedrock-agentcore:UpdatePaymentManager",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCorePaymentManagerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:DeletePaymentManager",
+        "bedrock-agentcore:DeleteWorkloadIdentity",
+        "bedrock-agentcore:GetPaymentManager"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

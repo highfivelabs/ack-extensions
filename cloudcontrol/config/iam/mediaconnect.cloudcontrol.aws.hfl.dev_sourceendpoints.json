@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaConnectSourceEndpoint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectSourceEndpointCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateTags",
+        "iam:CreateServiceLinkedRole",
+        "mediaconnect:AssociateSource",
+        "mediaconnect:GetSourceEndpoint",
+        "mediaconnect:ListSourceEndpoints",
+        "mediaconnect:RegisterSourceEndpoint",
+        "mediaconnect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectSourceEndpointRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:GetSourceEndpoint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectSourceEndpointUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:GetSourceEndpoint",
+        "mediaconnect:ListTagsForResource",
+        "mediaconnect:TagResource",
+        "mediaconnect:UntagResource",
+        "mediaconnect:UpdateSourceEndpoint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectSourceEndpointDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:DeregisterSourceEndpoint",
+        "mediaconnect:DisassociateSource",
+        "mediaconnect:GetSourceEndpoint",
+        "mediaconnect:ListSourceEndpoints"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

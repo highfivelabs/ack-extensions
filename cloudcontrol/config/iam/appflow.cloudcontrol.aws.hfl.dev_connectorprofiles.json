@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppFlowConnectorProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFlowConnectorProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appflow:CreateConnectorProfile",
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:ListAliases",
+        "kms:ListGrants",
+        "kms:ListKeys",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFlowConnectorProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "appflow:DescribeConnectorProfiles"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFlowConnectorProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appflow:UpdateConnectorProfile",
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:ListAliases",
+        "kms:ListGrants",
+        "kms:ListKeys",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFlowConnectorProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appflow:DeleteConnectorProfile"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCognitoTerms",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoTermsCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:CreateTerms",
+        "cognito-idp:DescribeTerms",
+        "cognito-idp:DescribeTermsByClient"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoTermsRead",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DescribeTerms"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoTermsUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:UpdateTerms"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoTermsDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DeleteTerms"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

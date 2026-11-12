@@ -1,0 +1,114 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlResilienceHubApp",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubAppCreate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET",
+        "autoscaling:DescribeAutoScalingGroups",
+        "cloudformation:DescribeStacks",
+        "cloudformation:ListStackResources",
+        "dynamodb:Describe*",
+        "ec2:Describe*",
+        "ecs:DescribeServices",
+        "eks:DescribeCluster",
+        "elasticfilesystem:DescribeFileSystems",
+        "elasticloadbalancing:DescribeLoadBalancers",
+        "iam:PassRole",
+        "lambda:GetFunction*",
+        "rds:Describe*",
+        "resiliencehub:AddDraftAppVersionResourceMappings",
+        "resiliencehub:CreateApp",
+        "resiliencehub:DescribeApp",
+        "resiliencehub:DescribeAppVersionTemplate",
+        "resiliencehub:ListAppVersionResourceMappings",
+        "resiliencehub:ListAppVersions",
+        "resiliencehub:ListTagsForResource",
+        "resiliencehub:PublishAppVersion",
+        "resiliencehub:PutDraftAppVersionTemplate",
+        "resiliencehub:TagResource",
+        "resiliencehub:UntagResource",
+        "route53:List*",
+        "s3:GetBucketLocation",
+        "s3:GetObject",
+        "s3:ListAllMyBuckets",
+        "sns:GetTopicAttributes",
+        "sqs:GetQueueAttributes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubAppRead",
+      "Effect": "Allow",
+      "Action": [
+        "resiliencehub:DescribeApp",
+        "resiliencehub:DescribeAppVersionTemplate",
+        "resiliencehub:ListAppVersionResourceMappings",
+        "resiliencehub:ListAppVersions",
+        "resiliencehub:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubAppUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET",
+        "autoscaling:DescribeAutoScalingGroups",
+        "cloudformation:DescribeStacks",
+        "cloudformation:ListStackResources",
+        "dynamodb:Describe*",
+        "ec2:Describe*",
+        "ecs:DescribeServices",
+        "eks:DescribeCluster",
+        "elasticfilesystem:DescribeFileSystems",
+        "elasticloadbalancing:DescribeLoadBalancers",
+        "iam:PassRole",
+        "lambda:GetFunction*",
+        "rds:Describe*",
+        "resiliencehub:AddDraftAppVersionResourceMappings",
+        "resiliencehub:DescribeApp",
+        "resiliencehub:DescribeAppVersionTemplate",
+        "resiliencehub:ListAppVersionResourceMappings",
+        "resiliencehub:ListAppVersions",
+        "resiliencehub:ListTagsForResource",
+        "resiliencehub:PublishAppVersion",
+        "resiliencehub:PutDraftAppVersionTemplate",
+        "resiliencehub:RemoveDraftAppVersionResourceMappings",
+        "resiliencehub:TagResource",
+        "resiliencehub:UntagResource",
+        "resiliencehub:UpdateApp",
+        "route53:List*",
+        "s3:GetBucketLocation",
+        "s3:GetObject",
+        "s3:ListAllMyBuckets",
+        "sns:GetTopicAttributes",
+        "sqs:GetQueueAttributes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubAppDelete",
+      "Effect": "Allow",
+      "Action": [
+        "resiliencehub:DeleteApp",
+        "resiliencehub:ListApps",
+        "resiliencehub:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

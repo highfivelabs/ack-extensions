@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlApplicationSignalsGroupingConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApplicationSignalsGroupingConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "application-signals:ListGroupingAttributeDefinitions",
+        "application-signals:PutGroupingConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApplicationSignalsGroupingConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "application-signals:ListGroupingAttributeDefinitions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApplicationSignalsGroupingConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "application-signals:ListGroupingAttributeDefinitions",
+        "application-signals:PutGroupingConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApplicationSignalsGroupingConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "application-signals:DeleteGroupingConfiguration",
+        "application-signals:ListGroupingAttributeDefinitions"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

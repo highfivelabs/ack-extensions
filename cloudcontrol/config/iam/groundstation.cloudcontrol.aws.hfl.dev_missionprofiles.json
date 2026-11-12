@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGroundStationMissionProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GroundStationMissionProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "groundstation:CreateMissionProfile",
+        "groundstation:GetMissionProfile",
+        "groundstation:TagResource",
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GroundStationMissionProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "groundstation:GetMissionProfile",
+        "groundstation:ListTagsForResource",
+        "kms:CreateGrant",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GroundStationMissionProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "groundstation:GetMissionProfile",
+        "groundstation:ListTagsForResource",
+        "groundstation:TagResource",
+        "groundstation:UntagResource",
+        "groundstation:UpdateMissionProfile",
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GroundStationMissionProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "groundstation:DeleteMissionProfile",
+        "groundstation:GetMissionProfile"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

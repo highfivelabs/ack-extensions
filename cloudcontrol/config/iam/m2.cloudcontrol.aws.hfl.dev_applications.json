@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlM2Application",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "M2ApplicationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "m2:CreateApplication",
+        "m2:GetApplication",
+        "m2:ListTagsForResource",
+        "m2:TagResource",
+        "s3:GetObject",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "M2ApplicationRead",
+      "Effect": "Allow",
+      "Action": [
+        "m2:GetApplication",
+        "m2:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "M2ApplicationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "m2:GetApplication",
+        "m2:ListTagsForResource",
+        "m2:TagResource",
+        "m2:UntagResource",
+        "m2:UpdateApplication",
+        "s3:GetObject",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "M2ApplicationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "elasticloadbalancing:DeleteListener",
+        "elasticloadbalancing:DeleteTargetGroup",
+        "logs:DeleteLogDelivery",
+        "m2:DeleteApplication",
+        "m2:GetApplication"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

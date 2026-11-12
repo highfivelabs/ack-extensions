@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlKendraThesaurus",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraThesaurusCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kendra:CreateThesaurus",
+        "kendra:DescribeThesaurus",
+        "kendra:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraThesaurusRead",
+      "Effect": "Allow",
+      "Action": [
+        "kendra:DescribeThesaurus",
+        "kendra:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraThesaurusUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kendra:DescribeThesaurus",
+        "kendra:ListTagsForResource",
+        "kendra:TagResource",
+        "kendra:UntagResource",
+        "kendra:UpdateThesaurus"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraThesaurusDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kendra:DeleteThesaurus",
+        "kendra:DescribeThesaurus",
+        "kendra:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

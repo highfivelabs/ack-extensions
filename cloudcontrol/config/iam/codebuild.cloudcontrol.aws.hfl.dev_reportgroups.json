@@ -1,0 +1,50 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCodeBuildReportGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeBuildReportGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "codebuild:CreateReportGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeBuildReportGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "codebuild:BatchGetReportGroups"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeBuildReportGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "codebuild:UpdateReportGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeBuildReportGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "codebuild:BatchGetReportGroups",
+        "codebuild:DeleteReportGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

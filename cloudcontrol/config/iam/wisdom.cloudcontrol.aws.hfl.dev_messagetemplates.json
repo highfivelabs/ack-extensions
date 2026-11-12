@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWisdomMessageTemplate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomMessageTemplateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeRoutingProfile",
+        "connect:SearchRoutingProfiles",
+        "wisdom:CreateMessageTemplate",
+        "wisdom:CreateMessageTemplateAttachment",
+        "wisdom:DeleteMessageTemplateAttachment",
+        "wisdom:GetMessageTemplate",
+        "wisdom:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomMessageTemplateRead",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:GetMessageTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomMessageTemplateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeRoutingProfile",
+        "connect:SearchRoutingProfiles",
+        "wisdom:CreateMessageTemplateAttachment",
+        "wisdom:DeleteMessageTemplateAttachment",
+        "wisdom:GetMessageTemplate",
+        "wisdom:TagResource",
+        "wisdom:UntagResource",
+        "wisdom:UpdateMessageTemplate",
+        "wisdom:UpdateMessageTemplateMetadata"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomMessageTemplateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:DeleteMessageTemplate",
+        "wisdom:DeleteMessageTemplateAttachment",
+        "wisdom:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

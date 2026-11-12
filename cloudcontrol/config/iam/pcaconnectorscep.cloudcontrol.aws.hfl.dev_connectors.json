@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPCAConnectorSCEPConnector",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCAConnectorSCEPConnectorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "acm-pca:DescribeCertificateAuthority",
+        "acm-pca:GetCertificate",
+        "acm-pca:GetCertificateAuthorityCertificate",
+        "acm-pca:IssueCertificate",
+        "pca-connector-scep:CreateConnector",
+        "pca-connector-scep:GetConnector",
+        "pca-connector-scep:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCAConnectorSCEPConnectorRead",
+      "Effect": "Allow",
+      "Action": [
+        "pca-connector-scep:GetConnector",
+        "pca-connector-scep:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCAConnectorSCEPConnectorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "pca-connector-scep:ListTagsForResource",
+        "pca-connector-scep:TagResource",
+        "pca-connector-scep:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCAConnectorSCEPConnectorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "acm-pca:DescribeCertificateAuthority",
+        "acm-pca:GetCertificate",
+        "acm-pca:GetCertificateAuthorityCertificate",
+        "acm-pca:IssueCertificate",
+        "pca-connector-scep:DeleteConnector",
+        "pca-connector-scep:GetConnector",
+        "pca-connector-scep:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

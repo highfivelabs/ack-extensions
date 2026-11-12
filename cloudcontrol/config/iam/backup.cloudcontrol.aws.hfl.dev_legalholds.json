@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBackupLegalHold",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupLegalHoldCreate",
+      "Effect": "Allow",
+      "Action": [
+        "backup:CreateLegalHold",
+        "backup:GetLegalHold",
+        "backup:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupLegalHoldRead",
+      "Effect": "Allow",
+      "Action": [
+        "backup:GetLegalHold",
+        "backup:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupLegalHoldUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "backup:GetLegalHold",
+        "backup:ListTags",
+        "backup:TagResource",
+        "backup:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupLegalHoldDelete",
+      "Effect": "Allow",
+      "Action": [
+        "backup:CancelLegalHold",
+        "backup:GetLegalHold"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaPackageChannel",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaPackageChannelCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "mediapackage:ConfigureLogs",
+        "mediapackage:CreateChannel",
+        "mediapackage:DescribeChannel",
+        "mediapackage:TagResource",
+        "mediapackage:UpdateChannel"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaPackageChannelRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediapackage:DescribeChannel"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaPackageChannelUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "mediapackage:ConfigureLogs",
+        "mediapackage:UpdateChannel"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaPackageChannelDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediapackage:DeleteChannel"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEventsV2EventSource",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventsV2EventSourceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "events:CreateEventSource",
+        "events:DescribeEventSource",
+        "events:ListEventSources",
+        "events:ListTagsForResource",
+        "events:TagResource",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "kms:ReEncryptFrom",
+        "kms:ReEncryptTo"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventsV2EventSourceRead",
+      "Effect": "Allow",
+      "Action": [
+        "events:DescribeEventSource",
+        "events:ListTagsForResource",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventsV2EventSourceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "events:CreateEventSource",
+        "events:DescribeEventSource",
+        "events:TagResource",
+        "events:UntagResource",
+        "events:UpdateEventSource",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "kms:ReEncryptFrom",
+        "kms:ReEncryptTo"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventsV2EventSourceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "events:DeleteEventSource",
+        "events:DescribeEventSource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

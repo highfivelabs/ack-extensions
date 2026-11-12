@@ -1,0 +1,72 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTimestreamTable",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamTableCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "s3:GetBucketAcl",
+        "s3:GetObject",
+        "s3:PutObject",
+        "timestream:CreateTable",
+        "timestream:DescribeEndpoints",
+        "timestream:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamTableRead",
+      "Effect": "Allow",
+      "Action": [
+        "timestream:DescribeEndpoints",
+        "timestream:DescribeTable",
+        "timestream:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamTableUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "s3:GetBucketAcl",
+        "s3:GetObject",
+        "s3:PutObject",
+        "timestream:DescribeEndpoints",
+        "timestream:TagResource",
+        "timestream:UntagResource",
+        "timestream:UpdateTable"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamTableDelete",
+      "Effect": "Allow",
+      "Action": [
+        "timestream:DeleteTable",
+        "timestream:DescribeEndpoints",
+        "timestream:DescribeTable"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectContactFlowModuleAlias",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectContactFlowModuleAliasCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:CreateContactFlowModuleAlias",
+        "connect:DescribeContactFlowModuleAlias"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectContactFlowModuleAliasRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeContactFlowModuleAlias"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectContactFlowModuleAliasUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeContactFlowModuleAlias",
+        "connect:UpdateContactFlowModuleAlias"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectContactFlowModuleAliasDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteContactFlowModuleAlias"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

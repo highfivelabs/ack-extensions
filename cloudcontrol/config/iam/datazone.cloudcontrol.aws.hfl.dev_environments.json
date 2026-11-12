@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataZoneEnvironment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneEnvironmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:AssociateEnvironmentRole",
+        "datazone:CreateEnvironment",
+        "datazone:DeleteEnvironment",
+        "datazone:GetEnvironment",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneEnvironmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetEnvironment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneEnvironmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:AssociateEnvironmentRole",
+        "datazone:DeleteEnvironment",
+        "datazone:DisassociateEnvironmentRole",
+        "datazone:GetEnvironment",
+        "datazone:UpdateEnvironment",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneEnvironmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:DeleteEnvironment",
+        "datazone:GetEnvironment"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

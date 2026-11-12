@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkMonitorMonitor",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkMonitorMonitorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "networkmonitor:CreateMonitor",
+        "networkmonitor:GetMonitor",
+        "networkmonitor:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkMonitorMonitorRead",
+      "Effect": "Allow",
+      "Action": [
+        "networkmonitor:GetMonitor",
+        "networkmonitor:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkMonitorMonitorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "networkmonitor:GetMonitor",
+        "networkmonitor:ListTagsForResource",
+        "networkmonitor:TagResource",
+        "networkmonitor:UntagResource",
+        "networkmonitor:UpdateMonitor"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkMonitorMonitorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "networkmonitor:DeleteMonitor",
+        "networkmonitor:GetMonitor"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

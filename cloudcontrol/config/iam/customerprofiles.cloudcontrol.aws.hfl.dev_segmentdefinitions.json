@@ -1,0 +1,78 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCustomerProfilesSegmentDefinition",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesSegmentDefinitionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:GetKeyPolicy",
+        "kms:ListGrants",
+        "kms:PutKeyPolicy",
+        "profile:CreateSegmentDefinition",
+        "profile:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesSegmentDefinitionRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:GetKeyPolicy",
+        "kms:ListGrants",
+        "kms:PutKeyPolicy",
+        "profile:GetSegmentDefinition",
+        "profile:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesSegmentDefinitionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:GetKeyPolicy",
+        "kms:ListGrants",
+        "kms:PutKeyPolicy",
+        "profile:GetSegmentDefinition",
+        "profile:ListTagsForResource",
+        "profile:TagResource",
+        "profile:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesSegmentDefinitionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:GetKeyPolicy",
+        "kms:ListGrants",
+        "kms:PutKeyPolicy",
+        "profile:DeleteSegmentDefinition"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

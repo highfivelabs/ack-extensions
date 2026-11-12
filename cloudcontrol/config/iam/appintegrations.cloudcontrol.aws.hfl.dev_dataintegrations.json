@@ -1,0 +1,92 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppIntegrationsDataIntegration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppIntegrationsDataIntegrationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "app-integrations:CreateDataIntegration",
+        "app-integrations:TagResource",
+        "appflow:CreateFlow",
+        "appflow:DeleteFlow",
+        "appflow:DescribeConnectorEntity",
+        "appflow:DescribeConnectorProfiles",
+        "appflow:TagResource",
+        "appflow:UntagResource",
+        "appflow:UseConnectorProfile",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:ListAliases",
+        "kms:ListGrants",
+        "kms:ListKeys",
+        "s3:GetBucketNotification",
+        "s3:GetEncryptionConfiguration",
+        "s3:PutBucketNotification"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppIntegrationsDataIntegrationRead",
+      "Effect": "Allow",
+      "Action": [
+        "app-integrations:GetDataIntegration",
+        "app-integrations:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppIntegrationsDataIntegrationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "app-integrations:GetDataIntegration",
+        "app-integrations:TagResource",
+        "app-integrations:UntagResource",
+        "app-integrations:UpdateDataIntegration",
+        "appflow:DeleteFlow",
+        "appflow:DescribeConnectorEntity",
+        "appflow:DescribeConnectorProfiles",
+        "appflow:TagResource",
+        "appflow:UntagResource",
+        "appflow:UseConnectorProfile",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:ListAliases",
+        "kms:ListGrants",
+        "kms:ListKeys"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppIntegrationsDataIntegrationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "app-integrations:DeleteDataIntegration",
+        "app-integrations:UntagResource",
+        "appflow:CreateFlow",
+        "appflow:DeleteFlow",
+        "appflow:DescribeConnectorEntity",
+        "appflow:TagResource",
+        "appflow:UntagResource",
+        "appflow:UseConnectorProfile",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:ListAliases",
+        "kms:ListGrants",
+        "kms:ListKeys"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

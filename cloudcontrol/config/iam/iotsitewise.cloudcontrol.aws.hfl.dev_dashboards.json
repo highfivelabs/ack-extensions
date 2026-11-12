@@ -1,0 +1,66 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTSiteWiseDashboard",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseDashboardCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:CreateDashboard",
+        "iotsitewise:DescribeAsset",
+        "iotsitewise:DescribeAssetModel",
+        "iotsitewise:DescribeDashboard",
+        "iotsitewise:ListAssetModelCompositeModels",
+        "iotsitewise:ListAssetModelProperties",
+        "iotsitewise:ListTagsForResource",
+        "iotsitewise:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseDashboardRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DescribeDashboard",
+        "iotsitewise:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseDashboardUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DescribeAsset",
+        "iotsitewise:DescribeAssetModel",
+        "iotsitewise:DescribeDashboard",
+        "iotsitewise:ListAssetModelCompositeModels",
+        "iotsitewise:ListAssetModelProperties",
+        "iotsitewise:ListTagsForResource",
+        "iotsitewise:TagResource",
+        "iotsitewise:UntagResource",
+        "iotsitewise:UpdateDashboard"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseDashboardDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DeleteDashboard",
+        "iotsitewise:DescribeDashboard"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

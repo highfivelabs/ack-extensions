@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlFSxSnapshot",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FSxSnapshotCreate",
+      "Effect": "Allow",
+      "Action": [
+        "fsx:CreateSnapshot",
+        "fsx:DescribeSnapshots",
+        "fsx:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FSxSnapshotRead",
+      "Effect": "Allow",
+      "Action": [
+        "fsx:DescribeSnapshots",
+        "fsx:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FSxSnapshotUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "fsx:DescribeSnapshots",
+        "fsx:TagResource",
+        "fsx:UntagResource",
+        "fsx:UpdateSnapshot"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FSxSnapshotDelete",
+      "Effect": "Allow",
+      "Action": [
+        "fsx:DeleteSnapshot",
+        "fsx:DescribeSnapshots"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

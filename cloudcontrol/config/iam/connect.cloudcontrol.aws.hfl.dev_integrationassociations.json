@@ -1,0 +1,106 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectIntegrationAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectIntegrationAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "app-integrations:CreateApplicationAssociation",
+        "app-integrations:CreateEventIntegrationAssociation",
+        "app-integrations:GetApplication",
+        "cases:GetDomain",
+        "connect:AssociateBot",
+        "connect:AssociateLambdaFunction",
+        "connect:CreateIntegrationAssociation",
+        "connect:DescribeInstance",
+        "connect:ListBots",
+        "connect:ListIntegrationAssociations",
+        "connect:ListLambdaFunctions",
+        "connect:TagResource",
+        "ds:DescribeDirectories",
+        "events:PutRule",
+        "events:PutTargets",
+        "iam:AttachRolePolicy",
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRolePolicy",
+        "iam:PutRolePolicy",
+        "lambda:AddPermission",
+        "lambda:addPermission",
+        "lex:CreateResourcePolicy",
+        "lex:CreateResourcePolicyStatement",
+        "lex:DescribeBotAlias",
+        "lex:GetBot",
+        "lex:UpdateResourcePolicy",
+        "mobiletargeting:GetApp",
+        "ses:GetIdentityVerificationAttributes",
+        "voiceid:DescribeDomain",
+        "wisdom:GetAssistant",
+        "wisdom:GetKnowledgeBase",
+        "wisdom:GetMessageTemplate",
+        "wisdom:GetQuickResponse",
+        "wisdom:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectIntegrationAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:ListBots",
+        "connect:ListIntegrationAssociations",
+        "connect:ListLambdaFunctions",
+        "connect:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectIntegrationAssociationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:ListIntegrationAssociations",
+        "connect:ListTagsForResource",
+        "connect:TagResource",
+        "connect:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectIntegrationAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "app-integrations:DeleteApplicationAssociation",
+        "app-integrations:DeleteEventIntegrationAssociation",
+        "connect:DeleteIntegrationAssociation",
+        "connect:DescribeInstance",
+        "connect:DisassociateBot",
+        "connect:DisassociateLambdaFunction",
+        "connect:ListBots",
+        "connect:ListIntegrationAssociations",
+        "connect:ListLambdaFunctions",
+        "ds:DescribeDirectories",
+        "events:DeleteRule",
+        "events:ListTargetsByRule",
+        "events:RemoveTargets",
+        "iam:DeleteRolePolicy",
+        "iam:GetRolePolicy",
+        "iam:PutRolePolicy",
+        "lambda:RemovePermission",
+        "lex:DeleteResourcePolicy",
+        "lex:DeleteResourcePolicyStatement"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

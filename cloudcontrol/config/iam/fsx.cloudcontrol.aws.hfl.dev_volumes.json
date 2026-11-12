@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlFSxVolume",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FSxVolumeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "fsx:CreateVolume",
+        "fsx:CreateVolumeFromBackup",
+        "fsx:DescribeVolumes",
+        "fsx:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FSxVolumeRead",
+      "Effect": "Allow",
+      "Action": [
+        "fsx:DescribeVolumes",
+        "fsx:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FSxVolumeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "fsx:DescribeVolumes",
+        "fsx:ListTagsForResource",
+        "fsx:TagResource",
+        "fsx:UntagResource",
+        "fsx:UpdateVolume"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FSxVolumeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "fsx:DeleteVolume",
+        "fsx:DescribeStorageVirtualMachines",
+        "fsx:DescribeVolumes",
+        "fsx:TagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

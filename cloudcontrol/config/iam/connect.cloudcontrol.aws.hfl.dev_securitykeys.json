@@ -1,0 +1,41 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectSecurityKey",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectSecurityKeyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:AssociateSecurityKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectSecurityKeyRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:ListSecurityKeys"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectSecurityKeyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DisassociateSecurityKey"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

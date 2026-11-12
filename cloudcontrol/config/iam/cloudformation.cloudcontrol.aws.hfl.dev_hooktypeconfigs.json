@@ -1,0 +1,49 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudFormationHookTypeConfig",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationHookTypeConfigCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:SetTypeConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationHookTypeConfigRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:BatchDescribeTypeConfigurations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationHookTypeConfigUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:SetTypeConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationHookTypeConfigDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:SetTypeConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

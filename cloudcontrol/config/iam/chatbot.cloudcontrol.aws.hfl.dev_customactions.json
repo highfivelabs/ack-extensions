@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlChatbotCustomAction",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChatbotCustomActionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "chatbot:CreateCustomAction",
+        "chatbot:GetCustomAction",
+        "chatbot:ListTagsForResource",
+        "chatbot:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChatbotCustomActionRead",
+      "Effect": "Allow",
+      "Action": [
+        "chatbot:GetCustomAction",
+        "chatbot:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChatbotCustomActionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "chatbot:GetCustomAction",
+        "chatbot:ListTagsForResource",
+        "chatbot:TagResource",
+        "chatbot:UntagResource",
+        "chatbot:UpdateCustomAction"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChatbotCustomActionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "chatbot:DeleteCustomAction"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

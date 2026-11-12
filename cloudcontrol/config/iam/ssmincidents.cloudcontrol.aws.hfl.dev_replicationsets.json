@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSSMIncidentsReplicationSet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMIncidentsReplicationSetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "ssm-incidents:CreateReplicationSet",
+        "ssm-incidents:GetReplicationSet",
+        "ssm-incidents:ListReplicationSets",
+        "ssm-incidents:ListTagsForResource",
+        "ssm-incidents:TagResource",
+        "ssm-incidents:UpdateDeletionProtection"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMIncidentsReplicationSetRead",
+      "Effect": "Allow",
+      "Action": [
+        "ssm-incidents:GetReplicationSet",
+        "ssm-incidents:ListReplicationSets",
+        "ssm-incidents:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMIncidentsReplicationSetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ssm-incidents:GetReplicationSet",
+        "ssm-incidents:ListTagsForResource",
+        "ssm-incidents:TagResource",
+        "ssm-incidents:UntagResource",
+        "ssm-incidents:UpdateDeletionProtection",
+        "ssm-incidents:UpdateReplicationSet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMIncidentsReplicationSetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ssm-incidents:DeleteReplicationSet",
+        "ssm-incidents:GetReplicationSet"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

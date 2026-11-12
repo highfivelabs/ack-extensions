@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBCMScheduledReport",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BCMScheduledReportCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bcm-dashboards:CreateScheduledReport",
+        "bcm-dashboards:GetDashboard",
+        "bcm-dashboards:TagResource",
+        "ce:GetCostAndUsage",
+        "ce:GetReservationCoverage",
+        "ce:GetReservationUtilization",
+        "ce:GetSavingsPlansCoverage",
+        "ce:GetSavingsPlansUtilization",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BCMScheduledReportRead",
+      "Effect": "Allow",
+      "Action": [
+        "bcm-dashboards:GetScheduledReport",
+        "bcm-dashboards:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BCMScheduledReportUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bcm-dashboards:GetDashboard",
+        "bcm-dashboards:TagResource",
+        "bcm-dashboards:UntagResource",
+        "bcm-dashboards:UpdateScheduledReport",
+        "ce:GetCostAndUsage",
+        "ce:GetReservationCoverage",
+        "ce:GetReservationUtilization",
+        "ce:GetSavingsPlansCoverage",
+        "ce:GetSavingsPlansUtilization",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BCMScheduledReportDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bcm-dashboards:DeleteScheduledReport"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

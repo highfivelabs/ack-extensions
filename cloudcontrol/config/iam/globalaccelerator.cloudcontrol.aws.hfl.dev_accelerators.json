@@ -1,0 +1,76 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlobalAcceleratorAccelerator",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlobalAcceleratorAcceleratorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "globalaccelerator:CreateAccelerator",
+        "globalaccelerator:DescribeAccelerator",
+        "globalaccelerator:DescribeAcceleratorAttributes",
+        "globalaccelerator:ListTagsForResource",
+        "globalaccelerator:TagResource",
+        "globalaccelerator:UpdateAcceleratorAttributes",
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlobalAcceleratorAcceleratorRead",
+      "Effect": "Allow",
+      "Action": [
+        "globalaccelerator:DescribeAccelerator",
+        "globalaccelerator:DescribeAcceleratorAttributes",
+        "globalaccelerator:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlobalAcceleratorAcceleratorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "globalaccelerator:DescribeAccelerator",
+        "globalaccelerator:DescribeAcceleratorAttributes",
+        "globalaccelerator:ListTagsForResource",
+        "globalaccelerator:TagResource",
+        "globalaccelerator:UntagResource",
+        "globalaccelerator:UpdateAccelerator",
+        "globalaccelerator:UpdateAcceleratorAttributes",
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlobalAcceleratorAcceleratorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "globalaccelerator:DeleteAccelerator",
+        "globalaccelerator:DescribeAccelerator",
+        "globalaccelerator:UpdateAccelerator",
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

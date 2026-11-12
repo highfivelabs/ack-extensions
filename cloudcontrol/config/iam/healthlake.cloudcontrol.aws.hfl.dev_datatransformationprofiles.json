@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlHealthLakeDataTransformationProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "HealthLakeDataTransformationProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "healthlake:CreateDataTransformationProfile",
+        "healthlake:GetDataTransformationProfile",
+        "healthlake:ListTagsForResource",
+        "healthlake:TagResource",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "HealthLakeDataTransformationProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "healthlake:GetDataTransformationProfile",
+        "healthlake:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "HealthLakeDataTransformationProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "healthlake:GetDataTransformationProfile",
+        "healthlake:ListTagsForResource",
+        "healthlake:TagResource",
+        "healthlake:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "HealthLakeDataTransformationProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "healthlake:DeleteDataTransformationProfile",
+        "healthlake:GetDataTransformationProfile"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

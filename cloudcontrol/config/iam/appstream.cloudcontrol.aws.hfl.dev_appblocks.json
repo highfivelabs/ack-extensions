@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppStreamAppBlock",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamAppBlockCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:CreateAppBlock",
+        "appstream:TagResource",
+        "s3:GetBucketOwnershipControls",
+        "s3:GetObject",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamAppBlockRead",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DescribeAppBlocks",
+        "appstream:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamAppBlockUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DescribeAppBlocks",
+        "appstream:TagResource",
+        "appstream:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamAppBlockDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DeleteAppBlock",
+        "appstream:DescribeAppBlocks"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

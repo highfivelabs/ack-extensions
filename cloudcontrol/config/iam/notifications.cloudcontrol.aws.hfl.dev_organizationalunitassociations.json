@@ -1,0 +1,44 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNotificationsOrganizationalUnitAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsOrganizationalUnitAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "notifications:AssociateOrganizationalUnit",
+        "notifications:GetNotificationConfiguration",
+        "notifications:ListOrganizationalUnits"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsOrganizationalUnitAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "notifications:ListOrganizationalUnits"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsOrganizationalUnitAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "notifications:DisassociateOrganizationalUnit",
+        "notifications:ListOrganizationalUnits"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

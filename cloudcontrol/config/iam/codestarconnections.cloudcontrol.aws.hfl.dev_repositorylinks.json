@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCodeStarConnectionsRepositoryLink",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeStarConnectionsRepositoryLinkCreate",
+      "Effect": "Allow",
+      "Action": [
+        "codestar-connections:CreateRepositoryLink",
+        "codestar-connections:GetConnection",
+        "codestar-connections:PassConnection",
+        "codestar-connections:TagResource",
+        "codestar-connections:UseConnection",
+        "iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeStarConnectionsRepositoryLinkRead",
+      "Effect": "Allow",
+      "Action": [
+        "codestar-connections:GetConnection",
+        "codestar-connections:GetRepositoryLink",
+        "codestar-connections:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeStarConnectionsRepositoryLinkUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "codestar-connections:GetConnection",
+        "codestar-connections:ListTagsForResource",
+        "codestar-connections:PassConnection",
+        "codestar-connections:TagResource",
+        "codestar-connections:UntagResource",
+        "codestar-connections:UpdateRepositoryLink",
+        "codestar-connections:UseConnection"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeStarConnectionsRepositoryLinkDelete",
+      "Effect": "Allow",
+      "Action": [
+        "codestar-connections:DeleteRepositoryLink",
+        "codestar-connections:GetConnection",
+        "codestar-connections:GetRepositoryLink"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

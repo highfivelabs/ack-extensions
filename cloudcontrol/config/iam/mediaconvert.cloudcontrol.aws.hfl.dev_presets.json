@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaConvertPreset",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConvertPresetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconvert:CreatePreset",
+        "mediaconvert:GetPreset",
+        "mediaconvert:ListTagsForResource",
+        "mediaconvert:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConvertPresetRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconvert:GetPreset",
+        "mediaconvert:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConvertPresetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconvert:ListTagsForResource",
+        "mediaconvert:TagResource",
+        "mediaconvert:UntagResource",
+        "mediaconvert:UpdatePreset"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConvertPresetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconvert:DeletePreset",
+        "mediaconvert:GetPreset"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

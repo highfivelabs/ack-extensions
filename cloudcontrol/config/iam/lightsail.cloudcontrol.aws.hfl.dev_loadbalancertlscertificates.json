@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLightsailLoadBalancerTlsCertificate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailLoadBalancerTlsCertificateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:AttachLoadBalancerTlsCertificate",
+        "lightsail:CreateLoadBalancerTlsCertificate",
+        "lightsail:GetLoadBalancer",
+        "lightsail:GetLoadBalancerTlsCertificates",
+        "lightsail:UpdateLoadBalancerAttribute"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailLoadBalancerTlsCertificateRead",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetLoadBalancer",
+        "lightsail:GetLoadBalancerTlsCertificates"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailLoadBalancerTlsCertificateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:AttachLoadBalancerTlsCertificate",
+        "lightsail:GetLoadBalancer",
+        "lightsail:GetLoadBalancerTlsCertificates",
+        "lightsail:UpdateLoadBalancerAttribute"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailLoadBalancerTlsCertificateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:DeleteLoadBalancerTlsCertificate",
+        "lightsail:GetLoadBalancer",
+        "lightsail:GetLoadBalancerTlsCertificates"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

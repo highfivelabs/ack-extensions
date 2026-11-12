@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBackupTieringConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupTieringConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "backup:CreateTieringConfiguration",
+        "backup:GetTieringConfiguration",
+        "backup:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupTieringConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "backup:GetTieringConfiguration",
+        "backup:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupTieringConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "backup:ListTags",
+        "backup:TagResource",
+        "backup:UntagResource",
+        "backup:UpdateTieringConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupTieringConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "backup:DeleteTieringConfiguration",
+        "backup:GetTieringConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

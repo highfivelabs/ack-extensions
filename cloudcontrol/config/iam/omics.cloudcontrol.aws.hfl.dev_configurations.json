@@ -1,0 +1,49 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlOmicsConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcs",
+        "iam:CreateServiceLinkedRole",
+        "omics:CreateConfiguration",
+        "omics:GetConfiguration",
+        "omics:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "omics:GetConfiguration",
+        "omics:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "omics:DeleteConfiguration",
+        "omics:GetConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

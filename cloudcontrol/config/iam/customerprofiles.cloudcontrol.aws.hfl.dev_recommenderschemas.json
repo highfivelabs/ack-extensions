@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCustomerProfilesRecommenderSchema",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesRecommenderSchemaCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey",
+        "profile:CreateRecommenderSchema",
+        "profile:GetRecommenderSchema",
+        "profile:ListTagsForResource",
+        "profile:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesRecommenderSchemaRead",
+      "Effect": "Allow",
+      "Action": [
+        "profile:GetRecommenderSchema",
+        "profile:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesRecommenderSchemaUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "profile:GetRecommenderSchema",
+        "profile:ListTagsForResource",
+        "profile:TagResource",
+        "profile:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesRecommenderSchemaDelete",
+      "Effect": "Allow",
+      "Action": [
+        "profile:DeleteRecommenderSchema",
+        "profile:GetRecommenderSchema"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

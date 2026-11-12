@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectTaskTemplate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectTaskTemplateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:CreateTaskTemplate",
+        "connect:DeleteTaskTemplate",
+        "connect:ListTaskTemplates",
+        "connect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectTaskTemplateRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:GetTaskTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectTaskTemplateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:TagResource",
+        "connect:UntagResource",
+        "connect:UpdateTaskTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectTaskTemplateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteTaskTemplate",
+        "connect:GetTaskTemplate",
+        "connect:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

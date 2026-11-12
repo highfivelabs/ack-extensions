@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlueDataCatalogEncryptionSettings",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueDataCatalogEncryptionSettingsCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetDataCatalogEncryptionSettings",
+        "glue:PutDataCatalogEncryptionSettings",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueDataCatalogEncryptionSettingsRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetDataCatalogEncryptionSettings"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueDataCatalogEncryptionSettingsUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetDataCatalogEncryptionSettings",
+        "glue:PutDataCatalogEncryptionSettings",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueDataCatalogEncryptionSettingsDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetDataCatalogEncryptionSettings",
+        "glue:PutDataCatalogEncryptionSettings"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

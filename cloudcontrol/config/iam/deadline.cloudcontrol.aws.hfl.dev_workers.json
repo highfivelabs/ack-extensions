@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDeadlineWorker",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineWorkerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:CreateWorker",
+        "deadline:GetWorker",
+        "deadline:ListTagsForResource",
+        "deadline:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineWorkerRead",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:GetWorker",
+        "deadline:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineWorkerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:GetWorker",
+        "deadline:ListTagsForResource",
+        "deadline:TagResource",
+        "deadline:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineWorkerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:DeleteWorker",
+        "deadline:GetWorker",
+        "deadline:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

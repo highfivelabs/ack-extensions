@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockFlowAlias",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockFlowAliasCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:CreateFlowAlias",
+        "bedrock:GetFlowAlias",
+        "bedrock:ListTagsForResource",
+        "bedrock:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockFlowAliasRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetFlowAlias",
+        "bedrock:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockFlowAliasUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetFlowAlias",
+        "bedrock:ListTagsForResource",
+        "bedrock:TagResource",
+        "bedrock:UntagResource",
+        "bedrock:UpdateFlowAlias"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockFlowAliasDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:DeleteFlowAlias"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

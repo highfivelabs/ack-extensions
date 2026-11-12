@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWisdomQuickResponse",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomQuickResponseCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeRoutingProfile",
+        "connect:SearchRoutingProfiles",
+        "wisdom:CreateQuickResponse",
+        "wisdom:GetQuickResponse",
+        "wisdom:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomQuickResponseRead",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:GetQuickResponse"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomQuickResponseUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeRoutingProfile",
+        "connect:SearchRoutingProfiles",
+        "wisdom:GetQuickResponse",
+        "wisdom:TagResource",
+        "wisdom:UntagResource",
+        "wisdom:UpdateQuickResponse"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomQuickResponseDelete",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:DeleteQuickResponse",
+        "wisdom:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

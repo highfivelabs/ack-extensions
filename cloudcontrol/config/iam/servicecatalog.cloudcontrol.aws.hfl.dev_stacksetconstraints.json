@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlServiceCatalogStackSetConstraint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogStackSetConstraintCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetRole",
+        "servicecatalog:CreateConstraint",
+        "servicecatalog:DescribeConstraint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogStackSetConstraintRead",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DescribeConstraint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogStackSetConstraintUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetRole",
+        "servicecatalog:DescribeConstraint",
+        "servicecatalog:UpdateConstraint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogStackSetConstraintDelete",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DeleteConstraint"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

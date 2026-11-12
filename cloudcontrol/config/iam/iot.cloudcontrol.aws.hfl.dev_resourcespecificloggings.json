@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTResourceSpecificLogging",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTResourceSpecificLoggingCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:ListV2LoggingLevels",
+        "iot:SetV2LoggingLevel"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTResourceSpecificLoggingRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:ListV2LoggingLevels"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTResourceSpecificLoggingUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:ListV2LoggingLevels",
+        "iot:SetV2LoggingLevel"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTResourceSpecificLoggingDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeleteV2LoggingLevel",
+        "iot:ListV2LoggingLevels"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

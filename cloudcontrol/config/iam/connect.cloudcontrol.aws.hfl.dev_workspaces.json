@@ -1,0 +1,70 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectWorkspace",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectWorkspaceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:AssociateWorkspace",
+        "connect:CreateWorkspace",
+        "connect:CreateWorkspacePage",
+        "connect:ImportWorkspaceMedia",
+        "connect:ListTagsForResource",
+        "connect:TagResource",
+        "connect:UpdateWorkspaceVisibility"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectWorkspaceRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeWorkspace",
+        "connect:ListTagsForResource",
+        "connect:ListWorkspaceMedia",
+        "connect:ListWorkspacePages",
+        "connect:SearchWorkspaceAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectWorkspaceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:AssociateWorkspace",
+        "connect:CreateWorkspacePage",
+        "connect:DeleteWorkspaceMedia",
+        "connect:DeleteWorkspacePage",
+        "connect:DisassociateWorkspace",
+        "connect:ImportWorkspaceMedia",
+        "connect:TagResource",
+        "connect:UntagResource",
+        "connect:UpdateWorkspaceMetadata",
+        "connect:UpdateWorkspacePage",
+        "connect:UpdateWorkspaceTheme",
+        "connect:UpdateWorkspaceVisibility"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectWorkspaceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteWorkspace"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

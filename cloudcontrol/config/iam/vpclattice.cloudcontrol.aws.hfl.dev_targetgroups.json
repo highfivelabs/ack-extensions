@@ -1,0 +1,84 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlVpcLatticeTargetGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeTargetGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeAvailabilityZoneMappings",
+        "ec2:DescribeInstances",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcs",
+        "elasticloadbalancing:DescribeLoadBalancers",
+        "iam:CreateServiceLinkedRole",
+        "lambda:AddPermission",
+        "lambda:Invoke",
+        "vpc-lattice:CreateTargetGroup",
+        "vpc-lattice:GetTargetGroup",
+        "vpc-lattice:ListTagsForResource",
+        "vpc-lattice:ListTargets",
+        "vpc-lattice:RegisterTargets",
+        "vpc-lattice:TagResource",
+        "vpc-lattice:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeTargetGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "vpc-lattice:GetTargetGroup",
+        "vpc-lattice:ListTagsForResource",
+        "vpc-lattice:ListTargets"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeTargetGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeAvailabilityZoneMappings",
+        "ec2:DescribeInstances",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcs",
+        "elasticloadbalancing:DescribeLoadBalancers",
+        "lambda:AddPermission",
+        "lambda:Invoke",
+        "lambda:RemovePermission",
+        "vpc-lattice:DeregisterTargets",
+        "vpc-lattice:GetTargetGroup",
+        "vpc-lattice:ListTagsForResource",
+        "vpc-lattice:ListTargets",
+        "vpc-lattice:RegisterTargets",
+        "vpc-lattice:TagResource",
+        "vpc-lattice:UntagResource",
+        "vpc-lattice:UpdateTargetGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeTargetGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:RemovePermission",
+        "vpc-lattice:DeleteTargetGroup",
+        "vpc-lattice:DeregisterTargets",
+        "vpc-lattice:GetTargetGroup",
+        "vpc-lattice:ListTargets"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

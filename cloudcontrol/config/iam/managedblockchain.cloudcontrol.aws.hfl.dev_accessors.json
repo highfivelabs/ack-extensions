@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlManagedBlockchainAccessor",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ManagedBlockchainAccessorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "managedblockchain:CreateAccessor",
+        "managedblockchain:GetAccessor",
+        "managedblockchain:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ManagedBlockchainAccessorRead",
+      "Effect": "Allow",
+      "Action": [
+        "managedblockchain:GetAccessor"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ManagedBlockchainAccessorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "managedblockchain:CreateAccessor",
+        "managedblockchain:GetAccessor",
+        "managedblockchain:TagResource",
+        "managedblockchain:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ManagedBlockchainAccessorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "managedblockchain:DeleteAccessor"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

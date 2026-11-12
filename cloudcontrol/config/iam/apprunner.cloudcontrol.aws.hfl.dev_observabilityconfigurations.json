@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppRunnerObservabilityConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppRunnerObservabilityConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "apprunner:CreateObservabilityConfiguration",
+        "apprunner:DescribeObservabilityConfiguration",
+        "apprunner:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppRunnerObservabilityConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "apprunner:DescribeObservabilityConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppRunnerObservabilityConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "apprunner:DeleteObservabilityConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

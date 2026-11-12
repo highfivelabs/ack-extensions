@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlB2BICapability",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "B2BICapabilityCreate",
+      "Effect": "Allow",
+      "Action": [
+        "b2bi:CreateCapability",
+        "b2bi:TagResource",
+        "events:ListRules",
+        "events:PutRule",
+        "events:PutTargets",
+        "logs:CreateLogDelivery",
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:DescribeLogGroups",
+        "logs:DescribeLogStreams",
+        "logs:DescribeResourcePolicies",
+        "logs:ListLogDeliveries",
+        "logs:PutLogEvents",
+        "logs:PutResourcePolicy",
+        "s3:GetObject",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "B2BICapabilityRead",
+      "Effect": "Allow",
+      "Action": [
+        "b2bi:GetCapability",
+        "b2bi:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "B2BICapabilityUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "b2bi:TagResource",
+        "b2bi:UntagResource",
+        "b2bi:UpdateCapability"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "B2BICapabilityDelete",
+      "Effect": "Allow",
+      "Action": [
+        "b2bi:DeleteCapability"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

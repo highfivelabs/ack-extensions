@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlChimeMediaInsightsPipelineConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeMediaInsightsPipelineConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "chime:CreateMediaInsightsPipelineConfiguration",
+        "chime:GetMediaInsightsPipelineConfiguration",
+        "chime:TagResource",
+        "iam:PassRole",
+        "kinesis:DescribeStream",
+        "s3:GetBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeMediaInsightsPipelineConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "chime:GetMediaInsightsPipelineConfiguration",
+        "chime:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeMediaInsightsPipelineConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "chime:GetMediaInsightsPipelineConfiguration",
+        "chime:ListTagsForResource",
+        "chime:TagResource",
+        "chime:UntagResource",
+        "chime:UpdateMediaInsightsPipelineConfiguration",
+        "iam:PassRole",
+        "kinesis:DescribeStream",
+        "s3:GetBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeMediaInsightsPipelineConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "chime:DeleteMediaInsightsPipelineConfiguration",
+        "chime:ListVoiceConnectors"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

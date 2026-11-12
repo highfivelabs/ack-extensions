@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRekognitionDataset",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RekognitionDatasetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "rekognition:CreateDataset",
+        "rekognition:DescribeDataset",
+        "rekognition:ListTagsForResource",
+        "rekognition:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RekognitionDatasetRead",
+      "Effect": "Allow",
+      "Action": [
+        "rekognition:DescribeDataset",
+        "rekognition:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RekognitionDatasetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "rekognition:DescribeDataset",
+        "rekognition:ListTagsForResource",
+        "rekognition:TagResource",
+        "rekognition:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RekognitionDatasetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "rekognition:DeleteDataset",
+        "rekognition:DescribeDataset",
+        "rekognition:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

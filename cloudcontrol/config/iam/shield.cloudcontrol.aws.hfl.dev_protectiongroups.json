@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlShieldProtectionGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ShieldProtectionGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "shield:CreateProtectionGroup",
+        "shield:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ShieldProtectionGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "shield:DescribeProtectionGroup",
+        "shield:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ShieldProtectionGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "shield:ListTagsForResource",
+        "shield:TagResource",
+        "shield:UntagResource",
+        "shield:UpdateProtectionGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ShieldProtectionGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "shield:DeleteProtectionGroup",
+        "shield:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

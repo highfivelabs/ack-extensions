@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlB2BIPartnership",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "B2BIPartnershipCreate",
+      "Effect": "Allow",
+      "Action": [
+        "b2bi:CreatePartnership",
+        "b2bi:TagResource",
+        "s3:PutObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "B2BIPartnershipRead",
+      "Effect": "Allow",
+      "Action": [
+        "b2bi:GetPartnership",
+        "b2bi:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "B2BIPartnershipUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "b2bi:TagResource",
+        "b2bi:UntagResource",
+        "b2bi:UpdatePartnership"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "B2BIPartnershipDelete",
+      "Effect": "Allow",
+      "Action": [
+        "b2bi:DeletePartnership"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

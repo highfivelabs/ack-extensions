@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlServiceCatalogPortfolioProductAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogPortfolioProductAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:AssociateProductWithPortfolio",
+        "servicecatalog:ListPortfoliosForProduct"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogPortfolioProductAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:ListPortfoliosForProduct"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogPortfolioProductAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DisassociateProductFromPortfolio",
+        "servicecatalog:ListPortfoliosForProduct"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

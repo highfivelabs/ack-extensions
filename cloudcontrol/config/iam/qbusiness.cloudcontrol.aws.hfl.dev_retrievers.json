@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlQBusinessRetriever",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QBusinessRetrieverCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "qbusiness:CreateRetriever",
+        "qbusiness:GetRetriever",
+        "qbusiness:ListTagsForResource",
+        "qbusiness:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QBusinessRetrieverRead",
+      "Effect": "Allow",
+      "Action": [
+        "qbusiness:GetRetriever",
+        "qbusiness:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QBusinessRetrieverUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "qbusiness:GetRetriever",
+        "qbusiness:ListTagsForResource",
+        "qbusiness:TagResource",
+        "qbusiness:UntagResource",
+        "qbusiness:UpdateRetriever"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QBusinessRetrieverDelete",
+      "Effect": "Allow",
+      "Action": [
+        "qbusiness:DeleteRetriever",
+        "qbusiness:GetRetriever"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

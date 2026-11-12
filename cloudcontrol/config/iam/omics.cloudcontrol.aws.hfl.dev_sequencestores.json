@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlOmicsSequenceStore",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsSequenceStoreCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:DescribeKey",
+        "omics:CreateSequenceStore",
+        "omics:GetS3AccessPolicy",
+        "omics:GetSequenceStore",
+        "omics:ListTagsForResource",
+        "omics:PutS3AccessPolicy",
+        "omics:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsSequenceStoreRead",
+      "Effect": "Allow",
+      "Action": [
+        "omics:GetS3AccessPolicy",
+        "omics:GetSequenceStore",
+        "omics:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsSequenceStoreUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "omics:DeleteS3AccessPolicy",
+        "omics:GetS3AccessPolicy",
+        "omics:GetSequenceStore",
+        "omics:ListTagsForResource",
+        "omics:PutS3AccessPolicy",
+        "omics:TagResource",
+        "omics:UntagResource",
+        "omics:UpdateSequenceStore"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsSequenceStoreDelete",
+      "Effect": "Allow",
+      "Action": [
+        "omics:DeleteSequenceStore"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

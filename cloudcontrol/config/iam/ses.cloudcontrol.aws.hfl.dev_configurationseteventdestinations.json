@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSESConfigurationSetEventDestination",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESConfigurationSetEventDestinationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "ses:CreateConfigurationSetEventDestination",
+        "ses:DescribeConfigurationSet",
+        "ses:GetConfigurationSetEventDestinations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESConfigurationSetEventDestinationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ses:DescribeConfigurationSet",
+        "ses:GetConfigurationSetEventDestinations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESConfigurationSetEventDestinationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "ses:GetConfigurationSetEventDestinations",
+        "ses:UpdateConfigurationSetEventDestination"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESConfigurationSetEventDestinationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ses:DeleteConfigurationSetEventDestination"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

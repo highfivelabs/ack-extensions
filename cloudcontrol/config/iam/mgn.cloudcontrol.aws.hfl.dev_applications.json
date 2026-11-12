@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMGNApplication",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MGNApplicationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "mgn:CreateApplication",
+        "mgn:ListTagsForResource",
+        "mgn:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MGNApplicationRead",
+      "Effect": "Allow",
+      "Action": [
+        "mgn:ListApplications",
+        "mgn:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MGNApplicationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "mgn:ListTagsForResource",
+        "mgn:TagResource",
+        "mgn:UntagResource",
+        "mgn:UpdateApplication"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MGNApplicationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mgn:DeleteApplication",
+        "mgn:ListApplications",
+        "mgn:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

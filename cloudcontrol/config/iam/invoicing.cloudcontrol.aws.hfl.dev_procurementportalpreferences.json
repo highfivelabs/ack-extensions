@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlInvoicingProcurementPortalPreference",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InvoicingProcurementPortalPreferenceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "invoicing:CreateProcurementPortalPreference",
+        "invoicing:GetProcurementPortalPreference",
+        "invoicing:ListTagsForResource",
+        "invoicing:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InvoicingProcurementPortalPreferenceRead",
+      "Effect": "Allow",
+      "Action": [
+        "invoicing:GetProcurementPortalPreference",
+        "invoicing:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InvoicingProcurementPortalPreferenceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "invoicing:GetProcurementPortalPreference",
+        "invoicing:ListTagsForResource",
+        "invoicing:PutProcurementPortalPreference",
+        "invoicing:TagResource",
+        "invoicing:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InvoicingProcurementPortalPreferenceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "invoicing:DeleteProcurementPortalPreference",
+        "invoicing:GetProcurementPortalPreference",
+        "invoicing:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

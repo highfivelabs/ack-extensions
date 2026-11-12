@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWickrNetwork",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WickrNetworkCreate",
+      "Effect": "Allow",
+      "Action": [
+        "wickr:CreateNetwork",
+        "wickr:GetNetwork"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WickrNetworkRead",
+      "Effect": "Allow",
+      "Action": [
+        "wickr:GetNetwork"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WickrNetworkUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "wickr:GetNetwork",
+        "wickr:UpdateNetwork"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WickrNetworkDelete",
+      "Effect": "Allow",
+      "Action": [
+        "wickr:DeleteNetwork",
+        "wickr:GetNetwork"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

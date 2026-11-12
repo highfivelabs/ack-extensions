@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEMRContainersSecurityConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EMRContainersSecurityConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "emr-containers:CreateSecurityConfiguration",
+        "emr-containers:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EMRContainersSecurityConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "emr-containers:DescribeSecurityConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EMRContainersSecurityConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "emr-containers:DescribeSecurityConfiguration",
+        "emr-containers:ListTagsForResource",
+        "emr-containers:TagResource",
+        "emr-containers:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EMRContainersSecurityConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "emr-containers:DeleteSecurityConfiguration",
+        "emr-containers:DescribeSecurityConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaConnectFlowVpcInterface",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectFlowVpcInterfaceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "mediaconnect:AddFlowVpcInterfaces",
+        "mediaconnect:DescribeFlow",
+        "mediaconnect:ListTagsForResource",
+        "mediaconnect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectFlowVpcInterfaceRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:DescribeFlow",
+        "mediaconnect:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectFlowVpcInterfaceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "mediaconnect:AddFlowVpcInterfaces",
+        "mediaconnect:DescribeFlow",
+        "mediaconnect:ListTagsForResource",
+        "mediaconnect:RemoveFlowVpcInterface",
+        "mediaconnect:TagResource",
+        "mediaconnect:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectFlowVpcInterfaceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:DescribeFlow",
+        "mediaconnect:RemoveFlowVpcInterface"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCodeBuildProject",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeBuildProjectCreate",
+      "Effect": "Allow",
+      "Action": [
+        "codebuild:BatchGetProjects",
+        "codebuild:CreateProject",
+        "codebuild:CreateWebhook",
+        "codebuild:UpdateProjectVisibility",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeBuildProjectRead",
+      "Effect": "Allow",
+      "Action": [
+        "codebuild:BatchGetProjects"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeBuildProjectUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "codebuild:BatchGetProjects",
+        "codebuild:CreateWebhook",
+        "codebuild:DeleteWebhook",
+        "codebuild:UpdateProject",
+        "codebuild:UpdateProjectVisibility",
+        "codebuild:UpdateWebhook",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeBuildProjectDelete",
+      "Effect": "Allow",
+      "Action": [
+        "codebuild:BatchGetProjects",
+        "codebuild:DeleteProject",
+        "codebuild:DeleteWebhook",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

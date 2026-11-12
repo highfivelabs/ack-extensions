@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSESDedicatedIpPool",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESDedicatedIpPoolCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:CreateDedicatedIpPool",
+        "ses:GetDedicatedIpPool",
+        "ses:GetDedicatedIps",
+        "ses:TagResource",
+        "ses:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESDedicatedIpPoolRead",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetDedicatedIpPool",
+        "ses:GetDedicatedIps",
+        "ses:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESDedicatedIpPoolUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetDedicatedIpPool",
+        "ses:ListTagsForResource",
+        "ses:PutDedicatedIpPoolScalingAttributes",
+        "ses:TagResource",
+        "ses:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESDedicatedIpPoolDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ses:DeleteDedicatedIpPool"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

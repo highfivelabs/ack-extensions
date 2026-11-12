@@ -1,0 +1,118 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRedshiftServerlessNamespace",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RedshiftServerlessNamespaceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "kms:CancelKeyDeletion",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyPair",
+        "kms:ListGrants",
+        "kms:RetireGrant",
+        "kms:RevokeGrant",
+        "kms:ScheduleKeyDeletion",
+        "kms:TagResource",
+        "kms:UntagResource",
+        "redshift-serverless:CreateNamespace",
+        "redshift-serverless:CreateSnapshotCopyConfiguration",
+        "redshift-serverless:GetNamespace",
+        "redshift-serverless:ListSnapshotCopyConfigurations",
+        "redshift-serverless:ListTagsForResource",
+        "redshift-serverless:TagResource",
+        "redshift:GetResourcePolicy",
+        "redshift:PutResourcePolicy",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:RotateSecret",
+        "secretsmanager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RedshiftServerlessNamespaceRead",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "redshift-serverless:GetNamespace",
+        "redshift-serverless:ListSnapshotCopyConfigurations",
+        "redshift-serverless:ListTagsForResource",
+        "redshift:GetResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RedshiftServerlessNamespaceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kms:CancelKeyDeletion",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyPair",
+        "kms:ListGrants",
+        "kms:RetireGrant",
+        "kms:RevokeGrant",
+        "kms:ScheduleKeyDeletion",
+        "kms:TagResource",
+        "kms:UntagResource",
+        "redshift-serverless:CreateSnapshotCopyConfiguration",
+        "redshift-serverless:DeleteSnapshotCopyConfiguration",
+        "redshift-serverless:GetNamespace",
+        "redshift-serverless:ListSnapshotCopyConfigurations",
+        "redshift-serverless:ListTagsForResource",
+        "redshift-serverless:TagResource",
+        "redshift-serverless:UntagResource",
+        "redshift-serverless:UpdateNamespace",
+        "redshift-serverless:UpdateSnapshotCopyConfiguration",
+        "redshift:DeleteResourcePolicy",
+        "redshift:GetResourcePolicy",
+        "redshift:PutResourcePolicy",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:DeleteSecret",
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:RotateSecret",
+        "secretsmanager:TagResource",
+        "secretsmanager:UpdateSecret"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RedshiftServerlessNamespaceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kms:RetireGrant",
+        "redshift-serverless:DeleteNamespace",
+        "redshift-serverless:GetNamespace",
+        "redshift-serverless:ListTagsForResource",
+        "redshift-serverless:UntagResource",
+        "redshift:DeleteResourcePolicy",
+        "secretsmanager:DeleteSecret",
+        "secretsmanager:DescribeSecret"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

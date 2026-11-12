@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTBillingGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTBillingGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:CreateBillingGroup",
+        "iot:DescribeBillingGroup",
+        "iot:ListTagsForResource",
+        "iot:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTBillingGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeBillingGroup",
+        "iot:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTBillingGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeBillingGroup",
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "iot:UntagResource",
+        "iot:UpdateBillingGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTBillingGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeleteBillingGroup",
+        "iot:DescribeBillingGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

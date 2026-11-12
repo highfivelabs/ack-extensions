@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlImageBuilderImage",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderImageCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:BatchGetRepositoryScanningConfiguration",
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole",
+        "iam:PassRole",
+        "imagebuilder:CreateImage",
+        "imagebuilder:GetContainerRecipe",
+        "imagebuilder:GetDistributionConfiguration",
+        "imagebuilder:GetImage",
+        "imagebuilder:GetImageRecipe",
+        "imagebuilder:GetInfrastructureConfiguration",
+        "imagebuilder:GetWorkflow",
+        "imagebuilder:StartImagePipelineExecution",
+        "imagebuilder:TagResource",
+        "inspector2:BatchGetAccountStatus"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderImageRead",
+      "Effect": "Allow",
+      "Action": [
+        "imagebuilder:GetImage"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderImageUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "imagebuilder:GetImage",
+        "imagebuilder:TagResource",
+        "imagebuilder:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderImageDelete",
+      "Effect": "Allow",
+      "Action": [
+        "imagebuilder:CancelImageCreation",
+        "imagebuilder:DeleteImage",
+        "imagebuilder:GetImage",
+        "imagebuilder:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

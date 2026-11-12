@@ -1,0 +1,47 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDeadlineQueueFleetAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineQueueFleetAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:CreateQueueFleetAssociation",
+        "deadline:GetQueueFleetAssociation",
+        "identitystore:ListGroupMembershipsForMember"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineQueueFleetAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:GetQueueFleetAssociation",
+        "identitystore:ListGroupMembershipsForMember"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineQueueFleetAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:DeleteQueueFleetAssociation",
+        "deadline:GetQueueFleetAssociation",
+        "deadline:UpdateQueueFleetAssociation",
+        "identitystore:ListGroupMembershipsForMember"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlResilienceHubV2Service",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubV2ServiceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant",
+        "resiliencehub:CreateAssertion",
+        "resiliencehub:CreateInputSource",
+        "resiliencehub:CreateService",
+        "resiliencehub:GetService",
+        "resiliencehub:ListAssertions",
+        "resiliencehub:ListInputSources",
+        "resiliencehub:ListTagsForResource",
+        "resiliencehub:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubV2ServiceRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant",
+        "resiliencehub:GetService",
+        "resiliencehub:ListAssertions",
+        "resiliencehub:ListInputSources",
+        "resiliencehub:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubV2ServiceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant",
+        "resiliencehub:CreateAssertion",
+        "resiliencehub:CreateInputSource",
+        "resiliencehub:DeleteAssertion",
+        "resiliencehub:DeleteInputSource",
+        "resiliencehub:GetService",
+        "resiliencehub:ListAssertions",
+        "resiliencehub:ListInputSources",
+        "resiliencehub:ListTagsForResource",
+        "resiliencehub:TagResource",
+        "resiliencehub:UntagResource",
+        "resiliencehub:UpdateAssertion",
+        "resiliencehub:UpdateService"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubV2ServiceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant",
+        "resiliencehub:DeleteAssertion",
+        "resiliencehub:DeleteInputSource",
+        "resiliencehub:DeleteService",
+        "resiliencehub:GetService",
+        "resiliencehub:ListAssertions",
+        "resiliencehub:ListInputSources"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

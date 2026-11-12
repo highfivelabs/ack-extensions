@@ -1,0 +1,87 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAmplifyBranch",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AmplifyBranchCreate",
+      "Effect": "Allow",
+      "Action": [
+        "amplify:CreateBranch",
+        "amplify:GetBranch",
+        "amplify:TagResource",
+        "codecommit:GetRepository",
+        "codecommit:GetRepositoryTriggers",
+        "codecommit:PutRepositoryTriggers",
+        "iam:PassRole",
+        "s3:GetObject",
+        "s3:GetObjectAcl",
+        "s3:PutObject",
+        "s3:PutObjectAcl",
+        "sns:CreateTopic",
+        "sns:Subscribe"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AmplifyBranchRead",
+      "Effect": "Allow",
+      "Action": [
+        "amplify:GetBranch",
+        "amplify:ListTagsForResource",
+        "codecommit:GetRepository",
+        "codecommit:GetRepositoryTriggers",
+        "iam:PassRole",
+        "s3:GetObject",
+        "s3:GetObjectAcl"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AmplifyBranchUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "amplify:GetBranch",
+        "amplify:ListTagsForResource",
+        "amplify:TagResource",
+        "amplify:UntagResource",
+        "amplify:UpdateBranch",
+        "codecommit:GetRepository",
+        "codecommit:GetRepositoryTriggers",
+        "codecommit:PutRepositoryTriggers",
+        "iam:PassRole",
+        "s3:GetObject",
+        "s3:GetObjectAcl",
+        "s3:PutObject",
+        "s3:PutObjectAcl",
+        "sns:CreateTopic",
+        "sns:Subscribe",
+        "sns:Unsubscribe"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AmplifyBranchDelete",
+      "Effect": "Allow",
+      "Action": [
+        "amplify:DeleteBranch",
+        "amplify:GetBranch",
+        "codecommit:GetRepository",
+        "codecommit:GetRepositoryTriggers",
+        "iam:PassRole",
+        "sns:Unsubscribe"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

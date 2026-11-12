@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppTestTestCase",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppTestTestCaseCreate",
+      "Effect": "Allow",
+      "Action": [
+        "apptest:CreateTestCase",
+        "apptest:GetTestCase",
+        "apptest:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppTestTestCaseRead",
+      "Effect": "Allow",
+      "Action": [
+        "apptest:GetTestCase",
+        "apptest:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppTestTestCaseUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "apptest:GetTestCase",
+        "apptest:ListTagsForResource",
+        "apptest:TagResource",
+        "apptest:UnTagResource",
+        "apptest:UpdateTestCase"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppTestTestCaseDelete",
+      "Effect": "Allow",
+      "Action": [
+        "apptest:DeleteTestCase",
+        "apptest:GetTestCase",
+        "apptest:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

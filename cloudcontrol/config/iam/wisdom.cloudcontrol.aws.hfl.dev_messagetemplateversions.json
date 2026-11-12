@@ -1,0 +1,50 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWisdomMessageTemplateVersion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomMessageTemplateVersionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:CreateMessageTemplateVersion",
+        "wisdom:ListMessageTemplateVersions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomMessageTemplateVersionRead",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:GetMessageTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomMessageTemplateVersionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:CreateMessageTemplateVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomMessageTemplateVersionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:DeleteMessageTemplate"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

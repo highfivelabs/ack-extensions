@@ -1,0 +1,46 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppRunnerVpcConnector",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppRunnerVpcConnectorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "apprunner:CreateVpcConnector",
+        "apprunner:DescribeVpcConnector",
+        "apprunner:TagResource",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppRunnerVpcConnectorRead",
+      "Effect": "Allow",
+      "Action": [
+        "apprunner:DescribeVpcConnector"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppRunnerVpcConnectorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "apprunner:DeleteVpcConnector"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

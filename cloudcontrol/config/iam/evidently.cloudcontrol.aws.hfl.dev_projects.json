@@ -1,0 +1,103 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEvidentlyProject",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EvidentlyProjectCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:CreateConfigurationProfile",
+        "appconfig:CreateExtensionAssociation",
+        "appconfig:CreateHostedConfigurationVersion",
+        "appconfig:GetEnvironment",
+        "appconfig:TagResource",
+        "evidently:CreateProject",
+        "evidently:ExportProjectAsConfiguration",
+        "evidently:GetProject",
+        "evidently:TagResource",
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole",
+        "logs:CreateLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EvidentlyProjectRead",
+      "Effect": "Allow",
+      "Action": [
+        "evidently:GetProject",
+        "evidently:ListTagsForResource",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "s3:GetBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EvidentlyProjectUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:CreateConfigurationProfile",
+        "appconfig:CreateExtensionAssociation",
+        "appconfig:CreateHostedConfigurationVersion",
+        "appconfig:GetEnvironment",
+        "appconfig:TagResource",
+        "evidently:ExportProjectAsConfiguration",
+        "evidently:GetProject",
+        "evidently:ListTagsForResource",
+        "evidently:TagResource",
+        "evidently:UntagResource",
+        "evidently:UpdateProject",
+        "evidently:UpdateProjectDataDelivery",
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "logs:UpdateLogDelivery",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EvidentlyProjectDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:DeleteConfigurationProfile",
+        "appconfig:DeleteExtensionAssociation",
+        "appconfig:DeleteHostedConfigurationVersion",
+        "evidently:DeleteProject",
+        "evidently:GetProject",
+        "evidently:UntagResource",
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "s3:GetBucketPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

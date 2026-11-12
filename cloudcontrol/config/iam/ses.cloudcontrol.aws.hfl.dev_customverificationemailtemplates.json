@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSESCustomVerificationEmailTemplate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESCustomVerificationEmailTemplateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:CreateCustomVerificationEmailTemplate",
+        "ses:GetCustomVerificationEmailTemplate",
+        "ses:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESCustomVerificationEmailTemplateRead",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetCustomVerificationEmailTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESCustomVerificationEmailTemplateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetCustomVerificationEmailTemplate",
+        "ses:TagResource",
+        "ses:UntagResource",
+        "ses:UpdateCustomVerificationEmailTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESCustomVerificationEmailTemplateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ses:DeleteCustomVerificationEmailTemplate",
+        "ses:GetCustomVerificationEmailTemplate"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

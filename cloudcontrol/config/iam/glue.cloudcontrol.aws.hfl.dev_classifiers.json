@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlueClassifier",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueClassifierCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateClassifier",
+        "glue:GetClassifier"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueClassifierRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetClassifier"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueClassifierUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetClassifier",
+        "glue:UpdateClassifier"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueClassifierDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DeleteClassifier"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

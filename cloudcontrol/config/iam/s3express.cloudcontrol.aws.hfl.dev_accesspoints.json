@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlS3ExpressAccessPoint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3ExpressAccessPointCreate",
+      "Effect": "Allow",
+      "Action": [
+        "s3express:CreateAccessPoint",
+        "s3express:GetAccessPoint",
+        "s3express:GetAccessPointScope",
+        "s3express:PutAccessPointPolicy",
+        "s3express:PutAccessPointScope",
+        "s3express:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3ExpressAccessPointRead",
+      "Effect": "Allow",
+      "Action": [
+        "s3express:GetAccessPoint",
+        "s3express:GetAccessPointPolicy",
+        "s3express:GetAccessPointScope",
+        "s3express:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3ExpressAccessPointUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "s3express:DeleteAccessPointPolicy",
+        "s3express:DeleteAccessPointScope",
+        "s3express:GetAccessPoint",
+        "s3express:GetAccessPointPolicy",
+        "s3express:GetAccessPointScope",
+        "s3express:ListTagsForResource",
+        "s3express:PutAccessPointPolicy",
+        "s3express:PutAccessPointScope",
+        "s3express:TagResource",
+        "s3express:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3ExpressAccessPointDelete",
+      "Effect": "Allow",
+      "Action": [
+        "s3express:DeleteAccessPoint",
+        "s3express:DeleteAccessPointPolicy",
+        "s3express:DeleteAccessPointScope"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

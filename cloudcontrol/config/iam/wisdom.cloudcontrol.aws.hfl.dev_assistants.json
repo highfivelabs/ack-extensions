@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWisdomAssistant",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomAssistantCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "wisdom:CreateAssistant",
+        "wisdom:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomAssistantRead",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:GetAssistant"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomAssistantUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:GetAssistant"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomAssistantDelete",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:DeleteAssistant"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

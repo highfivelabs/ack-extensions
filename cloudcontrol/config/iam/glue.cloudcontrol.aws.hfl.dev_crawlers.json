@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlueCrawler",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueCrawlerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateCrawler",
+        "glue:GetCrawler",
+        "glue:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueCrawlerRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetCrawler",
+        "glue:GetTags",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueCrawlerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:TagResource",
+        "glue:UntagResource",
+        "glue:UpdateCrawler",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueCrawlerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DeleteCrawler",
+        "glue:GetCrawler",
+        "glue:StopCrawler",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

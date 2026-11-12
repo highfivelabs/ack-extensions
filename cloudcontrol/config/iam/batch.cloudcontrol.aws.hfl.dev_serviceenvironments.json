@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBatchServiceEnvironment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchServiceEnvironmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:CreateServiceEnvironment",
+        "Batch:DescribeServiceEnvironments",
+        "Batch:TagResource",
+        "Iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchServiceEnvironmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:DescribeServiceEnvironments"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchServiceEnvironmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:DescribeServiceEnvironments",
+        "Batch:TagResource",
+        "Batch:UntagResource",
+        "Batch:UpdateServiceEnvironment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchServiceEnvironmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:DeleteServiceEnvironment",
+        "Batch:DescribeServiceEnvironments",
+        "Batch:UpdateServiceEnvironment"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

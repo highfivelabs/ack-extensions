@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTWirelessDestination",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessDestinationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iotwireless:CreateDestination",
+        "iotwireless:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessDestinationRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:GetDestination",
+        "iotwireless:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessDestinationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iotwireless:GetDestination",
+        "iotwireless:TagResource",
+        "iotwireless:UntagResource",
+        "iotwireless:UpdateDestination"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessDestinationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:DeleteDestination"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTPolicyPrincipalAttachment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTPolicyPrincipalAttachmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:AttachPrincipalPolicy",
+        "iot:ListAttachedPolicies"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTPolicyPrincipalAttachmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:ListAttachedPolicies"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTPolicyPrincipalAttachmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DetachPrincipalPolicy",
+        "iot:ListAttachedPolicies"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

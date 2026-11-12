@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNeptuneGraphGraphSnapshot",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneGraphGraphSnapshotCreate",
+      "Effect": "Allow",
+      "Action": [
+        "neptune-graph:CreateGraphSnapshot",
+        "neptune-graph:GetGraphSnapshot",
+        "neptune-graph:ListTagsForResource",
+        "neptune-graph:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneGraphGraphSnapshotRead",
+      "Effect": "Allow",
+      "Action": [
+        "neptune-graph:GetGraphSnapshot",
+        "neptune-graph:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneGraphGraphSnapshotUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "neptune-graph:GetGraphSnapshot",
+        "neptune-graph:ListTagsForResource",
+        "neptune-graph:TagResource",
+        "neptune-graph:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneGraphGraphSnapshotDelete",
+      "Effect": "Allow",
+      "Action": [
+        "neptune-graph:DeleteGraphSnapshot",
+        "neptune-graph:GetGraphSnapshot"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

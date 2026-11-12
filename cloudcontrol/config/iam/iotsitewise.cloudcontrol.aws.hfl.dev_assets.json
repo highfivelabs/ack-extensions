@@ -1,0 +1,85 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTSiteWiseAsset",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseAssetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:AssociateAssets",
+        "iotsitewise:CreateAsset",
+        "iotsitewise:DescribeAsset",
+        "iotsitewise:DescribeAssetModel",
+        "iotsitewise:ListAssetModelCompositeModels",
+        "iotsitewise:ListAssetModelProperties",
+        "iotsitewise:ListAssetProperties",
+        "iotsitewise:ListAssociatedAssets",
+        "iotsitewise:ListTagsForResource",
+        "iotsitewise:TagResource",
+        "iotsitewise:UpdateAssetProperty"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseAssetRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DescribeAsset",
+        "iotsitewise:DescribeAssetModel",
+        "iotsitewise:ListAssetModelCompositeModels",
+        "iotsitewise:ListAssetModelProperties",
+        "iotsitewise:ListAssetProperties",
+        "iotsitewise:ListAssociatedAssets",
+        "iotsitewise:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseAssetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:AssociateAssets",
+        "iotsitewise:DescribeAsset",
+        "iotsitewise:DescribeAssetModel",
+        "iotsitewise:DisassociateAssets",
+        "iotsitewise:ListAssetModelCompositeModels",
+        "iotsitewise:ListAssetModelProperties",
+        "iotsitewise:ListAssetProperties",
+        "iotsitewise:ListAssociatedAssets",
+        "iotsitewise:ListTagsForResource",
+        "iotsitewise:TagResource",
+        "iotsitewise:UntagResource",
+        "iotsitewise:UpdateAsset",
+        "iotsitewise:UpdateAssetProperty"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseAssetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DeleteAsset",
+        "iotsitewise:DescribeAsset",
+        "iotsitewise:DescribeAssetModel",
+        "iotsitewise:DisassociateAssets",
+        "iotsitewise:ListAssetModelCompositeModels",
+        "iotsitewise:ListAssetModelProperties",
+        "iotsitewise:ListAssetProperties",
+        "iotsitewise:ListAssociatedAssets",
+        "iotsitewise:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

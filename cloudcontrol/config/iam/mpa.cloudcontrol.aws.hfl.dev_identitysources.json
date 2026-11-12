@@ -1,0 +1,69 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMPAIdentitySource",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MPAIdentitySourceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "mpa:CreateIdentitySource",
+        "mpa:GetIdentitySource",
+        "mpa:ListTagsForResource",
+        "mpa:TagResource",
+        "sso:CreateApplication",
+        "sso:DescribeApplication",
+        "sso:DescribeInstance",
+        "sso:PutApplicationAccessScope",
+        "sso:PutApplicationAssignmentConfiguration",
+        "sso:PutApplicationAuthenticationMethod",
+        "sso:PutApplicationGrant"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MPAIdentitySourceRead",
+      "Effect": "Allow",
+      "Action": [
+        "mpa:GetIdentitySource",
+        "mpa:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MPAIdentitySourceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "mpa:GetIdentitySource",
+        "mpa:ListTagsForResource",
+        "mpa:TagResource",
+        "mpa:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MPAIdentitySourceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "mpa:DeleteIdentitySource",
+        "mpa:GetIdentitySource",
+        "mpa:UntagResource",
+        "sso:DeleteApplication",
+        "sso:ListInstances"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

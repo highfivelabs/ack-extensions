@@ -1,0 +1,97 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGrafanaWorkspace",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GrafanaWorkspaceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeDhcpOptions",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcs",
+        "ec2:GetManagedPrefixListEntries",
+        "grafana:CreateWorkspace",
+        "grafana:DescribeWorkspace",
+        "grafana:DescribeWorkspaceAuthentication",
+        "grafana:DescribeWorkspaceConfiguration",
+        "grafana:ListTagsForResource",
+        "grafana:TagResource",
+        "grafana:UpdateWorkspaceAuthentication",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "organizations:DescribeOrganization",
+        "sso:CreateManagedApplicationInstance",
+        "sso:DescribeRegisteredRegions",
+        "sso:GetApplicationInstance",
+        "sso:GetSharedSsoConfiguration",
+        "sso:ListApplicationInstances"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GrafanaWorkspaceRead",
+      "Effect": "Allow",
+      "Action": [
+        "grafana:DescribeWorkspace",
+        "grafana:DescribeWorkspaceAuthentication",
+        "grafana:DescribeWorkspaceConfiguration",
+        "grafana:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GrafanaWorkspaceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeDhcpOptions",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcs",
+        "ec2:GetManagedPrefixListEntries",
+        "grafana:DescribeWorkspace",
+        "grafana:DescribeWorkspaceAuthentication",
+        "grafana:DescribeWorkspaceConfiguration",
+        "grafana:ListTagsForResource",
+        "grafana:TagResource",
+        "grafana:UntagResource",
+        "grafana:UpdateWorkspace",
+        "grafana:UpdateWorkspaceAuthentication",
+        "grafana:UpdateWorkspaceConfiguration",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "sso:CreateManagedApplicationInstance",
+        "sso:DescribeRegisteredRegions",
+        "sso:GetApplicationInstance",
+        "sso:ListApplicationInstances"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GrafanaWorkspaceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "grafana:DeleteWorkspace",
+        "grafana:DescribeWorkspace",
+        "grafana:DescribeWorkspaceAuthentication",
+        "grafana:DescribeWorkspaceConfiguration",
+        "sso:DeleteManagedApplicationInstance",
+        "sso:DescribeRegisteredRegions"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

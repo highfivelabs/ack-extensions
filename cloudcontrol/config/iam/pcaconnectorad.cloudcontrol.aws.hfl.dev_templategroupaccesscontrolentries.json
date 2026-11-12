@@ -1,0 +1,50 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPCAConnectorADTemplateGroupAccessControlEntry",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCAConnectorADTemplateGroupAccessControlEntryCreate",
+      "Effect": "Allow",
+      "Action": [
+        "pca-connector-ad:CreateTemplateGroupAccessControlEntry"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCAConnectorADTemplateGroupAccessControlEntryRead",
+      "Effect": "Allow",
+      "Action": [
+        "pca-connector-ad:GetTemplateGroupAccessControlEntry"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCAConnectorADTemplateGroupAccessControlEntryUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "pca-connector-ad:UpdateTemplateGroupAccessControlEntry"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCAConnectorADTemplateGroupAccessControlEntryDelete",
+      "Effect": "Allow",
+      "Action": [
+        "pca-connector-ad:DeleteTemplateGroupAccessControlEntry",
+        "pca-connector-ad:GetTemplateGroupAccessControlEntry"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

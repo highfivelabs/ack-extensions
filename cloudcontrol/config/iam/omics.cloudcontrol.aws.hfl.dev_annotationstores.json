@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlOmicsAnnotationStore",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsAnnotationStoreCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "omics:CreateAnnotationStore",
+        "omics:GetAnnotationStore",
+        "omics:TagResource",
+        "ram:AcceptResourceShareInvitation",
+        "ram:GetResourceShareInvitations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsAnnotationStoreRead",
+      "Effect": "Allow",
+      "Action": [
+        "omics:GetAnnotationStore"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsAnnotationStoreUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "omics:GetAnnotationStore",
+        "omics:ListTagsForResource",
+        "omics:TagResource",
+        "omics:UntagResource",
+        "omics:UpdateAnnotationStore"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsAnnotationStoreDelete",
+      "Effect": "Allow",
+      "Action": [
+        "omics:DeleteAnnotationStore",
+        "omics:ListAnnotationStores"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

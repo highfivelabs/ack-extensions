@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlObservabilityAdminTelemetryRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminTelemetryRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "kms:DescribeKey",
+        "observabilityadmin:CreateTelemetryRule",
+        "observabilityadmin:GetTelemetryEvaluationStatus",
+        "observabilityadmin:GetTelemetryRule",
+        "observabilityadmin:ListTagsForResource",
+        "observabilityadmin:TagResource",
+        "xray:GetTraceSegmentDestination"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminTelemetryRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "observabilityadmin:GetTelemetryEvaluationStatus",
+        "observabilityadmin:GetTelemetryRule",
+        "observabilityadmin:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminTelemetryRuleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:DescribeKey",
+        "observabilityadmin:GetTelemetryEvaluationStatus",
+        "observabilityadmin:GetTelemetryRule",
+        "observabilityadmin:ListTagsForResource",
+        "observabilityadmin:TagResource",
+        "observabilityadmin:UntagResource",
+        "observabilityadmin:UpdateTelemetryRule",
+        "xray:GetTraceSegmentDestination"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminTelemetryRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "observabilityadmin:DeleteTelemetryRule",
+        "observabilityadmin:GetTelemetryEvaluationStatus",
+        "observabilityadmin:GetTelemetryRule"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

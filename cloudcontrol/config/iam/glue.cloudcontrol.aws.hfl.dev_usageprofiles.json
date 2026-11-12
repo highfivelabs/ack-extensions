@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlueUsageProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueUsageProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateUsageProfile",
+        "glue:GetTags",
+        "glue:GetUsageProfile",
+        "glue:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueUsageProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetTags",
+        "glue:GetUsageProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueUsageProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetTags",
+        "glue:GetUsageProfile",
+        "glue:TagResource",
+        "glue:UntagResource",
+        "glue:UpdateUsageProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueUsageProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DeleteUsageProfile",
+        "glue:GetUsageProfile"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSCNDataIntegrationFlow",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SCNDataIntegrationFlowCreate",
+      "Effect": "Allow",
+      "Action": [
+        "scn:CreateDataIntegrationFlow",
+        "scn:GetDataIntegrationFlow",
+        "scn:ListTagsForResource",
+        "scn:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SCNDataIntegrationFlowRead",
+      "Effect": "Allow",
+      "Action": [
+        "scn:GetDataIntegrationFlow",
+        "scn:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SCNDataIntegrationFlowUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "scn:GetDataIntegrationFlow",
+        "scn:ListTagsForResource",
+        "scn:TagResource",
+        "scn:UntagResource",
+        "scn:UpdateDataIntegrationFlow"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SCNDataIntegrationFlowDelete",
+      "Effect": "Allow",
+      "Action": [
+        "scn:DeleteDataIntegrationFlow",
+        "scn:GetDataIntegrationFlow",
+        "scn:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

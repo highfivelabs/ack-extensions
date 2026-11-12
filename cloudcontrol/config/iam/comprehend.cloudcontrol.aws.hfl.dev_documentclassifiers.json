@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlComprehendDocumentClassifier",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ComprehendDocumentClassifierCreate",
+      "Effect": "Allow",
+      "Action": [
+        "comprehend:CreateDocumentClassifier",
+        "comprehend:DescribeDocumentClassifier",
+        "comprehend:DescribeResourcePolicy",
+        "comprehend:ListTagsForResource",
+        "iam:PassRole",
+        "textract:DetectDocumentText"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ComprehendDocumentClassifierRead",
+      "Effect": "Allow",
+      "Action": [
+        "comprehend:DescribeDocumentClassifier",
+        "comprehend:DescribeResourcePolicy",
+        "comprehend:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ComprehendDocumentClassifierUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "comprehend:DeleteResourcePolicy",
+        "comprehend:DescribeDocumentClassifier",
+        "comprehend:DescribeResourcePolicy",
+        "comprehend:ListTagsForResource",
+        "comprehend:PutResourcePolicy",
+        "comprehend:TagResource",
+        "comprehend:UntagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ComprehendDocumentClassifierDelete",
+      "Effect": "Allow",
+      "Action": [
+        "comprehend:DeleteDocumentClassifier",
+        "comprehend:DescribeDocumentClassifier"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlComprehendDocumentClassifierEndpoint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ComprehendDocumentClassifierEndpointCreate",
+      "Effect": "Allow",
+      "Action": [
+        "comprehend:CreateEndpoint",
+        "comprehend:DescribeEndpoint",
+        "comprehend:ListTagsForResource",
+        "comprehend:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ComprehendDocumentClassifierEndpointRead",
+      "Effect": "Allow",
+      "Action": [
+        "comprehend:DescribeEndpoint",
+        "comprehend:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ComprehendDocumentClassifierEndpointUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "comprehend:DescribeEndpoint",
+        "comprehend:ListTagsForResource",
+        "comprehend:TagResource",
+        "comprehend:UntagResource",
+        "comprehend:UpdateEndpoint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ComprehendDocumentClassifierEndpointDelete",
+      "Effect": "Allow",
+      "Action": [
+        "comprehend:DeleteEndpoint",
+        "comprehend:DescribeEndpoint",
+        "comprehend:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlFinSpaceEnvironment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FinSpaceEnvironmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "finspace:CreateEnvironment",
+        "finspace:GetEnvironment",
+        "finspace:ListEnvironments",
+        "sts:AssumeRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FinSpaceEnvironmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "finspace:GetEnvironment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FinSpaceEnvironmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "finspace:UpdateEnvironment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FinSpaceEnvironmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "finspace:DeleteEnvironment",
+        "finspace:GetEnvironment"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

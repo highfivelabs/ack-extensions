@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDeadlineBudget",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineBudgetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:CreateBudget",
+        "deadline:GetBudget",
+        "deadline:ListTagsForResource",
+        "deadline:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineBudgetRead",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:GetBudget",
+        "deadline:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineBudgetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:GetBudget",
+        "deadline:ListTagsForResource",
+        "deadline:TagResource",
+        "deadline:UntagResource",
+        "deadline:UpdateBudget"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineBudgetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:DeleteBudget",
+        "deadline:GetBudget",
+        "deadline:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

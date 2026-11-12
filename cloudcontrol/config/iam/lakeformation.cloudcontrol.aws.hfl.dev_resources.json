@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLakeFormationResource",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LakeFormationResourceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole",
+        "iam:GetRolePolicy",
+        "iam:PassRole",
+        "iam:PutRolePolicy",
+        "lakeformation:DescribeResource",
+        "lakeformation:ListResources",
+        "lakeformation:RegisterResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LakeFormationResourceRead",
+      "Effect": "Allow",
+      "Action": [
+        "lakeformation:DescribeResource",
+        "lakeformation:ListResources"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LakeFormationResourceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole",
+        "iam:GetRolePolicy",
+        "iam:PassRole",
+        "iam:PutRolePolicy",
+        "lakeformation:DeregisterResource",
+        "lakeformation:RegisterResource",
+        "lakeformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LakeFormationResourceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetRole",
+        "iam:GetRolePolicy",
+        "iam:PutRolePolicy",
+        "lakeformation:DeregisterResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

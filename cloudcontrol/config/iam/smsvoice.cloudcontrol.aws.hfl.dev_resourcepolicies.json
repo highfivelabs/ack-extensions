@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSMSVOICEResourcePolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEResourcePolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:GetResourcePolicy",
+        "sms-voice:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEResourcePolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:GetResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEResourcePolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DeleteResourcePolicy",
+        "sms-voice:GetResourcePolicy",
+        "sms-voice:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEResourcePolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DeleteResourcePolicy",
+        "sms-voice:GetResourcePolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

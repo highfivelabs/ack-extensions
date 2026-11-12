@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSESVdmAttributes",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESVdmAttributesCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetAccount",
+        "ses:PutAccountVdmAttributes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESVdmAttributesRead",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetAccount"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESVdmAttributesUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetAccount",
+        "ses:PutAccountVdmAttributes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESVdmAttributesDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetAccount",
+        "ses:PutAccountVdmAttributes"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

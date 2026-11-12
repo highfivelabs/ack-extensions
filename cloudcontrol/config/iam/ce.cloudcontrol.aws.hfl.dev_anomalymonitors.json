@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCEAnomalyMonitor",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CEAnomalyMonitorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ce:CreateAnomalyMonitor",
+        "ce:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CEAnomalyMonitorRead",
+      "Effect": "Allow",
+      "Action": [
+        "ce:GetAnomalyMonitors",
+        "ce:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CEAnomalyMonitorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ce:UpdateAnomalyMonitor"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CEAnomalyMonitorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ce:DeleteAnomalyMonitor"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

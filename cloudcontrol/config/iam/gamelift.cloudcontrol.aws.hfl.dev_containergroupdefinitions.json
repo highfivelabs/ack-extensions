@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGameLiftContainerGroupDefinition",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftContainerGroupDefinitionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:DescribeImages",
+        "ecr:GetAuthorizationToken",
+        "ecr:GetDownloadUrlForLayer",
+        "gamelift:CreateContainerGroupDefinition",
+        "gamelift:DescribeContainerGroupDefinition",
+        "gamelift:ListTagsForResource",
+        "gamelift:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftContainerGroupDefinitionRead",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DescribeContainerGroupDefinition",
+        "gamelift:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftContainerGroupDefinitionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:DescribeImages",
+        "ecr:GetAuthorizationToken",
+        "ecr:GetDownloadUrlForLayer",
+        "gamelift:DescribeContainerGroupDefinition",
+        "gamelift:ListTagsForResource",
+        "gamelift:TagResource",
+        "gamelift:UntagResource",
+        "gamelift:UpdateContainerGroupDefinition"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftContainerGroupDefinitionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DeleteContainerGroupDefinition"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

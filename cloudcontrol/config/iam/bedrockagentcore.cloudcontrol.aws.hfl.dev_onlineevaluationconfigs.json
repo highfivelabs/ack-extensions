@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockAgentCoreOnlineEvaluationConfig",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCoreOnlineEvaluationConfigCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:CreateOnlineEvaluationConfig",
+        "bedrock-agentcore:GetOnlineEvaluationConfig",
+        "bedrock-agentcore:TagResource",
+        "iam:PassRole",
+        "lambda:GetFunction",
+        "lambda:InvokeFunction",
+        "logs:DescribeIndexPolicies",
+        "logs:DescribeLogGroups",
+        "logs:PutIndexPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCoreOnlineEvaluationConfigRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:GetOnlineEvaluationConfig",
+        "bedrock-agentcore:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCoreOnlineEvaluationConfigUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:GetOnlineEvaluationConfig",
+        "bedrock-agentcore:TagResource",
+        "bedrock-agentcore:UntagResource",
+        "bedrock-agentcore:UpdateOnlineEvaluationConfig",
+        "iam:PassRole",
+        "lambda:GetFunction",
+        "lambda:InvokeFunction",
+        "logs:DescribeIndexPolicies",
+        "logs:DescribeLogGroups",
+        "logs:PutIndexPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCoreOnlineEvaluationConfigDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:DeleteOnlineEvaluationConfig",
+        "bedrock-agentcore:GetOnlineEvaluationConfig"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTSecureTunnelingTunnel",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSecureTunnelingTunnelCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:OpenTunnel",
+        "iot:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSecureTunnelingTunnelRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeTunnel",
+        "iot:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSecureTunnelingTunnelUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeTunnel",
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "iot:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSecureTunnelingTunnelDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:CloseTunnel",
+        "iot:DescribeTunnel"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

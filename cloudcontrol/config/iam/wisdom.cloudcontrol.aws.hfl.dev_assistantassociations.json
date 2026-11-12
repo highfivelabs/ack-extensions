@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWisdomAssistantAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomAssistantAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "wisdom:CreateAssistantAssociation",
+        "wisdom:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomAssistantAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:GetAssistantAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomAssistantAssociationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:GetAssistantAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomAssistantAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:DeleteAssistantAssociation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

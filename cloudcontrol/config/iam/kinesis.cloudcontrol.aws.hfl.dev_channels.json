@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlKinesisChannel",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KinesisChannelCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kinesis:AssociateStreamsWithChannel",
+        "kinesis:CreateChannel",
+        "kinesis:DescribeChannel",
+        "kinesis:ListTagsForResource",
+        "kinesis:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KinesisChannelRead",
+      "Effect": "Allow",
+      "Action": [
+        "kinesis:DescribeChannel",
+        "kinesis:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KinesisChannelUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kinesis:DescribeChannel",
+        "kinesis:ListTagsForResource",
+        "kinesis:TagResource",
+        "kinesis:UntagResource",
+        "kinesis:UpdateChannel"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KinesisChannelDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kinesis:DeleteChannel",
+        "kinesis:DescribeChannel"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

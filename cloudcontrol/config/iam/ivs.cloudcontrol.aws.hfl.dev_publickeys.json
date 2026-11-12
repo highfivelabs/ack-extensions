@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIVSPublicKey",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSPublicKeyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:ImportPublicKey",
+        "ivs:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSPublicKeyRead",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:GetPublicKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSPublicKeyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:GetPublicKey",
+        "ivs:ListTagsForResource",
+        "ivs:TagResource",
+        "ivs:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSPublicKeyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:DeletePublicKey",
+        "ivs:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSageMakerImageVersion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerImageVersionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:CreateImageVersion",
+        "sagemaker:DescribeImageVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerImageVersionRead",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribeImageVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerImageVersionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribeImageVersion",
+        "sagemaker:ListAliases",
+        "sagemaker:UpdateImageVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerImageVersionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DeleteImageVersion",
+        "sagemaker:DescribeImageVersion"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
