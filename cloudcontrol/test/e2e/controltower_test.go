@@ -84,6 +84,9 @@ func TestLandingZone(t *testing.T) {
 		t.Skip("a landing zone is never made on a live run: a test could not delete it")
 	}
 	e := start(t)
+	if e.emulator != nil {
+		t.Skip("ACK_TEST_BACKEND=aws-emulator: the landing zone is a test double of ours, which the emulator does not replace")
+	}
 	const lzType = "AWS::ControlTower::LandingZone"
 	srv, ok := e.cc.(*fake.Server)
 	if !ok {

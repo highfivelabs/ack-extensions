@@ -44,6 +44,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 
 	"github.com/highfivelabs/ack-extensions/pkg/fakeaws"
+	"github.com/highfivelabs/ack-extensions/pkg/test/awsemulator"
 )
 
 // Region is the AWS region every test uses.
@@ -96,7 +97,11 @@ func Start(t *testing.T, service string, scheme *runtime.Scheme) *Env {
 	root := RepoRoot(t)
 
 	motoURL := os.Getenv("MOTO_URL")
-	if motoURL == "" {
+	if awsemulator.Selected(t) {
+		// ACK_TEST_BACKEND=aws-emulator: AWS Emulator in moto's place, behind
+		// its loopback proxy (docs/aws-emulator.md).
+		motoURL = awsemulator.Start(t).URL
+	} else if motoURL == "" {
 		motoURL = startMoto(t, root)
 	}
 	endpoint, err := fakeaws.Parse(motoURL, fakeaws.Loopback)
