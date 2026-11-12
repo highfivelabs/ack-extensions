@@ -628,6 +628,7 @@ ec2,NetworkInterfacePermission,3,,0,NetworkInterfacePermission,3,0,false,ours_un
 ec2,NetworkPerformanceMetricSubscription,4,,0,NetworkPerformanceMetricSubscription (Cloud Control),4,0,false,ours NetworkPerformanceMetricSubscription (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,PlacementGroup,6,,0,PlacementGroup (Cloud Control),6,0,false,ours PlacementGroup (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,PrefixList,7,ManagedPrefixList,7,,0,0,false,
+ec2,ResourceTag,0,,0,ResourceTag,0,0,false,outside-denominator;ours_crd_attributes=3
 ec2,Route,16,,0,,0,16,false,
 ec2,RouteServer,6,,0,RouteServer (Cloud Control),6,0,false,ours RouteServer (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,RouteServerAssociation,2,,0,RouteServerAssociation (Cloud Control),2,0,false,ours RouteServerAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
