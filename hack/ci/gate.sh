@@ -10,8 +10,15 @@
 #
 # For one commit (default HEAD) it runs what .github/workflows/ci.yml's
 # pull-request jobs run, then posts the commit status `offload/ci` on that
-# commit, with a link to the run's log. A pull request merges only when
-# that status on its head is success (docs/testing.md, "The merge gate").
+# commit. A pull request merges only when that status on its head is
+# success (docs/testing.md, "The merge gate").
+#
+# This repository is public, and so are its commit statuses. The status
+# says what ran, on what machine type, how it ended and in how long,
+# nothing else: no link (the run's log is in the private offload bucket)
+# and no project, bucket or account. The log's location is printed here
+# only, and a description that names the project or the bucket is
+# refused.
 #
 # What runs, as ci.yml decides it:
 #   plan    hack/ci/select.sh plan BASE SHA, BASE = the merge base with
@@ -109,7 +116,7 @@ task="env GOTOOLCHAIN=go$gover bin/ci/task"
 echo "gate: Go $gover (go.mod), tools $(cd "$SRC" && hack/ci/tools.sh --pins)"
 
 start=$SECONDS
-url="" machine="" rc=0
+log="" machine="" rc=0
 case "$mode" in
   none)
     what="docs only (select.sh plan): nothing to run" ;;
@@ -125,7 +132,7 @@ case "$mode" in
     set -e
     id="$(sed -n -E 's/^offload: (off[a-z]*-[^ ]+) \(.*/\1/p' "$TMP/log" | head -n 1)"
     machine="$(sed -n -E 's/.*VM [^ ]+: ([a-z0-9-]+) in .*/\1/p' "$TMP/log" | tail -n 1)"
-    [[ -n "$id" ]] && url="https://console.cloud.google.com/storage/browser/$BUCKET/runs/$id?project=$PROJECT" ;;
+    if [[ -n "$id" ]]; then log="gs://$BUCKET/runs/$id/"; fi ;;
   *) die "hack/ci/select.sh plan gave mode '$mode'" ;;
 esac
 mins=$(( (SECONDS - start + 59) / 60 ))
@@ -133,11 +140,14 @@ mins=$(( (SECONDS - start + 59) / 60 ))
 if [[ $rc -eq 0 ]]; then state=success; verb=passed; else state=failure; verb="failed (exit $rc)"; fi
 desc="$what: $verb${machine:+ on $machine} in ${mins}m"
 desc="${desc:0:140}"
-echo "gate: $state: $desc${url:+ ($url)}"
+echo "gate: $state: $desc"
+[[ -z "$log" ]] || echo "gate: log: $log (private; not in the status)"
+# The status is public: refuse one that names the project or the bucket.
+[[ "$desc" != *"$PROJECT"* && "$desc" != *"$BUCKET"* ]] || die "the status names the offload project or bucket; not posted"
 
 post() {
   gh api "repos/$REPO/statuses/$SHA" -f state="$state" -f context="$STATUS_CONTEXT" \
-    -f description="$desc" ${url:+-f target_url="$url"} --silent
+    -f description="$desc" --silent
   echo "gate: posted $STATUS_CONTEXT=$state on $SHA"
 }
 if [[ "${CI_NO_STATUS:-}" == 1 ]]; then
