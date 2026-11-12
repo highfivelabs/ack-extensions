@@ -99,7 +99,9 @@ when the plan says `e2e=true`. A docs-only change runs nothing. The VM is
 needs the memory). Only moto: no credentials reach a test.
 
 It then posts the commit status `offload/ci` (success or failure, the
-machine and the minutes, a link to the run's log in the offload bucket)
+machine type and the minutes; no link and no environment identifiers,
+since the repository's statuses are public: the gate prints the run's
+log location in the private offload bucket locally)
 on the commit. The pre-push hook (`hack/hooks/pre-push`) runs it for
 every branch commit pushed and refuses the push on a failure; a commit
 that already has `offload/ci` success is not run again.
