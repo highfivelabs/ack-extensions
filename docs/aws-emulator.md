@@ -198,6 +198,76 @@ failures say more:
 | The emulator's account starts in an organization | `TestOrganizationsOrganization`, `...Policy`, `...PolicyAttachment`, `...DelegatedAdministrator`, `...AccountPlacement` | `CreateOrganization` refuses (moto starts with none); and `ListAWSServiceAccessForOrganization` is not implemented (501) |
 | Not implemented, or different, in the emulator | `TestVPNConnection` (`CreateVpnConnection` 501), `TestAccountPasswordPolicy` (`GetAccountPasswordPolicy` unknown), `TestDBProxyTarget` (targets never read back), `TestConnection` (no connection secret in Secrets Manager), `TestReplicaKey` (one Region per emulator), `TestVpnGateway` (stays `deleting`), `TestScheduleGroup` (still there after the delete), `TestDBRoleAssociation` (the removal ends at once), `TestAccountAlias` (a second `CreateAccountAlias` refused; which side matches AWS is unchecked) | Gaps, or timing the emulator does not model |
 
+### Second pass, 2026-11-12
+
+Every failure above was read against the AWS API reference and sorted
+three ways: our request breaks the documented contract (fix the kind,
+with a test that fails first), the test asks for what AWS would not do
+(fix the test), or the emulator differs from AWS (written down here).
+After it: **18 of 32** on the emulator (17 in the full run, 2,800 s;
+`TestVolumeAttachment`'s wait, added after it, passes on its own run),
+still **32 of 32** on moto (837 s). Offload runs: before
+`off-ack-extensions-1112085953-22656`, after
+`off-ack-extensions-1112094927-21489` and
+`off-ack-extensions-1112105532-21257` (`TestVolumeAttachment` on both
+backends, and the survey below).
+
+**A bug of ours.**
+
+- **`iam.aws.hfl.dev` `AccountAlias`: a new object for the alias the
+  account already has went terminal.** The read finds nothing for an
+  object that has not set its alias yet, so the create calls
+  `CreateAccountAlias` with the account's own alias; the emulator
+  answers `EntityAlreadyExists` ("The account alias acme-prod already
+  exists"), an error the
+  [API reference](https://docs.aws.amazon.com/IAM/latest/APIReference/API_CreateAccountAlias.html)
+  lists for the call, and the object stopped there (`TestAccountAlias`,
+  "delete deletes the alias", after "deletion-policy retain leaves the
+  alias" left it). Moto accepts the call. **Fixed** (`docs/plan.md`
+  section 6.21): on `EntityAlreadyExists` the create reads the account's
+  alias and takes it over when it is the one asked for; another
+  account's alias stays terminal. `TestCreateAdoptsTheAccountsOwnAlias`
+  (`services/iam/pkg/resource/account_alias/create_test.go`) failed
+  before the fix with the emulator's error and passes after;
+  `TestAccountAlias` passes on the emulator. What real AWS answers for
+  the account's own alias is not yet checked live; the fix is right
+  either way. A new alias replacing the old one (the drift step) works
+  on both, as
+  [AWS documents](https://docs.aws.amazon.com/powershell/v5/userguide/powershell_iam_code_examples.html)
+  ("changes the account alias").
+
+**Tests that asked for what AWS would not do** (fixed; each still passes
+on moto):
+
+| Test | What AWS does | The fix |
+| --- | --- | --- |
+| `TestApplicationScheduledAction` | `PutScheduledAction` needs a registered scalable target (`ObjectNotFoundException` on the emulator) | the fixture makes the ECS cluster, task definition and service, and registers the service's desired count (adds `aws-sdk-go-v2/service/ecs` at v1.78.0, the release on the pinned SDK core, for the test only) |
+| `TestScalingPolicy`, `TestScheduledAction` | new accounts cannot make launch configurations (`UnsupportedOperation`) | the group's fixture uses a launch template |
+| `TestSSHPublicKey` | `UploadSSHPublicKey` parses the key (`InvalidPublicKey`) | two real RSA public keys, their private halves thrown away |
+| `TestSchedule` | the execution role must trust `scheduler.amazonaws.com` (`ValidationException`) | the test makes the role with that trust policy |
+| `TestVolumeAttachment` | `ami-12c6146b` is moto's image (the emulator: `InvalidAMIID.Malformed`) | the image is one `DescribeImages` returns |
+| `TestReplicationConfiguration`, `TestIAMVirtualMFADevice` | the account is the caller's | `harness.Env.Account`: moto's `123456789012` or the emulator's `000000000000` |
+| `TestVpnGateway`, `TestVolumeAttachment`, `TestConnection`, `TestScheduleGroup` | the delete is asynchronous: [`DeleteVpnGateway`](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DeleteVpnGateway.html) and [`DetachVolume`](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DetachVolume.html) pass through `deleting` and `detaching`, [`DeleteConnection`](https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_DeleteConnection.html) through `DELETING`, and a [schedule group](https://docs.aws.amazon.com/scheduler/latest/APIReference/API_DeleteScheduleGroup.html) "remains in a `DELETING` state" and the call "is eventually consistent" | the test waits up to a minute for the end state instead of reading it once; moto gets there at once |
+| `TestDBRoleAssociation` | `RemoveRoleFromDBCluster` removes the role | on the emulator, which implements the call, the test checks the role leaves the cluster and the object goes; on moto (no such call, section 4.4 of `docs/plan.md`) it still checks the object is kept while the call fails |
+
+**The emulator differs from AWS** (left failing; nothing of ours to fix):
+
+| Test | What the emulator does | AWS |
+| --- | --- | --- |
+| `TestDBProxyTarget` | `DescribeDBProxyTargets` gives the database's resource id (`db-...`) in `RdsResourceId` (`services/service-com-amazonaws-rds-amazonrdsv19/src/state/db_proxies.rs`, `target_to_wire`), so our read never finds the target it registered and every retry meets `DBProxyTargetAlreadyRegisteredFault` | `RdsResourceId` is "the instance identifier for an RDS DB instance, or the cluster identifier for an Aurora DB cluster" ([API reference](https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBProxyTarget.html); the [CLI example](https://docs.aws.amazon.com/cli/latest/reference/rds/describe-db-proxy-targets.html) shows `database1-instance-1`), which is what our read matches |
+| `TestScalingPolicy`, `TestScheduledAction` | `DescribePolicies` and `DescribeScheduledActions` answer 501 | implemented |
+| `TestSSHPublicKey` | the upload works now; `GetSSHPublicKey` and `UpdateSSHPublicKey` answer 501 | implemented |
+| `TestIAMVirtualMFADevice` | `DeleteVirtualMFADevice` answers 501 (the rest passes) | implemented |
+| `TestAccountPasswordPolicy` | `GetAccountPasswordPolicy` is an unknown action | implemented |
+| `TestVPNConnection` | `CreateVpnConnection` answers 501 | implemented |
+| `TestConnection` | `CreateConnection` makes no Secrets Manager secret for the credentials (the delete step passes now) | EventBridge stores them in a secret it manages ([`CreateConnection`](https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_CreateConnection.html), `SecretArn`) |
+| `TestReplicaKey` | one Region per emulator: the replica in `eu-west-1` is never there | a replica key lives in another Region |
+| `TestOrganizationsOrganization`, `...Policy`, `...PolicyAttachment`, `...DelegatedAdministrator`, `...AccountPlacement` | the account starts in an organization (`CreateOrganization`: `AlreadyInOrganizationException`), and `ListAWSServiceAccessForOrganization` answers 501 | a new account is in none; the call is implemented |
+
+The Cloud Control survey on the same release is unchanged:
+`TestEveryKindOnAWSEmulator` with `ACK_EMULATOR_EXPECT=docs/aws-emulator-1.0.322.csv`
+gives 257 works, 16 partial, 19 unsupported.
+
 ## The operator end to end
 
 Not run. `task operator-e2e` runs moto as a pinned image in the kind
@@ -245,8 +315,11 @@ What a test on the emulator would pass that AWS fails:
 5. **One Region per emulator**, so cross-Region kinds (KMS replica keys,
    ECR replication) need two emulators and a routing proxy.
 
-Where the emulator is stricter than moto and closer to AWS (the six fixture
-failures and `OptionGroup` above), it found things moto hides.
+Where the emulator is stricter than moto and closer to AWS (the fixture
+failures, `OptionGroup` and `AccountAlias` above), it found things moto
+hides. It also differs from AWS in places (`DBProxyTarget`'s
+`RdsResourceId`, the organization it starts in), so a failure on it is
+read against the API reference before anything changes.
 
 There is nothing live to compare with yet: the one row in
 `docs/live-runs.md`'s ledger stopped at the sweep, before any test.
@@ -277,9 +350,9 @@ There is nothing live to compare with yet: the one row in
   `TestEveryKindOnAWSEmulator` measures that in a minute: run it on the
   new release and compare with `ACK_EMULATOR_EXPECT=docs/aws-emulator-1.0.322.csv`.
 
-Follow-ups, each its own pull request: check the `OptionGroup` read on a
-live run (the fix is in); make the six moto-shaped fixtures real (a
-scalable target, a launch template, a real key, a trusted role).
+Follow-ups: check the `OptionGroup` read and the `AccountAlias` takeover
+on a live run (both fixes are in). The moto-shaped fixtures were made
+real on 2026-11-12 ("Second pass" above).
 
 ## In `task ci`, if adopted
 

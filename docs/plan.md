@@ -1399,14 +1399,22 @@ account-wide setting (`CreateAccountAlias`, `ListAccountAliases`,
   object's: the create that follows sets it back, since a new alias
   replaces the old. A new object sets the alias even when the account
   already has it, instead of ACK's "already exists".
+- **Create** of the alias the account already has (set by hand, or left
+  by an object deleted with deletion-policy retain) takes it over when
+  `CreateAccountAlias` answers `EntityAlreadyExists`: the create reads
+  the account's alias and succeeds when it is this one (2026-11-12). The
+  AWS Emulator answers so for the account's own alias; moto accepts the
+  call. Before, the object went terminal (`TestAccountAlias` on the
+  emulator, `docs/aws-emulator.md`). Unit tests: `create_test.go`.
 - **Delete** deletes the alias only while it is still this object's.
 - **One per account.** Two objects would set their aliases in turn, as
   for `ReplicationConfiguration`.
-- **Errors:** an alias another account has (`EntityAlreadyExists`) is
-  terminal.
+- **Errors:** an alias another account has (`EntityAlreadyExists`, and
+  the account's alias is another) is terminal.
 
 **Not proven:** an alias another account already has (moto does not
-check), and real AWS.
+check; the unit test fakes it), what real AWS answers for the account's
+own alias, and real AWS.
 ### 6.22 `iam.aws.hfl.dev` `AccountPasswordPolicy`
 
 The AWS account's password policy for IAM users: Terraform's

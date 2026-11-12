@@ -191,11 +191,19 @@ func TestConnection(t *testing.T) {
 			t.Fatal(err)
 		}
 		gone(t, partner)
-		_, err := cloud.DescribeConnection(ctx, &eventbridge.DescribeConnectionInput{Name: aws.String("partner")})
-		var nf *ebtypes.ResourceNotFoundException
-		if !errors.As(err, &nf) {
-			t.Fatalf("connection still there, or another error: %v", err)
-		}
+		// DeleteConnection is asynchronous on AWS: the connection is
+		// DELETING first (moto deletes it at once).
+		harness.Eventually(t, 60*time.Second, "the connection deleted", func() error {
+			out, err := cloud.DescribeConnection(ctx, &eventbridge.DescribeConnectionInput{Name: aws.String("partner")})
+			var nf *ebtypes.ResourceNotFoundException
+			if errors.As(err, &nf) {
+				return nil
+			}
+			if err != nil {
+				return err
+			}
+			return fmt.Errorf("connection still there, %s", out.ConnectionState)
+		})
 	})
 }
 

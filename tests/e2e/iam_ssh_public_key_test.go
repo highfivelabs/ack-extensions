@@ -23,10 +23,11 @@ import (
 	iamv1 "github.com/highfivelabs/ack-extensions/services/iam/apis/v1alpha1"
 )
 
-// Not real keys: moto does not parse the body (IAM does).
+// Real RSA public keys (their private halves were thrown away): moto does
+// not parse the body, but IAM and the AWS Emulator do.
 const (
-	sshKeyA = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDdeploykeyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA deploy@example"
-	sshKeyB = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDbackupkeyBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB backup@example"
+	sshKeyA = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCk7xyokQLNoSE57rj+wskTOOUNn2CEeu6EtjcFlAmPSVatbPp0N3XL0yCwue1LkPP7Sh9fw/k7XICR5Rbi1DgL3pBPKNLwPBh0yfVca/AA+RiGX4mCB+Mq1nqRdfixOQGc1GdNfhkVtBe2T+VRRngBPWyhavGij9B3dmBrWseXKE0Axb0V9VBWRyzRn597WCkbmIQ/Js/ZIDQqqhFnYBLk4TC9FfzeepNjejjZSmE1PjrTV4zG3Oi4Xytkfo2S6mCU6wr6ILKKwCpcNDc0QM57rbrMatxf4An4dt+yQG1Wmamv2AZ+qGLws4KAH4CffOCCLbTk7gFS7+Zo2udpFkv5 deploy@example"
+	sshKeyB = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCvFlIA/vWgqKYCnmaEcf0b21NLCXEJKMYOZnaA5yRb2c/c2InPf0G1tPARZmyI7VhqwOeRJbeibuNhwrEwwRcLQCRiKDbSSFF2SApMQplJKbav07sXnb4XGDy7wOvspvZezGvVnneIsUDTyjagpiBNAkXYOj+53TCpw54cV9iTvq00TWIbTXwkksA5PL9PHxK8TkTi+2/M47WkedfAZ6UynAeB3HNx4UZt/eLud3QVCoNz8j+YzVzUn9MHWTl6Hntaa6vNM7SpwDU9g9HkMWKkKa3mQwK2solj9FBypc/i27HYMeNMO8j73Nr6InDpcL12xs0PFd+1i8BX7QO3L9DT backup@example"
 )
 
 // SSHPublicKey: an IAM user's SSH public key for CodeCommit, Terraform's

@@ -14,6 +14,7 @@ import (
 
 	ackv1alpha1 "github.com/aws-controllers-k8s/runtime/apis/core/v1alpha1"
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/scheduler"
 	schedtypes "github.com/aws/aws-sdk-go-v2/service/scheduler/types"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -176,11 +177,19 @@ func TestScheduleGroup(t *testing.T) {
 			t.Fatal(err)
 		}
 		gone(t, nightly)
-		_, err := cloud.GetScheduleGroup(ctx, &scheduler.GetScheduleGroupInput{Name: aws.String("nightly")})
-		var nf *schedtypes.ResourceNotFoundException
-		if !errors.As(err, &nf) {
-			t.Fatalf("group still there, or another error: %v", err)
-		}
+		// DeleteScheduleGroup is eventually consistent on AWS: the group is
+		// DELETING until its schedules are gone (moto deletes it at once).
+		harness.Eventually(t, 60*time.Second, "the group deleted", func() error {
+			out, err := cloud.GetScheduleGroup(ctx, &scheduler.GetScheduleGroupInput{Name: aws.String("nightly")})
+			var nf *schedtypes.ResourceNotFoundException
+			if errors.As(err, &nf) {
+				return nil
+			}
+			if err != nil {
+				return err
+			}
+			return fmt.Errorf("group still there, %s", out.State)
+		})
 	})
 }
 
@@ -193,9 +202,19 @@ func TestSchedule(t *testing.T) {
 	cloud := scheduler.NewFromConfig(env.AWS)
 	ctx := context.Background()
 
-	// moto does not check that the target or role exist.
-	const queue = "arn:aws:sqs:us-west-2:123456789012:jobs"
-	const role = "arn:aws:iam::123456789012:role/scheduler-sqs"
+	// The role is made here, trusting Scheduler, as AWS (and the AWS
+	// Emulator) requires of a schedule's execution role; moto checks
+	// neither the role nor the target.
+	queue := "arn:aws:sqs:us-west-2:" + env.Account + ":jobs"
+	made, err := iam.NewFromConfig(env.AWS).CreateRole(ctx, &iam.CreateRoleInput{
+		RoleName: aws.String("scheduler-sqs"),
+		AssumeRolePolicyDocument: aws.String(`{"Version":"2012-10-17","Statement":[{"Effect":"Allow",` +
+			`"Principal":{"Service":"scheduler.amazonaws.com"},"Action":"sts:AssumeRole"}]}`),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	role := aws.ToString(made.Role.Arn)
 
 	waitSynced := func(t *testing.T, key client.ObjectKey, obj client.Object, conds func() []*ackv1alpha1.Condition) {
 		t.Helper()

@@ -56,8 +56,14 @@ type Env struct {
 	MotoURL string
 	AWS     aws.Config
 	Rest    *rest.Config
+	// Account is the account the backend answers as: moto's 123456789012,
+	// or the emulator's 000000000000 (docs/aws-emulator.md).
+	Account string
 	logs    *syncBuffer
 }
+
+// MotoAccount is the account moto answers as.
+const MotoAccount = "123456789012"
 
 // RepoRoot is the repository root, found from this package's directory.
 func RepoRoot(t testing.TB) string {
@@ -122,8 +128,9 @@ func StartControllers(t *testing.T, service string, scheme *runtime.Scheme, ctrl
 	}
 	root := RepoRoot(t)
 
-	motoURL := os.Getenv("MOTO_URL")
+	motoURL, account := os.Getenv("MOTO_URL"), MotoAccount
 	if awsemulator.Selected(t) {
+		account = awsemulator.Account
 		// ACK_TEST_BACKEND=aws-emulator: AWS Emulator in moto's place, behind
 		// its loopback proxy (docs/aws-emulator.md).
 		motoURL = awsemulator.Start(t).URL
@@ -168,7 +175,7 @@ func StartControllers(t *testing.T, service string, scheme *runtime.Scheme, ctrl
 		all = append(all, &Logs{b: runController(t, bin, kubeconfig, endpoint, ctl)})
 	}
 
-	return &Env{Client: c, MotoURL: motoURL, AWS: endpoint.Config(Region), Rest: cfg, logs: all[0].b}, all
+	return &Env{Client: c, MotoURL: motoURL, AWS: endpoint.Config(Region), Rest: cfg, Account: account, logs: all[0].b}, all
 }
 
 // Logs is what the controller wrote so far.
