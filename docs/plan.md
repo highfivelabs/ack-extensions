@@ -2694,6 +2694,15 @@ Before it can run on a real cluster:
     (renames, references, removed fields), selective CRD installation, and
     a non-EKS identity (documented in section 10, not built). The coverage
     dashboard does not count the Cloud Control kinds as ours yet.
+14. Version slots (`docs/slot-moves.md`, 2026-11-12): ACK's release, adopt
+    and pause annotations work on every manager here (ACK's runtime); the
+    opt-in slot guard (`--slot`/`HFL_SLOT`, tag `hfl.dev/slot`) is built
+    and a move is proven offline (`task test:slot-move`). Left: the
+    operator does not set a slot (`ACKContext` and `CloudControlContext`
+    have no field for it); two different versions as the two slots; a
+    live move in the sandbox account; the 26 ACK-generated and 141 Cloud
+    Control kinds without readable tags are unguarded (the sequence alone
+    keeps one writer).
 
 ## 9. Open questions
 

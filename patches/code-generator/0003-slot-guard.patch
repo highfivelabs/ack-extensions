@@ -1,0 +1,51 @@
+diff --git a/templates/cmd/controller/main.go.tpl b/templates/cmd/controller/main.go.tpl
+index 6100e2d..ba5bf9a 100644
+--- a/templates/cmd/controller/main.go.tpl
++++ b/templates/cmd/controller/main.go.tpl
+@@ -15,6 +15,7 @@ import (
+ 	ackrtutil "github.com/aws-controllers-k8s/runtime/pkg/util"
+ 	ackrtwebhook "github.com/aws-controllers-k8s/runtime/pkg/webhook"
+ 	flag "github.com/spf13/pflag"
++	hflslot "github.com/highfivelabs/ack-extensions/pkg/slot"
+ 	"k8s.io/apimachinery/pkg/runtime/schema"
+ 	"k8s.io/apimachinery/pkg/runtime"
+ 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
+@@ -83,9 +84,17 @@ func init() {
+ func main() {
+ 	var ackCfg ackcfg.Config
+ 	ackCfg.BindFlags()
++	slotFlag := hflslot.BindFlags(flag.CommandLine)
+ 	flag.Parse()
+ 	ackCfg.SetupLogger()
+ 
++	// ack-extensions patch 0003: the version-slot guard (docs/slot-moves.md).
++	slot, err := hflslot.Setup(&ackCfg, *slotFlag)
++	if err != nil {
++		setupLog.Error(err, "Invalid slot", "aws.service", awsServiceAlias)
++		os.Exit(1)
++	}
++
+ 	managerFactories := svcresource.GetManagerFactories()
+ 	resourceGVKs := make([]schema.GroupVersionKind, 0, len(managerFactories))
+ 	for _, mf := range managerFactories {
+@@ -188,7 +197,7 @@ func main() {
+ 	).WithLogger(
+ 		ctrlrt.Log,
+ 	).WithResourceManagerFactories(
+-		svcresource.GetManagerFactories(),
++		hflslot.Wrap(svcresource.GetManagerFactories(), slot, mgr, hflslot.GeneratedTags),
+ 	).WithPrometheusRegistry(
+ 		ctrlrtmetrics.Registry,
+ 	)
+diff --git a/templates/pkg/resource/registry.go.tpl b/templates/pkg/resource/registry.go.tpl
+index 57eae93..7073d92 100644
+--- a/templates/pkg/resource/registry.go.tpl
++++ b/templates/pkg/resource/registry.go.tpl
+@@ -14,6 +14,7 @@ import (
+ // +kubebuilder:rbac:groups="",resources=namespaces,verbs=get;list;watch
+ // +kubebuilder:rbac:groups="",resources=configmaps,verbs=get;list;watch;patch
+ // +kubebuilder:rbac:groups="",resources=secrets,verbs=get;list;watch;patch
++// +kubebuilder:rbac:groups="",resources=events,verbs=create;patch
+ 
+ var (
+ 	reg = ackrt.NewRegistry()
