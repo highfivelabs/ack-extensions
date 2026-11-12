@@ -48,6 +48,7 @@ import (
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/test/fake"
 	"github.com/highfivelabs/ack-extensions/pkg/fakeaws"
 	"github.com/highfivelabs/ack-extensions/pkg/operator"
+	"github.com/highfivelabs/ack-extensions/pkg/test/awsemulator"
 )
 
 const region = "us-west-2"
@@ -78,9 +79,13 @@ type env struct {
 	moto    aws.Config
 	account string
 	live    bool
-	logs    *syncBuffer
-	ctx     context.Context
-	schema  *runtime.Scheme
+	// emulator is set when ACK_TEST_BACKEND=aws-emulator: the manager's
+	// Cloud Control and the tests' service clients are AWS Emulator's, not
+	// the fake's over moto (docs/aws-emulator.md).
+	emulator *awsemulator.Emulator
+	logs     *syncBuffer
+	ctx      context.Context
+	schema   *runtime.Scheme
 }
 
 // Target is where the end-to-end tests run, CLOUDCONTROL_E2E_TARGET:
@@ -341,11 +346,20 @@ func start(t *testing.T) *env {
 		motoCfg   aws.Config
 		account   = motoAccount
 		extraArgs []string
+		emu       *awsemulator.Emulator
 	)
 	live := target(t) == "real"
 	if live {
 		r := startReal(t)
 		cc, ccURL, motoCfg, account, extraArgs = r.cc, r.url, r.cfg, r.account, r.extraArgs
+	} else if awsemulator.Selected(t) {
+		emu = awsemulator.Start(t)
+		t.Logf("aws-emulator healthy in %s at %s", emu.Started.Round(time.Millisecond), emu.Endpoint)
+		cfg, err := fake.AWSConfig(emu.URL, region)
+		if err != nil {
+			t.Fatal(err)
+		}
+		cc, ccURL, motoCfg, account = emu, emu.URL, cfg, awsemulator.Account
 	} else {
 		cc, ccURL, motoCfg = startFake(t, root)
 	}
@@ -460,7 +474,7 @@ func start(t *testing.T) *env {
 			}
 		}
 	})
-	return &env{c: c, cc: cc, ccURL: ccURL, moto: motoCfg, account: account, live: live, logs: logs, ctx: context.Background(), schema: sch}
+	return &env{c: c, cc: cc, ccURL: ccURL, moto: motoCfg, account: account, live: live, emulator: emu, logs: logs, ctx: context.Background(), schema: sch}
 }
 
 // ---- object helpers ----

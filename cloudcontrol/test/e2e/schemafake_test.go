@@ -40,6 +40,9 @@ func TestEveryKindOnSchemaFake(t *testing.T) {
 	if e.live {
 		t.Skip("the schema fake is a fake; a live run tests the kinds through their own tests (docs/live-runs.md)")
 	}
+	if e.emulator != nil {
+		t.Skip("ACK_TEST_BACKEND=aws-emulator: TestEveryKindOnAWSEmulator runs every kind there (docs/aws-emulator.md)")
+	}
 	srv, ok := e.cc.(*fake.Server)
 	if !ok {
 		t.Fatalf("the call log is a %T, not the fake", e.cc)

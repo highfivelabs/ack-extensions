@@ -233,6 +233,19 @@ tasks:
       - go build -o "{{.BIN}}/cloudcontrol-manager" ./cloudcontrol/cmd/manager
       - task: cloudcontrol:test
 
+  # AWS Emulator as a third fake backend (docs/aws-emulator.md): opt-in,
+  # never run by check. Installs the pinned Debian package (Linux, apt).
+  "test:aws-emulator":
+    desc: 'The Cloud Control e2e tests, every kind among them, against AWS Emulator instead of the fake over moto: task test:aws-emulator [RUN=regexp] [PKGS=./cloudcontrol/test/e2e/] [REPORT=offload-artifacts/aws-emulator.csv] (docs/aws-emulator.md).'
+    cmds:
+      - task: setup-envtest
+      - hack/aws-emulator.sh
+      - |
+        export KUBEBUILDER_ASSETS="$("{{.BIN}}/setup-envtest" use {{.ENVTEST_K8S_VERSION}} --bin-dir "{{.BIN}}/envtest" -p path)"
+        ACK_TEST_BACKEND=aws-emulator EMULATOR_TELEMETRY=off \
+        ACK_EMULATOR_REPORT="{{.REPORT | default (print .ROOT_DIR "/offload-artifacts/aws-emulator.csv")}}" \
+          go test -count=1 -timeout 60m {{.PKGS | default "./cloudcontrol/test/e2e/"}} -run '{{.RUN | default "TestEveryKindOnAWSEmulator"}}' -v
+
   # Live tests against the real sandbox account (docs/live-runs.md). Never
   # run by check or any task it runs (hack/noaws checks that); refuse to
   # start without ACK_EXT_LIVE=create-real-aws-resources and ACCOUNT equal

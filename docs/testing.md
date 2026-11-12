@@ -9,6 +9,11 @@ moto has the service; the third is sampled over time.
 | moto | `task check`, a backend in `cloudcontrol/test/fake` and a test in `cloudcontrol/test/e2e` (Cloud Control kinds), or `tests/e2e` (ACK-generated kinds) | the above, and what the service does in moto: values it validates, state it keeps, drift made through the service's own API put back | proven on fake (no note) |
 | Live | the sandbox account only, sampled (below) | the real service: defaults, validation, eventual consistency, what moto gets wrong | a row in `docs/live-runs.md`'s ledger |
 
+A third backend, AWS Emulator, can stand in for both fakes on request
+(`ACK_TEST_BACKEND=aws-emulator`, `task test:aws-emulator`); it is not part
+of `task check`. What it covers and what it gets wrong:
+`docs/aws-emulator.md`.
+
 ## In `task check`
 
 Every kind is tested on a fake in `task check`, or its CRD says why not.
