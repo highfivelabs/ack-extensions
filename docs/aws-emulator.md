@@ -192,7 +192,7 @@ failures say more:
 
 | Kind of failure | Tests | What |
 | --- | --- | --- |
-| **A bug of ours the emulator caught** | `TestOptionGroup` | Our `rds.aws.hfl.dev` `OptionGroup` reads with `DescribeOptionGroups` naming `OptionGroupName` together with `EngineName` and `MajorEngineVersion` (`services/rds/pkg/resource/option_group/sdk.go`, `newListRequestPayload`). AWS's API reference: OptionGroupName "can't be supplied together with EngineName or MajorEngineVersion". Moto answers; the emulator refuses, as AWS should. Worth a live check and a fix in its own pull request |
+| **A bug of ours the emulator caught** | `TestOptionGroup` | Our `rds.aws.hfl.dev` `OptionGroup` reads with `DescribeOptionGroups` naming `OptionGroupName` together with `EngineName` and `MajorEngineVersion` (`services/rds/pkg/resource/option_group/sdk.go`, `newListRequestPayload`). AWS's API reference: OptionGroupName "can't be supplied together with EngineName or MajorEngineVersion". Moto answers; the emulator refuses (`ValidationException`), as AWS should. **Fixed** (2026-11-11, `docs/plan.md` section 6.2): the read names the group only; `TestOptionGroup` fails on the emulator before the fix (offload run `off-ack-extensions-1112023209-20205`) and passes after (`off-ack-extensions-1112023210-13362`, 47 s). Not yet checked on a live run |
 | Fixtures moto lets through and AWS would not | `TestApplicationScheduledAction` (no scalable target registered), `TestScalingPolicy`, `TestScheduledAction` (launch configurations, which AWS no longer offers new accounts), `TestSSHPublicKey` (a key body that is not a key), `TestSchedule` (a role Scheduler cannot assume), `TestVolumeAttachment` (moto's own AMI id) | The emulator is closer to AWS than moto here; the tests would need real-looking fixtures to run on it |
 | The emulator's account, not moto's | `TestReplicationConfiguration`, `TestIAMVirtualMFADevice` | The tests expect `123456789012` |
 | The emulator's account starts in an organization | `TestOrganizationsOrganization`, `...Policy`, `...PolicyAttachment`, `...DelegatedAdministrator`, `...AccountPlacement` | `CreateOrganization` refuses (moto starts with none); and `ListAWSServiceAccessForOrganization` is not implemented (501) |
@@ -277,8 +277,8 @@ There is nothing live to compare with yet: the one row in
   `TestEveryKindOnAWSEmulator` measures that in a minute: run it on the
   new release and compare with `ACK_EMULATOR_EXPECT=docs/aws-emulator-1.0.322.csv`.
 
-Follow-ups, each its own pull request: fix the `OptionGroup` read (and
-check it on a live run); make the six moto-shaped fixtures real (a
+Follow-ups, each its own pull request: check the `OptionGroup` read on a
+live run (the fix is in); make the six moto-shaped fixtures real (a
 scalable target, a launch template, a real key, a trusted role).
 
 ## In `task ci`, if adopted
