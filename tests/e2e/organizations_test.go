@@ -72,9 +72,7 @@ func TestOrganizationsPolicy(t *testing.T) {
 	ctx := context.Background()
 
 	// The organization is the management account's; Policy needs one.
-	if _, err := cloud.CreateOrganization(ctx, &organizations.CreateOrganizationInput{FeatureSet: orgtypes.OrganizationFeatureSetAll}); err != nil {
-		t.Fatal(err)
-	}
+	managementOrganization(t, ctx, cloud)
 
 	waitSynced := func(t *testing.T, obj *orgv1.Policy) *orgv1.Policy {
 		t.Helper()
@@ -369,9 +367,7 @@ func TestOrganizationsPolicyAttachment(t *testing.T) {
 	cloud := organizations.NewFromConfig(env.AWS)
 	ctx := context.Background()
 
-	if _, err := cloud.CreateOrganization(ctx, &organizations.CreateOrganizationInput{FeatureSet: orgtypes.OrganizationFeatureSetAll}); err != nil {
-		t.Fatal(err)
-	}
+	managementOrganization(t, ctx, cloud)
 	roots, err := cloud.ListRoots(ctx, &organizations.ListRootsInput{})
 	if err != nil || len(roots.Roots) != 1 {
 		t.Fatalf("roots %+v: %v", roots, err)
@@ -586,6 +582,31 @@ func delegatedTo(ctx context.Context, c *organizations.Client, principal string)
 	return strings.Join(ids, ","), nil
 }
 
+// managementOrganization is the organization the tests' account manages,
+// with all features: made with CreateOrganization where the account is in
+// none (moto, a new AWS account), or the one it already manages
+// (AlreadyInOrganizationException: AWS Emulator's account, a sandbox
+// account; docs/aws-emulator.md).
+func managementOrganization(t *testing.T, ctx context.Context, c *organizations.Client) *orgtypes.Organization {
+	t.Helper()
+	out, err := c.CreateOrganization(ctx, &organizations.CreateOrganizationInput{FeatureSet: orgtypes.OrganizationFeatureSetAll})
+	if err == nil {
+		return out.Organization
+	}
+	var already *orgtypes.AlreadyInOrganizationException
+	if !errors.As(err, &already) {
+		t.Fatal(err)
+	}
+	got, err := c.DescribeOrganization(ctx, &organizations.DescribeOrganizationInput{})
+	if err != nil {
+		t.Fatalf("the account is in an organization already, and DescribeOrganization: %v", err)
+	}
+	if got.Organization.FeatureSet != orgtypes.OrganizationFeatureSetAll {
+		t.Fatalf("the account's organization %s has feature set %s; the tests need ALL", aws.ToString(got.Organization.Id), got.Organization.FeatureSet)
+	}
+	return got.Organization
+}
+
 // newMemberAccount makes an account in moto's organization and returns its ID.
 func newMemberAccount(t *testing.T, ctx context.Context, c *organizations.Client, name string) string {
 	t.Helper()
@@ -613,11 +634,7 @@ func TestOrganizationsDelegatedAdministrator(t *testing.T) {
 	cloud := organizations.NewFromConfig(env.AWS)
 	ctx := context.Background()
 
-	org, err := cloud.CreateOrganization(ctx, &organizations.CreateOrganizationInput{FeatureSet: orgtypes.OrganizationFeatureSetAll})
-	if err != nil {
-		t.Fatal(err)
-	}
-	management := aws.ToString(org.Organization.MasterAccountId)
+	management := aws.ToString(managementOrganization(t, ctx, cloud).MasterAccountId)
 	security := newMemberAccount(t, ctx, cloud, "security")
 	audit := newMemberAccount(t, ctx, cloud, "audit")
 	const guardduty = "guardduty.amazonaws.com"
