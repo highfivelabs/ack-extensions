@@ -298,6 +298,14 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::SSM::OpsItem` | `OpsItem.ssm.cloudcontrol.aws.hfl.dev` | 7 | 9 | 2 | 0 | 0 | 1 |
 | `AWS::SSM::ServiceSetting` | `ServiceSetting.ssm.cloudcontrol.aws.hfl.dev` | 2 | 4 | 2 | 0 | 0 | 0 |
 | `AWS::StepFunctions::StateMachineVersion` | `StateMachineVersion.stepfunctions.cloudcontrol.aws.hfl.dev` | 3 | 1 | 6 | 0 | 0 | 0 |
+| `AWS::Glue::Registry` | `Registry.glue.cloudcontrol.aws.hfl.dev` | 3 | 1 | 2 | 0 | 0 | 1 |
+| `AWS::Glue::Schema` | `Schema.glue.cloudcontrol.aws.hfl.dev` | 8 | 2 | 8 | 0 | 0 | 3 |
+| `AWS::KafkaConnect::CustomPlugin` | `CustomPlugin.kafkaconnect.cloudcontrol.aws.hfl.dev` | 5 | 3 | 8 | 0 | 0 | 1 |
+| `AWS::KafkaConnect::WorkerConfiguration` | `WorkerConfiguration.kafkaconnect.cloudcontrol.aws.hfl.dev` | 4 | 2 | 6 | 0 | 0 | 1 |
+| `AWS::S3Express::DirectoryBucket` | `DirectoryBucket.s3express.cloudcontrol.aws.hfl.dev` | 8 | 2 | 6 | 0 | 0 | 5 |
+| `AWS::S3Tables::TablePolicy` | `TablePolicy.s3tables.cloudcontrol.aws.hfl.dev` | 2 | 3 | 2 | 0 | 1 | 0 |
+| `AWS::S3Vectors::VectorBucketPolicy` | `VectorBucketPolicy.s3vectors.cloudcontrol.aws.hfl.dev` | 3 | 0 | 4 | 0 | 1 | 0 |
+| `AWS::SSM::ResourcePolicy` | `ResourcePolicy.ssm.cloudcontrol.aws.hfl.dev` | 2 | 2 | 2 | 0 | 1 | 0 |
 
 ## `AWS::IAM::SAMLProvider`
 
@@ -3800,5 +3808,101 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - Nodes made `x-kubernetes-preserve-unknown-fields`: none
 - Read-only properties nested in writable objects (dropped): none
 - IAM actions (9): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `states:DeleteStateMachineVersion`, `states:DescribeStateMachine`, `states:ListStateMachineVersions`, `states:PublishStateMachineVersion`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::Glue::Registry`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (12): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `glue:CreateRegistry`, `glue:DeleteRegistry`, `glue:GetRegistry`, `glue:GetTags`, `glue:TagResource`, `glue:UntagResource`, `glue:UpdateRegistry`
+- Sensitive IAM actions: none
+- Left out (list handler only): `glue:ListRegistries`
+
+## `AWS::Glue::Schema`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/SchemaDefinition`
+- Of those, write-only strings that could be opted in if they are secrets: `/properties/SchemaDefinition`
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (13): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `glue:CreateSchema`, `glue:DeleteSchema`, `glue:GetSchema`, `glue:GetSchemaVersion`, `glue:GetTags`, `glue:TagResource`, `glue:UntagResource`, `glue:UpdateSchema`
+- Sensitive IAM actions: none
+- Left out (list handler only): `glue:ListSchemas`
+
+## `AWS::KafkaConnect::CustomPlugin`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (15): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `kafkaconnect:CreateCustomPlugin`, `kafkaconnect:DeleteCustomPlugin`, `kafkaconnect:DescribeCustomPlugin`, `kafkaconnect:ListTagsForResource`, `kafkaconnect:TagResource`, `kafkaconnect:UntagResource`, `s3:GetObject`, `s3:GetObjectAttributes`, `s3:GetObjectVersion`, `s3:GetObjectVersionAttributes`
+- Sensitive IAM actions: none
+- Left out (list handler only): `kafkaconnect:ListCustomPlugins`
+
+## `AWS::KafkaConnect::WorkerConfiguration`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (11): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `kafkaconnect:CreateWorkerConfiguration`, `kafkaconnect:DeleteWorkerConfiguration`, `kafkaconnect:DescribeWorkerConfiguration`, `kafkaconnect:ListTagsForResource`, `kafkaconnect:TagResource`, `kafkaconnect:UntagResource`
+- Sensitive IAM actions: none
+- Left out (list handler only): `kafkaconnect:ListWorkerConfigurations`
+
+## `AWS::S3Express::DirectoryBucket`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (22): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:DescribeAvailabilityZones`, `kms:Decrypt`, `kms:GenerateDataKey`, `s3express:CreateBucket`, `s3express:DeleteBucket`, `s3express:GetEncryptionConfiguration`, `s3express:GetInventoryConfiguration`, `s3express:GetLifecycleConfiguration`, `s3express:GetMetricsConfiguration`, `s3express:ListAllMyDirectoryBuckets`, `s3express:ListTagsForResource`, `s3express:PutEncryptionConfiguration`, `s3express:PutInventoryConfiguration`, `s3express:PutLifecycleConfiguration`, `s3express:PutMetricsConfiguration`, `s3express:TagResource`, `s3express:UntagResource`
+- Sensitive IAM actions: `kms:Decrypt`
+- Left out (list handler only): none
+
+## `AWS::S3Tables::TablePolicy`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: `/properties/ResourcePolicy (several types object|string)`
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (9): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `s3tables:DeleteTablePolicy`, `s3tables:GetTable`, `s3tables:GetTablePolicy`, `s3tables:PutTablePolicy`
+- Sensitive IAM actions: none
+- Left out (list handler only): `s3tables:ListTables`
+
+## `AWS::S3Vectors::VectorBucketPolicy`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/VectorBucketName`
+- Of those, write-only strings that could be opted in if they are secrets: `/properties/VectorBucketName`
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: `/properties/Policy (several types object|string)`
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (8): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `s3vectors:DeleteVectorBucketPolicy`, `s3vectors:GetVectorBucketPolicy`, `s3vectors:PutVectorBucketPolicy`
+- Sensitive IAM actions: none
+- Left out (list handler only): `s3vectors:ListVectorBuckets`
+
+## `AWS::SSM::ResourcePolicy`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: `/properties/Policy (several types object|string)`
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (8): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ssm:DeleteResourcePolicy`, `ssm:GetResourcePolicies`, `ssm:PutResourcePolicy`
 - Sensitive IAM actions: none
 - Left out (list handler only): none

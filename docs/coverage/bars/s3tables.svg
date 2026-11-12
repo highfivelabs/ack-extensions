@@ -1,10 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="300" height="33" viewBox="0 0 300 33" role="img" aria-label="s3tables: official 38.9%, ours beyond official 0.0%, uncovered 61.1% of 54 attributes; lower bar: Terraform aws provider (estimate): 27.8% of 54 attributes, at least 25.9%">
-<title>s3tables: official 38.9%, ours beyond official 0.0%, uncovered 61.1% of 54 attributes; lower bar: Terraform aws provider (estimate): 27.8% of 54 attributes, at least 25.9%</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="33" viewBox="0 0 300 33" role="img" aria-label="s3tables: official 38.9%, ours beyond official 3.7%, uncovered 57.4% of 54 attributes; lower bar: Terraform aws provider (estimate): 27.8% of 54 attributes, at least 25.9%">
+<title>s3tables: official 38.9%, ours beyond official 3.7%, uncovered 57.4% of 54 attributes; lower bar: Terraform aws provider (estimate): 27.8% of 54 attributes, at least 25.9%</title>
 <rect x="0" y="0" width="300" height="22" rx="3" fill="#d0d7de"/>
 <rect x="0" y="0" width="116.6" height="22" fill="#2f81f7"/>
 <text x="58.3" y="12" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">38.9%</text>
-<rect x="116.6" y="0" width="183.4" height="22" fill="#d0d7de"/>
-<text x="208.3" y="12" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">61.1%</text>
+<rect x="116.6" y="0" width="11.1" height="22" fill="#2da44e"/>
+<rect x="127.7" y="0" width="172.3" height="22" fill="#d0d7de"/>
+<text x="213.8" y="12" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">57.4%</text>
 <rect x="0.5" y="0.5" width="299" height="21" rx="3" fill="none" stroke="#8c959f"/>
 <rect x="0" y="25" width="300" height="8" rx="3" fill="#d0d7de"/>
 <rect x="0" y="25" width="83.3" height="8" fill="#7b42bc"/>

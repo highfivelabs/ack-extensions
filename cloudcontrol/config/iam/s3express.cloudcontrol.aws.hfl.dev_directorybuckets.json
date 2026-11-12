@@ -1,0 +1,71 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlS3ExpressDirectoryBucket",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3ExpressDirectoryBucketCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey",
+        "s3express:CreateBucket",
+        "s3express:ListAllMyDirectoryBuckets",
+        "s3express:PutEncryptionConfiguration",
+        "s3express:PutInventoryConfiguration",
+        "s3express:PutLifecycleConfiguration",
+        "s3express:PutMetricsConfiguration",
+        "s3express:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3ExpressDirectoryBucketRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeAvailabilityZones",
+        "s3express:GetEncryptionConfiguration",
+        "s3express:GetInventoryConfiguration",
+        "s3express:GetLifecycleConfiguration",
+        "s3express:GetMetricsConfiguration",
+        "s3express:ListAllMyDirectoryBuckets",
+        "s3express:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3ExpressDirectoryBucketUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey",
+        "s3express:PutEncryptionConfiguration",
+        "s3express:PutInventoryConfiguration",
+        "s3express:PutLifecycleConfiguration",
+        "s3express:PutMetricsConfiguration",
+        "s3express:TagResource",
+        "s3express:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3ExpressDirectoryBucketDelete",
+      "Effect": "Allow",
+      "Action": [
+        "s3express:DeleteBucket",
+        "s3express:ListAllMyDirectoryBuckets"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
