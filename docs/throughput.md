@@ -96,6 +96,7 @@ Filled in as batches land (types, coverage before and after).
 | 12, logging and identity | #74 | 15 | 226 |
 | pins at the 2026-11-10 ACK releases | #75 | | 226 (denominator 1,878) |
 | 13, application tier | #76 | 89 | 315 (application 113 of 263) |
+| 14, the catalog's types | #92 | 8 | 323 |
 
 Then five kinds moved from the schema fake to proven on moto (#77, #78):
 ECR `RegistryPolicy` and `RegistryScanningConfiguration`, Identity Store

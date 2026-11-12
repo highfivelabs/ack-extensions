@@ -1,12 +1,12 @@
 # ack-extensions plan
 
-Status, 2026-11-09: the repository has twenty-nine kinds:
+Status, 2026-11-12: the repository has thirty-four kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
 - `ec2.aws.hfl.dev` `CustomerGateway`, `VPNGateway`, `VPNConnection`,
-  `VPNGatewayRoutePropagation`, `NetworkInterfacePermission`, `Volume` and
-  `VolumeAttachment`;
+  `VPNGatewayRoutePropagation`, `NetworkInterfacePermission`, `ResourceTag`,
+  `Volume` and `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
 - `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy`, `AccessKey` and `VirtualMFADevice`;
@@ -2156,6 +2156,48 @@ the create and delete send the gateway and the table. No end-to-end test.
 As for `NetworkInterfacePermission`, the coverage data's "unproven on
 fake" note is for Cloud Control kinds only, so it is said here and in the
 README.
+
+### 6.35 `ec2.aws.hfl.dev` `ResourceTag`
+
+One tag on one EC2 resource made elsewhere: Terraform's `aws_ec2_tag`,
+which four of the catalog's tracked modules use (2026-11-12 ranking,
+section 5): an EKS cluster's subnets tagged for its load balancers, an
+Auto Scaling group's instances, a transit gateway attachment shared from
+another account. Upstream rechecked 2026-11-12 (read-only): ec2-controller
+`v1.25.0` has tags only as a field of its own kinds; no open pull request
+or `community` issue adds a tag kind. CloudFormation has no type for it,
+so Cloud Control cannot serve it either.
+
+**Hand-written** on PR #184's skeleton (by way of `VolumeAttachment`):
+`CreateTags` and `DeleteTags` take a list of resources and a list of tags,
+which the generator would turn into a kind of both lists, not one tag.
+
+- **Spec:** `resourceID` and `key` (immutable), `value` (may be empty,
+  changed in place with `CreateTags`). **Status:** `resourceType`, as
+  `DescribeTags` gives it.
+- **Read:** `DescribeTags` filtered on the resource and the key; the
+  value read is the spec's, so a value changed outside Kubernetes is put
+  back, and a tag removed outside it is put again.
+- **Delete:** `DeleteTags` with the key and no value, which removes the
+  tag whatever its value; the resource's other tags stay.
+- **Errors:** a resource not made yet (`*.NotFound`) is retried; a
+  malformed ID, an invalid key (`aws:` is AWS's own prefix) or value and
+  `TagLimitExceeded` are terminal.
+- **Not for a resource an ACK kind manages:** ACK syncs that kind's whole
+  tag set and removes a tag its spec does not list, so the two would undo
+  each other every resync; list the tag in that kind's `spec.tags`
+  instead. Said in the CRD's description. Refusing such a `resourceID` is
+  not built: it would need every ACK ec2 kind's status read by ID.
+- **IAM:** `ec2:CreateTags`, `ec2:DeleteTags`, `ec2:DescribeTags`
+  (`task ack:iam LIST=1`).
+
+**Proven on moto** (`TestResourceTag`): a VPC made with the SDK and a tag
+of its own; the object's tag put and the other kept, `status.resourceType`
+`vpc`; a changed value put; a value changed and a tag removed outside
+Kubernetes put back; an empty value; the delete removes the tag only;
+`deletion-policy: retain` leaves it. Unit tests: the value compared,
+which errors are terminal. **Not proven:** real AWS (a live run), and
+the tag limit.
 
 ## 7. The operator: ACK's identity, beside ACK's controller
 

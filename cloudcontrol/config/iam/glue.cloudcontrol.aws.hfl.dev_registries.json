@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlueRegistry",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueRegistryCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateRegistry",
+        "glue:GetRegistry",
+        "glue:GetTags",
+        "glue:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueRegistryRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetRegistry",
+        "glue:GetTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueRegistryUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetRegistry",
+        "glue:GetTags",
+        "glue:TagResource",
+        "glue:UntagResource",
+        "glue:UpdateRegistry"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueRegistryDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DeleteRegistry",
+        "glue:GetRegistry"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

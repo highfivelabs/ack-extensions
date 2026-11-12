@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlS3TablesTablePolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3TablesTablePolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "s3tables:GetTable",
+        "s3tables:GetTablePolicy",
+        "s3tables:PutTablePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3TablesTablePolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "s3tables:GetTable",
+        "s3tables:GetTablePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3TablesTablePolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "s3tables:GetTable",
+        "s3tables:GetTablePolicy",
+        "s3tables:PutTablePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3TablesTablePolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "s3tables:DeleteTablePolicy",
+        "s3tables:GetTable",
+        "s3tables:GetTablePolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -113,8 +113,11 @@ AWS::Route53Resolver::ResolverDNSSECConfig
 AWS::S3::MultiRegionAccessPoint
 AWS::S3::MultiRegionAccessPointPolicy
 AWS::S3Files::FileSystemPolicy
+AWS::S3Tables::TablePolicy
+AWS::S3Vectors::VectorBucketPolicy
 AWS::SSM::MaintenanceWindowTarget
 AWS::SSM::MaintenanceWindowTask
+AWS::SSM::ResourcePolicy
 AWS::SSM::ServiceSetting
 AWS::SSO::ApplicationAssignment
 AWS::SSO::Assignment
