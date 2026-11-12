@@ -40,6 +40,7 @@ import (
 
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/pkg/registry"
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/pkg/resource"
+	"github.com/highfivelabs/ack-extensions/pkg/slot"
 )
 
 const (
@@ -64,6 +65,7 @@ func main() {
 	kinds := flag.StringSlice("cloudcontrol-kinds", nil,
 		"the kinds to serve, as Kind.service (SAMLProvider.iam), comma-separated; default: every kind in the registry. "+
 			"Group-qualified, unlike --reconcile-resources, because two services can have kinds of the same name.")
+	slotFlag := slot.BindFlags(flag.CommandLine)
 	flag.Parse()
 	cfg.SetupLogger()
 
@@ -79,6 +81,12 @@ func main() {
 	gvks := make([]schema.GroupVersionKind, 0, len(factories))
 	for _, f := range factories {
 		gvks = append(gvks, f.ResourceDescriptor().GroupVersionKind())
+	}
+	// The version-slot guard (docs/slot-moves.md): its tag joins ACK's
+	// default tags before Validate reads their keys.
+	slotName, err := slot.Setup(&cfg, *slotFlag)
+	if err != nil {
+		fail(err, "invalid slot")
 	}
 	if err := cfg.Validate(context.Background(), ackcfg.WithGVKs(gvks)); err != nil {
 		fail(err, "invalid configuration")
@@ -121,7 +129,7 @@ func main() {
 	setupLog.Info("serving Cloud Control kinds", "kinds", len(gvks), "watchNamespace", cfg.WatchNamespace, "version", gitVersion)
 	sc := ackrt.NewServiceController(alias, apiGroup, acktypes.VersionInfo{
 		GitCommit: gitCommit, GitVersion: gitVersion, BuildDate: buildDate,
-	}).WithLogger(ctrlrt.Log).WithResourceManagerFactories(factories).WithPrometheusRegistry(ctrlrtmetrics.Registry)
+	}).WithLogger(ctrlrt.Log).WithResourceManagerFactories(slot.Wrap(factories, slotName, mgr, resource.SlotTags)).WithPrometheusRegistry(ctrlrtmetrics.Registry)
 	if err := sc.BindControllerManager(mgr, cfg); err != nil {
 		fail(err, "unable to bind the service controller")
 	}
