@@ -13,7 +13,8 @@
 // calls on the service's SDK client (rm.sdkapi.<Operation>, a client
 // variable's <Operation>, svcsdk.New<Operation>Paginator), and each name is
 // kept only if the SDK has that operation. IAM's action is the
-// operation's name in the service's IAM namespace. What a call needs
+// operation's name in the service's IAM namespace, unless IAM names it
+// otherwise (actions: S3 Control's account-level operations). What a call needs
 // beyond its own action (iam:PassRole for a role handed to the service,
 // the protected resource's action for a WAF association) is not in the
 // code: Curated lists it per kind, from AWS's documentation.
@@ -43,6 +44,28 @@ var RuntimeActions = []string{"sts:GetCallerIdentity"}
 var prefixes = map[string]string{
 	"applicationautoscaling": "application-autoscaling",
 	"eventbridge":            "events",
+	"s3control":              "s3",
+}
+
+// actions are the operations whose IAM action is not their own name, by
+// service: S3 Control's public access block is authorized as the
+// account's (s3:GetAccountPublicAccessBlock, and
+// s3:PutAccountPublicAccessBlock for both the put and the delete; the
+// S3 API reference for each operation).
+var actions = map[string]map[string]string{
+	"s3control": {
+		"GetPublicAccessBlock":    "GetAccountPublicAccessBlock",
+		"PutPublicAccessBlock":    "PutAccountPublicAccessBlock",
+		"DeletePublicAccessBlock": "PutAccountPublicAccessBlock",
+	},
+}
+
+// Action is the IAM action of a service's SDK operation.
+func Action(service, operation string) string {
+	if a, ok := actions[service][operation]; ok {
+		operation = a
+	}
+	return Prefix(service) + ":" + operation
 }
 
 // Prefix is a service's IAM namespace.
@@ -267,13 +290,13 @@ func Scan(root string) ([]Kind, error) {
 		k := Kind{Service: sc.service, Kind: sc.kind}
 		for n := range sc.names {
 			if ops[sc.sdk][n] {
-				k.Generated = append(k.Generated, Prefix(sc.service)+":"+n)
+				k.Generated = append(k.Generated, Action(sc.service, n))
 			}
 		}
 		if len(k.Generated) == 0 {
 			return nil, fmt.Errorf("%s: no call of an operation of %s found", k.Ref(), sc.sdk)
 		}
-		sort.Strings(k.Generated)
+		k.Generated = dedupe(k.Generated)
 		k.Curated = dedupe(Curated[k.Ref()])
 		out = append(out, k)
 	}
