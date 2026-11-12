@@ -146,7 +146,6 @@ AWS::DataZone::Project
 AWS::DataZone::ProjectMembership
 AWS::DataZone::ProjectProfile
 AWS::DataZone::SubscriptionTarget
-AWS::DataZone::UserProfile
 AWS::Deadline::Limit
 AWS::Deadline::MeteredProduct
 AWS::Deadline::QueueEnvironment
@@ -371,7 +370,6 @@ AWS::QuickSight::ApprovalPolicy
 AWS::QuickSight::Assignment
 AWS::QuickSight::Group
 AWS::QuickSight::LimitsProfile
-AWS::QuickSight::RefreshSchedule
 AWS::RAM::PermissionAssociation
 AWS::RAM::PrincipalAssociation
 AWS::RAM::ResourceAssociation
@@ -436,7 +434,6 @@ AWS::SSMQuickSetup::LifecycleAutomation
 AWS::SSO::ApplicationAssignment
 AWS::SSO::Assignment
 AWS::SSO::InstanceAccessControlAttributeConfiguration
-AWS::SageMaker::Device
 AWS::SageMaker::DeviceFleet
 AWS::SageMaker::ImageVersion
 AWS::SecretsManager::ResourcePolicy

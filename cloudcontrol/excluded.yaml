@@ -114,3 +114,10 @@ types:
   # a list, and the manager's informer for it never synced, which stopped
   # every other kind's cache from syncing (batch 15's first gate).
   AWS::FraudDetector::List: "a kind named List, which Kubernetes clients take for a list of objects"
+  # Batch 15: TestEveryKindOnSchemaFake failed for these; each is a gap of
+  # our generator or fake to fix before the type is served.
+  AWS::QuickSight::RefreshSchedule: "its primary identifier is nested (/properties/Schedule/ScheduleId), which the schema fake's example does not fill: not proven on any fake"
+  AWS::SageMaker::Device: "its primary identifier is nested (/properties/Device/DeviceName), which the schema fake's example does not fill: not proven on any fake"
+  AWS::DataZone::UserProfile: "status.details is an object in the CRD, but the schema fake fills a string the API server refuses: crdgen and the fake disagree on a oneOf"
+  AWS::MediaConnect::SourceEndpoint: "status.associatedResourceDetails is an object in the CRD, but the schema fake fills a string the API server refuses: crdgen and the fake disagree on a oneOf"
+  AWS::MediaConnect::DestinationEndpoint: "status.associatedResourceDetails is an object in the CRD, but the schema fake fills a string the API server refuses: crdgen and the fake disagree on a oneOf"

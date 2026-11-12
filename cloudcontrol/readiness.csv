@@ -497,7 +497,7 @@ AWS::DataZone::Project,datazone,Project,other,FULLY_MUTABLE,,Project (Cloud Cont
 AWS::DataZone::ProjectMembership,datazone,ProjectMembership,other,FULLY_MUTABLE,,ProjectMembership (Cloud Control),ok,0,0,1,2,0,true
 AWS::DataZone::ProjectProfile,datazone,ProjectProfile,other,FULLY_MUTABLE,,ProjectProfile (Cloud Control),ok,0,0,1,2,0,true
 AWS::DataZone::SubscriptionTarget,datazone,SubscriptionTarget,other,FULLY_MUTABLE,,SubscriptionTarget (Cloud Control),ok,0,0,2,2,1,true
-AWS::DataZone::UserProfile,datazone,UserProfile,other,FULLY_MUTABLE,,UserProfile (Cloud Control),ok,0,0,4,4,0,true
+AWS::DataZone::UserProfile,datazone,UserProfile,other,FULLY_MUTABLE,,,ok,0,0,4,4,0,true
 AWS::DAX::Cluster,dax,Cluster,other,FULLY_MUTABLE,,Cluster (Cloud Control),ok,0,0,0,0,1,true
 AWS::DAX::ParameterGroup,dax,ParameterGroup,other,FULLY_MUTABLE,,ParameterGroup (Cloud Control),ok,0,0,0,0,0,true
 AWS::DAX::SubnetGroup,dax,SubnetGroup,other,FULLY_MUTABLE,,SubnetGroup (Cloud Control),ok,0,0,0,0,1,true
@@ -1143,7 +1143,7 @@ AWS::ManagedBlockchain::Node,managedblockchain,Node,other,NON_PROVISIONABLE,,,no
 AWS::MediaConnect::Bridge,mediaconnect,Bridge,other,FULLY_MUTABLE,,Bridge (Cloud Control),ok,0,0,0,0,0,true
 AWS::MediaConnect::BridgeOutput,mediaconnect,BridgeOutput,other,FULLY_MUTABLE,,BridgeOutput (Cloud Control),ok,0,0,0,0,0,false
 AWS::MediaConnect::BridgeSource,mediaconnect,BridgeSource,other,FULLY_MUTABLE,,BridgeSource (Cloud Control),ok,0,0,0,0,0,false
-AWS::MediaConnect::DestinationEndpoint,mediaconnect,DestinationEndpoint,other,FULLY_MUTABLE,,DestinationEndpoint (Cloud Control),ok,0,0,0,0,2,true
+AWS::MediaConnect::DestinationEndpoint,mediaconnect,DestinationEndpoint,other,FULLY_MUTABLE,,,ok,0,0,0,0,2,true
 AWS::MediaConnect::Flow,mediaconnect,Flow,other,FULLY_MUTABLE,,Flow (Cloud Control),ok,0,0,0,0,1,true
 AWS::MediaConnect::FlowEntitlement,mediaconnect,FlowEntitlement,other,FULLY_MUTABLE,,FlowEntitlement (Cloud Control),ok,0,0,0,0,1,true
 AWS::MediaConnect::FlowMediaStream,mediaconnect,FlowMediaStream,other,FULLY_MUTABLE,,FlowMediaStream (Cloud Control),ok,0,0,0,0,0,true
@@ -1154,7 +1154,7 @@ AWS::MediaConnect::Gateway,mediaconnect,Gateway,other,IMMUTABLE,,Gateway (Cloud 
 AWS::MediaConnect::RouterInput,mediaconnect,RouterInput,other,FULLY_MUTABLE,,RouterInput (Cloud Control),ok,0,0,0,0,1,true
 AWS::MediaConnect::RouterNetworkInterface,mediaconnect,RouterNetworkInterface,other,FULLY_MUTABLE,,RouterNetworkInterface (Cloud Control),ok,0,0,0,0,1,true
 AWS::MediaConnect::RouterOutput,mediaconnect,RouterOutput,other,FULLY_MUTABLE,,RouterOutput (Cloud Control),ok,0,0,0,0,1,true
-AWS::MediaConnect::SourceEndpoint,mediaconnect,SourceEndpoint,other,FULLY_MUTABLE,,SourceEndpoint (Cloud Control),ok,0,0,0,0,1,true
+AWS::MediaConnect::SourceEndpoint,mediaconnect,SourceEndpoint,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::MediaConvert::CertificateAssociation,mediaconvert,CertificateAssociation,other,IMMUTABLE,,CertificateAssociation (Cloud Control),ok,0,0,0,0,0,true
 AWS::MediaConvert::JobTemplate,mediaconvert,JobTemplate,other,FULLY_MUTABLE,,JobTemplate (Cloud Control),ok,0,0,0,0,0,true
 AWS::MediaConvert::Preset,mediaconvert,Preset,other,FULLY_MUTABLE,,Preset (Cloud Control),ok,0,0,0,0,0,true
@@ -1397,7 +1397,7 @@ AWS::QuickSight::Group,quicksight,Group,other,FULLY_MUTABLE,,Group (Cloud Contro
 AWS::QuickSight::KnowledgeBase,quicksight,KnowledgeBase,other,FULLY_MUTABLE,,,ok,1,0,0,0,0,true
 AWS::QuickSight::LimitsProfile,quicksight,LimitsProfile,other,FULLY_MUTABLE,,LimitsProfile (Cloud Control),ok,0,0,0,0,0,true
 AWS::QuickSight::OAuthClientApplication,quicksight,OAuthClientApplication,other,FULLY_MUTABLE,,OAuthClientApplication (Cloud Control),ok,0,0,2,2,0,true
-AWS::QuickSight::RefreshSchedule,quicksight,RefreshSchedule,other,FULLY_MUTABLE,,RefreshSchedule (Cloud Control),ok,0,0,0,0,0,true
+AWS::QuickSight::RefreshSchedule,quicksight,RefreshSchedule,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::QuickSight::Space,quicksight,Space,other,FULLY_MUTABLE,,Space (Cloud Control),ok,0,0,0,0,0,true
 AWS::QuickSight::Template,quicksight,Template,other,FULLY_MUTABLE,,,ok,0,0,1,4,0,true
 AWS::QuickSight::Theme,quicksight,Theme,other,FULLY_MUTABLE,,Theme (Cloud Control),ok,0,0,0,0,0,true
@@ -1570,7 +1570,7 @@ AWS::SageMaker::CodeRepository,sagemaker,CodeRepository,other,FULLY_MUTABLE,,Cod
 AWS::SageMaker::ComputeQuota,sagemaker,ComputeQuota,other,FULLY_MUTABLE,,ComputeQuota (Cloud Control),ok,0,0,0,0,0,true
 AWS::SageMaker::Context,sagemaker,Context,other,FULLY_MUTABLE,,Context (Cloud Control),ok,0,0,0,0,0,true
 AWS::SageMaker::DataQualityJobDefinition,sagemaker,DataQualityJobDefinition,other,IMMUTABLE,DataQualityJobDefinition,,ok,0,0,1,1,1,true
-AWS::SageMaker::Device,sagemaker,Device,other,FULLY_MUTABLE,,Device (Cloud Control),ok,0,0,0,0,0,false
+AWS::SageMaker::Device,sagemaker,Device,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,false
 AWS::SageMaker::DeviceFleet,sagemaker,DeviceFleet,other,FULLY_MUTABLE,,DeviceFleet (Cloud Control),ok,0,0,0,0,1,false
 AWS::SageMaker::Domain,sagemaker,Domain,other,FULLY_MUTABLE,Domain,,ok,0,0,0,0,4,true
 AWS::SageMaker::Endpoint,sagemaker,Endpoint,other,FULLY_MUTABLE,Endpoint,,ok,0,0,0,3,0,true

@@ -1429,8 +1429,6 @@ types:
     unproven: "moto 5.2.5 has no datazone; on the schema fake only"
   - typeName: AWS::DataZone::SubscriptionTarget
     unproven: "moto 5.2.5 has no datazone; on the schema fake only"
-  - typeName: AWS::DataZone::UserProfile
-    unproven: "moto 5.2.5 has no datazone; on the schema fake only"
   - typeName: AWS::DAX::Cluster
     unproven: "no moto backend yet (moto 5.2.5 has dax); on the schema fake only"
   - typeName: AWS::DAX::ParameterGroup
@@ -2005,8 +2003,6 @@ types:
     unproven: "no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only"
   - typeName: AWS::MediaConnect::BridgeSource
     unproven: "no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only"
-  - typeName: AWS::MediaConnect::DestinationEndpoint
-    unproven: "no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only"
   - typeName: AWS::MediaConnect::Flow
     unproven: "no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only"
   - typeName: AWS::MediaConnect::FlowEntitlement
@@ -2026,8 +2022,6 @@ types:
   - typeName: AWS::MediaConnect::RouterNetworkInterface
     unproven: "no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only"
   - typeName: AWS::MediaConnect::RouterOutput
-    unproven: "no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only"
-  - typeName: AWS::MediaConnect::SourceEndpoint
     unproven: "no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only"
   - typeName: AWS::MediaConvert::CertificateAssociation
     unproven: "moto 5.2.5 has no mediaconvert; on the schema fake only"
@@ -2325,8 +2319,6 @@ types:
     unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
   - typeName: AWS::QuickSight::OAuthClientApplication
     unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
-  - typeName: AWS::QuickSight::RefreshSchedule
-    unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
   - typeName: AWS::QuickSight::Space
     unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
   - typeName: AWS::QuickSight::Theme
@@ -2470,8 +2462,6 @@ types:
   - typeName: AWS::SageMaker::ComputeQuota
     unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
   - typeName: AWS::SageMaker::Context
-    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
-  - typeName: AWS::SageMaker::Device
     unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
   - typeName: AWS::SageMaker::DeviceFleet
     unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"

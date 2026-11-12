@@ -9,8 +9,8 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 60 | 56 | 56 | 54 |
 | security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 22 | 4 | 4 | 4 |
 | application | 263 | 251 | 233 | 18 | 251 | 231 | 41 | 30 | 30 | 25 |
-| other | 1262 | 1190 | 1086 | 104 | 1190 | 1139 | 117 | 49 | 49 | 7 |
-| all | 1878 | 1769 | 1592 | 177 | 1769 | 1675 | 240 | 139 | 139 | 90 |
+| other | 1262 | 1190 | 1086 | 104 | 1190 | 1139 | 122 | 54 | 54 | 12 |
+| all | 1878 | 1769 | 1592 | 177 | 1769 | 1675 | 245 | 144 | 144 | 95 |
 
 ## Foundation gaps (platform-foundation and security-adjacent types with no kind)
 

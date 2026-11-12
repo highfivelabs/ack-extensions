@@ -630,7 +630,6 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::DataZone::ProjectMembership` | `ProjectMembership.datazone.cloudcontrol.aws.hfl.dev` | 4 | 2 | 6 | 0 | 0 | 3 |
 | `AWS::DataZone::ProjectProfile` | `ProjectProfile.datazone.cloudcontrol.aws.hfl.dev` | 10 | 7 | 4 | 0 | 0 | 14 |
 | `AWS::DataZone::SubscriptionTarget` | `SubscriptionTarget.datazone.cloudcontrol.aws.hfl.dev` | 9 | 8 | 6 | 0 | 0 | 9 |
-| `AWS::DataZone::UserProfile` | `UserProfile.datazone.cloudcontrol.aws.hfl.dev` | 5 | 4 | 6 | 0 | 0 | 4 |
 | `AWS::DAX::Cluster` | `Cluster.dax.cloudcontrol.aws.hfl.dev` | 15 | 3 | 14 | 0 | 0 | 0 |
 | `AWS::DAX::ParameterGroup` | `ParameterGroup.dax.cloudcontrol.aws.hfl.dev` | 3 | 0 | 4 | 0 | 0 | 0 |
 | `AWS::DAX::SubnetGroup` | `SubnetGroup.dax.cloudcontrol.aws.hfl.dev` | 3 | 0 | 2 | 0 | 0 | 0 |
@@ -918,7 +917,6 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::MediaConnect::Bridge` | `Bridge.mediaconnect.cloudcontrol.aws.hfl.dev` | 7 | 2 | 0 | 0 | 0 | 0 |
 | `AWS::MediaConnect::BridgeOutput` | `BridgeOutput.mediaconnect.cloudcontrol.aws.hfl.dev` | 3 | 0 | 4 | 0 | 0 | 0 |
 | `AWS::MediaConnect::BridgeSource` | `BridgeSource.mediaconnect.cloudcontrol.aws.hfl.dev` | 4 | 0 | 4 | 0 | 0 | 0 |
-| `AWS::MediaConnect::DestinationEndpoint` | `DestinationEndpoint.mediaconnect.cloudcontrol.aws.hfl.dev` | 4 | 12 | 6 | 0 | 0 | 6 |
 | `AWS::MediaConnect::Flow` | `Flow.mediaconnect.cloudcontrol.aws.hfl.dev` | 12 | 4 | 6 | 0 | 0 | 8 |
 | `AWS::MediaConnect::FlowEntitlement` | `FlowEntitlement.mediaconnect.cloudcontrol.aws.hfl.dev` | 8 | 1 | 6 | 0 | 0 | 3 |
 | `AWS::MediaConnect::FlowMediaStream` | `FlowMediaStream.mediaconnect.cloudcontrol.aws.hfl.dev` | 9 | 2 | 6 | 0 | 0 | 1 |
@@ -929,7 +927,6 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::MediaConnect::RouterInput` | `RouterInput.mediaconnect.cloudcontrol.aws.hfl.dev` | 11 | 11 | 10 | 0 | 0 | 23 |
 | `AWS::MediaConnect::RouterNetworkInterface` | `RouterNetworkInterface.mediaconnect.cloudcontrol.aws.hfl.dev` | 4 | 8 | 2 | 0 | 0 | 3 |
 | `AWS::MediaConnect::RouterOutput` | `RouterOutput.mediaconnect.cloudcontrol.aws.hfl.dev` | 10 | 10 | 6 | 0 | 0 | 15 |
-| `AWS::MediaConnect::SourceEndpoint` | `SourceEndpoint.mediaconnect.cloudcontrol.aws.hfl.dev` | 4 | 12 | 6 | 0 | 0 | 6 |
 | `AWS::MediaConvert::CertificateAssociation` | `CertificateAssociation.mediaconvert.cloudcontrol.aws.hfl.dev` | 1 | 0 | 2 | 0 | 0 | 1 |
 | `AWS::MediaConvert::JobTemplate` | `JobTemplate.mediaconvert.cloudcontrol.aws.hfl.dev` | 10 | 1 | 2 | 0 | 0 | 1 |
 | `AWS::MediaConvert::Preset` | `Preset.mediaconvert.cloudcontrol.aws.hfl.dev` | 5 | 1 | 2 | 0 | 0 | 0 |
@@ -1078,7 +1075,6 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::QuickSight::Group` | `Group.quicksight.cloudcontrol.aws.hfl.dev` | 3 | 2 | 4 | 0 | 0 | 2 |
 | `AWS::QuickSight::LimitsProfile` | `LimitsProfile.quicksight.cloudcontrol.aws.hfl.dev` | 4 | 4 | 2 | 0 | 0 | 2 |
 | `AWS::QuickSight::OAuthClientApplication` | `OAuthClientApplication.quicksight.cloudcontrol.aws.hfl.dev` | 11 | 3 | 4 | 0 | 0 | 2 |
-| `AWS::QuickSight::RefreshSchedule` | `RefreshSchedule.quicksight.cloudcontrol.aws.hfl.dev` | 3 | 1 | 6 | 0 | 0 | 1 |
 | `AWS::QuickSight::Space` | `Space.quicksight.cloudcontrol.aws.hfl.dev` | 7 | 4 | 4 | 0 | 0 | 2 |
 | `AWS::QuickSight::Theme` | `Theme.quicksight.cloudcontrol.aws.hfl.dev` | 8 | 5 | 4 | 0 | 0 | 57 |
 | `AWS::QuickSight::Topic` | `Topic.quicksight.cloudcontrol.aws.hfl.dev` | 10 | 1 | 8 | 0 | 0 | 2 |
@@ -1151,7 +1147,6 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::SageMaker::CodeRepository` | `CodeRepository.sagemaker.cloudcontrol.aws.hfl.dev` | 3 | 1 | 6 | 0 | 0 | 1 |
 | `AWS::SageMaker::ComputeQuota` | `ComputeQuota.sagemaker.cloudcontrol.aws.hfl.dev` | 7 | 6 | 6 | 0 | 0 | 6 |
 | `AWS::SageMaker::Context` | `Context.sagemaker.cloudcontrol.aws.hfl.dev` | 6 | 3 | 6 | 0 | 0 | 4 |
-| `AWS::SageMaker::Device` | `Device.sagemaker.cloudcontrol.aws.hfl.dev` | 3 | 0 | 2 | 0 | 0 | 6 |
 | `AWS::SageMaker::DeviceFleet` | `DeviceFleet.sagemaker.cloudcontrol.aws.hfl.dev` | 5 | 0 | 2 | 0 | 0 | 7 |
 | `AWS::SageMaker::Experiment` | `Experiment.sagemaker.cloudcontrol.aws.hfl.dev` | 4 | 3 | 2 | 0 | 0 | 5 |
 | `AWS::SageMaker::Hub` | `Hub.sagemaker.cloudcontrol.aws.hfl.dev` | 6 | 4 | 4 | 0 | 0 | 6 |
@@ -8843,18 +8838,6 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - Sensitive IAM actions: `iam:PassRole`
 - Left out (list handler only): `datazone:ListSubscriptionTargets`
 
-## `AWS::DataZone::UserProfile`
-
-- Secret references (opted in, `secrets` in types.yaml): none
-- Write-only kept as plain fields: `/properties/DomainIdentifier`, `/properties/UserIdentifier`, `/properties/UserType`, `/properties/SessionName`
-- Of those, write-only strings that could be opted in if they are secrets: `/properties/DomainIdentifier`, `/properties/SessionName`, `/properties/UserIdentifier`, `/properties/UserType`
-- Create-only paths without a CEL rule: none
-- Nodes made `x-kubernetes-preserve-unknown-fields`: none
-- Read-only properties nested in writable objects (dropped): none
-- IAM actions (16): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `datazone:CreateUserProfile`, `datazone:DeleteUserProfile`, `datazone:GetDomain`, `datazone:GetUserProfile`, `datazone:UpdateUserProfile`, `iam:GetRole`, `iam:GetUser`, `sso:AssociateProfile`, `sso:DisassociateProfile`, `sso:GetProfile`, `sso:ListProfiles`
-- Sensitive IAM actions: none
-- Left out (list handler only): `datazone:SearchUserProfiles`
-
 ## `AWS::DAX::Cluster`
 
 - Secret references (opted in, `secrets` in types.yaml): none
@@ -12299,18 +12282,6 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - Sensitive IAM actions: none
 - Left out (list handler only): none
 
-## `AWS::MediaConnect::DestinationEndpoint`
-
-- Secret references (opted in, `secrets` in types.yaml): none
-- Write-only kept as plain fields: none
-- Of those, write-only strings that could be opted in if they are secrets: none
-- Create-only paths without a CEL rule: none
-- Nodes made `x-kubernetes-preserve-unknown-fields`: none
-- Read-only properties nested in writable objects (dropped): none
-- IAM actions (19): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:CreateNetworkInterface`, `ec2:CreateTags`, `iam:CreateServiceLinkedRole`, `iam:PassRole`, `mediaconnect:AssociateDestination`, `mediaconnect:DeregisterDestinationEndpoint`, `mediaconnect:DisassociateDestination`, `mediaconnect:GetDestinationEndpoint`, `mediaconnect:ListDestinationEndpoints`, `mediaconnect:ListTagsForResource`, `mediaconnect:RegisterDestinationEndpoint`, `mediaconnect:TagResource`, `mediaconnect:UntagResource`, `mediaconnect:UpdateDestinationEndpoint`
-- Sensitive IAM actions: `iam:CreateServiceLinkedRole`, `iam:PassRole`
-- Left out (list handler only): none
-
 ## `AWS::MediaConnect::Flow`
 
 - Secret references (opted in, `secrets` in types.yaml): none
@@ -12429,18 +12400,6 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - Read-only properties nested in writable objects (dropped): none
 - IAM actions (23): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:CreateNetworkInterface`, `ec2:CreateTags`, `iam:PassRole`, `mediaconnect:AssociateRouterNetworkInterface`, `mediaconnect:AssociateSource`, `mediaconnect:CreateRouterOutput`, `mediaconnect:DeleteRouterOutput`, `mediaconnect:DeregisterSourceEndpoint`, `mediaconnect:DisassociateSource`, `mediaconnect:GetRouterOutput`, `mediaconnect:ListRouterOutputs`, `mediaconnect:ListTagsForResource`, `mediaconnect:RegisterSourceEndpoint`, `mediaconnect:TagResource`, `mediaconnect:UntagResource`, `mediaconnect:UpdateFlowSource`, `mediaconnect:UpdateRouterOutput`, `medialive:UpdateInput`
 - Sensitive IAM actions: `iam:PassRole`
-- Left out (list handler only): none
-
-## `AWS::MediaConnect::SourceEndpoint`
-
-- Secret references (opted in, `secrets` in types.yaml): none
-- Write-only kept as plain fields: none
-- Of those, write-only strings that could be opted in if they are secrets: none
-- Create-only paths without a CEL rule: none
-- Nodes made `x-kubernetes-preserve-unknown-fields`: none
-- Read-only properties nested in writable objects (dropped): none
-- IAM actions (18): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:CreateNetworkInterface`, `ec2:CreateTags`, `iam:CreateServiceLinkedRole`, `mediaconnect:AssociateSource`, `mediaconnect:DeregisterSourceEndpoint`, `mediaconnect:DisassociateSource`, `mediaconnect:GetSourceEndpoint`, `mediaconnect:ListSourceEndpoints`, `mediaconnect:ListTagsForResource`, `mediaconnect:RegisterSourceEndpoint`, `mediaconnect:TagResource`, `mediaconnect:UntagResource`, `mediaconnect:UpdateSourceEndpoint`
-- Sensitive IAM actions: `iam:CreateServiceLinkedRole`
 - Left out (list handler only): none
 
 ## `AWS::MediaConvert::CertificateAssociation`
@@ -14219,18 +14178,6 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - Sensitive IAM actions: none
 - Left out (list handler only): `quicksight:ListOAuthClientApplications`
 
-## `AWS::QuickSight::RefreshSchedule`
-
-- Secret references (opted in, `secrets` in types.yaml): none
-- Write-only kept as plain fields: none
-- Of those, write-only strings that could be opted in if they are secrets: none
-- Create-only paths without a CEL rule: none
-- Nodes made `x-kubernetes-preserve-unknown-fields`: none
-- Read-only properties nested in writable objects (dropped): none
-- IAM actions (9): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `quicksight:CreateRefreshSchedule`, `quicksight:DeleteRefreshSchedule`, `quicksight:DescribeRefreshSchedule`, `quicksight:UpdateRefreshSchedule`
-- Sensitive IAM actions: none
-- Left out (list handler only): `quicksight:ListRefreshSchedules`
-
 ## `AWS::QuickSight::Space`
 
 - Secret references (opted in, `secrets` in types.yaml): none
@@ -15094,18 +15041,6 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - IAM actions (12): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `sagemaker:AddTags`, `sagemaker:CreateContext`, `sagemaker:DeleteContext`, `sagemaker:DeleteTags`, `sagemaker:DescribeContext`, `sagemaker:ListTags`, `sagemaker:UpdateContext`
 - Sensitive IAM actions: none
 - Left out (list handler only): `sagemaker:ListContexts`
-
-## `AWS::SageMaker::Device`
-
-- Secret references (opted in, `secrets` in types.yaml): none
-- Write-only kept as plain fields: none
-- Of those, write-only strings that could be opted in if they are secrets: none
-- Create-only paths without a CEL rule: none
-- Nodes made `x-kubernetes-preserve-unknown-fields`: none
-- Read-only properties nested in writable objects (dropped): none
-- IAM actions (9): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `sagemaker:DeregisterDevices`, `sagemaker:DescribeDevice`, `sagemaker:RegisterDevices`, `sagemaker:UpdateDevices`
-- Sensitive IAM actions: none
-- Left out (list handler only): none
 
 ## `AWS::SageMaker::DeviceFleet`
 

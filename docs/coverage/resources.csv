@@ -503,7 +503,7 @@ datazone,Project,18,,0,Project (Cloud Control),18,0,false,ours Project (Cloud Co
 datazone,ProjectMembership,5,,0,ProjectMembership (Cloud Control),5,0,false,ours ProjectMembership (Cloud Control) unproven on fake: moto 5.2.5 has no datazone; on the schema fake only
 datazone,ProjectProfile,22,,0,ProjectProfile (Cloud Control),22,0,false,ours ProjectProfile (Cloud Control) unproven on fake: moto 5.2.5 has no datazone; on the schema fake only
 datazone,SubscriptionTarget,10,,0,SubscriptionTarget (Cloud Control),10,0,false,ours SubscriptionTarget (Cloud Control) unproven on fake: moto 5.2.5 has no datazone; on the schema fake only
-datazone,UserProfile,5,,0,UserProfile (Cloud Control),5,0,false,ours UserProfile (Cloud Control) unproven on fake: moto 5.2.5 has no datazone; on the schema fake only
+datazone,UserProfile,5,,0,,0,5,false,
 dax,Cluster,15,,0,Cluster (Cloud Control),15,0,false,ours Cluster (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has dax); on the schema fake only
 dax,ParameterGroup,3,,0,ParameterGroup (Cloud Control),3,0,false,ours ParameterGroup (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has dax); on the schema fake only
 dax,SubnetGroup,3,,0,SubnetGroup (Cloud Control),3,0,false,ours SubnetGroup (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has dax); on the schema fake only
@@ -1159,7 +1159,7 @@ managedblockchain,Node,4,,0,,0,4,false,
 mediaconnect,Bridge,23,,0,Bridge (Cloud Control),23,0,false,ours Bridge (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only
 mediaconnect,BridgeOutput,7,,0,BridgeOutput (Cloud Control),7,0,false,ours BridgeOutput (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only
 mediaconnect,BridgeSource,9,,0,BridgeSource (Cloud Control),9,0,false,ours BridgeSource (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only
-mediaconnect,DestinationEndpoint,24,,0,DestinationEndpoint (Cloud Control),24,0,false,ours DestinationEndpoint (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only
+mediaconnect,DestinationEndpoint,24,,0,,0,24,false,
 mediaconnect,Flow,91,,0,Flow (Cloud Control),91,0,false,ours Flow (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only
 mediaconnect,FlowEntitlement,17,,0,FlowEntitlement (Cloud Control),17,0,false,ours FlowEntitlement (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only
 mediaconnect,FlowMediaStream,17,,0,FlowMediaStream (Cloud Control),17,0,false,ours FlowMediaStream (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only
@@ -1170,7 +1170,7 @@ mediaconnect,Gateway,4,,0,Gateway (Cloud Control),4,0,false,ours Gateway (Cloud 
 mediaconnect,RouterInput,78,,0,RouterInput (Cloud Control),78,0,false,ours RouterInput (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only
 mediaconnect,RouterNetworkInterface,7,,0,RouterNetworkInterface (Cloud Control),7,0,false,ours RouterNetworkInterface (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only
 mediaconnect,RouterOutput,52,,0,RouterOutput (Cloud Control),52,0,false,ours RouterOutput (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only
-mediaconnect,SourceEndpoint,23,,0,SourceEndpoint (Cloud Control),23,0,false,ours SourceEndpoint (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only
+mediaconnect,SourceEndpoint,23,,0,,0,23,false,
 mediaconvert,CertificateAssociation,1,,0,CertificateAssociation (Cloud Control),1,0,false,ours CertificateAssociation (Cloud Control) unproven on fake: moto 5.2.5 has no mediaconvert; on the schema fake only
 mediaconvert,JobTemplate,12,,0,JobTemplate (Cloud Control),12,0,false,ours JobTemplate (Cloud Control) unproven on fake: moto 5.2.5 has no mediaconvert; on the schema fake only
 mediaconvert,Preset,5,,0,Preset (Cloud Control),5,0,false,ours Preset (Cloud Control) unproven on fake: moto 5.2.5 has no mediaconvert; on the schema fake only
@@ -1417,7 +1417,7 @@ quicksight,Group,3,,0,Group (Cloud Control),3,0,false,ours Group (Cloud Control)
 quicksight,KnowledgeBase,18,,0,,0,18,false,
 quicksight,LimitsProfile,5,,0,LimitsProfile (Cloud Control),5,0,false,ours LimitsProfile (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only
 quicksight,OAuthClientApplication,12,,0,OAuthClientApplication (Cloud Control),12,0,false,ours OAuthClientApplication (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only
-quicksight,RefreshSchedule,10,,0,RefreshSchedule (Cloud Control),10,0,false,ours RefreshSchedule (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only
+quicksight,RefreshSchedule,10,,0,,0,10,false,
 quicksight,Space,10,,0,Space (Cloud Control),10,0,false,ours Space (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only
 quicksight,Template,16714,,0,,0,16714,false,
 quicksight,Theme,85,,0,Theme (Cloud Control),85,0,false,ours Theme (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only
@@ -1591,7 +1591,7 @@ sagemaker,CodeRepository,6,,0,CodeRepository (Cloud Control),6,0,false,ours Code
 sagemaker,ComputeQuota,25,,0,ComputeQuota (Cloud Control),25,0,false,ours ComputeQuota (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only
 sagemaker,Context,9,,0,Context (Cloud Control),9,0,false,ours Context (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only
 sagemaker,DataQualityJobDefinition,40,DataQualityJobDefinition,31,,0,9,false,official_unmapped=6
-sagemaker,Device,6,,0,Device (Cloud Control),6,0,false,ours Device (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only
+sagemaker,Device,6,,0,,0,6,false,
 sagemaker,DeviceFleet,7,,0,DeviceFleet (Cloud Control),7,0,false,ours DeviceFleet (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only
 sagemaker,Domain,150,Domain,111,,0,39,false,official_unmapped=15
 sagemaker,Endpoint,22,Endpoint,19,,0,3,false,

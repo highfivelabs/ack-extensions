@@ -2181,7 +2181,6 @@ rules:
   - projectprofiles
   - projects
   - subscriptiontargets
-  - userprofiles
   verbs:
   - create
   - delete
@@ -2209,7 +2208,6 @@ rules:
   - projectprofiles/status
   - projects/status
   - subscriptiontargets/status
-  - userprofiles/status
   verbs:
   - get
   - patch
@@ -4530,7 +4528,6 @@ rules:
   - bridgeoutputs
   - bridges
   - bridgesources
-  - destinationendpoints
   - flowentitlements
   - flowmediastreams
   - flowoutputs
@@ -4541,7 +4538,6 @@ rules:
   - routerinputs
   - routernetworkinterfaces
   - routeroutputs
-  - sourceendpoints
   verbs:
   - create
   - delete
@@ -4556,7 +4552,6 @@ rules:
   - bridgeoutputs/status
   - bridges/status
   - bridgesources/status
-  - destinationendpoints/status
   - flowentitlements/status
   - flowmediastreams/status
   - flowoutputs/status
@@ -4567,7 +4562,6 @@ rules:
   - routerinputs/status
   - routernetworkinterfaces/status
   - routeroutputs/status
-  - sourceendpoints/status
   verbs:
   - get
   - patch
@@ -5557,7 +5551,6 @@ rules:
   - groups
   - limitsprofiles
   - oauthclientapplications
-  - refreshschedules
   - spaces
   - themes
   - topics
@@ -5586,7 +5579,6 @@ rules:
   - groups/status
   - limitsprofiles/status
   - oauthclientapplications/status
-  - refreshschedules/status
   - spaces/status
   - themes/status
   - topics/status
@@ -6274,7 +6266,6 @@ rules:
   - computequotas
   - contexts
   - devicefleets
-  - devices
   - experiments
   - hubs
   - humantaskuis
@@ -6310,7 +6301,6 @@ rules:
   - computequotas/status
   - contexts/status
   - devicefleets/status
-  - devices/status
   - experiments/status
   - hubs/status
   - humantaskuis/status

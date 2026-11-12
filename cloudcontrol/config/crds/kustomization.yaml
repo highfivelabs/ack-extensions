@@ -624,7 +624,6 @@ resources:
   - datazone.cloudcontrol.aws.hfl.dev_projectmemberships.yaml
   - datazone.cloudcontrol.aws.hfl.dev_projectprofiles.yaml
   - datazone.cloudcontrol.aws.hfl.dev_subscriptiontargets.yaml
-  - datazone.cloudcontrol.aws.hfl.dev_userprofiles.yaml
   - dax.cloudcontrol.aws.hfl.dev_clusters.yaml
   - dax.cloudcontrol.aws.hfl.dev_parametergroups.yaml
   - dax.cloudcontrol.aws.hfl.dev_subnetgroups.yaml
@@ -912,7 +911,6 @@ resources:
   - mediaconnect.cloudcontrol.aws.hfl.dev_bridges.yaml
   - mediaconnect.cloudcontrol.aws.hfl.dev_bridgeoutputs.yaml
   - mediaconnect.cloudcontrol.aws.hfl.dev_bridgesources.yaml
-  - mediaconnect.cloudcontrol.aws.hfl.dev_destinationendpoints.yaml
   - mediaconnect.cloudcontrol.aws.hfl.dev_flows.yaml
   - mediaconnect.cloudcontrol.aws.hfl.dev_flowentitlements.yaml
   - mediaconnect.cloudcontrol.aws.hfl.dev_flowmediastreams.yaml
@@ -923,7 +921,6 @@ resources:
   - mediaconnect.cloudcontrol.aws.hfl.dev_routerinputs.yaml
   - mediaconnect.cloudcontrol.aws.hfl.dev_routernetworkinterfaces.yaml
   - mediaconnect.cloudcontrol.aws.hfl.dev_routeroutputs.yaml
-  - mediaconnect.cloudcontrol.aws.hfl.dev_sourceendpoints.yaml
   - mediaconvert.cloudcontrol.aws.hfl.dev_certificateassociations.yaml
   - mediaconvert.cloudcontrol.aws.hfl.dev_jobtemplates.yaml
   - mediaconvert.cloudcontrol.aws.hfl.dev_presets.yaml
@@ -1072,7 +1069,6 @@ resources:
   - quicksight.cloudcontrol.aws.hfl.dev_groups.yaml
   - quicksight.cloudcontrol.aws.hfl.dev_limitsprofiles.yaml
   - quicksight.cloudcontrol.aws.hfl.dev_oauthclientapplications.yaml
-  - quicksight.cloudcontrol.aws.hfl.dev_refreshschedules.yaml
   - quicksight.cloudcontrol.aws.hfl.dev_spaces.yaml
   - quicksight.cloudcontrol.aws.hfl.dev_themes.yaml
   - quicksight.cloudcontrol.aws.hfl.dev_topics.yaml
@@ -1145,7 +1141,6 @@ resources:
   - sagemaker.cloudcontrol.aws.hfl.dev_coderepositories.yaml
   - sagemaker.cloudcontrol.aws.hfl.dev_computequotas.yaml
   - sagemaker.cloudcontrol.aws.hfl.dev_contexts.yaml
-  - sagemaker.cloudcontrol.aws.hfl.dev_devices.yaml
   - sagemaker.cloudcontrol.aws.hfl.dev_devicefleets.yaml
   - sagemaker.cloudcontrol.aws.hfl.dev_experiments.yaml
   - sagemaker.cloudcontrol.aws.hfl.dev_hubs.yaml
