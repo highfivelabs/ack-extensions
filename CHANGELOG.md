@@ -7,6 +7,13 @@ design and the reasons are in `docs/plan.md`.
 
 ### Fixed
 
+- **`iam.aws.hfl.dev` `AccountAlias`: a new object for the account's
+  current alias takes it over.** When `CreateAccountAlias` answers
+  `EntityAlreadyExists` (an error IAM's API reference lists for it) and
+  the account's alias is the one asked for, the object syncs instead of
+  going terminal; another account's alias is still terminal
+  (`docs/plan.md` section 6.21). Found by aws-emulator; moto accepted it.
+
 - **`rds.aws.hfl.dev` `OptionGroup`: the read works on AWS.** It sent
   `DescribeOptionGroups` with `OptionGroupName` together with
   `EngineName` and `MajorEngineVersion`, a combination AWS's API

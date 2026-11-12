@@ -22,6 +22,11 @@ import (
 // The fault IAM returns when the alias does not exist.
 const noSuchEntity = "NoSuchEntity"
 
+// The fault CreateAccountAlias returns for an alias that already exists:
+// another account's, and (the AWS Emulator does this; moto does not) the
+// account's own (docs/aws-emulator.md).
+const entityAlreadyExists = "EntityAlreadyExists"
+
 func isAPIError(err error, codes ...string) bool {
 	var apiErr smithy.APIError
 	if !errors.As(err, &apiErr) {
@@ -61,8 +66,9 @@ func (rm *resourceManager) currentAlias(ctx context.Context) (string, error) {
 // this object's: the create that follows sets it back (a new alias
 // replaces the old). Before this object has set it once (no ARN yet), it
 // has nothing to find either: the create sets the alias even when the
-// account already has it, rather than the runtime refusing an object for
-// a setting that already exists.
+// account already has it (taking it over when IAM answers
+// EntityAlreadyExists), rather than the runtime refusing an object for a
+// setting that already exists.
 func (rm *resourceManager) sdkFind(ctx context.Context, r *resource) (latest *resource, err error) {
 	rlog := ackrtlog.FromContext(ctx)
 	exit := rlog.Trace("rm.sdkFind")
@@ -100,6 +106,15 @@ func (rm *resourceManager) sdkCreate(ctx context.Context, desired *resource) (cr
 	}
 	_, err = rm.sdkapi.CreateAccountAlias(ctx, &svcsdk.CreateAccountAliasInput{AccountAlias: desired.ko.Spec.AccountAlias})
 	rm.metrics.RecordAPICall("CREATE", "CreateAccountAlias", err)
+	if err != nil && isAPIError(err, entityAlreadyExists) {
+		// Already the account's alias (set by hand, or left by an object
+		// deleted with deletion-policy retain): this object takes it over.
+		// Any other alias is another account's, and the error stands.
+		alias, readErr := rm.currentAlias(ctx)
+		if readErr == nil && alias == aws.ToString(desired.ko.Spec.AccountAlias) {
+			err = nil
+		}
+	}
 	if err != nil {
 		return nil, err
 	}
