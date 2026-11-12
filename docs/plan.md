@@ -740,6 +740,45 @@ where it stands here:
 | `Key`: `pendingWindowInDays` on delete, `rotationPeriodInDays`, `enabled` | ACK (fields of `Key`) | **question 1.** kms-controller's `Key` reports `enabled` and `pendingDeletionWindowInDays` in status only, and has no rotation period; no pull request adds them. A copy of `Key` here, or a patch, is what question 1 asks |
 | `force_destroy` (emptying a bucket on delete) | ACK (a field and hook on `Bucket`) | **question 1**; no pull request |
 
+**Gaps on ACK's own kinds, each placed (2026-11-12).** The catalog's
+`ec2-instance`, `rds`, `acm`, `kms` and `s3-bucket` charts (its
+`docs/aws.md` section 8) need fields ACK's kinds lack. Nothing here
+changes ACK's kinds: whether a field ACK lacks is added by a copy of the
+kind in our group or by a patch is question 1, unanswered. Read
+read-only with `gh` at the catalog's pins (ec2-controller `v1.23.1`,
+rds-controller `v1.14.2`, s3-controller `v1.15.0`, kms-controller
+`v1.7.0`, acm-controller `v1.11.0`, route53-controller `v1.8.0`), at each
+controller's latest release (all 2026-11-10: ec2 `v1.24.0`, rds
+`v1.15.0`, s3 `v1.16.0`, kms `v1.8.0`, acm `v1.12.0`, route53 `v1.9.0`;
+the same fields as the pins except where said) and on `main`. None of
+the CloudFormation types behind these kinds is served here as a Cloud
+Control kind (`cloudcontrol/types.yaml`: a type ACK serves stays out, so
+two controllers never manage one resource), so "usable today" means a
+way that works without either.
+
+| Kind | Gap | What ACK has | AWS API | Upstream | Recommended | Usable today |
+| --- | --- | --- | --- | --- | --- | --- |
+| ec2 `Instance` | `securityGroupRefs` | `securityGroupIDs` (IDs), `securityGroups` (names) | `RunInstances` `SecurityGroupIds` | **merged on `main`**: ec2-controller PR #406 (2026-11-11, closes community#3132); release PR #411 (`v1.25.0`) open | wait for `v1.25.0` (the upstream-first rule) and move the catalog's pin | no; with `v1.25.0` |
+| ec2 `Instance` | `networkInterfaces[].groups`, `networkInterfaces[].primaryIPv6`, `enablePrimaryIPv6`, `placement.groupID`, `cpuOptions.amdSevSnp` | each in `generator.yaml`'s `ignore.field_paths` at both versions; `placement` has `groupName`; `cpuOptions` has `coreCount`, `threadsPerCore`, `nestedVirtualization` | `RunInstances` `NetworkInterfaces[].Groups`, `.PrimaryIpv6`, `EnablePrimaryIpv6`, `Placement.GroupId`, `CpuOptions.AmdSevSnp` | community#2765 (groups on network interfaces, open, 2026-09-21); nothing for the other four | one upstream change: take the four paths off `ignore`, with a `references` to `SecurityGroup` on `groups` as #406 did for the instance | `placement.groupName` for a placement group (our `ec2.cloudcontrol.aws.hfl.dev` `PlacementGroup` makes one); the rest no |
+| ours: ec2 `VolumeAttachment`, `Volume` | `instanceRef`; a volume's Availability Zone from an instance | `instanceID` (required ID), `volumeID`/`volumeRef`; `Volume.availabilityZone` a plain string | `AttachVolume` `InstanceId`; `CreateVolume` `AvailabilityZone` | ours | the generator's `references` to ACK's `Instance` (`Status.InstanceID`; `Spec.Placement.AvailabilityZone`, which ACK's read fills from `DescribeInstances`), once question 16 adds ec2-controller as a module | no: waits on question 16 |
+| rds `DBInstance` | Active Directory domain | `domain`, `domainIAMRoleName`; `DomainFqdn`, `DomainOu`, `DomainAuthSecretArn`, `DomainDnsIps` in `ignore.field_paths` (on create and both restores) | `CreateDBInstance` `Domain*` | none | upstream: take them off `ignore` (`domainAuthSecretARN` with a reference to ACK's `Secret`) | AWS-managed AD only (`domain`, `domainIAMRoleName`) |
+| rds `DBInstance` | point-in-time restore | restores from a snapshot (`dbSnapshotIdentifier`, a custom create calling `RestoreDBInstanceFromDBSnapshot`); `sourceDBInstanceIdentifier` means a read replica (`CreateDBInstanceReadReplica`); `DBCluster` has point-in-time restore (`restoreToTime`, `useLatestRestorableTime`) | `RestoreDBInstanceToPointInTime` `SourceDBInstanceIdentifier`, `SourceDbiResourceId`, `RestoreTime`, `UseLatestRestorableTime` | none (community#1665 was the cluster's, closed when it shipped) | upstream: a branch of the custom create, as `DBCluster`'s, chosen by `restoreTime` or `useLatestRestorableTime` (not by `sourceDBInstanceIdentifier`, which already means a replica) | no |
+| rds `DBInstance` | restore from S3 | none | `RestoreDBInstanceFromS3` `S3BucketName`, `S3Prefix`, `S3IngestionRoleArn`, `SourceEngine`, `SourceEngineVersion` | none | upstream: the same shape as the point-in-time branch | no |
+| rds | blue/green deployments | `BlueGreenDeployment` in `ignore.resource_names` | `CreateBlueGreenDeployment`, `SwitchoverBlueGreenDeployment`, `DeleteBlueGreenDeployment` | community#1992 (open, 2026-05-14) | a kind of its own (upstream per #1992, or here after question 1's rule): an operation with a switchover, not a field of `DBInstance`; no CloudFormation type | no |
+| acm `Certificate` | synced only once `ISSUED` | no `synced` block for `Certificate` (only `AcmeEndpoint`, `AcmeDomainValidation`): `ACK.ResourceSynced` is true while `status.status` is `PENDING_VALIDATION` | `DescribeCertificate` `Certificate.Status` | none | upstream: `synced: when: [{path: Status.Status, in: [ISSUED]}]`, opt-in so current users are not held; if declined, a small `CertificateValidation` kind here (`certificateRef`, ready when `ISSUED`; Terraform's `aws_acm_certificate_validation`) | no |
+| acm `Certificate` | `validationMethod` (`EMAIL`) | `RequestCertificateInput.ValidationMethod` in `ignore.field_paths`; the create hook sets `DNS` ("We only support DNS-based validation") | `RequestCertificate` `ValidationMethod`, `DomainValidationOptions[].ValidationDomain` | none | upstream: off `ignore`, the hook defaulting to `DNS` | no |
+| route53 `RecordSet` | overwrite on create (`UPSERT`; Terraform's `allow_overwrite`) | create sends `CREATE` (`sdk_create_post_build_request`), update `UPSERT` (`customUpdateRecordSet`); no field | `ChangeResourceRecordSets` `Changes[].Action` | none; adoption of an existing record by `adoption-fields` is broken until route53-controller PR #121 (open, 2026-10-14; community#2981) | upstream: a spec field (`allowOverwrite`) switching the create to `UPSERT`; meanwhile ACK's `adopt-or-create` annotation, once #121 lands, is the way to take over a record | no (`adopt-or-create` after #121) |
+| kms `Key` | deletion window | the annotation `kms.services.k8s.aws/pending-window-in-days` (default 7; `status.pendingDeletionWindowInDays`) | `ScheduleKeyDeletion` `PendingWindowInDays` | community#1787 (immediate delete, open) | the annotation: the chart sets `deletion_window_in_days` on it; a spec field upstream is optional | **yes**, the annotation |
+| kms `Key` | `rotationPeriodInDays` | `enableKeyRotation` (`EnableKeyRotation`/`DisableKeyRotation` in a hook), no period | `EnableKeyRotation` `RotationPeriodInDays` (90 to 2,560) | none | upstream: the field, passed in the existing call | no |
+| kms `Key` | `enabled` | `status.enabled` only | `EnableKey`, `DisableKey` | none | upstream: a spec field with a hook | no |
+| s3 `Bucket` | empty the bucket on delete (`force_destroy`) | `DeleteBucket` only (no delete hook); a bucket with objects fails `BucketNotEmpty` and retries | `ListObjectVersions`, `ListMultipartUploads`, `DeleteObjects` (1,000 a call), `AbortMultipartUpload`, then `DeleteBucket`; Object Lock needs `BypassGovernanceRetention` | community#1393 (closed as stale, 2025-09-16, no pull request) | upstream: a field or annotation and an `sdk_delete_pre_build_request` hook that empties the bucket | no (a chart could run a pre-delete job; not done) |
+
+So of the 14, one is usable today (the KMS deletion window, by
+annotation) and one lands with the next ec2-controller release
+(`securityGroupRefs`); one is ours and waits on question 16; the
+other eleven are fields of ACK's kinds, which question 1 decides. This
+repository opens nothing upstream (CLAUDE.md), so none is filed.
+
 Built before this ranking:
 
 - `RolePolicyAttachment`: iam-controller PR #184.
@@ -2817,6 +2856,76 @@ Before it can run on a real cluster:
     live move in the sandbox account; the 26 ACK-generated and 141 Cloud
     Control kinds without readable tags are unguarded (the sequence alone
     keeps one writer).
+15. **An upstream bug: ACK's s3-controller panics reading a bucket without
+    default encryption** (found by the catalog's fake-AWS layer on moto,
+    2026-11-12; reproduced here the same day). Not filed: this repository
+    opens nothing upstream (CLAUDE.md); the issue text below waits for the
+    builder.
+
+    - **What:** `customFindBucket` (`pkg/resource/bucket/hook.go`) calls
+      `GetBucketEncryption`, tolerates the error
+      `ServerSideEncryptionConfigurationNotFoundError`, and then reads
+      `getEncryptionResponse.ServerSideEncryptionConfiguration.Rules`
+      (line 487) from the nil response the SDK returns with that error. The
+      same code is in `v1.15.0` (the catalog's pin), `v1.16.0` (the latest
+      release) and `main` (read 2026-11-12).
+    - **When it fires:** S3 answers that error for a bucket with no default
+      encryption configuration. AWS has applied SSE-S3 to every bucket
+      since January 2023, so real S3 rarely gives it; moto 5.2.5 does, for
+      every new bucket (the catalog now gives each new bucket the default in
+      its fake). AWS Emulator 1.0.322 behaves as AWS does: a new bucket
+      reports SSE-S3, and still does after `DeleteBucketEncryption`.
+    - **Reproduced:** `hack/repro/s3-bucket-encryption-nil.sh` (an offload
+      VM: AWS Emulator, s3-controller cloned at the tag, one test added to
+      its `bucket` package calling the controller's own read). On the
+      emulator alone the read does not panic (new bucket; after
+      `DeleteBucketEncryption`); with a loopback proxy in front of the
+      emulator answering `GetBucketEncryption` with S3's documented 404
+      `ServerSideEncryptionConfigurationNotFoundError` (every other call
+      to the emulator) the read panics: `invalid memory address or nil
+      pointer dereference` at `hook.go:487`, from `hook.go:227` and
+      `sdk.go:62`; after `PutBucketEncryption` it reads normally (offload
+      run `off-ack-extensions-1112225246-16771`, s3-controller `v1.15.0`
+      at `e6796332`).
+    - **Upstream already:** community#2990 reported it on 2026-08-03 and
+      its author closed it the same day as not planned (their emulator had
+      changed to answer as AWS does), noting the nil check "would still be
+      worth adding". No pull request. s3-controller PR #252 (open) touches
+      encryption's late initialisation, not this read.
+
+    Draft issue text (for the builder; community#2990 could be reopened
+    instead):
+
+    > **[s3-controller] `customFindBucket` panics when `GetBucketEncryption`
+    > returns `ServerSideEncryptionConfigurationNotFoundError`**
+    >
+    > `pkg/resource/bucket/hook.go` (v1.15.0, v1.16.0 and main, line 487)
+    > tolerates `ServerSideEncryptionConfigurationNotFoundError` from
+    > `GetBucketEncryption` and then dereferences the response, which the
+    > SDK returns as nil with the error:
+    >
+    > ```go
+    > getEncryptionResponse, err := rm.sdkapi.GetBucketEncryption(ctx, rm.newGetBucketEncryptionPayload(r))
+    > if err != nil {
+    >     if awsErr, ok := ackerr.AWSError(err); !ok || awsErr.ErrorCode() != "ServerSideEncryptionConfigurationNotFoundError" {
+    >         return err
+    >     }
+    > }
+    > if getEncryptionResponse.ServerSideEncryptionConfiguration.Rules != nil { // nil pointer dereference
+    > ```
+    >
+    > S3 documents that error for a bucket without a default encryption
+    > configuration. AWS applies SSE-S3 to new buckets since 2023, so it is
+    > rare on AWS, but S3-compatible stores and fakes (moto) give it, and
+    > the controller then panics on every read of the bucket. Reproduced
+    > with the controller's own `sdkFind` against an S3 endpoint answering
+    > `GET /<bucket>?encryption` with a 404
+    > `ServerSideEncryptionConfigurationNotFoundError`: `invalid memory
+    > address or nil pointer dereference` at `hook.go:487` (via
+    > `hook.go:227`, `sdk.go:62`). Fix: guard the response, for example
+    > `if err == nil && getEncryptionResponse.ServerSideEncryptionConfiguration != nil && getEncryptionResponse.ServerSideEncryptionConfiguration.Rules != nil`,
+    > and keep `ko.Spec.Encryption = nil` otherwise. Earlier report:
+    > community#2990 (closed without a fix).
 
 ## 9. Open questions
 
@@ -2825,6 +2934,15 @@ Before it can run on a real cluster:
    for the release; ship our own copy of the kind, in our group, only when
    a package cannot work without the field and the release is not near.
    Does the same rule hold for ACK? Proposed: yes.
+
+   **Weight, 2026-11-12:** the catalog's AWS charts need eleven fields of
+   ACK's kinds that no release or pull request has (section 5, "Gaps on
+   ACK's own kinds": `Instance`, `DBInstance`, `Certificate`, `RecordSet`,
+   `Key`, `Bucket`), each with the upstream change recommended there.
+   Under the proposed rule each waits for upstream; the ones a chart cannot
+   work without (`Certificate` synced at `ISSUED`, `Bucket` emptied on
+   delete) are the first candidates for a copy here if the release is not
+   near.
 2. **Database users and roles on RDS** have no AWS API. Out of scope
    here, or a separate project that speaks SQL (connection details from
    ACK's `DBInstance`, credentials from Secrets Manager)? Proposed: out of
@@ -3178,7 +3296,11 @@ Before it can run on a real cluster:
     `vpcRef` too. All of it waits on this answer (section 5, "The
     catalog's charts").
     `VPNGatewayRoutePropagation`'s `routeTableRef` (PR #50) waits on the
-    same answer.
+    same answer. So do `VolumeAttachment.spec.instanceRef` and a `Volume`
+    whose Availability Zone comes from an instance (the `ec2-instance`
+    chart's `ebs_volumes`; section 5). The Cloud Control kinds no longer
+    wait on it: their references read ACK's objects as unstructured, so
+    need no Go module (`docs/cloudcontrol.md` section 12, item 4).
 17. **The name of the per-environment context for the ACK-generated
     kinds** (section 7.6). Built as `core.aws.hfl.dev/v1alpha1`
     `ACKContext`, one per namespace, named `ack`: a sibling of
