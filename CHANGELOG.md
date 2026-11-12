@@ -5,6 +5,14 @@ design and the reasons are in `docs/plan.md`.
 
 ## Unreleased
 
+### Fixed
+
+- **`rds.aws.hfl.dev` `OptionGroup`: the read works on AWS.** It sent
+  `DescribeOptionGroups` with `OptionGroupName` together with
+  `EngineName` and `MajorEngineVersion`, a combination AWS's API
+  reference rules out; it now names the group only (`docs/plan.md`
+  section 6.2). Found by aws-emulator; moto accepted it.
+
 ### Changed
 
 - **Cloud Control kinds: no value checks under `status`** (open question
