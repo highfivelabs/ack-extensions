@@ -853,8 +853,8 @@ glue,IntegrationResourceProperty,8,,0,,0,8,false,
 glue,Job,26,Job,25,,0,1,false,official_unmapped=694
 glue,MLTransform,22,,0,,0,22,false,
 glue,Partition,29,,0,,0,29,false,
-glue,Registry,4,,0,,0,4,false,
-glue,Schema,11,,0,,0,11,false,
+glue,Registry,4,,0,Registry (Cloud Control),4,0,false,ours Registry (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has glue); on the schema fake only
+glue,Schema,11,,0,Schema (Cloud Control),11,0,false,ours Schema (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has glue); on the schema fake only
 glue,SchemaVersion,4,,0,,0,4,false,
 glue,SchemaVersionMetadata,3,,0,,0,3,false,
 glue,SecurityConfiguration,7,,0,,0,7,false,
@@ -1036,8 +1036,8 @@ ivs,StreamKey,3,,0,,0,3,false,
 ivschat,LoggingConfiguration,6,,0,,0,6,false,
 ivschat,Room,8,,0,,0,8,false,
 kafkaconnect,Connector,32,,0,,0,32,false,
-kafkaconnect,CustomPlugin,8,,0,,0,8,false,
-kafkaconnect,WorkerConfiguration,5,,0,,0,5,false,
+kafkaconnect,CustomPlugin,8,,0,CustomPlugin (Cloud Control),8,0,false,ours CustomPlugin (Cloud Control) unproven on fake: moto 5.2.5 has no kafkaconnect; on the schema fake only
+kafkaconnect,WorkerConfiguration,5,,0,WorkerConfiguration (Cloud Control),5,0,false,ours WorkerConfiguration (Cloud Control) unproven on fake: moto 5.2.5 has no kafkaconnect; on the schema fake only
 kendra,DataSource,200,,0,,0,200,false,
 kendra,Faq,10,,0,,0,10,false,
 kendra,FeaturedResultsSet,8,,0,,0,8,false,
@@ -1559,7 +1559,7 @@ s3,StorageLens,47,,0,StorageLens (Cloud Control),47,0,false,ours StorageLens (Cl
 s3,StorageLensGroup,27,,0,StorageLensGroup (Cloud Control),27,0,false,ours StorageLensGroup (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has s3); on the schema fake only
 s3express,AccessPoint,13,,0,,0,13,false,
 s3express,BucketPolicy,2,,0,,0,2,false,
-s3express,DirectoryBucket,28,,0,,0,28,false,
+s3express,DirectoryBucket,28,,0,DirectoryBucket (Cloud Control),28,0,false,ours DirectoryBucket (Cloud Control) unproven on fake: moto 5.2.5 has no s3express; on the schema fake only
 s3files,AccessPoint,11,AccessPoint,10,,0,1,false,
 s3files,FileSystem,12,FileSystem,11,,0,1,false,official_unmapped=1
 s3files,FileSystemPolicy,2,,0,FileSystemPolicy (Cloud Control),2,0,false,ours FileSystemPolicy (Cloud Control) unproven on fake: moto 5.2.5 has no s3files; on the schema fake only
@@ -1574,10 +1574,10 @@ s3tables,Namespace,2,Namespace,2,,0,0,false,
 s3tables,Table,36,Table,13,,0,23,false,official_unmapped=12
 s3tables,TableBucket,12,TableBucket,6,,0,6,false,official_unmapped=4
 s3tables,TableBucketPolicy,2,,0,,0,2,false,
-s3tables,TablePolicy,2,,0,,0,2,false,
+s3tables,TablePolicy,2,,0,TablePolicy (Cloud Control),2,0,false,ours TablePolicy (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has s3tables); on the schema fake only
 s3vectors,Index,11,Index,10,,0,1,false,
 s3vectors,VectorBucket,5,VectorBucket,5,,0,0,false,
-s3vectors,VectorBucketPolicy,3,,0,,0,3,false,
+s3vectors,VectorBucketPolicy,3,,0,VectorBucketPolicy (Cloud Control),3,0,false,ours VectorBucketPolicy (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has s3vectors); on the schema fake only
 sagemaker,Action,14,,0,,0,14,false,
 sagemaker,AIWorkloadConfig,6,,0,,0,6,false,
 sagemaker,Algorithm,43,,0,,0,43,false,
@@ -1757,7 +1757,7 @@ ssm,OpsItem,8,,0,OpsItem (Cloud Control),8,0,false,ours OpsItem (Cloud Control) 
 ssm,Parameter,9,Parameter,8,,0,1,false,official_unmapped=3
 ssm,PatchBaseline,24,PatchBaseline,21,,0,3,false,official_unmapped=1
 ssm,ResourceDataSync,17,ResourceDataSync,11,,0,6,false,official_unmapped=3
-ssm,ResourcePolicy,2,,0,,0,2,false,
+ssm,ResourcePolicy,2,,0,ResourcePolicy (Cloud Control),2,0,false,ours ResourcePolicy (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ssm); on the schema fake only
 ssm,ServiceSetting,2,,0,ServiceSetting (Cloud Control),2,0,false,ours ServiceSetting (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ssm); on the schema fake only
 ssmcontacts,Contact,11,,0,,0,11,false,
 ssmcontacts,ContactChannel,5,,0,,0,5,false,
