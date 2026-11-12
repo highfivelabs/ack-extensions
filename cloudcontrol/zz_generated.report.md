@@ -703,7 +703,6 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::FraudDetector::EntityType` | `EntityType.frauddetector.cloudcontrol.aws.hfl.dev` | 3 | 3 | 2 | 0 | 0 | 1 |
 | `AWS::FraudDetector::EventType` | `EventType.frauddetector.cloudcontrol.aws.hfl.dev` | 6 | 3 | 2 | 0 | 0 | 1 |
 | `AWS::FraudDetector::Label` | `Label.frauddetector.cloudcontrol.aws.hfl.dev` | 3 | 3 | 2 | 0 | 0 | 1 |
-| `AWS::FraudDetector::List` | `List.frauddetector.cloudcontrol.aws.hfl.dev` | 5 | 3 | 2 | 0 | 0 | 3 |
 | `AWS::FraudDetector::Outcome` | `Outcome.frauddetector.cloudcontrol.aws.hfl.dev` | 3 | 3 | 2 | 0 | 0 | 1 |
 | `AWS::FraudDetector::Variable` | `Variable.frauddetector.cloudcontrol.aws.hfl.dev` | 7 | 3 | 2 | 0 | 0 | 1 |
 | `AWS::FSx::Backup` | `Backup.fsx.cloudcontrol.aws.hfl.dev` | 2 | 5 | 2 | 0 | 0 | 3 |
@@ -9717,18 +9716,6 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - Nodes made `x-kubernetes-preserve-unknown-fields`: none
 - Read-only properties nested in writable objects (dropped): none
 - IAM actions (11): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `frauddetector:DeleteLabel`, `frauddetector:GetLabels`, `frauddetector:ListTagsForResource`, `frauddetector:PutLabel`, `frauddetector:TagResource`, `frauddetector:UntagResource`
-- Sensitive IAM actions: none
-- Left out (list handler only): none
-
-## `AWS::FraudDetector::List`
-
-- Secret references (opted in, `secrets` in types.yaml): none
-- Write-only kept as plain fields: none
-- Of those, write-only strings that could be opted in if they are secrets: none
-- Create-only paths without a CEL rule: none
-- Nodes made `x-kubernetes-preserve-unknown-fields`: none
-- Read-only properties nested in writable objects (dropped): none
-- IAM actions (13): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `frauddetector:CreateList`, `frauddetector:DeleteList`, `frauddetector:GetListElements`, `frauddetector:GetListsMetadata`, `frauddetector:ListTagsForResource`, `frauddetector:TagResource`, `frauddetector:UntagResource`, `frauddetector:UpdateList`
 - Sensitive IAM actions: none
 - Left out (list handler only): none
 

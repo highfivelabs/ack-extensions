@@ -3123,7 +3123,6 @@ rules:
   - entitytypes
   - eventtypes
   - labels
-  - lists
   - outcomes
   - variables
   verbs:
@@ -3141,7 +3140,6 @@ rules:
   - entitytypes/status
   - eventtypes/status
   - labels/status
-  - lists/status
   - outcomes/status
   - variables/status
   verbs:

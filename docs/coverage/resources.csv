@@ -811,7 +811,7 @@ frauddetector,Detector,42,,0,Detector (Cloud Control),42,0,false,ours Detector (
 frauddetector,EntityType,4,,0,EntityType (Cloud Control),4,0,false,ours EntityType (Cloud Control) unproven on fake: moto 5.2.5 has no frauddetector; on the schema fake only
 frauddetector,EventType,23,,0,EventType (Cloud Control),23,0,false,ours EventType (Cloud Control) unproven on fake: moto 5.2.5 has no frauddetector; on the schema fake only
 frauddetector,Label,4,,0,Label (Cloud Control),4,0,false,ours Label (Cloud Control) unproven on fake: moto 5.2.5 has no frauddetector; on the schema fake only
-frauddetector,List,6,,0,List (Cloud Control),6,0,false,ours List (Cloud Control) unproven on fake: moto 5.2.5 has no frauddetector; on the schema fake only
+frauddetector,List,6,,0,,0,6,false,
 frauddetector,Outcome,4,,0,Outcome (Cloud Control),4,0,false,ours Outcome (Cloud Control) unproven on fake: moto 5.2.5 has no frauddetector; on the schema fake only
 frauddetector,Variable,8,,0,Variable (Cloud Control),8,0,false,ours Variable (Cloud Control) unproven on fake: moto 5.2.5 has no frauddetector; on the schema fake only
 fsx,Backup,3,,0,Backup (Cloud Control),3,0,false,ours Backup (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has fsx); on the schema fake only

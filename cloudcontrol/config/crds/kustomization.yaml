@@ -697,7 +697,6 @@ resources:
   - frauddetector.cloudcontrol.aws.hfl.dev_entitytypes.yaml
   - frauddetector.cloudcontrol.aws.hfl.dev_eventtypes.yaml
   - frauddetector.cloudcontrol.aws.hfl.dev_labels.yaml
-  - frauddetector.cloudcontrol.aws.hfl.dev_lists.yaml
   - frauddetector.cloudcontrol.aws.hfl.dev_outcomes.yaml
   - frauddetector.cloudcontrol.aws.hfl.dev_variables.yaml
   - fsx.cloudcontrol.aws.hfl.dev_backups.yaml

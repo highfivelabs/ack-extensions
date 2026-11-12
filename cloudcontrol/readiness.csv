@@ -802,7 +802,7 @@ AWS::FraudDetector::Detector,frauddetector,Detector,other,FULLY_MUTABLE,,Detecto
 AWS::FraudDetector::EntityType,frauddetector,EntityType,other,FULLY_MUTABLE,,EntityType (Cloud Control),ok,0,0,0,0,0,true
 AWS::FraudDetector::EventType,frauddetector,EventType,other,FULLY_MUTABLE,,EventType (Cloud Control),ok,0,0,0,0,0,true
 AWS::FraudDetector::Label,frauddetector,Label,other,FULLY_MUTABLE,,Label (Cloud Control),ok,0,0,0,0,0,true
-AWS::FraudDetector::List,frauddetector,List,other,FULLY_MUTABLE,,List (Cloud Control),ok,0,0,0,0,0,true
+AWS::FraudDetector::List,frauddetector,List,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::FraudDetector::Outcome,frauddetector,Outcome,other,FULLY_MUTABLE,,Outcome (Cloud Control),ok,0,0,0,0,0,true
 AWS::FraudDetector::Variable,frauddetector,Variable,other,FULLY_MUTABLE,,Variable (Cloud Control),ok,0,0,0,0,0,true
 AWS::FSx::Backup,fsx,Backup,other,FULLY_MUTABLE,,Backup (Cloud Control),ok,0,0,0,0,0,true

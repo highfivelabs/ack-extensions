@@ -110,3 +110,7 @@ types:
   # Too large to serve: its generated CRD is 9.3 MB, beyond the API
   # server's 1.5 MB limit on an object (etcd's request size).
   AWS::QuickSight::Template: "its CRD is 9.3 MB, beyond the API server's object size limit"
+  # A kind named List: Kubernetes clients take an object of kind List for
+  # a list, and the manager's informer for it never synced, which stopped
+  # every other kind's cache from syncing (batch 15's first gate).
+  AWS::FraudDetector::List: "a kind named List, which Kubernetes clients take for a list of objects"

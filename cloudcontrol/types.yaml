@@ -1575,8 +1575,6 @@ types:
     unproven: "moto 5.2.5 has no frauddetector; on the schema fake only"
   - typeName: AWS::FraudDetector::Label
     unproven: "moto 5.2.5 has no frauddetector; on the schema fake only"
-  - typeName: AWS::FraudDetector::List
-    unproven: "moto 5.2.5 has no frauddetector; on the schema fake only"
   - typeName: AWS::FraudDetector::Outcome
     unproven: "moto 5.2.5 has no frauddetector; on the schema fake only"
   - typeName: AWS::FraudDetector::Variable
