@@ -1,0 +1,76 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlInternetMonitorMonitor",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InternetMonitorMonitorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "internetmonitor:CreateMonitor",
+        "internetmonitor:GetMonitor",
+        "internetmonitor:TagResource",
+        "internetmonitor:UntagResource",
+        "logs:CreateLogDelivery",
+        "logs:GetLogDelivery",
+        "s3:GetBucketPolicy",
+        "s3:ListBucket",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InternetMonitorMonitorRead",
+      "Effect": "Allow",
+      "Action": [
+        "internetmonitor:GetMonitor",
+        "internetmonitor:ListTagsForResource",
+        "logs:GetLogDelivery"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InternetMonitorMonitorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "internetmonitor:CreateMonitor",
+        "internetmonitor:GetMonitor",
+        "internetmonitor:TagResource",
+        "internetmonitor:UntagResource",
+        "internetmonitor:UpdateMonitor",
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:UpdateLogDelivery",
+        "s3:GetBucketPolicy",
+        "s3:ListBucket",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InternetMonitorMonitorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "internetmonitor:DeleteMonitor",
+        "internetmonitor:GetMonitor",
+        "internetmonitor:UpdateMonitor",
+        "logs:DeleteLogDelivery"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

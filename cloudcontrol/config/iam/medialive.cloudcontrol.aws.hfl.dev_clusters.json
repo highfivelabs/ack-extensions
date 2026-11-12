@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaLiveCluster",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveClusterCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:CreateCluster",
+        "ecs:CreateService",
+        "ecs:RegisterTaskDefinition",
+        "ecs:TagResource",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "medialive:CreateCluster",
+        "medialive:CreateTags",
+        "medialive:DescribeCluster",
+        "medialive:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveClusterRead",
+      "Effect": "Allow",
+      "Action": [
+        "medialive:DescribeCluster",
+        "medialive:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveClusterUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "medialive:CreateTags",
+        "medialive:DeleteTags",
+        "medialive:DescribeCluster",
+        "medialive:ListTagsForResource",
+        "medialive:UpdateCluster"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveClusterDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ecs:DeleteService",
+        "medialive:DeleteCluster",
+        "medialive:DescribeCluster"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

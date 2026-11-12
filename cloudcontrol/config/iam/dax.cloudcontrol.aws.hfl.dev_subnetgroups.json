@@ -1,0 +1,50 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDAXSubnetGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DAXSubnetGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "dax:CreateSubnetGroup",
+        "iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DAXSubnetGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "dax:DescribeSubnetGroups"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DAXSubnetGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "dax:UpdateSubnetGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DAXSubnetGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "dax:DeleteSubnetGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

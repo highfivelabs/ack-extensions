@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSESMailManagerTrafficPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMailManagerTrafficPolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:CreateTrafficPolicy",
+        "ses:GetTrafficPolicy",
+        "ses:ListTagsForResource",
+        "ses:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMailManagerTrafficPolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetTrafficPolicy",
+        "ses:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMailManagerTrafficPolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetTrafficPolicy",
+        "ses:ListTagsForResource",
+        "ses:TagResource",
+        "ses:UntagResource",
+        "ses:UpdateTrafficPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMailManagerTrafficPolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ses:DeleteTrafficPolicy",
+        "ses:GetTrafficPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

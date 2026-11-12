@@ -1,0 +1,49 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlForecastDatasetGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ForecastDatasetGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "forecast:CreateDatasetGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ForecastDatasetGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "forecast:DescribeDatasetGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ForecastDatasetGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "forecast:UpdateDatasetGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ForecastDatasetGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "forecast:DeleteDatasetGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

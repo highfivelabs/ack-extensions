@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlServiceDiscoveryHttpNamespace",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceDiscoveryHttpNamespaceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "servicediscovery:CreateHttpNamespace",
+        "servicediscovery:GetNamespace",
+        "servicediscovery:GetOperation",
+        "servicediscovery:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceDiscoveryHttpNamespaceRead",
+      "Effect": "Allow",
+      "Action": [
+        "servicediscovery:GetNamespace",
+        "servicediscovery:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceDiscoveryHttpNamespaceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "servicediscovery:GetOperation",
+        "servicediscovery:TagResource",
+        "servicediscovery:UntagResource",
+        "servicediscovery:UpdateHttpNamespace"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceDiscoveryHttpNamespaceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "servicediscovery:DeleteNamespace",
+        "servicediscovery:GetOperation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

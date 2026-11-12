@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlVpcLatticeAuthPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeAuthPolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "vpc-lattice:GetAuthPolicy",
+        "vpc-lattice:PutAuthPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeAuthPolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "vpc-lattice:GetAuthPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeAuthPolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "vpc-lattice:GetAuthPolicy",
+        "vpc-lattice:PutAuthPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeAuthPolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "vpc-lattice:DeleteAuthPolicy",
+        "vpc-lattice:GetAuthPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

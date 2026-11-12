@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLightsailAlarm",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailAlarmCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetAlarms",
+        "lightsail:PutAlarm"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailAlarmRead",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetAlarms"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailAlarmUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetAlarms",
+        "lightsail:PutAlarm"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailAlarmDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:DeleteAlarm",
+        "lightsail:GetAlarms"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectQuickConnect",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectQuickConnectCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:CreateQuickConnect",
+        "connect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectQuickConnectRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeQuickConnect"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectQuickConnectUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:TagResource",
+        "connect:UntagResource",
+        "connect:UpdateQuickConnectConfig",
+        "connect:UpdateQuickConnectName"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectQuickConnectDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteQuickConnect",
+        "connect:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPollyLexicon",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PollyLexiconCreate",
+      "Effect": "Allow",
+      "Action": [
+        "polly:GetLexicon",
+        "polly:PutLexicon"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PollyLexiconRead",
+      "Effect": "Allow",
+      "Action": [
+        "polly:GetLexicon"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PollyLexiconUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "polly:GetLexicon",
+        "polly:PutLexicon"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PollyLexiconDelete",
+      "Effect": "Allow",
+      "Action": [
+        "polly:DeleteLexicon",
+        "polly:GetLexicon"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

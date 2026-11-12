@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPersonalizeEventTracker",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeEventTrackerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:CreateEventTracker",
+        "personalize:DescribeEventTracker",
+        "personalize:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeEventTrackerRead",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:DescribeEventTracker",
+        "personalize:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeEventTrackerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:DescribeEventTracker",
+        "personalize:ListTagsForResource",
+        "personalize:TagResource",
+        "personalize:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeEventTrackerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:DeleteEventTracker",
+        "personalize:DescribeEventTracker"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

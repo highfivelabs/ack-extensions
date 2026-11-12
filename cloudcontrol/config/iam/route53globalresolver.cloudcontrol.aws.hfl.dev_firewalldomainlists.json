@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoute53GlobalResolverFirewallDomainList",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53GlobalResolverFirewallDomainListCreate",
+      "Effect": "Allow",
+      "Action": [
+        "route53globalresolver:CreateFirewallDomainList",
+        "route53globalresolver:GetFirewallDomainList",
+        "route53globalresolver:ImportFirewallDomains",
+        "route53globalresolver:TagResource",
+        "route53globalresolver:UpdateFirewallDomains",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53GlobalResolverFirewallDomainListRead",
+      "Effect": "Allow",
+      "Action": [
+        "route53globalresolver:GetFirewallDomainList",
+        "route53globalresolver:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53GlobalResolverFirewallDomainListUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "route53globalresolver:GetFirewallDomainList",
+        "route53globalresolver:ImportFirewallDomains",
+        "route53globalresolver:ListTagsForResource",
+        "route53globalresolver:TagResource",
+        "route53globalresolver:UntagResource",
+        "route53globalresolver:UpdateFirewallDomains",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53GlobalResolverFirewallDomainListDelete",
+      "Effect": "Allow",
+      "Action": [
+        "route53globalresolver:DeleteFirewallDomainList",
+        "route53globalresolver:GetFirewallDomainList"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

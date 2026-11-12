@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectApprovedOrigin",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectApprovedOriginCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:AssociateApprovedOrigin",
+        "connect:ListApprovedOrigins"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectApprovedOriginRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:ListApprovedOrigins"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectApprovedOriginDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DisassociateApprovedOrigin",
+        "connect:ListApprovedOrigins"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

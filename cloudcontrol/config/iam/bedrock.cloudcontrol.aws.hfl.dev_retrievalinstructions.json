@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockRetrievalInstruction",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockRetrievalInstructionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:CreateRetrievalInstruction",
+        "bedrock:GetRetrievalInstruction",
+        "bedrock:TagResource",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockRetrievalInstructionRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetRetrievalInstruction",
+        "bedrock:ListTagsForResource",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockRetrievalInstructionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetRetrievalInstruction",
+        "bedrock:ListTagsForResource",
+        "bedrock:TagResource",
+        "bedrock:UntagResource",
+        "bedrock:UpdateRetrievalInstruction",
+        "kms:Decrypt",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockRetrievalInstructionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:DeleteRetrievalInstruction"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

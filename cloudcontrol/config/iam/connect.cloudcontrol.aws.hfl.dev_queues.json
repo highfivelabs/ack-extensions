@@ -1,0 +1,77 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectQueue",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectQueueCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:AssociateQueueEmailAddresses",
+        "connect:AssociateQueueQuickConnects",
+        "connect:CreateQueue",
+        "connect:CreateQueueAgentGroup",
+        "connect:DescribeQueue",
+        "connect:ListQueueAgentGroups",
+        "connect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectQueueRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeQueue",
+        "connect:ListQueueAgentGroups",
+        "connect:ListQueueEmailAddresses",
+        "connect:ListQueueQuickConnects"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectQueueUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:AssociateQueueEmailAddresses",
+        "connect:AssociateQueueQuickConnects",
+        "connect:CreateQueueAgentGroup",
+        "connect:DeleteQueueAgentGroup",
+        "connect:DescribeQueue",
+        "connect:DisassociateQueueEmailAddresses",
+        "connect:DisassociateQueueQuickConnects",
+        "connect:ListQueueAgentGroups",
+        "connect:TagResource",
+        "connect:UntagResource",
+        "connect:UpdateQueueAgentGroup",
+        "connect:UpdateQueueHoursOfOperation",
+        "connect:UpdateQueueMaxContacts",
+        "connect:UpdateQueueName",
+        "connect:UpdateQueueOutboundCallerConfig",
+        "connect:UpdateQueueOutboundEmailConfig",
+        "connect:UpdateQueueStatus"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectQueueDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteQueue",
+        "connect:DisassociateQueueEmailAddresses",
+        "connect:ListQueueEmailAddresses",
+        "connect:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

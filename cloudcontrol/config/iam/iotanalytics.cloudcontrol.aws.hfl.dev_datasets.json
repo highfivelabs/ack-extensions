@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTAnalyticsDataset",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTAnalyticsDatasetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iotanalytics:CreateDataset"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTAnalyticsDatasetRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotanalytics:DescribeDataset",
+        "iotanalytics:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTAnalyticsDatasetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotanalytics:TagResource",
+        "iotanalytics:UntagResource",
+        "iotanalytics:UpdateDataset"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTAnalyticsDatasetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotanalytics:DeleteDataset"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

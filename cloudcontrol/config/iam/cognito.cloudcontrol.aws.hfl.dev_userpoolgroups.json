@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCognitoUserPoolGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoUserPoolGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:CreateGroup",
+        "cognito-idp:GetGroup",
+        "iam:PassRole",
+        "iam:PutRolePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoUserPoolGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:GetGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoUserPoolGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:UpdateGroup",
+        "iam:PassRole",
+        "iam:PutRolePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoUserPoolGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DeleteGroup",
+        "cognito-idp:GetGroup",
+        "iam:PutRolePolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

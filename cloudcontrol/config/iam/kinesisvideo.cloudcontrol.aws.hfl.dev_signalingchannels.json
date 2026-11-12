@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlKinesisVideoSignalingChannel",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KinesisVideoSignalingChannelCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kinesisvideo:CreateSignalingChannel",
+        "kinesisvideo:DescribeSignalingChannel",
+        "kinesisvideo:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KinesisVideoSignalingChannelRead",
+      "Effect": "Allow",
+      "Action": [
+        "kinesisvideo:DescribeSignalingChannel",
+        "kinesisvideo:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KinesisVideoSignalingChannelUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kinesisvideo:DescribeSignalingChannel",
+        "kinesisvideo:ListTagsForResource",
+        "kinesisvideo:TagResource",
+        "kinesisvideo:UntagResource",
+        "kinesisvideo:UpdateSignalingChannel"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KinesisVideoSignalingChannelDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kinesisvideo:DeleteSignalingChannel",
+        "kinesisvideo:DescribeSignalingChannel"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

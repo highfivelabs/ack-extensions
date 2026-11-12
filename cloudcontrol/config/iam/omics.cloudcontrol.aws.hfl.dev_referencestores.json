@@ -1,0 +1,44 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlOmicsReferenceStore",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsReferenceStoreCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:DescribeKey",
+        "omics:CreateReferenceStore",
+        "omics:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsReferenceStoreRead",
+      "Effect": "Allow",
+      "Action": [
+        "omics:GetReferenceStore",
+        "omics:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsReferenceStoreDelete",
+      "Effect": "Allow",
+      "Action": [
+        "omics:DeleteReferenceStore"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

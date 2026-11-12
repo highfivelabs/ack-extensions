@@ -1,0 +1,50 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWisdomAIPrompt",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomAIPromptCreate",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:CreateAIPrompt",
+        "wisdom:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomAIPromptRead",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:GetAIPrompt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomAIPromptUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:UpdateAIPrompt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomAIPromptDelete",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:DeleteAIPrompt"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPinpointInAppTemplate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PinpointInAppTemplateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "mobiletargeting:CreateInAppTemplate",
+        "mobiletargeting:GetInAppTemplate",
+        "mobiletargeting:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PinpointInAppTemplateRead",
+      "Effect": "Allow",
+      "Action": [
+        "mobiletargeting:GetInAppTemplate",
+        "mobiletargeting:ListTemplates"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PinpointInAppTemplateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "mobiletargeting:GetInAppTemplate",
+        "mobiletargeting:TagResource",
+        "mobiletargeting:UntagResource",
+        "mobiletargeting:UpdateInAppTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PinpointInAppTemplateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mobiletargeting:DeleteInAppTemplate",
+        "mobiletargeting:GetInAppTemplate"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

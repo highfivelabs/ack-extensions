@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSESMailManagerRelay",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMailManagerRelayCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:CreateRelay",
+        "ses:GetRelay",
+        "ses:ListTagsForResource",
+        "ses:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMailManagerRelayRead",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetRelay",
+        "ses:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMailManagerRelayUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetRelay",
+        "ses:ListTagsForResource",
+        "ses:TagResource",
+        "ses:UntagResource",
+        "ses:UpdateRelay"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMailManagerRelayDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ses:DeleteRelay",
+        "ses:GetRelay"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

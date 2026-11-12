@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlueTrigger",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueTriggerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateTrigger",
+        "glue:GetTrigger",
+        "glue:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueTriggerRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetTags",
+        "glue:GetTrigger"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueTriggerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:TagResource",
+        "glue:UntagResource",
+        "glue:UpdateTrigger"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueTriggerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DeleteTrigger",
+        "glue:GetTrigger"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

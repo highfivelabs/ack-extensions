@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlQBusinessWebExperience",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QBusinessWebExperienceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "qbusiness:CreateWebExperience",
+        "qbusiness:GetWebExperience",
+        "qbusiness:ListTagsForResource",
+        "qbusiness:TagResource",
+        "sso:PutApplicationGrant",
+        "sso:UpdateApplication"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QBusinessWebExperienceRead",
+      "Effect": "Allow",
+      "Action": [
+        "qbusiness:GetWebExperience",
+        "qbusiness:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QBusinessWebExperienceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "qbusiness:GetWebExperience",
+        "qbusiness:ListTagsForResource",
+        "qbusiness:TagResource",
+        "qbusiness:UntagResource",
+        "qbusiness:UpdateWebExperience",
+        "sso:PutApplicationGrant",
+        "sso:UpdateApplication"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QBusinessWebExperienceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "qbusiness:DeleteWebExperience",
+        "qbusiness:GetWebExperience"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

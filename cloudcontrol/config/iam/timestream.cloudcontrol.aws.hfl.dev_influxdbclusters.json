@@ -1,0 +1,86 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTimestreamInfluxDBCluster",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamInfluxDBClusterCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateNetworkInterface",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeRouteTables",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcEndpoints",
+        "ec2:DescribeVpcs",
+        "iam:CreateServiceLinkedRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "s3:GetBucketPolicy",
+        "s3:ListBucket",
+        "timestream-influxdb:CreateDbCluster",
+        "timestream-influxdb:CreateDbInstance",
+        "timestream-influxdb:CreateDbParameterGroup",
+        "timestream-influxdb:GetDbCluster",
+        "timestream-influxdb:GetDbParameterGroup",
+        "timestream-influxdb:ListDbClusters",
+        "timestream-influxdb:ListDbInstancesForCluster",
+        "timestream-influxdb:ListTagsForResource",
+        "timestream-influxdb:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamInfluxDBClusterRead",
+      "Effect": "Allow",
+      "Action": [
+        "timestream-influxdb:GetDbCluster",
+        "timestream-influxdb:ListDbInstancesForCluster",
+        "timestream-influxdb:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamInfluxDBClusterUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcEndpoints",
+        "ec2:DescribeVpcs",
+        "s3:GetBucketPolicy",
+        "s3:ListBucket",
+        "timestream-influxdb:GetDbCluster",
+        "timestream-influxdb:ListDbClusters",
+        "timestream-influxdb:ListDbInstancesForCluster",
+        "timestream-influxdb:ListTagsForResource",
+        "timestream-influxdb:TagResource",
+        "timestream-influxdb:UntagResource",
+        "timestream-influxdb:UpdateDbCluster",
+        "timestream-influxdb:UpdateDbInstance"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamInfluxDBClusterDelete",
+      "Effect": "Allow",
+      "Action": [
+        "timestream-influxdb:DeleteDbCluster",
+        "timestream-influxdb:DeleteDbInstance",
+        "timestream-influxdb:GetDbCluster",
+        "timestream-influxdb:ListDbClusters"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

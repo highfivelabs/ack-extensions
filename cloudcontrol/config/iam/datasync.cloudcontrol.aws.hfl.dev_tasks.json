@@ -1,0 +1,84 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataSyncTask",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncTaskCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:CreateTask",
+        "datasync:DescribeTask",
+        "datasync:ListTagsForResource",
+        "datasync:TagResource",
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateNetworkInterfacePermission",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "elasticfilesystem:DescribeFileSystems",
+        "elasticfilesystem:DescribeMountTargets",
+        "fsx:DescribeFileSystems",
+        "iam:AssumeRole",
+        "iam:GetRole",
+        "iam:PassRole",
+        "logs:DescribeLogGroups",
+        "s3:GetObject",
+        "s3:GetObjectVersion",
+        "s3:ListAllMyBuckets",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncTaskRead",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DescribeTask",
+        "datasync:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncTaskUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DescribeTask",
+        "datasync:ListTagsForResource",
+        "datasync:TagResource",
+        "datasync:UntagResource",
+        "datasync:UpdateTask",
+        "iam:PassRole",
+        "logs:DescribeLogGroups"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncTaskDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DeleteTask",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "elasticfilesystem:DescribeFileSystems",
+        "elasticfilesystem:DescribeMountTargets",
+        "fsx:DescribeFileSystems",
+        "iam:GetRole"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

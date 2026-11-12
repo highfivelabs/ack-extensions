@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlKendraFeaturedResultsSet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraFeaturedResultsSetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kendra:CreateFeaturedResultsSet",
+        "kendra:DescribeFeaturedResultsSet",
+        "kendra:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraFeaturedResultsSetRead",
+      "Effect": "Allow",
+      "Action": [
+        "kendra:DescribeFeaturedResultsSet",
+        "kendra:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraFeaturedResultsSetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kendra:DescribeFeaturedResultsSet",
+        "kendra:ListTagsForResource",
+        "kendra:TagResource",
+        "kendra:UntagResource",
+        "kendra:UpdateFeaturedResultsSet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraFeaturedResultsSetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kendra:BatchDeleteFeaturedResultsSet",
+        "kendra:DescribeFeaturedResultsSet",
+        "kendra:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

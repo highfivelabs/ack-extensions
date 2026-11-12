@@ -1,0 +1,76 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectInstanceStorageConfig",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectInstanceStorageConfigCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:AssociateInstanceStorageConfig",
+        "connect:DescribeInstance",
+        "ds:DescribeDirectories",
+        "firehose:DescribeDeliveryStream",
+        "iam:PutRolePolicy",
+        "kinesis:DescribeStream",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "s3:GetBucketAcl",
+        "s3:GetBucketLocation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectInstanceStorageConfigRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeInstance",
+        "connect:DescribeInstanceStorageConfig",
+        "connect:ListInstanceStorageConfigs",
+        "ds:DescribeDirectories",
+        "s3:GetBucketAcl",
+        "s3:GetBucketLocation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectInstanceStorageConfigUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:UpdateInstanceStorageConfig",
+        "ds:DescribeDirectories",
+        "firehose:DescribeDeliveryStream",
+        "iam:PutRolePolicy",
+        "kinesis:DescribeStream",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:RetireGrant",
+        "s3:GetBucketAcl",
+        "s3:GetBucketLocation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectInstanceStorageConfigDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeInstance",
+        "connect:DisassociateInstanceStorageConfig",
+        "kms:RetireGrant",
+        "s3:GetBucketAcl",
+        "s3:GetBucketLocation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

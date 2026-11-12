@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPersonalizeDataset",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeDatasetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "personalize:CreateDataset",
+        "personalize:CreateDatasetImportJob",
+        "personalize:DescribeDataset",
+        "personalize:DescribeDatasetImportJob",
+        "personalize:ListDatasetImportJobs",
+        "personalize:ListTagsForResource",
+        "personalize:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeDatasetRead",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:DescribeDataset",
+        "personalize:DescribeDatasetImportJob",
+        "personalize:ListDatasetImportJobs",
+        "personalize:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeDatasetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "personalize:CreateDatasetImportJob",
+        "personalize:DescribeDataset",
+        "personalize:DescribeDatasetImportJob",
+        "personalize:ListDatasetImportJobs",
+        "personalize:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeDatasetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:DeleteDataset",
+        "personalize:DescribeDataset"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

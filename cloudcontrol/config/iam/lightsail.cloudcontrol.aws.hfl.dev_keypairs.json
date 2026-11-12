@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLightsailKeyPair",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailKeyPairCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:CreateKeyPair",
+        "lightsail:GetKeyPair",
+        "lightsail:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailKeyPairRead",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetKeyPair"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailKeyPairUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetKeyPair",
+        "lightsail:TagResource",
+        "lightsail:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailKeyPairDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:DeleteKeyPair",
+        "lightsail:GetKeyPair"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCleanRoomsIdNamespaceAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsIdNamespaceAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:CreateIdNamespaceAssociation",
+        "cleanrooms:GetCollaboration",
+        "cleanrooms:GetIdNamespaceAssociation",
+        "cleanrooms:GetMembership",
+        "cleanrooms:ListIdNamespaceAssociations",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:TagResource",
+        "entityresolution:AddPolicyStatement",
+        "entityresolution:GetIdNamespace"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsIdNamespaceAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:GetCollaboration",
+        "cleanrooms:GetIdNamespaceAssociation",
+        "cleanrooms:GetMembership",
+        "cleanrooms:ListTagsForResource",
+        "entityresolution:GetIdNamespace"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsIdNamespaceAssociationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:GetCollaboration",
+        "cleanrooms:GetIdNamespaceAssociation",
+        "cleanrooms:GetMembership",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:TagResource",
+        "cleanrooms:UntagResource",
+        "cleanrooms:UpdateIdNamespaceAssociation",
+        "entityresolution:AddPolicyStatement",
+        "entityresolution:GetIdNamespace"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsIdNamespaceAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:DeleteIdNamespaceAssociation",
+        "cleanrooms:GetCollaboration",
+        "cleanrooms:GetIdNamespaceAssociation",
+        "cleanrooms:GetMembership",
+        "cleanrooms:ListIdNamespaceAssociations",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:UntagResource",
+        "entityresolution:DeletePolicyStatement",
+        "entityresolution:GetIdNamespace"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlueSchemaVersion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueSchemaVersionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetSchemaByDefinition",
+        "glue:GetSchemaVersion",
+        "glue:RegisterSchemaVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueSchemaVersionRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetSchemaVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueSchemaVersionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DeleteSchemaVersions",
+        "glue:GetSchemaVersion"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

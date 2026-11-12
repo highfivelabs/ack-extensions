@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlobalAcceleratorEndpointGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlobalAcceleratorEndpointGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "globalaccelerator:CreateEndpointGroup",
+        "globalaccelerator:DescribeAccelerator",
+        "globalaccelerator:DescribeEndpointGroup",
+        "globalaccelerator:DescribeListener",
+        "globalaccelerator:ListAccelerators",
+        "globalaccelerator:ListListeners"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlobalAcceleratorEndpointGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "globalaccelerator:DescribeEndpointGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlobalAcceleratorEndpointGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "globalaccelerator:DescribeAccelerator",
+        "globalaccelerator:DescribeEndpointGroup",
+        "globalaccelerator:DescribeListener",
+        "globalaccelerator:UpdateEndpointGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlobalAcceleratorEndpointGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "globalaccelerator:DeleteEndpointGroup",
+        "globalaccelerator:DescribeAccelerator",
+        "globalaccelerator:DescribeEndpointGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

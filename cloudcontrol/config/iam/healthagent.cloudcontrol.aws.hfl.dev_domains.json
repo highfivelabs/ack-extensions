@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlHealthAgentDomain",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "HealthAgentDomainCreate",
+      "Effect": "Allow",
+      "Action": [
+        "health-agent:CreateDomain",
+        "health-agent:GetDomain",
+        "health-agent:TagResource",
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "HealthAgentDomainRead",
+      "Effect": "Allow",
+      "Action": [
+        "health-agent:GetDomain",
+        "health-agent:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "HealthAgentDomainUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "health-agent:GetDomain",
+        "health-agent:ListTagsForResource",
+        "health-agent:TagResource",
+        "health-agent:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "HealthAgentDomainDelete",
+      "Effect": "Allow",
+      "Action": [
+        "health-agent:DeleteDomain",
+        "health-agent:GetDomain"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

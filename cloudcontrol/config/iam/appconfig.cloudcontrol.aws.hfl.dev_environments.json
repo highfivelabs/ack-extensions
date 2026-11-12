@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppConfigEnvironment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigEnvironmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:CreateEnvironment",
+        "appconfig:GetEnvironment",
+        "appconfig:ListTagsForResource",
+        "appconfig:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigEnvironmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:GetEnvironment",
+        "appconfig:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigEnvironmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:TagResource",
+        "appconfig:UntagResource",
+        "appconfig:UpdateEnvironment",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigEnvironmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:DeleteEnvironment",
+        "appconfig:GetEnvironment"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlFSxStorageVirtualMachine",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FSxStorageVirtualMachineCreate",
+      "Effect": "Allow",
+      "Action": [
+        "fsx:CreateStorageVirtualMachine",
+        "fsx:DescribeStorageVirtualMachines",
+        "fsx:TagResource",
+        "kms:Decrypt",
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FSxStorageVirtualMachineRead",
+      "Effect": "Allow",
+      "Action": [
+        "fsx:DescribeStorageVirtualMachines",
+        "fsx:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FSxStorageVirtualMachineUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "fsx:DescribeStorageVirtualMachines",
+        "fsx:TagResource",
+        "fsx:UntagResource",
+        "fsx:UpdateStorageVirtualMachine",
+        "kms:Decrypt",
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FSxStorageVirtualMachineDelete",
+      "Effect": "Allow",
+      "Action": [
+        "fsx:DeleteStorageVirtualMachine",
+        "fsx:DescribeStorageVirtualMachines"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

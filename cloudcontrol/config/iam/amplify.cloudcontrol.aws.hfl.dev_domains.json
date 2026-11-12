@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAmplifyDomain",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AmplifyDomainCreate",
+      "Effect": "Allow",
+      "Action": [
+        "amplify:CreateDomainAssociation",
+        "amplify:GetDomainAssociation",
+        "amplify:TagResource",
+        "iam:PassRole",
+        "route53:ChangeResourceRecordSets",
+        "route53:ListHostedZones"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AmplifyDomainRead",
+      "Effect": "Allow",
+      "Action": [
+        "amplify:GetDomainAssociation",
+        "amplify:ListTagsForResource",
+        "iam:PassRole",
+        "route53:ListHostedZones"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AmplifyDomainUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "amplify:GetDomainAssociation",
+        "amplify:ListTagsForResource",
+        "amplify:TagResource",
+        "amplify:UntagResource",
+        "amplify:UpdateDomainAssociation",
+        "iam:PassRole",
+        "route53:ChangeResourceRecordSets",
+        "route53:ListHostedZones"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AmplifyDomainDelete",
+      "Effect": "Allow",
+      "Action": [
+        "amplify:DeleteDomainAssociation",
+        "amplify:GetDomainAssociation",
+        "iam:PassRole",
+        "route53:ListHostedZones"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

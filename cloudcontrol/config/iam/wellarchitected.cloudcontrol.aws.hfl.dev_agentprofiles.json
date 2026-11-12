@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWellArchitectedAgentProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedAgentProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "wellarchitected:CreateAgentProfile",
+        "wellarchitected:GetAgentProfile",
+        "wellarchitected:ListTagsForResource",
+        "wellarchitected:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedAgentProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:GetAgentProfile",
+        "wellarchitected:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedAgentProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "wellarchitected:GetAgentProfile",
+        "wellarchitected:ListTagsForResource",
+        "wellarchitected:TagResource",
+        "wellarchitected:UntagResource",
+        "wellarchitected:UpdateAgentProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedAgentProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:DeleteAgentProfile",
+        "wellarchitected:GetAgentProfile"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

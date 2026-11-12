@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTWirelessServiceProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessServiceProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:CreateServiceProfile",
+        "iotwireless:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessServiceProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:GetServiceProfile",
+        "iotwireless:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessServiceProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:GetServiceProfile",
+        "iotwireless:TagResource",
+        "iotwireless:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessServiceProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:DeleteServiceProfile"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

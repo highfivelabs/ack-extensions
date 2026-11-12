@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCasesLayout",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CasesLayoutCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cases:CreateLayout",
+        "cases:GetLayout",
+        "cases:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CasesLayoutRead",
+      "Effect": "Allow",
+      "Action": [
+        "cases:GetLayout"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CasesLayoutUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cases:GetLayout",
+        "cases:TagResource",
+        "cases:UntagResource",
+        "cases:UpdateLayout"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CasesLayoutDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cases:DeleteLayout",
+        "cases:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

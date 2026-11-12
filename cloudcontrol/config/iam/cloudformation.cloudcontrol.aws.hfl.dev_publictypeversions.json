@@ -1,0 +1,39 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudFormationPublicTypeVersion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationPublicTypeVersionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DescribePublisher",
+        "cloudformation:DescribeType",
+        "cloudformation:PublishType",
+        "cloudformation:TestType",
+        "s3:GetObject",
+        "s3:PutObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationPublicTypeVersionRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DescribePublisher",
+        "cloudformation:DescribeType"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

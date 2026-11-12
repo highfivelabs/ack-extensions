@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPCAConnectorADDirectoryRegistration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCAConnectorADDirectoryRegistrationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ds:AuthorizeApplication",
+        "ds:DescribeDirectories",
+        "pca-connector-ad:CreateDirectoryRegistration",
+        "pca-connector-ad:GetDirectoryRegistration",
+        "pca-connector-ad:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCAConnectorADDirectoryRegistrationRead",
+      "Effect": "Allow",
+      "Action": [
+        "pca-connector-ad:GetDirectoryRegistration",
+        "pca-connector-ad:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCAConnectorADDirectoryRegistrationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "pca-connector-ad:ListTagsForResource",
+        "pca-connector-ad:TagResource",
+        "pca-connector-ad:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCAConnectorADDirectoryRegistrationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ds:DescribeDirectories",
+        "ds:UnauthorizeApplication",
+        "ds:UpdateAuthorizedApplication",
+        "pca-connector-ad:DeleteDirectoryRegistration",
+        "pca-connector-ad:GetDirectoryRegistration",
+        "pca-connector-ad:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

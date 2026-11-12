@@ -1,0 +1,83 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBatchComputeEnvironment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchComputeEnvironmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:CreateComputeEnvironment",
+        "Batch:DescribeComputeEnvironments",
+        "Batch:SetCapacityTags",
+        "Batch:TagResource",
+        "Eks:AssociateAccessPolicy",
+        "Eks:CreateAccessEntry",
+        "Eks:DeleteAccessEntry",
+        "Eks:DescribeAccessEntry",
+        "Eks:DescribeCluster",
+        "Eks:ListAssociatedAccessPolicies",
+        "Iam:PassRole",
+        "ec2:DescribeLaunchTemplateVersions",
+        "iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchComputeEnvironmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:DescribeComputeEnvironments"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchComputeEnvironmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:DescribeComputeEnvironments",
+        "Batch:SetCapacityTags",
+        "Batch:TagResource",
+        "Batch:UnTagResource",
+        "Batch:UpdateComputeEnvironment",
+        "Eks:AssociateAccessPolicy",
+        "Eks:CreateAccessEntry",
+        "Eks:DeleteAccessEntry",
+        "Eks:DescribeAccessEntry",
+        "Eks:DescribeCluster",
+        "Eks:ListAssociatedAccessPolicies",
+        "Iam:PassRole",
+        "ec2:DescribeLaunchTemplateVersions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchComputeEnvironmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:DeleteComputeEnvironment",
+        "Batch:DescribeComputeEnvironments",
+        "Batch:UpdateComputeEnvironment",
+        "Eks:AssociateAccessPolicy",
+        "Eks:CreateAccessEntry",
+        "Eks:DeleteAccessEntry",
+        "Eks:DescribeAccessEntry",
+        "Eks:DescribeCluster",
+        "Eks:ListAssociatedAccessPolicies",
+        "Iam:PassRole",
+        "ec2:DescribeLaunchTemplateVersions"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

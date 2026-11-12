@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCodeStarConnectionsSyncConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeStarConnectionsSyncConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "codestar-connections:CreateSyncConfiguration",
+        "codestar-connections:PassRepository",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeStarConnectionsSyncConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "codestar-connections:GetSyncConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeStarConnectionsSyncConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "codestar-connections:PassRepository",
+        "codestar-connections:UpdateSyncConfiguration",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeStarConnectionsSyncConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "codestar-connections:DeleteSyncConfiguration",
+        "codestar-connections:GetSyncConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

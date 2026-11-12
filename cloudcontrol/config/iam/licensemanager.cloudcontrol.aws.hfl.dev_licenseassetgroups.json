@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLicenseManagerLicenseAssetGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerLicenseAssetGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager:CreateLicenseAssetGroup",
+        "license-manager:GetLicenseAssetGroup",
+        "license-manager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerLicenseAssetGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager:GetLicenseAssetGroup",
+        "license-manager:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerLicenseAssetGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager:GetLicenseAssetGroup",
+        "license-manager:TagResource",
+        "license-manager:UntagResource",
+        "license-manager:UpdateLicenseAssetGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerLicenseAssetGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager:DeleteLicenseAssetGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

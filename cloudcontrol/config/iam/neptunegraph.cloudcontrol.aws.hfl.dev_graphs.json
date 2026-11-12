@@ -1,0 +1,77 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNeptuneGraphGraph",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneGraphGraphCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "neptune-graph:CreateGraph",
+        "neptune-graph:CreateGraphUsingImportTask",
+        "neptune-graph:GetGraph",
+        "neptune-graph:GetImportTask",
+        "neptune-graph:ListTagsForResource",
+        "neptune-graph:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneGraphGraphRead",
+      "Effect": "Allow",
+      "Action": [
+        "neptune-graph:GetGraph",
+        "neptune-graph:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneGraphGraphUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "neptune-graph:GetGraph",
+        "neptune-graph:ListTagsForResource",
+        "neptune-graph:TagResource",
+        "neptune-graph:UntagResource",
+        "neptune-graph:UpdateGraph"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneGraphGraphDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "neptune-graph:CancelImportTask",
+        "neptune-graph:DeleteGraph",
+        "neptune-graph:GetGraph",
+        "neptune-graph:GetImportTask",
+        "neptune-graph:ListImportTasks",
+        "neptune-graph:ListTagsForResource",
+        "neptune-graph:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

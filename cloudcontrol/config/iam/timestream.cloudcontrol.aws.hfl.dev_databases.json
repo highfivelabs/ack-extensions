@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTimestreamDatabase",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamDatabaseCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "timestream:CreateDatabase",
+        "timestream:DescribeEndpoints",
+        "timestream:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamDatabaseRead",
+      "Effect": "Allow",
+      "Action": [
+        "timestream:DescribeDatabase",
+        "timestream:DescribeEndpoints",
+        "timestream:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamDatabaseUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "timestream:DescribeDatabase",
+        "timestream:DescribeEndpoints",
+        "timestream:TagResource",
+        "timestream:UntagResource",
+        "timestream:UpdateDatabase"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamDatabaseDelete",
+      "Effect": "Allow",
+      "Action": [
+        "timestream:DeleteDatabase",
+        "timestream:DescribeEndpoints"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

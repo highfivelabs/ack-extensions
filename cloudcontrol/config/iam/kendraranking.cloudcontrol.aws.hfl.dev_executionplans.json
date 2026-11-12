@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlKendraRankingExecutionPlan",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraRankingExecutionPlanCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kendra-ranking:CreateRescoreExecutionPlan",
+        "kendra-ranking:DescribeRescoreExecutionPlan",
+        "kendra-ranking:ListTagsForResource",
+        "kendra-ranking:TagResource",
+        "kendra-ranking:UpdateRescoreExecutionPlan"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraRankingExecutionPlanRead",
+      "Effect": "Allow",
+      "Action": [
+        "kendra-ranking:DescribeRescoreExecutionPlan",
+        "kendra-ranking:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraRankingExecutionPlanUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kendra-ranking:DescribeRescoreExecutionPlan",
+        "kendra-ranking:ListTagsForResource",
+        "kendra-ranking:TagResource",
+        "kendra-ranking:UntagResource",
+        "kendra-ranking:UpdateRescoreExecutionPlan"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraRankingExecutionPlanDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kendra-ranking:DeleteRescoreExecutionPlan",
+        "kendra-ranking:DescribeRescoreExecutionPlan"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

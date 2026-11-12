@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectView",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectViewCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:CreateView",
+        "connect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectViewRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeView"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectViewUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:TagResource",
+        "connect:UntagResource",
+        "connect:UpdateViewContent",
+        "connect:UpdateViewMetadata"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectViewDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteView",
+        "connect:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

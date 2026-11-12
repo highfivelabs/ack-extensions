@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTAccountAuditConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTAccountAuditConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iot:DescribeAccountAuditConfiguration",
+        "iot:UpdateAccountAuditConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTAccountAuditConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeAccountAuditConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTAccountAuditConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iot:DescribeAccountAuditConfiguration",
+        "iot:UpdateAccountAuditConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTAccountAuditConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeleteAccountAuditConfiguration",
+        "iot:DescribeAccountAuditConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSSMContactsContactChannel",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMContactsContactChannelCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ssm-contacts:CreateContactChannel",
+        "ssm-contacts:GetContactChannel"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMContactsContactChannelRead",
+      "Effect": "Allow",
+      "Action": [
+        "ssm-contacts:GetContactChannel"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMContactsContactChannelUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ssm-contacts:GetContactChannel",
+        "ssm-contacts:UpdateContactChannel"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMContactsContactChannelDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ssm-contacts:DeleteContactChannel",
+        "ssm-contacts:GetContactChannel"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

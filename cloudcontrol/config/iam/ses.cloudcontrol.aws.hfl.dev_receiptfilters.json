@@ -1,0 +1,42 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSESReceiptFilter",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESReceiptFilterCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:CreateReceiptFilter"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESReceiptFilterRead",
+      "Effect": "Allow",
+      "Action": [
+        "ses:ListReceiptFilters"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESReceiptFilterDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ses:DeleteReceiptFilter",
+        "ses:ListReceiptFilters"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

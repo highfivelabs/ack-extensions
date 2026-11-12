@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaConvertJobTemplate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConvertJobTemplateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconvert:CreateJobTemplate",
+        "mediaconvert:GetJobTemplate",
+        "mediaconvert:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConvertJobTemplateRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconvert:GetJobTemplate",
+        "mediaconvert:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConvertJobTemplateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconvert:ListTagsForResource",
+        "mediaconvert:TagResource",
+        "mediaconvert:UntagResource",
+        "mediaconvert:UpdateJobTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConvertJobTemplateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconvert:DeleteJobTemplate",
+        "mediaconvert:GetJobTemplate"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

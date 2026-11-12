@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlFraudDetectorVariable",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FraudDetectorVariableCreate",
+      "Effect": "Allow",
+      "Action": [
+        "frauddetector:CreateVariable",
+        "frauddetector:GetVariables",
+        "frauddetector:ListTagsForResource",
+        "frauddetector:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FraudDetectorVariableRead",
+      "Effect": "Allow",
+      "Action": [
+        "frauddetector:GetVariables",
+        "frauddetector:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FraudDetectorVariableUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "frauddetector:GetVariables",
+        "frauddetector:ListTagsForResource",
+        "frauddetector:TagResource",
+        "frauddetector:UntagResource",
+        "frauddetector:UpdateVariable"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FraudDetectorVariableDelete",
+      "Effect": "Allow",
+      "Action": [
+        "frauddetector:DeleteVariable",
+        "frauddetector:GetVariables"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

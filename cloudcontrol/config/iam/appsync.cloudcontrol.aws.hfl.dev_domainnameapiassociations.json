@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppSyncDomainNameApiAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncDomainNameApiAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:AssociateApi",
+        "appsync:GetApiAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncDomainNameApiAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:GetApiAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncDomainNameApiAssociationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:AssociateApi",
+        "appsync:GetApiAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncDomainNameApiAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:DisassociateApi",
+        "appsync:GetApiAssociation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

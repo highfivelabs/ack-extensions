@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLightsailInstanceSnapshot",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailInstanceSnapshotCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:CreateInstanceSnapshot",
+        "lightsail:GetInstanceSnapshot",
+        "lightsail:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailInstanceSnapshotRead",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetInstanceSnapshot"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailInstanceSnapshotUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetInstanceSnapshot",
+        "lightsail:TagResource",
+        "lightsail:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailInstanceSnapshotDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:DeleteInstanceSnapshot",
+        "lightsail:GetInstanceSnapshot"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

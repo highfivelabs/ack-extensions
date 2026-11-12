@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSupportAppSlackChannelConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SupportAppSlackChannelConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "supportapp:CreateSlackChannelConfiguration",
+        "supportapp:ListSlackChannelConfigurations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SupportAppSlackChannelConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "supportapp:ListSlackChannelConfigurations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SupportAppSlackChannelConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "supportapp:ListSlackChannelConfigurations",
+        "supportapp:UpdateSlackChannelConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SupportAppSlackChannelConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "supportapp:DeleteSlackChannelConfiguration",
+        "supportapp:ListSlackChannelConfigurations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

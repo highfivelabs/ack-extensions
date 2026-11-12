@@ -1,0 +1,89 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCleanRoomsMembership",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsMembershipCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:CreateMembership",
+        "cleanrooms:GetMembership",
+        "cleanrooms:ListMemberships",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:TagResource",
+        "iam:PassRole",
+        "logs:CreateLogDelivery",
+        "logs:CreateLogGroup",
+        "logs:DeleteLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "logs:UpdateLogDelivery"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsMembershipRead",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:GetMembership",
+        "cleanrooms:ListTagsForResource",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsMembershipUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:GetMembership",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:TagResource",
+        "cleanrooms:UntagResource",
+        "cleanrooms:UpdateMembership",
+        "iam:PassRole",
+        "logs:CreateLogDelivery",
+        "logs:CreateLogGroup",
+        "logs:DeleteLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "logs:UpdateLogDelivery"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsMembershipDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:DeleteMembership",
+        "cleanrooms:GetMembership",
+        "cleanrooms:ListMemberships",
+        "cleanrooms:ListTagsForResource",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

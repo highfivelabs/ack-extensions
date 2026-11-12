@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSignerProfilePermission",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SignerProfilePermissionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "signer:AddProfilePermission",
+        "signer:ListProfilePermissions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SignerProfilePermissionRead",
+      "Effect": "Allow",
+      "Action": [
+        "signer:ListProfilePermissions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SignerProfilePermissionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "signer:ListProfilePermissions",
+        "signer:RemoveProfilePermission"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

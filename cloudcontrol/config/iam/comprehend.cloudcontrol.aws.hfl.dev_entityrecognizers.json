@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlComprehendEntityRecognizer",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ComprehendEntityRecognizerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "comprehend:CreateEntityRecognizer",
+        "comprehend:DescribeEntityRecognizer",
+        "comprehend:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ComprehendEntityRecognizerRead",
+      "Effect": "Allow",
+      "Action": [
+        "comprehend:DescribeEntityRecognizer",
+        "comprehend:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ComprehendEntityRecognizerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "comprehend:DescribeEntityRecognizer",
+        "comprehend:ListTagsForResource",
+        "comprehend:TagResource",
+        "comprehend:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ComprehendEntityRecognizerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "comprehend:DeleteEntityRecognizer",
+        "comprehend:DescribeEntityRecognizer"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

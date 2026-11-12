@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTSiteWiseWorkspace",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseWorkspaceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:CreateWorkspace",
+        "iotsitewise:DescribeWorkspace",
+        "iotsitewise:ListTagsForResource",
+        "iotsitewise:TagResource",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseWorkspaceRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DescribeWorkspace",
+        "iotsitewise:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseWorkspaceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DescribeWorkspace",
+        "iotsitewise:ListTagsForResource",
+        "iotsitewise:TagResource",
+        "iotsitewise:UntagResource",
+        "iotsitewise:UpdateWorkspace"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseWorkspaceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DeleteWorkspace",
+        "iotsitewise:DescribeWorkspace",
+        "iotsitewise:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

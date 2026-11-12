@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlResourceExplorer2View",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResourceExplorer2ViewCreate",
+      "Effect": "Allow",
+      "Action": [
+        "resource-explorer-2:CreateView",
+        "resource-explorer-2:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResourceExplorer2ViewRead",
+      "Effect": "Allow",
+      "Action": [
+        "resource-explorer-2:GetView"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResourceExplorer2ViewUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "resource-explorer-2:ListTagsForResource",
+        "resource-explorer-2:TagResource",
+        "resource-explorer-2:UntagResource",
+        "resource-explorer-2:UpdateView"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResourceExplorer2ViewDelete",
+      "Effect": "Allow",
+      "Action": [
+        "resource-explorer-2:DeleteView",
+        "resource-explorer-2:GetView",
+        "resource-explorer-2:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTranscribeVocabulary",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranscribeVocabularyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "s3:GetObject",
+        "transcribe:CreateVocabulary",
+        "transcribe:GetVocabulary",
+        "transcribe:ListTagsForResource",
+        "transcribe:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranscribeVocabularyRead",
+      "Effect": "Allow",
+      "Action": [
+        "transcribe:GetVocabulary",
+        "transcribe:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranscribeVocabularyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "s3:GetObject",
+        "transcribe:GetVocabulary",
+        "transcribe:ListTagsForResource",
+        "transcribe:TagResource",
+        "transcribe:UntagResource",
+        "transcribe:UpdateVocabulary"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranscribeVocabularyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "transcribe:DeleteVocabulary",
+        "transcribe:GetVocabulary",
+        "transcribe:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

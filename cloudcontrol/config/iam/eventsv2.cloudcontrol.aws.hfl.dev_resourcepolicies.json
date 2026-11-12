@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEventsV2ResourcePolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventsV2ResourcePolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "events:GetResourcePolicy",
+        "events:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventsV2ResourcePolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "events:GetResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventsV2ResourcePolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "events:GetResourcePolicy",
+        "events:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventsV2ResourcePolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "events:DeleteResourcePolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

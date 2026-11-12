@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlChatbotSlackChannelConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChatbotSlackChannelConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "chatbot:AssociateToConfiguration",
+        "chatbot:CreateSlackChannelConfiguration",
+        "chatbot:ListAssociations",
+        "chatbot:TagResource",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChatbotSlackChannelConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "chatbot:DescribeSlackChannelConfigurations",
+        "chatbot:ListAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChatbotSlackChannelConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "chatbot:AssociateToConfiguration",
+        "chatbot:DisassociateFromConfiguration",
+        "chatbot:ListAssociations",
+        "chatbot:ListTagsForResource",
+        "chatbot:TagResource",
+        "chatbot:UntagResource",
+        "chatbot:UpdateSlackChannelConfiguration",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChatbotSlackChannelConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "chatbot:DeleteSlackChannelConfiguration",
+        "chatbot:DisassociateFromConfiguration",
+        "chatbot:ListAssociations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

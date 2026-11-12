@@ -1,0 +1,69 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTProvisioningTemplate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTProvisioningTemplateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetRole",
+        "iam:PassRole",
+        "iot:CreateProvisioningTemplate",
+        "iot:DescribeProvisioningTemplate",
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTProvisioningTemplateRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeProvisioningTemplate",
+        "iot:ListTagsForResource",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTProvisioningTemplateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetRole",
+        "iam:PassRole",
+        "iot:CreateProvisioningTemplateVersion",
+        "iot:DeleteProvisioningTemplateVersion",
+        "iot:DescribeProvisioningTemplate",
+        "iot:ListProvisioningTemplateVersions",
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "iot:UntagResource",
+        "iot:UpdateProvisioningTemplate",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTProvisioningTemplateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeleteProvisioningTemplate",
+        "iot:DescribeProvisioningTemplate",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

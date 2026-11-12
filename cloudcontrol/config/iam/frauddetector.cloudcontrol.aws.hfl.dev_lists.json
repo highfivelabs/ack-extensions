@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlFraudDetectorList",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FraudDetectorListCreate",
+      "Effect": "Allow",
+      "Action": [
+        "frauddetector:CreateList",
+        "frauddetector:GetListElements",
+        "frauddetector:GetListsMetadata",
+        "frauddetector:ListTagsForResource",
+        "frauddetector:TagResource",
+        "frauddetector:UpdateList"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FraudDetectorListRead",
+      "Effect": "Allow",
+      "Action": [
+        "frauddetector:GetListElements",
+        "frauddetector:GetListsMetadata",
+        "frauddetector:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FraudDetectorListUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "frauddetector:GetListElements",
+        "frauddetector:GetListsMetadata",
+        "frauddetector:ListTagsForResource",
+        "frauddetector:TagResource",
+        "frauddetector:UntagResource",
+        "frauddetector:UpdateList"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FraudDetectorListDelete",
+      "Effect": "Allow",
+      "Action": [
+        "frauddetector:DeleteList",
+        "frauddetector:GetListsMetadata"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

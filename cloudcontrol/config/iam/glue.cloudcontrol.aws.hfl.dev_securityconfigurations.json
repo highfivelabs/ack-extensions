@@ -1,0 +1,42 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlueSecurityConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueSecurityConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateSecurityConfiguration",
+        "glue:GetSecurityConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueSecurityConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetSecurityConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueSecurityConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DeleteSecurityConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

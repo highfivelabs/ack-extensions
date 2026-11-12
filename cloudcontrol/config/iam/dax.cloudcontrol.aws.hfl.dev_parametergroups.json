@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDAXParameterGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DAXParameterGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "dax:CreateParameterGroup",
+        "dax:DescribeParameterGroups",
+        "dax:DescribeParameters",
+        "dax:UpdateParameterGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DAXParameterGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "dax:DescribeParameterGroups",
+        "dax:DescribeParameters"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DAXParameterGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "dax:DescribeParameterGroups",
+        "dax:DescribeParameters",
+        "dax:UpdateParameterGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DAXParameterGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "dax:DeleteParameterGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

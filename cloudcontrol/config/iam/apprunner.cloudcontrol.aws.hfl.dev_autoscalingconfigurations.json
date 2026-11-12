@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppRunnerAutoScalingConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppRunnerAutoScalingConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "apprunner:CreateAutoScalingConfiguration",
+        "apprunner:DescribeAutoScalingConfiguration",
+        "apprunner:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppRunnerAutoScalingConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "apprunner:DescribeAutoScalingConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppRunnerAutoScalingConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "apprunner:DeleteAutoScalingConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

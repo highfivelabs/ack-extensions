@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLookoutEquipmentInferenceScheduler",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LookoutEquipmentInferenceSchedulerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "lookoutequipment:CreateInferenceScheduler",
+        "lookoutequipment:DescribeInferenceScheduler"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LookoutEquipmentInferenceSchedulerRead",
+      "Effect": "Allow",
+      "Action": [
+        "lookoutequipment:DescribeInferenceScheduler"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LookoutEquipmentInferenceSchedulerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lookoutequipment:DescribeInferenceScheduler",
+        "lookoutequipment:StartInferenceScheduler",
+        "lookoutequipment:StopInferenceScheduler",
+        "lookoutequipment:UpdateInferenceScheduler"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LookoutEquipmentInferenceSchedulerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lookoutequipment:DeleteInferenceScheduler",
+        "lookoutequipment:DescribeInferenceScheduler",
+        "lookoutequipment:StopInferenceScheduler"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

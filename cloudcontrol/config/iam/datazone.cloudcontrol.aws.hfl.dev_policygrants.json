@@ -1,0 +1,45 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataZonePolicyGrant",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZonePolicyGrantCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:AddPolicyGrant",
+        "datazone:GetUserProfile",
+        "datazone:ListPolicyGrants",
+        "iam:GetUser"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZonePolicyGrantRead",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:ListPolicyGrants"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZonePolicyGrantDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:ListPolicyGrants",
+        "datazone:RemovePolicyGrant"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

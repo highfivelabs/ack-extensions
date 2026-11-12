@@ -1,0 +1,74 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlStorageGatewaySMBFileShare",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StorageGatewaySMBFileShareCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:UpdateLogDelivery",
+        "storagegateway:AddTagsToResource",
+        "storagegateway:CreateSMBFileShare",
+        "storagegateway:DescribeSMBFileShares"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StorageGatewaySMBFileShareRead",
+      "Effect": "Allow",
+      "Action": [
+        "storagegateway:DescribeSMBFileShares",
+        "storagegateway:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StorageGatewaySMBFileShareUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:UpdateLogDelivery",
+        "storagegateway:AddTagsToResource",
+        "storagegateway:DescribeSMBFileShares",
+        "storagegateway:ListTagsForResource",
+        "storagegateway:RemoveTagsFromResource",
+        "storagegateway:UpdateSMBFileShare"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StorageGatewaySMBFileShareDelete",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:UpdateLogDelivery",
+        "storagegateway:DeleteFileShare",
+        "storagegateway:DescribeSMBFileShares",
+        "storagegateway:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

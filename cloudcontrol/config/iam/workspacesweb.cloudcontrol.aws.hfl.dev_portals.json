@@ -1,0 +1,131 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWorkSpacesWebPortal",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebPortalCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateNetworkInterfacePermission",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DeleteNetworkInterfacePermission",
+        "ec2:ModifyNetworkInterfaceAttribute",
+        "kinesis:Describe*",
+        "kinesis:PutRecord",
+        "kinesis:PutRecords",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "kms:ReEncryptFrom",
+        "kms:ReEncryptTo",
+        "s3:PutObject",
+        "sso:CreateManagedApplicationInstance",
+        "sso:Describe*",
+        "workspaces-web:AssociateBrowserSettings",
+        "workspaces-web:AssociateDataProtectionSettings",
+        "workspaces-web:AssociateIpAccessSettings",
+        "workspaces-web:AssociateNetworkSettings",
+        "workspaces-web:AssociateSessionLogger",
+        "workspaces-web:AssociateTrustStore",
+        "workspaces-web:AssociateUserAccessLoggingSettings",
+        "workspaces-web:AssociateUserSettings",
+        "workspaces-web:CreatePortal",
+        "workspaces-web:GetPortal*",
+        "workspaces-web:List*",
+        "workspaces-web:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebPortalRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "workspaces-web:GetPortal*",
+        "workspaces-web:List*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebPortalUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateNetworkInterfacePermission",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DeleteNetworkInterfacePermission",
+        "ec2:ModifyNetworkInterfaceAttribute",
+        "kinesis:Describe*",
+        "kinesis:PutRecord",
+        "kinesis:PutRecords",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "s3:PutObject",
+        "sso:CreateManagedApplicationInstance",
+        "sso:DeleteManagedApplicationInstance",
+        "sso:Describe*",
+        "sso:GetApplicationInstance",
+        "sso:List*",
+        "workspaces-web:AssociateBrowserSettings",
+        "workspaces-web:AssociateDataProtectionSettings",
+        "workspaces-web:AssociateIpAccessSettings",
+        "workspaces-web:AssociateNetworkSettings",
+        "workspaces-web:AssociateSessionLogger",
+        "workspaces-web:AssociateTrustStore",
+        "workspaces-web:AssociateUserAccessLoggingSettings",
+        "workspaces-web:AssociateUserSettings",
+        "workspaces-web:DisassociateBrowserSettings",
+        "workspaces-web:DisassociateDataProtectionSettings",
+        "workspaces-web:DisassociateIpAccessSettings",
+        "workspaces-web:DisassociateNetworkSettings",
+        "workspaces-web:DisassociateSessionLogger",
+        "workspaces-web:DisassociateTrustStore",
+        "workspaces-web:DisassociateUserAccessLoggingSettings",
+        "workspaces-web:DisassociateUserSettings",
+        "workspaces-web:GetPortal*",
+        "workspaces-web:List*",
+        "workspaces-web:TagResource",
+        "workspaces-web:UntagResource",
+        "workspaces-web:UpdatePortal"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebPortalDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "sso:DeleteManagedApplicationInstance",
+        "workspaces-web:DeletePortal",
+        "workspaces-web:DisassociateBrowserSettings",
+        "workspaces-web:DisassociateDataProtectionSettings",
+        "workspaces-web:DisassociateIpAccessSettings",
+        "workspaces-web:DisassociateNetworkSettings",
+        "workspaces-web:DisassociateSessionLogger",
+        "workspaces-web:DisassociateTrustStore",
+        "workspaces-web:DisassociateUserAccessLoggingSettings",
+        "workspaces-web:DisassociateUserSettings",
+        "workspaces-web:GetPortal*"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

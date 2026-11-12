@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlOamSink",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OamSinkCreate",
+      "Effect": "Allow",
+      "Action": [
+        "oam:CreateSink",
+        "oam:GetSink",
+        "oam:GetSinkPolicy",
+        "oam:ListTagsForResource",
+        "oam:PutSinkPolicy",
+        "oam:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OamSinkRead",
+      "Effect": "Allow",
+      "Action": [
+        "oam:GetSink",
+        "oam:GetSinkPolicy",
+        "oam:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OamSinkUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "oam:GetSink",
+        "oam:GetSinkPolicy",
+        "oam:ListTagsForResource",
+        "oam:PutSinkPolicy",
+        "oam:TagResource",
+        "oam:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OamSinkDelete",
+      "Effect": "Allow",
+      "Action": [
+        "oam:DeleteSink",
+        "oam:GetSink",
+        "oam:GetSinkPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

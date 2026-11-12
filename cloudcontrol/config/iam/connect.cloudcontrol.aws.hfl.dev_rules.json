@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cases:GetTemplate",
+        "cases:ListFieldOptions",
+        "cases:ListFields",
+        "connect:CreateRule",
+        "connect:DeleteRule",
+        "connect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectRuleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cases:GetTemplate",
+        "cases:ListFieldOptions",
+        "cases:ListFields",
+        "connect:TagResource",
+        "connect:UntagResource",
+        "connect:UpdateRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteRule",
+        "connect:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlXRayResourcePolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "XRayResourcePolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "xray:ListResourcePolicies",
+        "xray:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "XRayResourcePolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "xray:ListResourcePolicies"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "XRayResourcePolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "xray:ListResourcePolicies",
+        "xray:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "XRayResourcePolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "xray:DeleteResourcePolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

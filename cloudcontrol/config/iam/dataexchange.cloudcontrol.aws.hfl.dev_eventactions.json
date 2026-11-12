@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataExchangeEventAction",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataExchangeEventActionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "dataexchange:CreateEventAction",
+        "dataexchange:GetEventAction",
+        "dataexchange:TagResource",
+        "kms:CreateGrant"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataExchangeEventActionRead",
+      "Effect": "Allow",
+      "Action": [
+        "dataexchange:GetEventAction",
+        "dataexchange:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataExchangeEventActionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "dataexchange:GetEventAction",
+        "dataexchange:ListTagsForResource",
+        "dataexchange:TagResource",
+        "dataexchange:UntagResource",
+        "dataexchange:UpdateEventAction",
+        "kms:CreateGrant"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataExchangeEventActionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "dataexchange:DeleteEventAction",
+        "dataexchange:GetEventAction",
+        "kms:RevokeGrant"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

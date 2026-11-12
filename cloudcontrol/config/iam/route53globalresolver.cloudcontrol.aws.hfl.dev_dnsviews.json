@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoute53GlobalResolverDnsView",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53GlobalResolverDnsViewCreate",
+      "Effect": "Allow",
+      "Action": [
+        "route53globalresolver:CreateDNSView",
+        "route53globalresolver:GetDNSView",
+        "route53globalresolver:ListTagsForResource",
+        "route53globalresolver:TagResource",
+        "route53globalresolver:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53GlobalResolverDnsViewRead",
+      "Effect": "Allow",
+      "Action": [
+        "route53globalresolver:GetDNSView",
+        "route53globalresolver:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53GlobalResolverDnsViewUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "route53globalresolver:GetDNSView",
+        "route53globalresolver:ListTagsForResource",
+        "route53globalresolver:TagResource",
+        "route53globalresolver:UntagResource",
+        "route53globalresolver:UpdateDNSView"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53GlobalResolverDnsViewDelete",
+      "Effect": "Allow",
+      "Action": [
+        "route53globalresolver:DeleteDNSView",
+        "route53globalresolver:GetDNSView"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

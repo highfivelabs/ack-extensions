@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlueBlueprint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueBlueprintCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateBlueprint",
+        "glue:GetBlueprint",
+        "glue:GetTags",
+        "glue:TagResource",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueBlueprintRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetBlueprint",
+        "glue:GetTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueBlueprintUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetBlueprint",
+        "glue:GetTags",
+        "glue:TagResource",
+        "glue:UntagResource",
+        "glue:UpdateBlueprint",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueBlueprintDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DeleteBlueprint",
+        "glue:GetBlueprint",
+        "glue:GetTags"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

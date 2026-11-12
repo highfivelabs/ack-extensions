@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlServiceCatalogAppRegistryApplication",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogAppRegistryApplicationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "servicecatalog:CreateApplication",
+        "servicecatalog:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogAppRegistryApplicationRead",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:GetApplication"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogAppRegistryApplicationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "servicecatalog:GetApplication",
+        "servicecatalog:ListTagsForResource",
+        "servicecatalog:TagResource",
+        "servicecatalog:UntagResource",
+        "servicecatalog:UpdateApplication"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogAppRegistryApplicationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DeleteApplication"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

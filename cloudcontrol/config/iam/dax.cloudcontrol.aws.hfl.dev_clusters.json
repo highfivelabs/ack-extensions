@@ -1,0 +1,70 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDAXCluster",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DAXClusterCreate",
+      "Effect": "Allow",
+      "Action": [
+        "dax:CreateCluster",
+        "dax:CreateParameterGroup",
+        "dax:CreateSubnetGroup",
+        "dax:DescribeClusters",
+        "dax:ListTags",
+        "dax:TagResource",
+        "ec2:CreateNetworkInterface",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcs",
+        "iam:GetRole",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DAXClusterRead",
+      "Effect": "Allow",
+      "Action": [
+        "dax:DescribeClusters",
+        "dax:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DAXClusterUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "dax:DecreaseReplicationFactor",
+        "dax:DescribeClusters",
+        "dax:IncreaseReplicationFactor",
+        "dax:ListTags",
+        "dax:TagResource",
+        "dax:UntagResource",
+        "dax:UpdateCluster"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DAXClusterDelete",
+      "Effect": "Allow",
+      "Action": [
+        "dax:DeleteCluster",
+        "dax:DescribeClusters"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

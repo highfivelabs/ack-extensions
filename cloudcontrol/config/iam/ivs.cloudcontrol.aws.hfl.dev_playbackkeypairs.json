@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIVSPlaybackKeyPair",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSPlaybackKeyPairCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:ImportPlaybackKeyPair",
+        "ivs:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSPlaybackKeyPairRead",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:GetPlaybackKeyPair"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSPlaybackKeyPairUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:GetPlaybackKeyPair",
+        "ivs:ListTagsForResource",
+        "ivs:TagResource",
+        "ivs:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSPlaybackKeyPairDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:DeletePlaybackKeyPair",
+        "ivs:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

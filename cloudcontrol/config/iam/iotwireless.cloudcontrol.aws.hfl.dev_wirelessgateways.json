@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTWirelessWirelessGateway",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessWirelessGatewayCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:CreateWirelessGateway",
+        "iotwireless:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessWirelessGatewayRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:GetWirelessGateway",
+        "iotwireless:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessWirelessGatewayUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:AssociateWirelessGatewayWithThing",
+        "iotwireless:GetWirelessGateway",
+        "iotwireless:TagResource",
+        "iotwireless:UntagResource",
+        "iotwireless:UpdateWirelessGateway"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessWirelessGatewayDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:DeleteWirelessGateway",
+        "iotwireless:DisassociateWirelessGatewayFromThing"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

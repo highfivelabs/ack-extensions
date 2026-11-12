@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlImageBuilderLifecyclePolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderLifecyclePolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "imagebuilder:CreateLifecyclePolicy",
+        "imagebuilder:GetLifecyclePolicy",
+        "imagebuilder:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderLifecyclePolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "imagebuilder:GetLifecyclePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderLifecyclePolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "imagebuilder:GetLifecyclePolicy",
+        "imagebuilder:TagResource",
+        "imagebuilder:UntagResource",
+        "imagebuilder:UpdateLifecyclePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderLifecyclePolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "imagebuilder:DeleteLifecyclePolicy",
+        "imagebuilder:GetLifecyclePolicy",
+        "imagebuilder:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

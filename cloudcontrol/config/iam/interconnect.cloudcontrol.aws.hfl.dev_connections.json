@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlInterconnectConnection",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InterconnectConnectionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "interconnect:AcceptConnectionProposal",
+        "interconnect:CreateConnection",
+        "interconnect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InterconnectConnectionRead",
+      "Effect": "Allow",
+      "Action": [
+        "interconnect:GetConnection",
+        "interconnect:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InterconnectConnectionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "interconnect:GetConnection",
+        "interconnect:ListTagsForResource",
+        "interconnect:TagResource",
+        "interconnect:UntagResource",
+        "interconnect:UpdateConnection"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InterconnectConnectionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "interconnect:DeleteConnection",
+        "interconnect:GetConnection",
+        "interconnect:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRUMAppMonitor",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RUMAppMonitorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-identity:DescribeIdentityPool",
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole",
+        "iam:PassRole",
+        "logs:CreateLogDelivery",
+        "logs:CreateLogGroup",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:PutResourcePolicy",
+        "logs:PutRetentionPolicy",
+        "logs:UpdateLogDelivery",
+        "rum:BatchCreateRumMetricDefinitions",
+        "rum:BatchGetRumMetricDefinitions",
+        "rum:CreateAppMonitor",
+        "rum:GetAppMonitor",
+        "rum:GetResourcePolicy",
+        "rum:ListRumMetricsDestinations",
+        "rum:ListTagsForResource",
+        "rum:PutResourcePolicy",
+        "rum:PutRumMetricsDestination",
+        "rum:TagResource",
+        "s3:DoesObjectExist",
+        "s3:GetObject",
+        "s3:GetObjectAcl",
+        "s3:PutObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RUMAppMonitorRead",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:GetItem",
+        "rum:BatchGetRumMetricDefinitions",
+        "rum:GetAppMonitor",
+        "rum:GetResourcePolicy",
+        "rum:ListRumMetricsDestinations",
+        "rum:ListTagsForResource",
+        "s3:DoesObjectExist",
+        "s3:GetObject",
+        "s3:GetObjectAcl"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RUMAppMonitorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:UpdateItem",
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole",
+        "iam:PassRole",
+        "logs:CreateLogDelivery",
+        "logs:CreateLogGroup",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:PutResourcePolicy",
+        "logs:PutRetentionPolicy",
+        "logs:UpdateLogDelivery",
+        "rum:BatchCreateRumMetricDefinitions",
+        "rum:BatchDeleteRumMetricDefinitions",
+        "rum:BatchGetRumMetricDefinitions",
+        "rum:DeleteResourcePolicy",
+        "rum:DeleteRumMetricsDestination",
+        "rum:GetAppMonitor",
+        "rum:GetResourcePolicy",
+        "rum:ListRumMetricsDestinations",
+        "rum:ListTagsForResource",
+        "rum:PutResourcePolicy",
+        "rum:PutRumMetricsDestination",
+        "rum:TagResource",
+        "rum:UntagResource",
+        "rum:UpdateAppMonitor",
+        "rum:UpdateRumMetricDefinition",
+        "s3:DoesObjectExist",
+        "s3:GetObject",
+        "s3:GetObjectAcl",
+        "s3:PutObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RUMAppMonitorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:DeleteItem",
+        "dynamodb:Query",
+        "logs:DeleteLogDelivery",
+        "rum:BatchDeleteRumMetricDefinitions",
+        "rum:BatchGetRumMetricDefinitions",
+        "rum:DeleteAppMonitor",
+        "rum:DeleteResourcePolicy",
+        "rum:DeleteRumMetricsDestination",
+        "rum:GetAppMonitor",
+        "rum:GetResourcePolicy",
+        "rum:ListRumMetricsDestinations",
+        "rum:ListTagsForResource",
+        "rum:PutResourcePolicy",
+        "rum:UntagResource",
+        "s3:DeleteObject",
+        "s3:DoesObjectExist"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

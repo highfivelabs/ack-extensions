@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTCertificate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTCertificateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:CreateCertificateFromCsr",
+        "iot:DescribeCertificate",
+        "iot:RegisterCertificate",
+        "iot:RegisterCertificateWithoutCA",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTCertificateRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeCertificate",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTCertificateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeCertificate",
+        "iot:UpdateCertificate",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTCertificateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeleteCertificate",
+        "iot:DescribeCertificate",
+        "iot:UpdateCertificate",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

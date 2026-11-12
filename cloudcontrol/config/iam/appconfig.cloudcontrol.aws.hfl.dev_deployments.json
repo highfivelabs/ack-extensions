@@ -1,0 +1,46 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppConfigDeployment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigDeploymentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:GetDeployment",
+        "appconfig:ListTagsForResource",
+        "appconfig:StartDeployment",
+        "appconfig:TagResource",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigDeploymentRead",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:GetDeployment",
+        "appconfig:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigDeploymentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:StopDeployment"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

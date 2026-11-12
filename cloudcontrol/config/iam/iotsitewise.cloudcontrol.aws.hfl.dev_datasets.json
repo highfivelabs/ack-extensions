@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTSiteWiseDataset",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseDatasetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iotsitewise:CreateDataset",
+        "iotsitewise:DescribeDataset",
+        "iotsitewise:ListTagsForResource",
+        "iotsitewise:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseDatasetRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DescribeDataset",
+        "iotsitewise:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseDatasetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iotsitewise:DescribeDataset",
+        "iotsitewise:ListTagsForResource",
+        "iotsitewise:TagResource",
+        "iotsitewise:UntagResource",
+        "iotsitewise:UpdateDataset"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseDatasetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DeleteDataset",
+        "iotsitewise:DescribeDataset",
+        "iotsitewise:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRTBFabricResponderGateway",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RTBFabricResponderGatewayCreate",
+      "Effect": "Allow",
+      "Action": [
+        "acm:CreateCertificateRelation",
+        "acm:DescribeCertificate",
+        "iam:CreateServiceLinkedRole",
+        "quickbeam-admin:CreateCertificateRelation",
+        "quickbeam:CreateCertificateRelation",
+        "rtbfabric:AssociateCertificate",
+        "rtbfabric:CreateResponderGateway",
+        "rtbfabric:GetCertificateAssociation",
+        "rtbfabric:GetResponderGateway",
+        "rtbfabric:ListCertificateAssociations",
+        "rtbfabric:ListTagsForResource",
+        "rtbfabric:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RTBFabricResponderGatewayRead",
+      "Effect": "Allow",
+      "Action": [
+        "acm:DescribeCertificate",
+        "rtbfabric:GetCertificateAssociation",
+        "rtbfabric:GetResponderGateway",
+        "rtbfabric:ListCertificateAssociations",
+        "rtbfabric:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RTBFabricResponderGatewayUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "rtbfabric:GetResponderGateway",
+        "rtbfabric:ListCertificateAssociations",
+        "rtbfabric:ListTagsForResource",
+        "rtbfabric:TagResource",
+        "rtbfabric:UntagResource",
+        "rtbfabric:UpdateResponderGateway"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RTBFabricResponderGatewayDelete",
+      "Effect": "Allow",
+      "Action": [
+        "acm:RemoveCertificateRelation",
+        "quickbeam-admin:RemoveCertificateRelation",
+        "quickbeam:RemoveCertificateRelation",
+        "rtbfabric:DeleteResponderGateway",
+        "rtbfabric:DisassociateCertificate",
+        "rtbfabric:GetCertificateAssociation",
+        "rtbfabric:GetResponderGateway",
+        "rtbfabric:ListCertificateAssociations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

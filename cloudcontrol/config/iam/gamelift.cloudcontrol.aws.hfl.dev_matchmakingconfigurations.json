@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGameLiftMatchmakingConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftMatchmakingConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:CreateMatchmakingConfiguration",
+        "gamelift:DescribeMatchmakingConfigurations",
+        "gamelift:ListTagsForResource",
+        "gamelift:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftMatchmakingConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DescribeMatchmakingConfigurations",
+        "gamelift:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftMatchmakingConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DescribeMatchmakingConfigurations",
+        "gamelift:ListTagsForResource",
+        "gamelift:TagResource",
+        "gamelift:UntagResource",
+        "gamelift:UpdateMatchmakingConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftMatchmakingConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DeleteMatchmakingConfiguration",
+        "gamelift:DescribeMatchmakingConfigurations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

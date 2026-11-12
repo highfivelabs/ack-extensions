@@ -1,0 +1,72 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlODBCloudAutonomousVmCluster",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ODBCloudAutonomousVmClusterCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeAvailabilityZones",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "odb:AssociateIamRoleToResource",
+        "odb:CreateCloudAutonomousVmCluster",
+        "odb:GetCloudAutonomousVmCluster",
+        "odb:ListCloudAutonomousVmClusters",
+        "odb:ListTagsForResource",
+        "odb:TagResource",
+        "sts:GetCallerIdentity"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ODBCloudAutonomousVmClusterRead",
+      "Effect": "Allow",
+      "Action": [
+        "odb:GetCloudAutonomousVmCluster",
+        "odb:ListTagsForResource",
+        "sts:GetCallerIdentity"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ODBCloudAutonomousVmClusterUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "odb:AssociateIamRoleToResource",
+        "odb:DisassociateIamRoleFromResource",
+        "odb:GetCloudAutonomousVmCluster",
+        "odb:ListCloudAutonomousVmClusters",
+        "odb:ListTagsForResource",
+        "odb:TagResource",
+        "odb:UntagResource",
+        "sts:GetCallerIdentity"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ODBCloudAutonomousVmClusterDelete",
+      "Effect": "Allow",
+      "Action": [
+        "odb:DeleteCloudAutonomousVmCluster",
+        "odb:GetCloudAutonomousVmCluster",
+        "odb:ListCloudAutonomousVmClusters",
+        "odb:ListTagsForResource",
+        "sts:GetCallerIdentity"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

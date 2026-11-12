@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaConvertQueue",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConvertQueueCreate",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconvert:CreateQueue",
+        "mediaconvert:GetQueue",
+        "mediaconvert:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConvertQueueRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconvert:GetQueue",
+        "mediaconvert:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConvertQueueUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconvert:ListTagsForResource",
+        "mediaconvert:TagResource",
+        "mediaconvert:UntagResource",
+        "mediaconvert:UpdateQueue"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConvertQueueDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconvert:DeleteQueue",
+        "mediaconvert:GetQueue"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

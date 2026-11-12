@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNotificationsManagedNotificationAccountContactAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsManagedNotificationAccountContactAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "notifications:AssociateManagedNotificationAccountContact",
+        "notifications:ListManagedNotificationChannelAssociations",
+        "notifications:SubscribeSensitiveEvents"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsManagedNotificationAccountContactAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "notifications:ListManagedNotificationChannelAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsManagedNotificationAccountContactAssociationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "notifications:ListManagedNotificationChannelAssociations",
+        "notifications:SubscribeSensitiveEvents",
+        "notifications:UpdateManagedNotificationChannelAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsManagedNotificationAccountContactAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "notifications:DisassociateManagedNotificationAccountContact",
+        "notifications:ListManagedNotificationChannelAssociations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

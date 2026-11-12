@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBackupRestoreTestingSelection",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupRestoreTestingSelectionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "backup:CreateRestoreTestingSelection",
+        "backup:GetRestoreTestingSelection",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupRestoreTestingSelectionRead",
+      "Effect": "Allow",
+      "Action": [
+        "backup:GetRestoreTestingSelection"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupRestoreTestingSelectionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "backup:GetRestoreTestingSelection",
+        "backup:UpdateRestoreTestingSelection",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupRestoreTestingSelectionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "backup:DeleteRestoreTestingSelection",
+        "backup:GetRestoreTestingSelection"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

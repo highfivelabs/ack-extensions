@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBatchJobQueue",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchJobQueueCreate",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:CreateJobQueue",
+        "Batch:DescribeJobQueues",
+        "Batch:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchJobQueueRead",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:DescribeJobQueues"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchJobQueueUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:DescribeJobQueues",
+        "Batch:TagResource",
+        "Batch:UntagResource",
+        "Batch:UpdateJobQueue"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchJobQueueDelete",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:DeleteJobQueue",
+        "Batch:DescribeJobQueues",
+        "Batch:UpdateJobQueue"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

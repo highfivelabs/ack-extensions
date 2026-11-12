@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppSyncType",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncTypeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:CreateType",
+        "appsync:GetType"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncTypeRead",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:GetType"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncTypeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:GetType",
+        "appsync:UpdateType"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncTypeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:DeleteType",
+        "appsync:GetType"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

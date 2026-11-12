@@ -1,0 +1,48 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSageMakerStudioLifecycleConfig",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerStudioLifecycleConfigCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags",
+        "sagemaker:CreateStudioLifecycleConfig",
+        "sagemaker:DescribeStudioLifecycleConfig",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerStudioLifecycleConfigRead",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribeStudioLifecycleConfig",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerStudioLifecycleConfigDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DeleteStudioLifecycleConfig",
+        "sagemaker:DeleteTags",
+        "sagemaker:DescribeStudioLifecycleConfig",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

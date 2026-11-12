@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWisdomAIAgentVersion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomAIAgentVersionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:CreateAIAgentVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomAIAgentVersionRead",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:GetAIAgent",
+        "wisdom:GetAIAgentVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomAIAgentVersionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:GetAIAgent",
+        "wisdom:GetAIAgentVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomAIAgentVersionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:DeleteAIAgentVersion"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDeadlineMeteredProduct",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineMeteredProductCreate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:ListMeteredProducts",
+        "deadline:PutMeteredProduct"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineMeteredProductRead",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:GetMeteredProduct",
+        "deadline:ListMeteredProducts"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineMeteredProductDelete",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:DeleteMeteredProduct",
+        "deadline:ListMeteredProducts"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

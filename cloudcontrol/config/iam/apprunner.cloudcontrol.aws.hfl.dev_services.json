@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppRunnerService",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppRunnerServiceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "apprunner:CreateService",
+        "apprunner:TagResource",
+        "events:PutRule",
+        "events:PutTargets",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:DescribeLogStreams",
+        "logs:PutLogEvents",
+        "logs:PutRetentionPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppRunnerServiceRead",
+      "Effect": "Allow",
+      "Action": [
+        "apprunner:DescribeService"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppRunnerServiceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "apprunner:UpdateService",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppRunnerServiceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "apprunner:DeleteService"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

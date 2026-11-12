@@ -1,0 +1,77 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectInstance",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectInstanceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:CreateInstance",
+        "connect:DescribeInstance",
+        "connect:TagResource",
+        "connect:UpdateInstanceAttribute",
+        "ds:AuthorizeApplication",
+        "ds:CheckAlias",
+        "ds:CreateAlias",
+        "ds:CreateDirectory",
+        "ds:CreateIdentityPoolDirectory",
+        "ds:DescribeDirectories",
+        "ds:UnauthorizeApplication",
+        "iam:CreateServiceLinkedRole",
+        "iam:PutRolePolicy",
+        "logs:CreateLogGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectInstanceRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeInstance",
+        "connect:ListInstanceAttributes",
+        "ds:DescribeDirectories"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectInstanceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:ListInstanceAttributes",
+        "connect:TagResource",
+        "connect:UntagResource",
+        "connect:UpdateInstanceAttribute",
+        "ds:DescribeDirectories",
+        "iam:CreateServiceLinkedRole",
+        "iam:DeleteRolePolicy",
+        "iam:PutRolePolicy",
+        "logs:CreateLogGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectInstanceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteInstance",
+        "connect:DescribeInstance",
+        "connect:UntagResource",
+        "ds:DeleteDirectory",
+        "ds:DescribeDirectories",
+        "ds:UnauthorizeApplication"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoute53GlobalResolverAccessSource",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53GlobalResolverAccessSourceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "route53globalresolver:CreateAccessSource",
+        "route53globalresolver:GetAccessSource",
+        "route53globalresolver:ListTagsForResource",
+        "route53globalresolver:TagResource",
+        "route53globalresolver:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53GlobalResolverAccessSourceRead",
+      "Effect": "Allow",
+      "Action": [
+        "route53globalresolver:GetAccessSource",
+        "route53globalresolver:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53GlobalResolverAccessSourceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "route53globalresolver:GetAccessSource",
+        "route53globalresolver:ListTagsForResource",
+        "route53globalresolver:TagResource",
+        "route53globalresolver:UntagResource",
+        "route53globalresolver:UpdateAccessSource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53GlobalResolverAccessSourceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "route53globalresolver:DeleteAccessSource",
+        "route53globalresolver:GetAccessSource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

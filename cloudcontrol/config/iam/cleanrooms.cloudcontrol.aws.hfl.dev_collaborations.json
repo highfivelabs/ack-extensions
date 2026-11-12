@@ -1,0 +1,66 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCleanRoomsCollaboration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsCollaborationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:CreateCollaboration",
+        "cleanrooms:GetCollaboration",
+        "cleanrooms:ListCollaborations",
+        "cleanrooms:ListMembers",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsCollaborationRead",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:GetCollaboration",
+        "cleanrooms:ListMembers",
+        "cleanrooms:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsCollaborationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:GetCollaboration",
+        "cleanrooms:ListMembers",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:TagResource",
+        "cleanrooms:UntagResource",
+        "cleanrooms:UpdateCollaboration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsCollaborationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:DeleteCollaboration",
+        "cleanrooms:GetCollaboration",
+        "cleanrooms:ListCollaborations",
+        "cleanrooms:ListMembers",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

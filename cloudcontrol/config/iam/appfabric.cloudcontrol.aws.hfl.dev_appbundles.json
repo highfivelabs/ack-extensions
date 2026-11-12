@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppFabricAppBundle",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFabricAppBundleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appfabric:CreateAppBundle",
+        "appfabric:GetAppBundle",
+        "appfabric:ListTagsForResource",
+        "appfabric:TagResource",
+        "iam:CreateServiceLinkedRole",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFabricAppBundleRead",
+      "Effect": "Allow",
+      "Action": [
+        "appfabric:GetAppBundle",
+        "appfabric:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFabricAppBundleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appfabric:GetAppBundle",
+        "appfabric:ListTagsForResource",
+        "appfabric:TagResource",
+        "appfabric:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFabricAppBundleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appfabric:DeleteAppBundle",
+        "appfabric:GetAppBundle",
+        "appfabric:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

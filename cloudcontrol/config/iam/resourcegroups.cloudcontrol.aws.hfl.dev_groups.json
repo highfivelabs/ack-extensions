@@ -1,0 +1,71 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlResourceGroupsGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResourceGroupsGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DescribeStacks",
+        "cloudformation:ListStackResources",
+        "resource-groups:CreateGroup",
+        "resource-groups:GroupResources",
+        "resource-groups:ListGroupResources",
+        "resource-groups:Tag"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResourceGroupsGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "resource-groups:GetGroup",
+        "resource-groups:GetGroupConfiguration",
+        "resource-groups:GetGroupQuery",
+        "resource-groups:GetTags",
+        "resource-groups:ListGroupResources"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResourceGroupsGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DescribeStacks",
+        "cloudformation:ListStackResources",
+        "resource-groups:GetGroupConfiguration",
+        "resource-groups:GetGroupQuery",
+        "resource-groups:GetTags",
+        "resource-groups:GroupResources",
+        "resource-groups:ListGroupResources",
+        "resource-groups:PutGroupConfiguration",
+        "resource-groups:Tag",
+        "resource-groups:UnGroupResources",
+        "resource-groups:Untag",
+        "resource-groups:UpdateGroup",
+        "resource-groups:UpdateGroupQuery"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResourceGroupsGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "resource-groups:DeleteGroup",
+        "resource-groups:UnGroupResources"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

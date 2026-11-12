@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlResourceExplorer2Index",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResourceExplorer2IndexCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "resource-explorer-2:CreateIndex",
+        "resource-explorer-2:DeleteIndex",
+        "resource-explorer-2:GetIndex",
+        "resource-explorer-2:TagResource",
+        "resource-explorer-2:UpdateIndexType"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResourceExplorer2IndexRead",
+      "Effect": "Allow",
+      "Action": [
+        "resource-explorer-2:GetIndex"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResourceExplorer2IndexUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "resource-explorer-2:GetIndex",
+        "resource-explorer-2:ListTagsForResource",
+        "resource-explorer-2:TagResource",
+        "resource-explorer-2:UntagResource",
+        "resource-explorer-2:UpdateIndexType"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResourceExplorer2IndexDelete",
+      "Effect": "Allow",
+      "Action": [
+        "resource-explorer-2:DeleteIndex",
+        "resource-explorer-2:GetIndex",
+        "resource-explorer-2:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

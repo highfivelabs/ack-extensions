@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPaymentCryptographyKey",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PaymentCryptographyKeyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "payment-cryptography:CreateKey",
+        "payment-cryptography:GetKey",
+        "payment-cryptography:PutResourcePolicy",
+        "payment-cryptography:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PaymentCryptographyKeyRead",
+      "Effect": "Allow",
+      "Action": [
+        "payment-cryptography:GetKey",
+        "payment-cryptography:GetResourcePolicy",
+        "payment-cryptography:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PaymentCryptographyKeyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "payment-cryptography:AddKeyReplicationRegions",
+        "payment-cryptography:DeleteResourcePolicy",
+        "payment-cryptography:GetKey",
+        "payment-cryptography:ListTagsForResource",
+        "payment-cryptography:PutResourcePolicy",
+        "payment-cryptography:RemoveKeyReplicationRegions",
+        "payment-cryptography:StartKeyUsage",
+        "payment-cryptography:StopKeyUsage",
+        "payment-cryptography:TagResource",
+        "payment-cryptography:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PaymentCryptographyKeyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "payment-cryptography:DeleteKey",
+        "payment-cryptography:GetKey"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

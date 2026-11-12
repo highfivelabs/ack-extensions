@@ -1,0 +1,72 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNeptuneGraphPrivateGraphEndpoint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneGraphPrivateGraphEndpointCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateVpcEndpoint",
+        "ec2:DescribeAvailabilityZones",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcAttribute",
+        "ec2:DescribeVpcEndpoints",
+        "ec2:DescribeVpcs",
+        "ec2:ModifyVpcEndpoint",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "neptune-graph:CreatePrivateGraphEndpoint",
+        "neptune-graph:GetPrivateGraphEndpoint",
+        "route53:AssociateVPCWithHostedZone"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneGraphPrivateGraphEndpointRead",
+      "Effect": "Allow",
+      "Action": [
+        "neptune-graph:GetPrivateGraphEndpoint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneGraphPrivateGraphEndpointUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "neptune-graph:GetPrivateGraphEndpoint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneGraphPrivateGraphEndpointDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteVpcEndpoints",
+        "ec2:DescribeAvailabilityZones",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcAttribute",
+        "ec2:DescribeVpcEndpoints",
+        "ec2:DescribeVpcs",
+        "ec2:ModifyVpcEndpoint",
+        "neptune-graph:DeletePrivateGraphEndpoint",
+        "neptune-graph:GetPrivateGraphEndpoint",
+        "route53:DisassociateVPCFromHostedZone"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

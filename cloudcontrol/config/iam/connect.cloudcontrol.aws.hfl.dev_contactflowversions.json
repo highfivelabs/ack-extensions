@@ -1,0 +1,50 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectContactFlowVersion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectContactFlowVersionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:CreateContactFlowVersion",
+        "connect:DescribeContactFlow"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectContactFlowVersionRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeContactFlow"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectContactFlowVersionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeContactFlow"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectContactFlowVersionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteContactFlowVersion"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

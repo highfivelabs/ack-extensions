@@ -1,0 +1,36 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudFormationPublisher",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationPublisherCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DescribePublisher",
+        "cloudformation:RegisterPublisher",
+        "codestar-connections:GetConnection",
+        "codestar-connections:UseConnection"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationPublisherRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DescribePublisher"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

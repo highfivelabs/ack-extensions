@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkSecurityManagerScope",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkSecurityManagerScopeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "network-security-manager:CreateScope",
+        "network-security-manager:GetScope",
+        "network-security-manager:ListTagsForResource",
+        "network-security-manager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkSecurityManagerScopeRead",
+      "Effect": "Allow",
+      "Action": [
+        "network-security-manager:GetScope",
+        "network-security-manager:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkSecurityManagerScopeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "network-security-manager:GetScope",
+        "network-security-manager:ListTagsForResource",
+        "network-security-manager:TagResource",
+        "network-security-manager:UntagResource",
+        "network-security-manager:UpdateScope"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkSecurityManagerScopeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "network-security-manager:DeleteScope",
+        "network-security-manager:GetScope",
+        "network-security-manager:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

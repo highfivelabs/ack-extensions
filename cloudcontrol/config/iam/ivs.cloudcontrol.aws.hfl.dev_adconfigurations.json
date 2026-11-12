@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIVSAdConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSAdConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:CreateAdConfiguration",
+        "ivs:TagResource",
+        "mediatailor:GetPlaybackConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSAdConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:GetAdConfiguration",
+        "ivs:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSAdConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:ListTagsForResource",
+        "ivs:TagResource",
+        "ivs:UntagResource",
+        "ivs:UpdateAdConfiguration",
+        "mediatailor:GetPlaybackConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSAdConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:DeleteAdConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

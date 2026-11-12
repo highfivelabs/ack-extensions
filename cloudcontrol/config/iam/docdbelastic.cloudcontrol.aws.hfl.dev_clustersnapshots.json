@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDocDBElasticClusterSnapshot",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DocDBElasticClusterSnapshotCreate",
+      "Effect": "Allow",
+      "Action": [
+        "docdb-elastic:CreateClusterSnapshot",
+        "docdb-elastic:GetClusterSnapshot",
+        "docdb-elastic:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DocDBElasticClusterSnapshotRead",
+      "Effect": "Allow",
+      "Action": [
+        "docdb-elastic:GetClusterSnapshot",
+        "docdb-elastic:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DocDBElasticClusterSnapshotUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "docdb-elastic:GetClusterSnapshot",
+        "docdb-elastic:ListTagsForResource",
+        "docdb-elastic:TagResource",
+        "docdb-elastic:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DocDBElasticClusterSnapshotDelete",
+      "Effect": "Allow",
+      "Action": [
+        "docdb-elastic:DeleteClusterSnapshot",
+        "docdb-elastic:GetClusterSnapshot"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

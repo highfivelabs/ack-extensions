@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlServiceCatalogAppRegistryAttributeGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogAppRegistryAttributeGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:CreateAttributeGroup",
+        "servicecatalog:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogAppRegistryAttributeGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:GetAttributeGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogAppRegistryAttributeGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:GetAttributeGroup",
+        "servicecatalog:ListTagsForResource",
+        "servicecatalog:TagResource",
+        "servicecatalog:UntagResource",
+        "servicecatalog:UpdateAttributeGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogAppRegistryAttributeGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DeleteAttributeGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

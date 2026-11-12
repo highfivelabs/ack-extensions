@@ -80,7 +80,9 @@ func TestEnvironmentSplit(t *testing.T) {
 	for _, ty := range registry.Types {
 		every = append(every, iamgen.ForType(ty.Schema()))
 	}
-	one, err := iamgen.Environment(every, 1<<20)
+	// "Without a limit": larger than any environment's policy can be (1,349
+	// types' actions passed 1 MiB, the size used here before).
+	one, err := iamgen.Environment(every, 1<<30)
 	if err != nil || len(one) != 1 {
 		t.Fatalf("every type without a limit: %d documents, %v", len(one), err)
 	}

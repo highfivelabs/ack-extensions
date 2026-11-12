@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlueCustomEntityType",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueCustomEntityTypeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateCustomEntityType",
+        "glue:GetCustomEntityType",
+        "glue:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueCustomEntityTypeRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetCustomEntityType"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueCustomEntityTypeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateCustomEntityType",
+        "glue:DeleteCustomEntityType",
+        "glue:GetCustomEntityType",
+        "glue:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueCustomEntityTypeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DeleteCustomEntityType",
+        "glue:GetCustomEntityType"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

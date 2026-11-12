@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaTailorChannel",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorChannelCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "mediatailor:ConfigureLogsForChannel",
+        "mediatailor:CreateChannel",
+        "mediatailor:DescribeChannel",
+        "mediatailor:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorChannelRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediatailor:DescribeChannel"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorChannelUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "mediatailor:ConfigureLogsForChannel",
+        "mediatailor:DescribeChannel",
+        "mediatailor:TagResource",
+        "mediatailor:UntagResource",
+        "mediatailor:UpdateChannel"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorChannelDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediatailor:DeleteChannel",
+        "mediatailor:DescribeChannel"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

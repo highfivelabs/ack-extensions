@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlOmicsRunCache",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsRunCacheCreate",
+      "Effect": "Allow",
+      "Action": [
+        "omics:CreateRunCache",
+        "omics:GetRunCache",
+        "omics:TagResource",
+        "s3:GetBucketLocation",
+        "s3:GetObject",
+        "s3:ListBucket",
+        "s3:PutObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsRunCacheRead",
+      "Effect": "Allow",
+      "Action": [
+        "omics:GetRunCache"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsRunCacheUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "omics:GetRunCache",
+        "omics:ListTagsForResource",
+        "omics:TagResource",
+        "omics:UntagResource",
+        "omics:UpdateRunCache"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsRunCacheDelete",
+      "Effect": "Allow",
+      "Action": [
+        "omics:DeleteRunCache",
+        "omics:GetRunCache"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

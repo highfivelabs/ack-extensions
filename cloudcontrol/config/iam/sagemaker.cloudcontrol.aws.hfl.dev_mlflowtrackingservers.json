@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSageMakerMlflowTrackingServer",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerMlflowTrackingServerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "sagemaker:AddTags",
+        "sagemaker:CreateMlflowTrackingServer",
+        "sagemaker:DescribeMlflowTrackingServer",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerMlflowTrackingServerRead",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribeMlflowTrackingServer",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerMlflowTrackingServerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "sagemaker:AddTags",
+        "sagemaker:DeleteTags",
+        "sagemaker:DescribeMlflowTrackingServer",
+        "sagemaker:ListTags",
+        "sagemaker:UpdateMlflowTrackingServer"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerMlflowTrackingServerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DeleteMlflowTrackingServer",
+        "sagemaker:DescribeMlflowTrackingServer"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

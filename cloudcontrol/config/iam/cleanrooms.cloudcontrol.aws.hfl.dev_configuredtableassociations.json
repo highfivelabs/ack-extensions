@@ -1,0 +1,75 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCleanRoomsConfiguredTableAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsConfiguredTableAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:CreateConfiguredTableAssociation",
+        "cleanrooms:CreateConfiguredTableAssociationAnalysisRule",
+        "cleanrooms:DeleteConfiguredTableAssociation",
+        "cleanrooms:DeleteConfiguredTableAssociationAnalysisRule",
+        "cleanrooms:GetConfiguredTableAssociation",
+        "cleanrooms:GetConfiguredTableAssociationAnalysisRule",
+        "cleanrooms:ListConfiguredTableAssociations",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsConfiguredTableAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:GetConfiguredTableAssociation",
+        "cleanrooms:GetConfiguredTableAssociationAnalysisRule",
+        "cleanrooms:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsConfiguredTableAssociationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:CreateConfiguredTableAssociationAnalysisRule",
+        "cleanrooms:DeleteConfiguredTableAssociationAnalysisRule",
+        "cleanrooms:GetConfiguredTableAssociation",
+        "cleanrooms:GetConfiguredTableAssociationAnalysisRule",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:TagResource",
+        "cleanrooms:UntagResource",
+        "cleanrooms:UpdateConfiguredTableAssociation",
+        "cleanrooms:UpdateConfiguredTableAssociationAnalysisRule",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsConfiguredTableAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:DeleteConfiguredTableAssociation",
+        "cleanrooms:DeleteConfiguredTableAssociationAnalysisRule",
+        "cleanrooms:GetConfiguredTableAssociation",
+        "cleanrooms:GetConfiguredTableAssociationAnalysisRule",
+        "cleanrooms:ListConfiguredTableAssociations",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

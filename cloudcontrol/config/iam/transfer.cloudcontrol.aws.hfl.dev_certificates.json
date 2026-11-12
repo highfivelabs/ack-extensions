@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTransferCertificate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferCertificateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "transfer:ImportCertificate",
+        "transfer:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferCertificateRead",
+      "Effect": "Allow",
+      "Action": [
+        "transfer:DescribeCertificate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferCertificateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "transfer:TagResource",
+        "transfer:UnTagResource",
+        "transfer:UpdateCertificate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferCertificateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "transfer:DeleteCertificate"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

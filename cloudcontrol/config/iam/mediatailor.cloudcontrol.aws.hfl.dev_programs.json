@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaTailorProgram",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorProgramCreate",
+      "Effect": "Allow",
+      "Action": [
+        "mediatailor:CreateProgram",
+        "mediatailor:DescribeProgram"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorProgramRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediatailor:DescribeProgram"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorProgramUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "mediatailor:DescribeProgram",
+        "mediatailor:UpdateProgram"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorProgramDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediatailor:DeleteProgram",
+        "mediatailor:DescribeProgram"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

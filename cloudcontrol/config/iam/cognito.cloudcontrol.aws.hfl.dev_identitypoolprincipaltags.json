@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCognitoIdentityPoolPrincipalTag",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoIdentityPoolPrincipalTagCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-identity:GetPrincipalTagAttributeMap",
+        "cognito-identity:SetPrincipalTagAttributeMap"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoIdentityPoolPrincipalTagRead",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-identity:GetPrincipalTagAttributeMap"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoIdentityPoolPrincipalTagUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-identity:GetPrincipalTagAttributeMap",
+        "cognito-identity:SetPrincipalTagAttributeMap"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoIdentityPoolPrincipalTagDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-identity:GetPrincipalTagAttributeMap",
+        "cognito-identity:SetPrincipalTagAttributeMap"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

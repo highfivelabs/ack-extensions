@@ -1,0 +1,75 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataSyncLocationSMB",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationSMBCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:CreateLocationSmb",
+        "datasync:DescribeLocationSmb",
+        "datasync:ListTagsForResource",
+        "datasync:TagResource",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:DeleteSecret",
+        "secretsmanager:PutSecretValue"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationSMBRead",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DescribeLocationSmb",
+        "datasync:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationSMBUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DescribeLocationSmb",
+        "datasync:ListTagsForResource",
+        "datasync:TagResource",
+        "datasync:UntagResource",
+        "datasync:UpdateLocationSmb",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:DeleteSecret",
+        "secretsmanager:PutSecretValue",
+        "secretsmanager:UpdateSecret"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationSMBDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DeleteLocation",
+        "secretsmanager:DeleteSecret"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaConnectRouterOutput",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectRouterOutputCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateTags",
+        "iam:PassRole",
+        "mediaconnect:AssociateRouterNetworkInterface",
+        "mediaconnect:AssociateSource",
+        "mediaconnect:CreateRouterOutput",
+        "mediaconnect:GetRouterOutput",
+        "mediaconnect:ListRouterOutputs",
+        "mediaconnect:RegisterSourceEndpoint",
+        "mediaconnect:TagResource",
+        "mediaconnect:UpdateFlowSource",
+        "medialive:UpdateInput"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectRouterOutputRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:GetRouterOutput"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectRouterOutputUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateTags",
+        "iam:PassRole",
+        "mediaconnect:AssociateRouterNetworkInterface",
+        "mediaconnect:GetRouterOutput",
+        "mediaconnect:ListTagsForResource",
+        "mediaconnect:TagResource",
+        "mediaconnect:UntagResource",
+        "mediaconnect:UpdateFlowSource",
+        "mediaconnect:UpdateRouterOutput",
+        "medialive:UpdateInput"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectRouterOutputDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:DeleteRouterOutput",
+        "mediaconnect:DeregisterSourceEndpoint",
+        "mediaconnect:DisassociateSource",
+        "mediaconnect:GetRouterOutput",
+        "mediaconnect:ListRouterOutputs",
+        "mediaconnect:UpdateFlowSource",
+        "mediaconnect:UpdateRouterOutput",
+        "medialive:UpdateInput"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

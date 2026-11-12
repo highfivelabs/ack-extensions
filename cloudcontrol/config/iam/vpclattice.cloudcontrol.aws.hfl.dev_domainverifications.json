@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlVpcLatticeDomainVerification",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeDomainVerificationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "vpc-lattice:GetDomainVerification",
+        "vpc-lattice:ListTagsForResource",
+        "vpc-lattice:StartDomainVerification",
+        "vpc-lattice:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeDomainVerificationRead",
+      "Effect": "Allow",
+      "Action": [
+        "vpc-lattice:GetDomainVerification",
+        "vpc-lattice:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeDomainVerificationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "vpc-lattice:GetDomainVerification",
+        "vpc-lattice:ListTagsForResource",
+        "vpc-lattice:StartDomainVerification",
+        "vpc-lattice:TagResource",
+        "vpc-lattice:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeDomainVerificationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "vpc-lattice:DeleteDomainVerification",
+        "vpc-lattice:GetDomainVerification",
+        "vpc-lattice:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

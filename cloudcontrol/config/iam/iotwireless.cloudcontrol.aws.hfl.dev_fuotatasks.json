@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTWirelessFuotaTask",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessFuotaTaskCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetRole",
+        "iam:PassRole",
+        "iotwireless:CreateFuotaTask",
+        "iotwireless:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessFuotaTaskRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:GetFuotaTask",
+        "iotwireless:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessFuotaTaskUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iotwireless:AssociateMulticastGroupWithFuotaTask",
+        "iotwireless:AssociateWirelessDeviceWithFuotaTask",
+        "iotwireless:DisassociateMulticastGroupFromFuotaTask",
+        "iotwireless:DisassociateWirelessDeviceFromFuotaTask",
+        "iotwireless:GetFuotaTask",
+        "iotwireless:TagResource",
+        "iotwireless:UntagResource",
+        "iotwireless:UpdateFuotaTask"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessFuotaTaskDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:DeleteFuotaTask"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

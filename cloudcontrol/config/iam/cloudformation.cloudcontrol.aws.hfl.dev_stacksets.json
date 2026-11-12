@@ -1,0 +1,72 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudFormationStackSet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationStackSetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateStackInstances",
+        "cloudformation:CreateStackSet",
+        "cloudformation:DescribeStackSetOperation",
+        "cloudformation:GetTemplateSummary",
+        "cloudformation:ListStackSetOperationResults",
+        "cloudformation:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationStackSetRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DescribeStackInstance",
+        "cloudformation:DescribeStackSet",
+        "cloudformation:ListStackInstances"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationStackSetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateStackInstances",
+        "cloudformation:DeleteStackInstances",
+        "cloudformation:DescribeStackSet",
+        "cloudformation:DescribeStackSetOperation",
+        "cloudformation:GetTemplateSummary",
+        "cloudformation:ListStackSetOperationResults",
+        "cloudformation:TagResource",
+        "cloudformation:UntagResource",
+        "cloudformation:UpdateStackInstances",
+        "cloudformation:UpdateStackSet",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationStackSetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DeleteStackInstances",
+        "cloudformation:DeleteStackSet",
+        "cloudformation:DescribeStackSet",
+        "cloudformation:DescribeStackSetOperation",
+        "cloudformation:ListStackSetOperationResults",
+        "cloudformation:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

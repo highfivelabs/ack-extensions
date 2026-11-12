@@ -1,0 +1,91 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSageMakerCluster",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerClusterCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeImages",
+        "ec2:DescribeSnapshots",
+        "ec2:ModifyImageAttribute",
+        "ec2:ModifySnapshotAttribute",
+        "eks:AssociateAccessPolicy",
+        "eks:CreateAccessEntry",
+        "eks:DeleteAccessEntry",
+        "eks:DescribeAccessEntry",
+        "eks:DescribeCluster",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "sagemaker:AddTags",
+        "sagemaker:BatchAddClusterNodes",
+        "sagemaker:BatchDeleteClusterNodes",
+        "sagemaker:CreateCluster",
+        "sagemaker:DescribeCluster",
+        "sagemaker:ListTags",
+        "sagemaker:UpdateClusterSoftware"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerClusterRead",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribeCluster",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerClusterUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeImages",
+        "ec2:DescribeSnapshots",
+        "ec2:ModifyImageAttribute",
+        "ec2:ModifySnapshotAttribute",
+        "eks:AssociateAccessPolicy",
+        "eks:CreateAccessEntry",
+        "eks:DeleteAccessEntry",
+        "eks:DescribeAccessEntry",
+        "eks:DescribeCluster",
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "sagemaker:AddTags",
+        "sagemaker:BatchAddClusterNodes",
+        "sagemaker:BatchDeleteClusterNodes",
+        "sagemaker:DeleteTags",
+        "sagemaker:DescribeCluster",
+        "sagemaker:ListTags",
+        "sagemaker:UpdateCluster",
+        "sagemaker:UpdateClusterSoftware"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerClusterDelete",
+      "Effect": "Allow",
+      "Action": [
+        "eks:DeleteAccessEntry",
+        "eks:DescribeAccessEntry",
+        "sagemaker:DeleteCluster",
+        "sagemaker:DescribeCluster"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

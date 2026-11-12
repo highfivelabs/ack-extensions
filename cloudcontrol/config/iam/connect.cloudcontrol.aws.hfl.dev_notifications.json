@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectNotification",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectNotificationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:CreateNotification",
+        "connect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectNotificationRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeNotification"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectNotificationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:TagResource",
+        "connect:UntagResource",
+        "connect:UpdateNotificationContent"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectNotificationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteNotification",
+        "connect:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSSMIncidentsResponsePlan",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMIncidentsResponsePlanCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kms:Decrypt",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyPair",
+        "kms:GenerateDataKeyPairWithoutPlaintext",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "secretsmanager:GetSecretValue",
+        "ssm-incidents:CreateResponsePlan",
+        "ssm-incidents:GetResponsePlan",
+        "ssm-incidents:ListTagsForResource",
+        "ssm-incidents:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMIncidentsResponsePlanRead",
+      "Effect": "Allow",
+      "Action": [
+        "ssm-incidents:GetResponsePlan",
+        "ssm-incidents:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMIncidentsResponsePlanUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kms:Decrypt",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyPair",
+        "kms:GenerateDataKeyPairWithoutPlaintext",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "secretsmanager:GetSecretValue",
+        "ssm-incidents:GetResponsePlan",
+        "ssm-incidents:ListTagsForResource",
+        "ssm-incidents:TagResource",
+        "ssm-incidents:UntagResource",
+        "ssm-incidents:UpdateResponsePlan"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMIncidentsResponsePlanDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ssm-incidents:DeleteResponsePlan",
+        "ssm-incidents:GetResponsePlan"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

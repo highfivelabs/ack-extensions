@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlQuickSightOAuthClientApplication",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightOAuthClientApplicationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:CreateOAuthClientApplication",
+        "quicksight:DescribeOAuthClientApplication",
+        "quicksight:ListTagsForResource",
+        "quicksight:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightOAuthClientApplicationRead",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeOAuthClientApplication",
+        "quicksight:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightOAuthClientApplicationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeOAuthClientApplication",
+        "quicksight:ListTagsForResource",
+        "quicksight:TagResource",
+        "quicksight:UntagResource",
+        "quicksight:UpdateOAuthClientApplication"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightOAuthClientApplicationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DeleteOAuthClientApplication",
+        "quicksight:DescribeOAuthClientApplication"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCodeStarConnectionsConnection",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeStarConnectionsConnectionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "codestar-connections:CreateConnection",
+        "codestar-connections:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeStarConnectionsConnectionRead",
+      "Effect": "Allow",
+      "Action": [
+        "codestar-connections:GetConnection",
+        "codestar-connections:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeStarConnectionsConnectionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "codestar-connections:ListTagsForResource",
+        "codestar-connections:TagResource",
+        "codestar-connections:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeStarConnectionsConnectionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "codestar-connections:DeleteConnection"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

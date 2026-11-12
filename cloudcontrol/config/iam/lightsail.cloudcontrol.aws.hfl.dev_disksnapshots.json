@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLightsailDiskSnapshot",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDiskSnapshotCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:CreateDiskSnapshot",
+        "lightsail:GetDiskSnapshot",
+        "lightsail:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDiskSnapshotRead",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetDiskSnapshot"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDiskSnapshotUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetDiskSnapshot",
+        "lightsail:TagResource",
+        "lightsail:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDiskSnapshotDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:DeleteDiskSnapshot",
+        "lightsail:GetDiskSnapshot"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

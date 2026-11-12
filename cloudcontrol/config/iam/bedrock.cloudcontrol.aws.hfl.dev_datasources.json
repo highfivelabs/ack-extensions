@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockDataSource",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockDataSourceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:CreateDataSource",
+        "bedrock:GetDataSource",
+        "bedrock:GetKnowledgeBase",
+        "kms:Decrypt",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockDataSourceRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetDataSource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockDataSourceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetDataSource",
+        "bedrock:UpdateDataSource",
+        "kms:Decrypt",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockDataSourceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:DeleteDataSource",
+        "bedrock:GetDataSource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTFleetWiseSignalCatalog",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetWiseSignalCatalogCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iotfleetwise:CreateSignalCatalog",
+        "iotfleetwise:GetSignalCatalog",
+        "iotfleetwise:ListSignalCatalogNodes",
+        "iotfleetwise:ListTagsForResource",
+        "iotfleetwise:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetWiseSignalCatalogRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotfleetwise:GetSignalCatalog",
+        "iotfleetwise:ListSignalCatalogNodes",
+        "iotfleetwise:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetWiseSignalCatalogUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotfleetwise:GetSignalCatalog",
+        "iotfleetwise:ListSignalCatalogNodes",
+        "iotfleetwise:ListTagsForResource",
+        "iotfleetwise:TagResource",
+        "iotfleetwise:UntagResource",
+        "iotfleetwise:UpdateSignalCatalog"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetWiseSignalCatalogDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotfleetwise:DeleteSignalCatalog",
+        "iotfleetwise:GetSignalCatalog"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlVpcLatticeAccessLogSubscription",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeAccessLogSubscriptionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "firehose:CreateDeliveryStream",
+        "firehose:DescribeDeliveryStream",
+        "firehose:TagDeliveryStream",
+        "iam:CreateServiceLinkedRole",
+        "logs:CreateLogDelivery",
+        "logs:CreateLogStream",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:PutDestination",
+        "logs:PutDestinationPolicy",
+        "logs:PutResourcePolicy",
+        "s3:GetBucketLogging",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketLogging",
+        "s3:PutBucketPolicy",
+        "vpc-lattice:CreateAccessLogSubscription",
+        "vpc-lattice:GetAccessLogSubscription",
+        "vpc-lattice:ListTagsForResource",
+        "vpc-lattice:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeAccessLogSubscriptionRead",
+      "Effect": "Allow",
+      "Action": [
+        "logs:GetLogDelivery",
+        "vpc-lattice:GetAccessLogSubscription",
+        "vpc-lattice:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeAccessLogSubscriptionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "firehose:CreateDeliveryStream",
+        "firehose:DescribeDeliveryStream",
+        "firehose:TagDeliveryStream",
+        "firehose:UpdateDestination",
+        "logs:CreateLogDelivery",
+        "logs:CreateLogStream",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:PutDestination",
+        "logs:PutDestinationPolicy",
+        "logs:PutResourcePolicy",
+        "logs:UpdateLogDelivery",
+        "s3:GetBucketLogging",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketLogging",
+        "s3:PutBucketPolicy",
+        "vpc-lattice:GetAccessLogSubscription",
+        "vpc-lattice:ListTagsForResource",
+        "vpc-lattice:TagResource",
+        "vpc-lattice:UntagResource",
+        "vpc-lattice:UpdateAccessLogSubscription"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VpcLatticeAccessLogSubscriptionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "firehose:DeleteDeliveryStream",
+        "firehose:UntagDeliveryStream",
+        "iam:DeleteServiceLinkedRole",
+        "iam:GetServiceLinkedRoleDeletionStatus",
+        "logs:DeleteDestination",
+        "logs:DeleteLogDelivery",
+        "logs:DeleteLogStream",
+        "logs:GetLogDelivery",
+        "s3:PutBucketLogging",
+        "vpc-lattice:DeleteAccessLogSubscription",
+        "vpc-lattice:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

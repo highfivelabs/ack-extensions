@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlServiceCatalogServiceActionAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogServiceActionAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:AssociateServiceActionWithProvisioningArtifact",
+        "servicecatalog:ListServiceActionsForProvisioningArtifact"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogServiceActionAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:ListServiceActionsForProvisioningArtifact"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogServiceActionAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DisassociateServiceActionFromProvisioningArtifact",
+        "servicecatalog:ListServiceActionsForProvisioningArtifact"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

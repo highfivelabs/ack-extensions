@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWorkSpacesWebNetworkSettings",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebNetworkSettingsCreate",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces-web:CreateNetworkSettings",
+        "workspaces-web:GetNetworkSettings",
+        "workspaces-web:ListTagsForResource",
+        "workspaces-web:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebNetworkSettingsRead",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces-web:GetNetworkSettings",
+        "workspaces-web:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebNetworkSettingsUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces-web:GetNetworkSettings",
+        "workspaces-web:ListTagsForResource",
+        "workspaces-web:TagResource",
+        "workspaces-web:UntagResource",
+        "workspaces-web:UpdateNetworkSettings",
+        "workspaces-web:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebNetworkSettingsDelete",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces-web:DeleteNetworkSettings",
+        "workspaces-web:GetNetworkSettings"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

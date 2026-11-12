@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCodeBuildFleet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeBuildFleetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "codebuild:BatchGetFleets",
+        "codebuild:CreateFleet",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeBuildFleetRead",
+      "Effect": "Allow",
+      "Action": [
+        "codebuild:BatchGetFleets"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeBuildFleetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "codebuild:BatchGetFleets",
+        "codebuild:UpdateFleet",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeBuildFleetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "codebuild:BatchGetFleets",
+        "codebuild:DeleteFleet"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaPackageV2OriginEndpoint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaPackageV2OriginEndpointCreate",
+      "Effect": "Allow",
+      "Action": [
+        "acm:DescribeCertificate",
+        "iam:PassRole",
+        "mediapackagev2:CreateOriginEndpoint",
+        "mediapackagev2:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaPackageV2OriginEndpointRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediapackagev2:GetOriginEndpoint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaPackageV2OriginEndpointUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "acm:DescribeCertificate",
+        "iam:PassRole",
+        "mediapackagev2:ListTagsForResource",
+        "mediapackagev2:TagResource",
+        "mediapackagev2:UntagResource",
+        "mediapackagev2:UpdateOriginEndpoint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaPackageV2OriginEndpointDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediapackagev2:DeleteOriginEndpoint",
+        "mediapackagev2:GetOriginEndpoint"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

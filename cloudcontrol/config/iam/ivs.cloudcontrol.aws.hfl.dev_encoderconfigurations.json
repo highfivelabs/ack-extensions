@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIVSEncoderConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSEncoderConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:CreateEncoderConfiguration",
+        "ivs:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSEncoderConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:GetEncoderConfiguration",
+        "ivs:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSEncoderConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:GetEncoderConfiguration",
+        "ivs:ListTagsForResource",
+        "ivs:TagResource",
+        "ivs:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSEncoderConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:DeleteEncoderConfiguration",
+        "ivs:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

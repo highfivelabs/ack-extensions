@@ -1,0 +1,85 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCleanRoomsIntermediateTable",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsIntermediateTableCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:CreateIntermediateTable",
+        "cleanrooms:CreateIntermediateTableAnalysisRule",
+        "cleanrooms:GetCollaboration",
+        "cleanrooms:GetCollaborationAnalysisTemplate",
+        "cleanrooms:GetIntermediateTable",
+        "cleanrooms:GetIntermediateTableAnalysisRule",
+        "cleanrooms:GetMembership",
+        "cleanrooms:ListIntermediateTables",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:PopulateIntermediateTable",
+        "cleanrooms:TagResource",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsIntermediateTableRead",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:GetCollaboration",
+        "cleanrooms:GetIntermediateTable",
+        "cleanrooms:GetIntermediateTableAnalysisRule",
+        "cleanrooms:GetMembership",
+        "cleanrooms:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsIntermediateTableUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:CreateIntermediateTableAnalysisRule",
+        "cleanrooms:DeleteIntermediateTableAnalysisRule",
+        "cleanrooms:GetIntermediateTable",
+        "cleanrooms:GetIntermediateTableAnalysisRule",
+        "cleanrooms:GetMembership",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:TagResource",
+        "cleanrooms:UntagResource",
+        "cleanrooms:UpdateIntermediateTable",
+        "cleanrooms:UpdateIntermediateTableAnalysisRule",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsIntermediateTableDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:DeleteIntermediateTable",
+        "cleanrooms:DeleteIntermediateTableAnalysisRule",
+        "cleanrooms:GetIntermediateTable",
+        "cleanrooms:GetIntermediateTableAnalysisRule",
+        "cleanrooms:GetMembership",
+        "cleanrooms:ListIntermediateTables",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

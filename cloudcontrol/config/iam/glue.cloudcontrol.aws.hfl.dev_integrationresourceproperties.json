@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlueIntegrationResourceProperty",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueIntegrationResourcePropertyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateIntegrationResourceProperty",
+        "glue:GetConnection",
+        "glue:GetConnections",
+        "glue:GetIntegrationResourceProperty",
+        "glue:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueIntegrationResourcePropertyRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetIntegrationResourceProperty",
+        "glue:GetTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueIntegrationResourcePropertyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetIntegrationResourceProperty",
+        "glue:TagResource",
+        "glue:UntagResource",
+        "glue:UpdateIntegrationResourceProperty",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueIntegrationResourcePropertyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DeleteIntegrationResourceProperty",
+        "glue:UntagResource",
+        "glue:UpdateIntegrationResourceProperty"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

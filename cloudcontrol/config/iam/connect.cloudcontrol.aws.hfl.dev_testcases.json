@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectTestCase",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectTestCaseCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:CreateTestCase",
+        "connect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectTestCaseRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeTestCase"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectTestCaseUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:TagResource",
+        "connect:UntagResource",
+        "connect:UpdateTestCase"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectTestCaseDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteTestCase",
+        "connect:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

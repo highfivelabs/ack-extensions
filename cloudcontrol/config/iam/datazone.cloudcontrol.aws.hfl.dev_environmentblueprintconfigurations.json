@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataZoneEnvironmentBlueprintConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneEnvironmentBlueprintConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetEnvironmentBlueprintConfiguration",
+        "datazone:ListEnvironmentBlueprints",
+        "datazone:PutEnvironmentBlueprintConfiguration",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneEnvironmentBlueprintConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetEnvironmentBlueprintConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneEnvironmentBlueprintConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:DeleteEnvironmentBlueprintConfiguration",
+        "datazone:GetEnvironmentBlueprintConfiguration",
+        "datazone:PutEnvironmentBlueprintConfiguration",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneEnvironmentBlueprintConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:DeleteEnvironmentBlueprintConfiguration",
+        "datazone:GetEnvironmentBlueprintConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

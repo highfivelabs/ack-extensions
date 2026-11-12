@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLightsailDatabase",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDatabaseCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:CreateRelationalDatabase",
+        "lightsail:GetRegions",
+        "lightsail:GetRelationalDatabase",
+        "lightsail:GetRelationalDatabases",
+        "lightsail:TagResource",
+        "lightsail:UntagResource",
+        "lightsail:UpdateRelationalDatabase",
+        "lightsail:UpdateRelationalDatabaseParameters"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDatabaseRead",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetRelationalDatabase",
+        "lightsail:GetRelationalDatabases"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDatabaseUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetRelationalDatabase",
+        "lightsail:GetRelationalDatabases",
+        "lightsail:TagResource",
+        "lightsail:UntagResource",
+        "lightsail:UpdateRelationalDatabase",
+        "lightsail:UpdateRelationalDatabaseParameters"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDatabaseDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:DeleteRelationalDatabase",
+        "lightsail:GetRelationalDatabase",
+        "lightsail:GetRelationalDatabases"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMGNWave",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MGNWaveCreate",
+      "Effect": "Allow",
+      "Action": [
+        "mgn:CreateWave",
+        "mgn:ListTagsForResource",
+        "mgn:ListWaves",
+        "mgn:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MGNWaveRead",
+      "Effect": "Allow",
+      "Action": [
+        "mgn:ListTagsForResource",
+        "mgn:ListWaves"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MGNWaveUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "mgn:ListTagsForResource",
+        "mgn:ListWaves",
+        "mgn:TagResource",
+        "mgn:UntagResource",
+        "mgn:UpdateWave"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MGNWaveDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mgn:DeleteWave",
+        "mgn:ListTagsForResource",
+        "mgn:ListWaves"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

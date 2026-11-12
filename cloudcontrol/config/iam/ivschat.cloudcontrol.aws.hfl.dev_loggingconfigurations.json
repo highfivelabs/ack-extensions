@@ -1,0 +1,81 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIVSChatLoggingConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSChatLoggingConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "firehose:TagDeliveryStream",
+        "iam:CreateServiceLinkedRole",
+        "ivschat:CreateLoggingConfiguration",
+        "ivschat:GetLoggingConfiguration",
+        "ivschat:TagResource",
+        "logs:CreateLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:PutResourcePolicy",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSChatLoggingConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ivschat:GetLoggingConfiguration",
+        "ivschat:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSChatLoggingConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "firehose:TagDeliveryStream",
+        "iam:CreateServiceLinkedRole",
+        "ivschat:GetLoggingConfiguration",
+        "ivschat:ListTagsForResource",
+        "ivschat:TagResource",
+        "ivschat:UntagResource",
+        "ivschat:UpdateLoggingConfiguration",
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "logs:UpdateLogDelivery",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSChatLoggingConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ivschat:DeleteLoggingConfiguration",
+        "ivschat:GetLoggingConfiguration",
+        "ivschat:UntagResource",
+        "logs:DeleteLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

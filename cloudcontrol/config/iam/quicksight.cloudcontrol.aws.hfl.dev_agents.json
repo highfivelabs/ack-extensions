@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlQuickSightAgent",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightAgentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:CreateAgent",
+        "quicksight:DescribeAgent",
+        "quicksight:ListTagsForResource",
+        "quicksight:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightAgentRead",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeAgent",
+        "quicksight:DescribeAgentPermissions",
+        "quicksight:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightAgentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeAgent",
+        "quicksight:DescribeAgentPermissions",
+        "quicksight:ListTagsForResource",
+        "quicksight:TagResource",
+        "quicksight:UntagResource",
+        "quicksight:UpdateAgent",
+        "quicksight:UpdateAgentPermissions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightAgentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DeleteAgent",
+        "quicksight:DescribeAgent",
+        "quicksight:ListTagsForResource",
+        "quicksight:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlQuickSightCustomPermissions",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightCustomPermissionsCreate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:CreateCustomPermissions",
+        "quicksight:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightCustomPermissionsRead",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeCustomPermissions",
+        "quicksight:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightCustomPermissionsUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:ListTagsForResource",
+        "quicksight:TagResource",
+        "quicksight:UntagResource",
+        "quicksight:UpdateCustomPermissions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightCustomPermissionsDelete",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DeleteCustomPermissions"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

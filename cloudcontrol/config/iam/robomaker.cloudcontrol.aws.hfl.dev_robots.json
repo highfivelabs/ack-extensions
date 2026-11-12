@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoboMakerRobot",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RoboMakerRobotCreate",
+      "Effect": "Allow",
+      "Action": [
+        "robomaker:CreateRobot",
+        "robomaker:RegisterRobot"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RoboMakerRobotRead",
+      "Effect": "Allow",
+      "Action": [
+        "robomaker:DescribeRobot"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RoboMakerRobotUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "robomaker:TagResource",
+        "robomaker:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RoboMakerRobotDelete",
+      "Effect": "Allow",
+      "Action": [
+        "robomaker:DeleteRobot",
+        "robomaker:DeregisterRobot",
+        "robomaker:DescribeRobot"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

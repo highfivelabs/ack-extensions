@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSageMakerPartnerApp",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerPartnerAppCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "sagemaker:AddTags",
+        "sagemaker:CreatePartnerApp",
+        "sagemaker:DescribePartnerApp",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerPartnerAppRead",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribePartnerApp",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerPartnerAppUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:DescribeKey",
+        "sagemaker:AddTags",
+        "sagemaker:DeleteTags",
+        "sagemaker:DescribePartnerApp",
+        "sagemaker:ListTags",
+        "sagemaker:UpdatePartnerApp"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerPartnerAppDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DeletePartnerApp",
+        "sagemaker:DeleteTags",
+        "sagemaker:DescribePartnerApp"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

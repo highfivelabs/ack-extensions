@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockAgentAlias",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentAliasCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:CreateAgentAlias",
+        "bedrock:GetAgent",
+        "bedrock:GetAgentAlias",
+        "bedrock:ListTagsForResource",
+        "bedrock:PrepareAgent",
+        "bedrock:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentAliasRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetAgentAlias",
+        "bedrock:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentAliasUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetAgent",
+        "bedrock:GetAgentAlias",
+        "bedrock:ListTagsForResource",
+        "bedrock:PrepareAgent",
+        "bedrock:TagResource",
+        "bedrock:UntagResource",
+        "bedrock:UpdateAgentAlias"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentAliasDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:DeleteAgentAlias"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoute53RecoveryReadinessResourceSet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53RecoveryReadinessResourceSetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "route53-recovery-readiness:CreateResourceSet",
+        "route53-recovery-readiness:GetCell",
+        "route53-recovery-readiness:GetRecoveryGroup",
+        "route53-recovery-readiness:GetResourceSet",
+        "route53-recovery-readiness:ListTagsForResources",
+        "route53-recovery-readiness:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53RecoveryReadinessResourceSetRead",
+      "Effect": "Allow",
+      "Action": [
+        "route53-recovery-readiness:GetResourceSet",
+        "route53-recovery-readiness:ListTagsForResources"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53RecoveryReadinessResourceSetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "route53-recovery-readiness:GetCell",
+        "route53-recovery-readiness:GetRecoveryGroup",
+        "route53-recovery-readiness:GetResourceSet",
+        "route53-recovery-readiness:ListTagsForResources",
+        "route53-recovery-readiness:TagResource",
+        "route53-recovery-readiness:UntagResource",
+        "route53-recovery-readiness:UpdateResourceSet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53RecoveryReadinessResourceSetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "route53-recovery-readiness:DeleteResourceSet",
+        "route53-recovery-readiness:GetResourceSet"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

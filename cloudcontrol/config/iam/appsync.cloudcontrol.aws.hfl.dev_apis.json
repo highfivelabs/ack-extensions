@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppSyncApi",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncApiCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:CreateApi",
+        "appsync:GetApi",
+        "appsync:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncApiRead",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:GetApi",
+        "appsync:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncApiUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:GetApi",
+        "appsync:TagResource",
+        "appsync:UntagResource",
+        "appsync:UpdateApi",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncApiDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:DeleteApi",
+        "appsync:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

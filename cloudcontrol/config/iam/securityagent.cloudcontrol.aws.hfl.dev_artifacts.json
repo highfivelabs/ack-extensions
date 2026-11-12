@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityAgentArtifact",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentArtifactCreate",
+      "Effect": "Allow",
+      "Action": [
+        "securityagent:AddArtifact",
+        "securityagent:GetArtifact"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentArtifactRead",
+      "Effect": "Allow",
+      "Action": [
+        "securityagent:GetArtifact"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentArtifactDelete",
+      "Effect": "Allow",
+      "Action": [
+        "securityagent:DeleteArtifact",
+        "securityagent:GetArtifact"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

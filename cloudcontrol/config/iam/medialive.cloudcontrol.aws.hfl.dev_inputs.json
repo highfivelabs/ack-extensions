@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaLiveInput",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveInputCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "medialive:CreateInput",
+        "medialive:CreateTags",
+        "medialive:DescribeInput",
+        "medialive:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveInputRead",
+      "Effect": "Allow",
+      "Action": [
+        "medialive:DescribeInput",
+        "medialive:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveInputUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "medialive:CreateTags",
+        "medialive:DeleteTags",
+        "medialive:DescribeInput",
+        "medialive:UpdateInput"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveInputDelete",
+      "Effect": "Allow",
+      "Action": [
+        "medialive:DeleteInput",
+        "medialive:DescribeInput"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSignerSigningProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SignerSigningProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "signer:PutSigningProfile",
+        "signer:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SignerSigningProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "signer:GetSigningProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SignerSigningProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "signer:GetSigningProfile",
+        "signer:TagResource",
+        "signer:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SignerSigningProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "signer:CancelSigningProfile",
+        "signer:GetSigningProfile"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppConfigExperimentDefinition",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigExperimentDefinitionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:CreateExperimentDefinition",
+        "appconfig:GetExperimentDefinition",
+        "appconfig:ListTagsForResource",
+        "appconfig:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigExperimentDefinitionRead",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:GetExperimentDefinition",
+        "appconfig:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigExperimentDefinitionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:GetExperimentDefinition",
+        "appconfig:ListTagsForResource",
+        "appconfig:TagResource",
+        "appconfig:UntagResource",
+        "appconfig:UpdateExperimentDefinition"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigExperimentDefinitionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:DeleteExperimentDefinition",
+        "appconfig:GetExperimentDefinition"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

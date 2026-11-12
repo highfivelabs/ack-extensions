@@ -1,0 +1,46 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLexBotVersion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LexBotVersionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lex:BuildBotLocale",
+        "lex:CreateBotVersion",
+        "lex:DescribeBot",
+        "lex:DescribeBotLocale",
+        "lex:DescribeBotVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LexBotVersionRead",
+      "Effect": "Allow",
+      "Action": [
+        "lex:DescribeBotVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LexBotVersionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lex:DeleteBotVersion",
+        "lex:DescribeBotVersion"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

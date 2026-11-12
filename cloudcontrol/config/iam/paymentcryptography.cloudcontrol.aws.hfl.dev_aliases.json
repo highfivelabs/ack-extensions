@@ -1,0 +1,49 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPaymentCryptographyAlias",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PaymentCryptographyAliasCreate",
+      "Effect": "Allow",
+      "Action": [
+        "payment-cryptography:CreateAlias"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PaymentCryptographyAliasRead",
+      "Effect": "Allow",
+      "Action": [
+        "payment-cryptography:GetAlias"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PaymentCryptographyAliasUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "payment-cryptography:UpdateAlias"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PaymentCryptographyAliasDelete",
+      "Effect": "Allow",
+      "Action": [
+        "payment-cryptography:DeleteAlias"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

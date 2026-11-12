@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDRSRecoveryPlan",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DRSRecoveryPlanCreate",
+      "Effect": "Allow",
+      "Action": [
+        "drs:CreateRecoveryPlan",
+        "drs:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DRSRecoveryPlanRead",
+      "Effect": "Allow",
+      "Action": [
+        "drs:GetRecoveryPlan",
+        "drs:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DRSRecoveryPlanUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "drs:TagResource",
+        "drs:UntagResource",
+        "drs:UpdateRecoveryPlan"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DRSRecoveryPlanDelete",
+      "Effect": "Allow",
+      "Action": [
+        "drs:DeleteRecoveryPlan"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEvidentlySegment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EvidentlySegmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "evidently:CreateSegment",
+        "evidently:GetSegment",
+        "evidently:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EvidentlySegmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "evidently:GetSegment",
+        "evidently:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EvidentlySegmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "evidently:DeleteSegment",
+        "evidently:GetSegment",
+        "evidently:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

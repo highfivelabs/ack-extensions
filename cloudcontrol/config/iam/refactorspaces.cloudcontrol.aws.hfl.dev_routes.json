@@ -1,0 +1,116 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRefactorSpacesRoute",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RefactorSpacesRouteCreate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:DELETE",
+        "apigateway:GET",
+        "apigateway:PATCH",
+        "apigateway:POST",
+        "apigateway:PUT",
+        "apigateway:UpdateRestApiPolicy",
+        "ec2:DescribeSubnets",
+        "elasticloadbalancing:AddTags",
+        "elasticloadbalancing:CreateListener",
+        "elasticloadbalancing:CreateTargetGroup",
+        "elasticloadbalancing:DescribeListeners",
+        "elasticloadbalancing:DescribeTags",
+        "elasticloadbalancing:DescribeTargetGroups",
+        "elasticloadbalancing:DescribeTargetHealth",
+        "elasticloadbalancing:RegisterTargets",
+        "iam:CreateServiceLinkedRole",
+        "lambda:AddPermission",
+        "lambda:GetFunctionConfiguration",
+        "refactor-spaces:CreateRoute",
+        "refactor-spaces:GetRoute",
+        "refactor-spaces:TagResource",
+        "tag:GetResources"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RefactorSpacesRouteRead",
+      "Effect": "Allow",
+      "Action": [
+        "refactor-spaces:GetRoute",
+        "refactor-spaces:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RefactorSpacesRouteUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:DELETE",
+        "apigateway:GET",
+        "apigateway:PATCH",
+        "apigateway:POST",
+        "apigateway:PUT",
+        "apigateway:UpdateRestApiPolicy",
+        "ec2:DescribeSubnets",
+        "elasticloadbalancing:AddTags",
+        "elasticloadbalancing:CreateListener",
+        "elasticloadbalancing:CreateTargetGroup",
+        "elasticloadbalancing:DeleteListener",
+        "elasticloadbalancing:DeleteTargetGroup",
+        "elasticloadbalancing:DescribeListeners",
+        "elasticloadbalancing:DescribeTags",
+        "elasticloadbalancing:DescribeTargetGroups",
+        "elasticloadbalancing:DescribeTargetHealth",
+        "elasticloadbalancing:RegisterTargets",
+        "iam:CreateServiceLinkedRole",
+        "lambda:AddPermission",
+        "lambda:GetFunctionConfiguration",
+        "refactor-spaces:GetRoute",
+        "refactor-spaces:TagResource",
+        "refactor-spaces:UpdateRoute",
+        "tag:GetResources"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RefactorSpacesRouteDelete",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:DELETE",
+        "apigateway:GET",
+        "apigateway:PATCH",
+        "apigateway:POST",
+        "apigateway:PUT",
+        "apigateway:UpdateRestApiPolicy",
+        "ec2:DescribeSubnets",
+        "elasticloadbalancing:AddTags",
+        "elasticloadbalancing:CreateListener",
+        "elasticloadbalancing:CreateTargetGroup",
+        "elasticloadbalancing:DeleteListener",
+        "elasticloadbalancing:DeleteTargetGroup",
+        "elasticloadbalancing:DescribeListeners",
+        "elasticloadbalancing:DescribeTags",
+        "elasticloadbalancing:DescribeTargetGroups",
+        "elasticloadbalancing:DescribeTargetHealth",
+        "elasticloadbalancing:RegisterTargets",
+        "lambda:AddPermission",
+        "lambda:GetFunctionConfiguration",
+        "refactor-spaces:DeleteRoute",
+        "refactor-spaces:GetRoute",
+        "refactor-spaces:UntagResource",
+        "tag:GetResources"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

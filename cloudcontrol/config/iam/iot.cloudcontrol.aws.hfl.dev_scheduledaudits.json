@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTScheduledAudit",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTScheduledAuditCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:CreateScheduledAudit",
+        "iot:DescribeScheduledAudit",
+        "iot:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTScheduledAuditRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeScheduledAudit",
+        "iot:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTScheduledAuditUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "iot:UntagResource",
+        "iot:UpdateScheduledAudit"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTScheduledAuditDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeleteScheduledAudit",
+        "iot:DescribeScheduledAudit"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

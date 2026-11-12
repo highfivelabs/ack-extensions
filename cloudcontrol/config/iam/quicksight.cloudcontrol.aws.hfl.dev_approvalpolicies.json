@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlQuickSightApprovalPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightApprovalPolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:CreateApprovalPolicy",
+        "quicksight:DescribeApprovalPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightApprovalPolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeApprovalPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightApprovalPolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeApprovalPolicy",
+        "quicksight:UpdateApprovalPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightApprovalPolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DeleteApprovalPolicy",
+        "quicksight:DescribeApprovalPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

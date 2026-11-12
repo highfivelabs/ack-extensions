@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCustomerProfilesDomainObjectType",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesDomainObjectTypeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "profile:GetDomain",
+        "profile:GetDomainObjectType",
+        "profile:PutDomainObjectType",
+        "profile:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesDomainObjectTypeRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey",
+        "profile:GetDomainObjectType",
+        "profile:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesDomainObjectTypeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey",
+        "profile:GetDomainObjectType",
+        "profile:ListTagsForResource",
+        "profile:PutDomainObjectType",
+        "profile:TagResource",
+        "profile:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesDomainObjectTypeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "profile:DeleteDomainObjectType"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

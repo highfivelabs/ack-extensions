@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDevOpsAgentAsset",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsAgentAssetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "aidevops:CreateAsset",
+        "aidevops:CreateAssetFile",
+        "aidevops:DeleteAsset",
+        "aidevops:DeleteAssetFile",
+        "aidevops:GetAsset"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsAgentAssetRead",
+      "Effect": "Allow",
+      "Action": [
+        "aidevops:GetAsset"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsAgentAssetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "aidevops:CreateAssetFile",
+        "aidevops:DeleteAssetFile",
+        "aidevops:GetAsset",
+        "aidevops:GetAssetContent",
+        "aidevops:GetAssetFile",
+        "aidevops:ListAssetFiles",
+        "aidevops:UpdateAsset",
+        "aidevops:UpdateAssetFile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsAgentAssetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "aidevops:DeleteAsset",
+        "aidevops:GetAsset"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudFormationModuleDefaultVersion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationModuleDefaultVersionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DescribeType",
+        "cloudformation:SetTypeDefaultVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationModuleDefaultVersionRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DescribeType"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

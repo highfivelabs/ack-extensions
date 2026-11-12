@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataSyncLocationNFS",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationNFSCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:CreateLocationNfs",
+        "datasync:DescribeLocationNfs",
+        "datasync:ListTagsForResource",
+        "datasync:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationNFSRead",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DescribeLocationNfs",
+        "datasync:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationNFSUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DescribeLocationNfs",
+        "datasync:ListTagsForResource",
+        "datasync:TagResource",
+        "datasync:UntagResource",
+        "datasync:UpdateLocationNfs"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationNFSDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DeleteLocation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

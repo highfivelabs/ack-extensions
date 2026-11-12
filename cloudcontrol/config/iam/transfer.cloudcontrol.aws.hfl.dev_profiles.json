@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTransferProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "transfer:CreateProfile",
+        "transfer:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "transfer:DescribeProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "transfer:TagResource",
+        "transfer:UnTagResource",
+        "transfer:UpdateProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "transfer:DeleteProfile"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

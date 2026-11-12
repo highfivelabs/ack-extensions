@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppStreamFleet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamFleetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:CreateFleet",
+        "appstream:DescribeFleets",
+        "appstream:ListTagsForResource",
+        "appstream:StartFleet",
+        "appstream:TagResource",
+        "iam:PassRole",
+        "s3:GetObject",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamFleetRead",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DescribeFleets",
+        "appstream:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamFleetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DescribeFleets",
+        "appstream:ListTagsForResource",
+        "appstream:StartFleet",
+        "appstream:StopFleet",
+        "appstream:TagResource",
+        "appstream:UntagResource",
+        "appstream:UpdateFleet",
+        "iam:PassRole",
+        "s3:GetObject",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamFleetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DeleteFleet",
+        "appstream:DescribeFleets",
+        "appstream:StopFleet"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

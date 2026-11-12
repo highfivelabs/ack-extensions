@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTranscribeVocabularyFilter",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranscribeVocabularyFilterCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "transcribe:CreateVocabularyFilter",
+        "transcribe:GetVocabularyFilter",
+        "transcribe:ListTagsForResource",
+        "transcribe:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranscribeVocabularyFilterRead",
+      "Effect": "Allow",
+      "Action": [
+        "transcribe:GetVocabularyFilter",
+        "transcribe:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranscribeVocabularyFilterUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "transcribe:GetVocabularyFilter",
+        "transcribe:ListTagsForResource",
+        "transcribe:TagResource",
+        "transcribe:UntagResource",
+        "transcribe:UpdateVocabularyFilter"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranscribeVocabularyFilterDelete",
+      "Effect": "Allow",
+      "Action": [
+        "transcribe:DeleteVocabularyFilter",
+        "transcribe:GetVocabularyFilter",
+        "transcribe:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

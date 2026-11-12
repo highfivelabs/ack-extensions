@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaPackageV2Channel",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaPackageV2ChannelCreate",
+      "Effect": "Allow",
+      "Action": [
+        "mediapackagev2:CreateChannel",
+        "mediapackagev2:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaPackageV2ChannelRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediapackagev2:GetChannel"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaPackageV2ChannelUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "mediapackagev2:ListTagsForResource",
+        "mediapackagev2:TagResource",
+        "mediapackagev2:UntagResource",
+        "mediapackagev2:UpdateChannel"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaPackageV2ChannelDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediapackagev2:DeleteChannel",
+        "mediapackagev2:GetChannel"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

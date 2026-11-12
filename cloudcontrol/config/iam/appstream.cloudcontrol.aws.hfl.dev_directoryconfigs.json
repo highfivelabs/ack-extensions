@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppStreamDirectoryConfig",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamDirectoryConfigCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:CreateDirectoryConfig",
+        "appstream:DescribeDirectoryConfigs",
+        "iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamDirectoryConfigRead",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DescribeDirectoryConfigs"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamDirectoryConfigUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DescribeDirectoryConfigs",
+        "appstream:UpdateDirectoryConfig"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamDirectoryConfigDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DeleteDirectoryConfig",
+        "appstream:DescribeDirectoryConfigs",
+        "iam:DeleteServiceLinkedRole",
+        "iam:GetServiceLinkedRoleDeletionStatus"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

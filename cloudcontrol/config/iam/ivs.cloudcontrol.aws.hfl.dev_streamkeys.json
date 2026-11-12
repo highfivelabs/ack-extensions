@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIVSStreamKey",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSStreamKeyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:CreateStreamKey",
+        "ivs:TagResource",
+        "ivs:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSStreamKeyRead",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:GetStreamKey",
+        "ivs:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSStreamKeyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:GetStreamKey",
+        "ivs:ListTagsForResource",
+        "ivs:TagResource",
+        "ivs:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSStreamKeyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:DeleteStreamKey",
+        "ivs:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

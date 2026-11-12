@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBillingConductorPricingRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BillingConductorPricingRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "billingconductor:CreatePricingRule",
+        "billingconductor:ListPricingRules",
+        "billingconductor:ListTagsForResource",
+        "billingconductor:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BillingConductorPricingRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "billingconductor:ListPricingRules",
+        "billingconductor:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BillingConductorPricingRuleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "billingconductor:ListPricingRules",
+        "billingconductor:TagResource",
+        "billingconductor:UntagResource",
+        "billingconductor:UpdatePricingRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BillingConductorPricingRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "billingconductor:DeletePricingRule",
+        "billingconductor:ListPricingRules",
+        "billingconductor:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

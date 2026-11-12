@@ -1,0 +1,90 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGameLiftGameSessionQueue",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftGameSessionQueueCreate",
+      "Effect": "Allow",
+      "Action": [
+        "firehose:TagDeliveryStream",
+        "gamelift:AllowVendedLogDeliveryForResource",
+        "gamelift:CreateGameSessionQueue",
+        "gamelift:DescribeGameSessionQueues",
+        "gamelift:ListTagsForResource",
+        "gamelift:TagResource",
+        "iam:CreateServiceLinkedRole",
+        "logs:CreateDelivery",
+        "logs:CreateLogGroup",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:PutDeliveryDestination",
+        "logs:PutDeliverySource",
+        "logs:PutResourcePolicy",
+        "s3:CreateBucket",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftGameSessionQueueRead",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DescribeGameSessionQueues",
+        "gamelift:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftGameSessionQueueUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "firehose:TagDeliveryStream",
+        "gamelift:AllowVendedLogDeliveryForResource",
+        "gamelift:DescribeGameSessionQueues",
+        "gamelift:ListTagsForResource",
+        "gamelift:TagResource",
+        "gamelift:UntagResource",
+        "gamelift:UpdateGameSessionQueue",
+        "iam:CreateServiceLinkedRole",
+        "logs:CreateDelivery",
+        "logs:CreateLogGroup",
+        "logs:DeleteDelivery",
+        "logs:DeleteDeliveryDestination",
+        "logs:DeleteDeliverySource",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:PutDeliveryDestination",
+        "logs:PutDeliverySource",
+        "logs:PutResourcePolicy",
+        "s3:CreateBucket",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftGameSessionQueueDelete",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DeleteGameSessionQueue",
+        "gamelift:DescribeGameSessionQueues",
+        "logs:DeleteDelivery",
+        "logs:DeleteDeliveryDestination",
+        "logs:DeleteDeliverySource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

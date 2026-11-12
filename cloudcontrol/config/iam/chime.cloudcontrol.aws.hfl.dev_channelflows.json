@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlChimeChannelFlow",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeChannelFlowCreate",
+      "Effect": "Allow",
+      "Action": [
+        "chime:CreateChannelFlow",
+        "chime:DescribeChannelFlow",
+        "chime:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeChannelFlowRead",
+      "Effect": "Allow",
+      "Action": [
+        "chime:DescribeChannelFlow",
+        "chime:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeChannelFlowUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "chime:DescribeChannelFlow",
+        "chime:ListTagsForResource",
+        "chime:TagResource",
+        "chime:UntagResource",
+        "chime:UpdateChannelFlow"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeChannelFlowDelete",
+      "Effect": "Allow",
+      "Action": [
+        "chime:DeleteChannelFlow",
+        "chime:DescribeChannelFlow"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

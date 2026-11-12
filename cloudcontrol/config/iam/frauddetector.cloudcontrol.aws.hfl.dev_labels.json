@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlFraudDetectorLabel",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FraudDetectorLabelCreate",
+      "Effect": "Allow",
+      "Action": [
+        "frauddetector:GetLabels",
+        "frauddetector:ListTagsForResource",
+        "frauddetector:PutLabel",
+        "frauddetector:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FraudDetectorLabelRead",
+      "Effect": "Allow",
+      "Action": [
+        "frauddetector:GetLabels",
+        "frauddetector:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FraudDetectorLabelUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "frauddetector:GetLabels",
+        "frauddetector:ListTagsForResource",
+        "frauddetector:PutLabel",
+        "frauddetector:TagResource",
+        "frauddetector:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FraudDetectorLabelDelete",
+      "Effect": "Allow",
+      "Action": [
+        "frauddetector:DeleteLabel",
+        "frauddetector:GetLabels"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

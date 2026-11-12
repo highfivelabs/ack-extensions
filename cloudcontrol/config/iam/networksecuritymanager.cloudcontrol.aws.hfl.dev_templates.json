@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkSecurityManagerTemplate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkSecurityManagerTemplateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "network-security-manager:CreateTemplate",
+        "network-security-manager:GetTemplate",
+        "network-security-manager:ListTagsForResource",
+        "network-security-manager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkSecurityManagerTemplateRead",
+      "Effect": "Allow",
+      "Action": [
+        "network-security-manager:GetTemplate",
+        "network-security-manager:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkSecurityManagerTemplateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "network-security-manager:GetTemplate",
+        "network-security-manager:ListTagsForResource",
+        "network-security-manager:TagResource",
+        "network-security-manager:UntagResource",
+        "network-security-manager:UpdateTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkSecurityManagerTemplateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "network-security-manager:DeleteTemplate",
+        "network-security-manager:GetTemplate",
+        "network-security-manager:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

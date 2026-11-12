@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaLiveCloudWatchAlarmTemplateGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveCloudWatchAlarmTemplateGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "medialive:CreateCloudWatchAlarmTemplateGroup",
+        "medialive:CreateTags",
+        "medialive:GetCloudWatchAlarmTemplateGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveCloudWatchAlarmTemplateGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "medialive:GetCloudWatchAlarmTemplateGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveCloudWatchAlarmTemplateGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "medialive:CreateTags",
+        "medialive:DeleteTags",
+        "medialive:GetCloudWatchAlarmTemplateGroup",
+        "medialive:UpdateCloudWatchAlarmTemplateGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveCloudWatchAlarmTemplateGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "medialive:DeleteCloudWatchAlarmTemplateGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

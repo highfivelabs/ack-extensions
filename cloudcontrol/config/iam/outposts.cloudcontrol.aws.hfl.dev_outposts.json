@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlOutpostsOutpost",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OutpostsOutpostCreate",
+      "Effect": "Allow",
+      "Action": [
+        "outposts:CreateOutpost",
+        "outposts:GetOutpost",
+        "outposts:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OutpostsOutpostRead",
+      "Effect": "Allow",
+      "Action": [
+        "outposts:GetOutpost"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OutpostsOutpostUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "outposts:GetOutpost",
+        "outposts:TagResource",
+        "outposts:UntagResource",
+        "outposts:UpdateOutpost"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OutpostsOutpostDelete",
+      "Effect": "Allow",
+      "Action": [
+        "outposts:DeleteOutpost"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

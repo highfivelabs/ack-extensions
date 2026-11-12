@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSMSVOICEProtectConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEProtectConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:CreateProtectConfiguration",
+        "sms-voice:DescribeProtectConfigurations",
+        "sms-voice:GetProtectConfigurationCountryRuleSet",
+        "sms-voice:ListTagsForResource",
+        "sms-voice:TagResource",
+        "sms-voice:UpdateProtectConfigurationCountryRuleSet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEProtectConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DescribeProtectConfigurations",
+        "sms-voice:GetProtectConfigurationCountryRuleSet",
+        "sms-voice:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEProtectConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DescribeProtectConfigurations",
+        "sms-voice:GetProtectConfigurationCountryRuleSet",
+        "sms-voice:ListTagsForResource",
+        "sms-voice:TagResource",
+        "sms-voice:UntagResource",
+        "sms-voice:UpdateProtectConfiguration",
+        "sms-voice:UpdateProtectConfigurationCountryRuleSet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEProtectConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DeleteProtectConfiguration",
+        "sms-voice:DescribeProtectConfigurations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

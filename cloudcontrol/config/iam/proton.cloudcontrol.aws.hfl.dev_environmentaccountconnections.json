@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlProtonEnvironmentAccountConnection",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ProtonEnvironmentAccountConnectionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "proton:CreateEnvironmentAccountConnection",
+        "proton:GetEnvironmentAccountConnection",
+        "proton:ListTagsForResource",
+        "proton:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ProtonEnvironmentAccountConnectionRead",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "proton:GetEnvironmentAccountConnection",
+        "proton:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ProtonEnvironmentAccountConnectionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "proton:CreateEnvironmentAccountConnection",
+        "proton:GetEnvironmentAccountConnection",
+        "proton:ListTagsForResource",
+        "proton:TagResource",
+        "proton:UntagResource",
+        "proton:UpdateEnvironmentAccountConnection"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ProtonEnvironmentAccountConnectionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "proton:DeleteEnvironmentAccountConnection",
+        "proton:GetEnvironmentAccountConnection",
+        "proton:ListTagsForResource",
+        "proton:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlARCZonalShiftAutoshiftObserverNotificationStatus",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ARCZonalShiftAutoshiftObserverNotificationStatusCreate",
+      "Effect": "Allow",
+      "Action": [
+        "arc-zonal-shift:UpdateAutoshiftObserverNotificationStatus"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ARCZonalShiftAutoshiftObserverNotificationStatusRead",
+      "Effect": "Allow",
+      "Action": [
+        "arc-zonal-shift:GetAutoshiftObserverNotificationStatus"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ARCZonalShiftAutoshiftObserverNotificationStatusDelete",
+      "Effect": "Allow",
+      "Action": [
+        "arc-zonal-shift:GetAutoshiftObserverNotificationStatus",
+        "arc-zonal-shift:UpdateAutoshiftObserverNotificationStatus"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

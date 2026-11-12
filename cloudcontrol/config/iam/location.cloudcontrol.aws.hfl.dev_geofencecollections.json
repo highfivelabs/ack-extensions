@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLocationGeofenceCollection",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationGeofenceCollectionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "geo:CreateGeofenceCollection",
+        "geo:DescribeGeofenceCollection",
+        "geo:TagResource",
+        "geo:UntagResource",
+        "kms:CreateGrant",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationGeofenceCollectionRead",
+      "Effect": "Allow",
+      "Action": [
+        "geo:DescribeGeofenceCollection",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationGeofenceCollectionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "geo:CreateGeofenceCollection",
+        "geo:DescribeGeofenceCollection",
+        "geo:TagResource",
+        "geo:UntagResource",
+        "geo:UpdateGeofenceCollection",
+        "kms:CreateGrant",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationGeofenceCollectionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "geo:DeleteGeofenceCollection",
+        "geo:DescribeGeofenceCollection"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

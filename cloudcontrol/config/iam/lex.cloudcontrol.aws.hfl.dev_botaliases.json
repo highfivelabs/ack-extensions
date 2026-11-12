@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLexBotAlias",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LexBotAliasCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lex:CreateBotAlias",
+        "lex:DescribeBot",
+        "lex:DescribeBotAlias",
+        "lex:ListTagsForResource",
+        "lex:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LexBotAliasRead",
+      "Effect": "Allow",
+      "Action": [
+        "lex:DescribeBotAlias",
+        "lex:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LexBotAliasUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lex:DescribeBotAlias",
+        "lex:ListTagsForResource",
+        "lex:TagResource",
+        "lex:UntagResource",
+        "lex:UpdateBotAlias"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LexBotAliasDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lex:DeleteBotAlias"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

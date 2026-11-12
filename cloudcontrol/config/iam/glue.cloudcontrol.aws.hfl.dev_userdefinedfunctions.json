@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlueUserDefinedFunction",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueUserDefinedFunctionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateUserDefinedFunction",
+        "glue:GetUserDefinedFunction"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueUserDefinedFunctionRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetUserDefinedFunction"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueUserDefinedFunctionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetUserDefinedFunction",
+        "glue:UpdateUserDefinedFunction"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueUserDefinedFunctionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DeleteUserDefinedFunction",
+        "glue:GetUserDefinedFunction"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

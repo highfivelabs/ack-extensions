@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSESTemplate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESTemplateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:CreateEmailTemplate",
+        "ses:CreateTemplate",
+        "ses:GetEmailTemplate",
+        "ses:GetTemplate",
+        "ses:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESTemplateRead",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetEmailTemplate",
+        "ses:GetTemplate",
+        "ses:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESTemplateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetEmailTemplate",
+        "ses:GetTemplate",
+        "ses:TagResource",
+        "ses:UntagResource",
+        "ses:UpdateEmailTemplate",
+        "ses:UpdateTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESTemplateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ses:DeleteEmailTemplate",
+        "ses:DeleteTemplate"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

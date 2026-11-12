@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRTBFabricLinkRoutingRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RTBFabricLinkRoutingRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "rtbfabric:CreateLinkRoutingRule",
+        "rtbfabric:GetLinkRoutingRule",
+        "rtbfabric:ListTagsForResource",
+        "rtbfabric:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RTBFabricLinkRoutingRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "rtbfabric:GetLinkRoutingRule",
+        "rtbfabric:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RTBFabricLinkRoutingRuleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "rtbfabric:GetLinkRoutingRule",
+        "rtbfabric:ListTagsForResource",
+        "rtbfabric:TagResource",
+        "rtbfabric:UntagResource",
+        "rtbfabric:UpdateLinkRoutingRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RTBFabricLinkRoutingRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "rtbfabric:DeleteLinkRoutingRule",
+        "rtbfabric:GetLinkRoutingRule"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

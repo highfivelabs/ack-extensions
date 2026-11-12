@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTranscribeMedicalVocabulary",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranscribeMedicalVocabularyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "transcribe:CreateMedicalVocabulary",
+        "transcribe:GetMedicalVocabulary",
+        "transcribe:ListTagsForResource",
+        "transcribe:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranscribeMedicalVocabularyRead",
+      "Effect": "Allow",
+      "Action": [
+        "transcribe:GetMedicalVocabulary",
+        "transcribe:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranscribeMedicalVocabularyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "transcribe:GetMedicalVocabulary",
+        "transcribe:ListTagsForResource",
+        "transcribe:TagResource",
+        "transcribe:UntagResource",
+        "transcribe:UpdateMedicalVocabulary"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranscribeMedicalVocabularyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "transcribe:DeleteMedicalVocabulary",
+        "transcribe:GetMedicalVocabulary",
+        "transcribe:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

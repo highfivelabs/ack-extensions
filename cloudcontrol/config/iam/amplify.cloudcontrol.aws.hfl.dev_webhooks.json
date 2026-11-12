@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAmplifyWebhook",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AmplifyWebhookCreate",
+      "Effect": "Allow",
+      "Action": [
+        "amplify:CreateWebhook",
+        "amplify:GetWebhook",
+        "amplify:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AmplifyWebhookRead",
+      "Effect": "Allow",
+      "Action": [
+        "amplify:GetWebhook",
+        "amplify:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AmplifyWebhookUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "amplify:GetWebhook",
+        "amplify:ListTagsForResource",
+        "amplify:TagResource",
+        "amplify:UntagResource",
+        "amplify:UpdateWebhook"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AmplifyWebhookDelete",
+      "Effect": "Allow",
+      "Action": [
+        "amplify:DeleteWebhook",
+        "amplify:GetWebhook"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

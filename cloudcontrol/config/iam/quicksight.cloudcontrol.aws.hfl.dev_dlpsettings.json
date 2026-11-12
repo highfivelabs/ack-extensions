@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlQuickSightDLPSetting",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightDLPSettingCreate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:CreateDlpSetting",
+        "quicksight:DescribeDlpSetting",
+        "quicksight:ListTagsForResource",
+        "quicksight:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightDLPSettingRead",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeDlpSetting",
+        "quicksight:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightDLPSettingUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeDlpSetting",
+        "quicksight:ListTagsForResource",
+        "quicksight:TagResource",
+        "quicksight:UntagResource",
+        "quicksight:UpdateDlpSetting"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightDLPSettingDelete",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DeleteDlpSetting",
+        "quicksight:DescribeDlpSetting"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

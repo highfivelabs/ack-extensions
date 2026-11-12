@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaLiveNetwork",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveNetworkCreate",
+      "Effect": "Allow",
+      "Action": [
+        "medialive:CreateNetwork",
+        "medialive:CreateTags",
+        "medialive:DescribeNetwork",
+        "medialive:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveNetworkRead",
+      "Effect": "Allow",
+      "Action": [
+        "medialive:DescribeNetwork",
+        "medialive:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveNetworkUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "medialive:CreateTags",
+        "medialive:DeleteTags",
+        "medialive:DescribeNetwork",
+        "medialive:ListTagsForResource",
+        "medialive:UpdateNetwork"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveNetworkDelete",
+      "Effect": "Allow",
+      "Action": [
+        "medialive:DeleteNetwork",
+        "medialive:DescribeNetwork"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

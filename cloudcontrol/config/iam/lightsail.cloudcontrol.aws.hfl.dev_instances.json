@@ -1,0 +1,77 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLightsailInstance",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailInstanceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:AttachDisk",
+        "lightsail:CreateInstances",
+        "lightsail:DetachDisk",
+        "lightsail:DisableAddOn",
+        "lightsail:EnableAddOn",
+        "lightsail:GetDisk",
+        "lightsail:GetInstance",
+        "lightsail:GetInstances",
+        "lightsail:GetRegions",
+        "lightsail:PutInstancePublicPorts",
+        "lightsail:StartInstance",
+        "lightsail:StopInstance",
+        "lightsail:TagResource",
+        "lightsail:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailInstanceRead",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetInstance",
+        "lightsail:GetInstances"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailInstanceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:AttachDisk",
+        "lightsail:DeleteInstance",
+        "lightsail:DetachDisk",
+        "lightsail:DisableAddOn",
+        "lightsail:EnableAddOn",
+        "lightsail:GetDisk",
+        "lightsail:GetInstance",
+        "lightsail:GetInstances",
+        "lightsail:PutInstancePublicPorts",
+        "lightsail:StartInstance",
+        "lightsail:StopInstance",
+        "lightsail:TagResource",
+        "lightsail:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailInstanceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:DeleteInstance",
+        "lightsail:GetInstance",
+        "lightsail:GetInstances"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

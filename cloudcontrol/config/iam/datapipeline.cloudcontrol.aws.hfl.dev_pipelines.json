@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataPipelinePipeline",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataPipelinePipelineCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datapipeline:ActivatePipeline",
+        "datapipeline:AddTags",
+        "datapipeline:CreatePipeline",
+        "datapipeline:DescribePipelines",
+        "datapipeline:GetPipelineDefinition",
+        "datapipeline:PutPipelineDefinition",
+        "datapipeline:ValidatePipelineDefinition",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataPipelinePipelineRead",
+      "Effect": "Allow",
+      "Action": [
+        "datapipeline:DescribePipelines",
+        "datapipeline:GetPipelineDefinition"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataPipelinePipelineUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "datapipeline:ActivatePipeline",
+        "datapipeline:AddTags",
+        "datapipeline:DeactivatePipeline",
+        "datapipeline:DescribePipelines",
+        "datapipeline:GetPipelineDefinition",
+        "datapipeline:PutPipelineDefinition",
+        "datapipeline:RemoveTags",
+        "datapipeline:ValidatePipelineDefinition",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataPipelinePipelineDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datapipeline:DeletePipeline",
+        "datapipeline:DescribePipelines",
+        "datapipeline:GetPipelineDefinition",
+        "datapipeline:RemoveTags"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

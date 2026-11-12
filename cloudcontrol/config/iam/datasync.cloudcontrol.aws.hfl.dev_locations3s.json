@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataSyncLocationS3",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationS3Create",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:CreateLocationS3",
+        "datasync:DescribeLocationS3",
+        "datasync:ListTagsForResource",
+        "datasync:TagResource",
+        "iam:GetRole",
+        "iam:PassRole",
+        "s3:ListAllMyBuckets",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationS3Read",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DescribeLocationS3",
+        "datasync:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationS3Update",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DescribeLocationS3",
+        "datasync:ListTagsForResource",
+        "datasync:TagResource",
+        "datasync:UntagResource",
+        "datasync:UpdateLocationS3",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationS3Delete",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DeleteLocation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

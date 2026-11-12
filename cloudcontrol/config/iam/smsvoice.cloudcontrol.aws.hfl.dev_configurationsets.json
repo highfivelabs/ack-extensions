@@ -1,0 +1,73 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSMSVOICEConfigurationSet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEConfigurationSetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "sms-voice:AssociateProtectConfiguration",
+        "sms-voice:CreateConfigurationSet",
+        "sms-voice:CreateEventDestination",
+        "sms-voice:DescribeConfigurationSets",
+        "sms-voice:ListTagsForResource",
+        "sms-voice:SetDefaultMessageFeedbackEnabled",
+        "sms-voice:SetDefaultSenderId",
+        "sms-voice:TagResource",
+        "sms-voice:UpdateEventDestination"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEConfigurationSetRead",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DescribeConfigurationSets",
+        "sms-voice:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEConfigurationSetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "sms-voice:AssociateProtectConfiguration",
+        "sms-voice:CreateEventDestination",
+        "sms-voice:DeleteDefaultMessageFeedbackEnabled",
+        "sms-voice:DeleteDefaultSenderId",
+        "sms-voice:DeleteEventDestination",
+        "sms-voice:DescribeConfigurationSets",
+        "sms-voice:DisassociateProtectConfiguration",
+        "sms-voice:ListTagsForResource",
+        "sms-voice:SetDefaultMessageFeedbackEnabled",
+        "sms-voice:SetDefaultSenderId",
+        "sms-voice:TagResource",
+        "sms-voice:UntagResource",
+        "sms-voice:UpdateEventDestination"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEConfigurationSetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DeleteConfigurationSet",
+        "sms-voice:DescribeConfigurationSets"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

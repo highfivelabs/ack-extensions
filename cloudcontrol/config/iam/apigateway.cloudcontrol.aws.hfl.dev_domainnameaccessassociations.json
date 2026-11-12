@@ -1,0 +1,46 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlApiGatewayDomainNameAccessAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayDomainNameAccessAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:CreateAccessAssociation",
+        "apigateway:GET",
+        "apigateway:POST",
+        "apigateway:PUT"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayDomainNameAccessAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayDomainNameAccessAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:DELETE",
+        "apigateway:GET",
+        "apigateway:RejectAccessAssociation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

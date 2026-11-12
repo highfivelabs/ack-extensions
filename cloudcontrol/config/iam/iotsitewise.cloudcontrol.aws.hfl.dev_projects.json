@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTSiteWiseProject",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseProjectCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:BatchAssociateProjectAssets",
+        "iotsitewise:CreateProject",
+        "iotsitewise:DescribeProject",
+        "iotsitewise:ListProjectAssets",
+        "iotsitewise:ListTagsForResource",
+        "iotsitewise:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseProjectRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DescribeProject",
+        "iotsitewise:ListProjectAssets",
+        "iotsitewise:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseProjectUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:BatchAssociateProjectAssets",
+        "iotsitewise:BatchDisAssociateProjectAssets",
+        "iotsitewise:DescribeProject",
+        "iotsitewise:ListProjectAssets",
+        "iotsitewise:ListTagsForResource",
+        "iotsitewise:TagResource",
+        "iotsitewise:UntagResource",
+        "iotsitewise:UpdateProject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseProjectDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DeleteProject",
+        "iotsitewise:DescribeProject"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

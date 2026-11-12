@@ -1,0 +1,75 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataSyncLocationHDFS",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationHDFSCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:CreateLocationHdfs",
+        "datasync:DescribeLocationHdfs",
+        "datasync:ListTagsForResource",
+        "datasync:TagResource",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:DeleteSecret",
+        "secretsmanager:PutSecretValue"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationHDFSRead",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DescribeLocationHdfs",
+        "datasync:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationHDFSUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DescribeLocationHdfs",
+        "datasync:ListTagsForResource",
+        "datasync:TagResource",
+        "datasync:UntagResource",
+        "datasync:UpdateLocationHdfs",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:DeleteSecret",
+        "secretsmanager:PutSecretValue",
+        "secretsmanager:UpdateSecret"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationHDFSDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DeleteLocation",
+        "secretsmanager:DeleteSecret"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

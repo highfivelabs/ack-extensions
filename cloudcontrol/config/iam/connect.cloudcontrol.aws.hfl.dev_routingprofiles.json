@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectRoutingProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectRoutingProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:CreateRoutingProfile",
+        "connect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectRoutingProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeRoutingProfile",
+        "connect:ListRoutingProfileManualAssignmentQueues",
+        "connect:ListRoutingProfileQueues"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectRoutingProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:AssociateRoutingProfileQueues",
+        "connect:DisassociateRoutingProfileQueues",
+        "connect:ListRoutingProfileManualAssignmentQueues",
+        "connect:ListRoutingProfileQueues",
+        "connect:TagResource",
+        "connect:UntagResource",
+        "connect:UpdateRoutingProfileAgentAvailabilityTimer",
+        "connect:UpdateRoutingProfileConcurrency",
+        "connect:UpdateRoutingProfileDefaultOutboundQueue",
+        "connect:UpdateRoutingProfileName",
+        "connect:UpdateRoutingProfileQueues"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectRoutingProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteRoutingProfile",
+        "connect:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

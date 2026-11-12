@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlServiceCatalogAppRegistryResourceAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogAppRegistryResourceAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DescribeStacks",
+        "servicecatalog:AssociateResource",
+        "servicecatalog:ListAssociatedResources"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogAppRegistryResourceAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:ListAssociatedResources"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogAppRegistryResourceAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DisassociateResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLicenseManagerLinuxSubscriptionsSubscriptionProvider",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerLinuxSubscriptionsSubscriptionProviderCreate",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager-linux-subscriptions:GetRegisteredSubscriptionProvider",
+        "license-manager-linux-subscriptions:ListTagsForResource",
+        "license-manager-linux-subscriptions:RegisterSubscriptionProvider",
+        "license-manager-linux-subscriptions:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerLinuxSubscriptionsSubscriptionProviderRead",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager-linux-subscriptions:GetRegisteredSubscriptionProvider",
+        "license-manager-linux-subscriptions:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerLinuxSubscriptionsSubscriptionProviderUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager-linux-subscriptions:GetRegisteredSubscriptionProvider",
+        "license-manager-linux-subscriptions:ListTagsForResource",
+        "license-manager-linux-subscriptions:TagResource",
+        "license-manager-linux-subscriptions:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerLinuxSubscriptionsSubscriptionProviderDelete",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager-linux-subscriptions:DeregisterSubscriptionProvider",
+        "license-manager-linux-subscriptions:GetRegisteredSubscriptionProvider",
+        "license-manager-linux-subscriptions:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

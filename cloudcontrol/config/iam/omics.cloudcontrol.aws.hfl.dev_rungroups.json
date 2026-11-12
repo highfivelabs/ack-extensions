@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlOmicsRunGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsRunGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "omics:CreateRunGroup",
+        "omics:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsRunGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "omics:GetRunGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsRunGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "omics:GetRunGroup",
+        "omics:ListTagsForResource",
+        "omics:TagResource",
+        "omics:UntagResource",
+        "omics:UpdateRunGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsRunGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "omics:DeleteRunGroup",
+        "omics:GetRunGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

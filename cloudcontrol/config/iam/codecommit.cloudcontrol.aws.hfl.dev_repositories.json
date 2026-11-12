@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCodeCommitRepository",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeCommitRepositoryCreate",
+      "Effect": "Allow",
+      "Action": [
+        "codecommit:CreateCommit",
+        "codecommit:CreateRepository",
+        "codecommit:PutRepositoryTriggers",
+        "codecommit:TagResource",
+        "s3:GetObject",
+        "s3:GetObjectVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeCommitRepositoryRead",
+      "Effect": "Allow",
+      "Action": [
+        "codecommit:GetRepository",
+        "codecommit:GetRepositoryTriggers",
+        "codecommit:ListRepositories",
+        "codecommit:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeCommitRepositoryUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "codecommit:PutRepositoryTriggers",
+        "codecommit:TagResource",
+        "codecommit:UntagResource",
+        "codecommit:UpdateRepositoryDescription",
+        "codecommit:UpdateRepositoryEncryptionKey",
+        "codecommit:UpdateRepositoryName"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeCommitRepositoryDelete",
+      "Effect": "Allow",
+      "Action": [
+        "codecommit:DeleteRepository",
+        "codecommit:ListRepositories"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

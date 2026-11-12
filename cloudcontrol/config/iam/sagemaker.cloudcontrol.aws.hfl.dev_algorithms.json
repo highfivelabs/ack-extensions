@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSageMakerAlgorithm",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerAlgorithmCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags",
+        "sagemaker:CreateAlgorithm",
+        "sagemaker:DescribeAlgorithm"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerAlgorithmRead",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribeAlgorithm",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerAlgorithmUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags",
+        "sagemaker:DeleteTags",
+        "sagemaker:DescribeAlgorithm",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerAlgorithmDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DeleteAlgorithm",
+        "sagemaker:DescribeAlgorithm"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

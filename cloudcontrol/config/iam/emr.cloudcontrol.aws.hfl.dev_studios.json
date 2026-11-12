@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEMRStudio",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EMRStudioCreate",
+      "Effect": "Allow",
+      "Action": [
+        "elasticmapreduce:AddTags",
+        "elasticmapreduce:CreateStudio",
+        "elasticmapreduce:DescribeStudio",
+        "iam:PassRole",
+        "sso:CreateManagedApplicationInstance",
+        "sso:DeleteManagedApplicationInstance"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EMRStudioRead",
+      "Effect": "Allow",
+      "Action": [
+        "elasticmapreduce:DescribeStudio",
+        "sso:GetManagedApplicationInstance"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EMRStudioUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "elasticmapreduce:AddTags",
+        "elasticmapreduce:DescribeStudio",
+        "elasticmapreduce:RemoveTags",
+        "elasticmapreduce:UpdateStudio"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EMRStudioDelete",
+      "Effect": "Allow",
+      "Action": [
+        "elasticmapreduce:DeleteStudio",
+        "elasticmapreduce:DescribeStudio",
+        "sso:DeleteManagedApplicationInstance"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

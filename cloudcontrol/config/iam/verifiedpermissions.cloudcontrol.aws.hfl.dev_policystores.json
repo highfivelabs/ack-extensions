@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlVerifiedPermissionsPolicyStore",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VerifiedPermissionsPolicyStoreCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "kms:ReEncryptFrom",
+        "kms:ReEncryptTo",
+        "verifiedpermissions:CreatePolicyStore",
+        "verifiedpermissions:GetPolicyStore",
+        "verifiedpermissions:PutSchema",
+        "verifiedpermissions:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VerifiedPermissionsPolicyStoreRead",
+      "Effect": "Allow",
+      "Action": [
+        "verifiedpermissions:GetPolicyStore",
+        "verifiedpermissions:GetSchema",
+        "verifiedpermissions:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VerifiedPermissionsPolicyStoreUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "verifiedpermissions:GetPolicyStore",
+        "verifiedpermissions:GetSchema",
+        "verifiedpermissions:PutSchema",
+        "verifiedpermissions:TagResource",
+        "verifiedpermissions:UntagResource",
+        "verifiedpermissions:UpdatePolicyStore"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VerifiedPermissionsPolicyStoreDelete",
+      "Effect": "Allow",
+      "Action": [
+        "verifiedpermissions:DeletePolicyStore",
+        "verifiedpermissions:GetPolicyStore"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

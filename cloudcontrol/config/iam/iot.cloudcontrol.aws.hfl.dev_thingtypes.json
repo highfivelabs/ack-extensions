@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTThingType",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTThingTypeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:CreateThingType",
+        "iot:DeprecateThingType",
+        "iot:DescribeThingType",
+        "iot:ListTagsForResource",
+        "iot:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTThingTypeRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeThingType",
+        "iot:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTThingTypeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeprecateThingType",
+        "iot:DescribeThingType",
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "iot:UntagResource",
+        "iot:UpdateThingType"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTThingTypeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeleteThingType",
+        "iot:DeprecateThingType",
+        "iot:DescribeThingType"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

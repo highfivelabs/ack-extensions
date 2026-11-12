@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTFleetWiseModelManifest",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetWiseModelManifestCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iotfleetwise:CreateModelManifest",
+        "iotfleetwise:GetModelManifest",
+        "iotfleetwise:ListModelManifestNodes",
+        "iotfleetwise:ListTagsForResource",
+        "iotfleetwise:TagResource",
+        "iotfleetwise:UpdateModelManifest"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetWiseModelManifestRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotfleetwise:GetModelManifest",
+        "iotfleetwise:ListModelManifestNodes",
+        "iotfleetwise:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetWiseModelManifestUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotfleetwise:GetModelManifest",
+        "iotfleetwise:ListModelManifestNodes",
+        "iotfleetwise:ListTagsForResource",
+        "iotfleetwise:TagResource",
+        "iotfleetwise:UntagResource",
+        "iotfleetwise:UpdateModelManifest"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetWiseModelManifestDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotfleetwise:DeleteModelManifest",
+        "iotfleetwise:GetModelManifest"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

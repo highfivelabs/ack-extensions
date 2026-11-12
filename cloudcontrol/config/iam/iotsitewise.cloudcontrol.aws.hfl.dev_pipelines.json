@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTSiteWisePipeline",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWisePipelineCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:CreatePipeline",
+        "iotsitewise:DescribePipeline",
+        "iotsitewise:ListTagsForResource",
+        "iotsitewise:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWisePipelineRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DescribePipeline",
+        "iotsitewise:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWisePipelineUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DescribePipeline",
+        "iotsitewise:ListTagsForResource",
+        "iotsitewise:TagResource",
+        "iotsitewise:UntagResource",
+        "iotsitewise:UpdatePipeline"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWisePipelineDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DeletePipeline",
+        "iotsitewise:DescribePipeline",
+        "iotsitewise:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

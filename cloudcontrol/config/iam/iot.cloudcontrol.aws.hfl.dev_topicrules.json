@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTTopicRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTTopicRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iot:CreateTopicRule",
+        "iot:GetTopicRule",
+        "iot:ListTagsForResource",
+        "iot:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTTopicRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:GetTopicRule",
+        "iot:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTTopicRuleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iot:GetTopicRule",
+        "iot:ListTagsForResource",
+        "iot:ReplaceTopicRule",
+        "iot:TagResource",
+        "iot:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTTopicRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeleteTopicRule",
+        "iot:GetTopicRule"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLocationAPIKey",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationAPIKeyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "geo-maps:GetStaticMap",
+        "geo-maps:GetTile",
+        "geo-places:Autocomplete",
+        "geo-places:Geocode",
+        "geo-places:GetPlace",
+        "geo-places:ReverseGeocode",
+        "geo-places:SearchNearby",
+        "geo-places:SearchText",
+        "geo-places:Suggest",
+        "geo-routes:CalculateIsolines",
+        "geo-routes:CalculateRouteMatrix",
+        "geo-routes:CalculateRoutes",
+        "geo-routes:OptimizeWaypoints",
+        "geo-routes:SnapToRoads",
+        "geo:CalculateRoute",
+        "geo:CalculateRouteMatrix",
+        "geo:CreateKey",
+        "geo:DescribeKey",
+        "geo:GetMapGlyphs",
+        "geo:GetMapSprites",
+        "geo:GetMapStyleDescriptor",
+        "geo:GetMapTile",
+        "geo:GetPlace",
+        "geo:SearchPlaceIndexForPosition",
+        "geo:SearchPlaceIndexForSuggestions",
+        "geo:SearchPlaceIndexForText",
+        "geo:TagResource",
+        "geo:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationAPIKeyRead",
+      "Effect": "Allow",
+      "Action": [
+        "geo:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationAPIKeyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "geo-maps:GetStaticMap",
+        "geo-maps:GetTile",
+        "geo-places:Autocomplete",
+        "geo-places:Geocode",
+        "geo-places:GetPlace",
+        "geo-places:ReverseGeocode",
+        "geo-places:SearchNearby",
+        "geo-places:SearchText",
+        "geo-places:Suggest",
+        "geo-routes:CalculateIsolines",
+        "geo-routes:CalculateRouteMatrix",
+        "geo-routes:CalculateRoutes",
+        "geo-routes:OptimizeWaypoints",
+        "geo-routes:SnapToRoads",
+        "geo:CalculateRoute",
+        "geo:CalculateRouteMatrix",
+        "geo:CreateKey",
+        "geo:DescribeKey",
+        "geo:GetMapGlyphs",
+        "geo:GetMapSprites",
+        "geo:GetMapStyleDescriptor",
+        "geo:GetMapTile",
+        "geo:GetPlace",
+        "geo:SearchPlaceIndexForPosition",
+        "geo:SearchPlaceIndexForSuggestions",
+        "geo:SearchPlaceIndexForText",
+        "geo:TagResource",
+        "geo:UntagResource",
+        "geo:UpdateKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationAPIKeyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "geo:DeleteKey",
+        "geo:DescribeKey"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

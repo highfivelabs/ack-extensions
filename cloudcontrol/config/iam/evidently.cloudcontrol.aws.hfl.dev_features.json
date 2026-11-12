@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEvidentlyFeature",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EvidentlyFeatureCreate",
+      "Effect": "Allow",
+      "Action": [
+        "evidently:CreateFeature",
+        "evidently:GetFeature",
+        "evidently:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EvidentlyFeatureRead",
+      "Effect": "Allow",
+      "Action": [
+        "evidently:GetFeature",
+        "evidently:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EvidentlyFeatureUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "evidently:GetFeature",
+        "evidently:ListTagsForResource",
+        "evidently:TagResource",
+        "evidently:UntagResource",
+        "evidently:UpdateFeature"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EvidentlyFeatureDelete",
+      "Effect": "Allow",
+      "Action": [
+        "evidently:DeleteFeature",
+        "evidently:GetFeature",
+        "evidently:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

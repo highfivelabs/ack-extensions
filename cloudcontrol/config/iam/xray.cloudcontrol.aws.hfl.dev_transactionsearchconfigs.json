@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlXRayTransactionSearchConfig",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "XRayTransactionSearchConfigCreate",
+      "Effect": "Allow",
+      "Action": [
+        "application-signals:StartDiscovery",
+        "iam:CreateServiceLinkedRole",
+        "kms:DescribeKey",
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutRetentionPolicy",
+        "xray:GetIndexingRules",
+        "xray:GetTraceSegmentDestination",
+        "xray:UpdateIndexingRule",
+        "xray:UpdateTraceSegmentDestination"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "XRayTransactionSearchConfigRead",
+      "Effect": "Allow",
+      "Action": [
+        "xray:GetIndexingRules",
+        "xray:GetTraceSegmentDestination"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "XRayTransactionSearchConfigUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "xray:GetIndexingRules",
+        "xray:GetTraceSegmentDestination",
+        "xray:UpdateIndexingRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "XRayTransactionSearchConfigDelete",
+      "Effect": "Allow",
+      "Action": [
+        "xray:GetTraceSegmentDestination",
+        "xray:UpdateIndexingRule",
+        "xray:UpdateTraceSegmentDestination"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

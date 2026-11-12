@@ -1,0 +1,44 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlOSISPipelineEndpoint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OSISPipelineEndpointCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "osis:CreatePipelineEndpoint",
+        "osis:ListPipelineEndpoints"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OSISPipelineEndpointRead",
+      "Effect": "Allow",
+      "Action": [
+        "osis:ListPipelineEndpoints"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OSISPipelineEndpointDelete",
+      "Effect": "Allow",
+      "Action": [
+        "osis:DeletePipelineEndpoint",
+        "osis:ListPipelineEndpoints"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

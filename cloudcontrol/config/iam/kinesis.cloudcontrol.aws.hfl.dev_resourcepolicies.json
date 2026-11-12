@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlKinesisResourcePolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KinesisResourcePolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kinesis:GetResourcePolicy",
+        "kinesis:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KinesisResourcePolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "kinesis:GetResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KinesisResourcePolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kinesis:GetResourcePolicy",
+        "kinesis:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KinesisResourcePolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kinesis:DeleteResourcePolicy",
+        "kinesis:GetResourcePolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

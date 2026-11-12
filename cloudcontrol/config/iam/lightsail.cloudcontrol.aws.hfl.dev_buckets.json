@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLightsailBucket",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailBucketCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:CreateBucket",
+        "lightsail:GetBuckets",
+        "lightsail:GetInstance",
+        "lightsail:SetResourceAccessForBucket",
+        "lightsail:TagResource",
+        "lightsail:UntagResource",
+        "lightsail:UpdateBucket",
+        "lightsail:UpdateBucketBundle"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailBucketRead",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetBuckets"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailBucketUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetBuckets",
+        "lightsail:GetInstance",
+        "lightsail:SetResourceAccessForBucket",
+        "lightsail:TagResource",
+        "lightsail:UntagResource",
+        "lightsail:UpdateBucket",
+        "lightsail:UpdateBucketBundle"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailBucketDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:DeleteBucket",
+        "lightsail:GetBuckets"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

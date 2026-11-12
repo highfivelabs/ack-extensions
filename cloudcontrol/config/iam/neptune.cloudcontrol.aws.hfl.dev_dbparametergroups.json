@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNeptuneDBParameterGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneDBParameterGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "rds:AddTagsToResource",
+        "rds:CreateDBParameterGroup",
+        "rds:DescribeDBParameterGroups",
+        "rds:DescribeDBParameters",
+        "rds:DescribeEngineDefaultParameters",
+        "rds:ListTagsForResource",
+        "rds:ModifyDBParameterGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneDBParameterGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DescribeDBParameterGroups",
+        "rds:DescribeDBParameters",
+        "rds:DescribeEngineDefaultParameters",
+        "rds:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneDBParameterGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "rds:AddTagsToResource",
+        "rds:DescribeDBInstances",
+        "rds:DescribeDBParameterGroups",
+        "rds:DescribeDBParameters",
+        "rds:DescribeEngineDefaultParameters",
+        "rds:ListTagsForResource",
+        "rds:ModifyDBParameterGroup",
+        "rds:RemoveTagsFromResource",
+        "rds:ResetDBParameterGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneDBParameterGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DeleteDBParameterGroup",
+        "rds:RemoveTagsFromResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlResilienceHubV2Policy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubV2PolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant",
+        "resiliencehub:CreatePolicy",
+        "resiliencehub:GetPolicy",
+        "resiliencehub:ListTagsForResource",
+        "resiliencehub:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubV2PolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "resiliencehub:GetPolicy",
+        "resiliencehub:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubV2PolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant",
+        "resiliencehub:GetPolicy",
+        "resiliencehub:ListTagsForResource",
+        "resiliencehub:TagResource",
+        "resiliencehub:UntagResource",
+        "resiliencehub:UpdatePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubV2PolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant",
+        "resiliencehub:DeletePolicy",
+        "resiliencehub:GetPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLaunchWizardDeployment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LaunchWizardDeploymentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateStack",
+        "cloudformation:DeleteStack",
+        "cloudformation:DescribeStackEvents",
+        "cloudformation:DescribeStackResource",
+        "cloudformation:DescribeStackResources",
+        "cloudformation:DescribeStacks",
+        "cloudformation:TagResource",
+        "ec2:DescribeInstances",
+        "launchwizard:CreateDeployment",
+        "launchwizard:GetDeployment",
+        "launchwizard:ListDeploymentEvents",
+        "launchwizard:ListTagsForResource",
+        "launchwizard:TagResource",
+        "resource-groups:CreateGroup",
+        "resource-groups:DeleteGroup",
+        "s3:CreateBucket",
+        "s3:GetObject",
+        "s3:PutObject",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:PutSecretValue",
+        "secretsmanager:TagResource",
+        "secretsmanager:UpdateSecret",
+        "sns:CreateTopic",
+        "sns:ListSubscriptions",
+        "sns:ListSubscriptionsByTopic",
+        "sns:ListTopics",
+        "sns:Publish",
+        "sns:Subscribe",
+        "sns:Unsubscribe",
+        "sqs:AddPermission",
+        "sqs:CreateQueue",
+        "sqs:GetQueueAttributes",
+        "sqs:GetQueueUrl",
+        "sqs:ListQueueTags",
+        "sqs:ListQueues",
+        "sqs:SetQueueAttributes",
+        "sqs:TagQueue",
+        "ssm:AddTagsToResource",
+        "ssm:DeleteParameter",
+        "ssm:DescribeParameters",
+        "ssm:GetParameter",
+        "ssm:PutParameter"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LaunchWizardDeploymentRead",
+      "Effect": "Allow",
+      "Action": [
+        "launchwizard:GetDeployment",
+        "launchwizard:ListDeploymentEvents",
+        "launchwizard:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LaunchWizardDeploymentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "launchwizard:GetDeployment",
+        "launchwizard:ListTagsForResource",
+        "launchwizard:TagResource",
+        "launchwizard:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LaunchWizardDeploymentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DeleteStack",
+        "cloudformation:DescribeStacks",
+        "launchwizard:DeleteDeployment",
+        "launchwizard:GetDeployment",
+        "launchwizard:UntagResource",
+        "resource-groups:DeleteGroup",
+        "secretsmanager:DeleteSecret",
+        "sns:CreateTopic",
+        "sns:DeleteTopic",
+        "sns:ListSubscriptions",
+        "sns:ListSubscriptionsByTopic",
+        "sns:ListTopics",
+        "sns:Publish",
+        "sns:Subscribe",
+        "sns:Unsubscribe",
+        "sqs:DeleteQueue",
+        "sqs:GetQueueAttributes",
+        "sqs:GetQueueUrl",
+        "sqs:ListQueueTags",
+        "sqs:ListQueues",
+        "ssm:DeleteParameter",
+        "ssm:GetParameter"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

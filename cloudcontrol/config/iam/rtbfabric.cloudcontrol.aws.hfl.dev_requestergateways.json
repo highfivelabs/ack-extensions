@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRTBFabricRequesterGateway",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RTBFabricRequesterGatewayCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "rtbfabric:CreateRequesterGateway",
+        "rtbfabric:GetRequesterGateway",
+        "rtbfabric:ListTagsForResource",
+        "rtbfabric:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RTBFabricRequesterGatewayRead",
+      "Effect": "Allow",
+      "Action": [
+        "rtbfabric:GetRequesterGateway",
+        "rtbfabric:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RTBFabricRequesterGatewayUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "rtbfabric:GetRequesterGateway",
+        "rtbfabric:ListTagsForResource",
+        "rtbfabric:TagResource",
+        "rtbfabric:UntagResource",
+        "rtbfabric:UpdateRequesterGateway"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RTBFabricRequesterGatewayDelete",
+      "Effect": "Allow",
+      "Action": [
+        "rtbfabric:DeleteRequesterGateway",
+        "rtbfabric:GetRequesterGateway"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

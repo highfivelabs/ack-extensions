@@ -1,0 +1,49 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppSyncApiKey",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncApiKeyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:CreateApiKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncApiKeyRead",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:ListApiKeys"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncApiKeyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:UpdateApiKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncApiKeyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:DeleteApiKey"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

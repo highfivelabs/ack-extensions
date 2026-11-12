@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSMSVOICENotifyConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICENotifyConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:CreateNotifyConfiguration",
+        "sms-voice:DescribeNotifyConfigurations",
+        "sms-voice:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICENotifyConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DescribeNotifyConfigurations",
+        "sms-voice:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICENotifyConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:ListTagsForResource",
+        "sms-voice:TagResource",
+        "sms-voice:UntagResource",
+        "sms-voice:UpdateNotifyConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICENotifyConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DeleteNotifyConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

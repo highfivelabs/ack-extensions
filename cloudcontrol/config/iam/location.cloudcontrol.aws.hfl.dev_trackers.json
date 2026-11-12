@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLocationTracker",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationTrackerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "geo:CreateTracker",
+        "geo:DescribeTracker",
+        "geo:TagResource",
+        "geo:UntagResource",
+        "kms:CreateGrant",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationTrackerRead",
+      "Effect": "Allow",
+      "Action": [
+        "geo:DescribeTracker",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationTrackerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "geo:CreateTracker",
+        "geo:DescribeTracker",
+        "geo:TagResource",
+        "geo:UntagResource",
+        "geo:UpdateTracker",
+        "kms:CreateGrant",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationTrackerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "geo:DeleteTracker",
+        "geo:DescribeTracker"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

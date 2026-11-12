@@ -1,0 +1,50 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlServiceCatalogTagOption",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogTagOptionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:CreateTagOption"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogTagOptionRead",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DescribeTagOption"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogTagOptionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DescribeTagOption",
+        "servicecatalog:UpdateTagOption"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogTagOptionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DeleteTagOption"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

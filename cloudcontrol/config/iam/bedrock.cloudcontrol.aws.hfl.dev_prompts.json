@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockPrompt",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockPromptCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:CreatePrompt",
+        "bedrock:GetPrompt",
+        "bedrock:ListTagsForResource",
+        "bedrock:TagResource",
+        "kms:Decrypt",
+        "kms:GenerateDataKey",
+        "s3:GetObject",
+        "s3:GetObjectVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockPromptRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetPrompt",
+        "bedrock:ListTagsForResource",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockPromptUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetPrompt",
+        "bedrock:ListTagsForResource",
+        "bedrock:TagResource",
+        "bedrock:UntagResource",
+        "bedrock:UpdatePrompt",
+        "kms:Decrypt",
+        "kms:GenerateDataKey",
+        "s3:GetObject",
+        "s3:GetObjectVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockPromptDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:DeletePrompt",
+        "bedrock:GetPrompt"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

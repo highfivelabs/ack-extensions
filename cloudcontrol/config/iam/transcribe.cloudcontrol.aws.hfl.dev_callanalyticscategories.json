@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTranscribeCallAnalyticsCategory",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranscribeCallAnalyticsCategoryCreate",
+      "Effect": "Allow",
+      "Action": [
+        "transcribe:CreateCallAnalyticsCategory",
+        "transcribe:GetCallAnalyticsCategory",
+        "transcribe:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranscribeCallAnalyticsCategoryRead",
+      "Effect": "Allow",
+      "Action": [
+        "transcribe:GetCallAnalyticsCategory",
+        "transcribe:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranscribeCallAnalyticsCategoryUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "transcribe:GetCallAnalyticsCategory",
+        "transcribe:ListTagsForResource",
+        "transcribe:TagResource",
+        "transcribe:UntagResource",
+        "transcribe:UpdateCallAnalyticsCategory"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranscribeCallAnalyticsCategoryDelete",
+      "Effect": "Allow",
+      "Action": [
+        "transcribe:DeleteCallAnalyticsCategory"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataBrewSchedule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewScheduleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:CreateSchedule",
+        "databrew:DescribeSchedule",
+        "databrew:TagResource",
+        "databrew:UntagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewScheduleRead",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:DescribeSchedule",
+        "iam:ListRoles"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewScheduleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:TagResource",
+        "databrew:UntagResource",
+        "databrew:UpdateSchedule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewScheduleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:DeleteSchedule"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

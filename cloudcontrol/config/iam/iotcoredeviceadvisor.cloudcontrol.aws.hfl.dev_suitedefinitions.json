@@ -1,0 +1,73 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTCoreDeviceAdvisorSuiteDefinition",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTCoreDeviceAdvisorSuiteDefinitionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iot:DescribeCertificate",
+        "iot:DescribeThing",
+        "iot:GetPolicy",
+        "iot:ListAttachedPolicies",
+        "iot:ListCertificates",
+        "iot:ListPrincipalPolicies",
+        "iot:ListThingPrincipals",
+        "iot:ListThings",
+        "iotdeviceadvisor:CreateSuiteDefinition",
+        "iotdeviceadvisor:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTCoreDeviceAdvisorSuiteDefinitionRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:ListTagsForResource",
+        "iotdeviceadvisor:GetSuiteDefinition"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTCoreDeviceAdvisorSuiteDefinitionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iot:DescribeCertificate",
+        "iot:DescribeThing",
+        "iot:GetPolicy",
+        "iot:ListAttachedPolicies",
+        "iot:ListCertificates",
+        "iot:ListPrincipalPolicies",
+        "iot:ListThingPrincipals",
+        "iot:ListThings",
+        "iotdeviceadvisor:GetSuiteDefinition",
+        "iotdeviceadvisor:TagResource",
+        "iotdeviceadvisor:UntagResource",
+        "iotdeviceadvisor:UpdateSuiteDefinition"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTCoreDeviceAdvisorSuiteDefinitionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotdeviceadvisor:DeleteSuiteDefinition",
+        "iotdeviceadvisor:GetSuiteDefinition"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

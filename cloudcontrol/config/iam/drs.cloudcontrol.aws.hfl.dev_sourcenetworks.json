@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDRSSourceNetwork",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DRSSourceNetworkCreate",
+      "Effect": "Allow",
+      "Action": [
+        "drs:CreateSourceNetwork",
+        "drs:DescribeSourceNetworks",
+        "drs:TagResource",
+        "ec2:DescribeInstances",
+        "ec2:DescribeVpcs"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DRSSourceNetworkRead",
+      "Effect": "Allow",
+      "Action": [
+        "drs:DescribeSourceNetworks",
+        "drs:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DRSSourceNetworkUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "drs:DescribeSourceNetworks",
+        "drs:ListTagsForResource",
+        "drs:TagResource",
+        "drs:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DRSSourceNetworkDelete",
+      "Effect": "Allow",
+      "Action": [
+        "drs:DeleteSourceNetwork",
+        "drs:DescribeSourceNetworks",
+        "drs:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

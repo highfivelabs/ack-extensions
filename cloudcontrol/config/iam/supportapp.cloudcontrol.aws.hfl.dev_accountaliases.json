@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSupportAppAccountAlias",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SupportAppAccountAliasCreate",
+      "Effect": "Allow",
+      "Action": [
+        "supportapp:GetAccountAlias",
+        "supportapp:PutAccountAlias"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SupportAppAccountAliasRead",
+      "Effect": "Allow",
+      "Action": [
+        "supportapp:GetAccountAlias"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SupportAppAccountAliasUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "supportapp:GetAccountAlias",
+        "supportapp:PutAccountAlias"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SupportAppAccountAliasDelete",
+      "Effect": "Allow",
+      "Action": [
+        "supportapp:DeleteAccountAlias",
+        "supportapp:GetAccountAlias"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIVSPlaybackRestrictionPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSPlaybackRestrictionPolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:CreatePlaybackRestrictionPolicy",
+        "ivs:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSPlaybackRestrictionPolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:GetPlaybackRestrictionPolicy",
+        "ivs:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSPlaybackRestrictionPolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:GetPlaybackRestrictionPolicy",
+        "ivs:ListTagsForResource",
+        "ivs:TagResource",
+        "ivs:UntagResource",
+        "ivs:UpdatePlaybackRestrictionPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSPlaybackRestrictionPolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:DeletePlaybackRestrictionPolicy",
+        "ivs:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

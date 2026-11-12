@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIVSChannel",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSChannelCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:CreateChannel",
+        "ivs:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSChannelRead",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:GetChannel",
+        "ivs:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSChannelUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:GetChannel",
+        "ivs:ListTagsForResource",
+        "ivs:TagResource",
+        "ivs:UntagResource",
+        "ivs:UpdateChannel"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSChannelDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:DeleteChannel",
+        "ivs:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

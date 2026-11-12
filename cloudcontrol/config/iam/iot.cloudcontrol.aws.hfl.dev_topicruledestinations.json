@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTTopicRuleDestination",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTTopicRuleDestinationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iot:CreateTopicRuleDestination",
+        "iot:GetTopicRuleDestination",
+        "iot:UpdateTopicRuleDestination",
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTTopicRuleDestinationRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:GetTopicRuleDestination"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTTopicRuleDestinationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iot:GetTopicRuleDestination",
+        "iot:UpdateTopicRuleDestination",
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTTopicRuleDestinationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeleteTopicRuleDestination",
+        "iot:GetTopicRuleDestination"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

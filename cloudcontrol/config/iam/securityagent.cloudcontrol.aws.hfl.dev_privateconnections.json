@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityAgentPrivateConnection",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentPrivateConnectionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "securityagent:CreatePrivateConnection",
+        "securityagent:DescribePrivateConnection",
+        "securityagent:ListTagsForResource",
+        "securityagent:TagResource",
+        "vpc-lattice:AssociateViaAWSService",
+        "vpc-lattice:CreateServiceNetworkResourceAssociation",
+        "vpc-lattice:GetResourceConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentPrivateConnectionRead",
+      "Effect": "Allow",
+      "Action": [
+        "securityagent:DescribePrivateConnection",
+        "securityagent:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentPrivateConnectionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "securityagent:DescribePrivateConnection",
+        "securityagent:ListTagsForResource",
+        "securityagent:TagResource",
+        "securityagent:UntagResource",
+        "securityagent:UpdatePrivateConnectionCertificate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentPrivateConnectionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "securityagent:DeletePrivateConnection",
+        "securityagent:DescribePrivateConnection",
+        "securityagent:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

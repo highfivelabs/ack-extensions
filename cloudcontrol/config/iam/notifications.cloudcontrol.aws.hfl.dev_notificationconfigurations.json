@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNotificationsNotificationConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsNotificationConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "notifications:CreateNotificationConfiguration",
+        "notifications:GetNotificationConfiguration",
+        "notifications:ListTagsForResource",
+        "notifications:TagResource",
+        "notifications:UntagResource",
+        "notifications:UpdateNotificationConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsNotificationConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "notifications:GetNotificationConfiguration",
+        "notifications:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsNotificationConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "notifications:CreateNotificationConfiguration",
+        "notifications:GetNotificationConfiguration",
+        "notifications:ListTagsForResource",
+        "notifications:TagResource",
+        "notifications:UntagResource",
+        "notifications:UpdateNotificationConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsNotificationConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "notifications:DeleteNotificationConfiguration",
+        "notifications:GetNotificationConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEvidentlyExperiment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EvidentlyExperimentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "evidently:CreateExperiment",
+        "evidently:GetExperiment",
+        "evidently:StartExperiment",
+        "evidently:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EvidentlyExperimentRead",
+      "Effect": "Allow",
+      "Action": [
+        "evidently:GetExperiment",
+        "evidently:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EvidentlyExperimentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "evidently:GetExperiment",
+        "evidently:StartExperiment",
+        "evidently:StopExperiment",
+        "evidently:TagResource",
+        "evidently:UntagResource",
+        "evidently:UpdateExperiment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EvidentlyExperimentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "evidently:DeleteExperiment",
+        "evidently:GetExperiment",
+        "evidently:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTCACertificate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTCACertificateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetRole",
+        "iam:PassRole",
+        "iot:DescribeCACertificate",
+        "iot:ListTagsForResource",
+        "iot:RegisterCACertificate",
+        "iot:TagResource",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTCACertificateRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeCACertificate",
+        "iot:ListTagsForResource",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTCACertificateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetRole",
+        "iam:PassRole",
+        "iot:DescribeCACertificate",
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "iot:UntagResource",
+        "iot:UpdateCACertificate",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTCACertificateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeleteCACertificate",
+        "iot:DescribeCACertificate",
+        "iot:UpdateCACertificate",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

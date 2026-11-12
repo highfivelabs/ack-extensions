@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAthenaCapacityReservation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AthenaCapacityReservationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "athena:CreateCapacityReservation",
+        "athena:GetCapacityReservation",
+        "athena:PutCapacityAssignmentConfiguration",
+        "athena:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AthenaCapacityReservationRead",
+      "Effect": "Allow",
+      "Action": [
+        "athena:GetCapacityAssignmentConfiguration",
+        "athena:GetCapacityReservation",
+        "athena:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AthenaCapacityReservationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "athena:GetCapacityReservation",
+        "athena:PutCapacityAssignmentConfiguration",
+        "athena:TagResource",
+        "athena:UntagResource",
+        "athena:UpdateCapacityReservation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AthenaCapacityReservationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "athena:CancelCapacityReservation",
+        "athena:DeleteCapacityReservation",
+        "athena:GetCapacityReservation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

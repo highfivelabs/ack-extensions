@@ -1,0 +1,72 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlODBCloudExadataInfrastructure",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ODBCloudExadataInfrastructureCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeAvailabilityZones",
+        "iam:CreateServiceLinkedRole",
+        "odb:CreateCloudExadataInfrastructure",
+        "odb:GetCloudExadataInfrastructure",
+        "odb:ListCloudExadataInfrastructures",
+        "odb:ListDbServers",
+        "odb:ListTagsForResource",
+        "odb:TagResource",
+        "sts:GetCallerIdentity"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ODBCloudExadataInfrastructureRead",
+      "Effect": "Allow",
+      "Action": [
+        "odb:GetCloudExadataInfrastructure",
+        "odb:ListDbServers",
+        "odb:ListTagsForResource",
+        "sts:GetCallerIdentity"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ODBCloudExadataInfrastructureUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "odb:GetCloudExadataInfrastructure",
+        "odb:ListCloudExadataInfrastructures",
+        "odb:ListDbServers",
+        "odb:ListTagsForResource",
+        "odb:TagResource",
+        "odb:UntagResource",
+        "odb:UpdateCloudExadataInfrastructure",
+        "sts:GetCallerIdentity"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ODBCloudExadataInfrastructureDelete",
+      "Effect": "Allow",
+      "Action": [
+        "odb:DeleteCloudExadataInfrastructure",
+        "odb:GetCloudExadataInfrastructure",
+        "odb:ListCloudExadataInfrastructures",
+        "odb:ListDbServers",
+        "odb:ListTagsForResource",
+        "sts:GetCallerIdentity"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectEmailAddress",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectEmailAddressCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:AssociateEmailAddressAlias",
+        "connect:CreateEmailAddress",
+        "connect:ListIntegrationAssociations",
+        "connect:TagResource",
+        "iam:PassRole",
+        "ses:DescribeReceiptRule",
+        "ses:GetEmailIdentity",
+        "ses:UpdateReceiptRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectEmailAddressRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeEmailAddress"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectEmailAddressUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:AssociateEmailAddressAlias",
+        "connect:DisassociateEmailAddressAlias",
+        "connect:TagResource",
+        "connect:UntagResource",
+        "connect:UpdateEmailAddressMetadata"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectEmailAddressDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteEmailAddress",
+        "connect:DisassociateEmailAddressAlias",
+        "connect:UntagResource",
+        "iam:PassRole",
+        "ses:DescribeReceiptRule",
+        "ses:UpdateReceiptRule"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

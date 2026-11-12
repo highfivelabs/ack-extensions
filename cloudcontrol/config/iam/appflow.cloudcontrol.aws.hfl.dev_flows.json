@@ -1,0 +1,79 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppFlowFlow",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFlowFlowCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appflow:CreateFlow",
+        "appflow:ListTagsForResource",
+        "appflow:StartFlow",
+        "appflow:TagResource",
+        "appflow:UseConnectorProfile",
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:ListAliases",
+        "kms:ListGrants",
+        "kms:ListKeys",
+        "s3:GetBucketLocation",
+        "s3:GetBucketPolicy",
+        "s3:ListAllMyBuckets",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFlowFlowRead",
+      "Effect": "Allow",
+      "Action": [
+        "appflow:DescribeFlow",
+        "appflow:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFlowFlowUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appflow:DescribeFlow",
+        "appflow:ListTagsForResource",
+        "appflow:StartFlow",
+        "appflow:StopFlow",
+        "appflow:TagResource",
+        "appflow:UntagResource",
+        "appflow:UpdateFlow",
+        "appflow:UseConnectorProfile",
+        "iam:PassRole",
+        "kms:ListGrants",
+        "s3:GetBucketLocation",
+        "s3:GetBucketPolicy",
+        "s3:ListAllMyBuckets",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFlowFlowDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appflow:DeleteFlow"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

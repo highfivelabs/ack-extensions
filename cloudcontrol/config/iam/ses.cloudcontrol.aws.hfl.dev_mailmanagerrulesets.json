@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSESMailManagerRuleSet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMailManagerRuleSetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:CreateRuleSet",
+        "ses:GetRuleSet",
+        "ses:ListTagsForResource",
+        "ses:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMailManagerRuleSetRead",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetRuleSet",
+        "ses:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMailManagerRuleSetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetRuleSet",
+        "ses:ListTagsForResource",
+        "ses:TagResource",
+        "ses:UntagResource",
+        "ses:UpdateRuleSet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMailManagerRuleSetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ses:DeleteRuleSet",
+        "ses:GetRuleSet"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

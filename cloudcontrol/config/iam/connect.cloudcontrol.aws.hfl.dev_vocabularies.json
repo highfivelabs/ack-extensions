@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectVocabulary",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectVocabularyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:CreateVocabulary",
+        "connect:DescribeVocabulary",
+        "connect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectVocabularyRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeVocabulary"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectVocabularyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeVocabulary",
+        "connect:TagResource",
+        "connect:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectVocabularyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteVocabulary",
+        "connect:DescribeVocabulary"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

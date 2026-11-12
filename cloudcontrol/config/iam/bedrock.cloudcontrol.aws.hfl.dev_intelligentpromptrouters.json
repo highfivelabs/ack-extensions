@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockIntelligentPromptRouter",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockIntelligentPromptRouterCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:CreatePromptRouter",
+        "bedrock:GetPromptRouter",
+        "bedrock:ListTagsForResource",
+        "bedrock:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockIntelligentPromptRouterRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetPromptRouter",
+        "bedrock:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockIntelligentPromptRouterUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetPromptRouter",
+        "bedrock:ListTagsForResource",
+        "bedrock:TagResource",
+        "bedrock:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockIntelligentPromptRouterDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:DeletePromptRouter",
+        "bedrock:GetPromptRouter"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

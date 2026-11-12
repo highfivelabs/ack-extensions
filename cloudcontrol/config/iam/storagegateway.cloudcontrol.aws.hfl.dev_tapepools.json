@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlStorageGatewayTapePool",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StorageGatewayTapePoolCreate",
+      "Effect": "Allow",
+      "Action": [
+        "storagegateway:AddTagsToResource",
+        "storagegateway:CreateTapePool"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StorageGatewayTapePoolRead",
+      "Effect": "Allow",
+      "Action": [
+        "storagegateway:ListTagsForResource",
+        "storagegateway:ListTapePools"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StorageGatewayTapePoolUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "storagegateway:AddTagsToResource",
+        "storagegateway:ListTagsForResource",
+        "storagegateway:ListTapePools",
+        "storagegateway:RemoveTagsFromResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StorageGatewayTapePoolDelete",
+      "Effect": "Allow",
+      "Action": [
+        "storagegateway:DeleteTapePool",
+        "storagegateway:ListTagsForResource",
+        "storagegateway:ListTapePools"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

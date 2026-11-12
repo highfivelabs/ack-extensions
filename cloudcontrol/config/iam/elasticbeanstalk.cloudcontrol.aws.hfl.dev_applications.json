@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlElasticBeanstalkApplication",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElasticBeanstalkApplicationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "elasticbeanstalk:CreateApplication",
+        "elasticbeanstalk:DescribeApplications",
+        "iam:PassRole",
+        "s3:CreateBucket",
+        "s3:GetBucketLocation",
+        "s3:GetBucketPolicy",
+        "s3:GetObject",
+        "s3:ListBucket",
+        "s3:PutBucketAcl",
+        "s3:PutBucketObjectLockConfiguration",
+        "s3:PutBucketOwnershipControls",
+        "s3:PutBucketPolicy",
+        "s3:PutBucketPublicAccessBlock",
+        "s3:PutBucketVersioning",
+        "s3:PutObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElasticBeanstalkApplicationRead",
+      "Effect": "Allow",
+      "Action": [
+        "elasticbeanstalk:DescribeApplications"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElasticBeanstalkApplicationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "elasticbeanstalk:DescribeApplications",
+        "elasticbeanstalk:UpdateApplication",
+        "elasticbeanstalk:UpdateApplicationResourceLifecycle",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElasticBeanstalkApplicationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "elasticbeanstalk:DeleteApplication",
+        "elasticbeanstalk:DescribeApplications",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

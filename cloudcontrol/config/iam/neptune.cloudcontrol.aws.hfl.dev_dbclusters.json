@@ -1,0 +1,87 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNeptuneDBCluster",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneDBClusterCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "rds:AddRoleToDBCluster",
+        "rds:AddTagsToResource",
+        "rds:CreateDBCluster",
+        "rds:CreateDBInstance",
+        "rds:DescribeDBClusters",
+        "rds:ListTagsForResource",
+        "rds:ModifyDBCluster",
+        "rds:RestoreDBClusterFromSnapshot",
+        "rds:RestoreDBClusterToPointInTime"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneDBClusterRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "rds:DescribeDBClusters",
+        "rds:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneDBClusterUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeSecurityGroups",
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "rds:AddRoleToDBCluster",
+        "rds:AddTagsToResource",
+        "rds:DescribeDBClusters",
+        "rds:DescribeDBInstances",
+        "rds:DescribeDBSubnetGroups",
+        "rds:DescribeGlobalClusters",
+        "rds:ListTagsForResource",
+        "rds:ModifyDBCluster",
+        "rds:ModifyDBInstance",
+        "rds:RemoveFromGlobalCluster",
+        "rds:RemoveRoleFromDBCluster",
+        "rds:RemoveTagsFromResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneDBClusterDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "rds:CreateDBClusterSnapshot",
+        "rds:DeleteDBCluster",
+        "rds:DeleteDBInstance",
+        "rds:DescribeDBClusters",
+        "rds:DescribeGlobalClusters",
+        "rds:ListTagsForResource",
+        "rds:RemoveFromGlobalCluster"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

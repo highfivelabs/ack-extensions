@@ -1,0 +1,41 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectViewVersion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectViewVersionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:CreateViewVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectViewVersionRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeView"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectViewVersionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteViewVersion"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

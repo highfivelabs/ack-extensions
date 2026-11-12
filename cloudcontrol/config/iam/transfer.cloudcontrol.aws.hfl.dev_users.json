@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTransferUser",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferUserCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "transfer:CreateUser",
+        "transfer:DescribeUser",
+        "transfer:ImportSshPublicKey",
+        "transfer:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferUserRead",
+      "Effect": "Allow",
+      "Action": [
+        "transfer:DescribeUser"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferUserUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "transfer:DeleteSshPublicKey",
+        "transfer:DescribeUser",
+        "transfer:ImportSshPublicKey",
+        "transfer:TagResource",
+        "transfer:UnTagResource",
+        "transfer:UpdateUser"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferUserDelete",
+      "Effect": "Allow",
+      "Action": [
+        "transfer:DeleteUser"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

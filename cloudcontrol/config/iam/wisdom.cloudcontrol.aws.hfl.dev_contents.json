@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWisdomContent",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomContentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:CreateContent",
+        "wisdom:GetContent",
+        "wisdom:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomContentRead",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:GetContent",
+        "wisdom:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomContentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:GetContent",
+        "wisdom:ListTagsForResource",
+        "wisdom:TagResource",
+        "wisdom:UntagResource",
+        "wisdom:UpdateContent"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomContentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:DeleteContent",
+        "wisdom:GetContent",
+        "wisdom:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

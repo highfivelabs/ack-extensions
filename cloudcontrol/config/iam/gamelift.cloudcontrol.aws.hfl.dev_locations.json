@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGameLiftLocation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftLocationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:CreateLocation",
+        "gamelift:ListLocations",
+        "gamelift:ListTagsForResource",
+        "gamelift:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftLocationRead",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:ListLocations",
+        "gamelift:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftLocationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:ListLocations",
+        "gamelift:ListTagsForResource",
+        "gamelift:TagResource",
+        "gamelift:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftLocationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DeleteLocation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

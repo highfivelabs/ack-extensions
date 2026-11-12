@@ -1,0 +1,47 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPersonalizeDatasetGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeDatasetGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "personalize:CreateDatasetGroup",
+        "personalize:DescribeDatasetGroup",
+        "personalize:ListTagsForResource",
+        "personalize:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeDatasetGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:DescribeDatasetGroup",
+        "personalize:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeDatasetGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:DeleteDatasetGroup",
+        "personalize:DescribeDatasetGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

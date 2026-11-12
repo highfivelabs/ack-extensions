@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlKendraQuerySuggestionsBlockList",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraQuerySuggestionsBlockListCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kendra:CreateQuerySuggestionsBlockList",
+        "kendra:DescribeQuerySuggestionsBlockList",
+        "kendra:TagResource",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraQuerySuggestionsBlockListRead",
+      "Effect": "Allow",
+      "Action": [
+        "kendra:DescribeQuerySuggestionsBlockList",
+        "kendra:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraQuerySuggestionsBlockListUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kendra:DescribeQuerySuggestionsBlockList",
+        "kendra:ListTagsForResource",
+        "kendra:TagResource",
+        "kendra:UntagResource",
+        "kendra:UpdateQuerySuggestionsBlockList",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraQuerySuggestionsBlockListDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kendra:DeleteQuerySuggestionsBlockList",
+        "kendra:DescribeQuerySuggestionsBlockList",
+        "kendra:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

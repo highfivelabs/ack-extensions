@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectContactFlow",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectContactFlowCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:CreateContactFlow",
+        "connect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectContactFlowRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeContactFlow"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectContactFlowUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:TagResource",
+        "connect:UntagResource",
+        "connect:UpdateContactFlowContent",
+        "connect:UpdateContactFlowMetadata"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectContactFlowDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteContactFlow",
+        "connect:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

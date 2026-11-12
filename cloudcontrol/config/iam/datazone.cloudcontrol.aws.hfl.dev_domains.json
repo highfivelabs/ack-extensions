@@ -1,0 +1,79 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataZoneDomain",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneDomainCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:CreateDomain",
+        "datazone:GetDomain",
+        "datazone:TagResource",
+        "datazone:UpdateDomain",
+        "iam:PassRole",
+        "sso:CreateApplication",
+        "sso:CreateApplicationAssignment",
+        "sso:CreateManagedApplicationInstance",
+        "sso:DeleteApplication",
+        "sso:DeleteApplicationAssignment",
+        "sso:DeleteManagedApplicationInstance",
+        "sso:ListInstances",
+        "sso:PutApplicationAccessScope",
+        "sso:PutApplicationAssignmentConfiguration",
+        "sso:PutApplicationAuthenticationMethod",
+        "sso:PutApplicationGrant"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneDomainRead",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetDomain"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneDomainUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetDomain",
+        "datazone:TagResource",
+        "datazone:UntagResource",
+        "datazone:UpdateDomain",
+        "iam:PassRole",
+        "sso:CreateManagedApplicationInstance",
+        "sso:DeleteManagedApplicationInstance",
+        "sso:ListInstances",
+        "sso:PutApplicationAccessScope",
+        "sso:PutApplicationAssignmentConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneDomainDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:DeleteDomain",
+        "datazone:GetDomain",
+        "sso:DeleteApplication",
+        "sso:DeleteApplicationAssignment",
+        "sso:DeleteManagedApplicationInstance",
+        "sso:ListInstances",
+        "sso:PutApplicationAssignmentConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

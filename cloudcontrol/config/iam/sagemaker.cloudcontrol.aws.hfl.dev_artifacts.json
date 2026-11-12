@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSageMakerArtifact",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerArtifactCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags",
+        "sagemaker:CreateArtifact",
+        "sagemaker:DescribeArtifact",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerArtifactRead",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribeArtifact",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerArtifactUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags",
+        "sagemaker:DeleteTags",
+        "sagemaker:DescribeArtifact",
+        "sagemaker:ListTags",
+        "sagemaker:UpdateArtifact"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerArtifactDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DeleteArtifact",
+        "sagemaker:DescribeArtifact",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

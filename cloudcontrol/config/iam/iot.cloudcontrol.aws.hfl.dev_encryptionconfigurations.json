@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTEncryptionConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTEncryptionConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iot:DescribeEncryptionConfiguration",
+        "iot:UpdateEncryptionConfiguration",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTEncryptionConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeEncryptionConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTEncryptionConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iot:DescribeEncryptionConfiguration",
+        "iot:UpdateEncryptionConfiguration",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTEncryptionConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeEncryptionConfiguration",
+        "iot:UpdateEncryptionConfiguration",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

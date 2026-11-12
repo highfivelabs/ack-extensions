@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataZoneSubscriptionTarget",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneSubscriptionTargetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:CreateSubscriptionTarget",
+        "datazone:GetSubscriptionTarget",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneSubscriptionTargetRead",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetSubscriptionTarget"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneSubscriptionTargetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetSubscriptionTarget",
+        "datazone:UpdateSubscriptionTarget",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneSubscriptionTargetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:DeleteSubscriptionTarget"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

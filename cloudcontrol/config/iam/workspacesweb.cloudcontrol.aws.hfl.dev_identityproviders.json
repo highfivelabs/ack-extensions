@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWorkSpacesWebIdentityProvider",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebIdentityProviderCreate",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces-web:CreateIdentityProvider",
+        "workspaces-web:GetIdentityProvider",
+        "workspaces-web:ListTagsForResource",
+        "workspaces-web:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebIdentityProviderRead",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces-web:GetIdentityProvider",
+        "workspaces-web:ListIdentityProviders",
+        "workspaces-web:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebIdentityProviderUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces-web:GetIdentityProvider",
+        "workspaces-web:ListIdentityProviders",
+        "workspaces-web:ListTagsForResource",
+        "workspaces-web:TagResource",
+        "workspaces-web:UntagResource",
+        "workspaces-web:UpdateIdentityProvider"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebIdentityProviderDelete",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces-web:DeleteIdentityProvider",
+        "workspaces-web:GetIdentityProvider"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

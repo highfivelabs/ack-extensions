@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDocDBDBClusterParameterGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DocDBDBClusterParameterGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "rds:AddTagsToResource",
+        "rds:CreateDBClusterParameterGroup",
+        "rds:DescribeDBClusterParameterGroups",
+        "rds:DescribeDBClusterParameters",
+        "rds:ListTagsForResource",
+        "rds:ModifyDBClusterParameterGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DocDBDBClusterParameterGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DescribeDBClusterParameterGroups",
+        "rds:DescribeDBClusterParameters",
+        "rds:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DocDBDBClusterParameterGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "rds:AddTagsToResource",
+        "rds:DescribeDBClusterParameterGroups",
+        "rds:DescribeDBClusterParameters",
+        "rds:ListTagsForResource",
+        "rds:ModifyDBClusterParameterGroup",
+        "rds:RemoveTagsFromResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DocDBDBClusterParameterGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DeleteDBClusterParameterGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

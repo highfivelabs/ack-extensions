@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBCMDataExportsExport",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BCMDataExportsExportCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bcm-data-exports:CreateExport",
+        "bcm-data-exports:GetExport",
+        "bcm-data-exports:ListTagsForResource",
+        "bcm-data-exports:TagResource",
+        "cur:PutReportDefinition"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BCMDataExportsExportRead",
+      "Effect": "Allow",
+      "Action": [
+        "bcm-data-exports:GetExport",
+        "bcm-data-exports:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BCMDataExportsExportUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bcm-data-exports:GetExport",
+        "bcm-data-exports:ListTagsForResource",
+        "bcm-data-exports:TagResource",
+        "bcm-data-exports:UntagResource",
+        "bcm-data-exports:UpdateExport"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BCMDataExportsExportDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bcm-data-exports:DeleteExport"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTSiteWiseApplication",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseApplicationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:CreateApplication",
+        "iotsitewise:DescribeApplication",
+        "iotsitewise:ListTagsForResource",
+        "iotsitewise:TagResource",
+        "sso:CreateApplication",
+        "sso:DeleteApplication",
+        "sso:PutApplicationAccessScope",
+        "sso:PutApplicationAssignmentConfiguration",
+        "sso:PutApplicationAuthenticationMethod",
+        "sso:PutApplicationGrant"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseApplicationRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DescribeApplication",
+        "iotsitewise:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseApplicationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DescribeApplication",
+        "iotsitewise:ListTagsForResource",
+        "iotsitewise:TagResource",
+        "iotsitewise:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSiteWiseApplicationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotsitewise:DeleteApplication",
+        "iotsitewise:DescribeApplication",
+        "iotsitewise:ListTagsForResource",
+        "sso:DeleteApplication"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

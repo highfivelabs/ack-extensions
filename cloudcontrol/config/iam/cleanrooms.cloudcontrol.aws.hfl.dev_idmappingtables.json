@@ -1,0 +1,75 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCleanRoomsIdMappingTable",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsIdMappingTableCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:CreateIdMappingTable",
+        "cleanrooms:GetCollaboration",
+        "cleanrooms:GetIdMappingTable",
+        "cleanrooms:GetMembership",
+        "cleanrooms:ListIdMappingTables",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:TagResource",
+        "entityresolution:AddPolicyStatement",
+        "entityresolution:GetIdMappingWorkflow"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsIdMappingTableRead",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:GetCollaboration",
+        "cleanrooms:GetIdMappingTable",
+        "cleanrooms:GetMembership",
+        "cleanrooms:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsIdMappingTableUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:GetIdMappingTable",
+        "cleanrooms:GetMembership",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:TagResource",
+        "cleanrooms:UntagResource",
+        "cleanrooms:UpdateIdMappingTable",
+        "entityresolution:AddPolicyStatement",
+        "entityresolution:GetIdMappingWorkflow"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsIdMappingTableDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:DeleteIdMappingTable",
+        "cleanrooms:GetIdMappingTable",
+        "cleanrooms:GetMembership",
+        "cleanrooms:ListIdMappingTables",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:UntagResource",
+        "entityresolution:AddPolicyStatement",
+        "entityresolution:DeletePolicyStatement",
+        "entityresolution:GetIdMappingWorkflow"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

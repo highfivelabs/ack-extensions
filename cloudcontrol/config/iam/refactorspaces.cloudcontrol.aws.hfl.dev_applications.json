@@ -1,0 +1,78 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRefactorSpacesApplication",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RefactorSpacesApplicationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:DELETE",
+        "apigateway:GET",
+        "apigateway:PATCH",
+        "apigateway:POST",
+        "apigateway:PUT",
+        "apigateway:UpdateRestApiPolicy",
+        "ec2:CreateTags",
+        "ec2:CreateVpcEndpointServiceConfiguration",
+        "ec2:DescribeAccountAttributes",
+        "ec2:DescribeInternetGateways",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcEndpointServiceConfigurations",
+        "ec2:DescribeVpcs",
+        "ec2:ModifyVpcEndpointServicePermissions",
+        "elasticloadbalancing:AddTags",
+        "elasticloadbalancing:CreateLoadBalancer",
+        "elasticloadbalancing:DescribeLoadBalancers",
+        "elasticloadbalancing:DescribeTags",
+        "iam:CreateServiceLinkedRole",
+        "refactor-spaces:CreateApplication",
+        "refactor-spaces:GetApplication",
+        "refactor-spaces:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RefactorSpacesApplicationRead",
+      "Effect": "Allow",
+      "Action": [
+        "refactor-spaces:GetApplication",
+        "refactor-spaces:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RefactorSpacesApplicationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:DELETE",
+        "apigateway:GET",
+        "apigateway:PUT",
+        "apigateway:UpdateRestApiPolicy",
+        "ec2:DeleteRoute",
+        "ec2:DeleteSecurityGroup",
+        "ec2:DeleteTags",
+        "ec2:DeleteTransitGateway",
+        "ec2:DeleteTransitGatewayVpcAttachment",
+        "ec2:DeleteVpcEndpointServiceConfigurations",
+        "ec2:DescribeVpcEndpointServiceConfigurations",
+        "ec2:RevokeSecurityGroupIngress",
+        "elasticloadbalancing:DeleteLoadBalancer",
+        "refactor-spaces:DeleteApplication",
+        "refactor-spaces:GetApplication",
+        "refactor-spaces:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
