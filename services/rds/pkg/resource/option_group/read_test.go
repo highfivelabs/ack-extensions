@@ -14,6 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	svcsdk "github.com/aws/aws-sdk-go-v2/service/rds"
 
+	"github.com/highfivelabs/ack-extensions/pkg/fakeaws"
 	svcapitypes "github.com/highfivelabs/ack-extensions/services/rds/apis/v1alpha1"
 )
 
@@ -52,13 +53,13 @@ func describeOptionGroupsEndpoint(t *testing.T, seen *[]string) *httptest.Server
 func TestReadNamesTheGroupOnly(t *testing.T) {
 	var seen []string
 	srv := describeOptionGroupsEndpoint(t, &seen)
+	cfg, err := fakeaws.Config(srv.URL, "us-west-2")
+	if err != nil {
+		t.Fatal(err)
+	}
 	rm := &resourceManager{
 		metrics: ackmetrics.NewMetrics("rds"),
-		sdkapi: svcsdk.New(svcsdk.Options{
-			Region:       "us-west-2",
-			BaseEndpoint: aws.String(srv.URL),
-			Credentials:  aws.AnonymousCredentials{},
-		}),
+		sdkapi:  svcsdk.NewFromConfig(cfg),
 	}
 	r := &resource{ko: &svcapitypes.OptionGroup{Spec: svcapitypes.OptionGroupSpec{
 		Name:               aws.String("app-mysql"),
