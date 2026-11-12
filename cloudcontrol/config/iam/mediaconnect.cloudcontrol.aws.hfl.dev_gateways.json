@@ -1,0 +1,45 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaConnectGateway",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectGatewayCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "mediaconnect:CreateGateway",
+        "mediaconnect:DescribeGateway"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectGatewayRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:DescribeGateway"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectGatewayDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "mediaconnect:DeleteGateway",
+        "mediaconnect:DescribeGateway"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

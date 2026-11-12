@@ -1,0 +1,87 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRefactorSpacesEnvironment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RefactorSpacesEnvironmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AuthorizeSecurityGroupIngress",
+        "ec2:CreateSecurityGroup",
+        "ec2:CreateTags",
+        "ec2:CreateTransitGateway",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeRouteTables",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeTags",
+        "ec2:DescribeTransitGatewayVpcAttachments",
+        "ec2:DescribeTransitGateways",
+        "ec2:DescribeVpcEndpointServiceConfigurations",
+        "ec2:ModifyVpcEndpointServicePermissions",
+        "ec2:RevokeSecurityGroupIngress",
+        "iam:CreateServiceLinkedRole",
+        "ram:AcceptResourceShareInvitation",
+        "ram:AssociateResourceShare",
+        "ram:CreateResourceShare",
+        "ram:DisassociateResourceShare",
+        "ram:GetResourceShareAssociations",
+        "ram:GetResourceShareInvitations",
+        "ram:GetResourceShares",
+        "ram:TagResource",
+        "refactor-spaces:CreateEnvironment",
+        "refactor-spaces:GetEnvironment",
+        "refactor-spaces:TagResource",
+        "tag:GetResources"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RefactorSpacesEnvironmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "refactor-spaces:GetEnvironment",
+        "refactor-spaces:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RefactorSpacesEnvironmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "refactor-spaces:GetEnvironment",
+        "refactor-spaces:TagResource",
+        "refactor-spaces:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RefactorSpacesEnvironmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteTags",
+        "ec2:DeleteTransitGateway",
+        "ec2:DeleteTransitGatewayVpcAttachment",
+        "ec2:DescribeTransitGatewayVpcAttachments",
+        "ec2:DescribeTransitGateways",
+        "ram:DeleteResourceShare",
+        "ram:GetResourceShareAssociations",
+        "refactor-spaces:DeleteEnvironment",
+        "refactor-spaces:GetEnvironment",
+        "refactor-spaces:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

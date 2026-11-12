@@ -1,0 +1,102 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPCSComputeNodeGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCSComputeNodeGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateFleet",
+        "ec2:CreateTags",
+        "ec2:DescribeImages",
+        "ec2:DescribeInstanceTypeOfferings",
+        "ec2:DescribeInstanceTypes",
+        "ec2:DescribeKeyPairs",
+        "ec2:DescribeLaunchTemplateVersions",
+        "ec2:DescribeLaunchTemplates",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcs",
+        "ec2:RunInstances",
+        "iam:GetInstanceProfile",
+        "iam:PassRole",
+        "pcs:CreateComputeNodeGroup",
+        "pcs:GetComputeNodeGroup",
+        "pcs:ListTagsForResource",
+        "pcs:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCSComputeNodeGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "pcs:GetComputeNodeGroup",
+        "pcs:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCSComputeNodeGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateFleet",
+        "ec2:CreateTags",
+        "ec2:DescribeImages",
+        "ec2:DescribeInstanceTypeOfferings",
+        "ec2:DescribeInstanceTypes",
+        "ec2:DescribeKeyPairs",
+        "ec2:DescribeLaunchTemplateVersions",
+        "ec2:DescribeLaunchTemplates",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcs",
+        "ec2:RunInstances",
+        "iam:GetInstanceProfile",
+        "iam:PassRole",
+        "pcs:GetComputeNodeGroup",
+        "pcs:ListTagsForResource",
+        "pcs:TagResource",
+        "pcs:UntagResource",
+        "pcs:UpdateComputeNodeGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCSComputeNodeGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateFleet",
+        "ec2:CreateTags",
+        "ec2:DescribeImages",
+        "ec2:DescribeInstanceTypeOfferings",
+        "ec2:DescribeInstanceTypes",
+        "ec2:DescribeLaunchTemplateVersions",
+        "ec2:DescribeLaunchTemplates",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcs",
+        "ec2:TerminateInstances",
+        "iam:GetInstanceProfile",
+        "iam:PassRole",
+        "pcs:DeleteComputeNodeGroup",
+        "pcs:GetComputeNodeGroup",
+        "pcs:ListTagsForResource",
+        "pcs:TagResource",
+        "pcs:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlOmicsWorkflow",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsWorkflowCreate",
+      "Effect": "Allow",
+      "Action": [
+        "codeconnections:GetConnection",
+        "codeconnections:GetHost",
+        "codeconnections:PassConnection",
+        "codeconnections:UseConnection",
+        "kms:Decrypt",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyPair",
+        "kms:GenerateDataKeyPairWithoutPlaintext",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "omics:CreateWorkflow",
+        "omics:GetWorkflow",
+        "omics:TagResource",
+        "s3:GetEncryptionConfiguration",
+        "s3:GetObject",
+        "s3:GetObjectAttributes",
+        "s3:HeadObject",
+        "s3:PutObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsWorkflowRead",
+      "Effect": "Allow",
+      "Action": [
+        "omics:GetWorkflow"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsWorkflowUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "omics:GetWorkflow",
+        "omics:ListTagsForResource",
+        "omics:TagResource",
+        "omics:UntagResource",
+        "omics:UpdateWorkflow"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsWorkflowDelete",
+      "Effect": "Allow",
+      "Action": [
+        "omics:DeleteWorkflow",
+        "omics:GetWorkflow"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

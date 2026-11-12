@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLightsailCertificate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailCertificateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:CreateCertificate",
+        "lightsail:GetCertificates",
+        "lightsail:TagResource",
+        "lightsail:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailCertificateRead",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetCertificates"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailCertificateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetCertificates",
+        "lightsail:TagResource",
+        "lightsail:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailCertificateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:DeleteCertificate",
+        "lightsail:GetCertificates"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

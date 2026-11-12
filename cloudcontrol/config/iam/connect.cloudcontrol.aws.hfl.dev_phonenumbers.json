@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectPhoneNumber",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectPhoneNumberCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:ClaimPhoneNumber",
+        "connect:DescribePhoneNumber",
+        "connect:ImportPhoneNumber",
+        "connect:SearchAvailablePhoneNumbers",
+        "connect:TagResource",
+        "sms-voice:DescribePhoneNumbers",
+        "social-messaging:GetLinkedWhatsAppBusinessAccountPhoneNumber",
+        "social-messaging:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectPhoneNumberRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribePhoneNumber"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectPhoneNumberUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribePhoneNumber",
+        "connect:TagResource",
+        "connect:UntagResource",
+        "connect:UpdatePhoneNumber",
+        "connect:UpdatePhoneNumberMetadata"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectPhoneNumberDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:ReleasePhoneNumber",
+        "connect:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

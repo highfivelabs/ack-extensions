@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataZoneProjectProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneProjectProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:CreateProjectProfile",
+        "datazone:GetProjectProfile",
+        "datazone:ListEnvironmentBlueprints",
+        "ssm:GetParameter"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneProjectProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetProjectProfile",
+        "ssm:GetParameter"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneProjectProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetProjectProfile",
+        "datazone:UpdateProjectProfile",
+        "ssm:GetParameter"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneProjectProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:DeleteProjectProfile",
+        "datazone:GetProjectProfile"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNovaActWorkflowDefinition",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NovaActWorkflowDefinitionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "nova-act:CreateWorkflowDefinition",
+        "nova-act:GetWorkflowDefinition",
+        "s3:GetBucketAcl",
+        "s3:GetBucketLocation",
+        "s3:ListBucket",
+        "s3:PutObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NovaActWorkflowDefinitionRead",
+      "Effect": "Allow",
+      "Action": [
+        "nova-act:GetWorkflowDefinition"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NovaActWorkflowDefinitionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "nova-act:DeleteWorkflowDefinition",
+        "nova-act:GetWorkflowDefinition"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEMRWALWorkspace",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EMRWALWorkspaceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "emrwal:CreateWorkspace",
+        "emrwal:TagResource",
+        "iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EMRWALWorkspaceRead",
+      "Effect": "Allow",
+      "Action": [
+        "emrwal:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EMRWALWorkspaceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "emrwal:ListTagsForResource",
+        "emrwal:TagResource",
+        "emrwal:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EMRWALWorkspaceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "emrwal:DeleteWorkspace"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

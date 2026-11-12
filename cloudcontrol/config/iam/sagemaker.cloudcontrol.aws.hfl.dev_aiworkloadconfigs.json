@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSageMakerAIWorkloadConfig",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerAIWorkloadConfigCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags",
+        "sagemaker:CreateAIWorkloadConfig",
+        "sagemaker:DescribeAIWorkloadConfig",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerAIWorkloadConfigRead",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribeAIWorkloadConfig",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerAIWorkloadConfigUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags",
+        "sagemaker:DeleteTags",
+        "sagemaker:DescribeAIWorkloadConfig",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerAIWorkloadConfigDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DeleteAIWorkloadConfig",
+        "sagemaker:DescribeAIWorkloadConfig"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlueTableOptimizer",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueTableOptimizerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateTableOptimizer",
+        "glue:GetConnection",
+        "glue:GetTable",
+        "glue:PassConnection",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueTableOptimizerRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetTable",
+        "glue:GetTableOptimizer"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueTableOptimizerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetConnection",
+        "glue:GetTable",
+        "glue:PassConnection",
+        "glue:UpdateTableOptimizer",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueTableOptimizerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DeleteTableOptimizer",
+        "glue:GetTable",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

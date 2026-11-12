@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlUXCAccountCustomization",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "UXCAccountCustomizationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "uxc:GetAccountCustomizations",
+        "uxc:UpdateAccountCustomizations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "UXCAccountCustomizationRead",
+      "Effect": "Allow",
+      "Action": [
+        "uxc:GetAccountCustomizations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "UXCAccountCustomizationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "uxc:GetAccountCustomizations",
+        "uxc:UpdateAccountCustomizations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "UXCAccountCustomizationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "uxc:GetAccountCustomizations",
+        "uxc:UpdateAccountCustomizations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWorkSpacesWebBrowserSettings",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebBrowserSettingsCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "kms:ReEncryptFrom",
+        "kms:ReEncryptTo",
+        "workspaces-web:CreateBrowserSettings",
+        "workspaces-web:GetBrowserSettings",
+        "workspaces-web:ListTagsForResource",
+        "workspaces-web:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebBrowserSettingsRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "workspaces-web:GetBrowserSettings",
+        "workspaces-web:ListBrowserSettings",
+        "workspaces-web:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebBrowserSettingsUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "workspaces-web:GetBrowserSettings",
+        "workspaces-web:ListBrowserSettings",
+        "workspaces-web:ListTagsForResource",
+        "workspaces-web:TagResource",
+        "workspaces-web:UntagResource",
+        "workspaces-web:UpdateBrowserSettings"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebBrowserSettingsDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "workspaces-web:DeleteBrowserSettings",
+        "workspaces-web:GetBrowserSettings"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLightsailStaticIp",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailStaticIpCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:AllocateStaticIp",
+        "lightsail:AttachStaticIp",
+        "lightsail:DetachStaticIp",
+        "lightsail:GetInstance",
+        "lightsail:GetStaticIp",
+        "lightsail:GetStaticIps"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailStaticIpRead",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetStaticIp",
+        "lightsail:GetStaticIps"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailStaticIpUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:AttachStaticIp",
+        "lightsail:DetachStaticIp",
+        "lightsail:GetInstance",
+        "lightsail:GetStaticIp",
+        "lightsail:GetStaticIps"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailStaticIpDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetStaticIp",
+        "lightsail:GetStaticIps",
+        "lightsail:ReleaseStaticIp"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockAgentCoreEvaluator",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCoreEvaluatorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:CreateEvaluator",
+        "bedrock-agentcore:GetEvaluator",
+        "bedrock-agentcore:TagResource",
+        "bedrock-mantle:CallWithBearerToken",
+        "bedrock-mantle:CreateInference",
+        "bedrock:InvokeModel",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "lambda:GetFunction",
+        "lambda:InvokeFunction"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCoreEvaluatorRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:GetEvaluator",
+        "bedrock-agentcore:ListTagsForResource",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCoreEvaluatorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:GetEvaluator",
+        "bedrock-agentcore:ListTagsForResource",
+        "bedrock-agentcore:TagResource",
+        "bedrock-agentcore:UntagResource",
+        "bedrock-agentcore:UpdateEvaluator",
+        "bedrock-mantle:CallWithBearerToken",
+        "bedrock-mantle:CreateInference",
+        "bedrock:InvokeModel",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "lambda:GetFunction",
+        "lambda:InvokeFunction"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCoreEvaluatorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:DeleteEvaluator",
+        "bedrock-agentcore:GetEvaluator"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

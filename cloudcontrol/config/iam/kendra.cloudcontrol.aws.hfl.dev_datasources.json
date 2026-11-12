@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlKendraDataSource",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraDataSourceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kendra:CreateDataSource",
+        "kendra:DescribeDataSource",
+        "kendra:ListTagsForResource",
+        "kendra:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraDataSourceRead",
+      "Effect": "Allow",
+      "Action": [
+        "kendra:DescribeDataSource",
+        "kendra:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraDataSourceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kendra:DescribeDataSource",
+        "kendra:ListTagsForResource",
+        "kendra:TagResource",
+        "kendra:UntagResource",
+        "kendra:UpdateDataSource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraDataSourceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kendra:DeleteDataSource",
+        "kendra:DescribeDataSource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

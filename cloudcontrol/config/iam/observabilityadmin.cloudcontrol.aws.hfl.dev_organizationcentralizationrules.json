@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlObservabilityAdminOrganizationCentralizationRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminOrganizationCentralizationRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "observabilityadmin:CreateCentralizationRuleForOrganization",
+        "observabilityadmin:GetCentralizationRuleForOrganization",
+        "observabilityadmin:ListTagsForResource",
+        "observabilityadmin:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminOrganizationCentralizationRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "observabilityadmin:GetCentralizationRuleForOrganization",
+        "observabilityadmin:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminOrganizationCentralizationRuleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "observabilityadmin:GetCentralizationRuleForOrganization",
+        "observabilityadmin:ListTagsForResource",
+        "observabilityadmin:TagResource",
+        "observabilityadmin:UntagResource",
+        "observabilityadmin:UpdateCentralizationRuleForOrganization"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminOrganizationCentralizationRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "observabilityadmin:DeleteCentralizationRuleForOrganization"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectUserHierarchyStructure",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectUserHierarchyStructureCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:UpdateUserHierarchyStructure"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectUserHierarchyStructureRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeUserHierarchyStructure"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectUserHierarchyStructureUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:UpdateUserHierarchyStructure"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectUserHierarchyStructureDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:UpdateUserHierarchyStructure"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

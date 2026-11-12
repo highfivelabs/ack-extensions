@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaConnectFlowMediaStream",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectFlowMediaStreamCreate",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:AddFlowMediaStreams",
+        "mediaconnect:DescribeFlow",
+        "mediaconnect:ListTagsForResource",
+        "mediaconnect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectFlowMediaStreamRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:DescribeFlow",
+        "mediaconnect:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectFlowMediaStreamUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:DescribeFlow",
+        "mediaconnect:ListTagsForResource",
+        "mediaconnect:TagResource",
+        "mediaconnect:UntagResource",
+        "mediaconnect:UpdateFlowMediaStream"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectFlowMediaStreamDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:DescribeFlow",
+        "mediaconnect:RemoveFlowMediaStream"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

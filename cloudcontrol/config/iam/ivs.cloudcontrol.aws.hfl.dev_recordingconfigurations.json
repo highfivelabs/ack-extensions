@@ -1,0 +1,69 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIVSRecordingConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSRecordingConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:ListExports",
+        "iam:AttachRolePolicy",
+        "iam:CreateServiceLinkedRole",
+        "iam:PutRolePolicy",
+        "ivs:CreateRecordingConfiguration",
+        "ivs:GetRecordingConfiguration",
+        "ivs:TagResource",
+        "s3:GetBucketLocation",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSRecordingConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:GetRecordingConfiguration",
+        "ivs:ListTagsForResource",
+        "s3:GetBucketLocation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSRecordingConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:AttachRolePolicy",
+        "iam:CreateServiceLinkedRole",
+        "iam:PutRolePolicy",
+        "ivs:GetRecordingConfiguration",
+        "ivs:ListTagsForResource",
+        "ivs:TagResource",
+        "ivs:UntagResource",
+        "s3:ListBucket",
+        "sts:AssumeRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSRecordingConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "ivs:DeleteRecordingConfiguration",
+        "ivs:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

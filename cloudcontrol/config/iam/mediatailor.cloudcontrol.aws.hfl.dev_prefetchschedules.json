@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaTailorPrefetchSchedule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorPrefetchScheduleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "mediatailor:CreatePrefetchSchedule",
+        "mediatailor:GetPrefetchSchedule",
+        "mediatailor:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorPrefetchScheduleRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediatailor:GetPrefetchSchedule",
+        "mediatailor:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorPrefetchScheduleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "mediatailor:GetPrefetchSchedule",
+        "mediatailor:ListTagsForResource",
+        "mediatailor:TagResource",
+        "mediatailor:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorPrefetchScheduleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediatailor:DeletePrefetchSchedule",
+        "mediatailor:GetPrefetchSchedule"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

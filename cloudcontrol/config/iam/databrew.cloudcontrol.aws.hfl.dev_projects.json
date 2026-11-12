@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataBrewProject",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewProjectCreate",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:CreateProject",
+        "databrew:DescribeProject",
+        "databrew:TagResource",
+        "databrew:UntagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewProjectRead",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:DescribeProject",
+        "iam:ListRoles"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewProjectUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:TagResource",
+        "databrew:UntagResource",
+        "databrew:UpdateProject",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewProjectDelete",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:DeleteProject"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

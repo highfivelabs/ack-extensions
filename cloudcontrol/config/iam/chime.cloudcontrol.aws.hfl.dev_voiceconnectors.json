@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlChimeVoiceConnector",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeVoiceConnectorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "chime:CreateVoiceConnector",
+        "chime:GetVoiceConnector",
+        "chime:ListTagsForResource",
+        "chime:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeVoiceConnectorRead",
+      "Effect": "Allow",
+      "Action": [
+        "chime:GetVoiceConnector",
+        "chime:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeVoiceConnectorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "chime:GetVoiceConnector",
+        "chime:ListTagsForResource",
+        "chime:TagResource",
+        "chime:UntagResource",
+        "chime:UpdateVoiceConnector"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeVoiceConnectorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "chime:DeleteVoiceConnector",
+        "chime:GetVoiceConnector",
+        "chime:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

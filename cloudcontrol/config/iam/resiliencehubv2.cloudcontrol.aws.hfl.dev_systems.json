@@ -1,0 +1,78 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlResilienceHubV2System",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubV2SystemCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant",
+        "resiliencehub:CreateSystem",
+        "resiliencehub:GetSystem",
+        "resiliencehub:ListTagsForResource",
+        "resiliencehub:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubV2SystemRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "resiliencehub:GetSystem",
+        "resiliencehub:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubV2SystemUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant",
+        "resiliencehub:GetSystem",
+        "resiliencehub:ListTagsForResource",
+        "resiliencehub:TagResource",
+        "resiliencehub:UntagResource",
+        "resiliencehub:UpdateSystem"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ResilienceHubV2SystemDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant",
+        "resiliencehub:DeleteSystem",
+        "resiliencehub:GetSystem"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

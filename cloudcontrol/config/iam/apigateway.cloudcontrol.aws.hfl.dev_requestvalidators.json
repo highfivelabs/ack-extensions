@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlApiGatewayRequestValidator",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayRequestValidatorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET",
+        "apigateway:POST"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayRequestValidatorRead",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayRequestValidatorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET",
+        "apigateway:PATCH"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayRequestValidatorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:DELETE"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

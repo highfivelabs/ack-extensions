@@ -1,0 +1,91 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGameLiftFleet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftFleetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:CreateFleet",
+        "gamelift:CreateFleetLocations",
+        "gamelift:DescribeFleetAttributes",
+        "gamelift:DescribeFleetCapacity",
+        "gamelift:DescribeFleetLocationAttributes",
+        "gamelift:DescribeFleetLocationCapacity",
+        "gamelift:DescribeFleetPortSettings",
+        "gamelift:DescribeRuntimeConfiguration",
+        "gamelift:DescribeScalingPolicies",
+        "gamelift:ListTagsForResource",
+        "gamelift:PutScalingPolicy",
+        "gamelift:TagResource",
+        "gamelift:UpdateFleetCapacity"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftFleetRead",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DescribeFleetAttributes",
+        "gamelift:DescribeFleetCapacity",
+        "gamelift:DescribeFleetLocationAttributes",
+        "gamelift:DescribeFleetLocationCapacity",
+        "gamelift:DescribeFleetPortSettings",
+        "gamelift:DescribeRuntimeConfiguration",
+        "gamelift:DescribeScalingPolicies",
+        "gamelift:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftFleetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:CreateFleetLocations",
+        "gamelift:DeleteFleetLocations",
+        "gamelift:DeleteScalingPolicy",
+        "gamelift:DescribeFleetAttributes",
+        "gamelift:DescribeFleetCapacity",
+        "gamelift:DescribeFleetLocationAttributes",
+        "gamelift:DescribeFleetLocationCapacity",
+        "gamelift:DescribeFleetPortSettings",
+        "gamelift:DescribeRuntimeConfiguration",
+        "gamelift:DescribeScalingPolicies",
+        "gamelift:ListTagsForResource",
+        "gamelift:PutScalingPolicy",
+        "gamelift:TagResource",
+        "gamelift:UntagResource",
+        "gamelift:UpdateFleetAttributes",
+        "gamelift:UpdateFleetCapacity",
+        "gamelift:UpdateFleetPortSettings",
+        "gamelift:UpdateRuntimeConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftFleetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DeleteFleet",
+        "gamelift:DeleteScalingPolicy",
+        "gamelift:DescribeFleetAttributes",
+        "gamelift:DescribeFleetCapacity",
+        "gamelift:DescribeFleetLocationCapacity",
+        "gamelift:DescribeScalingPolicies",
+        "gamelift:UpdateFleetCapacity"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

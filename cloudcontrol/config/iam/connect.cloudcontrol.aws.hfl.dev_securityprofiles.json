@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectSecurityProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectSecurityProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:CreateSecurityProfile",
+        "connect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectSecurityProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeSecurityProfile",
+        "connect:ListSecurityProfileApplications",
+        "connect:ListSecurityProfileFlowModules",
+        "connect:ListSecurityProfilePermissions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectSecurityProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:TagResource",
+        "connect:UntagResource",
+        "connect:UpdateSecurityProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectSecurityProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteSecurityProfile",
+        "connect:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

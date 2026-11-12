@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlFraudDetectorEntityType",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FraudDetectorEntityTypeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "frauddetector:GetEntityTypes",
+        "frauddetector:ListTagsForResource",
+        "frauddetector:PutEntityType",
+        "frauddetector:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FraudDetectorEntityTypeRead",
+      "Effect": "Allow",
+      "Action": [
+        "frauddetector:GetEntityTypes",
+        "frauddetector:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FraudDetectorEntityTypeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "frauddetector:GetEntityTypes",
+        "frauddetector:ListTagsForResource",
+        "frauddetector:PutEntityType",
+        "frauddetector:TagResource",
+        "frauddetector:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FraudDetectorEntityTypeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "frauddetector:DeleteEntityType",
+        "frauddetector:GetEntityTypes"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

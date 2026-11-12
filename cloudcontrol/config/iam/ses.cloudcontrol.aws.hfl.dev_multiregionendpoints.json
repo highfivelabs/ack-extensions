@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSESMultiRegionEndpoint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMultiRegionEndpointCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "ses:CreateMultiRegionEndpoint",
+        "ses:GetMultiRegionEndpoint",
+        "ses:ListTagsForResource",
+        "ses:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMultiRegionEndpointRead",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetMultiRegionEndpoint",
+        "ses:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMultiRegionEndpointUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetMultiRegionEndpoint",
+        "ses:ListTagsForResource",
+        "ses:TagResource",
+        "ses:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMultiRegionEndpointDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ses:DeleteMultiRegionEndpoint",
+        "ses:GetMultiRegionEndpoint"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

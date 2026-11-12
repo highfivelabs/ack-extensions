@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlServerlessRepoApplication",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServerlessRepoApplicationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "serverlessrepo:CreateApplication",
+        "serverlessrepo:GetApplication",
+        "serverlessrepo:ListApplications"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServerlessRepoApplicationRead",
+      "Effect": "Allow",
+      "Action": [
+        "serverlessrepo:GetApplication"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServerlessRepoApplicationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "serverlessrepo:UpdateApplication"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServerlessRepoApplicationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "serverlessrepo:DeleteApplication",
+        "serverlessrepo:ListApplications"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

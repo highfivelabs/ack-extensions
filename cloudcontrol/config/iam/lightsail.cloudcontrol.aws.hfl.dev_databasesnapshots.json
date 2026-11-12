@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLightsailDatabaseSnapshot",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDatabaseSnapshotCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:CreateRelationalDatabaseSnapshot",
+        "lightsail:GetRelationalDatabaseSnapshot",
+        "lightsail:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDatabaseSnapshotRead",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetRelationalDatabaseSnapshot"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDatabaseSnapshotUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetRelationalDatabaseSnapshot",
+        "lightsail:TagResource",
+        "lightsail:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDatabaseSnapshotDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:DeleteRelationalDatabaseSnapshot",
+        "lightsail:GetRelationalDatabaseSnapshot"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

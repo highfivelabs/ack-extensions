@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSCNNamespace",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SCNNamespaceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "scn:CreateDataLakeNamespace",
+        "scn:GetDataLakeNamespace",
+        "scn:ListTagsForResource",
+        "scn:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SCNNamespaceRead",
+      "Effect": "Allow",
+      "Action": [
+        "scn:GetDataLakeNamespace",
+        "scn:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SCNNamespaceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "scn:GetDataLakeNamespace",
+        "scn:ListTagsForResource",
+        "scn:TagResource",
+        "scn:UntagResource",
+        "scn:UpdateDataLakeNamespace"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SCNNamespaceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "scn:DeleteDataLakeNamespace",
+        "scn:GetDataLakeNamespace"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

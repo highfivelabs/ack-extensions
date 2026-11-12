@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCasesField",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CasesFieldCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cases:BatchGetField",
+        "cases:CreateField",
+        "cases:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CasesFieldRead",
+      "Effect": "Allow",
+      "Action": [
+        "cases:BatchGetField"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CasesFieldUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cases:BatchGetField",
+        "cases:TagResource",
+        "cases:UntagResource",
+        "cases:UpdateField"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CasesFieldDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cases:DeleteField",
+        "cases:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCasesCase",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CasesCaseCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cases:CreateCase",
+        "cases:GetCase",
+        "cases:GetDomain",
+        "cases:TagResource",
+        "profile:SearchProfiles"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CasesCaseRead",
+      "Effect": "Allow",
+      "Action": [
+        "cases:GetCase",
+        "cases:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CasesCaseUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cases:GetCase",
+        "cases:ListTagsForResource",
+        "cases:TagResource",
+        "cases:UntagResource",
+        "cases:UpdateCase"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CasesCaseDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cases:DeleteCase"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

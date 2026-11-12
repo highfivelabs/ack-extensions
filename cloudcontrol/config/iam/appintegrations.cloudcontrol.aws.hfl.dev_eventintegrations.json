@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppIntegrationsEventIntegration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppIntegrationsEventIntegrationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "app-integrations:CreateEventIntegration",
+        "app-integrations:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppIntegrationsEventIntegrationRead",
+      "Effect": "Allow",
+      "Action": [
+        "app-integrations:GetEventIntegration",
+        "app-integrations:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppIntegrationsEventIntegrationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "app-integrations:GetEventIntegration",
+        "app-integrations:TagResource",
+        "app-integrations:UntagResource",
+        "app-integrations:UpdateEventIntegration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppIntegrationsEventIntegrationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "app-integrations:DeleteEventIntegration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

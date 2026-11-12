@@ -1,0 +1,82 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCognitoUserPoolDomain",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoUserPoolDomainCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:updateDistribution",
+        "cognito-idp:CreateUserPoolDomain",
+        "cognito-idp:DescribeUserPoolDomain",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "kms:ReEncryptFrom",
+        "kms:ReEncryptTo"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoUserPoolDomainRead",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DescribeUserPoolDomain",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "kms:ReEncryptFrom",
+        "kms:ReEncryptTo"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoUserPoolDomainUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:updateDistribution",
+        "cognito-idp:DescribeUserPoolDomain",
+        "cognito-idp:UpdateUserPoolDomain",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "kms:ReEncryptFrom",
+        "kms:ReEncryptTo"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoUserPoolDomainDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DeleteUserPoolDomain",
+        "cognito-idp:DescribeUserPoolDomain",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "kms:ReEncryptFrom",
+        "kms:ReEncryptTo"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

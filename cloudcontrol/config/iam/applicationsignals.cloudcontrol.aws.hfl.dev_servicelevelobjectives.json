@@ -1,0 +1,72 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlApplicationSignalsServiceLevelObjective",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApplicationSignalsServiceLevelObjectiveCreate",
+      "Effect": "Allow",
+      "Action": [
+        "application-signals:BatchUpdateExclusionWindows",
+        "application-signals:CreateServiceLevelObjective",
+        "application-signals:GetServiceLevelObjective",
+        "application-signals:ListServiceLevelObjectiveExclusionWindows",
+        "application-signals:ListTagsForResource",
+        "application-signals:TagResource",
+        "cloudwatch:GetMetricData",
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole",
+        "rum:BatchGetRumMetricDefinitions",
+        "rum:GetAppMonitor"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApplicationSignalsServiceLevelObjectiveRead",
+      "Effect": "Allow",
+      "Action": [
+        "application-signals:GetServiceLevelObjective",
+        "application-signals:ListServiceLevelObjectiveExclusionWindows",
+        "application-signals:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApplicationSignalsServiceLevelObjectiveUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "application-signals:BatchUpdateExclusionWindows",
+        "application-signals:GetServiceLevelObjective",
+        "application-signals:ListServiceLevelObjectiveExclusionWindows",
+        "application-signals:ListTagsForResource",
+        "application-signals:TagResource",
+        "application-signals:UntagResource",
+        "application-signals:UpdateServiceLevelObjective",
+        "cloudwatch:GetMetricData",
+        "rum:BatchGetRumMetricDefinitions",
+        "rum:GetAppMonitor"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApplicationSignalsServiceLevelObjectiveDelete",
+      "Effect": "Allow",
+      "Action": [
+        "application-signals:DeleteServiceLevelObjective",
+        "application-signals:GetServiceLevelObjective",
+        "application-signals:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlImageBuilderComponent",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderComponentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole",
+        "imagebuilder:CreateComponent",
+        "imagebuilder:GetComponent",
+        "imagebuilder:TagResource",
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyPair",
+        "kms:GenerateDataKeyPairWithoutPlaintext",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "s3:GetBucketLocation",
+        "s3:GetObject",
+        "s3:HeadBucket"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderComponentRead",
+      "Effect": "Allow",
+      "Action": [
+        "imagebuilder:GetComponent",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderComponentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "imagebuilder:TagResource",
+        "imagebuilder:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderComponentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "imagebuilder:DeleteComponent",
+        "imagebuilder:GetComponent",
+        "imagebuilder:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

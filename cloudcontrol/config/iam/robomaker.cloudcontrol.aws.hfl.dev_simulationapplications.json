@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoboMakerSimulationApplication",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RoboMakerSimulationApplicationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ecr-public:GetAuthorizationToken",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:GetAuthorizationToken",
+        "robomaker:CreateSimulationApplication",
+        "robomaker:TagResource",
+        "robomaker:UntagResource",
+        "sts:GetServiceBearerToken"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RoboMakerSimulationApplicationRead",
+      "Effect": "Allow",
+      "Action": [
+        "robomaker:DescribeSimulationApplication"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RoboMakerSimulationApplicationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ecr-public:GetAuthorizationToken",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:GetAuthorizationToken",
+        "robomaker:TagResource",
+        "robomaker:UntagResource",
+        "robomaker:UpdateSimulationApplication"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RoboMakerSimulationApplicationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "robomaker:DeleteSimulationApplication",
+        "robomaker:DescribeSimulationApplication"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

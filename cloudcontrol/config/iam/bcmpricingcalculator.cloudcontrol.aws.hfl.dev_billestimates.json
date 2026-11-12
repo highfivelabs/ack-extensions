@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBcmPricingCalculatorBillEstimate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BcmPricingCalculatorBillEstimateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bcm-pricing-calculator:CreateBillEstimate",
+        "bcm-pricing-calculator:GetBillEstimate",
+        "bcm-pricing-calculator:TagResource",
+        "bcm-pricing-calculator:UpdateBillEstimate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BcmPricingCalculatorBillEstimateRead",
+      "Effect": "Allow",
+      "Action": [
+        "bcm-pricing-calculator:GetBillEstimate",
+        "bcm-pricing-calculator:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BcmPricingCalculatorBillEstimateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bcm-pricing-calculator:GetBillEstimate",
+        "bcm-pricing-calculator:ListTagsForResource",
+        "bcm-pricing-calculator:TagResource",
+        "bcm-pricing-calculator:UntagResource",
+        "bcm-pricing-calculator:UpdateBillEstimate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BcmPricingCalculatorBillEstimateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bcm-pricing-calculator:DeleteBillEstimate",
+        "bcm-pricing-calculator:GetBillEstimate",
+        "bcm-pricing-calculator:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlServiceCatalogPortfolioShare",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogPortfolioShareCreate",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:CreatePortfolioShare",
+        "servicecatalog:DescribePortfolioShares"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogPortfolioShareRead",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DescribePortfolioShares"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogPortfolioShareUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DescribePortfolioShares",
+        "servicecatalog:UpdatePortfolioShare"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogPortfolioShareDelete",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DeletePortfolioShare",
+        "servicecatalog:DescribePortfolioShares"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

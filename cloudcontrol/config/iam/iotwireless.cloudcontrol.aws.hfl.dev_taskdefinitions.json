@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTWirelessTaskDefinition",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessTaskDefinitionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetRole",
+        "iam:PassRole",
+        "iotwireless:CreateWirelessGatewayTaskDefinition",
+        "iotwireless:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessTaskDefinitionRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:GetWirelessGatewayTaskDefinition",
+        "iotwireless:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessTaskDefinitionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:GetWirelessGatewayTaskDefinition",
+        "iotwireless:TagResource",
+        "iotwireless:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessTaskDefinitionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:DeleteWirelessGatewayTaskDefinition"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlueSession",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueSessionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateSession",
+        "glue:GetSession",
+        "glue:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueSessionRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetSession",
+        "glue:GetTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueSessionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetSession",
+        "glue:TagResource",
+        "glue:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueSessionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DeleteSession",
+        "glue:GetSession"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

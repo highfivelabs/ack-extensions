@@ -1,0 +1,69 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockAgentCoreDataset",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCoreDatasetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:CreateDataset",
+        "bedrock-agentcore:GetDataset",
+        "bedrock-agentcore:TagResource",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "s3:GetBucketLocation",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCoreDatasetRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:GetDataset",
+        "bedrock-agentcore:ListTagsForResource",
+        "kms:Decrypt",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCoreDatasetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:GetDataset",
+        "bedrock-agentcore:ListTagsForResource",
+        "bedrock-agentcore:TagResource",
+        "bedrock-agentcore:UntagResource",
+        "bedrock-agentcore:UpdateDataset",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCoreDatasetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:DeleteDataset",
+        "bedrock-agentcore:GetDataset",
+        "kms:Decrypt",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

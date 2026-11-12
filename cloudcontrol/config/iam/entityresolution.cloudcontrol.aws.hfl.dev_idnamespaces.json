@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEntityResolutionIdNamespace",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EntityResolutionIdNamespaceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "entityresolution:CreateIdNamespace",
+        "entityresolution:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EntityResolutionIdNamespaceRead",
+      "Effect": "Allow",
+      "Action": [
+        "entityresolution:GetIdNamespace",
+        "entityresolution:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EntityResolutionIdNamespaceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "entityresolution:ListTagsForResource",
+        "entityresolution:TagResource",
+        "entityresolution:UntagResource",
+        "entityresolution:UpdateIdNamespace",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EntityResolutionIdNamespaceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "entityresolution:DeleteIdNamespace",
+        "entityresolution:GetIdNamespace",
+        "entityresolution:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

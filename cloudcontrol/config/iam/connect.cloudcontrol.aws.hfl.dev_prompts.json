@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectPrompt",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectPromptCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:CreatePrompt",
+        "connect:TagResource",
+        "kms:Decrypt",
+        "s3:GetObject",
+        "s3:GetObjectAcl"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectPromptRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribePrompt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectPromptUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:TagResource",
+        "connect:UntagResource",
+        "connect:UpdatePrompt",
+        "kms:Decrypt",
+        "s3:GetObject",
+        "s3:GetObjectAcl"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectPromptDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeletePrompt"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

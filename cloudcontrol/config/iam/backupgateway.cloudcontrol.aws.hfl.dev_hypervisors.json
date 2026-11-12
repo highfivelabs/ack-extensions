@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBackupGatewayHypervisor",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupGatewayHypervisorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "backup-gateway:GetHypervisor",
+        "backup-gateway:ImportHypervisorConfiguration",
+        "backup-gateway:ListHypervisors",
+        "backup-gateway:ListTagsForResource",
+        "backup-gateway:TagResource",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:Encrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupGatewayHypervisorRead",
+      "Effect": "Allow",
+      "Action": [
+        "backup-gateway:GetHypervisor",
+        "backup-gateway:ListHypervisors",
+        "backup-gateway:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupGatewayHypervisorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "backup-gateway:DeleteHypervisor",
+        "backup-gateway:GetHypervisor",
+        "backup-gateway:ImportHypervisorConfiguration",
+        "backup-gateway:ListHypervisors",
+        "backup-gateway:ListTagsForResource",
+        "backup-gateway:UpdateHypervisor",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:Encrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupGatewayHypervisorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "backup-gateway:DeleteHypervisor",
+        "backup-gateway:GetHypervisor",
+        "backup-gateway:ListHypervisors"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

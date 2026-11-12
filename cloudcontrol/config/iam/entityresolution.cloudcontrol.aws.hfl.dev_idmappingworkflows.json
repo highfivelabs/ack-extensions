@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEntityResolutionIdMappingWorkflow",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EntityResolutionIdMappingWorkflowCreate",
+      "Effect": "Allow",
+      "Action": [
+        "entityresolution:CreateIdMappingWorkflow",
+        "entityresolution:GetIdMappingWorkflow",
+        "entityresolution:TagResource",
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EntityResolutionIdMappingWorkflowRead",
+      "Effect": "Allow",
+      "Action": [
+        "entityresolution:GetIdMappingWorkflow",
+        "entityresolution:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EntityResolutionIdMappingWorkflowUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "entityresolution:GetIdMappingWorkflow",
+        "entityresolution:ListTagsForResource",
+        "entityresolution:TagResource",
+        "entityresolution:UntagResource",
+        "entityresolution:UpdateIdMappingWorkflow",
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EntityResolutionIdMappingWorkflowDelete",
+      "Effect": "Allow",
+      "Action": [
+        "entityresolution:DeleteIdMappingWorkflow",
+        "entityresolution:GetIdMappingWorkflow",
+        "entityresolution:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

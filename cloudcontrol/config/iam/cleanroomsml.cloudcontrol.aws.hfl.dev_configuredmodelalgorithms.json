@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCleanRoomsMLConfiguredModelAlgorithm",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsMLConfiguredModelAlgorithmCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms-ml:CreateConfiguredModelAlgorithm",
+        "cleanrooms-ml:GetConfiguredModelAlgorithm",
+        "cleanrooms-ml:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsMLConfiguredModelAlgorithmRead",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms-ml:GetConfiguredModelAlgorithm"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsMLConfiguredModelAlgorithmUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms-ml:TagResource",
+        "cleanrooms-ml:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsMLConfiguredModelAlgorithmDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms-ml:DeleteConfiguredModelAlgorithm"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

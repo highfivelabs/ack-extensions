@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIVSStorageConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSStorageConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:CreateStorageConfiguration",
+        "ivs:GetStorageConfiguration",
+        "ivs:TagResource",
+        "s3:GetBucketLocation",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSStorageConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:GetStorageConfiguration",
+        "ivs:ListTagsForResource",
+        "s3:GetBucketLocation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSStorageConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:GetStorageConfiguration",
+        "ivs:ListTagsForResource",
+        "ivs:TagResource",
+        "ivs:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSStorageConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:DeleteStorageConfiguration",
+        "ivs:UntagResource",
+        "s3:DeleteBucketPolicy",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

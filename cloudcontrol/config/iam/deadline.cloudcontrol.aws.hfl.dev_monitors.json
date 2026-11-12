@@ -1,0 +1,70 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDeadlineMonitor",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineMonitorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:CreateMonitor",
+        "deadline:GetMonitor",
+        "deadline:ListTagsForResource",
+        "deadline:TagResource",
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "sso:CreateApplication",
+        "sso:DeleteApplication",
+        "sso:PutApplicationAssignmentConfiguration",
+        "sso:PutApplicationAuthenticationMethod",
+        "sso:PutApplicationGrant"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineMonitorRead",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:GetMonitor",
+        "deadline:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineMonitorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:GetMonitor",
+        "deadline:ListTagsForResource",
+        "deadline:TagResource",
+        "deadline:UntagResource",
+        "deadline:UpdateMonitor",
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "sso:PutApplicationGrant",
+        "sso:UpdateApplication"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineMonitorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:DeleteMonitor",
+        "deadline:GetMonitor",
+        "sso:DeleteApplication"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

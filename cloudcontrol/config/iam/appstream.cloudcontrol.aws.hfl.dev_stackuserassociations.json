@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppStreamStackUserAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamStackUserAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:BatchAssociateUserStack",
+        "appstream:DescribeUserStackAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamStackUserAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DescribeUserStackAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamStackUserAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:BatchDisassociateUserStack",
+        "appstream:DescribeUserStackAssociations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

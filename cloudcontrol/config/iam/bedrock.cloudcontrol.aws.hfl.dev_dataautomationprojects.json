@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockDataAutomationProject",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockDataAutomationProjectCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:CreateDataAutomationProject",
+        "bedrock:GetDataAutomationProject",
+        "bedrock:ListTagsForResource",
+        "bedrock:TagResource",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockDataAutomationProjectRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetDataAutomationProject",
+        "bedrock:ListTagsForResource",
+        "kms:Decrypt",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockDataAutomationProjectUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetDataAutomationProject",
+        "bedrock:ListTagsForResource",
+        "bedrock:TagResource",
+        "bedrock:UntagResource",
+        "bedrock:UpdateDataAutomationProject",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockDataAutomationProjectDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:DeleteDataAutomationProject",
+        "bedrock:GetDataAutomationProject",
+        "kms:Decrypt",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

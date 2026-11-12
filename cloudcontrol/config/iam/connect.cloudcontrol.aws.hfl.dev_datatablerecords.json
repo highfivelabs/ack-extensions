@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectDataTableRecord",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectDataTableRecordCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:BatchCreateDataTableValue",
+        "connect:ListDataTableAttributes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectDataTableRecordRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:ListDataTableAttributes",
+        "connect:ListDataTableValues"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectDataTableRecordUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:BatchCreateDataTableValue",
+        "connect:BatchDeleteDataTableValue",
+        "connect:BatchUpdateDataTableValue",
+        "connect:ListDataTableAttributes",
+        "connect:ListDataTableValues",
+        "connect:UpdateDataTablePrimaryValues"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectDataTableRecordDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:BatchDeleteDataTableValue",
+        "connect:ListDataTableAttributes",
+        "connect:ListDataTableValues"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

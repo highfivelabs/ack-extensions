@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataBrewRuleset",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewRulesetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:CreateRuleset",
+        "databrew:DescribeRuleset",
+        "databrew:TagResource",
+        "databrew:UntagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewRulesetRead",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:DescribeRuleset",
+        "iam:ListRoles"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewRulesetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:TagResource",
+        "databrew:UntagResource",
+        "databrew:UpdateRuleset"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewRulesetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:DeleteRuleset"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

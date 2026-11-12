@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockResourcePolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockResourcePolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetResourcePolicy",
+        "bedrock:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockResourcePolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockResourcePolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetResourcePolicy",
+        "bedrock:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockResourcePolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:DeleteResourcePolicy",
+        "bedrock:GetResourcePolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

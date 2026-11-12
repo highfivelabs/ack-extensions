@@ -1,0 +1,49 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLakeFormationTagAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LakeFormationTagAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetDatabase",
+        "glue:GetTable",
+        "lakeformation:AddLFTagsToResource",
+        "lakeformation:GetResourceLFTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LakeFormationTagAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetDatabase",
+        "glue:GetTable",
+        "lakeformation:GetResourceLFTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LakeFormationTagAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetDatabase",
+        "glue:GetTable",
+        "lakeformation:GetResourceLFTags",
+        "lakeformation:RemoveLFTagsFromResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

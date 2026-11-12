@@ -1,0 +1,74 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTranslateParallelData",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranslateParallelDataCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "s3:GetObject",
+        "translate:CreateParallelData",
+        "translate:GetParallelData",
+        "translate:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranslateParallelDataRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "translate:GetParallelData",
+        "translate:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranslateParallelDataUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "s3:GetObject",
+        "translate:GetParallelData",
+        "translate:ListTagsForResource",
+        "translate:TagResource",
+        "translate:UntagResource",
+        "translate:UpdateParallelData"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranslateParallelDataDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "translate:DeleteParallelData",
+        "translate:GetParallelData",
+        "translate:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

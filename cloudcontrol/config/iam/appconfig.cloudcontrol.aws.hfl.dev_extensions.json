@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppConfigExtension",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigExtensionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:CreateExtension",
+        "appconfig:GetExtension",
+        "appconfig:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigExtensionRead",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:GetExtension",
+        "appconfig:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigExtensionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:TagResource",
+        "appconfig:UntagResource",
+        "appconfig:UpdateExtension"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigExtensionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:DeleteExtension",
+        "appconfig:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityAgentTargetDomain",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentTargetDomainCreate",
+      "Effect": "Allow",
+      "Action": [
+        "securityagent:BatchGetTargetDomains",
+        "securityagent:CreateTargetDomain",
+        "securityagent:ListTagsForResource",
+        "securityagent:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentTargetDomainRead",
+      "Effect": "Allow",
+      "Action": [
+        "securityagent:BatchGetTargetDomains",
+        "securityagent:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentTargetDomainUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "securityagent:BatchGetTargetDomains",
+        "securityagent:ListTagsForResource",
+        "securityagent:TagResource",
+        "securityagent:UntagResource",
+        "securityagent:UpdateTargetDomain"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentTargetDomainDelete",
+      "Effect": "Allow",
+      "Action": [
+        "securityagent:BatchGetTargetDomains",
+        "securityagent:DeleteTargetDomain"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

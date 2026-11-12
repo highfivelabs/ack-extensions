@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlHealthImagingDatastore",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "HealthImagingDatastoreCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant",
+        "lambda:InvokeFunction",
+        "medical-imaging:CreateDatastore",
+        "medical-imaging:GetDatastore",
+        "medical-imaging:ListTagsForResource",
+        "medical-imaging:TagResource",
+        "medical-imaging:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "HealthImagingDatastoreRead",
+      "Effect": "Allow",
+      "Action": [
+        "medical-imaging:GetDatastore",
+        "medical-imaging:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "HealthImagingDatastoreDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:RetireGrant",
+        "medical-imaging:DeleteDatastore",
+        "medical-imaging:GetDatastore",
+        "medical-imaging:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

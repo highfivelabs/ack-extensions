@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPersonalizeFilter",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeFilterCreate",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:CreateFilter",
+        "personalize:DescribeFilter",
+        "personalize:ListTagsForResource",
+        "personalize:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeFilterRead",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:DescribeFilter",
+        "personalize:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeFilterUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:DescribeFilter",
+        "personalize:ListTagsForResource",
+        "personalize:TagResource",
+        "personalize:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeFilterDelete",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:DeleteFilter",
+        "personalize:DescribeFilter"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

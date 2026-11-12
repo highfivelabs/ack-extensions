@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppSyncSourceApiAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncSourceApiAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:AssociateMergedGraphqlApi",
+        "appsync:AssociateSourceGraphqlApi",
+        "appsync:GetSourceApiAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncSourceApiAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:GetSourceApiAssociation",
+        "appsync:ListSourceApiAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncSourceApiAssociationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:GetSourceApiAssociation",
+        "appsync:UpdateSourceApiAssociation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncSourceApiAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:DisassociateMergedGraphqlApi",
+        "appsync:DisassociateSourceGraphqlApi",
+        "appsync:GetSourceApiAssociation",
+        "appsync:ListSourceApiAssociations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBatchSchedulingPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchSchedulingPolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:CreateSchedulingPolicy",
+        "Batch:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchSchedulingPolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:DescribeSchedulingPolicies"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchSchedulingPolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:TagResource",
+        "Batch:UntagResource",
+        "Batch:UpdateSchedulingPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchSchedulingPolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:DeleteSchedulingPolicy",
+        "Batch:DescribeSchedulingPolicies"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

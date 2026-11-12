@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLightsailDisk",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDiskCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:CreateDisk",
+        "lightsail:DisableAddOn",
+        "lightsail:EnableAddOn",
+        "lightsail:GetDisk",
+        "lightsail:GetDisks",
+        "lightsail:GetRegions",
+        "lightsail:TagResource",
+        "lightsail:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDiskRead",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetDisk",
+        "lightsail:GetDisks"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDiskUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:DisableAddOn",
+        "lightsail:EnableAddOn",
+        "lightsail:GetDisk",
+        "lightsail:GetDisks",
+        "lightsail:TagResource",
+        "lightsail:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDiskDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:DeleteDisk",
+        "lightsail:GetDisk",
+        "lightsail:GetDisks"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

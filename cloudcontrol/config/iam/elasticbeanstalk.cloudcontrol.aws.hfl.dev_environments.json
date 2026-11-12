@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlElasticBeanstalkEnvironment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElasticBeanstalkEnvironmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "elasticbeanstalk:AddTags",
+        "elasticbeanstalk:CreateEnvironment",
+        "elasticbeanstalk:DescribeEnvironments",
+        "elasticbeanstalk:ListTagsForResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElasticBeanstalkEnvironmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "elasticbeanstalk:DescribeConfigurationSettings",
+        "elasticbeanstalk:DescribeEnvironments",
+        "elasticbeanstalk:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElasticBeanstalkEnvironmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "elasticbeanstalk:AddTags",
+        "elasticbeanstalk:AssociateEnvironmentOperationsRole",
+        "elasticbeanstalk:DescribeEnvironments",
+        "elasticbeanstalk:DisassociateEnvironmentOperationsRole",
+        "elasticbeanstalk:ListTagsForResource",
+        "elasticbeanstalk:RemoveTags",
+        "elasticbeanstalk:UpdateEnvironment",
+        "iam:PassRole",
+        "s3:GetBucketLocation",
+        "s3:GetBucketPolicy",
+        "s3:ListBucket",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElasticBeanstalkEnvironmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "elasticbeanstalk:DescribeEnvironments",
+        "elasticbeanstalk:TerminateEnvironment"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

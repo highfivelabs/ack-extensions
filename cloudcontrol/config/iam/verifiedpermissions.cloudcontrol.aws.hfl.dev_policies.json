@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlVerifiedPermissionsPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VerifiedPermissionsPolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "verifiedpermissions:CreatePolicy",
+        "verifiedpermissions:GetPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VerifiedPermissionsPolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "verifiedpermissions:GetPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VerifiedPermissionsPolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "verifiedpermissions:GetPolicy",
+        "verifiedpermissions:UpdatePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VerifiedPermissionsPolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "verifiedpermissions:DeletePolicy",
+        "verifiedpermissions:GetPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlKendraIndex",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraIndexCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kendra:CreateIndex",
+        "kendra:DescribeIndex",
+        "kendra:ListTagsForResource",
+        "kendra:TagResource",
+        "kendra:UpdateIndex",
+        "kms:CreateGrant",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraIndexRead",
+      "Effect": "Allow",
+      "Action": [
+        "kendra:DescribeIndex",
+        "kendra:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraIndexUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kendra:DescribeIndex",
+        "kendra:ListTagsForResource",
+        "kendra:TagResource",
+        "kendra:UntagResource",
+        "kendra:UpdateIndex"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraIndexDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kendra:DeleteIndex",
+        "kendra:DescribeIndex",
+        "kms:RetireGrant"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

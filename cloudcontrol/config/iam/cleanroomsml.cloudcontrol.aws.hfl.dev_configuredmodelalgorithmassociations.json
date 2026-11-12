@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCleanRoomsMLConfiguredModelAlgorithmAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsMLConfiguredModelAlgorithmAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms-ml:CreateConfiguredModelAlgorithmAssociation",
+        "cleanrooms-ml:GetConfiguredModelAlgorithmAssociation",
+        "cleanrooms-ml:TagResource",
+        "cleanrooms:GetCollaboration",
+        "cleanrooms:GetMembership",
+        "cleanrooms:ListMembers",
+        "cleanrooms:PassMembership"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsMLConfiguredModelAlgorithmAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms-ml:GetConfiguredModelAlgorithmAssociation",
+        "cleanrooms:GetMembership",
+        "cleanrooms:PassMembership"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsMLConfiguredModelAlgorithmAssociationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms-ml:TagResource",
+        "cleanrooms-ml:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsMLConfiguredModelAlgorithmAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms-ml:DeleteConfiguredModelAlgorithmAssociation",
+        "cleanrooms:GetMembership",
+        "cleanrooms:PassMembership"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

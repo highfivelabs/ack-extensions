@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataExchangeDataSet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataExchangeDataSetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "dataexchange:CreateDataSet",
+        "dataexchange:GetDataSet",
+        "dataexchange:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataExchangeDataSetRead",
+      "Effect": "Allow",
+      "Action": [
+        "dataexchange:GetDataSet",
+        "dataexchange:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataExchangeDataSetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "dataexchange:GetDataSet",
+        "dataexchange:ListTagsForResource",
+        "dataexchange:TagResource",
+        "dataexchange:UntagResource",
+        "dataexchange:UpdateDataSet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataExchangeDataSetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "dataexchange:DeleteDataSet",
+        "dataexchange:GetDataSet"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

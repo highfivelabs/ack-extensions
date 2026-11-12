@@ -1,0 +1,74 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAccountAccessApplication",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AccountAccessApplicationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "account-access:CreateApplication",
+        "account-access:GetApplication",
+        "account-access:ListTagsForResource",
+        "account-access:TagResource",
+        "iam:CreateServiceLinkedRole",
+        "kms:Decrypt",
+        "organizations:DescribeOrganization",
+        "organizations:ListAWSServiceAccessForOrganization",
+        "sso:CreateApplication",
+        "sso:DescribeApplication",
+        "sso:DescribeInstance",
+        "sso:DescribeRegion",
+        "sso:PutApplicationAccessScope",
+        "sso:PutApplicationAssignmentConfiguration",
+        "sso:PutApplicationAuthenticationMethod",
+        "sso:PutApplicationGrant"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AccountAccessApplicationRead",
+      "Effect": "Allow",
+      "Action": [
+        "account-access:GetApplication",
+        "account-access:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AccountAccessApplicationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "account-access:GetApplication",
+        "account-access:ListTagsForResource",
+        "account-access:TagResource",
+        "account-access:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AccountAccessApplicationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "account-access:DeleteApplication",
+        "account-access:GetApplication",
+        "account-access:ListTagsForResource",
+        "kms:Decrypt",
+        "sso:DeleteApplication",
+        "sso:DescribeApplication",
+        "sso:DescribeInstance"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

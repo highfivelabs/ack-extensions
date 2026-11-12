@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBudgetsBudgetsAction",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BudgetsBudgetsActionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "budgets:CreateBudgetAction",
+        "budgets:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BudgetsBudgetsActionRead",
+      "Effect": "Allow",
+      "Action": [
+        "budgets:DescribeBudgetAction",
+        "budgets:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BudgetsBudgetsActionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "budgets:ListTagsForResource",
+        "budgets:TagResource",
+        "budgets:UntagResource",
+        "budgets:UpdateBudgetAction",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BudgetsBudgetsActionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "budgets:DeleteBudgetAction"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockAgentCoreConsentPortal",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCoreConsentPortalCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:CreateConsentPortal",
+        "bedrock-agentcore:GetConsentPortal",
+        "bedrock-agentcore:GetGateway",
+        "bedrock-agentcore:GetOauth2CredentialProvider",
+        "bedrock-agentcore:ListTagsForResource",
+        "bedrock-agentcore:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCoreConsentPortalRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:GetConsentPortal",
+        "bedrock-agentcore:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCoreConsentPortalUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:GetConsentPortal",
+        "bedrock-agentcore:GetGateway",
+        "bedrock-agentcore:GetOauth2CredentialProvider",
+        "bedrock-agentcore:ListTagsForResource",
+        "bedrock-agentcore:TagResource",
+        "bedrock-agentcore:UntagResource",
+        "bedrock-agentcore:UpdateConsentPortal",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAgentCoreConsentPortalDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:DeleteConsentPortal",
+        "bedrock-agentcore:GetConsentPortal",
+        "bedrock-agentcore:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

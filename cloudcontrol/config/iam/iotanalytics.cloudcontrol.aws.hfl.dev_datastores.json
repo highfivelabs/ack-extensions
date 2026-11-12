@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTAnalyticsDatastore",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTAnalyticsDatastoreCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iotanalytics:CreateDatastore"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTAnalyticsDatastoreRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotanalytics:DescribeDatastore",
+        "iotanalytics:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTAnalyticsDatastoreUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotanalytics:TagResource",
+        "iotanalytics:UntagResource",
+        "iotanalytics:UpdateDatastore"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTAnalyticsDatastoreDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotanalytics:DeleteDatastore"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

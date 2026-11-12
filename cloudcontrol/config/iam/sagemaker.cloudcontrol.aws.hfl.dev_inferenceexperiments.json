@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSageMakerInferenceExperiment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerInferenceExperimentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "sagemaker:AddTags",
+        "sagemaker:CreateInferenceExperiment",
+        "sagemaker:DescribeInferenceExperiment",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerInferenceExperimentRead",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribeInferenceExperiment",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerInferenceExperimentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags",
+        "sagemaker:DeleteTags",
+        "sagemaker:DescribeInferenceExperiment",
+        "sagemaker:ListTags",
+        "sagemaker:StartInferenceExperiment",
+        "sagemaker:StopInferenceExperiment",
+        "sagemaker:UpdateInferenceExperiment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerInferenceExperimentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DeleteInferenceExperiment",
+        "sagemaker:DescribeInferenceExperiment",
+        "sagemaker:ListTags",
+        "sagemaker:StopInferenceExperiment"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

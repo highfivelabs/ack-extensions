@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGroundStationDataflowEndpointGroupV2",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GroundStationDataflowEndpointGroupV2Create",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:describeAddresses",
+        "ec2:describeNetworkInterfaces",
+        "groundstation:CreateDataflowEndpointGroupV2",
+        "groundstation:GetDataflowEndpointGroup",
+        "groundstation:TagResource",
+        "iam:PassRole",
+        "iam:createServiceLinkedRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GroundStationDataflowEndpointGroupV2Read",
+      "Effect": "Allow",
+      "Action": [
+        "groundstation:GetDataflowEndpointGroup",
+        "groundstation:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GroundStationDataflowEndpointGroupV2Update",
+      "Effect": "Allow",
+      "Action": [
+        "groundstation:ListTagsForResource",
+        "groundstation:TagResource",
+        "groundstation:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GroundStationDataflowEndpointGroupV2Delete",
+      "Effect": "Allow",
+      "Action": [
+        "groundstation:DeleteDataflowEndpointGroup",
+        "groundstation:GetDataflowEndpointGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

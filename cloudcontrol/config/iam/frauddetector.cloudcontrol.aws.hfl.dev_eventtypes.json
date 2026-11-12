@@ -1,0 +1,91 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlFraudDetectorEventType",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FraudDetectorEventTypeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "frauddetector:BatchCreateVariable",
+        "frauddetector:BatchGetVariable",
+        "frauddetector:CreateVariable",
+        "frauddetector:GetEntityTypes",
+        "frauddetector:GetEventTypes",
+        "frauddetector:GetLabels",
+        "frauddetector:GetVariables",
+        "frauddetector:ListTagsForResource",
+        "frauddetector:PutEntityType",
+        "frauddetector:PutEventType",
+        "frauddetector:PutLabel",
+        "frauddetector:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FraudDetectorEventTypeRead",
+      "Effect": "Allow",
+      "Action": [
+        "frauddetector:BatchGetVariable",
+        "frauddetector:GetEntityTypes",
+        "frauddetector:GetEventTypes",
+        "frauddetector:GetLabels",
+        "frauddetector:GetVariables",
+        "frauddetector:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FraudDetectorEventTypeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "frauddetector:BatchCreateVariable",
+        "frauddetector:BatchGetVariable",
+        "frauddetector:CreateVariable",
+        "frauddetector:DeleteEntityType",
+        "frauddetector:DeleteEventType",
+        "frauddetector:DeleteLabel",
+        "frauddetector:DeleteVariable",
+        "frauddetector:GetEntityTypes",
+        "frauddetector:GetEventTypes",
+        "frauddetector:GetLabels",
+        "frauddetector:GetVariables",
+        "frauddetector:ListTagsForResource",
+        "frauddetector:PutEntityType",
+        "frauddetector:PutEventType",
+        "frauddetector:PutLabel",
+        "frauddetector:TagResource",
+        "frauddetector:UntagResource",
+        "frauddetector:UpdateVariable"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FraudDetectorEventTypeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "frauddetector:BatchGetVariable",
+        "frauddetector:DeleteEntityType",
+        "frauddetector:DeleteEventType",
+        "frauddetector:DeleteLabel",
+        "frauddetector:DeleteVariable",
+        "frauddetector:GetEntityTypes",
+        "frauddetector:GetEventTypes",
+        "frauddetector:GetLabels",
+        "frauddetector:GetVariables",
+        "frauddetector:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

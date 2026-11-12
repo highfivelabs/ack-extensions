@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTFleetMetric",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetMetricCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:CreateFleetMetric",
+        "iot:DescribeFleetMetric",
+        "iot:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetMetricRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeFleetMetric",
+        "iot:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetMetricUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeFleetMetric",
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "iot:UntagResource",
+        "iot:UpdateFleetMetric"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetMetricDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeleteFleetMetric",
+        "iot:DescribeFleetMetric"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

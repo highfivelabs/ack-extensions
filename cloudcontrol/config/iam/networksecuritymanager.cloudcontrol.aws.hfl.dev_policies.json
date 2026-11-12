@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkSecurityManagerPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkSecurityManagerPolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "network-security-manager:CreatePolicy",
+        "network-security-manager:GetPolicy",
+        "network-security-manager:ListTagsForResource",
+        "network-security-manager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkSecurityManagerPolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "network-security-manager:GetPolicy",
+        "network-security-manager:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkSecurityManagerPolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "network-security-manager:GetPolicy",
+        "network-security-manager:ListTagsForResource",
+        "network-security-manager:TagResource",
+        "network-security-manager:UntagResource",
+        "network-security-manager:UpdatePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkSecurityManagerPolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "network-security-manager:DeletePolicy",
+        "network-security-manager:GetPolicy",
+        "network-security-manager:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

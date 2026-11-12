@@ -1,0 +1,103 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGameLiftGameServerGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftGameServerGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "autoscaling:CreateAutoScalingGroup",
+        "autoscaling:CreateOrUpdateTags",
+        "autoscaling:DescribeAutoScalingGroups",
+        "autoscaling:DescribeLifecycleHooks",
+        "autoscaling:DescribeNotificationConfigurations",
+        "autoscaling:ExitStandby",
+        "autoscaling:PutLifecycleHook",
+        "autoscaling:PutScalingPolicy",
+        "autoscaling:ResumeProcesses",
+        "autoscaling:SetInstanceProtection",
+        "autoscaling:UpdateAutoScalingGroup",
+        "ec2:CreateTags",
+        "ec2:DescribeAvailabilityZones",
+        "ec2:DescribeLaunchTemplateVersions",
+        "ec2:DescribeSubnets",
+        "ec2:RunInstances",
+        "events:PutRule",
+        "events:PutTargets",
+        "gamelift:CreateGameServerGroup",
+        "gamelift:DescribeGameServerGroup",
+        "gamelift:ListTagsForResource",
+        "gamelift:TagResource",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "iam:assumeRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftGameServerGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DescribeGameServerGroup",
+        "gamelift:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftGameServerGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "autoscaling:DescribeAutoScalingGroups",
+        "autoscaling:SetInstanceProtection",
+        "autoscaling:UpdateAutoScalingGroup",
+        "gamelift:DescribeGameServerGroup",
+        "gamelift:ListTagsForResource",
+        "gamelift:TagResource",
+        "gamelift:UntagResource",
+        "gamelift:UpdateGameServerGroup",
+        "iam:PassRole",
+        "iam:assumeRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftGameServerGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "autoscaling:CreateAutoScalingGroup",
+        "autoscaling:DeleteAutoScalingGroup",
+        "autoscaling:DescribeAutoScalingGroups",
+        "autoscaling:DescribeLifecycleHooks",
+        "autoscaling:DescribeNotificationConfigurations",
+        "autoscaling:ExitStandby",
+        "autoscaling:PutLifecycleHook",
+        "autoscaling:PutScalingPolicy",
+        "autoscaling:ResumeProcesses",
+        "autoscaling:SetInstanceProtection",
+        "autoscaling:UpdateAutoScalingGroup",
+        "ec2:DescribeAvailabilityZones",
+        "ec2:DescribeLaunchTemplateVersions",
+        "ec2:DescribeSubnets",
+        "events:PutRule",
+        "events:PutTargets",
+        "gamelift:DeleteGameServerGroup",
+        "gamelift:DescribeGameServerGroup",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "iam:assumeRole"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

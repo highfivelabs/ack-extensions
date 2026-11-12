@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTAnalyticsPipeline",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTAnalyticsPipelineCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iotanalytics:CreatePipeline"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTAnalyticsPipelineRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotanalytics:DescribePipeline",
+        "iotanalytics:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTAnalyticsPipelineUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotanalytics:TagResource",
+        "iotanalytics:UntagResource",
+        "iotanalytics:UpdatePipeline"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTAnalyticsPipelineDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotanalytics:DeletePipeline"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

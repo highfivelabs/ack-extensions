@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaConnectBridgeSource",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectBridgeSourceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:AddBridgeSources",
+        "mediaconnect:DescribeBridge"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectBridgeSourceRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:DescribeBridge"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectBridgeSourceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:DescribeBridge",
+        "mediaconnect:UpdateBridgeSource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectBridgeSourceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:RemoveBridgeSource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

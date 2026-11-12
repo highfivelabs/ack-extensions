@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkFlowMonitorMonitor",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFlowMonitorMonitorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "networkflowmonitor:CreateMonitor",
+        "networkflowmonitor:GetMonitor",
+        "networkflowmonitor:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFlowMonitorMonitorRead",
+      "Effect": "Allow",
+      "Action": [
+        "networkflowmonitor:GetMonitor",
+        "networkflowmonitor:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFlowMonitorMonitorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "networkflowmonitor:GetMonitor",
+        "networkflowmonitor:ListTagsForResource",
+        "networkflowmonitor:TagResource",
+        "networkflowmonitor:UntagResource",
+        "networkflowmonitor:UpdateMonitor"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFlowMonitorMonitorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "networkflowmonitor:DeleteMonitor",
+        "networkflowmonitor:GetMonitor"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSCNDataset",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SCNDatasetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "scn:CreateDataLakeDataset",
+        "scn:GetDataLakeDataset",
+        "scn:ListTagsForResource",
+        "scn:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SCNDatasetRead",
+      "Effect": "Allow",
+      "Action": [
+        "scn:GetDataLakeDataset",
+        "scn:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SCNDatasetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "scn:GetDataLakeDataset",
+        "scn:ListTagsForResource",
+        "scn:TagResource",
+        "scn:UntagResource",
+        "scn:UpdateDataLakeDataset"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SCNDatasetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "scn:DeleteDataLakeDataset",
+        "scn:GetDataLakeDataset"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

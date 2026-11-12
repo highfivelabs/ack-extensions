@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlueMLTransform",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueMLTransformCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateMLTransform",
+        "glue:GetDatabase",
+        "glue:GetMLTransform",
+        "glue:GetTable",
+        "glue:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueMLTransformRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetMLTransform",
+        "glue:GetTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueMLTransformUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetDatabase",
+        "glue:GetMLTransform",
+        "glue:GetTable",
+        "glue:GetTags",
+        "glue:TagResource",
+        "glue:UntagResource",
+        "glue:UpdateMLTransform",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueMLTransformDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DeleteMLTransform",
+        "glue:GetMLTransform"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

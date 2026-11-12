@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDeadlineQueueEnvironment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineQueueEnvironmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:CreateQueueEnvironment",
+        "identitystore:ListGroupMembershipsForMember"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineQueueEnvironmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:GetQueueEnvironment",
+        "identitystore:ListGroupMembershipsForMember"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineQueueEnvironmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:UpdateQueueEnvironment",
+        "identitystore:ListGroupMembershipsForMember"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineQueueEnvironmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:DeleteQueueEnvironment",
+        "deadline:GetQueueEnvironment",
+        "identitystore:ListGroupMembershipsForMember"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

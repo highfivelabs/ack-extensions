@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBcmPricingCalculatorWorkloadEstimate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BcmPricingCalculatorWorkloadEstimateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bcm-pricing-calculator:CreateWorkloadEstimate",
+        "bcm-pricing-calculator:GetWorkloadEstimate",
+        "bcm-pricing-calculator:TagResource",
+        "bcm-pricing-calculator:UpdateWorkloadEstimate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BcmPricingCalculatorWorkloadEstimateRead",
+      "Effect": "Allow",
+      "Action": [
+        "bcm-pricing-calculator:GetWorkloadEstimate",
+        "bcm-pricing-calculator:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BcmPricingCalculatorWorkloadEstimateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bcm-pricing-calculator:GetWorkloadEstimate",
+        "bcm-pricing-calculator:ListTagsForResource",
+        "bcm-pricing-calculator:TagResource",
+        "bcm-pricing-calculator:UntagResource",
+        "bcm-pricing-calculator:UpdateWorkloadEstimate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BcmPricingCalculatorWorkloadEstimateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bcm-pricing-calculator:DeleteWorkloadEstimate",
+        "bcm-pricing-calculator:GetWorkloadEstimate",
+        "bcm-pricing-calculator:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

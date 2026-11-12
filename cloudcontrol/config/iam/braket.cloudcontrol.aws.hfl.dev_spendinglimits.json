@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBraketSpendingLimit",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BraketSpendingLimitCreate",
+      "Effect": "Allow",
+      "Action": [
+        "braket:CreateSpendingLimit",
+        "braket:SearchSpendingLimits",
+        "braket:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BraketSpendingLimitRead",
+      "Effect": "Allow",
+      "Action": [
+        "braket:ListTagsForResource",
+        "braket:SearchSpendingLimits"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BraketSpendingLimitUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "braket:SearchSpendingLimits",
+        "braket:TagResource",
+        "braket:UntagResource",
+        "braket:UpdateSpendingLimit"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BraketSpendingLimitDelete",
+      "Effect": "Allow",
+      "Action": [
+        "braket:DeleteSpendingLimit",
+        "braket:SearchSpendingLimits"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

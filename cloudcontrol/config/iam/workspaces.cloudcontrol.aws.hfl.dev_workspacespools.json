@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWorkSpacesWorkspacesPool",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWorkspacesPoolCreate",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces:CreateTags",
+        "workspaces:CreateWorkspacesPool",
+        "workspaces:DescribeWorkspacesPools"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWorkspacesPoolRead",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces:DescribeTags",
+        "workspaces:DescribeWorkspacesPools"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWorkspacesPoolUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces:CreateTags",
+        "workspaces:DeleteTags",
+        "workspaces:DescribeTags",
+        "workspaces:DescribeWorkspacesPools",
+        "workspaces:UpdateWorkspacesPool"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWorkspacesPoolDelete",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces:DeleteTags",
+        "workspaces:DescribeWorkspacesPools",
+        "workspaces:TerminateWorkspacesPool"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

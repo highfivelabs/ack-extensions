@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMGNConnector",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MGNConnectorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "mgn:CreateConnector",
+        "mgn:InitializeService",
+        "mgn:TagResource",
+        "ssm:GetCommandInvocation",
+        "ssm:SendCommand"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MGNConnectorRead",
+      "Effect": "Allow",
+      "Action": [
+        "mgn:ListConnectors",
+        "mgn:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MGNConnectorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "mgn:ListConnectors",
+        "mgn:ListTagsForResource",
+        "mgn:TagResource",
+        "mgn:UntagResource",
+        "mgn:UpdateConnector"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MGNConnectorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mgn:DeleteConnector",
+        "mgn:ListConnectors",
+        "mgn:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

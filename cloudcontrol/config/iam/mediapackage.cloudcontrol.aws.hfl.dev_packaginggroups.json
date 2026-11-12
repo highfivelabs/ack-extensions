@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaPackagePackagingGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaPackagePackagingGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "mediapackage-vod:ConfigureLogs",
+        "mediapackage-vod:CreatePackagingGroup",
+        "mediapackage-vod:DescribePackagingGroup",
+        "mediapackage-vod:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaPackagePackagingGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediapackage-vod:DescribePackagingGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaPackagePackagingGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "mediapackage-vod:ConfigureLogs",
+        "mediapackage-vod:DescribePackagingGroup",
+        "mediapackage-vod:TagResource",
+        "mediapackage-vod:UpdatePackagingGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaPackagePackagingGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediapackage-vod:DeletePackagingGroup",
+        "mediapackage-vod:DescribePackagingGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

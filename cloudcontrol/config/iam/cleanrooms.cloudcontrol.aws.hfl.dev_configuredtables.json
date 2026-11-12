@@ -1,0 +1,100 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCleanRoomsConfiguredTable",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsConfiguredTableCreate",
+      "Effect": "Allow",
+      "Action": [
+        "athena:GetTableMetadata",
+        "cleanrooms:CreateConfiguredTable",
+        "cleanrooms:CreateConfiguredTableAnalysisRule",
+        "cleanrooms:DeleteConfiguredTable",
+        "cleanrooms:DeleteConfiguredTableAnalysisRule",
+        "cleanrooms:GetConfiguredTable",
+        "cleanrooms:GetConfiguredTableAnalysisRule",
+        "cleanrooms:ListConfiguredTables",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:TagResource",
+        "glue:BatchGetPartition",
+        "glue:GetDatabase",
+        "glue:GetDatabases",
+        "glue:GetPartition",
+        "glue:GetPartitions",
+        "glue:GetSchemaVersion",
+        "glue:GetTable",
+        "glue:GetTables"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsConfiguredTableRead",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:GetConfiguredTable",
+        "cleanrooms:GetConfiguredTableAnalysisRule",
+        "cleanrooms:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsConfiguredTableUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:CreateConfiguredTableAnalysisRule",
+        "cleanrooms:DeleteConfiguredTableAnalysisRule",
+        "cleanrooms:GetConfiguredTable",
+        "cleanrooms:GetConfiguredTableAnalysisRule",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:TagResource",
+        "cleanrooms:UntagResource",
+        "cleanrooms:UpdateConfiguredTable",
+        "cleanrooms:UpdateConfiguredTableAllowedColumns",
+        "cleanrooms:UpdateConfiguredTableAnalysisRule",
+        "cleanrooms:UpdateConfiguredTableReference",
+        "glue:BatchGetPartition",
+        "glue:GetDatabase",
+        "glue:GetDatabases",
+        "glue:GetPartition",
+        "glue:GetPartitions",
+        "glue:GetSchemaVersion",
+        "glue:GetTable",
+        "glue:GetTables"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsConfiguredTableDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:DeleteConfiguredTable",
+        "cleanrooms:DeleteConfiguredTableAnalysisRule",
+        "cleanrooms:GetConfiguredTable",
+        "cleanrooms:GetConfiguredTableAnalysisRule",
+        "cleanrooms:ListConfiguredTables",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:UntagResource",
+        "glue:BatchGetPartition",
+        "glue:GetDatabase",
+        "glue:GetDatabases",
+        "glue:GetPartition",
+        "glue:GetPartitions",
+        "glue:GetSchemaVersion",
+        "glue:GetTable",
+        "glue:GetTables"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

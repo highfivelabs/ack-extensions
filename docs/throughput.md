@@ -97,6 +97,7 @@ Filled in as batches land (types, coverage before and after).
 | pins at the 2026-11-10 ACK releases | #75 | | 226 (denominator 1,878) |
 | 13, application tier | #76 | 89 | 315 (application 113 of 263) |
 | 14, the catalog's types | #92 | 8 | 323 |
+| 15, tier 3 (category other) | #97 | 1,043 | 1,366 (all resources 87.0% with ACK) |
 
 Then five kinds moved from the schema fake to proven on moto (#77, #78):
 ECR `RegistryPolicy` and `RegistryScanningConfiguration`, Identity Store
@@ -117,7 +118,11 @@ Two limits reached on 2026-11-11, for the builder:
   `offload/ci` status that `task ci` posts (#80, docs/testing.md).
 
 Written in one session on 2026-11-11: 152 types in four pull requests,
-against 51 in the two days before. What is left of the foundation and
+against 51 in the two days before. Batch 15 (2026-11-12) took
+the generator over tier 3, every service of the category `other`: 1,049
+types, all on the schema fake; excluded with reasons are the five types
+open ACK pull requests add, `AWS::FraudDetector::List` (a kind named `List`), five types `TestEveryKindOnSchemaFake` failed (a nested primary identifier, or a status `oneOf` the fake fills as a string) and `AWS::QuickSight::Template`, whose CRD
+(9.3 MB) is past the API server's object size limit. What is left of the foundation and
 security gap is in `cloudcontrol/excluded.yaml` (each with its reason),
 not provisionable through Cloud Control, or has a lossy CRD
 (`AWS::CloudTrail::ResourcePolicy`, `AWS::Organizations::ResourcePolicy`).

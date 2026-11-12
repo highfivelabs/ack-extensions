@@ -1,0 +1,88 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAIOpsInvestigationGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AIOpsInvestigationGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "aiops:CreateInvestigationGroup",
+        "aiops:GetInvestigationGroup",
+        "aiops:GetInvestigationGroupPolicy",
+        "aiops:ListInvestigationGroups",
+        "aiops:ListTagsForResource",
+        "aiops:PutInvestigationGroupPolicy",
+        "aiops:TagResource",
+        "iam:PassRole",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:ListAliases"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AIOpsInvestigationGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "aiops:GetInvestigationGroup",
+        "aiops:GetInvestigationGroupPolicy",
+        "aiops:ListInvestigationGroups",
+        "aiops:ListTagsForResource",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:ListAliases"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AIOpsInvestigationGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "aiops:DeleteInvestigationGroupPolicy",
+        "aiops:GetInvestigationGroup",
+        "aiops:GetInvestigationGroupPolicy",
+        "aiops:ListInvestigationGroups",
+        "aiops:ListTagsForResource",
+        "aiops:PutInvestigationGroupPolicy",
+        "aiops:TagResource",
+        "aiops:UntagResource",
+        "aiops:UpdateInvestigationGroup",
+        "iam:PassRole",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:ListAliases"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AIOpsInvestigationGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "aiops:DeleteInvestigationGroup",
+        "aiops:DeleteInvestigationGroupPolicy",
+        "aiops:GetInvestigationGroup",
+        "aiops:GetInvestigationGroupPolicy",
+        "aiops:UntagResource",
+        "kms:DescribeKey",
+        "kms:ListAliases"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

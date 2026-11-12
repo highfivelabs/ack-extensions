@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWellArchitectedWorkload",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedWorkloadCreate",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:CreateWorkload",
+        "wellarchitected:GetWorkload",
+        "wellarchitected:ListTagsForResource",
+        "wellarchitected:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedWorkloadRead",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:GetWorkload",
+        "wellarchitected:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedWorkloadUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:GetWorkload",
+        "wellarchitected:ListTagsForResource",
+        "wellarchitected:TagResource",
+        "wellarchitected:UntagResource",
+        "wellarchitected:UpdateWorkload"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedWorkloadDelete",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:DeleteWorkload",
+        "wellarchitected:GetWorkload",
+        "wellarchitected:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

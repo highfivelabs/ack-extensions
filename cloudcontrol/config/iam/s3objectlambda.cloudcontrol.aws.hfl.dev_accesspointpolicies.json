@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlS3ObjectLambdaAccessPointPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3ObjectLambdaAccessPointPolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetAccessPointPolicyForObjectLambda",
+        "s3:PutAccessPointPolicyForObjectLambda"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3ObjectLambdaAccessPointPolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetAccessPointPolicyForObjectLambda"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3ObjectLambdaAccessPointPolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetAccessPointPolicyForObjectLambda",
+        "s3:PutAccessPointPolicyForObjectLambda"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3ObjectLambdaAccessPointPolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "s3:DeleteAccessPointPolicyForObjectLambda",
+        "s3:GetAccessPointPolicyForObjectLambda"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWellArchitectedLens",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedLensCreate",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:CreateLensVersion",
+        "wellarchitected:GetLens",
+        "wellarchitected:ImportLens",
+        "wellarchitected:ListTagsForResource",
+        "wellarchitected:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedLensRead",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:GetLens",
+        "wellarchitected:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedLensUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:GetLens",
+        "wellarchitected:ListTagsForResource",
+        "wellarchitected:TagResource",
+        "wellarchitected:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedLensDelete",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:DeleteLens",
+        "wellarchitected:GetLens"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCustomerProfilesEventStream",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesEventStreamCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PutRolePolicy",
+        "kinesis:DescribeStreamSummary",
+        "profile:CreateEventStream",
+        "profile:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesEventStreamRead",
+      "Effect": "Allow",
+      "Action": [
+        "kinesis:DescribeStreamSummary",
+        "profile:GetEventStream",
+        "profile:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesEventStreamUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kinesis:DescribeStreamSummary",
+        "profile:GetEventStream",
+        "profile:ListTagsForResource",
+        "profile:TagResource",
+        "profile:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesEventStreamDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iam:DeleteRolePolicy",
+        "profile:DeleteEventStream"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

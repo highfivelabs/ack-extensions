@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlObservabilityAdminTelemetryPipelines",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminTelemetryPipelinesCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:PutPipelineRule",
+        "iam:PassRole",
+        "logs:PutPipelineRule",
+        "observabilityadmin:CreateTelemetryPipeline",
+        "observabilityadmin:GetTelemetryPipeline",
+        "observabilityadmin:ListTagsForResource",
+        "observabilityadmin:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminTelemetryPipelinesRead",
+      "Effect": "Allow",
+      "Action": [
+        "observabilityadmin:GetTelemetryPipeline",
+        "observabilityadmin:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminTelemetryPipelinesUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:PutPipelineRule",
+        "iam:PassRole",
+        "logs:DeletePipelineRule",
+        "logs:PutPipelineRule",
+        "observabilityadmin:GetTelemetryPipeline",
+        "observabilityadmin:ListTagsForResource",
+        "observabilityadmin:TagResource",
+        "observabilityadmin:UntagResource",
+        "observabilityadmin:UpdateTelemetryPipeline"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminTelemetryPipelinesDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:DeletePipelineRule",
+        "logs:DeletePipelineRule",
+        "observabilityadmin:DeleteTelemetryPipeline",
+        "observabilityadmin:GetTelemetryPipeline"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

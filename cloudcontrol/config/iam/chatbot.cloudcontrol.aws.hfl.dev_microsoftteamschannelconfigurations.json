@@ -1,0 +1,66 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlChatbotMicrosoftTeamsChannelConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChatbotMicrosoftTeamsChannelConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "chatbot:AssociateToConfiguration",
+        "chatbot:CreateMicrosoftTeamsChannelConfiguration",
+        "chatbot:ListAssociations",
+        "chatbot:TagResource",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChatbotMicrosoftTeamsChannelConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "chatbot:GetMicrosoftTeamsChannelConfiguration",
+        "chatbot:ListAssociations",
+        "chatbot:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChatbotMicrosoftTeamsChannelConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "chatbot:AssociateToConfiguration",
+        "chatbot:DisassociateFromConfiguration",
+        "chatbot:ListAssociations",
+        "chatbot:ListTagsForResource",
+        "chatbot:TagResource",
+        "chatbot:UntagResource",
+        "chatbot:UpdateMicrosoftTeamsChannelConfiguration",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChatbotMicrosoftTeamsChannelConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "chatbot:DeleteMicrosoftTeamsChannelConfiguration",
+        "chatbot:DisassociateFromConfiguration",
+        "chatbot:GetMicrosoftTeamsChannelConfiguration",
+        "chatbot:ListAssociations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

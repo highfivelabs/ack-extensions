@@ -1,0 +1,41 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlS3OutpostsEndpoint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3OutpostsEndpointCreate",
+      "Effect": "Allow",
+      "Action": [
+        "s3-outposts:CreateEndpoint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3OutpostsEndpointRead",
+      "Effect": "Allow",
+      "Action": [
+        "s3-outposts:ListEndpoints"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3OutpostsEndpointDelete",
+      "Effect": "Allow",
+      "Action": [
+        "s3-outposts:DeleteEndpoint"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

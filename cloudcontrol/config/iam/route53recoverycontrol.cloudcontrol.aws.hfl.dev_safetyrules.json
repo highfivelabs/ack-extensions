@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoute53RecoveryControlSafetyRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53RecoveryControlSafetyRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "route53-recovery-control-config:CreateSafetyRule",
+        "route53-recovery-control-config:DescribeControlPanel",
+        "route53-recovery-control-config:DescribeRoutingControl",
+        "route53-recovery-control-config:DescribeSafetyRule",
+        "route53-recovery-control-config:ListTagsForResource",
+        "route53-recovery-control-config:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53RecoveryControlSafetyRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "route53-recovery-control-config:DescribeSafetyRule",
+        "route53-recovery-control-config:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53RecoveryControlSafetyRuleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "route53-recovery-control-config:DescribeSafetyRule",
+        "route53-recovery-control-config:ListTagsForResource",
+        "route53-recovery-control-config:TagResource",
+        "route53-recovery-control-config:UntagResource",
+        "route53-recovery-control-config:UpdateSafetyRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53RecoveryControlSafetyRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "route53-recovery-control-config:DeleteSafetyRule",
+        "route53-recovery-control-config:DescribeSafetyRule"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

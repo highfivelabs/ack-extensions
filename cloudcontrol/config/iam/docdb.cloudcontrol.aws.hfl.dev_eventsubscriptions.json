@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDocDBEventSubscription",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DocDBEventSubscriptionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "rds:CreateEventSubscription"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DocDBEventSubscriptionRead",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DescribeEventSubscriptions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DocDBEventSubscriptionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "rds:AddSourceIdentifierToSubscription",
+        "rds:DescribeEventSubscriptions",
+        "rds:ModifyEventSubscription",
+        "rds:RemoveSourceIdentifierFromSubscription"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DocDBEventSubscriptionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DeleteEventSubscription"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

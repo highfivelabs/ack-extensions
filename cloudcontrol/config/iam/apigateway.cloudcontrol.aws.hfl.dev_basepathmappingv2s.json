@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlApiGatewayBasePathMappingV2",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayBasePathMappingV2Create",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET",
+        "apigateway:POST"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayBasePathMappingV2Read",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayBasePathMappingV2Update",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:DELETE",
+        "apigateway:GET",
+        "apigateway:PATCH"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayBasePathMappingV2Delete",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:DELETE"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

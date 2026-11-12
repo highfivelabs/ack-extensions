@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlQuickSightLimitsProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightLimitsProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:CreateLimitsProfile",
+        "quicksight:DescribeLimitsProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightLimitsProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeLimitsProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightLimitsProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeLimitsProfile",
+        "quicksight:UpdateLimitsProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightLimitsProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DeleteLimitsProfile",
+        "quicksight:DescribeLimitsProfile"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

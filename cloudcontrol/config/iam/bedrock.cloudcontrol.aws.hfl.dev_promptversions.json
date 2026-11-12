@@ -1,0 +1,49 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockPromptVersion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockPromptVersionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:CreatePromptVersion",
+        "bedrock:GetPrompt",
+        "bedrock:ListTagsForResource",
+        "bedrock:TagResource",
+        "kms:Decrypt",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockPromptVersionRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetPrompt",
+        "bedrock:ListTagsForResource",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockPromptVersionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:DeletePrompt",
+        "bedrock:GetPrompt"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSimSpaceWeaverSimulation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SimSpaceWeaverSimulationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetRole",
+        "iam:PassRole",
+        "simspaceweaver:DescribeSimulation",
+        "simspaceweaver:StartSimulation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SimSpaceWeaverSimulationRead",
+      "Effect": "Allow",
+      "Action": [
+        "simspaceweaver:DescribeSimulation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SimSpaceWeaverSimulationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "simspaceweaver:DeleteSimulation",
+        "simspaceweaver:DescribeSimulation",
+        "simspaceweaver:StartSimulation",
+        "simspaceweaver:StopSimulation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SimSpaceWeaverSimulationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "simspaceweaver:DeleteSimulation",
+        "simspaceweaver:DescribeSimulation",
+        "simspaceweaver:StopSimulation"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

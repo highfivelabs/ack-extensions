@@ -1,0 +1,45 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaPackageAsset",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaPackageAssetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "mediapackage-vod:CreateAsset",
+        "mediapackage-vod:DescribeAsset",
+        "mediapackage-vod:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaPackageAssetRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediapackage-vod:DescribeAsset"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaPackageAssetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediapackage-vod:DeleteAsset",
+        "mediapackage-vod:DescribeAsset"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

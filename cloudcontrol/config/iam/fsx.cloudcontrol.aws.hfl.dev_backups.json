@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlFSxBackup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FSxBackupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "fsx:CreateBackup",
+        "fsx:DescribeBackups",
+        "fsx:ListTagsForResource",
+        "fsx:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FSxBackupRead",
+      "Effect": "Allow",
+      "Action": [
+        "fsx:DescribeBackups",
+        "fsx:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FSxBackupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "fsx:DescribeBackups",
+        "fsx:ListTagsForResource",
+        "fsx:TagResource",
+        "fsx:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FSxBackupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "fsx:DeleteBackup",
+        "fsx:DescribeBackups",
+        "fsx:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

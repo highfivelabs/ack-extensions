@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppStreamStack",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamStackCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:CreateStack",
+        "appstream:DescribeStacks",
+        "appstream:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamStackRead",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DescribeStacks",
+        "appstream:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamStackUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DescribeStacks",
+        "appstream:ListTagsForResource",
+        "appstream:TagResource",
+        "appstream:UntagResource",
+        "appstream:UpdateStack"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamStackDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DeleteStack",
+        "appstream:DescribeStacks"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

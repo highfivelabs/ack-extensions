@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCleanRoomsPrivacyBudgetTemplate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsPrivacyBudgetTemplateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:CreatePrivacyBudgetTemplate",
+        "cleanrooms:GetPrivacyBudgetTemplate",
+        "cleanrooms:ListPrivacyBudgetTemplates",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsPrivacyBudgetTemplateRead",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:GetPrivacyBudgetTemplate",
+        "cleanrooms:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsPrivacyBudgetTemplateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:GetPrivacyBudgetTemplate",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:TagResource",
+        "cleanrooms:UntagResource",
+        "cleanrooms:UpdatePrivacyBudgetTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CleanRoomsPrivacyBudgetTemplateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cleanrooms:DeletePrivacyBudgetTemplate",
+        "cleanrooms:GetPrivacyBudgetTemplate",
+        "cleanrooms:ListPrivacyBudgetTemplates",
+        "cleanrooms:ListTagsForResource",
+        "cleanrooms:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

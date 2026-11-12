@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlServiceDiscoveryService",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceDiscoveryServiceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "servicediscovery:CreateService",
+        "servicediscovery:GetService",
+        "servicediscovery:GetServiceAttributes",
+        "servicediscovery:ListServices",
+        "servicediscovery:ListTagsForResource",
+        "servicediscovery:TagResource",
+        "servicediscovery:UntagResource",
+        "servicediscovery:UpdateServiceAttributes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceDiscoveryServiceRead",
+      "Effect": "Allow",
+      "Action": [
+        "servicediscovery:GetService",
+        "servicediscovery:GetServiceAttributes",
+        "servicediscovery:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceDiscoveryServiceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "servicediscovery:DeleteServiceAttributes",
+        "servicediscovery:GetNamespace",
+        "servicediscovery:GetOperation",
+        "servicediscovery:GetService",
+        "servicediscovery:GetServiceAttributes",
+        "servicediscovery:ListTagsForResource",
+        "servicediscovery:TagResource",
+        "servicediscovery:UntagResource",
+        "servicediscovery:UpdateService",
+        "servicediscovery:UpdateServiceAttributes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceDiscoveryServiceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "servicediscovery:DeleteService",
+        "servicediscovery:GetService"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

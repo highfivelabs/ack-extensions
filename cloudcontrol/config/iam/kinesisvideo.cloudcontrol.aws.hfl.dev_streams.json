@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlKinesisVideoStream",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KinesisVideoStreamCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kinesisvideo:CreateStream",
+        "kinesisvideo:DescribeStream",
+        "kinesisvideo:TagStream"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KinesisVideoStreamRead",
+      "Effect": "Allow",
+      "Action": [
+        "kinesisvideo:DescribeStream",
+        "kinesisvideo:DescribeStreamStorageConfiguration",
+        "kinesisvideo:ListTagsForStream"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KinesisVideoStreamUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kinesisvideo:DescribeStream",
+        "kinesisvideo:ListTagsForStream",
+        "kinesisvideo:TagStream",
+        "kinesisvideo:UntagStream",
+        "kinesisvideo:UpdateDataRetention",
+        "kinesisvideo:UpdateStream"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KinesisVideoStreamDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kinesisvideo:DeleteStream",
+        "kinesisvideo:DescribeStream"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPIPerfReports",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PIPerfReportsCreate",
+      "Effect": "Allow",
+      "Action": [
+        "pi:CreatePerformanceAnalysisReport",
+        "pi:GetPerformanceAnalysisReport",
+        "pi:GetResourceMetadata",
+        "pi:ListTagsForResource",
+        "pi:TagResource",
+        "rds:DescribeDBInstances"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PIPerfReportsRead",
+      "Effect": "Allow",
+      "Action": [
+        "pi:GetPerformanceAnalysisReport",
+        "pi:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PIPerfReportsDelete",
+      "Effect": "Allow",
+      "Action": [
+        "pi:DeletePerformanceAnalysisReport",
+        "pi:GetPerformanceAnalysisReport",
+        "pi:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

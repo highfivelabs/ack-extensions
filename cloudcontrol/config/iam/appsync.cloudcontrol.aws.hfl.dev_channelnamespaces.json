@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppSyncChannelNamespace",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncChannelNamespaceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:CreateChannelNamespace",
+        "appsync:GetChannelNamespace",
+        "appsync:TagResource",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncChannelNamespaceRead",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:GetChannelNamespace",
+        "appsync:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncChannelNamespaceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:GetChannelNamespace",
+        "appsync:TagResource",
+        "appsync:UntagResource",
+        "appsync:UpdateChannelNamespace",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncChannelNamespaceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:DeleteChannelNamespace",
+        "appsync:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

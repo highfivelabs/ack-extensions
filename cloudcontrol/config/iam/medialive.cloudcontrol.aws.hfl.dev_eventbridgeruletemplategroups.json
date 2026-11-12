@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaLiveEventBridgeRuleTemplateGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveEventBridgeRuleTemplateGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "medialive:CreateEventBridgeRuleTemplateGroup",
+        "medialive:CreateTags",
+        "medialive:GetEventBridgeRuleTemplateGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveEventBridgeRuleTemplateGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "medialive:GetEventBridgeRuleTemplateGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveEventBridgeRuleTemplateGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "medialive:CreateTags",
+        "medialive:DeleteTags",
+        "medialive:GetEventBridgeRuleTemplateGroup",
+        "medialive:UpdateEventBridgeRuleTemplateGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveEventBridgeRuleTemplateGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "medialive:DeleteEventBridgeRuleTemplateGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

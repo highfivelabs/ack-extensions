@@ -1,0 +1,75 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSageMakerClusterSchedulerConfig",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerClusterSchedulerConfigCreate",
+      "Effect": "Allow",
+      "Action": [
+        "eks:AssociateAccessPolicy",
+        "eks:DescribeAccessEntry",
+        "eks:DescribeCluster",
+        "eks:ListAssociatedAccessPolicies",
+        "sagemaker:AddTags",
+        "sagemaker:CreateClusterSchedulerConfig",
+        "sagemaker:DescribeCluster",
+        "sagemaker:DescribeClusterSchedulerConfig",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerClusterSchedulerConfigRead",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribeClusterSchedulerConfig",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerClusterSchedulerConfigUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "eks:AssociateAccessPolicy",
+        "eks:DescribeAccessEntry",
+        "eks:DescribeCluster",
+        "eks:DisassociateAccessPolicy",
+        "eks:ListAssociatedAccessPolicies",
+        "sagemaker:AddTags",
+        "sagemaker:DeleteTags",
+        "sagemaker:DescribeCluster",
+        "sagemaker:DescribeClusterSchedulerConfig",
+        "sagemaker:ListTags",
+        "sagemaker:UpdateClusterSchedulerConfig"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerClusterSchedulerConfigDelete",
+      "Effect": "Allow",
+      "Action": [
+        "eks:DescribeAccessEntry",
+        "eks:DescribeCluster",
+        "eks:DisassociateAccessPolicy",
+        "eks:ListAssociatedAccessPolicies",
+        "sagemaker:DeleteClusterSchedulerConfig",
+        "sagemaker:DescribeCluster",
+        "sagemaker:DescribeClusterSchedulerConfig",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

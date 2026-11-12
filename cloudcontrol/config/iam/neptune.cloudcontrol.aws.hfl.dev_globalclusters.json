@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNeptuneGlobalCluster",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneGlobalClusterCreate",
+      "Effect": "Allow",
+      "Action": [
+        "rds:AddTagsToResource",
+        "rds:CreateGlobalCluster",
+        "rds:DescribeDBClusters",
+        "rds:DescribeGlobalClusters",
+        "rds:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneGlobalClusterRead",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DescribeGlobalClusters",
+        "rds:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneGlobalClusterUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "rds:AddTagsToResource",
+        "rds:DescribeGlobalClusters",
+        "rds:ListTagsForResource",
+        "rds:ModifyGlobalCluster",
+        "rds:RemoveTagsFromResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NeptuneGlobalClusterDelete",
+      "Effect": "Allow",
+      "Action": [
+        "rds:DeleteGlobalCluster",
+        "rds:DescribeDBClusters",
+        "rds:DescribeGlobalClusters",
+        "rds:RemoveFromGlobalCluster"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkSecurityManagerDeployment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkSecurityManagerDeploymentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "network-security-manager:CreateDeployment",
+        "network-security-manager:GetDeployment",
+        "network-security-manager:ListTagsForResource",
+        "network-security-manager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkSecurityManagerDeploymentRead",
+      "Effect": "Allow",
+      "Action": [
+        "network-security-manager:GetDeployment",
+        "network-security-manager:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkSecurityManagerDeploymentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "network-security-manager:GetDeployment",
+        "network-security-manager:ListTagsForResource",
+        "network-security-manager:TagResource",
+        "network-security-manager:UntagResource",
+        "network-security-manager:UpdateDeployment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkSecurityManagerDeploymentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "network-security-manager:DeleteDeployment",
+        "network-security-manager:GetDeployment",
+        "network-security-manager:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDevOpsAgentAgentSpace",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsAgentAgentSpaceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "aidevops:CreateAgentSpace",
+        "aidevops:EnableOperatorApp",
+        "aidevops:GetAgentSpace",
+        "aidevops:GetOperatorApp",
+        "aidevops:GetOperatorAppTeams",
+        "aidevops:ListTagsForResource",
+        "aidevops:TagResource",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyPair",
+        "kms:GenerateDataKeyPairWithoutPlaintext",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "kms:ReEncryptFrom",
+        "kms:ReEncryptTo",
+        "kms:RetireGrant",
+        "sso:CreateApplication",
+        "sso:DeleteApplication",
+        "sso:DeleteApplicationAccessScope",
+        "sso:DeleteApplicationAuthenticationMethod",
+        "sso:DeleteApplicationGrant",
+        "sso:PutApplicationAccessScope",
+        "sso:PutApplicationAssignmentConfiguration",
+        "sso:PutApplicationAuthenticationMethod",
+        "sso:PutApplicationGrant"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsAgentAgentSpaceRead",
+      "Effect": "Allow",
+      "Action": [
+        "aidevops:GetAgentSpace",
+        "aidevops:GetOperatorApp",
+        "aidevops:GetOperatorAppTeams",
+        "aidevops:ListTagsForResource",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsAgentAgentSpaceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "aidevops:DisableOperatorApp",
+        "aidevops:EnableOperatorApp",
+        "aidevops:GetAgentSpace",
+        "aidevops:GetOperatorApp",
+        "aidevops:GetOperatorAppTeams",
+        "aidevops:ListTagsForResource",
+        "aidevops:TagResource",
+        "aidevops:UntagResource",
+        "aidevops:UpdateAgentSpace",
+        "aidevops:UpdateOperatorAppIdpConfig",
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyPair",
+        "kms:GenerateDataKeyPairWithoutPlaintext",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "kms:ReEncryptFrom",
+        "kms:ReEncryptTo",
+        "kms:RetireGrant",
+        "sso:CreateApplication",
+        "sso:DeleteApplication",
+        "sso:DeleteApplicationAccessScope",
+        "sso:DeleteApplicationAuthenticationMethod",
+        "sso:DeleteApplicationGrant",
+        "sso:PutApplicationAccessScope",
+        "sso:PutApplicationAssignmentConfiguration",
+        "sso:PutApplicationAuthenticationMethod",
+        "sso:PutApplicationGrant"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsAgentAgentSpaceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "aidevops:DeleteAgentSpace",
+        "aidevops:DisableOperatorApp",
+        "aidevops:GetAgentSpace",
+        "kms:Decrypt",
+        "sso:DeleteApplication",
+        "sso:DeleteApplicationAccessScope",
+        "sso:DeleteApplicationAuthenticationMethod",
+        "sso:DeleteApplicationGrant"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

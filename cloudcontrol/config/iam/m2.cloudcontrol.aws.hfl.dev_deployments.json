@@ -1,0 +1,87 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlM2Deployment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "M2DeploymentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeNetworkInterfaces",
+        "elasticloadbalancing:AddTags",
+        "elasticloadbalancing:CreateListener",
+        "elasticloadbalancing:CreateLoadBalancer",
+        "elasticloadbalancing:CreateTargetGroup",
+        "elasticloadbalancing:RegisterTargets",
+        "iam:PassRole",
+        "logs:CreateLogDelivery",
+        "logs:CreateLogGroup",
+        "logs:DeleteLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "logs:UpdateLogDelivery",
+        "m2:CreateDeployment",
+        "m2:GetDeployment",
+        "m2:ListDeployments"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "M2DeploymentRead",
+      "Effect": "Allow",
+      "Action": [
+        "m2:GetDeployment",
+        "m2:ListDeployments"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "M2DeploymentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeNetworkInterfaces",
+        "elasticloadbalancing:AddTags",
+        "elasticloadbalancing:CreateListener",
+        "elasticloadbalancing:CreateLoadBalancer",
+        "elasticloadbalancing:CreateTargetGroup",
+        "elasticloadbalancing:DeleteListener",
+        "elasticloadbalancing:DeleteLoadBalancer",
+        "elasticloadbalancing:DeleteTargetGroup",
+        "elasticloadbalancing:DeregisterTargets",
+        "elasticloadbalancing:RegisterTargets",
+        "m2:CreateDeployment",
+        "m2:GetDeployment",
+        "m2:ListDeployments"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "M2DeploymentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "elasticloadbalancing:DeleteListener",
+        "elasticloadbalancing:DeleteLoadBalancer",
+        "elasticloadbalancing:DeleteTargetGroup",
+        "elasticloadbalancing:DeregisterTargets",
+        "logs:DeleteLogDelivery",
+        "m2:DeleteApplicationFromEnvironment",
+        "m2:GetDeployment",
+        "m2:ListDeployments"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

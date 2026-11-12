@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlImageBuilderImageRecipe",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderImageRecipeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeImages",
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole",
+        "imagebuilder:CreateImageRecipe",
+        "imagebuilder:GetComponent",
+        "imagebuilder:GetImage",
+        "imagebuilder:GetImageRecipe",
+        "imagebuilder:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderImageRecipeRead",
+      "Effect": "Allow",
+      "Action": [
+        "imagebuilder:GetImageRecipe"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderImageRecipeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "imagebuilder:TagResource",
+        "imagebuilder:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ImageBuilderImageRecipeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "imagebuilder:DeleteImageRecipe",
+        "imagebuilder:GetImageRecipe",
+        "imagebuilder:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

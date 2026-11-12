@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLicenseManagerReportGenerator",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerReportGeneratorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager:CreateLicenseManagerReportGenerator",
+        "license-manager:GetLicenseConfiguration",
+        "license-manager:GetServiceSettings",
+        "license-manager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerReportGeneratorRead",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager:GetLicenseManagerReportGenerator"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerReportGeneratorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager:GetLicenseConfiguration",
+        "license-manager:GetServiceSettings",
+        "license-manager:TagResource",
+        "license-manager:UntagResource",
+        "license-manager:UpdateLicenseManagerReportGenerator"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerReportGeneratorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager:DeleteLicenseManagerReportGenerator"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

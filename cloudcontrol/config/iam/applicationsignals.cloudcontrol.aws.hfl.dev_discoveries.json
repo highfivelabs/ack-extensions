@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlApplicationSignalsDiscovery",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApplicationSignalsDiscoveryCreate",
+      "Effect": "Allow",
+      "Action": [
+        "application-signals:ListServices",
+        "application-signals:StartDiscovery",
+        "cloudtrail:CreateServiceLinkedChannel",
+        "iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApplicationSignalsDiscoveryRead",
+      "Effect": "Allow",
+      "Action": [
+        "application-signals:ListServices"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApplicationSignalsDiscoveryUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "application-signals:ListServices"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApplicationSignalsDiscoveryDelete",
+      "Effect": "Allow",
+      "Action": [
+        "application-signals:ListServices"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

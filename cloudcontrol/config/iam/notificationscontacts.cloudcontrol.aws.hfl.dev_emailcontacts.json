@@ -1,0 +1,49 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNotificationsContactsEmailContact",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsContactsEmailContactCreate",
+      "Effect": "Allow",
+      "Action": [
+        "notifications-contacts:CreateEmailContact",
+        "notifications-contacts:GetEmailContact",
+        "notifications-contacts:ListEmailContacts",
+        "notifications-contacts:ListTagsForResource",
+        "notifications-contacts:SendActivationCode",
+        "notifications-contacts:TagResource",
+        "notifications-contacts:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsContactsEmailContactRead",
+      "Effect": "Allow",
+      "Action": [
+        "notifications-contacts:GetEmailContact",
+        "notifications-contacts:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsContactsEmailContactDelete",
+      "Effect": "Allow",
+      "Action": [
+        "notifications-contacts:DeleteEmailContact",
+        "notifications-contacts:GetEmailContact"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

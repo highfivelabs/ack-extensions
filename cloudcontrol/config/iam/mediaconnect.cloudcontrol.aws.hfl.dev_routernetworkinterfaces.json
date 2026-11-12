@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaConnectRouterNetworkInterface",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectRouterNetworkInterfaceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "mediaconnect:CreateRouterNetworkInterface",
+        "mediaconnect:GetRouterNetworkInterface",
+        "mediaconnect:ListRouterNetworkInterfaces",
+        "mediaconnect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectRouterNetworkInterfaceRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:GetRouterNetworkInterface"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectRouterNetworkInterfaceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "mediaconnect:GetRouterNetworkInterface",
+        "mediaconnect:ListTagsForResource",
+        "mediaconnect:TagResource",
+        "mediaconnect:UntagResource",
+        "mediaconnect:UpdateRouterNetworkInterface"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectRouterNetworkInterfaceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:DeleteRouterNetworkInterface",
+        "mediaconnect:GetRouterNetworkInterface",
+        "mediaconnect:ListRouterNetworkInterfaces"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudFormationModuleVersion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationModuleVersionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DescribeType",
+        "cloudformation:DescribeTypeRegistration",
+        "cloudformation:ListTypeVersions",
+        "cloudformation:RegisterType",
+        "s3:GetObject",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationModuleVersionRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DescribeType"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationModuleVersionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DeregisterType",
+        "cloudformation:DescribeType"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

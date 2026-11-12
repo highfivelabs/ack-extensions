@@ -1,0 +1,71 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlQuickSightSpace",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightSpaceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:CreateSpace",
+        "quicksight:DescribeSpace",
+        "quicksight:DescribeSpacePermissions",
+        "quicksight:ListSpaceResources",
+        "quicksight:ListTagsForResource",
+        "quicksight:TagResource",
+        "quicksight:UntagResource",
+        "quicksight:UpdateSpacePermissions",
+        "quicksight:UpdateSpaceResources"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightSpaceRead",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeSpace",
+        "quicksight:DescribeSpacePermissions",
+        "quicksight:ListSpaceResources",
+        "quicksight:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightSpaceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeSpace",
+        "quicksight:DescribeSpacePermissions",
+        "quicksight:ListSpaceResources",
+        "quicksight:ListTagsForResource",
+        "quicksight:TagResource",
+        "quicksight:UntagResource",
+        "quicksight:UpdateSpace",
+        "quicksight:UpdateSpacePermissions",
+        "quicksight:UpdateSpaceResources"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightSpaceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DeleteSpace",
+        "quicksight:DescribeSpace",
+        "quicksight:ListTagsForResource",
+        "quicksight:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWorkSpacesWebTrustStore",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebTrustStoreCreate",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces-web:CreateTrustStore",
+        "workspaces-web:GetTrustStore",
+        "workspaces-web:GetTrustStoreCertificate",
+        "workspaces-web:ListTagsForResource",
+        "workspaces-web:ListTrustStoreCertificates",
+        "workspaces-web:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebTrustStoreRead",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces-web:GetTrustStore",
+        "workspaces-web:GetTrustStoreCertificate",
+        "workspaces-web:ListTagsForResource",
+        "workspaces-web:ListTrustStoreCertificates"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebTrustStoreUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces-web:GetTrustStore",
+        "workspaces-web:GetTrustStoreCertificate",
+        "workspaces-web:ListTagsForResource",
+        "workspaces-web:ListTrustStoreCertificates",
+        "workspaces-web:TagResource",
+        "workspaces-web:UntagResource",
+        "workspaces-web:UpdateTrustStore"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebTrustStoreDelete",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces-web:DeleteTrustStore",
+        "workspaces-web:GetTrustStore",
+        "workspaces-web:GetTrustStoreCertificate"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlueWorkflow",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueWorkflowCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateWorkflow",
+        "glue:GetTags",
+        "glue:GetWorkflow",
+        "glue:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueWorkflowRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetTags",
+        "glue:GetWorkflow"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueWorkflowUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetTags",
+        "glue:GetWorkflow",
+        "glue:TagResource",
+        "glue:UntagResource",
+        "glue:UpdateWorkflow"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueWorkflowDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DeleteWorkflow",
+        "glue:GetWorkflow"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

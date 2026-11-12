@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIVSIngestConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSIngestConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:CreateIngestConfiguration",
+        "ivs:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSIngestConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:GetIngestConfiguration",
+        "ivs:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSIngestConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:GetIngestConfiguration",
+        "ivs:ListTagsForResource",
+        "ivs:TagResource",
+        "ivs:UntagResource",
+        "ivs:UpdateIngestConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSIngestConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:DeleteIngestConfiguration",
+        "ivs:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

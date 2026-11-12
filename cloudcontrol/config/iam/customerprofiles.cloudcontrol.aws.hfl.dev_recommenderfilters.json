@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCustomerProfilesRecommenderFilter",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesRecommenderFilterCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey",
+        "profile:CreateRecommenderFilter",
+        "profile:GetRecommenderFilter",
+        "profile:ListTagsForResource",
+        "profile:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesRecommenderFilterRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey",
+        "profile:GetRecommenderFilter",
+        "profile:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesRecommenderFilterUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey",
+        "profile:GetRecommenderFilter",
+        "profile:ListTagsForResource",
+        "profile:TagResource",
+        "profile:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesRecommenderFilterDelete",
+      "Effect": "Allow",
+      "Action": [
+        "profile:DeleteRecommenderFilter",
+        "profile:GetRecommenderFilter"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

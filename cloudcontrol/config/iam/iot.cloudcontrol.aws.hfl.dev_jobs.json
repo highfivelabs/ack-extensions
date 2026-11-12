@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTJob",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTJobCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iot:CreateJob",
+        "iot:DescribeJob",
+        "iot:GetPackageVersion",
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTJobRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeJob",
+        "iot:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTJobUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iot:DescribeJob",
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "iot:UntagResource",
+        "iot:UpdateJob"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTJobDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeleteJob",
+        "iot:DescribeJob"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

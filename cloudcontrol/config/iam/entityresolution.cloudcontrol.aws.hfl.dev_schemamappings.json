@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEntityResolutionSchemaMapping",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EntityResolutionSchemaMappingCreate",
+      "Effect": "Allow",
+      "Action": [
+        "entityresolution:CreateSchemaMapping",
+        "entityresolution:GetSchemaMapping",
+        "entityresolution:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EntityResolutionSchemaMappingRead",
+      "Effect": "Allow",
+      "Action": [
+        "entityresolution:GetSchemaMapping",
+        "entityresolution:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EntityResolutionSchemaMappingUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "entityresolution:GetSchemaMapping",
+        "entityresolution:ListTagsForResource",
+        "entityresolution:TagResource",
+        "entityresolution:UntagResource",
+        "entityresolution:UpdateSchemaMapping"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EntityResolutionSchemaMappingDelete",
+      "Effect": "Allow",
+      "Action": [
+        "entityresolution:DeleteSchemaMapping",
+        "entityresolution:GetSchemaMapping"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

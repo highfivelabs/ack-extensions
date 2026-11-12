@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppSyncDataSource",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncDataSourceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:CreateDataSource",
+        "appsync:GetDataSource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncDataSourceRead",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:GetDataSource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncDataSourceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:UpdateDataSource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncDataSourceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:DeleteDataSource",
+        "appsync:GetDataSource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

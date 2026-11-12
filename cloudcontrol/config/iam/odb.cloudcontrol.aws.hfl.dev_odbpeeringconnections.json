@@ -1,0 +1,75 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlODBOdbPeeringConnection",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ODBOdbPeeringConnectionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateOdbNetworkPeering",
+        "ec2:CreateRoute",
+        "ec2:DescribeRouteTables",
+        "ec2:DescribeVpcs",
+        "ec2:ModifyOdbNetworkPeering",
+        "iam:CreateServiceLinkedRole",
+        "odb:CreateOdbPeeringConnection",
+        "odb:GetOdbPeeringConnection",
+        "odb:ListTagsForResource",
+        "odb:TagResource",
+        "sts:GetCallerIdentity"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ODBOdbPeeringConnectionRead",
+      "Effect": "Allow",
+      "Action": [
+        "odb:GetOdbPeeringConnection",
+        "odb:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ODBOdbPeeringConnectionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcs",
+        "ec2:ModifyOdbNetworkPeering",
+        "odb:GetOdbPeeringConnection",
+        "odb:ListTagsForResource",
+        "odb:TagResource",
+        "odb:UntagResource",
+        "odb:UpdateOdbPeeringConnection",
+        "sts:GetCallerIdentity"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ODBOdbPeeringConnectionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteOdbNetworkPeering",
+        "ec2:DeleteRoute",
+        "ec2:DescribeRouteTables",
+        "ec2:DescribeVpcs",
+        "odb:DeleteOdbPeeringConnection",
+        "odb:GetOdbPeeringConnection",
+        "odb:ListTagsForResource",
+        "odb:UntagResource",
+        "sts:GetCallerIdentity"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSMSVOICEOptOutList",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEOptOutListCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:CreateOptOutList",
+        "sms-voice:DescribeOptOutLists",
+        "sms-voice:ListTagsForResource",
+        "sms-voice:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEOptOutListRead",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DescribeOptOutLists",
+        "sms-voice:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEOptOutListUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DescribeOptOutLists",
+        "sms-voice:ListTagsForResource",
+        "sms-voice:TagResource",
+        "sms-voice:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEOptOutListDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DeleteOptOutList",
+        "sms-voice:DescribeOptOutLists"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSecurityAgentSecurityRequirementPack",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentSecurityRequirementPackCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "kms:ReEncryptFrom",
+        "kms:ReEncryptTo",
+        "securityagent:BatchCreateSecurityRequirements",
+        "securityagent:BatchGetSecurityRequirements",
+        "securityagent:CreateSecurityRequirementPack",
+        "securityagent:GetSecurityRequirementPack",
+        "securityagent:ListSecurityRequirements",
+        "securityagent:ListTagsForResource",
+        "securityagent:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentSecurityRequirementPackRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "securityagent:BatchGetSecurityRequirements",
+        "securityagent:GetSecurityRequirementPack",
+        "securityagent:ListSecurityRequirements",
+        "securityagent:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentSecurityRequirementPackUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "securityagent:BatchCreateSecurityRequirements",
+        "securityagent:BatchDeleteSecurityRequirements",
+        "securityagent:BatchGetSecurityRequirements",
+        "securityagent:BatchUpdateSecurityRequirements",
+        "securityagent:GetSecurityRequirementPack",
+        "securityagent:ListSecurityRequirements",
+        "securityagent:ListTagsForResource",
+        "securityagent:TagResource",
+        "securityagent:UntagResource",
+        "securityagent:UpdateSecurityRequirementPack"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SecurityAgentSecurityRequirementPackDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "securityagent:BatchDeleteSecurityRequirements",
+        "securityagent:DeleteSecurityRequirementPack",
+        "securityagent:GetSecurityRequirementPack",
+        "securityagent:ListSecurityRequirements"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

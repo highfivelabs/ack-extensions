@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWellArchitectedProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:CreateProfile",
+        "wellarchitected:GetProfile",
+        "wellarchitected:ListTagsForResource",
+        "wellarchitected:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:GetProfile",
+        "wellarchitected:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:GetProfile",
+        "wellarchitected:ListTagsForResource",
+        "wellarchitected:TagResource",
+        "wellarchitected:UntagResource",
+        "wellarchitected:UpdateProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:DeleteProfile",
+        "wellarchitected:GetProfile"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

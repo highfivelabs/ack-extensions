@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPersonalizeMetricAttribution",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeMetricAttributionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "personalize:CreateMetricAttribution",
+        "personalize:DescribeMetricAttribution"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeMetricAttributionRead",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:DescribeMetricAttribution",
+        "personalize:ListMetricAttributionMetrics"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeMetricAttributionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "personalize:DescribeMetricAttribution",
+        "personalize:UpdateMetricAttribution"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeMetricAttributionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:DeleteMetricAttribution",
+        "personalize:DescribeMetricAttribution"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

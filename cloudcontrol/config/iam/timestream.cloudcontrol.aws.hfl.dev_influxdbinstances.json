@@ -1,0 +1,75 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTimestreamInfluxDBInstance",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamInfluxDBInstanceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateNetworkInterface",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcs",
+        "iam:CreateServiceLinkedRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "s3:GetBucketPolicy",
+        "s3:ListBucket",
+        "timestream-influxdb:CreateDbInstance",
+        "timestream-influxdb:GetDbInstance",
+        "timestream-influxdb:ListDbInstances",
+        "timestream-influxdb:ListTagsForResource",
+        "timestream-influxdb:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamInfluxDBInstanceRead",
+      "Effect": "Allow",
+      "Action": [
+        "timestream-influxdb:GetDbInstance",
+        "timestream-influxdb:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamInfluxDBInstanceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcs",
+        "s3:GetBucketPolicy",
+        "s3:ListBucket",
+        "timestream-influxdb:GetDbInstance",
+        "timestream-influxdb:ListDbInstances",
+        "timestream-influxdb:ListTagsForResource",
+        "timestream-influxdb:TagResource",
+        "timestream-influxdb:UntagResource",
+        "timestream-influxdb:UpdateDbInstance"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TimestreamInfluxDBInstanceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "timestream-influxdb:DeleteDbInstance",
+        "timestream-influxdb:GetDbInstance",
+        "timestream-influxdb:ListDbInstances"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

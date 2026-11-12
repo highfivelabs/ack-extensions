@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockEnforcedGuardrailConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockEnforcedGuardrailConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:ListEnforcedGuardrailsConfiguration",
+        "bedrock:PutEnforcedGuardrailConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockEnforcedGuardrailConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:ListEnforcedGuardrailsConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockEnforcedGuardrailConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:ListEnforcedGuardrailsConfiguration",
+        "bedrock:PutEnforcedGuardrailConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockEnforcedGuardrailConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:DeleteEnforcedGuardrailConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

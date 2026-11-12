@@ -29,6 +29,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
+	"k8s.io/client-go/rest"
 	"k8s.io/utils/ptr"
 	ctrlrt "sigs.k8s.io/controller-runtime"
 	ctrlrtcache "sigs.k8s.io/controller-runtime/pkg/cache"
@@ -107,7 +108,7 @@ func main() {
 	if err != nil {
 		fail(err, "unable to parse watch selectors")
 	}
-	mgr, err := ctrlrt.NewManager(ctrlrt.GetConfigOrDie(), ctrlrt.Options{
+	mgr, err := ctrlrt.NewManager(restConfig(len(gvks)), ctrlrt.Options{
 		Scheme:                  scheme,
 		Cache:                   ctrlrtcache.Options{Scheme: scheme, DefaultNamespaces: watch, DefaultLabelSelector: selectors},
 		WebhookServer:           &ctrlrtwebhook.DefaultServer{Options: ctrlrtwebhook.Options{Port: port, Host: host}},
@@ -170,4 +171,18 @@ func selectTypes(refs []string) ([]*registry.Type, error) {
 		return nil, fmt.Errorf("no such Cloud Control kind: %s", strings.Join(unknown, ", "))
 	}
 	return out, nil
+}
+
+// restConfig is the API server's client configuration, its rate limit
+// scaled to the kinds served. Each kind starts two informers (its
+// reconciler's and its field export's), and each lists and watches once
+// at start; at client-go's default of 20 requests a second, 1,349 kinds
+// took over two minutes to start. One request a second per kind (at least
+// the default 20, burst twice that) starts them in seconds; the API
+// server's priority and fairness still applies.
+func restConfig(kinds int) *rest.Config {
+	c := ctrlrt.GetConfigOrDie()
+	qps := max(20, kinds)
+	c.QPS, c.Burst = float32(qps), 2*qps
+	return c
 }

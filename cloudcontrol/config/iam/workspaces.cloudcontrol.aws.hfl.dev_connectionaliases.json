@@ -1,0 +1,48 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWorkSpacesConnectionAlias",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesConnectionAliasCreate",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces:CreateConnectionAlias",
+        "workspaces:CreateTags",
+        "workspaces:DescribeConnectionAliases",
+        "workspaces:DescribeTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesConnectionAliasRead",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces:DescribeConnectionAliases",
+        "workspaces:DescribeTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesConnectionAliasDelete",
+      "Effect": "Allow",
+      "Action": [
+        "workspaces:DeleteConnectionAlias",
+        "workspaces:DeleteTags",
+        "workspaces:DescribeConnectionAliases",
+        "workspaces:DescribeTags"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWorkSpacesWebSessionLogger",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebSessionLoggerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "kms:ReEncryptFrom",
+        "kms:ReEncryptTo",
+        "s3:PutObject",
+        "workspaces-web:CreateSessionLogger",
+        "workspaces-web:GetSessionLogger",
+        "workspaces-web:ListSessionLoggers",
+        "workspaces-web:ListTagsForResource",
+        "workspaces-web:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebSessionLoggerRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "workspaces-web:GetSessionLogger",
+        "workspaces-web:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebSessionLoggerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey",
+        "s3:PutObject",
+        "workspaces-web:GetSessionLogger",
+        "workspaces-web:ListSessionLoggers",
+        "workspaces-web:ListTagsForResource",
+        "workspaces-web:TagResource",
+        "workspaces-web:UntagResource",
+        "workspaces-web:UpdateSessionLogger"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebSessionLoggerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "workspaces-web:DeleteSessionLogger",
+        "workspaces-web:GetSessionLogger"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

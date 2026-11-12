@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSESMailManagerAddonInstance",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMailManagerAddonInstanceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:CreateAddonInstance",
+        "ses:GetAddonInstance",
+        "ses:ListTagsForResource",
+        "ses:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMailManagerAddonInstanceRead",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetAddonInstance",
+        "ses:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMailManagerAddonInstanceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetAddonInstance",
+        "ses:ListTagsForResource",
+        "ses:TagResource",
+        "ses:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESMailManagerAddonInstanceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ses:DeleteAddonInstance",
+        "ses:GetAddonInstance"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

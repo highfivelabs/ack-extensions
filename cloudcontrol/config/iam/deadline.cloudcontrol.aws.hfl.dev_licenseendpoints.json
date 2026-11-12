@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDeadlineLicenseEndpoint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineLicenseEndpointCreate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:CreateLicenseEndpoint",
+        "deadline:GetLicenseEndpoint",
+        "deadline:ListTagsForResource",
+        "deadline:TagResource",
+        "ec2:CreateTags",
+        "ec2:CreateVpcEndpoint",
+        "ec2:DescribeVpcEndpoints"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineLicenseEndpointRead",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:GetLicenseEndpoint",
+        "deadline:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineLicenseEndpointUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:GetLicenseEndpoint",
+        "deadline:ListTagsForResource",
+        "deadline:TagResource",
+        "deadline:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineLicenseEndpointDelete",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:DeleteLicenseEndpoint",
+        "deadline:GetLicenseEndpoint",
+        "ec2:DeleteVpcEndpoints",
+        "ec2:DescribeVpcEndpoints"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

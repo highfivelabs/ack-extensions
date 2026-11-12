@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDevOpsGuruLogAnomalyDetectionIntegration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsGuruLogAnomalyDetectionIntegrationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "devops-guru:DescribeServiceIntegration",
+        "devops-guru:UpdateServiceIntegration",
+        "logs:TagLogGroup",
+        "logs:UntagLogGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsGuruLogAnomalyDetectionIntegrationRead",
+      "Effect": "Allow",
+      "Action": [
+        "devops-guru:DescribeServiceIntegration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsGuruLogAnomalyDetectionIntegrationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "devops-guru:UpdateServiceIntegration",
+        "logs:TagLogGroup",
+        "logs:UntagLogGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsGuruLogAnomalyDetectionIntegrationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "devops-guru:DescribeServiceIntegration",
+        "devops-guru:UpdateServiceIntegration",
+        "logs:TagLogGroup",
+        "logs:UntagLogGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

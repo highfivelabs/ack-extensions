@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRTBFabricInboundExternalLink",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RTBFabricInboundExternalLinkCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "rtbfabric:CreateInboundExternalLink",
+        "rtbfabric:GetInboundExternalLink",
+        "rtbfabric:ListTagsForResource",
+        "rtbfabric:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RTBFabricInboundExternalLinkRead",
+      "Effect": "Allow",
+      "Action": [
+        "rtbfabric:GetInboundExternalLink",
+        "rtbfabric:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RTBFabricInboundExternalLinkUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "rtbfabric:GetInboundExternalLink",
+        "rtbfabric:ListTagsForResource",
+        "rtbfabric:TagResource",
+        "rtbfabric:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RTBFabricInboundExternalLinkDelete",
+      "Effect": "Allow",
+      "Action": [
+        "rtbfabric:DeleteInboundExternalLink",
+        "rtbfabric:GetInboundExternalLink"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

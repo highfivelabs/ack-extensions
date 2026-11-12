@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlObservabilityAdminDatasetIntegration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminDatasetIntegrationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "observabilityadmin:CreateDatasetIntegration",
+        "observabilityadmin:GetDatasetIntegration",
+        "observabilityadmin:ListTagsForResource",
+        "observabilityadmin:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminDatasetIntegrationRead",
+      "Effect": "Allow",
+      "Action": [
+        "observabilityadmin:GetDatasetIntegration",
+        "observabilityadmin:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminDatasetIntegrationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "observabilityadmin:GetDatasetIntegration",
+        "observabilityadmin:ListTagsForResource",
+        "observabilityadmin:TagResource",
+        "observabilityadmin:UntagResource",
+        "observabilityadmin:UpdateDatasetIntegration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminDatasetIntegrationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "observabilityadmin:DeleteDatasetIntegration",
+        "observabilityadmin:GetDatasetIntegration",
+        "observabilityadmin:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlObservabilityAdminOrganizationTelemetryRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminOrganizationTelemetryRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "kms:DescribeKey",
+        "observabilityadmin:CreateTelemetryRuleForOrganization",
+        "observabilityadmin:GetTelemetryEvaluationStatusForOrganization",
+        "observabilityadmin:GetTelemetryRuleForOrganization",
+        "observabilityadmin:ListTagsForResource",
+        "observabilityadmin:TagResource",
+        "organizations:ListDelegatedAdministrators"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminOrganizationTelemetryRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "observabilityadmin:GetTelemetryEvaluationStatusForOrganization",
+        "observabilityadmin:GetTelemetryRuleForOrganization",
+        "observabilityadmin:ListTagsForResource",
+        "organizations:ListDelegatedAdministrators"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminOrganizationTelemetryRuleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:DescribeKey",
+        "observabilityadmin:GetTelemetryEvaluationStatusForOrganization",
+        "observabilityadmin:GetTelemetryRuleForOrganization",
+        "observabilityadmin:ListTagsForResource",
+        "observabilityadmin:TagResource",
+        "observabilityadmin:UntagResource",
+        "observabilityadmin:UpdateTelemetryRuleForOrganization",
+        "organizations:ListDelegatedAdministrators"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ObservabilityAdminOrganizationTelemetryRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "observabilityadmin:DeleteTelemetryRuleForOrganization",
+        "observabilityadmin:GetTelemetryEvaluationStatusForOrganization",
+        "observabilityadmin:GetTelemetryRuleForOrganization",
+        "organizations:ListDelegatedAdministrators"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

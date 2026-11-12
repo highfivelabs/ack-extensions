@@ -1,0 +1,75 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCustomerProfilesDomain",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesDomainCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:GetKeyPolicy",
+        "kms:ListGrants",
+        "kms:PutKeyPolicy",
+        "profile:CreateDomain",
+        "profile:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesDomainRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:GetKeyPolicy",
+        "kms:ListGrants",
+        "kms:PutKeyPolicy",
+        "profile:GetDomain",
+        "profile:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesDomainUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:GetKeyPolicy",
+        "kms:ListGrants",
+        "kms:PutKeyPolicy",
+        "profile:GetDomain",
+        "profile:ListTagsForResource",
+        "profile:TagResource",
+        "profile:UntagResource",
+        "profile:UpdateDomain"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CustomerProfilesDomainDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:GetKeyPolicy",
+        "kms:ListGrants",
+        "kms:PutKeyPolicy",
+        "profile:DeleteDomain"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

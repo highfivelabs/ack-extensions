@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIVSStage",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSStageCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:CreateStage",
+        "ivs:GetStage",
+        "ivs:ListTagsForResource",
+        "ivs:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSStageRead",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:GetStage",
+        "ivs:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSStageUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:GetStage",
+        "ivs:ListTagsForResource",
+        "ivs:TagResource",
+        "ivs:UntagResource",
+        "ivs:UpdateStage"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IVSStageDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ivs:DeleteStage",
+        "ivs:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

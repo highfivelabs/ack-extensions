@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGroundStationConfig",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GroundStationConfigCreate",
+      "Effect": "Allow",
+      "Action": [
+        "groundstation:CreateConfig",
+        "groundstation:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GroundStationConfigRead",
+      "Effect": "Allow",
+      "Action": [
+        "groundstation:GetConfig",
+        "groundstation:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GroundStationConfigUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "groundstation:ListTagsForResource",
+        "groundstation:TagResource",
+        "groundstation:UntagResource",
+        "groundstation:UpdateConfig",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GroundStationConfigDelete",
+      "Effect": "Allow",
+      "Action": [
+        "groundstation:DeleteConfig"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

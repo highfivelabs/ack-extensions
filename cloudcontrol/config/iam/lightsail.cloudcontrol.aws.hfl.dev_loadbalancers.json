@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLightsailLoadBalancer",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailLoadBalancerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:AttachInstancesToLoadBalancer",
+        "lightsail:CreateLoadBalancer",
+        "lightsail:DetachInstancesFromLoadBalancer",
+        "lightsail:GetInstance",
+        "lightsail:GetLoadBalancer",
+        "lightsail:GetLoadBalancers",
+        "lightsail:TagResource",
+        "lightsail:UntagResource",
+        "lightsail:UpdateLoadBalancerAttribute"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailLoadBalancerRead",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetLoadBalancer",
+        "lightsail:GetLoadBalancers"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailLoadBalancerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:AttachInstancesToLoadBalancer",
+        "lightsail:DetachInstancesFromLoadBalancer",
+        "lightsail:GetInstance",
+        "lightsail:GetLoadBalancer",
+        "lightsail:GetLoadBalancers",
+        "lightsail:TagResource",
+        "lightsail:UntagResource",
+        "lightsail:UpdateLoadBalancerAttribute"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailLoadBalancerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:DeleteLoadBalancer",
+        "lightsail:GetLoadBalancer",
+        "lightsail:GetLoadBalancers"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

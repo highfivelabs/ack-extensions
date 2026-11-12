@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppSyncDomainName",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncDomainNameCreate",
+      "Effect": "Allow",
+      "Action": [
+        "acm:DescribeCertificate",
+        "appsync:CreateDomainName",
+        "appsync:GetDomainName",
+        "appsync:TagResource",
+        "cloudfront:UpdateDistribution"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncDomainNameRead",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:GetDomainName"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncDomainNameUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:GetDomainName",
+        "appsync:TagResource",
+        "appsync:UntagResource",
+        "appsync:UpdateDomainName"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncDomainNameDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:DeleteDomainName",
+        "appsync:GetDomainName",
+        "appsync:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

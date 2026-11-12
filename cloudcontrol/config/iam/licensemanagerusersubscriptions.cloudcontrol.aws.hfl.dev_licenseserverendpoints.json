@@ -1,0 +1,88 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLicenseManagerUserSubscriptionsLicenseServerEndpoint",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerUserSubscriptionsLicenseServerEndpointCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ds:AuthorizeApplication",
+        "ds:DescribeDirectories",
+        "ds:DescribeDomainControllers",
+        "ds:GetAuthorizedApplicationDetails",
+        "ds:UnauthorizeApplication",
+        "ec2:AuthorizeSecurityGroupIngress",
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateNetworkInterfacePermission",
+        "ec2:CreateSecurityGroup",
+        "ec2:CreateTags",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcs",
+        "kms:Decrypt",
+        "license-manager-user-subscriptions:CreateLicenseServerEndpoint",
+        "license-manager-user-subscriptions:ListLicenseServerEndpoints",
+        "license-manager-user-subscriptions:TagResource",
+        "route53:AssociateVPCWithHostedZone",
+        "route53:ChangeResourceRecordSets",
+        "route53:CreateHostedZone",
+        "route53:GetHostedZone",
+        "route53:ListHostedZonesByName",
+        "route53:ListHostedZonesByVPC",
+        "route53:ListResourceRecordSets",
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerUserSubscriptionsLicenseServerEndpointRead",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager-user-subscriptions:ListLicenseServerEndpoints",
+        "license-manager-user-subscriptions:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerUserSubscriptionsLicenseServerEndpointUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager-user-subscriptions:ListLicenseServerEndpoints",
+        "license-manager-user-subscriptions:ListTagsForResource",
+        "license-manager-user-subscriptions:TagResource",
+        "license-manager-user-subscriptions:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerUserSubscriptionsLicenseServerEndpointDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ds:GetAuthorizedApplicationDetails",
+        "ds:UnauthorizeApplication",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DescribeNetworkInterfaces",
+        "license-manager-user-subscriptions:DeleteLicenseServerEndpoint",
+        "license-manager-user-subscriptions:ListLicenseServerEndpoints",
+        "license-manager-user-subscriptions:ListTagsForResource",
+        "route53:ChangeResourceRecordSets",
+        "route53:DeleteHostedZone",
+        "route53:GetHostedZone",
+        "route53:ListResourceRecordSets"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

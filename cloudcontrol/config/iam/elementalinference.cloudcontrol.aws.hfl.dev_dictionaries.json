@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlElementalInferenceDictionary",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElementalInferenceDictionaryCreate",
+      "Effect": "Allow",
+      "Action": [
+        "elemental-inference:CreateDictionary",
+        "elemental-inference:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElementalInferenceDictionaryRead",
+      "Effect": "Allow",
+      "Action": [
+        "elemental-inference:GetDictionary",
+        "elemental-inference:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElementalInferenceDictionaryUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "elemental-inference:GetDictionary",
+        "elemental-inference:ListTagsForResource",
+        "elemental-inference:TagResource",
+        "elemental-inference:UntagResource",
+        "elemental-inference:UpdateDictionary"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElementalInferenceDictionaryDelete",
+      "Effect": "Allow",
+      "Action": [
+        "elemental-inference:DeleteDictionary",
+        "elemental-inference:GetDictionary"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

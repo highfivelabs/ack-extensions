@@ -57,6 +57,28 @@ rules:
   - patch
   - update
 - apiGroups:
+  - accountaccess.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications
+  - entitlements
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - accountaccess.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications/status
+  - entitlements/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - acmpca.cloudcontrol.aws.hfl.dev
   resources:
   - permissions
@@ -72,6 +94,136 @@ rules:
   - acmpca.cloudcontrol.aws.hfl.dev
   resources:
   - permissions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - agentregistry.cloudcontrol.aws.hfl.dev
+  resources:
+  - registries
+  - registryrecords
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - agentregistry.cloudcontrol.aws.hfl.dev
+  resources:
+  - registries/status
+  - registryrecords/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - aiops.cloudcontrol.aws.hfl.dev
+  resources:
+  - investigationgroups
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - aiops.cloudcontrol.aws.hfl.dev
+  resources:
+  - investigationgroups/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - amazonmq.cloudcontrol.aws.hfl.dev
+  resources:
+  - configurations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - amazonmq.cloudcontrol.aws.hfl.dev
+  resources:
+  - configurations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - amplify.cloudcontrol.aws.hfl.dev
+  resources:
+  - apps
+  - branches
+  - domains
+  - webhooks
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - amplify.cloudcontrol.aws.hfl.dev
+  resources:
+  - apps/status
+  - branches/status
+  - domains/status
+  - webhooks/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - apigateway.cloudcontrol.aws.hfl.dev
+  resources:
+  - accounts
+  - basepathmappings
+  - basepathmappingv2s
+  - clientcertificates
+  - documentationparts
+  - documentationversions
+  - domainnameaccessassociations
+  - domainnames
+  - gatewayresponses
+  - requestvalidators
+  - usageplankeys
+  - usageplans
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apigateway.cloudcontrol.aws.hfl.dev
+  resources:
+  - accounts/status
+  - basepathmappings/status
+  - basepathmappingv2s/status
+  - clientcertificates/status
+  - documentationparts/status
+  - documentationversions/status
+  - domainnameaccessassociations/status
+  - domainnames/status
+  - gatewayresponses/status
+  - requestvalidators/status
+  - usageplankeys/status
+  - usageplans/status
   verbs:
   - get
   - patch
@@ -107,6 +259,298 @@ rules:
   - patch
   - update
 - apiGroups:
+  - appconfig.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications
+  - configurationprofiles
+  - deployments
+  - deploymentstrategies
+  - environments
+  - experimentdefinitions
+  - experimentruns
+  - extensionassociations
+  - extensions
+  - hostedconfigurationversions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - appconfig.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications/status
+  - configurationprofiles/status
+  - deployments/status
+  - deploymentstrategies/status
+  - environments/status
+  - experimentdefinitions/status
+  - experimentruns/status
+  - extensionassociations/status
+  - extensions/status
+  - hostedconfigurationversions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - appfabric.cloudcontrol.aws.hfl.dev
+  resources:
+  - appauthorizations
+  - appbundles
+  - ingestiondestinations
+  - ingestions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - appfabric.cloudcontrol.aws.hfl.dev
+  resources:
+  - appauthorizations/status
+  - appbundles/status
+  - ingestiondestinations/status
+  - ingestions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - appflow.cloudcontrol.aws.hfl.dev
+  resources:
+  - connectorprofiles
+  - connectors
+  - flows
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - appflow.cloudcontrol.aws.hfl.dev
+  resources:
+  - connectorprofiles/status
+  - connectors/status
+  - flows/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - appintegrations.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications
+  - dataintegrations
+  - eventintegrations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - appintegrations.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications/status
+  - dataintegrations/status
+  - eventintegrations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - applicationinsights.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - applicationinsights.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - applicationsignals.cloudcontrol.aws.hfl.dev
+  resources:
+  - discoveries
+  - groupingconfigurations
+  - instrumentationconfigs
+  - servicelevelobjectives
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - applicationsignals.cloudcontrol.aws.hfl.dev
+  resources:
+  - discoveries/status
+  - groupingconfigurations/status
+  - instrumentationconfigs/status
+  - servicelevelobjectives/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - apprunner.cloudcontrol.aws.hfl.dev
+  resources:
+  - autoscalingconfigurations
+  - observabilityconfigurations
+  - services
+  - vpcconnectors
+  - vpcingressconnections
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apprunner.cloudcontrol.aws.hfl.dev
+  resources:
+  - autoscalingconfigurations/status
+  - observabilityconfigurations/status
+  - services/status
+  - vpcconnectors/status
+  - vpcingressconnections/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - appstream.cloudcontrol.aws.hfl.dev
+  resources:
+  - appblockbuilders
+  - appblocks
+  - applicationentitlementassociations
+  - applicationfleetassociations
+  - applications
+  - directoryconfigs
+  - entitlements
+  - fleets
+  - imagebuilders
+  - stackfleetassociations
+  - stacks
+  - stackuserassociations
+  - users
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - appstream.cloudcontrol.aws.hfl.dev
+  resources:
+  - appblockbuilders/status
+  - appblocks/status
+  - applicationentitlementassociations/status
+  - applicationfleetassociations/status
+  - applications/status
+  - directoryconfigs/status
+  - entitlements/status
+  - fleets/status
+  - imagebuilders/status
+  - stackfleetassociations/status
+  - stacks/status
+  - stackuserassociations/status
+  - users/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - appsync.cloudcontrol.aws.hfl.dev
+  resources:
+  - apicaches
+  - apikeys
+  - apis
+  - channelnamespaces
+  - datasources
+  - domainnameapiassociations
+  - domainnames
+  - functionconfigurations
+  - graphqlapis
+  - resolvers
+  - sourceapiassociations
+  - types
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - appsync.cloudcontrol.aws.hfl.dev
+  resources:
+  - apicaches/status
+  - apikeys/status
+  - apis/status
+  - channelnamespaces/status
+  - datasources/status
+  - domainnameapiassociations/status
+  - domainnames/status
+  - functionconfigurations/status
+  - graphqlapis/status
+  - resolvers/status
+  - sourceapiassociations/status
+  - types/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - apptest.cloudcontrol.aws.hfl.dev
+  resources:
+  - testcases
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apptest.cloudcontrol.aws.hfl.dev
+  resources:
+  - testcases/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - aps.cloudcontrol.aws.hfl.dev
   resources:
   - anomalydetectors
@@ -124,6 +568,50 @@ rules:
   resources:
   - anomalydetectors/status
   - resourcepolicies/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - arczonalshift.cloudcontrol.aws.hfl.dev
+  resources:
+  - autoshiftobservernotificationstatuses
+  - zonalautoshiftconfigurations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - arczonalshift.cloudcontrol.aws.hfl.dev
+  resources:
+  - autoshiftobservernotificationstatuses/status
+  - zonalautoshiftconfigurations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - athena.cloudcontrol.aws.hfl.dev
+  resources:
+  - capacityreservations
+  - namedqueries
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - athena.cloudcontrol.aws.hfl.dev
+  resources:
+  - capacityreservations/status
+  - namedqueries/status
   verbs:
   - get
   - patch
@@ -173,6 +661,476 @@ rules:
   - patch
   - update
 - apiGroups:
+  - autoscalingplans.cloudcontrol.aws.hfl.dev
+  resources:
+  - scalingplans
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - autoscalingplans.cloudcontrol.aws.hfl.dev
+  resources:
+  - scalingplans/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - awsexternalanthropic.cloudcontrol.aws.hfl.dev
+  resources:
+  - workspaces
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - awsexternalanthropic.cloudcontrol.aws.hfl.dev
+  resources:
+  - workspaces/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - b2bi.cloudcontrol.aws.hfl.dev
+  resources:
+  - capabilities
+  - partnerships
+  - profiles
+  - transformers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - b2bi.cloudcontrol.aws.hfl.dev
+  resources:
+  - capabilities/status
+  - partnerships/status
+  - profiles/status
+  - transformers/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - backup.cloudcontrol.aws.hfl.dev
+  resources:
+  - frameworks
+  - legalholds
+  - reportplans
+  - restoretestingplans
+  - restoretestingselections
+  - tieringconfigurations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - backup.cloudcontrol.aws.hfl.dev
+  resources:
+  - frameworks/status
+  - legalholds/status
+  - reportplans/status
+  - restoretestingplans/status
+  - restoretestingselections/status
+  - tieringconfigurations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - backupgateway.cloudcontrol.aws.hfl.dev
+  resources:
+  - hypervisors
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - backupgateway.cloudcontrol.aws.hfl.dev
+  resources:
+  - hypervisors/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - batch.cloudcontrol.aws.hfl.dev
+  resources:
+  - computeenvironments
+  - consumableresources
+  - jobdefinitions
+  - jobqueues
+  - quotashares
+  - schedulingpolicies
+  - serviceenvironments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - batch.cloudcontrol.aws.hfl.dev
+  resources:
+  - computeenvironments/status
+  - consumableresources/status
+  - jobdefinitions/status
+  - jobqueues/status
+  - quotashares/status
+  - schedulingpolicies/status
+  - serviceenvironments/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - bcm.cloudcontrol.aws.hfl.dev
+  resources:
+  - scheduledreports
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - bcm.cloudcontrol.aws.hfl.dev
+  resources:
+  - scheduledreports/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - bcmdataexports.cloudcontrol.aws.hfl.dev
+  resources:
+  - exports
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - bcmdataexports.cloudcontrol.aws.hfl.dev
+  resources:
+  - exports/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - bcmpricingcalculator.cloudcontrol.aws.hfl.dev
+  resources:
+  - billestimates
+  - billscenarios
+  - workloadestimates
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - bcmpricingcalculator.cloudcontrol.aws.hfl.dev
+  resources:
+  - billestimates/status
+  - billscenarios/status
+  - workloadestimates/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - bedrock.cloudcontrol.aws.hfl.dev
+  resources:
+  - agentaliases
+  - applicationinferenceprofiles
+  - automatedreasoningpolicies
+  - automatedreasoningpolicyversions
+  - blueprints
+  - dataautomationlibraries
+  - dataautomationprojects
+  - datasources
+  - enforcedguardrailconfigurations
+  - flowaliases
+  - guardrails
+  - guardrailversions
+  - intelligentpromptrouters
+  - knowledgebasepolicies
+  - prompts
+  - promptversions
+  - resourcepolicies
+  - retrievalinstructions
+  - sessions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - bedrock.cloudcontrol.aws.hfl.dev
+  resources:
+  - agentaliases/status
+  - applicationinferenceprofiles/status
+  - automatedreasoningpolicies/status
+  - automatedreasoningpolicyversions/status
+  - blueprints/status
+  - dataautomationlibraries/status
+  - dataautomationprojects/status
+  - datasources/status
+  - enforcedguardrailconfigurations/status
+  - flowaliases/status
+  - guardrails/status
+  - guardrailversions/status
+  - intelligentpromptrouters/status
+  - knowledgebasepolicies/status
+  - prompts/status
+  - promptversions/status
+  - resourcepolicies/status
+  - retrievalinstructions/status
+  - sessions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - bedrockagentcore.cloudcontrol.aws.hfl.dev
+  resources:
+  - capacityproviders
+  - configurationbundles
+  - consentportals
+  - datasets
+  - evaluators
+  - oauth2credentialproviders
+  - onlineevaluationconfigs
+  - paymentconnectors
+  - paymentcredentialproviders
+  - paymentmanagers
+  - resourcepolicies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - bedrockagentcore.cloudcontrol.aws.hfl.dev
+  resources:
+  - capacityproviders/status
+  - configurationbundles/status
+  - consentportals/status
+  - datasets/status
+  - evaluators/status
+  - oauth2credentialproviders/status
+  - onlineevaluationconfigs/status
+  - paymentconnectors/status
+  - paymentcredentialproviders/status
+  - paymentmanagers/status
+  - resourcepolicies/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - bedrockmantle.cloudcontrol.aws.hfl.dev
+  resources:
+  - projects
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - bedrockmantle.cloudcontrol.aws.hfl.dev
+  resources:
+  - projects/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - billing.cloudcontrol.aws.hfl.dev
+  resources:
+  - billingviews
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - billing.cloudcontrol.aws.hfl.dev
+  resources:
+  - billingviews/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - billingconductor.cloudcontrol.aws.hfl.dev
+  resources:
+  - billinggroups
+  - customlineitems
+  - pricingplans
+  - pricingrules
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - billingconductor.cloudcontrol.aws.hfl.dev
+  resources:
+  - billinggroups/status
+  - customlineitems/status
+  - pricingplans/status
+  - pricingrules/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - braket.cloudcontrol.aws.hfl.dev
+  resources:
+  - spendinglimits
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - braket.cloudcontrol.aws.hfl.dev
+  resources:
+  - spendinglimits/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - budgets.cloudcontrol.aws.hfl.dev
+  resources:
+  - budgetsactions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - budgets.cloudcontrol.aws.hfl.dev
+  resources:
+  - budgetsactions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - cases.cloudcontrol.aws.hfl.dev
+  resources:
+  - caserules
+  - cases
+  - domains
+  - fields
+  - layouts
+  - relateditems
+  - templates
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cases.cloudcontrol.aws.hfl.dev
+  resources:
+  - caserules/status
+  - cases/status
+  - domains/status
+  - fields/status
+  - layouts/status
+  - relateditems/status
+  - templates/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - ce.cloudcontrol.aws.hfl.dev
+  resources:
+  - anomalymonitors
+  - anomalysubscriptions
+  - costcategories
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ce.cloudcontrol.aws.hfl.dev
+  resources:
+  - anomalymonitors/status
+  - anomalysubscriptions/status
+  - costcategories/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - certificatemanager.cloudcontrol.aws.hfl.dev
   resources:
   - accounts
@@ -188,6 +1146,194 @@ rules:
   - certificatemanager.cloudcontrol.aws.hfl.dev
   resources:
   - accounts/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - chatbot.cloudcontrol.aws.hfl.dev
+  resources:
+  - customactions
+  - microsoftteamschannelconfigurations
+  - slackchannelconfigurations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - chatbot.cloudcontrol.aws.hfl.dev
+  resources:
+  - customactions/status
+  - microsoftteamschannelconfigurations/status
+  - slackchannelconfigurations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - chime.cloudcontrol.aws.hfl.dev
+  resources:
+  - appinstancebots
+  - appinstances
+  - appinstanceusers
+  - channelflows
+  - channels
+  - mediainsightspipelineconfigurations
+  - mediapipelinekinesisvideostreampools
+  - sipmediaapplications
+  - voiceconnectors
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - chime.cloudcontrol.aws.hfl.dev
+  resources:
+  - appinstancebots/status
+  - appinstances/status
+  - appinstanceusers/status
+  - channelflows/status
+  - channels/status
+  - mediainsightspipelineconfigurations/status
+  - mediapipelinekinesisvideostreampools/status
+  - sipmediaapplications/status
+  - voiceconnectors/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - cleanrooms.cloudcontrol.aws.hfl.dev
+  resources:
+  - analysistemplates
+  - collaborations
+  - configuredtableassociations
+  - configuredtables
+  - idmappingtables
+  - idnamespaceassociations
+  - intermediatetables
+  - memberships
+  - privacybudgettemplates
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cleanrooms.cloudcontrol.aws.hfl.dev
+  resources:
+  - analysistemplates/status
+  - collaborations/status
+  - configuredtableassociations/status
+  - configuredtables/status
+  - idmappingtables/status
+  - idnamespaceassociations/status
+  - intermediatetables/status
+  - memberships/status
+  - privacybudgettemplates/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - cleanroomsml.cloudcontrol.aws.hfl.dev
+  resources:
+  - configuredmodelalgorithmassociations
+  - configuredmodelalgorithms
+  - trainingdatasets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cleanroomsml.cloudcontrol.aws.hfl.dev
+  resources:
+  - configuredmodelalgorithmassociations/status
+  - configuredmodelalgorithms/status
+  - trainingdatasets/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - cloud9.cloudcontrol.aws.hfl.dev
+  resources:
+  - environmentec2s
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cloud9.cloudcontrol.aws.hfl.dev
+  resources:
+  - environmentec2s/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - cloudformation.cloudcontrol.aws.hfl.dev
+  resources:
+  - changesets
+  - generatedtemplates
+  - guardhooks
+  - hookdefaultversions
+  - hooktypeconfigs
+  - hookversions
+  - lambdahooks
+  - moduledefaultversions
+  - moduleversions
+  - publictypeversions
+  - publishers
+  - resourcedefaultversions
+  - resourceversions
+  - stacksets
+  - typeactivations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cloudformation.cloudcontrol.aws.hfl.dev
+  resources:
+  - changesets/status
+  - generatedtemplates/status
+  - guardhooks/status
+  - hookdefaultversions/status
+  - hooktypeconfigs/status
+  - hookversions/status
+  - lambdahooks/status
+  - moduledefaultversions/status
+  - moduleversions/status
+  - publictypeversions/status
+  - publishers/status
+  - resourcedefaultversions/status
+  - resourceversions/status
+  - stacksets/status
+  - typeactivations/status
   verbs:
   - get
   - patch
@@ -230,6 +1376,26 @@ rules:
   - publickeys/status
   - realtimelogconfigs/status
   - truststores/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - cloudhsm.cloudcontrol.aws.hfl.dev
+  resources:
+  - clusters
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cloudhsm.cloudcontrol.aws.hfl.dev
+  resources:
+  - clusters/status
   verbs:
   - get
   - patch
@@ -307,6 +1473,94 @@ rules:
   - patch
   - update
 - apiGroups:
+  - codeartifact.cloudcontrol.aws.hfl.dev
+  resources:
+  - repositories
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - codeartifact.cloudcontrol.aws.hfl.dev
+  resources:
+  - repositories/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - codebuild.cloudcontrol.aws.hfl.dev
+  resources:
+  - fleets
+  - projects
+  - reportgroups
+  - sourcecredentials
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - codebuild.cloudcontrol.aws.hfl.dev
+  resources:
+  - fleets/status
+  - projects/status
+  - reportgroups/status
+  - sourcecredentials/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - codecommit.cloudcontrol.aws.hfl.dev
+  resources:
+  - repositories
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - codecommit.cloudcontrol.aws.hfl.dev
+  resources:
+  - repositories/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - codeconnections.cloudcontrol.aws.hfl.dev
+  resources:
+  - connections
+  - hosts
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - codeconnections.cloudcontrol.aws.hfl.dev
+  resources:
+  - connections/status
+  - hosts/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - codedeploy.cloudcontrol.aws.hfl.dev
   resources:
   - applications
@@ -326,6 +1580,210 @@ rules:
   - applications/status
   - deploymentconfigs/status
   - deploymentgroups/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - codeguruprofiler.cloudcontrol.aws.hfl.dev
+  resources:
+  - profilinggroups
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - codeguruprofiler.cloudcontrol.aws.hfl.dev
+  resources:
+  - profilinggroups/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - codegurureviewer.cloudcontrol.aws.hfl.dev
+  resources:
+  - repositoryassociations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - codegurureviewer.cloudcontrol.aws.hfl.dev
+  resources:
+  - repositoryassociations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - codepipeline.cloudcontrol.aws.hfl.dev
+  resources:
+  - customactiontypes
+  - pipelines
+  - webhooks
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - codepipeline.cloudcontrol.aws.hfl.dev
+  resources:
+  - customactiontypes/status
+  - pipelines/status
+  - webhooks/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - codestarconnections.cloudcontrol.aws.hfl.dev
+  resources:
+  - connections
+  - repositorylinks
+  - syncconfigurations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - codestarconnections.cloudcontrol.aws.hfl.dev
+  resources:
+  - connections/status
+  - repositorylinks/status
+  - syncconfigurations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - codestarnotifications.cloudcontrol.aws.hfl.dev
+  resources:
+  - notificationrules
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - codestarnotifications.cloudcontrol.aws.hfl.dev
+  resources:
+  - notificationrules/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - cognito.cloudcontrol.aws.hfl.dev
+  resources:
+  - identitypoolprincipaltags
+  - identitypoolroleattachments
+  - identitypools
+  - logdeliveryconfigurations
+  - managedloginbrandings
+  - termses
+  - userpooldomains
+  - userpoolgroups
+  - userpoolidentityproviders
+  - userpoolregionalconfigurationattachments
+  - userpoolreplicas
+  - userpoolriskconfigurationattachments
+  - userpooluicustomizationattachments
+  - userpoolusers
+  - userpoolusertogroupattachments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cognito.cloudcontrol.aws.hfl.dev
+  resources:
+  - identitypoolprincipaltags/status
+  - identitypoolroleattachments/status
+  - identitypools/status
+  - logdeliveryconfigurations/status
+  - managedloginbrandings/status
+  - termses/status
+  - userpooldomains/status
+  - userpoolgroups/status
+  - userpoolidentityproviders/status
+  - userpoolregionalconfigurationattachments/status
+  - userpoolreplicas/status
+  - userpoolriskconfigurationattachments/status
+  - userpooluicustomizationattachments/status
+  - userpoolusers/status
+  - userpoolusertogroupattachments/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - comprehend.cloudcontrol.aws.hfl.dev
+  resources:
+  - documentclassifierendpoints
+  - documentclassifiers
+  - entityrecognizerendpoints
+  - entityrecognizers
+  - flywheels
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - comprehend.cloudcontrol.aws.hfl.dev
+  resources:
+  - documentclassifierendpoints/status
+  - documentclassifiers/status
+  - entityrecognizerendpoints/status
+  - entityrecognizers/status
+  - flywheels/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - computeoptimizer.cloudcontrol.aws.hfl.dev
+  resources:
+  - automationrules
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - computeoptimizer.cloudcontrol.aws.hfl.dev
+  resources:
+  - automationrules/status
   verbs:
   - get
   - patch
@@ -371,6 +1829,140 @@ rules:
   - patch
   - update
 - apiGroups:
+  - connect.cloudcontrol.aws.hfl.dev
+  resources:
+  - agentstatuses
+  - approvedorigins
+  - contactflowmodulealiases
+  - contactflowmodules
+  - contactflowmoduleversions
+  - contactflows
+  - contactflowversions
+  - datalakeassociations
+  - datatableattributes
+  - datatablerecords
+  - datatables
+  - emailaddresses
+  - hoursofoperations
+  - instances
+  - instancestorageconfigs
+  - integrationassociations
+  - metrics
+  - notifications
+  - phonenumbers
+  - predefinedattributes
+  - prompts
+  - queues
+  - quickconnects
+  - routingprofiles
+  - rules
+  - securitykeys
+  - securityprofiles
+  - tasktemplates
+  - testcases
+  - trafficdistributiongroups
+  - usecases
+  - userhierarchygroups
+  - userhierarchystructures
+  - users
+  - views
+  - viewversions
+  - vocabularies
+  - workspaces
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - connect.cloudcontrol.aws.hfl.dev
+  resources:
+  - agentstatuses/status
+  - approvedorigins/status
+  - contactflowmodulealiases/status
+  - contactflowmodules/status
+  - contactflowmoduleversions/status
+  - contactflows/status
+  - contactflowversions/status
+  - datalakeassociations/status
+  - datatableattributes/status
+  - datatablerecords/status
+  - datatables/status
+  - emailaddresses/status
+  - hoursofoperations/status
+  - instances/status
+  - instancestorageconfigs/status
+  - integrationassociations/status
+  - metrics/status
+  - notifications/status
+  - phonenumbers/status
+  - predefinedattributes/status
+  - prompts/status
+  - queues/status
+  - quickconnects/status
+  - routingprofiles/status
+  - rules/status
+  - securitykeys/status
+  - securityprofiles/status
+  - tasktemplates/status
+  - testcases/status
+  - trafficdistributiongroups/status
+  - usecases/status
+  - userhierarchygroups/status
+  - userhierarchystructures/status
+  - users/status
+  - views/status
+  - viewversions/status
+  - vocabularies/status
+  - workspaces/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - connectcampaigns.cloudcontrol.aws.hfl.dev
+  resources:
+  - campaigns
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - connectcampaigns.cloudcontrol.aws.hfl.dev
+  resources:
+  - campaigns/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - connectcampaignsv2.cloudcontrol.aws.hfl.dev
+  resources:
+  - campaigns
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - connectcampaignsv2.cloudcontrol.aws.hfl.dev
+  resources:
+  - campaigns/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - controltower.cloudcontrol.aws.hfl.dev
   resources:
   - enabledbaselines
@@ -390,6 +1982,300 @@ rules:
   - enabledbaselines/status
   - enabledcontrols/status
   - landingzones/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - cur.cloudcontrol.aws.hfl.dev
+  resources:
+  - reportdefinitions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cur.cloudcontrol.aws.hfl.dev
+  resources:
+  - reportdefinitions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - customerprofiles.cloudcontrol.aws.hfl.dev
+  resources:
+  - calculatedattributedefinitions
+  - domainobjecttypes
+  - domains
+  - eventstreams
+  - eventtriggers
+  - integrations
+  - objecttypes
+  - recommenderfilters
+  - recommenders
+  - recommenderschemas
+  - segmentdefinitions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - customerprofiles.cloudcontrol.aws.hfl.dev
+  resources:
+  - calculatedattributedefinitions/status
+  - domainobjecttypes/status
+  - domains/status
+  - eventstreams/status
+  - eventtriggers/status
+  - integrations/status
+  - objecttypes/status
+  - recommenderfilters/status
+  - recommenders/status
+  - recommenderschemas/status
+  - segmentdefinitions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - databrew.cloudcontrol.aws.hfl.dev
+  resources:
+  - datasets
+  - jobs
+  - projects
+  - recipes
+  - rulesets
+  - schedules
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - databrew.cloudcontrol.aws.hfl.dev
+  resources:
+  - datasets/status
+  - jobs/status
+  - projects/status
+  - recipes/status
+  - rulesets/status
+  - schedules/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - dataexchange.cloudcontrol.aws.hfl.dev
+  resources:
+  - datasets
+  - eventactions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - dataexchange.cloudcontrol.aws.hfl.dev
+  resources:
+  - datasets/status
+  - eventactions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - datapipeline.cloudcontrol.aws.hfl.dev
+  resources:
+  - pipelines
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - datapipeline.cloudcontrol.aws.hfl.dev
+  resources:
+  - pipelines/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - datasync.cloudcontrol.aws.hfl.dev
+  resources:
+  - agents
+  - locationazureblobs
+  - locationefses
+  - locationfsxlustres
+  - locationfsxontaps
+  - locationfsxopenzfses
+  - locationfsxwindowses
+  - locationhdfses
+  - locationnfses
+  - locationobjectstorages
+  - locations3s
+  - locationsmbs
+  - tasks
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - datasync.cloudcontrol.aws.hfl.dev
+  resources:
+  - agents/status
+  - locationazureblobs/status
+  - locationefses/status
+  - locationfsxlustres/status
+  - locationfsxontaps/status
+  - locationfsxopenzfses/status
+  - locationfsxwindowses/status
+  - locationhdfses/status
+  - locationnfses/status
+  - locationobjectstorages/status
+  - locations3s/status
+  - locationsmbs/status
+  - tasks/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - datazone.cloudcontrol.aws.hfl.dev
+  resources:
+  - connections
+  - datasources
+  - domains
+  - domainunits
+  - environmentactionses
+  - environmentblueprintconfigurations
+  - environmentprofiles
+  - environments
+  - formtypes
+  - groupprofiles
+  - owners
+  - policygrants
+  - projectmemberships
+  - projectprofiles
+  - projects
+  - subscriptiontargets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - datazone.cloudcontrol.aws.hfl.dev
+  resources:
+  - connections/status
+  - datasources/status
+  - domains/status
+  - domainunits/status
+  - environmentactionses/status
+  - environmentblueprintconfigurations/status
+  - environmentprofiles/status
+  - environments/status
+  - formtypes/status
+  - groupprofiles/status
+  - owners/status
+  - policygrants/status
+  - projectmemberships/status
+  - projectprofiles/status
+  - projects/status
+  - subscriptiontargets/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - dax.cloudcontrol.aws.hfl.dev
+  resources:
+  - clusters
+  - parametergroups
+  - subnetgroups
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - dax.cloudcontrol.aws.hfl.dev
+  resources:
+  - clusters/status
+  - parametergroups/status
+  - subnetgroups/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - deadline.cloudcontrol.aws.hfl.dev
+  resources:
+  - budgets
+  - farms
+  - fleets
+  - licenseendpoints
+  - limits
+  - meteredproducts
+  - monitors
+  - queueenvironments
+  - queuefleetassociations
+  - queuelimitassociations
+  - queues
+  - storageprofiles
+  - workers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - deadline.cloudcontrol.aws.hfl.dev
+  resources:
+  - budgets/status
+  - farms/status
+  - fleets/status
+  - licenseendpoints/status
+  - limits/status
+  - meteredproducts/status
+  - monitors/status
+  - queueenvironments/status
+  - queuefleetassociations/status
+  - queuelimitassociations/status
+  - queues/status
+  - storageprofiles/status
+  - workers/status
   verbs:
   - get
   - patch
@@ -419,6 +2305,58 @@ rules:
   - patch
   - update
 - apiGroups:
+  - devopsagent.cloudcontrol.aws.hfl.dev
+  resources:
+  - agentspaces
+  - assets
+  - associations
+  - privateconnections
+  - services
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - devopsagent.cloudcontrol.aws.hfl.dev
+  resources:
+  - agentspaces/status
+  - assets/status
+  - associations/status
+  - privateconnections/status
+  - services/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - devopsguru.cloudcontrol.aws.hfl.dev
+  resources:
+  - loganomalydetectionintegrations
+  - notificationchannels
+  - resourcecollections
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - devopsguru.cloudcontrol.aws.hfl.dev
+  resources:
+  - loganomalydetectionintegrations/status
+  - notificationchannels/status
+  - resourcecollections/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - directconnect.cloudcontrol.aws.hfl.dev
   resources:
   - directconnectgatewayassociations
@@ -436,6 +2374,48 @@ rules:
   resources:
   - directconnectgatewayassociations/status
   - directconnectgateways/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - directoryservice.cloudcontrol.aws.hfl.dev
+  resources:
+  - microsoftads
+  - simpleads
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - directoryservice.cloudcontrol.aws.hfl.dev
+  resources:
+  - microsoftads/status
+  - simpleads/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - dlm.cloudcontrol.aws.hfl.dev
+  resources:
+  - lifecyclepolicies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - dlm.cloudcontrol.aws.hfl.dev
+  resources:
+  - lifecyclepolicies/status
   verbs:
   - get
   - patch
@@ -464,6 +2444,78 @@ rules:
   - instanceprofiles/status
   - migrationprojects/status
   - replicationconfigs/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - docdb.cloudcontrol.aws.hfl.dev
+  resources:
+  - dbclusterparametergroups
+  - eventsubscriptions
+  - globalclusters
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - docdb.cloudcontrol.aws.hfl.dev
+  resources:
+  - dbclusterparametergroups/status
+  - eventsubscriptions/status
+  - globalclusters/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - docdbelastic.cloudcontrol.aws.hfl.dev
+  resources:
+  - clusters
+  - clustersnapshots
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - docdbelastic.cloudcontrol.aws.hfl.dev
+  resources:
+  - clusters/status
+  - clustersnapshots/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - drs.cloudcontrol.aws.hfl.dev
+  resources:
+  - launchconfigurationtemplates
+  - recoveryplans
+  - replicationconfigurationtemplates
+  - sourcenetworks
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - drs.cloudcontrol.aws.hfl.dev
+  resources:
+  - launchconfigurationtemplates/status
+  - recoveryplans/status
+  - replicationconfigurationtemplates/status
+  - sourcenetworks/status
   verbs:
   - get
   - patch
@@ -707,6 +2759,52 @@ rules:
   - patch
   - update
 - apiGroups:
+  - elasticbeanstalk.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications
+  - applicationversions
+  - configurationtemplates
+  - environments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - elasticbeanstalk.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications/status
+  - applicationversions/status
+  - configurationtemplates/status
+  - environments/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - elasticloadbalancing.cloudcontrol.aws.hfl.dev
+  resources:
+  - loadbalancers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - elasticloadbalancing.cloudcontrol.aws.hfl.dev
+  resources:
+  - loadbalancers/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - elasticloadbalancingv2.cloudcontrol.aws.hfl.dev
   resources:
   - truststorerevocations
@@ -724,6 +2822,102 @@ rules:
   resources:
   - truststorerevocations/status
   - truststores/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - elementalinference.cloudcontrol.aws.hfl.dev
+  resources:
+  - dictionaries
+  - feeds
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - elementalinference.cloudcontrol.aws.hfl.dev
+  resources:
+  - dictionaries/status
+  - feeds/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - emr.cloudcontrol.aws.hfl.dev
+  resources:
+  - steps
+  - studios
+  - studiosessionmappings
+  - walworkspaces
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - emr.cloudcontrol.aws.hfl.dev
+  resources:
+  - steps/status
+  - studios/status
+  - studiosessionmappings/status
+  - walworkspaces/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - emrcontainers.cloudcontrol.aws.hfl.dev
+  resources:
+  - securityconfigurations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - emrcontainers.cloudcontrol.aws.hfl.dev
+  resources:
+  - securityconfigurations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - entityresolution.cloudcontrol.aws.hfl.dev
+  resources:
+  - idmappingworkflows
+  - idnamespaces
+  - matchingworkflows
+  - policystatements
+  - schemamappings
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - entityresolution.cloudcontrol.aws.hfl.dev
+  resources:
+  - idmappingworkflows/status
+  - idnamespaces/status
+  - matchingworkflows/status
+  - policystatements/status
+  - schemamappings/status
   verbs:
   - get
   - patch
@@ -750,6 +2944,122 @@ rules:
   - registries/status
   - registrypolicies/status
   - schemas/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - eventsv2.cloudcontrol.aws.hfl.dev
+  resources:
+  - eventbuses
+  - eventsources
+  - resourcepolicies
+  - subscribers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - eventsv2.cloudcontrol.aws.hfl.dev
+  resources:
+  - eventbuses/status
+  - eventsources/status
+  - resourcepolicies/status
+  - subscribers/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - evidently.cloudcontrol.aws.hfl.dev
+  resources:
+  - experiments
+  - features
+  - launches
+  - projects
+  - segments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - evidently.cloudcontrol.aws.hfl.dev
+  resources:
+  - experiments/status
+  - features/status
+  - launches/status
+  - projects/status
+  - segments/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - evs.cloudcontrol.aws.hfl.dev
+  resources:
+  - environments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - evs.cloudcontrol.aws.hfl.dev
+  resources:
+  - environments/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - finspace.cloudcontrol.aws.hfl.dev
+  resources:
+  - environments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - finspace.cloudcontrol.aws.hfl.dev
+  resources:
+  - environments/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - fis.cloudcontrol.aws.hfl.dev
+  resources:
+  - experimenttemplates
+  - targetaccountconfigurations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - fis.cloudcontrol.aws.hfl.dev
+  resources:
+  - experimenttemplates/status
+  - targetaccountconfigurations/status
   verbs:
   - get
   - patch
@@ -783,10 +3093,180 @@ rules:
   - patch
   - update
 - apiGroups:
+  - forecast.cloudcontrol.aws.hfl.dev
+  resources:
+  - datasetgroups
+  - datasets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - forecast.cloudcontrol.aws.hfl.dev
+  resources:
+  - datasetgroups/status
+  - datasets/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - frauddetector.cloudcontrol.aws.hfl.dev
+  resources:
+  - detectors
+  - entitytypes
+  - eventtypes
+  - labels
+  - outcomes
+  - variables
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - frauddetector.cloudcontrol.aws.hfl.dev
+  resources:
+  - detectors/status
+  - entitytypes/status
+  - eventtypes/status
+  - labels/status
+  - outcomes/status
+  - variables/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - fsx.cloudcontrol.aws.hfl.dev
+  resources:
+  - backups
+  - filecaches
+  - snapshots
+  - storagevirtualmachines
+  - volumes
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - fsx.cloudcontrol.aws.hfl.dev
+  resources:
+  - backups/status
+  - filecaches/status
+  - snapshots/status
+  - storagevirtualmachines/status
+  - volumes/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - gamelift.cloudcontrol.aws.hfl.dev
+  resources:
+  - aliases
+  - builds
+  - containerfleets
+  - containergroupdefinitions
+  - fleets
+  - gameservergroups
+  - gamesessionqueues
+  - locations
+  - matchmakingconfigurations
+  - matchmakingrulesets
+  - scripts
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - gamelift.cloudcontrol.aws.hfl.dev
+  resources:
+  - aliases/status
+  - builds/status
+  - containerfleets/status
+  - containergroupdefinitions/status
+  - fleets/status
+  - gameservergroups/status
+  - gamesessionqueues/status
+  - locations/status
+  - matchmakingconfigurations/status
+  - matchmakingrulesets/status
+  - scripts/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - globalaccelerator.cloudcontrol.aws.hfl.dev
+  resources:
+  - accelerators
+  - crossaccountattachments
+  - endpointgroups
+  - listeners
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - globalaccelerator.cloudcontrol.aws.hfl.dev
+  resources:
+  - accelerators/status
+  - crossaccountattachments/status
+  - endpointgroups/status
+  - listeners/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - glue.cloudcontrol.aws.hfl.dev
   resources:
+  - blueprints
+  - catalogs
+  - classifiers
+  - connections
+  - connectiontypes
+  - crawlers
+  - customentitytypes
+  - datacatalogencryptionsettingses
+  - dataqualityrulesets
+  - identitycenterconfigurations
+  - integrationresourceproperties
+  - integrations
+  - mltransforms
+  - partitions
   - registries
   - schemas
+  - schemaversionmetadatas
+  - schemaversions
+  - securityconfigurations
+  - sessions
+  - tableoptimizers
+  - tables
+  - triggers
+  - usageprofiles
+  - userdefinedfunctions
+  - workflows
   verbs:
   - create
   - delete
@@ -798,8 +3278,100 @@ rules:
 - apiGroups:
   - glue.cloudcontrol.aws.hfl.dev
   resources:
+  - blueprints/status
+  - catalogs/status
+  - classifiers/status
+  - connections/status
+  - connectiontypes/status
+  - crawlers/status
+  - customentitytypes/status
+  - datacatalogencryptionsettingses/status
+  - dataqualityrulesets/status
+  - identitycenterconfigurations/status
+  - integrationresourceproperties/status
+  - integrations/status
+  - mltransforms/status
+  - partitions/status
   - registries/status
   - schemas/status
+  - schemaversionmetadatas/status
+  - schemaversions/status
+  - securityconfigurations/status
+  - sessions/status
+  - tableoptimizers/status
+  - tables/status
+  - triggers/status
+  - usageprofiles/status
+  - userdefinedfunctions/status
+  - workflows/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - grafana.cloudcontrol.aws.hfl.dev
+  resources:
+  - workspaces
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - grafana.cloudcontrol.aws.hfl.dev
+  resources:
+  - workspaces/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - greengrassv2.cloudcontrol.aws.hfl.dev
+  resources:
+  - componentversions
+  - deployments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - greengrassv2.cloudcontrol.aws.hfl.dev
+  resources:
+  - componentversions/status
+  - deployments/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - groundstation.cloudcontrol.aws.hfl.dev
+  resources:
+  - configs
+  - dataflowendpointgroups
+  - dataflowendpointgroupv2s
+  - missionprofiles
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - groundstation.cloudcontrol.aws.hfl.dev
+  resources:
+  - configs/status
+  - dataflowendpointgroups/status
+  - dataflowendpointgroupv2s/status
+  - missionprofiles/status
   verbs:
   - get
   - patch
@@ -840,6 +3412,68 @@ rules:
   - threatentitysets/status
   - threatintelsets/status
   - trustedentitysets/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - healthagent.cloudcontrol.aws.hfl.dev
+  resources:
+  - domains
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - healthagent.cloudcontrol.aws.hfl.dev
+  resources:
+  - domains/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - healthimaging.cloudcontrol.aws.hfl.dev
+  resources:
+  - datastores
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - healthimaging.cloudcontrol.aws.hfl.dev
+  resources:
+  - datastores/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - healthlake.cloudcontrol.aws.hfl.dev
+  resources:
+  - datatransformationprofiles
+  - fhirdatastores
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - healthlake.cloudcontrol.aws.hfl.dev
+  resources:
+  - datatransformationprofiles/status
+  - fhirdatastores/status
   verbs:
   - get
   - patch
@@ -891,6 +3525,42 @@ rules:
   - patch
   - update
 - apiGroups:
+  - imagebuilder.cloudcontrol.aws.hfl.dev
+  resources:
+  - components
+  - containerrecipes
+  - distributionconfigurations
+  - imagepipelines
+  - imagerecipes
+  - images
+  - infrastructureconfigurations
+  - lifecyclepolicies
+  - workflows
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - imagebuilder.cloudcontrol.aws.hfl.dev
+  resources:
+  - components/status
+  - containerrecipes/status
+  - distributionconfigurations/status
+  - imagepipelines/status
+  - imagerecipes/status
+  - images/status
+  - infrastructureconfigurations/status
+  - lifecyclepolicies/status
+  - workflows/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - inspectorv2.cloudcontrol.aws.hfl.dev
   resources:
   - cisscanconfigurations
@@ -919,8 +3589,417 @@ rules:
   - patch
   - update
 - apiGroups:
+  - interconnect.cloudcontrol.aws.hfl.dev
+  resources:
+  - connections
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - interconnect.cloudcontrol.aws.hfl.dev
+  resources:
+  - connections/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - internetmonitor.cloudcontrol.aws.hfl.dev
+  resources:
+  - monitors
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - internetmonitor.cloudcontrol.aws.hfl.dev
+  resources:
+  - monitors/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - invoicing.cloudcontrol.aws.hfl.dev
+  resources:
+  - invoiceunits
+  - procurementportalpreferences
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - invoicing.cloudcontrol.aws.hfl.dev
+  resources:
+  - invoiceunits/status
+  - procurementportalpreferences/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - iot.cloudcontrol.aws.hfl.dev
+  resources:
+  - accountauditconfigurations
+  - authorizers
+  - billinggroups
+  - cacertificates
+  - certificateproviders
+  - certificates
+  - commands
+  - custommetrics
+  - dimensions
+  - domainconfigurations
+  - encryptionconfigurations
+  - fleetmetrics
+  - jobs
+  - jobtemplates
+  - loggings
+  - mitigationactions
+  - otaupdates
+  - policyprincipalattachments
+  - provisioningtemplates
+  - resourcespecificloggings
+  - rolealiases
+  - scheduledaudits
+  - securityprofiles
+  - softwarepackages
+  - softwarepackageversions
+  - streams
+  - thinggroups
+  - thingprincipalattachments
+  - things
+  - thingtypes
+  - topicruledestinations
+  - topicrules
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - iot.cloudcontrol.aws.hfl.dev
+  resources:
+  - accountauditconfigurations/status
+  - authorizers/status
+  - billinggroups/status
+  - cacertificates/status
+  - certificateproviders/status
+  - certificates/status
+  - commands/status
+  - custommetrics/status
+  - dimensions/status
+  - domainconfigurations/status
+  - encryptionconfigurations/status
+  - fleetmetrics/status
+  - jobs/status
+  - jobtemplates/status
+  - loggings/status
+  - mitigationactions/status
+  - otaupdates/status
+  - policyprincipalattachments/status
+  - provisioningtemplates/status
+  - resourcespecificloggings/status
+  - rolealiases/status
+  - scheduledaudits/status
+  - securityprofiles/status
+  - softwarepackages/status
+  - softwarepackageversions/status
+  - streams/status
+  - thinggroups/status
+  - thingprincipalattachments/status
+  - things/status
+  - thingtypes/status
+  - topicruledestinations/status
+  - topicrules/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - iotanalytics.cloudcontrol.aws.hfl.dev
+  resources:
+  - channels
+  - datasets
+  - datastores
+  - pipelines
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - iotanalytics.cloudcontrol.aws.hfl.dev
+  resources:
+  - channels/status
+  - datasets/status
+  - datastores/status
+  - pipelines/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - iotcoredeviceadvisor.cloudcontrol.aws.hfl.dev
+  resources:
+  - suitedefinitions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - iotcoredeviceadvisor.cloudcontrol.aws.hfl.dev
+  resources:
+  - suitedefinitions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - iotfleetwise.cloudcontrol.aws.hfl.dev
+  resources:
+  - campaigns
+  - fleets
+  - modelmanifests
+  - signalcatalogs
+  - statetemplates
+  - vehicles
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - iotfleetwise.cloudcontrol.aws.hfl.dev
+  resources:
+  - campaigns/status
+  - fleets/status
+  - modelmanifests/status
+  - signalcatalogs/status
+  - statetemplates/status
+  - vehicles/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - iotsecuretunneling.cloudcontrol.aws.hfl.dev
+  resources:
+  - tunnels
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - iotsecuretunneling.cloudcontrol.aws.hfl.dev
+  resources:
+  - tunnels/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - iotsitewise.cloudcontrol.aws.hfl.dev
+  resources:
+  - accesspolicies
+  - applications
+  - assetmodels
+  - assets
+  - dashboards
+  - datasets
+  - gateways
+  - pipelines
+  - portals
+  - projects
+  - tasks
+  - workspaces
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - iotsitewise.cloudcontrol.aws.hfl.dev
+  resources:
+  - accesspolicies/status
+  - applications/status
+  - assetmodels/status
+  - assets/status
+  - dashboards/status
+  - datasets/status
+  - gateways/status
+  - pipelines/status
+  - portals/status
+  - projects/status
+  - tasks/status
+  - workspaces/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - iottwinmaker.cloudcontrol.aws.hfl.dev
+  resources:
+  - scenes
+  - syncjobs
+  - workspaces
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - iottwinmaker.cloudcontrol.aws.hfl.dev
+  resources:
+  - scenes/status
+  - syncjobs/status
+  - workspaces/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - iotwireless.cloudcontrol.aws.hfl.dev
+  resources:
+  - destinations
+  - deviceprofiles
+  - fuotatasks
+  - multicastgroups
+  - networkanalyzerconfigurations
+  - partneraccounts
+  - serviceprofiles
+  - taskdefinitions
+  - wirelessdeviceimporttasks
+  - wirelessdevices
+  - wirelessgateways
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - iotwireless.cloudcontrol.aws.hfl.dev
+  resources:
+  - destinations/status
+  - deviceprofiles/status
+  - fuotatasks/status
+  - multicastgroups/status
+  - networkanalyzerconfigurations/status
+  - partneraccounts/status
+  - serviceprofiles/status
+  - taskdefinitions/status
+  - wirelessdeviceimporttasks/status
+  - wirelessdevices/status
+  - wirelessgateways/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - ivs.cloudcontrol.aws.hfl.dev
+  resources:
+  - adconfigurations
+  - channels
+  - encoderconfigurations
+  - ingestconfigurations
+  - playbackkeypairs
+  - playbackrestrictionpolicies
+  - publickeys
+  - recordingconfigurations
+  - stages
+  - storageconfigurations
+  - streamkeys
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ivs.cloudcontrol.aws.hfl.dev
+  resources:
+  - adconfigurations/status
+  - channels/status
+  - encoderconfigurations/status
+  - ingestconfigurations/status
+  - playbackkeypairs/status
+  - playbackrestrictionpolicies/status
+  - publickeys/status
+  - recordingconfigurations/status
+  - stages/status
+  - storageconfigurations/status
+  - streamkeys/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - ivschat.cloudcontrol.aws.hfl.dev
+  resources:
+  - loggingconfigurations
+  - rooms
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ivschat.cloudcontrol.aws.hfl.dev
+  resources:
+  - loggingconfigurations/status
+  - rooms/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - kafkaconnect.cloudcontrol.aws.hfl.dev
   resources:
+  - connectors
   - customplugins
   - workerconfigurations
   verbs:
@@ -934,8 +4013,151 @@ rules:
 - apiGroups:
   - kafkaconnect.cloudcontrol.aws.hfl.dev
   resources:
+  - connectors/status
   - customplugins/status
   - workerconfigurations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - kendra.cloudcontrol.aws.hfl.dev
+  resources:
+  - datasources
+  - faqs
+  - featuredresultssets
+  - indexes
+  - querysuggestionsblocklists
+  - thesauruses
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - kendra.cloudcontrol.aws.hfl.dev
+  resources:
+  - datasources/status
+  - faqs/status
+  - featuredresultssets/status
+  - indexes/status
+  - querysuggestionsblocklists/status
+  - thesauruses/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - kendraranking.cloudcontrol.aws.hfl.dev
+  resources:
+  - executionplans
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - kendraranking.cloudcontrol.aws.hfl.dev
+  resources:
+  - executionplans/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - kinesis.cloudcontrol.aws.hfl.dev
+  resources:
+  - channels
+  - resourcepolicies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - kinesis.cloudcontrol.aws.hfl.dev
+  resources:
+  - channels/status
+  - resourcepolicies/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - kinesisanalyticsv2.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - kinesisanalyticsv2.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - kinesisvideo.cloudcontrol.aws.hfl.dev
+  resources:
+  - signalingchannels
+  - streams
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - kinesisvideo.cloudcontrol.aws.hfl.dev
+  resources:
+  - signalingchannels/status
+  - streams/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - lakeformation.cloudcontrol.aws.hfl.dev
+  resources:
+  - datacellsfilters
+  - principalpermissionses
+  - resources
+  - tagassociations
+  - tags
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - lakeformation.cloudcontrol.aws.hfl.dev
+  resources:
+  - datacellsfilters/status
+  - principalpermissionses/status
+  - resources/status
+  - tagassociations/status
+  - tags/status
   verbs:
   - get
   - patch
@@ -968,6 +4190,204 @@ rules:
   - webfunctionendpoints/status
   - webfunctionrevisions/status
   - webfunctions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - launchwizard.cloudcontrol.aws.hfl.dev
+  resources:
+  - deployments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - launchwizard.cloudcontrol.aws.hfl.dev
+  resources:
+  - deployments/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - lex.cloudcontrol.aws.hfl.dev
+  resources:
+  - botaliases
+  - botversions
+  - resourcepolicies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - lex.cloudcontrol.aws.hfl.dev
+  resources:
+  - botaliases/status
+  - botversions/status
+  - resourcepolicies/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - licensemanager.cloudcontrol.aws.hfl.dev
+  resources:
+  - grants
+  - licenseassetgroups
+  - licenseassetrulesets
+  - licenseconfigurations
+  - licenses
+  - reportgenerators
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - licensemanager.cloudcontrol.aws.hfl.dev
+  resources:
+  - grants/status
+  - licenseassetgroups/status
+  - licenseassetrulesets/status
+  - licenseconfigurations/status
+  - licenses/status
+  - reportgenerators/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - licensemanagerlinuxsubscriptions.cloudcontrol.aws.hfl.dev
+  resources:
+  - subscriptionproviders
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - licensemanagerlinuxsubscriptions.cloudcontrol.aws.hfl.dev
+  resources:
+  - subscriptionproviders/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - licensemanagerusersubscriptions.cloudcontrol.aws.hfl.dev
+  resources:
+  - licenseserverendpoints
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - licensemanagerusersubscriptions.cloudcontrol.aws.hfl.dev
+  resources:
+  - licenseserverendpoints/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - lightsail.cloudcontrol.aws.hfl.dev
+  resources:
+  - alarms
+  - buckets
+  - certificates
+  - contactmethods
+  - containers
+  - databases
+  - databasesnapshots
+  - disks
+  - disksnapshots
+  - distributions
+  - domains
+  - instances
+  - instancesnapshots
+  - keypairs
+  - loadbalancers
+  - loadbalancertlscertificates
+  - staticips
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - lightsail.cloudcontrol.aws.hfl.dev
+  resources:
+  - alarms/status
+  - buckets/status
+  - certificates/status
+  - contactmethods/status
+  - containers/status
+  - databases/status
+  - databasesnapshots/status
+  - disks/status
+  - disksnapshots/status
+  - distributions/status
+  - domains/status
+  - instances/status
+  - instancesnapshots/status
+  - keypairs/status
+  - loadbalancers/status
+  - loadbalancertlscertificates/status
+  - staticips/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - location.cloudcontrol.aws.hfl.dev
+  resources:
+  - apikeys
+  - geofencecollections
+  - maps
+  - placeindexes
+  - routecalculators
+  - trackerconsumers
+  - trackers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - location.cloudcontrol.aws.hfl.dev
+  resources:
+  - apikeys/status
+  - geofencecollections/status
+  - maps/status
+  - placeindexes/status
+  - routecalculators/status
+  - trackerconsumers/status
+  - trackers/status
   verbs:
   - get
   - patch
@@ -1011,6 +4431,50 @@ rules:
   - patch
   - update
 - apiGroups:
+  - lookoutequipment.cloudcontrol.aws.hfl.dev
+  resources:
+  - inferenceschedulers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - lookoutequipment.cloudcontrol.aws.hfl.dev
+  resources:
+  - inferenceschedulers/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - m2.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications
+  - deployments
+  - environments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - m2.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications/status
+  - deployments/status
+  - environments/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - macie.cloudcontrol.aws.hfl.dev
   resources:
   - allowlists
@@ -1034,6 +4498,278 @@ rules:
   - findingsfilters/status
   - members/status
   - sessions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - managedblockchain.cloudcontrol.aws.hfl.dev
+  resources:
+  - accessors
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - managedblockchain.cloudcontrol.aws.hfl.dev
+  resources:
+  - accessors/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - mediaconnect.cloudcontrol.aws.hfl.dev
+  resources:
+  - bridgeoutputs
+  - bridges
+  - bridgesources
+  - flowentitlements
+  - flowmediastreams
+  - flowoutputs
+  - flows
+  - flowsources
+  - flowvpcinterfaces
+  - gateways
+  - routerinputs
+  - routernetworkinterfaces
+  - routeroutputs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - mediaconnect.cloudcontrol.aws.hfl.dev
+  resources:
+  - bridgeoutputs/status
+  - bridges/status
+  - bridgesources/status
+  - flowentitlements/status
+  - flowmediastreams/status
+  - flowoutputs/status
+  - flows/status
+  - flowsources/status
+  - flowvpcinterfaces/status
+  - gateways/status
+  - routerinputs/status
+  - routernetworkinterfaces/status
+  - routeroutputs/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - mediaconvert.cloudcontrol.aws.hfl.dev
+  resources:
+  - certificateassociations
+  - jobtemplates
+  - presets
+  - queues
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - mediaconvert.cloudcontrol.aws.hfl.dev
+  resources:
+  - certificateassociations/status
+  - jobtemplates/status
+  - presets/status
+  - queues/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - medialive.cloudcontrol.aws.hfl.dev
+  resources:
+  - channelplacementgroups
+  - cloudwatchalarmtemplategroups
+  - cloudwatchalarmtemplates
+  - clusters
+  - eventbridgeruletemplategroups
+  - eventbridgeruletemplates
+  - inputs
+  - inputsecuritygroups
+  - multiplexes
+  - multiplexprograms
+  - networks
+  - nodes
+  - sdisources
+  - signalmaps
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - medialive.cloudcontrol.aws.hfl.dev
+  resources:
+  - channelplacementgroups/status
+  - cloudwatchalarmtemplategroups/status
+  - cloudwatchalarmtemplates/status
+  - clusters/status
+  - eventbridgeruletemplategroups/status
+  - eventbridgeruletemplates/status
+  - inputs/status
+  - inputsecuritygroups/status
+  - multiplexes/status
+  - multiplexprograms/status
+  - networks/status
+  - nodes/status
+  - sdisources/status
+  - signalmaps/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - mediapackage.cloudcontrol.aws.hfl.dev
+  resources:
+  - assets
+  - channels
+  - originendpoints
+  - packagingconfigurations
+  - packaginggroups
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - mediapackage.cloudcontrol.aws.hfl.dev
+  resources:
+  - assets/status
+  - channels/status
+  - originendpoints/status
+  - packagingconfigurations/status
+  - packaginggroups/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - mediapackagev2.cloudcontrol.aws.hfl.dev
+  resources:
+  - channelgroups
+  - channels
+  - originendpoints
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - mediapackagev2.cloudcontrol.aws.hfl.dev
+  resources:
+  - channelgroups/status
+  - channels/status
+  - originendpoints/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - mediatailor.cloudcontrol.aws.hfl.dev
+  resources:
+  - channels
+  - functions
+  - livesources
+  - playbackconfigurations
+  - prefetchschedules
+  - programs
+  - sourcelocations
+  - vodsources
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - mediatailor.cloudcontrol.aws.hfl.dev
+  resources:
+  - channels/status
+  - functions/status
+  - livesources/status
+  - playbackconfigurations/status
+  - prefetchschedules/status
+  - programs/status
+  - sourcelocations/status
+  - vodsources/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - mgn.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications
+  - connectors
+  - launchconfigurationtemplates
+  - networkmigrationdefinitions
+  - replicationconfigurationtemplates
+  - waves
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - mgn.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications/status
+  - connectors/status
+  - launchconfigurationtemplates/status
+  - networkmigrationdefinitions/status
+  - replicationconfigurationtemplates/status
+  - waves/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - mpa.cloudcontrol.aws.hfl.dev
+  resources:
+  - identitysources
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - mpa.cloudcontrol.aws.hfl.dev
+  resources:
+  - identitysources/status
   verbs:
   - get
   - patch
@@ -1063,6 +4799,62 @@ rules:
   - patch
   - update
 - apiGroups:
+  - neptune.cloudcontrol.aws.hfl.dev
+  resources:
+  - dbclusterparametergroups
+  - dbclusters
+  - dbinstances
+  - dbparametergroups
+  - dbsubnetgroups
+  - eventsubscriptions
+  - globalclusters
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - neptune.cloudcontrol.aws.hfl.dev
+  resources:
+  - dbclusterparametergroups/status
+  - dbclusters/status
+  - dbinstances/status
+  - dbparametergroups/status
+  - dbsubnetgroups/status
+  - eventsubscriptions/status
+  - globalclusters/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - neptunegraph.cloudcontrol.aws.hfl.dev
+  resources:
+  - graphs
+  - graphsnapshots
+  - privategraphendpoints
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - neptunegraph.cloudcontrol.aws.hfl.dev
+  resources:
+  - graphs/status
+  - graphsnapshots/status
+  - privategraphendpoints/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - networkfirewall.cloudcontrol.aws.hfl.dev
   resources:
   - containerassociations
@@ -1084,6 +4876,714 @@ rules:
   - loggingconfigurations/status
   - tlsinspectionconfigurations/status
   - vpcendpointassociations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - networkflowmonitor.cloudcontrol.aws.hfl.dev
+  resources:
+  - monitors
+  - scopes
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - networkflowmonitor.cloudcontrol.aws.hfl.dev
+  resources:
+  - monitors/status
+  - scopes/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - networkmonitor.cloudcontrol.aws.hfl.dev
+  resources:
+  - monitors
+  - probes
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - networkmonitor.cloudcontrol.aws.hfl.dev
+  resources:
+  - monitors/status
+  - probes/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - networksecuritymanager.cloudcontrol.aws.hfl.dev
+  resources:
+  - deployments
+  - policies
+  - rules
+  - scopes
+  - templates
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - networksecuritymanager.cloudcontrol.aws.hfl.dev
+  resources:
+  - deployments/status
+  - policies/status
+  - rules/status
+  - scopes/status
+  - templates/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - notifications.cloudcontrol.aws.hfl.dev
+  resources:
+  - channelassociations
+  - eventrules
+  - managednotificationaccountcontactassociations
+  - managednotificationadditionalchannelassociations
+  - notificationconfigurations
+  - notificationhubs
+  - organizationalunitassociations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - notifications.cloudcontrol.aws.hfl.dev
+  resources:
+  - channelassociations/status
+  - eventrules/status
+  - managednotificationaccountcontactassociations/status
+  - managednotificationadditionalchannelassociations/status
+  - notificationconfigurations/status
+  - notificationhubs/status
+  - organizationalunitassociations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - notificationscontacts.cloudcontrol.aws.hfl.dev
+  resources:
+  - emailcontacts
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - notificationscontacts.cloudcontrol.aws.hfl.dev
+  resources:
+  - emailcontacts/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - novaact.cloudcontrol.aws.hfl.dev
+  resources:
+  - workflowdefinitions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - novaact.cloudcontrol.aws.hfl.dev
+  resources:
+  - workflowdefinitions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - oam.cloudcontrol.aws.hfl.dev
+  resources:
+  - links
+  - sinks
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - oam.cloudcontrol.aws.hfl.dev
+  resources:
+  - links/status
+  - sinks/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - observabilityadmin.cloudcontrol.aws.hfl.dev
+  resources:
+  - datasetintegrations
+  - organizationcentralizationrules
+  - organizationtelemetryrules
+  - s3tableintegrations
+  - telemetryenrichments
+  - telemetrypipelineses
+  - telemetryrules
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - observabilityadmin.cloudcontrol.aws.hfl.dev
+  resources:
+  - datasetintegrations/status
+  - organizationcentralizationrules/status
+  - organizationtelemetryrules/status
+  - s3tableintegrations/status
+  - telemetryenrichments/status
+  - telemetrypipelineses/status
+  - telemetryrules/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - odb.cloudcontrol.aws.hfl.dev
+  resources:
+  - cloudautonomousvmclusters
+  - cloudexadatainfrastructures
+  - odbnetworks
+  - odbpeeringconnections
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - odb.cloudcontrol.aws.hfl.dev
+  resources:
+  - cloudautonomousvmclusters/status
+  - cloudexadatainfrastructures/status
+  - odbnetworks/status
+  - odbpeeringconnections/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - omics.cloudcontrol.aws.hfl.dev
+  resources:
+  - annotationstores
+  - configurations
+  - referencestores
+  - runcaches
+  - rungroups
+  - sequencestores
+  - variantstores
+  - workflows
+  - workflowversions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - omics.cloudcontrol.aws.hfl.dev
+  resources:
+  - annotationstores/status
+  - configurations/status
+  - referencestores/status
+  - runcaches/status
+  - rungroups/status
+  - sequencestores/status
+  - variantstores/status
+  - workflows/status
+  - workflowversions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - opensearch.cloudcontrol.aws.hfl.dev
+  resources:
+  - datasources
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - opensearch.cloudcontrol.aws.hfl.dev
+  resources:
+  - datasources/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - opensearchserverless.cloudcontrol.aws.hfl.dev
+  resources:
+  - collectionindexes
+  - vpcendpoints
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - opensearchserverless.cloudcontrol.aws.hfl.dev
+  resources:
+  - collectionindexes/status
+  - vpcendpoints/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - osis.cloudcontrol.aws.hfl.dev
+  resources:
+  - pipelineendpoints
+  - pipelines
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - osis.cloudcontrol.aws.hfl.dev
+  resources:
+  - pipelineendpoints/status
+  - pipelines/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - outposts.cloudcontrol.aws.hfl.dev
+  resources:
+  - outposts
+  - sites
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - outposts.cloudcontrol.aws.hfl.dev
+  resources:
+  - outposts/status
+  - sites/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - panorama.cloudcontrol.aws.hfl.dev
+  resources:
+  - applicationinstances
+  - packages
+  - packageversions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - panorama.cloudcontrol.aws.hfl.dev
+  resources:
+  - applicationinstances/status
+  - packages/status
+  - packageversions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - paymentcryptography.cloudcontrol.aws.hfl.dev
+  resources:
+  - aliases
+  - keys
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - paymentcryptography.cloudcontrol.aws.hfl.dev
+  resources:
+  - aliases/status
+  - keys/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - pcaconnectorad.cloudcontrol.aws.hfl.dev
+  resources:
+  - connectors
+  - directoryregistrations
+  - serviceprincipalnames
+  - templategroupaccesscontrolentries
+  - templates
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - pcaconnectorad.cloudcontrol.aws.hfl.dev
+  resources:
+  - connectors/status
+  - directoryregistrations/status
+  - serviceprincipalnames/status
+  - templategroupaccesscontrolentries/status
+  - templates/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - pcaconnectorscep.cloudcontrol.aws.hfl.dev
+  resources:
+  - challenges
+  - connectors
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - pcaconnectorscep.cloudcontrol.aws.hfl.dev
+  resources:
+  - challenges/status
+  - connectors/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - pcs.cloudcontrol.aws.hfl.dev
+  resources:
+  - clusters
+  - computenodegroups
+  - queues
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - pcs.cloudcontrol.aws.hfl.dev
+  resources:
+  - clusters/status
+  - computenodegroups/status
+  - queues/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - personalize.cloudcontrol.aws.hfl.dev
+  resources:
+  - campaigns
+  - datasetgroups
+  - datasets
+  - eventtrackers
+  - filters
+  - metricattributions
+  - recommenders
+  - schemas
+  - solutions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - personalize.cloudcontrol.aws.hfl.dev
+  resources:
+  - campaigns/status
+  - datasetgroups/status
+  - datasets/status
+  - eventtrackers/status
+  - filters/status
+  - metricattributions/status
+  - recommenders/status
+  - schemas/status
+  - solutions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - pi.cloudcontrol.aws.hfl.dev
+  resources:
+  - perfreportses
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - pi.cloudcontrol.aws.hfl.dev
+  resources:
+  - perfreportses/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - pinpoint.cloudcontrol.aws.hfl.dev
+  resources:
+  - inapptemplates
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - pinpoint.cloudcontrol.aws.hfl.dev
+  resources:
+  - inapptemplates/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - polly.cloudcontrol.aws.hfl.dev
+  resources:
+  - lexicons
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - polly.cloudcontrol.aws.hfl.dev
+  resources:
+  - lexicons/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - pricingplanmanager.cloudcontrol.aws.hfl.dev
+  resources:
+  - subscriptions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - pricingplanmanager.cloudcontrol.aws.hfl.dev
+  resources:
+  - subscriptions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - proton.cloudcontrol.aws.hfl.dev
+  resources:
+  - environmentaccountconnections
+  - environmenttemplates
+  - servicetemplates
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - proton.cloudcontrol.aws.hfl.dev
+  resources:
+  - environmentaccountconnections/status
+  - environmenttemplates/status
+  - servicetemplates/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - qbusiness.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications
+  - indexes
+  - permissions
+  - plugins
+  - retrievers
+  - webexperiences
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - qbusiness.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications/status
+  - indexes/status
+  - permissions/status
+  - plugins/status
+  - retrievers/status
+  - webexperiences/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - qldb.cloudcontrol.aws.hfl.dev
+  resources:
+  - streams
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - qldb.cloudcontrol.aws.hfl.dev
+  resources:
+  - streams/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - quicksight.cloudcontrol.aws.hfl.dev
+  resources:
+  - actionconnectors
+  - agents
+  - approvalpolicies
+  - assignments
+  - brands
+  - customizations
+  - custompermissionses
+  - dlpsettings
+  - folders
+  - groups
+  - limitsprofiles
+  - oauthclientapplications
+  - spaces
+  - themes
+  - topics
+  - topicv2s
+  - vpcconnections
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - quicksight.cloudcontrol.aws.hfl.dev
+  resources:
+  - actionconnectors/status
+  - agents/status
+  - approvalpolicies/status
+  - assignments/status
+  - brands/status
+  - customizations/status
+  - custompermissionses/status
+  - dlpsettings/status
+  - folders/status
+  - groups/status
+  - limitsprofiles/status
+  - oauthclientapplications/status
+  - spaces/status
+  - themes/status
+  - topics/status
+  - topicv2s/status
+  - vpcconnections/status
   verbs:
   - get
   - patch
@@ -1147,6 +5647,206 @@ rules:
   - patch
   - update
 - apiGroups:
+  - redshiftserverless.cloudcontrol.aws.hfl.dev
+  resources:
+  - namespaces
+  - workgroups
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - redshiftserverless.cloudcontrol.aws.hfl.dev
+  resources:
+  - namespaces/status
+  - workgroups/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - refactorspaces.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications
+  - environments
+  - routes
+  - services
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - refactorspaces.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications/status
+  - environments/status
+  - routes/status
+  - services/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - rekognition.cloudcontrol.aws.hfl.dev
+  resources:
+  - collections
+  - datasets
+  - projects
+  - streamprocessors
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - rekognition.cloudcontrol.aws.hfl.dev
+  resources:
+  - collections/status
+  - datasets/status
+  - projects/status
+  - streamprocessors/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - resiliencehub.cloudcontrol.aws.hfl.dev
+  resources:
+  - apps
+  - resiliencypolicies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - resiliencehub.cloudcontrol.aws.hfl.dev
+  resources:
+  - apps/status
+  - resiliencypolicies/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - resiliencehubv2.cloudcontrol.aws.hfl.dev
+  resources:
+  - policies
+  - servicefunctions
+  - services
+  - systems
+  - userjourneys
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - resiliencehubv2.cloudcontrol.aws.hfl.dev
+  resources:
+  - policies/status
+  - servicefunctions/status
+  - services/status
+  - systems/status
+  - userjourneys/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - resourceexplorer2.cloudcontrol.aws.hfl.dev
+  resources:
+  - defaultviewassociations
+  - indexes
+  - views
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - resourceexplorer2.cloudcontrol.aws.hfl.dev
+  resources:
+  - defaultviewassociations/status
+  - indexes/status
+  - views/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - resourcegroups.cloudcontrol.aws.hfl.dev
+  resources:
+  - groups
+  - tagsynctasks
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - resourcegroups.cloudcontrol.aws.hfl.dev
+  resources:
+  - groups/status
+  - tagsynctasks/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - robomaker.cloudcontrol.aws.hfl.dev
+  resources:
+  - fleets
+  - robotapplications
+  - robotapplicationversions
+  - robots
+  - simulationapplications
+  - simulationapplicationversions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - robomaker.cloudcontrol.aws.hfl.dev
+  resources:
+  - fleets/status
+  - robotapplications/status
+  - robotapplicationversions/status
+  - robots/status
+  - simulationapplications/status
+  - simulationapplicationversions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - rolesanywhere.cloudcontrol.aws.hfl.dev
   resources:
   - crls
@@ -1203,6 +5903,38 @@ rules:
   - patch
   - update
 - apiGroups:
+  - route53globalresolver.cloudcontrol.aws.hfl.dev
+  resources:
+  - accesssources
+  - accesstokens
+  - dnsviews
+  - firewalldomainlists
+  - firewallrules
+  - globalresolvers
+  - hostedzoneassociations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - route53globalresolver.cloudcontrol.aws.hfl.dev
+  resources:
+  - accesssources/status
+  - accesstokens/status
+  - dnsviews/status
+  - firewalldomainlists/status
+  - firewallrules/status
+  - globalresolvers/status
+  - hostedzoneassociations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - route53profiles.cloudcontrol.aws.hfl.dev
   resources:
   - profileassociations
@@ -1222,6 +5954,58 @@ rules:
   - profileassociations/status
   - profileresourceassociations/status
   - profiles/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - route53recoverycontrol.cloudcontrol.aws.hfl.dev
+  resources:
+  - clusters
+  - controlpanels
+  - routingcontrols
+  - safetyrules
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - route53recoverycontrol.cloudcontrol.aws.hfl.dev
+  resources:
+  - clusters/status
+  - controlpanels/status
+  - routingcontrols/status
+  - safetyrules/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - route53recoveryreadiness.cloudcontrol.aws.hfl.dev
+  resources:
+  - cells
+  - readinesschecks
+  - recoverygroups
+  - resourcesets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - route53recoveryreadiness.cloudcontrol.aws.hfl.dev
+  resources:
+  - cells/status
+  - readinesschecks/status
+  - recoverygroups/status
+  - resourcesets/status
   verbs:
   - get
   - patch
@@ -1252,6 +6036,56 @@ rules:
   - firewallrulegroups/status
   - resolverconfigs/status
   - resolverdnssecconfigs/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - rtbfabric.cloudcontrol.aws.hfl.dev
+  resources:
+  - inboundexternallinks
+  - linkroutingrules
+  - links
+  - outboundexternallinks
+  - requestergateways
+  - respondergateways
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - rtbfabric.cloudcontrol.aws.hfl.dev
+  resources:
+  - inboundexternallinks/status
+  - linkroutingrules/status
+  - links/status
+  - outboundexternallinks/status
+  - requestergateways/status
+  - respondergateways/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - rum.cloudcontrol.aws.hfl.dev
+  resources:
+  - appmonitors
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - rum.cloudcontrol.aws.hfl.dev
+  resources:
+  - appmonitors/status
   verbs:
   - get
   - patch
@@ -1291,6 +6125,7 @@ rules:
 - apiGroups:
   - s3express.cloudcontrol.aws.hfl.dev
   resources:
+  - accesspoints
   - directorybuckets
   verbs:
   - create
@@ -1303,6 +6138,7 @@ rules:
 - apiGroups:
   - s3express.cloudcontrol.aws.hfl.dev
   resources:
+  - accesspoints/status
   - directorybuckets/status
   verbs:
   - get
@@ -1324,6 +6160,54 @@ rules:
   - s3files.cloudcontrol.aws.hfl.dev
   resources:
   - filesystempolicies/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - s3objectlambda.cloudcontrol.aws.hfl.dev
+  resources:
+  - accesspointpolicies
+  - accesspoints
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - s3objectlambda.cloudcontrol.aws.hfl.dev
+  resources:
+  - accesspointpolicies/status
+  - accesspoints/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - s3outposts.cloudcontrol.aws.hfl.dev
+  resources:
+  - accesspoints
+  - bucketpolicies
+  - buckets
+  - endpoints
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - s3outposts.cloudcontrol.aws.hfl.dev
+  resources:
+  - accesspoints/status
+  - bucketpolicies/status
+  - buckets/status
+  - endpoints/status
   verbs:
   - get
   - patch
@@ -1369,6 +6253,118 @@ rules:
   - patch
   - update
 - apiGroups:
+  - sagemaker.cloudcontrol.aws.hfl.dev
+  resources:
+  - actions
+  - aiworkloadconfigs
+  - algorithms
+  - appimageconfigs
+  - artifacts
+  - clusters
+  - clusterschedulerconfigs
+  - coderepositories
+  - computequotas
+  - contexts
+  - devicefleets
+  - experiments
+  - hubs
+  - humantaskuis
+  - images
+  - imageversions
+  - inferenceexperiments
+  - mlflowapps
+  - mlflowtrackingservers
+  - partnerapps
+  - studiolifecycleconfigs
+  - trialcomponents
+  - workforces
+  - workteams
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - sagemaker.cloudcontrol.aws.hfl.dev
+  resources:
+  - actions/status
+  - aiworkloadconfigs/status
+  - algorithms/status
+  - appimageconfigs/status
+  - artifacts/status
+  - clusters/status
+  - clusterschedulerconfigs/status
+  - coderepositories/status
+  - computequotas/status
+  - contexts/status
+  - devicefleets/status
+  - experiments/status
+  - hubs/status
+  - humantaskuis/status
+  - images/status
+  - imageversions/status
+  - inferenceexperiments/status
+  - mlflowapps/status
+  - mlflowtrackingservers/status
+  - partnerapps/status
+  - studiolifecycleconfigs/status
+  - trialcomponents/status
+  - workforces/status
+  - workteams/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - scn.cloudcontrol.aws.hfl.dev
+  resources:
+  - dataintegrationflows
+  - datasets
+  - instances
+  - namespaces
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - scn.cloudcontrol.aws.hfl.dev
+  resources:
+  - dataintegrationflows/status
+  - datasets/status
+  - instances/status
+  - namespaces/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - sdb.cloudcontrol.aws.hfl.dev
+  resources:
+  - domains
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - sdb.cloudcontrol.aws.hfl.dev
+  resources:
+  - domains/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - secretsmanager.cloudcontrol.aws.hfl.dev
   resources:
   - resourcepolicies
@@ -1386,6 +6382,40 @@ rules:
   resources:
   - resourcepolicies/status
   - secrettargetattachments/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - securityagent.cloudcontrol.aws.hfl.dev
+  resources:
+  - agentspaces
+  - applications
+  - artifacts
+  - integrations
+  - pentests
+  - privateconnections
+  - securityrequirementpacks
+  - targetdomains
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - securityagent.cloudcontrol.aws.hfl.dev
+  resources:
+  - agentspaces/status
+  - applications/status
+  - artifacts/status
+  - integrations/status
+  - pentests/status
+  - privateconnections/status
+  - securityrequirementpacks/status
+  - targetdomains/status
   verbs:
   - get
   - patch
@@ -1469,6 +6499,298 @@ rules:
   - patch
   - update
 - apiGroups:
+  - serverlessrepo.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - serverlessrepo.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - servicecatalog.cloudcontrol.aws.hfl.dev
+  resources:
+  - acceptedportfolioshares
+  - cloudformationproducts
+  - cloudformationprovisionedproducts
+  - launchnotificationconstraints
+  - launchroleconstraints
+  - launchtemplateconstraints
+  - portfolioprincipalassociations
+  - portfolioproductassociations
+  - portfolios
+  - portfolioshares
+  - resourceupdateconstraints
+  - serviceactionassociations
+  - serviceactions
+  - stacksetconstraints
+  - tagoptionassociations
+  - tagoptions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - servicecatalog.cloudcontrol.aws.hfl.dev
+  resources:
+  - acceptedportfolioshares/status
+  - cloudformationproducts/status
+  - cloudformationprovisionedproducts/status
+  - launchnotificationconstraints/status
+  - launchroleconstraints/status
+  - launchtemplateconstraints/status
+  - portfolioprincipalassociations/status
+  - portfolioproductassociations/status
+  - portfolios/status
+  - portfolioshares/status
+  - resourceupdateconstraints/status
+  - serviceactionassociations/status
+  - serviceactions/status
+  - stacksetconstraints/status
+  - tagoptionassociations/status
+  - tagoptions/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - servicecatalogappregistry.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications
+  - attributegroupassociations
+  - attributegroups
+  - resourceassociations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - servicecatalogappregistry.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications/status
+  - attributegroupassociations/status
+  - attributegroups/status
+  - resourceassociations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - servicediscovery.cloudcontrol.aws.hfl.dev
+  resources:
+  - httpnamespaces
+  - instances
+  - privatednsnamespaces
+  - publicdnsnamespaces
+  - services
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - servicediscovery.cloudcontrol.aws.hfl.dev
+  resources:
+  - httpnamespaces/status
+  - instances/status
+  - privatednsnamespaces/status
+  - publicdnsnamespaces/status
+  - services/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - ses.cloudcontrol.aws.hfl.dev
+  resources:
+  - configurationseteventdestinations
+  - contactlists
+  - customverificationemailtemplates
+  - dedicatedippools
+  - emailidentities
+  - emailidentitycertificates
+  - mailmanageraddoninstances
+  - mailmanageraddonsubscriptions
+  - mailmanageraddresslists
+  - mailmanagerarchives
+  - mailmanagerrelays
+  - mailmanagerrulesets
+  - mailmanagertrafficpolicies
+  - multiregionendpoints
+  - receiptfilters
+  - receiptrules
+  - receiptrulesets
+  - templates
+  - tenants
+  - vdmattributeses
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ses.cloudcontrol.aws.hfl.dev
+  resources:
+  - configurationseteventdestinations/status
+  - contactlists/status
+  - customverificationemailtemplates/status
+  - dedicatedippools/status
+  - emailidentities/status
+  - emailidentitycertificates/status
+  - mailmanageraddoninstances/status
+  - mailmanageraddonsubscriptions/status
+  - mailmanageraddresslists/status
+  - mailmanagerarchives/status
+  - mailmanagerrelays/status
+  - mailmanagerrulesets/status
+  - mailmanagertrafficpolicies/status
+  - multiregionendpoints/status
+  - receiptfilters/status
+  - receiptrules/status
+  - receiptrulesets/status
+  - templates/status
+  - tenants/status
+  - vdmattributeses/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - shield.cloudcontrol.aws.hfl.dev
+  resources:
+  - drtaccesses
+  - proactiveengagements
+  - protectiongroups
+  - protections
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - shield.cloudcontrol.aws.hfl.dev
+  resources:
+  - drtaccesses/status
+  - proactiveengagements/status
+  - protectiongroups/status
+  - protections/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - signer.cloudcontrol.aws.hfl.dev
+  resources:
+  - profilepermissions
+  - signingprofiles
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - signer.cloudcontrol.aws.hfl.dev
+  resources:
+  - profilepermissions/status
+  - signingprofiles/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - simspaceweaver.cloudcontrol.aws.hfl.dev
+  resources:
+  - simulations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - simspaceweaver.cloudcontrol.aws.hfl.dev
+  resources:
+  - simulations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - smsvoice.cloudcontrol.aws.hfl.dev
+  resources:
+  - configurationsets
+  - notifyconfigurations
+  - optoutlists
+  - phonenumbers
+  - pools
+  - protectconfigurations
+  - rcsagents
+  - registrationattachments
+  - registrations
+  - resourcepolicies
+  - senderids
+  - verifieddestinationnumbers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - smsvoice.cloudcontrol.aws.hfl.dev
+  resources:
+  - configurationsets/status
+  - notifyconfigurations/status
+  - optoutlists/status
+  - phonenumbers/status
+  - pools/status
+  - protectconfigurations/status
+  - rcsagents/status
+  - registrationattachments/status
+  - registrations/status
+  - resourcepolicies/status
+  - senderids/status
+  - verifieddestinationnumbers/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - ssm.cloudcontrol.aws.hfl.dev
   resources:
   - cloudconnectors
@@ -1496,6 +6818,94 @@ rules:
   - opsitems/status
   - resourcepolicies/status
   - servicesettings/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - ssmcontacts.cloudcontrol.aws.hfl.dev
+  resources:
+  - contactchannels
+  - contacts
+  - plans
+  - rotations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ssmcontacts.cloudcontrol.aws.hfl.dev
+  resources:
+  - contactchannels/status
+  - contacts/status
+  - plans/status
+  - rotations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - ssmguiconnect.cloudcontrol.aws.hfl.dev
+  resources:
+  - preferenceses
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ssmguiconnect.cloudcontrol.aws.hfl.dev
+  resources:
+  - preferenceses/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - ssmincidents.cloudcontrol.aws.hfl.dev
+  resources:
+  - replicationsets
+  - responseplans
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ssmincidents.cloudcontrol.aws.hfl.dev
+  resources:
+  - replicationsets/status
+  - responseplans/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - ssmquicksetup.cloudcontrol.aws.hfl.dev
+  resources:
+  - lifecycleautomations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ssmquicksetup.cloudcontrol.aws.hfl.dev
+  resources:
+  - lifecycleautomations/status
   verbs:
   - get
   - patch
@@ -1549,6 +6959,368 @@ rules:
   - patch
   - update
 - apiGroups:
+  - storagegateway.cloudcontrol.aws.hfl.dev
+  resources:
+  - nfsfileshares
+  - smbfileshares
+  - tapepools
+  - tapes
+  - volumes
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - storagegateway.cloudcontrol.aws.hfl.dev
+  resources:
+  - nfsfileshares/status
+  - smbfileshares/status
+  - tapepools/status
+  - tapes/status
+  - volumes/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - supportapp.cloudcontrol.aws.hfl.dev
+  resources:
+  - accountaliases
+  - slackchannelconfigurations
+  - slackworkspaceconfigurations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - supportapp.cloudcontrol.aws.hfl.dev
+  resources:
+  - accountaliases/status
+  - slackchannelconfigurations/status
+  - slackworkspaceconfigurations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - supportauthz.cloudcontrol.aws.hfl.dev
+  resources:
+  - supportpermits
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - supportauthz.cloudcontrol.aws.hfl.dev
+  resources:
+  - supportpermits/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - synthetics.cloudcontrol.aws.hfl.dev
+  resources:
+  - canaries
+  - groups
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - synthetics.cloudcontrol.aws.hfl.dev
+  resources:
+  - canaries/status
+  - groups/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - systemsmanagersap.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - systemsmanagersap.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - textract.cloudcontrol.aws.hfl.dev
+  resources:
+  - adapters
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - textract.cloudcontrol.aws.hfl.dev
+  resources:
+  - adapters/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - timestream.cloudcontrol.aws.hfl.dev
+  resources:
+  - databases
+  - influxdbbackups
+  - influxdbclusters
+  - influxdbinstances
+  - scheduledqueries
+  - tables
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - timestream.cloudcontrol.aws.hfl.dev
+  resources:
+  - databases/status
+  - influxdbbackups/status
+  - influxdbclusters/status
+  - influxdbinstances/status
+  - scheduledqueries/status
+  - tables/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - transcribe.cloudcontrol.aws.hfl.dev
+  resources:
+  - callanalyticscategories
+  - medicalvocabularies
+  - vocabularies
+  - vocabularyfilters
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - transcribe.cloudcontrol.aws.hfl.dev
+  resources:
+  - callanalyticscategories/status
+  - medicalvocabularies/status
+  - vocabularies/status
+  - vocabularyfilters/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - transfer.cloudcontrol.aws.hfl.dev
+  resources:
+  - agreements
+  - certificates
+  - connectors
+  - hostkeys
+  - profiles
+  - servers
+  - users
+  - webapps
+  - workflows
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - transfer.cloudcontrol.aws.hfl.dev
+  resources:
+  - agreements/status
+  - certificates/status
+  - connectors/status
+  - hostkeys/status
+  - profiles/status
+  - servers/status
+  - users/status
+  - webapps/status
+  - workflows/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - translate.cloudcontrol.aws.hfl.dev
+  resources:
+  - paralleldatas
+  - terminologies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - translate.cloudcontrol.aws.hfl.dev
+  resources:
+  - paralleldatas/status
+  - terminologies/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - uxc.cloudcontrol.aws.hfl.dev
+  resources:
+  - accountcustomizations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - uxc.cloudcontrol.aws.hfl.dev
+  resources:
+  - accountcustomizations/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - verifiedpermissions.cloudcontrol.aws.hfl.dev
+  resources:
+  - identitysources
+  - policies
+  - policystorealiases
+  - policystores
+  - policytemplates
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - verifiedpermissions.cloudcontrol.aws.hfl.dev
+  resources:
+  - identitysources/status
+  - policies/status
+  - policystorealiases/status
+  - policystores/status
+  - policytemplates/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - voiceid.cloudcontrol.aws.hfl.dev
+  resources:
+  - domains
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - voiceid.cloudcontrol.aws.hfl.dev
+  resources:
+  - domains/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - vpclattice.cloudcontrol.aws.hfl.dev
+  resources:
+  - accesslogsubscriptions
+  - authpolicies
+  - domainverifications
+  - listeners
+  - resourceconfigurations
+  - resourcegateways
+  - resourcepolicies
+  - rules
+  - servicenetworkresourceassociations
+  - servicenetworks
+  - servicenetworkserviceassociations
+  - servicenetworkvpcassociations
+  - services
+  - targetgroups
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - vpclattice.cloudcontrol.aws.hfl.dev
+  resources:
+  - accesslogsubscriptions/status
+  - authpolicies/status
+  - domainverifications/status
+  - listeners/status
+  - resourceconfigurations/status
+  - resourcegateways/status
+  - resourcepolicies/status
+  - rules/status
+  - servicenetworkresourceassociations/status
+  - servicenetworks/status
+  - servicenetworkserviceassociations/status
+  - servicenetworkvpcassociations/status
+  - services/status
+  - targetgroups/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - wafv2.cloudcontrol.aws.hfl.dev
   resources:
   - loggingconfigurations
@@ -1566,6 +7338,244 @@ rules:
   resources:
   - loggingconfigurations/status
   - regexpatternsets/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - wellarchitected.cloudcontrol.aws.hfl.dev
+  resources:
+  - agentcontexts
+  - agentgoals
+  - agentorganizationalprofiles
+  - agentprofilepolicies
+  - agentprofiles
+  - lenses
+  - profiles
+  - reviewtemplates
+  - workloads
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - wellarchitected.cloudcontrol.aws.hfl.dev
+  resources:
+  - agentcontexts/status
+  - agentgoals/status
+  - agentorganizationalprofiles/status
+  - agentprofilepolicies/status
+  - agentprofiles/status
+  - lenses/status
+  - profiles/status
+  - reviewtemplates/status
+  - workloads/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - wickr.cloudcontrol.aws.hfl.dev
+  resources:
+  - networks
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - wickr.cloudcontrol.aws.hfl.dev
+  resources:
+  - networks/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - wisdom.cloudcontrol.aws.hfl.dev
+  resources:
+  - aiagents
+  - aiagentversions
+  - aiguardrails
+  - aiguardrailversions
+  - aiprompts
+  - aipromptversions
+  - assistantassociations
+  - assistants
+  - contentassociations
+  - contents
+  - knowledgebases
+  - messagetemplates
+  - messagetemplateversions
+  - quickresponses
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - wisdom.cloudcontrol.aws.hfl.dev
+  resources:
+  - aiagents/status
+  - aiagentversions/status
+  - aiguardrails/status
+  - aiguardrailversions/status
+  - aiprompts/status
+  - aipromptversions/status
+  - assistantassociations/status
+  - assistants/status
+  - contentassociations/status
+  - contents/status
+  - knowledgebases/status
+  - messagetemplates/status
+  - messagetemplateversions/status
+  - quickresponses/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - workspaces.cloudcontrol.aws.hfl.dev
+  resources:
+  - connectionaliases
+  - directories
+  - workspaceipgroups
+  - workspaces
+  - workspacespools
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - workspaces.cloudcontrol.aws.hfl.dev
+  resources:
+  - connectionaliases/status
+  - directories/status
+  - workspaceipgroups/status
+  - workspaces/status
+  - workspacespools/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - workspacesinstances.cloudcontrol.aws.hfl.dev
+  resources:
+  - volumeassociations
+  - volumes
+  - workspaceinstances
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - workspacesinstances.cloudcontrol.aws.hfl.dev
+  resources:
+  - volumeassociations/status
+  - volumes/status
+  - workspaceinstances/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - workspacesthinclient.cloudcontrol.aws.hfl.dev
+  resources:
+  - environments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - workspacesthinclient.cloudcontrol.aws.hfl.dev
+  resources:
+  - environments/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - workspacesweb.cloudcontrol.aws.hfl.dev
+  resources:
+  - browsersettingses
+  - dataprotectionsettingses
+  - identityproviders
+  - ipaccesssettingses
+  - networksettingses
+  - portals
+  - sessionloggers
+  - truststores
+  - useraccessloggingsettingses
+  - usersettingses
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - workspacesweb.cloudcontrol.aws.hfl.dev
+  resources:
+  - browsersettingses/status
+  - dataprotectionsettingses/status
+  - identityproviders/status
+  - ipaccesssettingses/status
+  - networksettingses/status
+  - portals/status
+  - sessionloggers/status
+  - truststores/status
+  - useraccessloggingsettingses/status
+  - usersettingses/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - xray.cloudcontrol.aws.hfl.dev
+  resources:
+  - groups
+  - resourcepolicies
+  - samplingrules
+  - transactionsearchconfigs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - xray.cloudcontrol.aws.hfl.dev
+  resources:
+  - groups/status
+  - resourcepolicies/status
+  - samplingrules/status
+  - transactionsearchconfigs/status
   verbs:
   - get
   - patch

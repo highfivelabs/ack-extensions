@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBatchQuotaShare",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchQuotaShareCreate",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:CreateQuotaShare",
+        "Batch:DescribeQuotaShare",
+        "Batch:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchQuotaShareRead",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:DescribeQuotaShare"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchQuotaShareUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:DescribeQuotaShare",
+        "Batch:TagResource",
+        "Batch:UntagResource",
+        "Batch:UpdateQuotaShare"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchQuotaShareDelete",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:DeleteQuotaShare",
+        "Batch:DescribeQuotaShare",
+        "Batch:UpdateQuotaShare"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

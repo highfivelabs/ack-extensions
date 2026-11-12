@@ -1,0 +1,70 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppStreamAppBlockBuilder",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamAppBlockBuilderCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:AssociateAppBlockBuilderAppBlock",
+        "appstream:CreateAppBlockBuilder",
+        "appstream:DescribeAppBlockBuilderAppBlockAssociations",
+        "appstream:DescribeAppBlockBuilders",
+        "appstream:ListTagsForResource",
+        "appstream:StartAppBlockBuilder",
+        "appstream:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamAppBlockBuilderRead",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DescribeAppBlockBuilders",
+        "appstream:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamAppBlockBuilderUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:AssociateAppBlockBuilderAppBlock",
+        "appstream:DescribeAppBlockBuilderAppBlockAssociations",
+        "appstream:DescribeAppBlockBuilders",
+        "appstream:DisassociateAppBlockBuilderAppBlock",
+        "appstream:ListTagsForResource",
+        "appstream:StartAppBlockBuilder",
+        "appstream:StopAppBlockBuilder",
+        "appstream:TagResource",
+        "appstream:UntagResource",
+        "appstream:UpdateAppBlockBuilder",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamAppBlockBuilderDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DeleteAppBlockBuilder",
+        "appstream:DescribeAppBlockBuilderAppBlockAssociations",
+        "appstream:DescribeAppBlockBuilders",
+        "appstream:DisassociateAppBlockBuilderAppBlock"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

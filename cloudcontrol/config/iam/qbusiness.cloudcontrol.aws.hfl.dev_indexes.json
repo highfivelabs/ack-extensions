@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlQBusinessIndex",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QBusinessIndexCreate",
+      "Effect": "Allow",
+      "Action": [
+        "qbusiness:CreateIndex",
+        "qbusiness:GetIndex",
+        "qbusiness:ListTagsForResource",
+        "qbusiness:TagResource",
+        "qbusiness:UpdateIndex"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QBusinessIndexRead",
+      "Effect": "Allow",
+      "Action": [
+        "qbusiness:GetIndex",
+        "qbusiness:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QBusinessIndexUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "qbusiness:GetIndex",
+        "qbusiness:ListTagsForResource",
+        "qbusiness:TagResource",
+        "qbusiness:UntagResource",
+        "qbusiness:UpdateIndex"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QBusinessIndexDelete",
+      "Effect": "Allow",
+      "Action": [
+        "qbusiness:DeleteIndex",
+        "qbusiness:GetIndex"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

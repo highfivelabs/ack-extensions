@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPersonalizeRecommender",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeRecommenderCreate",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:CreateRecommender",
+        "personalize:DescribeRecommender",
+        "personalize:ListTagsForResource",
+        "personalize:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeRecommenderRead",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:DescribeRecommender",
+        "personalize:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeRecommenderUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:DescribeRecommender",
+        "personalize:ListTagsForResource",
+        "personalize:TagResource",
+        "personalize:UntagResource",
+        "personalize:UpdateRecommender"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeRecommenderDelete",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:DeleteRecommender",
+        "personalize:DescribeRecommender"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

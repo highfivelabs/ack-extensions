@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaConnectFlowEntitlement",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectFlowEntitlementCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "mediaconnect:DescribeFlow",
+        "mediaconnect:GrantFlowEntitlements",
+        "mediaconnect:ListTagsForResource",
+        "mediaconnect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectFlowEntitlementRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:DescribeFlow",
+        "mediaconnect:ListFlows",
+        "mediaconnect:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectFlowEntitlementUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "mediaconnect:DescribeFlow",
+        "mediaconnect:ListTagsForResource",
+        "mediaconnect:TagResource",
+        "mediaconnect:UntagResource",
+        "mediaconnect:UpdateFlowEntitlement"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectFlowEntitlementDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:DescribeFlow",
+        "mediaconnect:ListFlows",
+        "mediaconnect:RevokeFlowEntitlement"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

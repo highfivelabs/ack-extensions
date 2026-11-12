@@ -1,0 +1,77 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlShieldProtection",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ShieldProtectionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeAddresses",
+        "elasticloadbalancing:DescribeLoadBalancers",
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole",
+        "route53:GetHealthCheck",
+        "shield:AssociateHealthCheck",
+        "shield:CreateProtection",
+        "shield:DeleteProtection",
+        "shield:DescribeProtection",
+        "shield:EnableApplicationLayerAutomaticResponse",
+        "shield:ListProtections",
+        "shield:TagResource",
+        "wafv2:GetWebACL",
+        "wafv2:GetWebACLForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ShieldProtectionRead",
+      "Effect": "Allow",
+      "Action": [
+        "shield:DescribeProtection",
+        "shield:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ShieldProtectionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole",
+        "route53:GetHealthCheck",
+        "shield:AssociateHealthCheck",
+        "shield:DescribeProtection",
+        "shield:DisableApplicationLayerAutomaticResponse",
+        "shield:DisassociateHealthCheck",
+        "shield:EnableApplicationLayerAutomaticResponse",
+        "shield:ListTagsForResource",
+        "shield:TagResource",
+        "shield:UntagResource",
+        "shield:UpdateApplicationLayerAutomaticResponse",
+        "wafv2:GetWebACL",
+        "wafv2:GetWebACLForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ShieldProtectionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "shield:DeleteProtection",
+        "shield:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

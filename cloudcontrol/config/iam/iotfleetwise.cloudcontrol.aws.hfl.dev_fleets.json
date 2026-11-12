@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTFleetWiseFleet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetWiseFleetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iotfleetwise:CreateFleet",
+        "iotfleetwise:GetFleet",
+        "iotfleetwise:ListTagsForResource",
+        "iotfleetwise:ListVehiclesInFleet",
+        "iotfleetwise:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetWiseFleetRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotfleetwise:GetFleet",
+        "iotfleetwise:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetWiseFleetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotfleetwise:GetFleet",
+        "iotfleetwise:ListTagsForResource",
+        "iotfleetwise:TagResource",
+        "iotfleetwise:UntagResource",
+        "iotfleetwise:UpdateFleet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetWiseFleetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotfleetwise:DeleteFleet",
+        "iotfleetwise:GetFleet"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

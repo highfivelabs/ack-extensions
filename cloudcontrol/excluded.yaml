@@ -100,3 +100,24 @@ types:
   AWS::Redshift::SnapshotCopyGrant: "ACK redshift-controller is being built"
   AWS::Redshift::SnapshotSchedule: "ACK redshift-controller is being built"
   AWS::Redshift::UsageLimit: "ACK redshift-controller is being built"
+  # Tier 3 (batch 15), open ACK pull requests that add the type, read-only
+  # 2026-11-12 (CLAUDE.md: upstream first).
+  AWS::Bedrock::KnowledgeBase: "ACK bedrockagent-controller pull request #31"
+  AWS::FSx::DataRepositoryAssociation: "ACK fsx-controller pull request #8"
+  AWS::Cassandra::Type: "ACK keyspaces-controller pull request #41"
+  AWS::Kinesis::StreamConsumer: "ACK kinesis-controller pull request #93"
+  AWS::OpenSearchServerless::SecurityConfig: "ACK opensearchserverless-controller pull request #48"
+  # Too large to serve: its generated CRD is 9.3 MB, beyond the API
+  # server's 1.5 MB limit on an object (etcd's request size).
+  AWS::QuickSight::Template: "its CRD is 9.3 MB, beyond the API server's object size limit"
+  # A kind named List: Kubernetes clients take an object of kind List for
+  # a list, and the manager's informer for it never synced, which stopped
+  # every other kind's cache from syncing (batch 15's first gate).
+  AWS::FraudDetector::List: "a kind named List, which Kubernetes clients take for a list of objects"
+  # Batch 15: TestEveryKindOnSchemaFake failed for these; each is a gap of
+  # our generator or fake to fix before the type is served.
+  AWS::QuickSight::RefreshSchedule: "its primary identifier is nested (/properties/Schedule/ScheduleId), which the schema fake's example does not fill: not proven on any fake"
+  AWS::SageMaker::Device: "its primary identifier is nested (/properties/Device/DeviceName), which the schema fake's example does not fill: not proven on any fake"
+  AWS::DataZone::UserProfile: "status.details is an object in the CRD, but the schema fake fills a string the API server refuses: crdgen and the fake disagree on a oneOf"
+  AWS::MediaConnect::SourceEndpoint: "status.associatedResourceDetails is an object in the CRD, but the schema fake fills a string the API server refuses: crdgen and the fake disagree on a oneOf"
+  AWS::MediaConnect::DestinationEndpoint: "status.associatedResourceDetails is an object in the CRD, but the schema fake fills a string the API server refuses: crdgen and the fake disagree on a oneOf"

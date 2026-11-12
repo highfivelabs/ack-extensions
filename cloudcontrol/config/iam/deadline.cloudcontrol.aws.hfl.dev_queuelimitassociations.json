@@ -1,0 +1,47 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDeadlineQueueLimitAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineQueueLimitAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:CreateQueueLimitAssociation",
+        "deadline:GetQueueLimitAssociation",
+        "identitystore:ListGroupMembershipsForMember"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineQueueLimitAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:GetQueueLimitAssociation",
+        "identitystore:ListGroupMembershipsForMember"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineQueueLimitAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:DeleteQueueLimitAssociation",
+        "deadline:GetQueueLimitAssociation",
+        "deadline:UpdateQueueLimitAssociation",
+        "identitystore:ListGroupMembershipsForMember"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

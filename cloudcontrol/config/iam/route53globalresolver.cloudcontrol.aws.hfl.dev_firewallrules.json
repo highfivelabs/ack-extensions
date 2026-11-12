@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRoute53GlobalResolverFirewallRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53GlobalResolverFirewallRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "route53globalresolver:CreateFirewallRule",
+        "route53globalresolver:GetFirewallRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53GlobalResolverFirewallRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "route53globalresolver:GetFirewallRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53GlobalResolverFirewallRuleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "route53globalresolver:GetFirewallRule",
+        "route53globalresolver:UpdateFirewallRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Route53GlobalResolverFirewallRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "route53globalresolver:DeleteFirewallRule",
+        "route53globalresolver:GetFirewallRule"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

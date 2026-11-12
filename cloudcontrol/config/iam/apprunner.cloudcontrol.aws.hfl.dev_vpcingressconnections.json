@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppRunnerVpcIngressConnection",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppRunnerVpcIngressConnectionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "apprunner:CreateVpcIngressConnection",
+        "apprunner:DescribeVpcIngressConnection",
+        "apprunner:TagResource",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcEndpoints",
+        "ec2:DescribeVpcs"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppRunnerVpcIngressConnectionRead",
+      "Effect": "Allow",
+      "Action": [
+        "apprunner:DescribeVpcIngressConnection"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppRunnerVpcIngressConnectionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "apprunner:DescribeVpcIngressConnection",
+        "apprunner:UpdateVpcIngressConnection",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcEndpoints",
+        "ec2:DescribeVpcs"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppRunnerVpcIngressConnectionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "apprunner:DeleteVpcIngressConnection",
+        "apprunner:DescribeVpcIngressConnection"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

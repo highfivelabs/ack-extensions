@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLicenseManagerLicenseConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerLicenseConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager:CreateLicenseConfiguration",
+        "license-manager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerLicenseConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager:GetLicenseConfiguration",
+        "license-manager:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerLicenseConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager:GetLicenseConfiguration",
+        "license-manager:ListTagsForResource",
+        "license-manager:TagResource",
+        "license-manager:UntagResource",
+        "license-manager:UpdateLicenseConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerLicenseConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager:DeleteLicenseConfiguration",
+        "license-manager:GetLicenseConfiguration",
+        "license-manager:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

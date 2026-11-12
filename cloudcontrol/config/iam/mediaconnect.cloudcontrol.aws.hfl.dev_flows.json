@@ -1,0 +1,73 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaConnectFlow",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectFlowCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "mediaconnect:AddFlowMediaStreams",
+        "mediaconnect:AddFlowSources",
+        "mediaconnect:AddFlowVpcInterfaces",
+        "mediaconnect:CreateFlow",
+        "mediaconnect:DescribeFlow",
+        "mediaconnect:ListTagsForResource",
+        "mediaconnect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectFlowRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:DescribeFlow",
+        "mediaconnect:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectFlowUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:AddFlowMediaStreams",
+        "mediaconnect:AddFlowVpcInterfaces",
+        "mediaconnect:DescribeFlow",
+        "mediaconnect:ListTagsForResource",
+        "mediaconnect:RemoveFlowMediaStream",
+        "mediaconnect:RemoveFlowVpcInterface",
+        "mediaconnect:TagResource",
+        "mediaconnect:UntagResource",
+        "mediaconnect:UpdateFlow",
+        "mediaconnect:UpdateFlowMediaStream",
+        "mediaconnect:UpdateFlowSource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaConnectFlowDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediaconnect:DeleteFlow",
+        "mediaconnect:DescribeFlow",
+        "mediaconnect:RemoveFlowMediaStream",
+        "mediaconnect:RemoveFlowOutput",
+        "mediaconnect:RemoveFlowSource",
+        "mediaconnect:RemoveFlowVpcInterface",
+        "mediaconnect:RevokeFlowEntitlement"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

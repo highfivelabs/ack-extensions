@@ -1,0 +1,76 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlKinesisAnalyticsV2Application",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KinesisAnalyticsV2ApplicationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kinesisanalytics:CreateApplication",
+        "kinesisanalytics:DescribeApplication",
+        "kinesisanalytics:ListTagsForResource",
+        "kinesisanalytics:TagResource",
+        "kinesisanalytics:UpdateApplicationMaintenanceConfiguration",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyWithoutPlaintext"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KinesisAnalyticsV2ApplicationRead",
+      "Effect": "Allow",
+      "Action": [
+        "kinesisanalytics:DescribeApplication",
+        "kinesisanalytics:ListTagsForResource",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KinesisAnalyticsV2ApplicationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kinesisanalytics:AddApplicationVpcConfiguration",
+        "kinesisanalytics:CreateSystemSnapshot",
+        "kinesisanalytics:DeleteApplicationVpcConfiguration",
+        "kinesisanalytics:DescribeApplication",
+        "kinesisanalytics:ListTagsForResource",
+        "kinesisanalytics:RestoreFromSnapshot",
+        "kinesisanalytics:TagResource",
+        "kinesisanalytics:UntagResource",
+        "kinesisanalytics:UpdateApplication",
+        "kinesisanalytics:UpdateApplicationMaintenanceConfiguration",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyWithoutPlaintext"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KinesisAnalyticsV2ApplicationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kinesisanalytics:DeleteApplication",
+        "kinesisanalytics:DescribeApplication"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

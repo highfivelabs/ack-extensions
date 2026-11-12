@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlChimeMediaPipelineKinesisVideoStreamPool",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeMediaPipelineKinesisVideoStreamPoolCreate",
+      "Effect": "Allow",
+      "Action": [
+        "chime:CreateMediaPipelineKinesisVideoStreamPool",
+        "chime:GetMediaPipelineKinesisVideoStreamPool",
+        "chime:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeMediaPipelineKinesisVideoStreamPoolRead",
+      "Effect": "Allow",
+      "Action": [
+        "chime:GetMediaPipelineKinesisVideoStreamPool",
+        "chime:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeMediaPipelineKinesisVideoStreamPoolUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "chime:GetMediaPipelineKinesisVideoStreamPool",
+        "chime:ListTagsForResource",
+        "chime:TagResource",
+        "chime:UntagResource",
+        "chime:UpdateMediaPipelineKinesisVideoStreamPool"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ChimeMediaPipelineKinesisVideoStreamPoolDelete",
+      "Effect": "Allow",
+      "Action": [
+        "chime:DeleteMediaPipelineKinesisVideoStreamPool",
+        "chime:GetMediaPipelineKinesisVideoStreamPool"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

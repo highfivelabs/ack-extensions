@@ -1,0 +1,78 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWorkSpacesWebUserSettings",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebUserSettingsCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "kms:ReEncryptFrom",
+        "kms:ReEncryptTo",
+        "s3:GetObject",
+        "workspaces-web:CreateUserSettings",
+        "workspaces-web:GetUserSettings",
+        "workspaces-web:ListTagsForResource",
+        "workspaces-web:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebUserSettingsRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "workspaces-web:GetUserSettings",
+        "workspaces-web:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebUserSettingsUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "s3:GetObject",
+        "workspaces-web:GetUserSettings",
+        "workspaces-web:ListTagsForResource",
+        "workspaces-web:TagResource",
+        "workspaces-web:UntagResource",
+        "workspaces-web:UpdateUserSettings"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkSpacesWebUserSettingsDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "workspaces-web:DeleteUserSettings",
+        "workspaces-web:GetUserSettings"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

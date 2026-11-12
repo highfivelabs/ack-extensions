@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataZoneDomainUnit",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneDomainUnitCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:CreateDomainUnit",
+        "datazone:GetDomainUnit"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneDomainUnitRead",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetDomainUnit"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneDomainUnitUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetDomainUnit",
+        "datazone:UpdateDomainUnit"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneDomainUnitDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:DeleteDomainUnit",
+        "datazone:GetDomainUnit"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

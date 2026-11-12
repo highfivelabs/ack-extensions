@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSSMContactsContact",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMContactsContactCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ssm-contacts:AssociateContact",
+        "ssm-contacts:CreateContact",
+        "ssm-contacts:GetContact",
+        "ssm-contacts:ListTagsForResource",
+        "ssm-contacts:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMContactsContactRead",
+      "Effect": "Allow",
+      "Action": [
+        "ssm-contacts:GetContact",
+        "ssm-contacts:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMContactsContactUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ssm-contacts:AssociateContact",
+        "ssm-contacts:GetContact",
+        "ssm-contacts:ListTagsForResource",
+        "ssm-contacts:TagResource",
+        "ssm-contacts:UntagResource",
+        "ssm-contacts:UpdateContact"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMContactsContactDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ssm-contacts:AssociateContact",
+        "ssm-contacts:DeleteContact",
+        "ssm-contacts:GetContact"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

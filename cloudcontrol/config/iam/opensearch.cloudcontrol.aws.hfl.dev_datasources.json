@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlOpenSearchDataSource",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OpenSearchDataSourceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "es:AddDataSource",
+        "es:GetDataSource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OpenSearchDataSourceRead",
+      "Effect": "Allow",
+      "Action": [
+        "es:GetDataSource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OpenSearchDataSourceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "es:GetDataSource",
+        "es:UpdateDataSource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OpenSearchDataSourceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "es:DeleteDataSource",
+        "es:GetDataSource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

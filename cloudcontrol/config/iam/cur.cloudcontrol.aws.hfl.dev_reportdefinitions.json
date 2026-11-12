@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCURReportDefinition",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CURReportDefinitionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cur:DescribeReportDefinitions",
+        "cur:ListTagsForResource",
+        "cur:PutReportDefinition",
+        "cur:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CURReportDefinitionRead",
+      "Effect": "Allow",
+      "Action": [
+        "cur:DescribeReportDefinitions",
+        "cur:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CURReportDefinitionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cur:DescribeReportDefinitions",
+        "cur:ListTagsForResource",
+        "cur:ModifyReportDefinition",
+        "cur:TagResource",
+        "cur:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CURReportDefinitionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cur:DeleteReportDefinition",
+        "cur:DescribeReportDefinitions"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

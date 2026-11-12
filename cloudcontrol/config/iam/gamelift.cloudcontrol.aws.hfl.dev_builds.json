@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGameLiftBuild",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftBuildCreate",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:CreateBuild",
+        "gamelift:DescribeBuild",
+        "gamelift:ListTagsForResource",
+        "gamelift:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftBuildRead",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DescribeBuild",
+        "gamelift:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftBuildUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DescribeBuild",
+        "gamelift:ListTagsForResource",
+        "gamelift:TagResource",
+        "gamelift:UntagResource",
+        "gamelift:UpdateBuild"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftBuildDelete",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DeleteBuild",
+        "gamelift:DescribeBuild"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

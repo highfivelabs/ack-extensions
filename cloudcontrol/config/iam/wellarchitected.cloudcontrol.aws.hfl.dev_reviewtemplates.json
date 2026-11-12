@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWellArchitectedReviewTemplate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedReviewTemplateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:CreateReviewTemplate",
+        "wellarchitected:GetReviewTemplate",
+        "wellarchitected:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedReviewTemplateRead",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:GetReviewTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedReviewTemplateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:GetReviewTemplate",
+        "wellarchitected:ListTagsForResource",
+        "wellarchitected:TagResource",
+        "wellarchitected:UntagResource",
+        "wellarchitected:UpdateReviewTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WellArchitectedReviewTemplateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "wellarchitected:DeleteReviewTemplate",
+        "wellarchitected:GetReviewTemplate"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

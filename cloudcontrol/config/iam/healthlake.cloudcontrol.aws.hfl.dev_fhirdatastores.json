@@ -1,0 +1,81 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlHealthLakeFHIRDatastore",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "HealthLakeFHIRDatastoreCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateDatabase",
+        "glue:DeleteDatabase",
+        "healthlake:CreateFHIRDatastore",
+        "healthlake:DescribeFHIRDatastore",
+        "healthlake:ListTagsForResource",
+        "healthlake:TagResource",
+        "healthlake:UntagResource",
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole",
+        "iam:PassRole",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "lambda:InvokeFunction",
+        "ram:AcceptResourceShareInvitation",
+        "ram:GetResourceShareInvitations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "HealthLakeFHIRDatastoreRead",
+      "Effect": "Allow",
+      "Action": [
+        "healthlake:DescribeFHIRDatastore",
+        "healthlake:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "HealthLakeFHIRDatastoreUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "healthlake:DescribeFHIRDatastore",
+        "healthlake:ListTagsForResource",
+        "healthlake:TagResource",
+        "healthlake:UntagResource",
+        "healthlake:UpdateFHIRDatastore",
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "HealthLakeFHIRDatastoreDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateDatabase",
+        "glue:DeleteDatabase",
+        "healthlake:DeleteFHIRDatastore",
+        "healthlake:DescribeFHIRDatastore",
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole",
+        "iam:PassRole",
+        "ram:AcceptResourceShareInvitation",
+        "ram:GetResourceShareInvitations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

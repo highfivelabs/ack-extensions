@@ -1,0 +1,108 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTransferServer",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferServerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET",
+        "ds:AuthorizeApplication",
+        "ds:DescribeDirectories",
+        "ec2:AssociateAddress",
+        "ec2:CreateVpcEndpoint",
+        "ec2:DescribeAddresses",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeVpcEndpoints",
+        "iam:PassRole",
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "logs:UpdateLogDelivery",
+        "transfer:CreateServer",
+        "transfer:DescribeServer",
+        "transfer:StartServer",
+        "transfer:StopServer",
+        "transfer:TagResource",
+        "transfer:UpdateServer"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferServerRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcEndpoints",
+        "transfer:DescribeServer"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferServerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET",
+        "ds:AuthorizeApplication",
+        "ds:DescribeDirectories",
+        "ds:UnauthorizeApplication",
+        "ec2:AssociateAddress",
+        "ec2:CreateVpcEndpoint",
+        "ec2:DeleteVpcEndpoints",
+        "ec2:DescribeAddresses",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeVpcEndpoints",
+        "ec2:DisassociateAddress",
+        "ec2:ModifyVpcEndpoint",
+        "iam:PassRole",
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "logs:UpdateLogDelivery",
+        "transfer:DescribeServer",
+        "transfer:StartServer",
+        "transfer:StopServer",
+        "transfer:TagResource",
+        "transfer:UnTagResource",
+        "transfer:UpdateServer"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferServerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ds:DescribeDirectories",
+        "ds:UnauthorizeApplication",
+        "ec2:DeleteVpcEndpoints",
+        "ec2:DescribeAddresses",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeVpcEndpoints",
+        "ec2:DisassociateAddress",
+        "logs:DeleteLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "transfer:DeleteServer"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

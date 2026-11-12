@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEntityResolutionPolicyStatement",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EntityResolutionPolicyStatementCreate",
+      "Effect": "Allow",
+      "Action": [
+        "entityresolution:AddPolicyStatement"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EntityResolutionPolicyStatementRead",
+      "Effect": "Allow",
+      "Action": [
+        "entityresolution:GetPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EntityResolutionPolicyStatementUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "entityresolution:AddPolicyStatement",
+        "entityresolution:DeletePolicyStatement"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EntityResolutionPolicyStatementDelete",
+      "Effect": "Allow",
+      "Action": [
+        "entityresolution:DeletePolicyStatement",
+        "entityresolution:GetPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

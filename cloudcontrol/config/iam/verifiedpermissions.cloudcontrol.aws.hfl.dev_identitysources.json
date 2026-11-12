@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlVerifiedPermissionsIdentitySource",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VerifiedPermissionsIdentitySourceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DescribeUserPool",
+        "cognito-idp:ListUserPoolClients",
+        "verifiedpermissions:CreateIdentitySource",
+        "verifiedpermissions:GetIdentitySource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VerifiedPermissionsIdentitySourceRead",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DescribeUserPool",
+        "cognito-idp:ListUserPoolClients",
+        "verifiedpermissions:GetIdentitySource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VerifiedPermissionsIdentitySourceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DescribeUserPool",
+        "cognito-idp:ListUserPoolClients",
+        "verifiedpermissions:GetIdentitySource",
+        "verifiedpermissions:UpdateIdentitySource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VerifiedPermissionsIdentitySourceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DescribeUserPool",
+        "cognito-idp:ListUserPoolClients",
+        "verifiedpermissions:DeleteIdentitySource",
+        "verifiedpermissions:GetIdentitySource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

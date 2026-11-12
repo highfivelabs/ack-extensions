@@ -1,0 +1,87 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlKafkaConnectConnector",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KafkaConnectConnectorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateNetworkInterface",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcs",
+        "firehose:TagDeliveryStream",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "kafkaconnect:CreateConnector",
+        "kafkaconnect:DescribeConnector",
+        "kafkaconnect:ListTagsForResource",
+        "kafkaconnect:TagResource",
+        "logs:CreateLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KafkaConnectConnectorRead",
+      "Effect": "Allow",
+      "Action": [
+        "kafkaconnect:DescribeConnector",
+        "kafkaconnect:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KafkaConnectConnectorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "firehose:TagDeliveryStream",
+        "iam:CreateServiceLinkedRole",
+        "kafkaconnect:DescribeConnector",
+        "kafkaconnect:DescribeConnectorOperation",
+        "kafkaconnect:ListTagsForResource",
+        "kafkaconnect:TagResource",
+        "kafkaconnect:UntagResource",
+        "kafkaconnect:UpdateConnector",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "logs:UpdateLogDelivery",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KafkaConnectConnectorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kafkaconnect:DeleteConnector",
+        "kafkaconnect:DescribeConnector",
+        "logs:DeleteLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

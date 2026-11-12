@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSMSVOICERcsAgent",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICERcsAgentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "sms-voice:CreateRcsAgent",
+        "sms-voice:TagResource",
+        "sms-voice:UpdateRcsAgent"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICERcsAgentRead",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DescribeRcsAgents",
+        "sms-voice:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICERcsAgentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "sms-voice:DescribeRcsAgents",
+        "sms-voice:ListTagsForResource",
+        "sms-voice:TagResource",
+        "sms-voice:UntagResource",
+        "sms-voice:UpdateRcsAgent"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICERcsAgentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DeleteRcsAgent",
+        "sms-voice:DescribeRcsAgents",
+        "sms-voice:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

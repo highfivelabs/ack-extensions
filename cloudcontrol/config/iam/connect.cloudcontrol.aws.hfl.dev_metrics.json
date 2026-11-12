@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectMetric",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectMetricCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:CreateMetric",
+        "connect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectMetricRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeMetric"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectMetricUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:TagResource",
+        "connect:UntagResource",
+        "connect:UpdateMetricContent",
+        "connect:UpdateMetricMetadata"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectMetricDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteMetric",
+        "connect:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

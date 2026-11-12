@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudFormationLambdaHook",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationLambdaHookCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:ActivateType",
+        "cloudformation:BatchDescribeTypeConfigurations",
+        "cloudformation:DescribeType",
+        "cloudformation:ListTypes",
+        "cloudformation:SetTypeConfiguration",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationLambdaHookRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:BatchDescribeTypeConfigurations",
+        "cloudformation:DescribeType"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationLambdaHookUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:BatchDescribeTypeConfigurations",
+        "cloudformation:DescribeType",
+        "cloudformation:SetTypeConfiguration",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationLambdaHookDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:BatchDescribeTypeConfigurations",
+        "cloudformation:DeactivateType",
+        "cloudformation:DescribeType",
+        "cloudformation:SetTypeConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

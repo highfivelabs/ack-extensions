@@ -1,0 +1,99 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEMRStudioSessionMapping",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EMRStudioSessionMappingCreate",
+      "Effect": "Allow",
+      "Action": [
+        "elasticmapreduce:CreateStudioSessionMapping",
+        "sso-directory:CreateGroup",
+        "sso-directory:CreateUser",
+        "sso-directory:DescribeGroup",
+        "sso-directory:DescribeUser",
+        "sso-directory:SearchGroups",
+        "sso-directory:SearchUsers",
+        "sso:AssociateProfile",
+        "sso:CreateApplication",
+        "sso:CreateApplicationAssignment",
+        "sso:DeleteApplication",
+        "sso:DeleteApplicationAccessScope",
+        "sso:DeleteApplicationAssignment",
+        "sso:DeleteApplicationAuthenticationMethod",
+        "sso:DeleteApplicationGrant",
+        "sso:DescribeApplication",
+        "sso:DescribeInstance",
+        "sso:GetManagedApplicationInstance",
+        "sso:GetProfile",
+        "sso:ListApplicationAssignments",
+        "sso:ListDirectoryAssociations",
+        "sso:ListInstances",
+        "sso:ListProfiles",
+        "sso:PutApplicationAccessScope",
+        "sso:PutApplicationAssignmentConfiguration",
+        "sso:PutApplicationAuthenticationMethod",
+        "sso:PutApplicationGrant"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EMRStudioSessionMappingRead",
+      "Effect": "Allow",
+      "Action": [
+        "elasticmapreduce:GetStudioSessionMapping",
+        "sso-directory:DescribeGroup",
+        "sso-directory:DescribeUser",
+        "sso-directory:SearchGroups",
+        "sso-directory:SearchUsers",
+        "sso:DescribeInstance",
+        "sso:GetManagedApplicationInstance"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EMRStudioSessionMappingUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "elasticmapreduce:GetStudioSessionMapping",
+        "elasticmapreduce:UpdateStudioSessionMapping",
+        "sso-directory:DescribeGroup",
+        "sso-directory:DescribeUser",
+        "sso-directory:SearchGroups",
+        "sso-directory:SearchUsers",
+        "sso:DescribeInstance",
+        "sso:GetManagedApplicationInstance"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EMRStudioSessionMappingDelete",
+      "Effect": "Allow",
+      "Action": [
+        "elasticmapreduce:DeleteStudioSessionMapping",
+        "elasticmapreduce:GetStudioSessionMapping",
+        "sso-directory:DescribeGroup",
+        "sso-directory:DescribeUser",
+        "sso-directory:SearchGroups",
+        "sso-directory:SearchUsers",
+        "sso:DescribeInstance",
+        "sso:DisassociateProfile",
+        "sso:GetManagedApplicationInstance",
+        "sso:GetProfile",
+        "sso:ListDirectoryAssociations",
+        "sso:ListProfiles"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

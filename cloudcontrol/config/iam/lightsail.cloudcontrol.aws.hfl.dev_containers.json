@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLightsailContainer",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailContainerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:CreateContainerService",
+        "lightsail:CreateContainerServiceDeployment",
+        "lightsail:GetContainerServices",
+        "lightsail:TagResource",
+        "lightsail:UntagResource",
+        "lightsail:UpdateContainerService"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailContainerRead",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetContainerServices"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailContainerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:CreateContainerServiceDeployment",
+        "lightsail:GetContainerServices",
+        "lightsail:TagResource",
+        "lightsail:UntagResource",
+        "lightsail:UpdateContainerService"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailContainerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:DeleteContainerService",
+        "lightsail:GetContainerServices"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

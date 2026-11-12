@@ -1,0 +1,66 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlVoiceIDDomain",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VoiceIDDomainCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "voiceid:CreateDomain",
+        "voiceid:DescribeDomain",
+        "voiceid:ListTagsForResource",
+        "voiceid:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VoiceIDDomainRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "voiceid:DescribeDomain",
+        "voiceid:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VoiceIDDomainUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "voiceid:DescribeDomain",
+        "voiceid:ListTagsForResource",
+        "voiceid:TagResource",
+        "voiceid:UntagResource",
+        "voiceid:UpdateDomain"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "VoiceIDDomainDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "voiceid:DeleteDomain",
+        "voiceid:DescribeDomain"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

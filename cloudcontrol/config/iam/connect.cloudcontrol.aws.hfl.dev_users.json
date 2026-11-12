@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectUser",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectUserCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:AssociateUserProficiencies",
+        "connect:CreateUser",
+        "connect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectUserRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeUser",
+        "connect:ListUserProficiencies"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectUserUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:AssociateUserProficiencies",
+        "connect:DisassociateUserProficiencies",
+        "connect:TagResource",
+        "connect:UntagResource",
+        "connect:UpdateUserConfig",
+        "connect:UpdateUserHierarchy",
+        "connect:UpdateUserIdentityInfo",
+        "connect:UpdateUserPhoneConfig",
+        "connect:UpdateUserProficiencies",
+        "connect:UpdateUserRoutingProfile",
+        "connect:UpdateUserSecurityProfiles"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectUserDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteUser",
+        "connect:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

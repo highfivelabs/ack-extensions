@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlServiceCatalogServiceAction",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogServiceActionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetRole",
+        "servicecatalog:CreateServiceAction",
+        "ssm:DescribeDocument"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogServiceActionRead",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DescribeServiceAction"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogServiceActionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetRole",
+        "servicecatalog:UpdateServiceAction",
+        "ssm:DescribeDocument"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogServiceActionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:DeleteServiceAction"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

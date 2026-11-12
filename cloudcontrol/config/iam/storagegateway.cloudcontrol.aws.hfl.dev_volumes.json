@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlStorageGatewayVolume",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StorageGatewayVolumeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "storagegateway:AddTagsToResource",
+        "storagegateway:CreateCachediSCSIVolume",
+        "storagegateway:DescribeCachediSCSIVolumes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StorageGatewayVolumeRead",
+      "Effect": "Allow",
+      "Action": [
+        "storagegateway:DescribeCachediSCSIVolumes",
+        "storagegateway:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StorageGatewayVolumeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "storagegateway:AddTagsToResource",
+        "storagegateway:DescribeCachediSCSIVolumes",
+        "storagegateway:ListTagsForResource",
+        "storagegateway:RemoveTagsFromResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "StorageGatewayVolumeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "storagegateway:DeleteVolume",
+        "storagegateway:DescribeCachediSCSIVolumes",
+        "storagegateway:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

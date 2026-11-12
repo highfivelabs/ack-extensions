@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSSMContactsRotation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMContactsRotationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ssm-contacts:CreateRotation",
+        "ssm-contacts:GetRotation",
+        "ssm-contacts:ListTagsForResource",
+        "ssm-contacts:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMContactsRotationRead",
+      "Effect": "Allow",
+      "Action": [
+        "ssm-contacts:GetRotation",
+        "ssm-contacts:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMContactsRotationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ssm-contacts:GetRotation",
+        "ssm-contacts:ListTagsForResource",
+        "ssm-contacts:TagResource",
+        "ssm-contacts:UntagResource",
+        "ssm-contacts:UpdateRotation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SSMContactsRotationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ssm-contacts:DeleteRotation",
+        "ssm-contacts:GetRotation",
+        "ssm-contacts:ListTagsForResource",
+        "ssm-contacts:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSyntheticsGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SyntheticsGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "synthetics:AssociateResource",
+        "synthetics:CreateGroup",
+        "synthetics:GetGroup",
+        "synthetics:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SyntheticsGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "synthetics:GetGroup",
+        "synthetics:ListGroupResources",
+        "synthetics:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SyntheticsGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "synthetics:AssociateResource",
+        "synthetics:DisassociateResource",
+        "synthetics:GetGroup",
+        "synthetics:ListGroupResources",
+        "synthetics:TagResource",
+        "synthetics:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SyntheticsGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "synthetics:DeleteGroup",
+        "synthetics:GetGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

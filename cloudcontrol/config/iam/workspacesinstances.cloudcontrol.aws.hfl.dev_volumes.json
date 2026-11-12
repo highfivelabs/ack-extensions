@@ -1,0 +1,45 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWorkspacesInstancesVolume",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkspacesInstancesVolumeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateTags",
+        "ec2:CreateVolume",
+        "workspaces-instances:CreateVolume"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkspacesInstancesVolumeRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVolumes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WorkspacesInstancesVolumeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteVolume",
+        "ec2:DescribeVolumes",
+        "workspaces-instances:DeleteVolume"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

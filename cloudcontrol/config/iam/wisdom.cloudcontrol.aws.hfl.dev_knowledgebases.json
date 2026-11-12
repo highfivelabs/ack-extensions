@@ -1,0 +1,63 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWisdomKnowledgeBase",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomKnowledgeBaseCreate",
+      "Effect": "Allow",
+      "Action": [
+        "app-integrations:CreateDataIntegrationAssociation",
+        "app-integrations:GetDataIntegration",
+        "appflow:CreateFlow",
+        "appflow:DeleteFlow",
+        "appflow:StartFlow",
+        "appflow:TagResource",
+        "appflow:UseConnectorProfile",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:ListGrants",
+        "wisdom:CreateKnowledgeBase",
+        "wisdom:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomKnowledgeBaseRead",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:GetKnowledgeBase"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomKnowledgeBaseUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:GetKnowledgeBase"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomKnowledgeBaseDelete",
+      "Effect": "Allow",
+      "Action": [
+        "app-integrations:DeleteDataIntegrationAssociation",
+        "appflow:DeleteFlow",
+        "appflow:StopFlow",
+        "wisdom:DeleteKnowledgeBase"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

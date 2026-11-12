@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppStreamApplicationEntitlementAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamApplicationEntitlementAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:AssociateApplicationToEntitlement",
+        "appstream:ListEntitledApplications"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamApplicationEntitlementAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:ListEntitledApplications"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamApplicationEntitlementAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DisassociateApplicationFromEntitlement",
+        "appstream:ListEntitledApplications"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAWSExternalAnthropicWorkspace",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AWSExternalAnthropicWorkspaceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "aws-external-anthropic:CreateWorkspace",
+        "aws-external-anthropic:GetWorkspace",
+        "aws-external-anthropic:ListTagsForResource",
+        "aws-external-anthropic:TagResource",
+        "sts:GetWebIdentityToken",
+        "sts:TagGetWebIdentityToken"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AWSExternalAnthropicWorkspaceRead",
+      "Effect": "Allow",
+      "Action": [
+        "aws-external-anthropic:GetWorkspace",
+        "aws-external-anthropic:ListTagsForResource",
+        "sts:GetWebIdentityToken",
+        "sts:TagGetWebIdentityToken"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AWSExternalAnthropicWorkspaceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "aws-external-anthropic:GetWorkspace",
+        "aws-external-anthropic:ListTagsForResource",
+        "aws-external-anthropic:TagResource",
+        "aws-external-anthropic:UntagResource",
+        "aws-external-anthropic:UpdateWorkspace",
+        "sts:GetWebIdentityToken",
+        "sts:TagGetWebIdentityToken"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AWSExternalAnthropicWorkspaceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "aws-external-anthropic:ArchiveWorkspace",
+        "aws-external-anthropic:GetWorkspace",
+        "aws-external-anthropic:ListTagsForResource",
+        "sts:GetWebIdentityToken",
+        "sts:TagGetWebIdentityToken"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

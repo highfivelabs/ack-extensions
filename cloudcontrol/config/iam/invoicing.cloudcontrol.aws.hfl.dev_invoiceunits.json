@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlInvoicingInvoiceUnit",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InvoicingInvoiceUnitCreate",
+      "Effect": "Allow",
+      "Action": [
+        "invoicing:CreateInvoiceUnit",
+        "invoicing:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InvoicingInvoiceUnitRead",
+      "Effect": "Allow",
+      "Action": [
+        "invoicing:GetInvoiceUnit",
+        "invoicing:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InvoicingInvoiceUnitUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "invoicing:TagResource",
+        "invoicing:UntagResource",
+        "invoicing:UpdateInvoiceUnit"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "InvoicingInvoiceUnitDelete",
+      "Effect": "Allow",
+      "Action": [
+        "invoicing:DeleteInvoiceUnit"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

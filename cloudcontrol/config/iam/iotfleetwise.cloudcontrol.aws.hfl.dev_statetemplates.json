@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTFleetWiseStateTemplate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetWiseStateTemplateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iotfleetwise:CreateStateTemplate",
+        "iotfleetwise:GetStateTemplate",
+        "iotfleetwise:ListTagsForResource",
+        "iotfleetwise:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetWiseStateTemplateRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotfleetwise:GetStateTemplate",
+        "iotfleetwise:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetWiseStateTemplateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotfleetwise:GetStateTemplate",
+        "iotfleetwise:ListTagsForResource",
+        "iotfleetwise:TagResource",
+        "iotfleetwise:UntagResource",
+        "iotfleetwise:UpdateStateTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTFleetWiseStateTemplateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotfleetwise:DeleteStateTemplate",
+        "iotfleetwise:GetStateTemplate"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

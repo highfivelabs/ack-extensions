@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTWirelessPartnerAccount",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessPartnerAccountCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:AssociateAwsAccountWithPartnerAccount",
+        "iotwireless:GetPartnerAccount",
+        "iotwireless:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessPartnerAccountRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:GetPartnerAccount",
+        "iotwireless:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessPartnerAccountUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:AssociateAwsAccountWithPartnerAccount",
+        "iotwireless:GetPartnerAccount",
+        "iotwireless:ListTagsForResource",
+        "iotwireless:TagResource",
+        "iotwireless:UntagResource",
+        "iotwireless:UpdatePartnerAccount"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessPartnerAccountDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:DisassociateAwsAccountFromPartnerAccount"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

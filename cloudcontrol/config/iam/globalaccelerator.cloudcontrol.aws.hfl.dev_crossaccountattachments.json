@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlobalAcceleratorCrossAccountAttachment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlobalAcceleratorCrossAccountAttachmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "globalaccelerator:CreateCrossAccountAttachment",
+        "globalaccelerator:DescribeCrossAccountAttachment",
+        "globalaccelerator:ListTagsForResource",
+        "globalaccelerator:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlobalAcceleratorCrossAccountAttachmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "globalaccelerator:DescribeCrossAccountAttachment",
+        "globalaccelerator:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlobalAcceleratorCrossAccountAttachmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "globalaccelerator:DescribeCrossAccountAttachment",
+        "globalaccelerator:ListTagsForResource",
+        "globalaccelerator:TagResource",
+        "globalaccelerator:UntagResource",
+        "globalaccelerator:UpdateCrossAccountAttachment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlobalAcceleratorCrossAccountAttachmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "globalaccelerator:DeleteCrossAccountAttachment",
+        "globalaccelerator:DescribeCrossAccountAttachment"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

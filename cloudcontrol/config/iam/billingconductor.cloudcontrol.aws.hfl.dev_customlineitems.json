@@ -1,0 +1,66 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBillingConductorCustomLineItem",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BillingConductorCustomLineItemCreate",
+      "Effect": "Allow",
+      "Action": [
+        "billingconductor:BatchAssociateResourcesToCustomLineItem",
+        "billingconductor:CreateCustomLineItem",
+        "billingconductor:ListCustomLineItems",
+        "billingconductor:ListTagsForResource",
+        "billingconductor:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BillingConductorCustomLineItemRead",
+      "Effect": "Allow",
+      "Action": [
+        "billingconductor:ListCustomLineItemVersions",
+        "billingconductor:ListCustomLineItems",
+        "billingconductor:ListResourcesAssociatedToCustomLineItem",
+        "billingconductor:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BillingConductorCustomLineItemUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "billingconductor:BatchAssociateResourcesToCustomLineItem",
+        "billingconductor:BatchDisassociateResourcesFromCustomLineItem",
+        "billingconductor:ListCustomLineItems",
+        "billingconductor:ListResourcesAssociatedToCustomLineItem",
+        "billingconductor:TagResource",
+        "billingconductor:UntagResource",
+        "billingconductor:UpdateCustomLineItem"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BillingConductorCustomLineItemDelete",
+      "Effect": "Allow",
+      "Action": [
+        "billingconductor:BatchDisassociateResourcesFromCustomLineItem",
+        "billingconductor:DeleteCustomLineItem",
+        "billingconductor:ListCustomLineItems",
+        "billingconductor:ListResourcesAssociatedToCustomLineItem",
+        "billingconductor:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

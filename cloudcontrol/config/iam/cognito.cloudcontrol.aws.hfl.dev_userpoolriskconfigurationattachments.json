@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCognitoUserPoolRiskConfigurationAttachment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoUserPoolRiskConfigurationAttachmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DescribeRiskConfiguration",
+        "cognito-idp:SetRiskConfiguration",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoUserPoolRiskConfigurationAttachmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DescribeRiskConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoUserPoolRiskConfigurationAttachmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DescribeRiskConfiguration",
+        "cognito-idp:SetRiskConfiguration",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CognitoUserPoolRiskConfigurationAttachmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DescribeRiskConfiguration",
+        "cognito-idp:SetRiskConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

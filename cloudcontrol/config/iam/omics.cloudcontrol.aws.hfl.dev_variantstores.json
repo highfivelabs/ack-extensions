@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlOmicsVariantStore",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsVariantStoreCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey",
+        "omics:CreateVariantStore",
+        "omics:GetVariantStore",
+        "omics:TagResource",
+        "ram:AcceptResourceShareInvitation",
+        "ram:GetResourceShareInvitations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsVariantStoreRead",
+      "Effect": "Allow",
+      "Action": [
+        "omics:GetVariantStore"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsVariantStoreUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "omics:GetVariantStore",
+        "omics:ListTagsForResource",
+        "omics:TagResource",
+        "omics:UntagResource",
+        "omics:UpdateVariantStore"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OmicsVariantStoreDelete",
+      "Effect": "Allow",
+      "Action": [
+        "omics:DeleteVariantStore",
+        "omics:ListVariantStores"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

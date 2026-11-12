@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTWirelessWirelessDeviceImportTask",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessWirelessDeviceImportTaskCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iotwireless:StartSingleWirelessDeviceImportTask",
+        "iotwireless:StartWirelessDeviceImportTask",
+        "iotwireless:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessWirelessDeviceImportTaskRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:GetWirelessDeviceImportTask",
+        "iotwireless:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessWirelessDeviceImportTaskUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "iotwireless:GetWirelessDeviceImportTask",
+        "iotwireless:TagResource",
+        "iotwireless:UntagResource",
+        "iotwireless:UpdateWirelessDeviceImportTask"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessWirelessDeviceImportTaskDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:DeleteWirelessDeviceImportTask"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlQuickSightVPCConnection",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightVPCConnectionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "quicksight:CreateVPCConnection",
+        "quicksight:DescribeVPCConnection",
+        "quicksight:ListTagsForResource",
+        "quicksight:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightVPCConnectionRead",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeVPCConnection",
+        "quicksight:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightVPCConnectionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "quicksight:DescribeVPCConnection",
+        "quicksight:ListTagsForResource",
+        "quicksight:TagResource",
+        "quicksight:UntagResource",
+        "quicksight:UpdateVPCConnection"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightVPCConnectionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "quicksight:DeleteVPCConnection",
+        "quicksight:DescribeVPCConnection",
+        "quicksight:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

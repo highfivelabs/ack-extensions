@@ -1,0 +1,88 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTransferWebApp",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferWebAppCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateVpcEndpoint",
+        "ec2:DescribeVpcEndpoints",
+        "iam:PassRole",
+        "sso:CreateApplication",
+        "sso:DescribeApplication",
+        "sso:GetApplicationAccessScope",
+        "sso:GetApplicationAuthenticationMethod",
+        "sso:GetApplicationGrant",
+        "sso:ListApplicationAccessScopes",
+        "sso:ListApplicationAuthenticationMethods",
+        "sso:ListApplicationGrants",
+        "sso:ListApplications",
+        "sso:PutApplicationAccessScope",
+        "sso:PutApplicationAuthenticationMethod",
+        "sso:PutApplicationGrant",
+        "transfer:CreateWebApp",
+        "transfer:DescribeWebApp",
+        "transfer:DescribeWebAppCustomization",
+        "transfer:TagResource",
+        "transfer:UpdateWebAppCustomization"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferWebAppRead",
+      "Effect": "Allow",
+      "Action": [
+        "transfer:DescribeWebApp",
+        "transfer:DescribeWebAppCustomization"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferWebAppUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcEndpoints",
+        "ec2:ModifyVpcEndpoint",
+        "iam:PassRole",
+        "sso:DescribeApplication",
+        "sso:GetApplicationGrant",
+        "sso:ListApplicationGrants",
+        "sso:ListApplications",
+        "sso:PutApplicationGrant",
+        "sso:UpdateApplication",
+        "transfer:DeleteWebAppCustomization",
+        "transfer:DescribeWebApp",
+        "transfer:DescribeWebAppCustomization",
+        "transfer:TagResource",
+        "transfer:UnTagResource",
+        "transfer:UpdateWebApp",
+        "transfer:UpdateWebAppCustomization"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferWebAppDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteVpcEndpoints",
+        "ec2:DescribeVpcEndpoints",
+        "sso:DeleteApplication",
+        "sso:DescribeApplication",
+        "transfer:DeleteWebApp"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

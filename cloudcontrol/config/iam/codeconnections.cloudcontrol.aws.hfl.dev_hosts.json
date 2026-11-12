@@ -1,0 +1,84 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCodeConnectionsHost",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeConnectionsHostCreate",
+      "Effect": "Allow",
+      "Action": [
+        "codeconnections:CreateHost",
+        "codeconnections:GetHost",
+        "codeconnections:TagResource",
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateTags",
+        "ec2:CreateVpcEndpoint",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DeleteVpcEndpoints",
+        "ec2:DescribeDhcpOptions",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcEndpoints",
+        "ec2:DescribeVpcs"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeConnectionsHostRead",
+      "Effect": "Allow",
+      "Action": [
+        "codeconnections:GetHost",
+        "codeconnections:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeConnectionsHostUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "codeconnections:GetHost",
+        "codeconnections:ListTagsForResource",
+        "codeconnections:TagResource",
+        "codeconnections:UntagResource",
+        "codeconnections:UpdateHost",
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateTags",
+        "ec2:CreateVpcEndpoint",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DeleteVpcEndpoints",
+        "ec2:DescribeDhcpOptions",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcEndpoints",
+        "ec2:DescribeVpcs",
+        "ec2:ModifyVpcEndpoint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeConnectionsHostDelete",
+      "Effect": "Allow",
+      "Action": [
+        "codeconnections:DeleteHost",
+        "codeconnections:GetHost",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DeleteVpcEndpoints",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeVpcEndpoints"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

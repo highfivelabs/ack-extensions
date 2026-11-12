@@ -1,0 +1,81 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGameLiftContainerFleet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftContainerFleetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:CreateContainerFleet",
+        "gamelift:DescribeContainerFleet",
+        "gamelift:DescribeFleetDeployment",
+        "gamelift:DescribeFleetLocationAttributes",
+        "gamelift:DescribeFleetLocationCapacity",
+        "gamelift:DescribeScalingPolicies",
+        "gamelift:ListTagsForResource",
+        "gamelift:PutScalingPolicy",
+        "gamelift:StopFleetActions",
+        "gamelift:TagResource",
+        "gamelift:UpdateFleetCapacity",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftContainerFleetRead",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DescribeContainerFleet",
+        "gamelift:DescribeFleetLocationAttributes",
+        "gamelift:DescribeFleetLocationCapacity",
+        "gamelift:DescribeScalingPolicies",
+        "gamelift:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftContainerFleetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:CreateFleetLocations",
+        "gamelift:DeleteFleetLocations",
+        "gamelift:DeleteScalingPolicy",
+        "gamelift:DescribeContainerFleet",
+        "gamelift:DescribeFleetDeployment",
+        "gamelift:DescribeFleetLocationAttributes",
+        "gamelift:DescribeFleetLocationCapacity",
+        "gamelift:DescribeScalingPolicies",
+        "gamelift:ListTagsForResource",
+        "gamelift:PutScalingPolicy",
+        "gamelift:StartFleetActions",
+        "gamelift:StopFleetActions",
+        "gamelift:TagResource",
+        "gamelift:UntagResource",
+        "gamelift:UpdateContainerFleet",
+        "gamelift:UpdateFleetCapacity",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftContainerFleetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DeleteContainerFleet",
+        "gamelift:DescribeContainerFleet"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

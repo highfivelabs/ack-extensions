@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlApplicationSignalsInstrumentationConfig",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApplicationSignalsInstrumentationConfigCreate",
+      "Effect": "Allow",
+      "Action": [
+        "application-signals:CreateInstrumentationConfiguration",
+        "application-signals:GetInstrumentationConfiguration",
+        "application-signals:ListTagsForResource",
+        "application-signals:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApplicationSignalsInstrumentationConfigRead",
+      "Effect": "Allow",
+      "Action": [
+        "application-signals:GetInstrumentationConfiguration",
+        "application-signals:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApplicationSignalsInstrumentationConfigUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "application-signals:GetInstrumentationConfiguration",
+        "application-signals:ListTagsForResource",
+        "application-signals:TagResource",
+        "application-signals:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApplicationSignalsInstrumentationConfigDelete",
+      "Effect": "Allow",
+      "Action": [
+        "application-signals:DeleteInstrumentationConfiguration",
+        "application-signals:GetInstrumentationConfiguration",
+        "application-signals:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

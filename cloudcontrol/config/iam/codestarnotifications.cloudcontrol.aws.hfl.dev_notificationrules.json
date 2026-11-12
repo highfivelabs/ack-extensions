@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCodeStarNotificationsNotificationRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeStarNotificationsNotificationRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "codestar-notifications:TagResource",
+        "codestar-notifications:createNotificationRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeStarNotificationsNotificationRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "codestar-notifications:describeNotificationRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeStarNotificationsNotificationRuleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "codestar-notifications:TagResource",
+        "codestar-notifications:UntagResource",
+        "codestar-notifications:updateNotificationRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodeStarNotificationsNotificationRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "codestar-notifications:deleteNotificationRule",
+        "codestar-notifications:describeNotificationRule"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

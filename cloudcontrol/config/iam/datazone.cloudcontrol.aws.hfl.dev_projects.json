@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataZoneProject",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneProjectCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:CreateProject",
+        "datazone:GetProject",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneProjectRead",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetProject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneProjectUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetProject",
+        "datazone:UpdateProject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneProjectDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:DeleteProject",
+        "datazone:GetProject"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

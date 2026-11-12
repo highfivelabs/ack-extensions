@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlApiGatewayDomainName",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayDomainNameCreate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:AddCertificateToDomain",
+        "apigateway:GET",
+        "apigateway:POST",
+        "apigateway:PUT",
+        "cloudfront:UpdateDistribution",
+        "s3:GetObject",
+        "s3:GetObjectVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayDomainNameRead",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayDomainNameUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:AddCertificateToDomain",
+        "apigateway:DELETE",
+        "apigateway:GET",
+        "apigateway:PATCH",
+        "apigateway:PUT",
+        "apigateway:RemoveCertificateFromDomain",
+        "cloudfront:UpdateDistribution",
+        "s3:GetObject",
+        "s3:GetObjectVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayDomainNameDelete",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:DELETE",
+        "apigateway:GET",
+        "apigateway:RemoveCertificateFromDomain"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

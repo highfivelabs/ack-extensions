@@ -1,0 +1,66 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPCSCluster",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCSClusterCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateNetworkInterface",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcs",
+        "ec2:GetSecurityGroupsForVpc",
+        "iam:CreateServiceLinkedRole",
+        "pcs:CreateCluster",
+        "pcs:GetCluster",
+        "pcs:ListTagsForResource",
+        "pcs:TagResource",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCSClusterRead",
+      "Effect": "Allow",
+      "Action": [
+        "pcs:GetCluster",
+        "pcs:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCSClusterUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "pcs:GetCluster",
+        "pcs:ListTagsForResource",
+        "pcs:TagResource",
+        "pcs:UntagResource",
+        "pcs:UpdateCluster"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PCSClusterDelete",
+      "Effect": "Allow",
+      "Action": [
+        "pcs:DeleteCluster",
+        "pcs:GetCluster"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

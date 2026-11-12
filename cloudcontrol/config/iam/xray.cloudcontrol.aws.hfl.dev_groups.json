@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlXRayGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "XRayGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "xray:CreateGroup",
+        "xray:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "XRayGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "xray:GetGroup",
+        "xray:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "XRayGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "xray:ListTagsForResource",
+        "xray:TagResource",
+        "xray:UntagResource",
+        "xray:UpdateGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "XRayGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "xray:DeleteGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

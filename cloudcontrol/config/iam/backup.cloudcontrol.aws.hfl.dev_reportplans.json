@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBackupReportPlan",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupReportPlanCreate",
+      "Effect": "Allow",
+      "Action": [
+        "backup:CreateReportPlan",
+        "backup:DescribeReportPlan",
+        "backup:ListTags",
+        "backup:TagResource",
+        "iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupReportPlanRead",
+      "Effect": "Allow",
+      "Action": [
+        "backup:DescribeReportPlan",
+        "backup:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupReportPlanUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "backup:DescribeReportPlan",
+        "backup:ListTags",
+        "backup:TagResource",
+        "backup:UntagResource",
+        "backup:UpdateReportPlan"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupReportPlanDelete",
+      "Effect": "Allow",
+      "Action": [
+        "backup:DeleteReportPlan",
+        "backup:DescribeReportPlan"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

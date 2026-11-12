@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTWirelessMulticastGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessMulticastGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:CreateMulticastGroup",
+        "iotwireless:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessMulticastGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:GetMulticastGroup",
+        "iotwireless:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessMulticastGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:AssociateWirelessDeviceWithMulticastGroup",
+        "iotwireless:DisassociateWirelessDeviceFromMulticastGroup",
+        "iotwireless:GetMulticastGroup",
+        "iotwireless:TagResource",
+        "iotwireless:UntagResource",
+        "iotwireless:UpdateMulticastGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessMulticastGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:DeleteMulticastGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

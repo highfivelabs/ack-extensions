@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSageMakerHumanTaskUi",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerHumanTaskUiCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags",
+        "sagemaker:CreateHumanTaskUi",
+        "sagemaker:DescribeHumanTaskUi",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerHumanTaskUiRead",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribeHumanTaskUi",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerHumanTaskUiUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags",
+        "sagemaker:DeleteTags",
+        "sagemaker:DescribeHumanTaskUi",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerHumanTaskUiDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DeleteHumanTaskUi",
+        "sagemaker:DescribeHumanTaskUi",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

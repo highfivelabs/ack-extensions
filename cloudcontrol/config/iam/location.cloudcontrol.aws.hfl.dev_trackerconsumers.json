@@ -1,0 +1,43 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLocationTrackerConsumer",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationTrackerConsumerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "geo:AssociateTrackerConsumer",
+        "geo:ListTrackerConsumers"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationTrackerConsumerRead",
+      "Effect": "Allow",
+      "Action": [
+        "geo:ListTrackerConsumers"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationTrackerConsumerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "geo:DisassociateTrackerConsumer",
+        "geo:ListTrackerConsumers"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

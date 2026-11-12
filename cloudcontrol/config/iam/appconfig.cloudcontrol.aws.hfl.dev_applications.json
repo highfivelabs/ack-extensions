@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppConfigApplication",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigApplicationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:CreateApplication",
+        "appconfig:GetApplication",
+        "appconfig:ListTagsForResource",
+        "appconfig:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigApplicationRead",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:GetApplication",
+        "appconfig:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigApplicationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:TagResource",
+        "appconfig:UntagResource",
+        "appconfig:UpdateApplication"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigApplicationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:DeleteApplication",
+        "appconfig:GetApplication"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

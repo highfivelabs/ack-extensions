@@ -1,0 +1,71 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTransferHostKey",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferHostKeyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "kms:Decrypt",
+        "kms:GenerateDataKey",
+        "secretsmanager:CreateSecret",
+        "transfer:DescribeHostKey",
+        "transfer:ImportHostKey",
+        "transfer:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferHostKeyRead",
+      "Effect": "Allow",
+      "Action": [
+        "transfer:DescribeHostKey",
+        "transfer:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferHostKeyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "kms:Decrypt",
+        "kms:GenerateDataKey",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:DeleteSecret",
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:UpdateSecret",
+        "transfer:DescribeHostKey",
+        "transfer:ExportHostKey",
+        "transfer:ListTagsForResource",
+        "transfer:TagResource",
+        "transfer:UntagResource",
+        "transfer:UpdateHostKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferHostKeyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:DeleteSecret",
+        "transfer:DeleteHostKey",
+        "transfer:DescribeHostKey",
+        "transfer:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDevOpsGuruNotificationChannel",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsGuruNotificationChannelCreate",
+      "Effect": "Allow",
+      "Action": [
+        "devops-guru:AddNotificationChannel",
+        "devops-guru:ListNotificationChannels",
+        "sns:GetTopicAttributes",
+        "sns:Publish",
+        "sns:SetTopicAttributes"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsGuruNotificationChannelRead",
+      "Effect": "Allow",
+      "Action": [
+        "devops-guru:ListNotificationChannels"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsGuruNotificationChannelDelete",
+      "Effect": "Allow",
+      "Action": [
+        "devops-guru:ListNotificationChannels",
+        "devops-guru:RemoveNotificationChannel"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

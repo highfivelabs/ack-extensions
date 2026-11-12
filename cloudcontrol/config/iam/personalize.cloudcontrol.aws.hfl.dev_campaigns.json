@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlPersonalizeCampaign",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeCampaignCreate",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:CreateCampaign",
+        "personalize:DescribeCampaign",
+        "personalize:ListTagsForResource",
+        "personalize:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeCampaignRead",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:DescribeCampaign",
+        "personalize:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeCampaignUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:DescribeCampaign",
+        "personalize:ListTagsForResource",
+        "personalize:TagResource",
+        "personalize:UntagResource",
+        "personalize:UpdateCampaign"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "PersonalizeCampaignDelete",
+      "Effect": "Allow",
+      "Action": [
+        "personalize:DeleteCampaign",
+        "personalize:DescribeCampaign"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

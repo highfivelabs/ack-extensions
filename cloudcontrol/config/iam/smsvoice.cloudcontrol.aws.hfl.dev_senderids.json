@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSMSVOICESenderId",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICESenderIdCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DescribeSenderIds",
+        "sms-voice:ListTagsForResource",
+        "sms-voice:RequestSenderId",
+        "sms-voice:TagResource",
+        "sms-voice:UpdateSenderId"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICESenderIdRead",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DescribeSenderIds",
+        "sms-voice:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICESenderIdUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DescribeSenderIds",
+        "sms-voice:ListTagsForResource",
+        "sms-voice:TagResource",
+        "sms-voice:UntagResource",
+        "sms-voice:UpdateSenderId"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICESenderIdDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DescribeSenderIds",
+        "sms-voice:ReleaseSenderId"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

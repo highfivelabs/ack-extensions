@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTRoleAlias",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTRoleAliasCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetRole",
+        "iam:PassRole",
+        "iot:CreateRoleAlias",
+        "iot:DescribeRoleAlias",
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTRoleAliasRead",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetRole",
+        "iam:PassRole",
+        "iot:DescribeRoleAlias",
+        "iot:ListTagsForResource",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTRoleAliasUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetRole",
+        "iam:PassRole",
+        "iot:DescribeRoleAlias",
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "iot:UntagResource",
+        "iot:UpdateRoleAlias",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTRoleAliasDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeleteRoleAlias",
+        "iot:DescribeRoleAlias",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

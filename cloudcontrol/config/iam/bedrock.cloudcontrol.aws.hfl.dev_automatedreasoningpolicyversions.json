@@ -1,0 +1,50 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockAutomatedReasoningPolicyVersion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAutomatedReasoningPolicyVersionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:CreateAutomatedReasoningPolicyVersion",
+        "bedrock:ExportAutomatedReasoningPolicyVersion",
+        "bedrock:GetAutomatedReasoningPolicy",
+        "bedrock:ListTagsForResource",
+        "bedrock:TagResource",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAutomatedReasoningPolicyVersionRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetAutomatedReasoningPolicy",
+        "bedrock:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockAutomatedReasoningPolicyVersionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:DeleteAutomatedReasoningPolicy",
+        "bedrock:GetAutomatedReasoningPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

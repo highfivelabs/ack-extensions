@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDeadlineQueue",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineQueueCreate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:CreateQueue",
+        "deadline:GetQueue",
+        "deadline:ListTagsForResource",
+        "deadline:TagResource",
+        "iam:PassRole",
+        "identitystore:ListGroupMembershipsForMember",
+        "logs:CreateLogGroup",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineQueueRead",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:GetQueue",
+        "deadline:ListTagsForResource",
+        "identitystore:ListGroupMembershipsForMember"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineQueueUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:GetQueue",
+        "deadline:ListTagsForResource",
+        "deadline:TagResource",
+        "deadline:UntagResource",
+        "deadline:UpdateQueue",
+        "iam:PassRole",
+        "identitystore:ListGroupMembershipsForMember",
+        "logs:CreateLogGroup",
+        "s3:ListBucket"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineQueueDelete",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:DeleteQueue",
+        "deadline:GetQueue",
+        "identitystore:ListGroupMembershipsForMember"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

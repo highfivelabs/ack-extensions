@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlARCZonalShiftZonalAutoshiftConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ARCZonalShiftZonalAutoshiftConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "arc-zonal-shift:CreatePracticeRunConfiguration",
+        "arc-zonal-shift:GetManagedResource",
+        "arc-zonal-shift:UpdateZonalAutoshiftConfiguration",
+        "cloudwatch:DescribeAlarms",
+        "iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ARCZonalShiftZonalAutoshiftConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "arc-zonal-shift:GetManagedResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ARCZonalShiftZonalAutoshiftConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "arc-zonal-shift:GetManagedResource",
+        "arc-zonal-shift:UpdatePracticeRunConfiguration",
+        "arc-zonal-shift:UpdateZonalAutoshiftConfiguration",
+        "cloudwatch:DescribeAlarms"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ARCZonalShiftZonalAutoshiftConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "arc-zonal-shift:DeletePracticeRunConfiguration",
+        "arc-zonal-shift:GetManagedResource",
+        "arc-zonal-shift:UpdateZonalAutoshiftConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

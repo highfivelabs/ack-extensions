@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBatchJobDefinition",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchJobDefinitionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:DescribeJobDefinitions",
+        "Batch:RegisterJobDefinition",
+        "Batch:TagResource",
+        "Iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchJobDefinitionRead",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:DescribeJobDefinitions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchJobDefinitionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:DeregisterJobDefinition",
+        "Batch:DescribeJobDefinitions",
+        "Batch:RegisterJobDefinition",
+        "Batch:TagResource",
+        "Batch:UntagResource",
+        "Iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BatchJobDefinitionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "Batch:DeregisterJobDefinition",
+        "Batch:DescribeJobDefinitions",
+        "Iam:PassRole"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

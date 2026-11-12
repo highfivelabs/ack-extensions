@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectCampaignsCampaign",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectCampaignsCampaignCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect-campaigns:CreateCampaign",
+        "connect-campaigns:DescribeCampaign",
+        "connect-campaigns:TagResource",
+        "connect:DescribeContactFlow",
+        "connect:DescribeInstance",
+        "connect:DescribeQueue"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectCampaignsCampaignRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect-campaigns:DescribeCampaign"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectCampaignsCampaignUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect-campaigns:DescribeCampaign",
+        "connect-campaigns:TagResource",
+        "connect-campaigns:UntagResource",
+        "connect-campaigns:UpdateCampaignDialerConfig",
+        "connect-campaigns:UpdateCampaignName",
+        "connect-campaigns:UpdateCampaignOutboundCallConfig"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectCampaignsCampaignDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect-campaigns:DeleteCampaign"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

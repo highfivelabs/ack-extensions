@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSMSVOICERegistrationAttachment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICERegistrationAttachmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "sms-voice:CreateRegistrationAttachment",
+        "sms-voice:DescribeRegistrationAttachments",
+        "sms-voice:ListTagsForResource",
+        "sms-voice:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICERegistrationAttachmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DescribeRegistrationAttachments",
+        "sms-voice:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICERegistrationAttachmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DescribeRegistrationAttachments",
+        "sms-voice:ListTagsForResource",
+        "sms-voice:TagResource",
+        "sms-voice:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICERegistrationAttachmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DeleteRegistrationAttachment",
+        "sms-voice:DescribeRegistrationAttachments",
+        "sms-voice:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

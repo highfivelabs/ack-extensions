@@ -1,0 +1,50 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlWisdomAIGuardrail",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomAIGuardrailCreate",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:CreateAIGuardrail",
+        "wisdom:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomAIGuardrailRead",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:GetAIGuardrail"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomAIGuardrailUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:UpdateAIGuardrail"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "WisdomAIGuardrailDelete",
+      "Effect": "Allow",
+      "Action": [
+        "wisdom:DeleteAIGuardrail"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

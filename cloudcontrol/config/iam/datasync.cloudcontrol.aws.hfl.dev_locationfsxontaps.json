@@ -1,0 +1,83 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataSyncLocationFSxONTAP",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationFSxONTAPCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:CreateLocationFsxOntap",
+        "datasync:DescribeLocationFsxOntap",
+        "datasync:ListTagsForResource",
+        "datasync:TagResource",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "fsx:DescribeFileSystems",
+        "fsx:DescribeStorageVirtualMachines",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:DeleteSecret",
+        "secretsmanager:PutSecretValue"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationFSxONTAPRead",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DescribeLocationFsxOntap",
+        "datasync:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationFSxONTAPUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DescribeLocationFsxOntap",
+        "datasync:ListTagsForResource",
+        "datasync:TagResource",
+        "datasync:UntagResource",
+        "datasync:UpdateLocationFsxOntap",
+        "ec2:DescribeNetworkInterfaces",
+        "fsx:DescribeFileSystems",
+        "fsx:DescribeStorageVirtualMachines",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "secretsmanager:CreateSecret",
+        "secretsmanager:DeleteSecret",
+        "secretsmanager:PutSecretValue",
+        "secretsmanager:UpdateSecret"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncLocationFSxONTAPDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DeleteLocation",
+        "secretsmanager:DeleteSecret"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSageMakerDeviceFleet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerDeviceFleetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "sagemaker:CreateDeviceFleet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerDeviceFleetRead",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribeDeviceFleet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerDeviceFleetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "sagemaker:UpdateDeviceFleet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerDeviceFleetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DeleteDeviceFleet"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

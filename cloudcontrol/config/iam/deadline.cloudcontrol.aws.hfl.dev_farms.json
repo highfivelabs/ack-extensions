@@ -1,0 +1,78 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDeadlineFarm",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineFarmCreate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:CreateFarm",
+        "deadline:GetFarm",
+        "deadline:ListTagsForResource",
+        "deadline:TagResource",
+        "identitystore:ListGroupMembershipsForMember",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineFarmRead",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:GetFarm",
+        "deadline:ListTagsForResource",
+        "identitystore:ListGroupMembershipsForMember",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineFarmUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:GetFarm",
+        "deadline:ListTagsForResource",
+        "deadline:TagResource",
+        "deadline:UntagResource",
+        "deadline:UpdateFarm",
+        "identitystore:ListGroupMembershipsForMember",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineFarmDelete",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:DeleteFarm",
+        "deadline:GetFarm",
+        "identitystore:ListGroupMembershipsForMember",
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

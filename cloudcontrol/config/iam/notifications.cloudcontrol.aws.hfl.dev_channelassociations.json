@@ -1,0 +1,42 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNotificationsChannelAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsChannelAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "notifications:AssociateChannel",
+        "notifications:ListChannels"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsChannelAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "notifications:ListChannels"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NotificationsChannelAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "notifications:DisassociateChannel"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

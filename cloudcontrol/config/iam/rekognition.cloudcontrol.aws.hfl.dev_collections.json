@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlRekognitionCollection",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RekognitionCollectionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "rekognition:CreateCollection",
+        "rekognition:DescribeCollection",
+        "rekognition:ListTagsForResource",
+        "rekognition:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RekognitionCollectionRead",
+      "Effect": "Allow",
+      "Action": [
+        "rekognition:DescribeCollection",
+        "rekognition:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RekognitionCollectionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "rekognition:DescribeCollection",
+        "rekognition:ListTagsForResource",
+        "rekognition:TagResource",
+        "rekognition:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "RekognitionCollectionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "rekognition:DeleteCollection"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

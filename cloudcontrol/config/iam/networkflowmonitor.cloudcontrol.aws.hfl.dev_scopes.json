@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkFlowMonitorScope",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFlowMonitorScopeCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "iam:GetRole",
+        "networkflowmonitor:CreateScope",
+        "networkflowmonitor:GetScope",
+        "networkflowmonitor:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFlowMonitorScopeRead",
+      "Effect": "Allow",
+      "Action": [
+        "networkflowmonitor:GetScope",
+        "networkflowmonitor:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFlowMonitorScopeUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "networkflowmonitor:GetScope",
+        "networkflowmonitor:ListTagsForResource",
+        "networkflowmonitor:TagResource",
+        "networkflowmonitor:UntagResource",
+        "networkflowmonitor:UpdateScope"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkFlowMonitorScopeDelete",
+      "Effect": "Allow",
+      "Action": [
+        "networkflowmonitor:DeleteScope",
+        "networkflowmonitor:GetScope"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

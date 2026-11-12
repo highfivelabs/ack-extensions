@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCECostCategory",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CECostCategoryCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ce:CreateCostCategoryDefinition",
+        "ce:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CECostCategoryRead",
+      "Effect": "Allow",
+      "Action": [
+        "ce:DescribeCostCategoryDefinition",
+        "ce:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CECostCategoryUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ce:TagResource",
+        "ce:UntagResource",
+        "ce:UpdateCostCategoryDefinition"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CECostCategoryDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ce:DeleteCostCategoryDefinition"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkSecurityManagerRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkSecurityManagerRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "network-security-manager:CreateRule",
+        "network-security-manager:GetRule",
+        "network-security-manager:ListTagsForResource",
+        "network-security-manager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkSecurityManagerRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "network-security-manager:GetRule",
+        "network-security-manager:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkSecurityManagerRuleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "network-security-manager:GetRule",
+        "network-security-manager:ListTagsForResource",
+        "network-security-manager:TagResource",
+        "network-security-manager:UntagResource",
+        "network-security-manager:UpdateRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkSecurityManagerRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "network-security-manager:DeleteRule",
+        "network-security-manager:GetRule",
+        "network-security-manager:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

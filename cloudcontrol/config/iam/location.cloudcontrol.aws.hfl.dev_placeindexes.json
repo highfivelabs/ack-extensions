@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLocationPlaceIndex",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationPlaceIndexCreate",
+      "Effect": "Allow",
+      "Action": [
+        "geo:CreatePlaceIndex",
+        "geo:DescribePlaceIndex",
+        "geo:TagResource",
+        "geo:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationPlaceIndexRead",
+      "Effect": "Allow",
+      "Action": [
+        "geo:DescribePlaceIndex"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationPlaceIndexUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "geo:CreatePlaceIndex",
+        "geo:DescribePlaceIndex",
+        "geo:TagResource",
+        "geo:UntagResource",
+        "geo:UpdatePlaceIndex"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationPlaceIndexDelete",
+      "Effect": "Allow",
+      "Action": [
+        "geo:DeletePlaceIndex",
+        "geo:DescribePlaceIndex"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

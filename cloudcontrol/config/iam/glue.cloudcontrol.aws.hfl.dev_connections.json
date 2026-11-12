@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlueConnection",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueConnectionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateConnection",
+        "glue:GetConnection",
+        "glue:GetTags",
+        "glue:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueConnectionRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetConnection",
+        "glue:GetTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueConnectionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetConnection",
+        "glue:GetTags",
+        "glue:TagResource",
+        "glue:UntagResource",
+        "glue:UpdateConnection"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueConnectionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DeleteConnection"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

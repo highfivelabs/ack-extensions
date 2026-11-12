@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataZoneEnvironmentProfile",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneEnvironmentProfileCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:CreateEnvironmentProfile",
+        "datazone:GetEnvironmentProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneEnvironmentProfileRead",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetEnvironmentProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneEnvironmentProfileUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:GetEnvironmentProfile",
+        "datazone:UpdateEnvironmentProfile"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneEnvironmentProfileDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:DeleteEnvironmentProfile",
+        "datazone:GetEnvironmentProfile"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

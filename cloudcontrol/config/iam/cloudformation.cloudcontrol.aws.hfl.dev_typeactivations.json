@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudFormationTypeActivation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationTypeActivationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:ActivateType",
+        "cloudformation:DescribeType",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationTypeActivationRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DescribeType"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationTypeActivationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:ActivateType",
+        "cloudformation:DescribeType",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationTypeActivationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DeactivateType",
+        "cloudformation:DescribeType"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

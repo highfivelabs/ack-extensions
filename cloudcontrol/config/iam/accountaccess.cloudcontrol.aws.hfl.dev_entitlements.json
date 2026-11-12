@@ -1,0 +1,44 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAccountAccessEntitlement",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AccountAccessEntitlementCreate",
+      "Effect": "Allow",
+      "Action": [
+        "account-access:CreateEntitlement",
+        "account-access:GetEntitlement",
+        "account-access:ListEntitlements"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AccountAccessEntitlementRead",
+      "Effect": "Allow",
+      "Action": [
+        "account-access:GetEntitlement"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AccountAccessEntitlementDelete",
+      "Effect": "Allow",
+      "Action": [
+        "account-access:DeleteEntitlement",
+        "account-access:GetEntitlement"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

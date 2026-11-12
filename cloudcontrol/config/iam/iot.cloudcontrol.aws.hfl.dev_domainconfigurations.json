@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTDomainConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTDomainConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "acm:GetCertificate",
+        "iot:CreateDomainConfiguration",
+        "iot:DescribeDomainConfiguration",
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "iot:UpdateDomainConfiguration",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTDomainConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeDomainConfiguration",
+        "iot:ListTagsForResource",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTDomainConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DescribeDomainConfiguration",
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "iot:UntagResource",
+        "iot:UpdateDomainConfiguration",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTDomainConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeleteDomainConfiguration",
+        "iot:DescribeDomainConfiguration",
+        "iot:UpdateDomainConfiguration",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

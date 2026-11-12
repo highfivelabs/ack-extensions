@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaLiveMultiplexprogram",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveMultiplexprogramCreate",
+      "Effect": "Allow",
+      "Action": [
+        "medialive:CreateMultiplexProgram",
+        "medialive:DescribeMultiplexProgram"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveMultiplexprogramRead",
+      "Effect": "Allow",
+      "Action": [
+        "medialive:DescribeMultiplexProgram"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveMultiplexprogramUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "medialive:DescribeMultiplexProgram",
+        "medialive:UpdateMultiplexProgram"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaLiveMultiplexprogramDelete",
+      "Effect": "Allow",
+      "Action": [
+        "medialive:DeleteMultiplexProgram",
+        "medialive:DescribeMultiplexProgram"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

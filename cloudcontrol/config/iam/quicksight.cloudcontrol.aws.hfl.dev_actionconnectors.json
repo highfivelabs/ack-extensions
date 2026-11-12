@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlQuickSightActionConnector",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightActionConnectorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "quicksight:CreateActionConnector",
+        "quicksight:DescribeActionConnector",
+        "quicksight:DescribeActionConnectorPermissions",
+        "quicksight:ListTagsForResource",
+        "quicksight:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightActionConnectorRead",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeActionConnector",
+        "quicksight:DescribeActionConnectorPermissions",
+        "quicksight:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightActionConnectorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "quicksight:DescribeActionConnector",
+        "quicksight:DescribeActionConnectorPermissions",
+        "quicksight:ListTagsForResource",
+        "quicksight:TagResource",
+        "quicksight:UntagResource",
+        "quicksight:UpdateActionConnector",
+        "quicksight:UpdateActionConnectorPermissions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightActionConnectorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DeleteActionConnector",
+        "quicksight:DescribeActionConnector"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

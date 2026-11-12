@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppSyncResolver",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncResolverCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:CreateResolver",
+        "appsync:GetResolver",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncResolverRead",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:GetResolver"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncResolverUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:UpdateResolver",
+        "s3:GetObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppSyncResolverDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appsync:DeleteResolver"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

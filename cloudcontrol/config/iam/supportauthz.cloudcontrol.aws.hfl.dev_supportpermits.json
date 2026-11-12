@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSupportAuthZSupportPermit",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SupportAuthZSupportPermitCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "supportauthz:CreateSupportPermit",
+        "supportauthz:GetSupportPermit",
+        "supportauthz:ListTagsForResource",
+        "supportauthz:RegisterKey",
+        "supportauthz:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SupportAuthZSupportPermitRead",
+      "Effect": "Allow",
+      "Action": [
+        "supportauthz:GetSupportPermit",
+        "supportauthz:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SupportAuthZSupportPermitUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "supportauthz:GetSupportPermit",
+        "supportauthz:ListTagsForResource",
+        "supportauthz:TagResource",
+        "supportauthz:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SupportAuthZSupportPermitDelete",
+      "Effect": "Allow",
+      "Action": [
+        "supportauthz:DeleteSupportPermit",
+        "supportauthz:GetSupportPermit",
+        "supportauthz:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

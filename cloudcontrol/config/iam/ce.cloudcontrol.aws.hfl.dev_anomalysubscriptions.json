@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCEAnomalySubscription",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CEAnomalySubscriptionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ce:CreateAnomalySubscription",
+        "ce:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CEAnomalySubscriptionRead",
+      "Effect": "Allow",
+      "Action": [
+        "ce:GetAnomalySubscriptions",
+        "ce:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CEAnomalySubscriptionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ce:UpdateAnomalySubscription"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CEAnomalySubscriptionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ce:DeleteAnomalySubscription"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

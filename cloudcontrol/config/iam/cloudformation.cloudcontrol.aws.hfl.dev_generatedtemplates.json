@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudFormationGeneratedTemplate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationGeneratedTemplateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateGeneratedTemplate",
+        "cloudformation:DescribeGeneratedTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationGeneratedTemplateRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DescribeGeneratedTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationGeneratedTemplateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DescribeGeneratedTemplate",
+        "cloudformation:UpdateGeneratedTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFormationGeneratedTemplateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DeleteGeneratedTemplate",
+        "cloudformation:DescribeGeneratedTemplate"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

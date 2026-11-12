@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataBrewDataset",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewDatasetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:CreateDataset",
+        "databrew:DescribeDataset",
+        "databrew:TagResource",
+        "databrew:UntagResource",
+        "glue:GetConnection",
+        "glue:GetTable",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewDatasetRead",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:DescribeDataset",
+        "iam:ListRoles"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewDatasetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:TagResource",
+        "databrew:UntagResource",
+        "databrew:UpdateDataset",
+        "glue:GetConnection",
+        "glue:GetTable"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataBrewDatasetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "databrew:DeleteDataset"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

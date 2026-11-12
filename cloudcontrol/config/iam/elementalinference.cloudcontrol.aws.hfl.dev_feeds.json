@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlElementalInferenceFeed",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElementalInferenceFeedCreate",
+      "Effect": "Allow",
+      "Action": [
+        "elemental-inference:CreateFeed",
+        "elemental-inference:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElementalInferenceFeedRead",
+      "Effect": "Allow",
+      "Action": [
+        "elemental-inference:GetFeed",
+        "elemental-inference:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElementalInferenceFeedUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "elemental-inference:GetFeed",
+        "elemental-inference:ListTagsForResource",
+        "elemental-inference:TagResource",
+        "elemental-inference:UntagResource",
+        "elemental-inference:UpdateFeed",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ElementalInferenceFeedDelete",
+      "Effect": "Allow",
+      "Action": [
+        "elemental-inference:DeleteFeed",
+        "elemental-inference:GetFeed"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

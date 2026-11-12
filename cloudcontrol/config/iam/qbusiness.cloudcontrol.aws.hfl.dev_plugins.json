@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlQBusinessPlugin",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QBusinessPluginCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "qbusiness:CreatePlugin",
+        "qbusiness:GetPlugin",
+        "qbusiness:ListTagsForResource",
+        "qbusiness:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QBusinessPluginRead",
+      "Effect": "Allow",
+      "Action": [
+        "qbusiness:GetPlugin",
+        "qbusiness:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QBusinessPluginUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "qbusiness:GetPlugin",
+        "qbusiness:ListTagsForResource",
+        "qbusiness:TagResource",
+        "qbusiness:UntagResource",
+        "qbusiness:UpdatePlugin"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QBusinessPluginDelete",
+      "Effect": "Allow",
+      "Action": [
+        "qbusiness:DeletePlugin",
+        "qbusiness:GetPlugin"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

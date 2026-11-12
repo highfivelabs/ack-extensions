@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSageMakerTrialComponent",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerTrialComponentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags",
+        "sagemaker:CreateTrialComponent",
+        "sagemaker:DescribeTrialComponent",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerTrialComponentRead",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribeTrialComponent",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerTrialComponentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags",
+        "sagemaker:DeleteTags",
+        "sagemaker:DescribeTrialComponent",
+        "sagemaker:ListTags",
+        "sagemaker:UpdateTrialComponent"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerTrialComponentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DeleteTrialComponent",
+        "sagemaker:DescribeTrialComponent",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

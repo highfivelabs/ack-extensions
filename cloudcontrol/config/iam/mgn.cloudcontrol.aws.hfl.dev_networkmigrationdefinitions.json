@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMGNNetworkMigrationDefinition",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MGNNetworkMigrationDefinitionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "mgn:CreateNetworkMigrationDefinition",
+        "mgn:GetNetworkMigrationDefinition",
+        "mgn:InitializeService",
+        "mgn:TagResource",
+        "s3:GetBucketLocation",
+        "s3:GetObject",
+        "s3:GetObjectAttributes",
+        "s3:ListBucket",
+        "s3:PutObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MGNNetworkMigrationDefinitionRead",
+      "Effect": "Allow",
+      "Action": [
+        "mgn:GetNetworkMigrationDefinition"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MGNNetworkMigrationDefinitionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "mgn:GetNetworkMigrationDefinition",
+        "mgn:ListTagsForResource",
+        "mgn:TagResource",
+        "mgn:UntagResource",
+        "mgn:UpdateNetworkMigrationDefinition",
+        "s3:GetBucketLocation",
+        "s3:GetObject",
+        "s3:GetObjectAttributes",
+        "s3:ListBucket",
+        "s3:PutObject"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MGNNetworkMigrationDefinitionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mgn:DeleteNetworkMigrationDefinition",
+        "mgn:GetNetworkMigrationDefinition"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

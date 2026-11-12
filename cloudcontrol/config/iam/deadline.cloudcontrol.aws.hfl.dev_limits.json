@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDeadlineLimit",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineLimitCreate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:CreateLimit",
+        "deadline:GetLimit",
+        "identitystore:ListGroupMembershipsForMember",
+        "kms:Encrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineLimitRead",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:GetLimit",
+        "identitystore:ListGroupMembershipsForMember",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineLimitUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:GetLimit",
+        "deadline:UpdateLimit",
+        "identitystore:ListGroupMembershipsForMember",
+        "kms:Encrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DeadlineLimitDelete",
+      "Effect": "Allow",
+      "Action": [
+        "deadline:DeleteLimit",
+        "deadline:GetLimit",
+        "identitystore:ListGroupMembershipsForMember",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlQuickSightGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:CreateGroup",
+        "quicksight:DescribeGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:UpdateGroup"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DeleteGroup",
+        "quicksight:DescribeGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

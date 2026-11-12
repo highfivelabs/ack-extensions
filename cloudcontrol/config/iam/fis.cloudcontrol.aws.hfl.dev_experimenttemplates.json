@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlFISExperimentTemplate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FISExperimentTemplateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "fis:CreateExperimentTemplate",
+        "fis:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FISExperimentTemplateRead",
+      "Effect": "Allow",
+      "Action": [
+        "fis:GetExperimentTemplate",
+        "fis:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FISExperimentTemplateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "fis:TagResource",
+        "fis:UntagResource",
+        "fis:UpdateExperimentTemplate",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "FISExperimentTemplateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "fis:DeleteExperimentTemplate"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGameLiftScript",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftScriptCreate",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:CreateScript",
+        "gamelift:DescribeScript",
+        "gamelift:ListTagsForResource",
+        "gamelift:TagResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftScriptRead",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DescribeScript",
+        "gamelift:ListScripts",
+        "gamelift:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftScriptUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DescribeScript",
+        "gamelift:ListTagsForResource",
+        "gamelift:TagResource",
+        "gamelift:UntagResource",
+        "gamelift:UpdateScript",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftScriptDelete",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DeleteScript"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

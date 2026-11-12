@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataZoneProjectMembership",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneProjectMembershipCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:CreateProjectMembership",
+        "datazone:GetGroupProfile",
+        "datazone:GetUserProfile",
+        "datazone:ListProjectMemberships",
+        "iam:GetRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneProjectMembershipRead",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:ListProjectMemberships"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneProjectMembershipUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:CreateProjectMembership",
+        "datazone:DeleteProjectMembership"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataZoneProjectMembershipDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datazone:DeleteProjectMembership"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

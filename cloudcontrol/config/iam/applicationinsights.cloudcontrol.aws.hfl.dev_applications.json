@@ -1,0 +1,107 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlApplicationInsightsApplication",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApplicationInsightsApplicationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET",
+        "applicationinsights:CreateApplication",
+        "applicationinsights:CreateComponent",
+        "applicationinsights:CreateLogPattern",
+        "applicationinsights:DescribeApplication",
+        "applicationinsights:DescribeComponent",
+        "applicationinsights:DescribeComponentConfigurationRecommendation",
+        "applicationinsights:DescribeLogPattern",
+        "applicationinsights:ListComponents",
+        "applicationinsights:TagResource",
+        "applicationinsights:UpdateComponentConfiguration",
+        "autoscaling:DescribeAutoScalingGroups",
+        "dynamodb:ListTables",
+        "ec2:DescribeInstances",
+        "ec2:DescribeVolumes",
+        "ecs:DescribeTaskDefinition",
+        "ecs:ListClusters",
+        "ecs:ListServices",
+        "ecs:ListTasks",
+        "eks:ListClusters",
+        "eks:ListNodegroups",
+        "elasticfilesystem:DescribeFileSystems",
+        "elasticloadbalancing:DescribeLoadBalancers",
+        "elasticloadbalancing:DescribeTargetGroups",
+        "elasticloadbalancing:DescribeTargetHealth",
+        "fsx:DescribeFileSystems",
+        "lambda:ListFunctions",
+        "logs:DescribeLogGroups",
+        "rds:DescribeDBClusters",
+        "rds:DescribeDBInstances",
+        "s3:ListAllMyBuckets",
+        "sns:ListTopics",
+        "sqs:ListQueues",
+        "states:ListStateMachines"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApplicationInsightsApplicationRead",
+      "Effect": "Allow",
+      "Action": [
+        "applicationinsights:DescribeApplication",
+        "applicationinsights:DescribeComponent",
+        "applicationinsights:DescribeLogPattern",
+        "applicationinsights:ListComponents",
+        "applicationinsights:ListLogPatternSets",
+        "applicationinsights:ListLogPatterns",
+        "applicationinsights:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApplicationInsightsApplicationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "applicationinsights:CreateApplication",
+        "applicationinsights:CreateComponent",
+        "applicationinsights:CreateLogPattern",
+        "applicationinsights:DeleteComponent",
+        "applicationinsights:DeleteLogPattern",
+        "applicationinsights:DescribeApplication",
+        "applicationinsights:DescribeComponent",
+        "applicationinsights:DescribeComponentConfiguration",
+        "applicationinsights:DescribeComponentConfigurationRecommendation",
+        "applicationinsights:DescribeLogPattern",
+        "applicationinsights:ListComponents",
+        "applicationinsights:ListLogPatternSets",
+        "applicationinsights:ListLogPatterns",
+        "applicationinsights:ListTagsForResource",
+        "applicationinsights:TagResource",
+        "applicationinsights:UntagResource",
+        "applicationinsights:UpdateApplication",
+        "applicationinsights:UpdateComponentConfiguration",
+        "applicationinsights:UpdateLogPattern"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApplicationInsightsApplicationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "applicationinsights:DeleteApplication",
+        "applicationinsights:DescribeApplication"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlKendraFaq",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraFaqCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kendra:CreateFaq",
+        "kendra:DescribeFaq",
+        "kendra:ListTagsForResource",
+        "kendra:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraFaqRead",
+      "Effect": "Allow",
+      "Action": [
+        "kendra:DescribeFaq",
+        "kendra:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraFaqUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kendra:DescribeFaq",
+        "kendra:ListTagsForResource",
+        "kendra:TagResource",
+        "kendra:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "KendraFaqDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kendra:DeleteFaq",
+        "kendra:DescribeFaq"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

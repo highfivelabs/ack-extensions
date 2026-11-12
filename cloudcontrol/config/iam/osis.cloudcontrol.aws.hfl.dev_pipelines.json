@@ -1,0 +1,76 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlOSISPipeline",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OSISPipelineCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "kms:DescribeKey",
+        "logs:CreateLogDelivery",
+        "osis:CreatePipeline",
+        "osis:GetPipeline",
+        "osis:GetResourcePolicy",
+        "osis:ListTagsForResource",
+        "osis:PutResourcePolicy",
+        "osis:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OSISPipelineRead",
+      "Effect": "Allow",
+      "Action": [
+        "osis:GetPipeline",
+        "osis:GetResourcePolicy",
+        "osis:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OSISPipelineUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "kms:DescribeKey",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:UpdateLogDelivery",
+        "osis:DeleteResourcePolicy",
+        "osis:GetPipeline",
+        "osis:GetResourcePolicy",
+        "osis:ListTagsForResource",
+        "osis:PutResourcePolicy",
+        "osis:TagResource",
+        "osis:UntagResource",
+        "osis:UpdatePipeline"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OSISPipelineDelete",
+      "Effect": "Allow",
+      "Action": [
+        "logs:DeleteLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "osis:DeletePipeline",
+        "osis:GetPipeline"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

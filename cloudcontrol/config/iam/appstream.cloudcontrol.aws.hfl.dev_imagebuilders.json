@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppStreamImageBuilder",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamImageBuilderCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:CreateImageBuilder",
+        "appstream:CreateImageBuilderStreamingURL",
+        "appstream:CreateStreamingURL",
+        "appstream:DeleteImageBuilder",
+        "appstream:DescribeImageBuilders",
+        "appstream:StartImageBuilder",
+        "appstream:StopImageBuilder",
+        "appstream:TagResource",
+        "iam:CreateServiceLinkedRole",
+        "iam:DeleteServiceLinkedRole",
+        "iam:GetServiceLinkedRoleDeletionStatus",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamImageBuilderRead",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:CreateImageBuilderStreamingURL",
+        "appstream:DescribeImageBuilders",
+        "appstream:ListTagsForResource",
+        "iam:CreateServiceLinkedRole",
+        "iam:DeleteServiceLinkedRole",
+        "iam:GetServiceLinkedRoleDeletionStatus"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppStreamImageBuilderDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appstream:DeleteImageBuilder",
+        "appstream:DescribeImageBuilders",
+        "appstream:ListTagsForResource",
+        "appstream:StartImageBuilder",
+        "appstream:StopImageBuilder",
+        "iam:CreateServiceLinkedRole",
+        "iam:DeleteServiceLinkedRole",
+        "iam:GetServiceLinkedRoleDeletionStatus"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

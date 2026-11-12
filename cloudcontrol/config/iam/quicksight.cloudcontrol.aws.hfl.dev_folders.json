@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlQuickSightFolder",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightFolderCreate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:CreateFolder",
+        "quicksight:DescribeFolder",
+        "quicksight:DescribeFolderPermissions",
+        "quicksight:ListTagsForResource",
+        "quicksight:TagResource",
+        "quicksight:UpdateFolderPermissions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightFolderRead",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeFolder",
+        "quicksight:DescribeFolderPermissions",
+        "quicksight:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightFolderUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DescribeFolder",
+        "quicksight:DescribeFolderPermissions",
+        "quicksight:ListTagsForResource",
+        "quicksight:TagResource",
+        "quicksight:UntagResource",
+        "quicksight:UpdateFolder",
+        "quicksight:UpdateFolderPermissions"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "QuickSightFolderDelete",
+      "Effect": "Allow",
+      "Action": [
+        "quicksight:DeleteFolder"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEMRStep",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EMRStepCreate",
+      "Effect": "Allow",
+      "Action": [
+        "elasticmapreduce:AddJobFlowSteps"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EMRStepRead",
+      "Effect": "Allow",
+      "Action": [
+        "elasticmapreduce:DescribeStep"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

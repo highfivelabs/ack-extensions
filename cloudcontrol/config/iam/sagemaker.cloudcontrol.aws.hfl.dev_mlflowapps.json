@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSageMakerMlflowApp",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerMlflowAppCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "sagemaker:AddTags",
+        "sagemaker:CreateMlflowApp",
+        "sagemaker:DescribeMlflowApp",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerMlflowAppRead",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribeMlflowApp",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerMlflowAppUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:AddTags",
+        "sagemaker:DeleteTags",
+        "sagemaker:DescribeMlflowApp",
+        "sagemaker:ListTags",
+        "sagemaker:UpdateMlflowApp"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerMlflowAppDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DeleteMlflowApp",
+        "sagemaker:DescribeMlflowApp",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

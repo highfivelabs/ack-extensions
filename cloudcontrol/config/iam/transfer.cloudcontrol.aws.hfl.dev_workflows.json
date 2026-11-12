@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTransferWorkflow",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferWorkflowCreate",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "logs:UpdateLogDelivery",
+        "transfer:CreateWorkflow",
+        "transfer:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferWorkflowRead",
+      "Effect": "Allow",
+      "Action": [
+        "transfer:DescribeWorkflow"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferWorkflowUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "transfer:TagResource",
+        "transfer:UnTagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TransferWorkflowDelete",
+      "Effect": "Allow",
+      "Action": [
+        "logs:DeleteLogDelivery",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "transfer:DeleteWorkflow"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

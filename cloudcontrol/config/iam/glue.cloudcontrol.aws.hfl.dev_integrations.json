@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGlueIntegration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueIntegrationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:CreateInboundIntegration",
+        "glue:CreateIntegration",
+        "glue:DescribeIntegrations",
+        "glue:GetTags",
+        "glue:TagResource",
+        "kms:CreateGrant",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueIntegrationRead",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DescribeIntegrations",
+        "glue:GetTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueIntegrationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DescribeIntegrations",
+        "glue:ModifyIntegration",
+        "glue:TagResource",
+        "glue:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GlueIntegrationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "glue:DeleteIntegration",
+        "glue:DescribeIntegrations",
+        "glue:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

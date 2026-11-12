@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMediaTailorFunction",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorFunctionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "mediatailor:GetFunction",
+        "mediatailor:PutFunction",
+        "mediatailor:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorFunctionRead",
+      "Effect": "Allow",
+      "Action": [
+        "mediatailor:GetFunction"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorFunctionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "mediatailor:GetFunction",
+        "mediatailor:PutFunction",
+        "mediatailor:TagResource",
+        "mediatailor:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MediaTailorFunctionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mediatailor:DeleteFunction",
+        "mediatailor:GetFunction"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

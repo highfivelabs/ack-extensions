@@ -1,0 +1,49 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlServiceCatalogPortfolioPrincipalAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogPortfolioPrincipalAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetGroup",
+        "iam:GetRole",
+        "iam:GetUser",
+        "servicecatalog:AssociatePrincipalWithPortfolio",
+        "servicecatalog:ListPrincipalsForPortfolio"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogPortfolioPrincipalAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "servicecatalog:ListPrincipalsForPortfolio"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogPortfolioPrincipalAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iam:GetGroup",
+        "iam:GetRole",
+        "iam:GetUser",
+        "servicecatalog:DisassociatePrincipalFromPortfolio",
+        "servicecatalog:ListPrincipalsForPortfolio"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

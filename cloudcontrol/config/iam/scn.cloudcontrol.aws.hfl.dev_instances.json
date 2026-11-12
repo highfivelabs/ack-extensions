@@ -1,0 +1,81 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSCNInstance",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SCNInstanceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "chime:*",
+        "events:*",
+        "iam:CreateServiceLinkedRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:RetireGrant",
+        "organizations:CreateOrganization",
+        "organizations:DescribeOrganization",
+        "organizations:EnableAWSServiceAccess",
+        "s3:*",
+        "scn:CreateInstance",
+        "scn:CreateSSOApplication",
+        "scn:GetInstance",
+        "scn:ListTagsForResource",
+        "scn:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SCNInstanceRead",
+      "Effect": "Allow",
+      "Action": [
+        "scn:GetInstance",
+        "scn:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SCNInstanceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "scn:GetInstance",
+        "scn:ListTagsForResource",
+        "scn:TagResource",
+        "scn:UntagResource",
+        "scn:UpdateInstance"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SCNInstanceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "chime:*",
+        "events:*",
+        "iam:CreateServiceLinkedRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "kms:RetireGrant",
+        "organizations:CreateOrganization",
+        "organizations:DescribeOrganization",
+        "organizations:EnableAWSServiceAccess",
+        "s3:*",
+        "scn:DeleteInstance",
+        "scn:DeleteSSOApplication",
+        "scn:GetInstance",
+        "scn:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBedrockGuardrailVersion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockGuardrailVersionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:CreateGuardrailVersion",
+        "bedrock:GetGuardrail",
+        "kms:CreateGrant",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockGuardrailVersionRead",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:GetGuardrail",
+        "kms:Decrypt"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BedrockGuardrailVersionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:DeleteGuardrail",
+        "bedrock:GetGuardrail",
+        "kms:RetireGrant"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

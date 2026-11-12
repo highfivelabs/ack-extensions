@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSESContactList",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESContactListCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:CreateContactList",
+        "ses:GetContactList",
+        "ses:TagResource",
+        "ses:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESContactListRead",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetContactList",
+        "ses:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESContactListUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ses:GetContactList",
+        "ses:TagResource",
+        "ses:UntagResource",
+        "ses:UpdateContactList"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SESContactListDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ses:DeleteContactList",
+        "ses:GetContactList"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

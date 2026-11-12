@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlXRaySamplingRule",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "XRaySamplingRuleCreate",
+      "Effect": "Allow",
+      "Action": [
+        "xray:CreateSamplingRule",
+        "xray:ListTagsForResource",
+        "xray:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "XRaySamplingRuleRead",
+      "Effect": "Allow",
+      "Action": [
+        "xray:GetSamplingRules",
+        "xray:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "XRaySamplingRuleUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "xray:ListTagsForResource",
+        "xray:TagResource",
+        "xray:UntagResource",
+        "xray:UpdateSamplingRule"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "XRaySamplingRuleDelete",
+      "Effect": "Allow",
+      "Action": [
+        "xray:DeleteSamplingRule"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

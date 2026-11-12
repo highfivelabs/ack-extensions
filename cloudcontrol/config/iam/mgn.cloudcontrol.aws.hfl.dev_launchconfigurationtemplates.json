@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMGNLaunchConfigurationTemplate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MGNLaunchConfigurationTemplateCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateLaunchTemplate",
+        "ec2:CreateTags",
+        "ec2:GetEbsDefaultKmsKeyId",
+        "kms:DescribeKey",
+        "mgn:CreateLaunchConfigurationTemplate",
+        "mgn:DescribeLaunchConfigurationTemplates",
+        "mgn:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MGNLaunchConfigurationTemplateRead",
+      "Effect": "Allow",
+      "Action": [
+        "mgn:DescribeLaunchConfigurationTemplates"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MGNLaunchConfigurationTemplateUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeLaunchTemplates",
+        "ec2:GetEbsDefaultKmsKeyId",
+        "kms:DescribeKey",
+        "mgn:DescribeLaunchConfigurationTemplates",
+        "mgn:TagResource",
+        "mgn:UntagResource",
+        "mgn:UpdateLaunchConfigurationTemplate"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MGNLaunchConfigurationTemplateDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteLaunchTemplate",
+        "mgn:DeleteLaunchConfigurationTemplate"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

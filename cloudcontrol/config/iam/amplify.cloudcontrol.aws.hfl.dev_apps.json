@@ -1,0 +1,78 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAmplifyApp",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AmplifyAppCreate",
+      "Effect": "Allow",
+      "Action": [
+        "amplify:CreateApp",
+        "amplify:GetApp",
+        "amplify:TagResource",
+        "codecommit:GetRepository",
+        "codecommit:GetRepositoryTriggers",
+        "codecommit:PutRepositoryTriggers",
+        "iam:PassRole",
+        "sns:CreateTopic",
+        "sns:Subscribe"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AmplifyAppRead",
+      "Effect": "Allow",
+      "Action": [
+        "amplify:GetApp",
+        "amplify:ListTagsForResource",
+        "codecommit:GetRepository",
+        "codecommit:GetRepositoryTriggers",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AmplifyAppUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "amplify:GetApp",
+        "amplify:ListTagsForResource",
+        "amplify:TagResource",
+        "amplify:UntagResource",
+        "amplify:UpdateApp",
+        "codecommit:GetRepository",
+        "codecommit:GetRepositoryTriggers",
+        "codecommit:PutRepositoryTriggers",
+        "iam:PassRole",
+        "sns:CreateTopic",
+        "sns:Subscribe",
+        "sns:Unsubscribe"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AmplifyAppDelete",
+      "Effect": "Allow",
+      "Action": [
+        "amplify:DeleteApp",
+        "amplify:GetApp",
+        "codecommit:GetRepository",
+        "codecommit:GetRepositoryTriggers",
+        "codecommit:PutRepositoryTriggers",
+        "iam:PassRole",
+        "sns:Unsubscribe"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

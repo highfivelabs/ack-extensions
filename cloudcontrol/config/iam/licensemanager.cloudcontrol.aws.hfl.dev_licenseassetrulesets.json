@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLicenseManagerLicenseAssetRuleSet",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerLicenseAssetRuleSetCreate",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager:CreateLicenseAssetRuleset",
+        "license-manager:GetLicenseAssetRuleset",
+        "license-manager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerLicenseAssetRuleSetRead",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager:GetLicenseAssetRuleset",
+        "license-manager:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerLicenseAssetRuleSetUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager:GetLicenseAssetRuleset",
+        "license-manager:TagResource",
+        "license-manager:UntagResource",
+        "license-manager:UpdateLicenseAssetRuleset"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LicenseManagerLicenseAssetRuleSetDelete",
+      "Effect": "Allow",
+      "Action": [
+        "license-manager:DeleteLicenseAssetRuleset"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

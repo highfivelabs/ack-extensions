@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEvidentlyLaunch",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EvidentlyLaunchCreate",
+      "Effect": "Allow",
+      "Action": [
+        "evidently:CreateLaunch",
+        "evidently:GetLaunch",
+        "evidently:StartLaunch",
+        "evidently:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EvidentlyLaunchRead",
+      "Effect": "Allow",
+      "Action": [
+        "evidently:GetLaunch",
+        "evidently:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EvidentlyLaunchUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "evidently:GetLaunch",
+        "evidently:ListTagsForResource",
+        "evidently:StartLaunch",
+        "evidently:StopLaunch",
+        "evidently:TagResource",
+        "evidently:UntagResource",
+        "evidently:UpdateLaunch"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EvidentlyLaunchDelete",
+      "Effect": "Allow",
+      "Action": [
+        "evidently:DeleteLaunch",
+        "evidently:GetLaunch",
+        "evidently:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

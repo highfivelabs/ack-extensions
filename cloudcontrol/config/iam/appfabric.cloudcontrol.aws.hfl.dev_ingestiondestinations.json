@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppFabricIngestionDestination",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFabricIngestionDestinationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appfabric:CreateIngestionDestination",
+        "appfabric:GetIngestionDestination",
+        "appfabric:ListTagsForResource",
+        "appfabric:TagResource",
+        "firehose:DescribeDeliveryStream",
+        "firehose:TagDeliveryStream",
+        "s3:GetBucketLocation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFabricIngestionDestinationRead",
+      "Effect": "Allow",
+      "Action": [
+        "appfabric:GetIngestionDestination",
+        "appfabric:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFabricIngestionDestinationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appfabric:GetIngestionDestination",
+        "appfabric:ListTagsForResource",
+        "appfabric:TagResource",
+        "appfabric:UntagResource",
+        "appfabric:UpdateIngestionDestination",
+        "firehose:DescribeDeliveryStream",
+        "firehose:TagDeliveryStream",
+        "s3:GetBucketLocation"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppFabricIngestionDestinationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appfabric:DeleteIngestionDestination",
+        "appfabric:GetIngestionDestination",
+        "appfabric:ListTagsForResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

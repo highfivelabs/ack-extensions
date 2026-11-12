@@ -1,0 +1,79 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDevOpsAgentService",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsAgentServiceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "aidevops:GetService",
+        "aidevops:ListTagsForResource",
+        "aidevops:RegisterService",
+        "aidevops:TagResource",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyPair",
+        "kms:GenerateDataKeyPairWithoutPlaintext",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "kms:ReEncryptFrom",
+        "kms:ReEncryptTo"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsAgentServiceRead",
+      "Effect": "Allow",
+      "Action": [
+        "aidevops:GetService",
+        "aidevops:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsAgentServiceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "aidevops:GetService",
+        "aidevops:ListTagsForResource",
+        "aidevops:TagResource",
+        "aidevops:UntagResource",
+        "aidevops:UpdateService",
+        "iam:PassRole",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:GenerateDataKeyPair",
+        "kms:GenerateDataKeyPairWithoutPlaintext",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "kms:ReEncryptFrom",
+        "kms:ReEncryptTo"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DevOpsAgentServiceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "aidevops:DeregisterService",
+        "aidevops:GetService"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

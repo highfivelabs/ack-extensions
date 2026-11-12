@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTSoftwarePackageVersion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSoftwarePackageVersionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:AssociateSbomWithPackageVersion",
+        "iot:CreatePackageVersion",
+        "iot:GetIndexingConfiguration",
+        "iot:GetPackageVersion",
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "s3:GetObjectVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSoftwarePackageVersionRead",
+      "Effect": "Allow",
+      "Action": [
+        "iot:GetPackageVersion",
+        "iot:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSoftwarePackageVersionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iot:AssociateSbomWithPackageVersion",
+        "iot:DisassociateSbomFromPackageVersion",
+        "iot:GetIndexingConfiguration",
+        "iot:GetPackageVersion",
+        "iot:ListTagsForResource",
+        "iot:TagResource",
+        "iot:UntagResource",
+        "iot:UpdatePackageVersion",
+        "s3:GetObjectVersion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTSoftwarePackageVersionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iot:DeletePackageVersion",
+        "iot:GetIndexingConfiguration",
+        "iot:GetPackageVersion",
+        "iot:UpdatePackageVersion"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

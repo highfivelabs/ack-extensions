@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlConnectHoursOfOperation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectHoursOfOperationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:CreateHoursOfOperation",
+        "connect:CreateHoursOfOperationOverride",
+        "connect:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectHoursOfOperationRead",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DescribeHoursOfOperation",
+        "connect:ListChildHoursOfOperations",
+        "connect:ListHoursOfOperationOverrides"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectHoursOfOperationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "connect:AssociateHoursOfOperations",
+        "connect:CreateHoursOfOperationOverride",
+        "connect:DeleteHoursOfOperationOverride",
+        "connect:DisassociateHoursOfOperations",
+        "connect:ListHoursOfOperationOverrides",
+        "connect:TagResource",
+        "connect:UntagResource",
+        "connect:UpdateHoursOfOperation",
+        "connect:UpdateHoursOfOperationOverride"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ConnectHoursOfOperationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "connect:DeleteHoursOfOperation",
+        "connect:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

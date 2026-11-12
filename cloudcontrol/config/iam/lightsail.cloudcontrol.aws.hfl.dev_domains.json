@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLightsailDomain",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDomainCreate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:CreateDomain",
+        "lightsail:CreateDomainEntry",
+        "lightsail:GetDomain",
+        "lightsail:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDomainRead",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:GetDomain"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDomainUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:CreateDomainEntry",
+        "lightsail:DeleteDomainEntry",
+        "lightsail:GetDomain",
+        "lightsail:TagResource",
+        "lightsail:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LightsailDomainDelete",
+      "Effect": "Allow",
+      "Action": [
+        "lightsail:DeleteDomain",
+        "lightsail:GetDomain"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

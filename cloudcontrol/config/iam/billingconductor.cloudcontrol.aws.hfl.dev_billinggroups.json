@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBillingConductorBillingGroup",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BillingConductorBillingGroupCreate",
+      "Effect": "Allow",
+      "Action": [
+        "billingconductor:AssociateAccounts",
+        "billingconductor:CreateBillingGroup",
+        "billingconductor:ListBillingGroups",
+        "billingconductor:ListTagsForResource",
+        "billingconductor:TagResource",
+        "organizations:DescribeResponsibilityTransfer"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BillingConductorBillingGroupRead",
+      "Effect": "Allow",
+      "Action": [
+        "billingconductor:ListAccountAssociations",
+        "billingconductor:ListBillingGroups",
+        "billingconductor:ListTagsForResource",
+        "organizations:ListAccounts"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BillingConductorBillingGroupUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "billingconductor:AssociateAccounts",
+        "billingconductor:DisassociateAccounts",
+        "billingconductor:ListAccountAssociations",
+        "billingconductor:ListBillingGroups",
+        "billingconductor:TagResource",
+        "billingconductor:UntagResource",
+        "billingconductor:UpdateBillingGroup",
+        "organizations:ListAccounts"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BillingConductorBillingGroupDelete",
+      "Effect": "Allow",
+      "Action": [
+        "billingconductor:DeleteBillingGroup",
+        "billingconductor:ListBillingGroups",
+        "billingconductor:UntagResource",
+        "billingconductor:UpdateBillingGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

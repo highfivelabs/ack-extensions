@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlApiGatewayDocumentationVersion",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayDocumentationVersionCreate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET",
+        "apigateway:POST"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayDocumentationVersionRead",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayDocumentationVersionUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:GET",
+        "apigateway:PATCH"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ApiGatewayDocumentationVersionDelete",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:DELETE"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

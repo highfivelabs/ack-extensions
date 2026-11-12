@@ -1,0 +1,67 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSMSVOICEPhoneNumber",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEPhoneNumberCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "sms-voice:DescribeKeywords",
+        "sms-voice:DescribePhoneNumbers",
+        "sms-voice:ListTagsForResource",
+        "sms-voice:PutKeyword",
+        "sms-voice:RequestPhoneNumber",
+        "sms-voice:TagResource",
+        "sms-voice:UpdatePhoneNumber"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEPhoneNumberRead",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DescribeKeywords",
+        "sms-voice:DescribePhoneNumbers",
+        "sms-voice:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEPhoneNumberUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:PassRole",
+        "sms-voice:DeleteKeyword",
+        "sms-voice:DescribeKeywords",
+        "sms-voice:DescribePhoneNumbers",
+        "sms-voice:ListTagsForResource",
+        "sms-voice:PutKeyword",
+        "sms-voice:TagResource",
+        "sms-voice:UntagResource",
+        "sms-voice:UpdatePhoneNumber"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SMSVOICEPhoneNumberDelete",
+      "Effect": "Allow",
+      "Action": [
+        "sms-voice:DescribePhoneNumbers",
+        "sms-voice:ReleasePhoneNumber"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

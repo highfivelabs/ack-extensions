@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAmazonMQConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AmazonMQConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "mq:CreateConfiguration",
+        "mq:CreateTags",
+        "mq:UpdateConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AmazonMQConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "mq:DescribeConfiguration",
+        "mq:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AmazonMQConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "mq:CreateTags",
+        "mq:DeleteTags",
+        "mq:DescribeConfiguration",
+        "mq:UpdateConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AmazonMQConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "mq:DeleteConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

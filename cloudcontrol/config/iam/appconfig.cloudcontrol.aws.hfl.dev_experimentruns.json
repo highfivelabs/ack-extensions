@@ -1,0 +1,64 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlAppConfigExperimentRun",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigExperimentRunCreate",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:GetExperimentRun",
+        "appconfig:ListTagsForResource",
+        "appconfig:StartDeployment",
+        "appconfig:StartExperimentRun",
+        "appconfig:TagResource",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigExperimentRunRead",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:GetExperimentRun",
+        "appconfig:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigExperimentRunUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:GetExperimentRun",
+        "appconfig:ListTagsForResource",
+        "appconfig:StartDeployment",
+        "appconfig:TagResource",
+        "appconfig:UntagResource",
+        "appconfig:UpdateExperimentRun",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AppConfigExperimentRunDelete",
+      "Effect": "Allow",
+      "Action": [
+        "appconfig:GetExperimentRun",
+        "appconfig:StartDeployment",
+        "appconfig:StopExperimentRun",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

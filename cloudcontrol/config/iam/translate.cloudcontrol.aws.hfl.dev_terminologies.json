@@ -1,0 +1,66 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlTranslateTerminology",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranslateTerminologyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "translate:GetTerminology",
+        "translate:ImportTerminology",
+        "translate:ListTagsForResource",
+        "translate:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranslateTerminologyRead",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "translate:GetTerminology",
+        "translate:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranslateTerminologyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateGrant",
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "translate:GetTerminology",
+        "translate:ImportTerminology",
+        "translate:ListTagsForResource",
+        "translate:TagResource",
+        "translate:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TranslateTerminologyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "translate:DeleteTerminology",
+        "translate:GetTerminology"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

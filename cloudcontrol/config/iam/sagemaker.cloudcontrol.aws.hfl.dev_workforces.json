@@ -1,0 +1,81 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlSageMakerWorkforce",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerWorkforceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cognito-idp:DescribeUserPool",
+        "cognito-idp:DescribeUserPoolClient",
+        "cognito-idp:DescribeUserPoolDomain",
+        "cognito-idp:ListGroups",
+        "cognito-idp:ListUsers",
+        "cognito-idp:UpdateUserPool",
+        "cognito-idp:UpdateUserPoolClient",
+        "ec2:CreateVpcEndpoint",
+        "ec2:DeleteVpcEndpoints",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcEndpoints",
+        "ec2:DescribeVpcs",
+        "sagemaker:AddTags",
+        "sagemaker:CreateWorkforce",
+        "sagemaker:DescribeWorkforce",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerWorkforceRead",
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker:DescribeWorkforce",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerWorkforceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateVpcEndpoint",
+        "ec2:DeleteVpcEndpoints",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcEndpoints",
+        "ec2:DescribeVpcs",
+        "ec2:ModifyVpcEndpoint",
+        "sagemaker:AddTags",
+        "sagemaker:DeleteTags",
+        "sagemaker:DescribeWorkforce",
+        "sagemaker:ListTags",
+        "sagemaker:UpdateWorkforce"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "SageMakerWorkforceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DeleteVpcEndpoints",
+        "ec2:DescribeVpcEndpoints",
+        "sagemaker:DeleteWorkforce",
+        "sagemaker:DescribeWorkforce",
+        "sagemaker:ListTags"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

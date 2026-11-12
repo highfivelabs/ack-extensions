@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlDataSyncAgent",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncAgentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:CreateAgent",
+        "datasync:DescribeAgent",
+        "datasync:ListTagsForResource",
+        "datasync:TagResource",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcEndpoints"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncAgentRead",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DescribeAgent",
+        "datasync:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncAgentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DescribeAgent",
+        "datasync:ListTagsForResource",
+        "datasync:TagResource",
+        "datasync:UntagResource",
+        "datasync:UpdateAgent"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DataSyncAgentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "datasync:DeleteAgent"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

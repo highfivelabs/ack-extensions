@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlGameLiftAlias",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftAliasCreate",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:CreateAlias",
+        "gamelift:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftAliasRead",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DescribeAlias",
+        "gamelift:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftAliasUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DescribeAlias",
+        "gamelift:ListTagsForResource",
+        "gamelift:TagResource",
+        "gamelift:UntagResource",
+        "gamelift:UpdateAlias"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GameLiftAliasDelete",
+      "Effect": "Allow",
+      "Action": [
+        "gamelift:DeleteAlias"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

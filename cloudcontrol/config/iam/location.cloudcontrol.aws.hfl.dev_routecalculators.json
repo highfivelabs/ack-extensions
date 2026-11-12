@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlLocationRouteCalculator",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationRouteCalculatorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "geo:CreateRouteCalculator",
+        "geo:DescribeRouteCalculator",
+        "geo:TagResource",
+        "geo:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationRouteCalculatorRead",
+      "Effect": "Allow",
+      "Action": [
+        "geo:DescribeRouteCalculator"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationRouteCalculatorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "geo:CreateRouteCalculator",
+        "geo:DescribeRouteCalculator",
+        "geo:TagResource",
+        "geo:UntagResource",
+        "geo:UpdateRouteCalculator"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "LocationRouteCalculatorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "geo:DeleteRouteCalculator",
+        "geo:DescribeRouteCalculator"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

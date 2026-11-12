@@ -1,0 +1,60 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCodePipelineWebhook",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodePipelineWebhookCreate",
+      "Effect": "Allow",
+      "Action": [
+        "codepipeline:ListWebhooks",
+        "codepipeline:PutWebhook",
+        "codepipeline:RegisterWebhookWithThirdParty",
+        "codepipeline:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodePipelineWebhookRead",
+      "Effect": "Allow",
+      "Action": [
+        "codepipeline:ListWebhooks"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodePipelineWebhookUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "codepipeline:DeregisterWebhookWithThirdParty",
+        "codepipeline:ListWebhooks",
+        "codepipeline:PutWebhook",
+        "codepipeline:RegisterWebhookWithThirdParty",
+        "codepipeline:TagResource",
+        "codepipeline:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodePipelineWebhookDelete",
+      "Effect": "Allow",
+      "Action": [
+        "codepipeline:DeleteWebhook",
+        "codepipeline:DeregisterWebhookWithThirdParty",
+        "codepipeline:ListWebhooks",
+        "codepipeline:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

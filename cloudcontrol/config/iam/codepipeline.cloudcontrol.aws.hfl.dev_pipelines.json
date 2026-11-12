@@ -1,0 +1,69 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCodePipelinePipeline",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodePipelinePipelineCreate",
+      "Effect": "Allow",
+      "Action": [
+        "codepipeline:CreatePipeline",
+        "codepipeline:DisableStageTransition",
+        "codepipeline:GetPipeline",
+        "codepipeline:GetPipelineState",
+        "codepipeline:TagResource",
+        "codestar-connections:PassConnection",
+        "iam:GetRole",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodePipelinePipelineRead",
+      "Effect": "Allow",
+      "Action": [
+        "codepipeline:GetPipeline",
+        "codepipeline:GetPipelineState",
+        "codepipeline:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodePipelinePipelineUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "codepipeline:DisableStageTransition",
+        "codepipeline:EnableStageTransition",
+        "codepipeline:GetPipeline",
+        "codepipeline:GetPipelineState",
+        "codepipeline:StartPipelineExecution",
+        "codepipeline:TagResource",
+        "codepipeline:UntagResource",
+        "codepipeline:UpdatePipeline",
+        "codestar-connections:PassConnection",
+        "iam:GetRole",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CodePipelinePipelineDelete",
+      "Effect": "Allow",
+      "Action": [
+        "codepipeline:DeletePipeline",
+        "codepipeline:GetPipeline"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

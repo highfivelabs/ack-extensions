@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlBcmPricingCalculatorBillScenario",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BcmPricingCalculatorBillScenarioCreate",
+      "Effect": "Allow",
+      "Action": [
+        "bcm-pricing-calculator:CreateBillScenario",
+        "bcm-pricing-calculator:GetBillScenario",
+        "bcm-pricing-calculator:TagResource",
+        "bcm-pricing-calculator:UpdateBillScenario"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BcmPricingCalculatorBillScenarioRead",
+      "Effect": "Allow",
+      "Action": [
+        "bcm-pricing-calculator:GetBillScenario",
+        "bcm-pricing-calculator:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BcmPricingCalculatorBillScenarioUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "bcm-pricing-calculator:GetBillScenario",
+        "bcm-pricing-calculator:ListTagsForResource",
+        "bcm-pricing-calculator:TagResource",
+        "bcm-pricing-calculator:UntagResource",
+        "bcm-pricing-calculator:UpdateBillScenario"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BcmPricingCalculatorBillScenarioDelete",
+      "Effect": "Allow",
+      "Action": [
+        "bcm-pricing-calculator:DeleteBillScenario",
+        "bcm-pricing-calculator:GetBillScenario"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

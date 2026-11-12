@@ -1,0 +1,66 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlServiceCatalogCloudFormationProvisionedProduct",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogCloudFormationProvisionedProductCreate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateStack",
+        "servicecatalog:TagResource",
+        "servicecatalog:describeProvisionedProduct",
+        "servicecatalog:describeRecord",
+        "servicecatalog:provisionProduct"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogCloudFormationProvisionedProductRead",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DescribeStacks",
+        "cloudformation:ListStacks",
+        "servicecatalog:DescribeProduct",
+        "servicecatalog:ListTagsForResource",
+        "servicecatalog:describeProvisionedProduct",
+        "servicecatalog:describeRecord"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogCloudFormationProvisionedProductUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:UpdateStack",
+        "servicecatalog:DescribeProduct",
+        "servicecatalog:TagResource",
+        "servicecatalog:UntagResource",
+        "servicecatalog:describeProvisionedProduct",
+        "servicecatalog:describeRecord",
+        "servicecatalog:updateProvisionedProduct"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ServiceCatalogCloudFormationProvisionedProductDelete",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:DeleteStack",
+        "servicecatalog:describeRecord",
+        "servicecatalog:terminateProvisionedProduct"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

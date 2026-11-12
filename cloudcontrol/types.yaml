@@ -774,3 +774,2096 @@ types:
     unproven: "no moto backend yet (moto 5.2.5 has s3vectors); on the schema fake only"
   - typeName: AWS::SSM::ResourcePolicy
     unproven: "no moto backend yet (moto 5.2.5 has ssm); on the schema fake only"
+  # Batch 15 (docs/throughput.md), tier 3: every gap type of the services in
+  # the category other (docs/coverage/priority.csv) that is provisionable,
+  # clean and not in cloudcontrol/excluded.yaml, added with hack/cloudcontrol-
+  # batch on 2026-11-12 against the pinned ACK releases. Open pull requests of
+  # every ACK controller were read the same day; the five that add a type here
+  # are excluded. On the schema fake until a moto backend or a live run proves
+  # them.
+  - typeName: AWS::AccountAccess::Application
+    unproven: "moto 5.2.5 has no accountaccess; on the schema fake only"
+  - typeName: AWS::AccountAccess::Entitlement
+    unproven: "moto 5.2.5 has no accountaccess; on the schema fake only"
+  - typeName: AWS::AgentRegistry::Registry
+    unproven: "moto 5.2.5 has no agentregistry; on the schema fake only"
+  - typeName: AWS::AgentRegistry::RegistryRecord
+    unproven: "moto 5.2.5 has no agentregistry; on the schema fake only"
+  - typeName: AWS::AIOps::InvestigationGroup
+    unproven: "moto 5.2.5 has no aiops; on the schema fake only"
+  - typeName: AWS::AmazonMQ::Configuration
+    unproven: "moto 5.2.5 has no amazonmq; on the schema fake only"
+  - typeName: AWS::Amplify::App
+    unproven: "moto 5.2.5 has no amplify; on the schema fake only"
+  - typeName: AWS::Amplify::Branch
+    unproven: "moto 5.2.5 has no amplify; on the schema fake only"
+  - typeName: AWS::Amplify::Domain
+    unproven: "moto 5.2.5 has no amplify; on the schema fake only"
+  - typeName: AWS::Amplify::Webhook
+    unproven: "moto 5.2.5 has no amplify; on the schema fake only"
+  - typeName: AWS::ApiGateway::Account
+    unproven: "no moto backend yet (moto 5.2.5 has apigateway); on the schema fake only"
+  - typeName: AWS::ApiGateway::BasePathMapping
+    unproven: "no moto backend yet (moto 5.2.5 has apigateway); on the schema fake only"
+  - typeName: AWS::ApiGateway::BasePathMappingV2
+    unproven: "no moto backend yet (moto 5.2.5 has apigateway); on the schema fake only"
+  - typeName: AWS::ApiGateway::ClientCertificate
+    unproven: "no moto backend yet (moto 5.2.5 has apigateway); on the schema fake only"
+  - typeName: AWS::ApiGateway::DocumentationPart
+    unproven: "no moto backend yet (moto 5.2.5 has apigateway); on the schema fake only"
+  - typeName: AWS::ApiGateway::DocumentationVersion
+    unproven: "no moto backend yet (moto 5.2.5 has apigateway); on the schema fake only"
+  - typeName: AWS::ApiGateway::DomainName
+    unproven: "no moto backend yet (moto 5.2.5 has apigateway); on the schema fake only"
+  - typeName: AWS::ApiGateway::DomainNameAccessAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has apigateway); on the schema fake only"
+  - typeName: AWS::ApiGateway::GatewayResponse
+    unproven: "no moto backend yet (moto 5.2.5 has apigateway); on the schema fake only"
+  - typeName: AWS::ApiGateway::RequestValidator
+    unproven: "no moto backend yet (moto 5.2.5 has apigateway); on the schema fake only"
+  - typeName: AWS::ApiGateway::UsagePlan
+    unproven: "no moto backend yet (moto 5.2.5 has apigateway); on the schema fake only"
+  - typeName: AWS::ApiGateway::UsagePlanKey
+    unproven: "no moto backend yet (moto 5.2.5 has apigateway); on the schema fake only"
+  - typeName: AWS::AppConfig::Application
+    unproven: "no moto backend yet (moto 5.2.5 has appconfig); on the schema fake only"
+  - typeName: AWS::AppConfig::ConfigurationProfile
+    unproven: "no moto backend yet (moto 5.2.5 has appconfig); on the schema fake only"
+  - typeName: AWS::AppConfig::Deployment
+    unproven: "no moto backend yet (moto 5.2.5 has appconfig); on the schema fake only"
+  - typeName: AWS::AppConfig::DeploymentStrategy
+    unproven: "no moto backend yet (moto 5.2.5 has appconfig); on the schema fake only"
+  - typeName: AWS::AppConfig::Environment
+    unproven: "no moto backend yet (moto 5.2.5 has appconfig); on the schema fake only"
+  - typeName: AWS::AppConfig::ExperimentDefinition
+    unproven: "no moto backend yet (moto 5.2.5 has appconfig); on the schema fake only"
+  - typeName: AWS::AppConfig::ExperimentRun
+    unproven: "no moto backend yet (moto 5.2.5 has appconfig); on the schema fake only"
+  - typeName: AWS::AppConfig::Extension
+    unproven: "no moto backend yet (moto 5.2.5 has appconfig); on the schema fake only"
+  - typeName: AWS::AppConfig::ExtensionAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has appconfig); on the schema fake only"
+  - typeName: AWS::AppConfig::HostedConfigurationVersion
+    unproven: "no moto backend yet (moto 5.2.5 has appconfig); on the schema fake only"
+  - typeName: AWS::AppFabric::AppAuthorization
+    unproven: "moto 5.2.5 has no appfabric; on the schema fake only"
+  - typeName: AWS::AppFabric::AppBundle
+    unproven: "moto 5.2.5 has no appfabric; on the schema fake only"
+  - typeName: AWS::AppFabric::Ingestion
+    unproven: "moto 5.2.5 has no appfabric; on the schema fake only"
+  - typeName: AWS::AppFabric::IngestionDestination
+    unproven: "moto 5.2.5 has no appfabric; on the schema fake only"
+  - typeName: AWS::AppFlow::Connector
+    unproven: "moto 5.2.5 has no appflow; on the schema fake only"
+  - typeName: AWS::AppFlow::ConnectorProfile
+    unproven: "moto 5.2.5 has no appflow; on the schema fake only"
+  - typeName: AWS::AppFlow::Flow
+    unproven: "moto 5.2.5 has no appflow; on the schema fake only"
+  - typeName: AWS::AppIntegrations::Application
+    unproven: "moto 5.2.5 has no appintegrations; on the schema fake only"
+  - typeName: AWS::AppIntegrations::DataIntegration
+    unproven: "moto 5.2.5 has no appintegrations; on the schema fake only"
+  - typeName: AWS::AppIntegrations::EventIntegration
+    unproven: "moto 5.2.5 has no appintegrations; on the schema fake only"
+  - typeName: AWS::ApplicationInsights::Application
+    unproven: "moto 5.2.5 has no applicationinsights; on the schema fake only"
+  - typeName: AWS::ApplicationSignals::Discovery
+    unproven: "moto 5.2.5 has no applicationsignals; on the schema fake only"
+  - typeName: AWS::ApplicationSignals::GroupingConfiguration
+    unproven: "moto 5.2.5 has no applicationsignals; on the schema fake only"
+  - typeName: AWS::ApplicationSignals::InstrumentationConfig
+    unproven: "moto 5.2.5 has no applicationsignals; on the schema fake only"
+  - typeName: AWS::ApplicationSignals::ServiceLevelObjective
+    unproven: "moto 5.2.5 has no applicationsignals; on the schema fake only"
+  - typeName: AWS::AppRunner::AutoScalingConfiguration
+    unproven: "moto 5.2.5 has no apprunner; on the schema fake only"
+  - typeName: AWS::AppRunner::ObservabilityConfiguration
+    unproven: "moto 5.2.5 has no apprunner; on the schema fake only"
+  - typeName: AWS::AppRunner::Service
+    unproven: "moto 5.2.5 has no apprunner; on the schema fake only"
+  - typeName: AWS::AppRunner::VpcConnector
+    unproven: "moto 5.2.5 has no apprunner; on the schema fake only"
+  - typeName: AWS::AppRunner::VpcIngressConnection
+    unproven: "moto 5.2.5 has no apprunner; on the schema fake only"
+  - typeName: AWS::AppStream::AppBlock
+    unproven: "moto 5.2.5 has no appstream; on the schema fake only"
+  - typeName: AWS::AppStream::AppBlockBuilder
+    unproven: "moto 5.2.5 has no appstream; on the schema fake only"
+  - typeName: AWS::AppStream::Application
+    unproven: "moto 5.2.5 has no appstream; on the schema fake only"
+  - typeName: AWS::AppStream::ApplicationEntitlementAssociation
+    unproven: "moto 5.2.5 has no appstream; on the schema fake only"
+  - typeName: AWS::AppStream::ApplicationFleetAssociation
+    unproven: "moto 5.2.5 has no appstream; on the schema fake only"
+  - typeName: AWS::AppStream::DirectoryConfig
+    unproven: "moto 5.2.5 has no appstream; on the schema fake only"
+  - typeName: AWS::AppStream::Entitlement
+    unproven: "moto 5.2.5 has no appstream; on the schema fake only"
+  - typeName: AWS::AppStream::Fleet
+    unproven: "moto 5.2.5 has no appstream; on the schema fake only"
+  - typeName: AWS::AppStream::ImageBuilder
+    unproven: "moto 5.2.5 has no appstream; on the schema fake only"
+  - typeName: AWS::AppStream::Stack
+    unproven: "moto 5.2.5 has no appstream; on the schema fake only"
+  - typeName: AWS::AppStream::StackFleetAssociation
+    unproven: "moto 5.2.5 has no appstream; on the schema fake only"
+  - typeName: AWS::AppStream::StackUserAssociation
+    unproven: "moto 5.2.5 has no appstream; on the schema fake only"
+  - typeName: AWS::AppStream::User
+    unproven: "moto 5.2.5 has no appstream; on the schema fake only"
+  - typeName: AWS::AppSync::Api
+    unproven: "no moto backend yet (moto 5.2.5 has appsync); on the schema fake only"
+  - typeName: AWS::AppSync::ApiCache
+    unproven: "no moto backend yet (moto 5.2.5 has appsync); on the schema fake only"
+  - typeName: AWS::AppSync::ApiKey
+    unproven: "no moto backend yet (moto 5.2.5 has appsync); on the schema fake only"
+  - typeName: AWS::AppSync::ChannelNamespace
+    unproven: "no moto backend yet (moto 5.2.5 has appsync); on the schema fake only"
+  - typeName: AWS::AppSync::DataSource
+    unproven: "no moto backend yet (moto 5.2.5 has appsync); on the schema fake only"
+  - typeName: AWS::AppSync::DomainName
+    unproven: "no moto backend yet (moto 5.2.5 has appsync); on the schema fake only"
+  - typeName: AWS::AppSync::DomainNameApiAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has appsync); on the schema fake only"
+  - typeName: AWS::AppSync::FunctionConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has appsync); on the schema fake only"
+  - typeName: AWS::AppSync::GraphQLApi
+    unproven: "no moto backend yet (moto 5.2.5 has appsync); on the schema fake only"
+  - typeName: AWS::AppSync::Resolver
+    unproven: "no moto backend yet (moto 5.2.5 has appsync); on the schema fake only"
+  - typeName: AWS::AppSync::SourceApiAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has appsync); on the schema fake only"
+  - typeName: AWS::AppSync::Type
+    unproven: "no moto backend yet (moto 5.2.5 has appsync); on the schema fake only"
+  - typeName: AWS::AppTest::TestCase
+    unproven: "moto 5.2.5 has no apptest; on the schema fake only"
+  - typeName: AWS::ARCZonalShift::AutoshiftObserverNotificationStatus
+    unproven: "moto 5.2.5 has no arczonalshift; on the schema fake only"
+  - typeName: AWS::ARCZonalShift::ZonalAutoshiftConfiguration
+    unproven: "moto 5.2.5 has no arczonalshift; on the schema fake only"
+  - typeName: AWS::Athena::CapacityReservation
+    unproven: "no moto backend yet (moto 5.2.5 has athena); on the schema fake only"
+  - typeName: AWS::Athena::NamedQuery
+    unproven: "no moto backend yet (moto 5.2.5 has athena); on the schema fake only"
+  - typeName: AWS::AutoScalingPlans::ScalingPlan
+    unproven: "moto 5.2.5 has no autoscalingplans; on the schema fake only"
+  - typeName: AWS::AWSExternalAnthropic::Workspace
+    unproven: "moto 5.2.5 has no awsexternalanthropic; on the schema fake only"
+  - typeName: AWS::B2BI::Capability
+    unproven: "moto 5.2.5 has no b2bi; on the schema fake only"
+  - typeName: AWS::B2BI::Partnership
+    unproven: "moto 5.2.5 has no b2bi; on the schema fake only"
+  - typeName: AWS::B2BI::Profile
+    unproven: "moto 5.2.5 has no b2bi; on the schema fake only"
+  - typeName: AWS::B2BI::Transformer
+    unproven: "moto 5.2.5 has no b2bi; on the schema fake only"
+  - typeName: AWS::Backup::Framework
+    unproven: "no moto backend yet (moto 5.2.5 has backup); on the schema fake only"
+  - typeName: AWS::Backup::LegalHold
+    unproven: "no moto backend yet (moto 5.2.5 has backup); on the schema fake only"
+  - typeName: AWS::Backup::ReportPlan
+    unproven: "no moto backend yet (moto 5.2.5 has backup); on the schema fake only"
+  - typeName: AWS::Backup::RestoreTestingPlan
+    unproven: "no moto backend yet (moto 5.2.5 has backup); on the schema fake only"
+  - typeName: AWS::Backup::RestoreTestingSelection
+    unproven: "no moto backend yet (moto 5.2.5 has backup); on the schema fake only"
+  - typeName: AWS::Backup::TieringConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has backup); on the schema fake only"
+  - typeName: AWS::BackupGateway::Hypervisor
+    unproven: "moto 5.2.5 has no backupgateway; on the schema fake only"
+  - typeName: AWS::Batch::ComputeEnvironment
+    unproven: "no moto backend yet (moto 5.2.5 has batch); on the schema fake only"
+  - typeName: AWS::Batch::ConsumableResource
+    unproven: "no moto backend yet (moto 5.2.5 has batch); on the schema fake only"
+  - typeName: AWS::Batch::JobDefinition
+    unproven: "no moto backend yet (moto 5.2.5 has batch); on the schema fake only"
+  - typeName: AWS::Batch::JobQueue
+    unproven: "no moto backend yet (moto 5.2.5 has batch); on the schema fake only"
+  - typeName: AWS::Batch::QuotaShare
+    unproven: "no moto backend yet (moto 5.2.5 has batch); on the schema fake only"
+  - typeName: AWS::Batch::SchedulingPolicy
+    unproven: "no moto backend yet (moto 5.2.5 has batch); on the schema fake only"
+  - typeName: AWS::Batch::ServiceEnvironment
+    unproven: "no moto backend yet (moto 5.2.5 has batch); on the schema fake only"
+  - typeName: AWS::BCM::ScheduledReport
+    unproven: "moto 5.2.5 has no bcm; on the schema fake only"
+  - typeName: AWS::BCMDataExports::Export
+    unproven: "moto 5.2.5 has no bcmdataexports; on the schema fake only"
+  - typeName: AWS::BcmPricingCalculator::BillEstimate
+    unproven: "moto 5.2.5 has no bcmpricingcalculator; on the schema fake only"
+  - typeName: AWS::BcmPricingCalculator::BillScenario
+    unproven: "moto 5.2.5 has no bcmpricingcalculator; on the schema fake only"
+  - typeName: AWS::BcmPricingCalculator::WorkloadEstimate
+    unproven: "moto 5.2.5 has no bcmpricingcalculator; on the schema fake only"
+  - typeName: AWS::Bedrock::AgentAlias
+    unproven: "no moto backend yet (moto 5.2.5 has bedrock); on the schema fake only"
+  - typeName: AWS::Bedrock::ApplicationInferenceProfile
+    unproven: "no moto backend yet (moto 5.2.5 has bedrock); on the schema fake only"
+  - typeName: AWS::Bedrock::AutomatedReasoningPolicy
+    unproven: "no moto backend yet (moto 5.2.5 has bedrock); on the schema fake only"
+  - typeName: AWS::Bedrock::AutomatedReasoningPolicyVersion
+    unproven: "no moto backend yet (moto 5.2.5 has bedrock); on the schema fake only"
+  - typeName: AWS::Bedrock::Blueprint
+    unproven: "no moto backend yet (moto 5.2.5 has bedrock); on the schema fake only"
+  - typeName: AWS::Bedrock::DataAutomationLibrary
+    unproven: "no moto backend yet (moto 5.2.5 has bedrock); on the schema fake only"
+  - typeName: AWS::Bedrock::DataAutomationProject
+    unproven: "no moto backend yet (moto 5.2.5 has bedrock); on the schema fake only"
+  - typeName: AWS::Bedrock::DataSource
+    unproven: "no moto backend yet (moto 5.2.5 has bedrock); on the schema fake only"
+  - typeName: AWS::Bedrock::EnforcedGuardrailConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has bedrock); on the schema fake only"
+  - typeName: AWS::Bedrock::FlowAlias
+    unproven: "no moto backend yet (moto 5.2.5 has bedrock); on the schema fake only"
+  - typeName: AWS::Bedrock::Guardrail
+    unproven: "no moto backend yet (moto 5.2.5 has bedrock); on the schema fake only"
+  - typeName: AWS::Bedrock::GuardrailVersion
+    unproven: "no moto backend yet (moto 5.2.5 has bedrock); on the schema fake only"
+  - typeName: AWS::Bedrock::IntelligentPromptRouter
+    unproven: "no moto backend yet (moto 5.2.5 has bedrock); on the schema fake only"
+  - typeName: AWS::Bedrock::KnowledgeBasePolicy
+    unproven: "no moto backend yet (moto 5.2.5 has bedrock); on the schema fake only"
+  - typeName: AWS::Bedrock::Prompt
+    unproven: "no moto backend yet (moto 5.2.5 has bedrock); on the schema fake only"
+  - typeName: AWS::Bedrock::PromptVersion
+    unproven: "no moto backend yet (moto 5.2.5 has bedrock); on the schema fake only"
+  - typeName: AWS::Bedrock::ResourcePolicy
+    unproven: "no moto backend yet (moto 5.2.5 has bedrock); on the schema fake only"
+  - typeName: AWS::Bedrock::RetrievalInstruction
+    unproven: "no moto backend yet (moto 5.2.5 has bedrock); on the schema fake only"
+  - typeName: AWS::Bedrock::Session
+    unproven: "no moto backend yet (moto 5.2.5 has bedrock); on the schema fake only"
+  - typeName: AWS::BedrockAgentCore::CapacityProvider
+    unproven: "no moto backend yet (moto 5.2.5 has bedrockagentcore); on the schema fake only"
+  - typeName: AWS::BedrockAgentCore::ConfigurationBundle
+    unproven: "no moto backend yet (moto 5.2.5 has bedrockagentcore); on the schema fake only"
+  - typeName: AWS::BedrockAgentCore::ConsentPortal
+    unproven: "no moto backend yet (moto 5.2.5 has bedrockagentcore); on the schema fake only"
+  - typeName: AWS::BedrockAgentCore::Dataset
+    unproven: "no moto backend yet (moto 5.2.5 has bedrockagentcore); on the schema fake only"
+  - typeName: AWS::BedrockAgentCore::Evaluator
+    unproven: "no moto backend yet (moto 5.2.5 has bedrockagentcore); on the schema fake only"
+  - typeName: AWS::BedrockAgentCore::OAuth2CredentialProvider
+    unproven: "no moto backend yet (moto 5.2.5 has bedrockagentcore); on the schema fake only"
+  - typeName: AWS::BedrockAgentCore::OnlineEvaluationConfig
+    unproven: "no moto backend yet (moto 5.2.5 has bedrockagentcore); on the schema fake only"
+  - typeName: AWS::BedrockAgentCore::PaymentConnector
+    unproven: "no moto backend yet (moto 5.2.5 has bedrockagentcore); on the schema fake only"
+  - typeName: AWS::BedrockAgentCore::PaymentCredentialProvider
+    unproven: "no moto backend yet (moto 5.2.5 has bedrockagentcore); on the schema fake only"
+  - typeName: AWS::BedrockAgentCore::PaymentManager
+    unproven: "no moto backend yet (moto 5.2.5 has bedrockagentcore); on the schema fake only"
+  - typeName: AWS::BedrockAgentCore::ResourcePolicy
+    unproven: "no moto backend yet (moto 5.2.5 has bedrockagentcore); on the schema fake only"
+  - typeName: AWS::BedrockMantle::Project
+    unproven: "moto 5.2.5 has no bedrockmantle; on the schema fake only"
+  - typeName: AWS::Billing::BillingView
+    unproven: "moto 5.2.5 has no billing; on the schema fake only"
+  - typeName: AWS::BillingConductor::BillingGroup
+    unproven: "moto 5.2.5 has no billingconductor; on the schema fake only"
+  - typeName: AWS::BillingConductor::CustomLineItem
+    unproven: "moto 5.2.5 has no billingconductor; on the schema fake only"
+  - typeName: AWS::BillingConductor::PricingPlan
+    unproven: "moto 5.2.5 has no billingconductor; on the schema fake only"
+  - typeName: AWS::BillingConductor::PricingRule
+    unproven: "moto 5.2.5 has no billingconductor; on the schema fake only"
+  - typeName: AWS::Braket::SpendingLimit
+    unproven: "moto 5.2.5 has no braket; on the schema fake only"
+  - typeName: AWS::Budgets::BudgetsAction
+    unproven: "no moto backend yet (moto 5.2.5 has budgets); on the schema fake only"
+  - typeName: AWS::Cases::Case
+    unproven: "moto 5.2.5 has no cases; on the schema fake only"
+  - typeName: AWS::Cases::CaseRule
+    unproven: "moto 5.2.5 has no cases; on the schema fake only"
+  - typeName: AWS::Cases::Domain
+    unproven: "moto 5.2.5 has no cases; on the schema fake only"
+  - typeName: AWS::Cases::Field
+    unproven: "moto 5.2.5 has no cases; on the schema fake only"
+  - typeName: AWS::Cases::Layout
+    unproven: "moto 5.2.5 has no cases; on the schema fake only"
+  - typeName: AWS::Cases::RelatedItem
+    unproven: "moto 5.2.5 has no cases; on the schema fake only"
+  - typeName: AWS::Cases::Template
+    unproven: "moto 5.2.5 has no cases; on the schema fake only"
+  - typeName: AWS::CE::AnomalyMonitor
+    unproven: "no moto backend yet (moto 5.2.5 has ce); on the schema fake only"
+  - typeName: AWS::CE::AnomalySubscription
+    unproven: "no moto backend yet (moto 5.2.5 has ce); on the schema fake only"
+  - typeName: AWS::CE::CostCategory
+    unproven: "no moto backend yet (moto 5.2.5 has ce); on the schema fake only"
+  - typeName: AWS::Chatbot::CustomAction
+    unproven: "moto 5.2.5 has no chatbot; on the schema fake only"
+  - typeName: AWS::Chatbot::MicrosoftTeamsChannelConfiguration
+    unproven: "moto 5.2.5 has no chatbot; on the schema fake only"
+  - typeName: AWS::Chatbot::SlackChannelConfiguration
+    unproven: "moto 5.2.5 has no chatbot; on the schema fake only"
+  - typeName: AWS::Chime::AppInstance
+    unproven: "moto 5.2.5 has no chime; on the schema fake only"
+  - typeName: AWS::Chime::AppInstanceBot
+    unproven: "moto 5.2.5 has no chime; on the schema fake only"
+  - typeName: AWS::Chime::AppInstanceUser
+    unproven: "moto 5.2.5 has no chime; on the schema fake only"
+  - typeName: AWS::Chime::Channel
+    unproven: "moto 5.2.5 has no chime; on the schema fake only"
+  - typeName: AWS::Chime::ChannelFlow
+    unproven: "moto 5.2.5 has no chime; on the schema fake only"
+  - typeName: AWS::Chime::MediaInsightsPipelineConfiguration
+    unproven: "moto 5.2.5 has no chime; on the schema fake only"
+  - typeName: AWS::Chime::MediaPipelineKinesisVideoStreamPool
+    unproven: "moto 5.2.5 has no chime; on the schema fake only"
+  - typeName: AWS::Chime::SipMediaApplication
+    unproven: "moto 5.2.5 has no chime; on the schema fake only"
+  - typeName: AWS::Chime::VoiceConnector
+    unproven: "moto 5.2.5 has no chime; on the schema fake only"
+  - typeName: AWS::CleanRooms::AnalysisTemplate
+    unproven: "no moto backend yet (moto 5.2.5 has cleanrooms); on the schema fake only"
+  - typeName: AWS::CleanRooms::Collaboration
+    unproven: "no moto backend yet (moto 5.2.5 has cleanrooms); on the schema fake only"
+  - typeName: AWS::CleanRooms::ConfiguredTable
+    unproven: "no moto backend yet (moto 5.2.5 has cleanrooms); on the schema fake only"
+  - typeName: AWS::CleanRooms::ConfiguredTableAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has cleanrooms); on the schema fake only"
+  - typeName: AWS::CleanRooms::IdMappingTable
+    unproven: "no moto backend yet (moto 5.2.5 has cleanrooms); on the schema fake only"
+  - typeName: AWS::CleanRooms::IdNamespaceAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has cleanrooms); on the schema fake only"
+  - typeName: AWS::CleanRooms::IntermediateTable
+    unproven: "no moto backend yet (moto 5.2.5 has cleanrooms); on the schema fake only"
+  - typeName: AWS::CleanRooms::Membership
+    unproven: "no moto backend yet (moto 5.2.5 has cleanrooms); on the schema fake only"
+  - typeName: AWS::CleanRooms::PrivacyBudgetTemplate
+    unproven: "no moto backend yet (moto 5.2.5 has cleanrooms); on the schema fake only"
+  - typeName: AWS::CleanRoomsML::ConfiguredModelAlgorithm
+    unproven: "moto 5.2.5 has no cleanroomsml; on the schema fake only"
+  - typeName: AWS::CleanRoomsML::ConfiguredModelAlgorithmAssociation
+    unproven: "moto 5.2.5 has no cleanroomsml; on the schema fake only"
+  - typeName: AWS::CleanRoomsML::TrainingDataset
+    unproven: "moto 5.2.5 has no cleanroomsml; on the schema fake only"
+  - typeName: AWS::Cloud9::EnvironmentEC2
+    unproven: "moto 5.2.5 has no cloud9; on the schema fake only"
+  - typeName: AWS::CloudFormation::ChangeSet
+    unproven: "no moto backend yet (moto 5.2.5 has cloudformation); on the schema fake only"
+  - typeName: AWS::CloudFormation::GeneratedTemplate
+    unproven: "no moto backend yet (moto 5.2.5 has cloudformation); on the schema fake only"
+  - typeName: AWS::CloudFormation::GuardHook
+    unproven: "no moto backend yet (moto 5.2.5 has cloudformation); on the schema fake only"
+  - typeName: AWS::CloudFormation::HookDefaultVersion
+    unproven: "no moto backend yet (moto 5.2.5 has cloudformation); on the schema fake only"
+  - typeName: AWS::CloudFormation::HookTypeConfig
+    unproven: "no moto backend yet (moto 5.2.5 has cloudformation); on the schema fake only"
+  - typeName: AWS::CloudFormation::HookVersion
+    unproven: "no moto backend yet (moto 5.2.5 has cloudformation); on the schema fake only"
+  - typeName: AWS::CloudFormation::LambdaHook
+    unproven: "no moto backend yet (moto 5.2.5 has cloudformation); on the schema fake only"
+  - typeName: AWS::CloudFormation::ModuleDefaultVersion
+    unproven: "no moto backend yet (moto 5.2.5 has cloudformation); on the schema fake only"
+  - typeName: AWS::CloudFormation::ModuleVersion
+    unproven: "no moto backend yet (moto 5.2.5 has cloudformation); on the schema fake only"
+  - typeName: AWS::CloudFormation::PublicTypeVersion
+    unproven: "no moto backend yet (moto 5.2.5 has cloudformation); on the schema fake only"
+  - typeName: AWS::CloudFormation::Publisher
+    unproven: "no moto backend yet (moto 5.2.5 has cloudformation); on the schema fake only"
+  - typeName: AWS::CloudFormation::ResourceDefaultVersion
+    unproven: "no moto backend yet (moto 5.2.5 has cloudformation); on the schema fake only"
+  - typeName: AWS::CloudFormation::ResourceVersion
+    unproven: "no moto backend yet (moto 5.2.5 has cloudformation); on the schema fake only"
+  - typeName: AWS::CloudFormation::StackSet
+    unproven: "no moto backend yet (moto 5.2.5 has cloudformation); on the schema fake only"
+  - typeName: AWS::CloudFormation::TypeActivation
+    unproven: "no moto backend yet (moto 5.2.5 has cloudformation); on the schema fake only"
+  - typeName: AWS::CloudHSM::Cluster
+    unproven: "moto 5.2.5 has no cloudhsm; on the schema fake only"
+  - typeName: AWS::CodeArtifact::Repository
+    unproven: "moto 5.2.5 has no codeartifact; on the schema fake only"
+  - typeName: AWS::CodeBuild::Fleet
+    unproven: "no moto backend yet (moto 5.2.5 has codebuild); on the schema fake only"
+  - typeName: AWS::CodeBuild::Project
+    unproven: "no moto backend yet (moto 5.2.5 has codebuild); on the schema fake only"
+  - typeName: AWS::CodeBuild::ReportGroup
+    unproven: "no moto backend yet (moto 5.2.5 has codebuild); on the schema fake only"
+  - typeName: AWS::CodeBuild::SourceCredential
+    unproven: "no moto backend yet (moto 5.2.5 has codebuild); on the schema fake only"
+  - typeName: AWS::CodeCommit::Repository
+    unproven: "no moto backend yet (moto 5.2.5 has codecommit); on the schema fake only"
+  - typeName: AWS::CodeConnections::Connection
+    unproven: "moto 5.2.5 has no codeconnections; on the schema fake only"
+  - typeName: AWS::CodeConnections::Host
+    unproven: "moto 5.2.5 has no codeconnections; on the schema fake only"
+  - typeName: AWS::CodeGuruProfiler::ProfilingGroup
+    unproven: "moto 5.2.5 has no codeguruprofiler; on the schema fake only"
+  - typeName: AWS::CodeGuruReviewer::RepositoryAssociation
+    unproven: "moto 5.2.5 has no codegurureviewer; on the schema fake only"
+  - typeName: AWS::CodePipeline::CustomActionType
+    unproven: "no moto backend yet (moto 5.2.5 has codepipeline); on the schema fake only"
+  - typeName: AWS::CodePipeline::Pipeline
+    unproven: "no moto backend yet (moto 5.2.5 has codepipeline); on the schema fake only"
+  - typeName: AWS::CodePipeline::Webhook
+    unproven: "no moto backend yet (moto 5.2.5 has codepipeline); on the schema fake only"
+  - typeName: AWS::CodeStarConnections::Connection
+    unproven: "moto 5.2.5 has no codestarconnections; on the schema fake only"
+  - typeName: AWS::CodeStarConnections::RepositoryLink
+    unproven: "moto 5.2.5 has no codestarconnections; on the schema fake only"
+  - typeName: AWS::CodeStarConnections::SyncConfiguration
+    unproven: "moto 5.2.5 has no codestarconnections; on the schema fake only"
+  - typeName: AWS::CodeStarNotifications::NotificationRule
+    unproven: "moto 5.2.5 has no codestarnotifications; on the schema fake only"
+  - typeName: AWS::Cognito::IdentityPool
+    unproven: "moto 5.2.5 has no cognito; on the schema fake only"
+  - typeName: AWS::Cognito::IdentityPoolPrincipalTag
+    unproven: "moto 5.2.5 has no cognito; on the schema fake only"
+  - typeName: AWS::Cognito::IdentityPoolRoleAttachment
+    unproven: "moto 5.2.5 has no cognito; on the schema fake only"
+  - typeName: AWS::Cognito::LogDeliveryConfiguration
+    unproven: "moto 5.2.5 has no cognito; on the schema fake only"
+  - typeName: AWS::Cognito::ManagedLoginBranding
+    unproven: "moto 5.2.5 has no cognito; on the schema fake only"
+  - typeName: AWS::Cognito::Terms
+    unproven: "moto 5.2.5 has no cognito; on the schema fake only"
+  - typeName: AWS::Cognito::UserPoolDomain
+    unproven: "moto 5.2.5 has no cognito; on the schema fake only"
+  - typeName: AWS::Cognito::UserPoolGroup
+    unproven: "moto 5.2.5 has no cognito; on the schema fake only"
+  - typeName: AWS::Cognito::UserPoolIdentityProvider
+    unproven: "moto 5.2.5 has no cognito; on the schema fake only"
+  - typeName: AWS::Cognito::UserPoolRegionalConfigurationAttachment
+    unproven: "moto 5.2.5 has no cognito; on the schema fake only"
+  - typeName: AWS::Cognito::UserPoolReplica
+    unproven: "moto 5.2.5 has no cognito; on the schema fake only"
+  - typeName: AWS::Cognito::UserPoolRiskConfigurationAttachment
+    unproven: "moto 5.2.5 has no cognito; on the schema fake only"
+  - typeName: AWS::Cognito::UserPoolUICustomizationAttachment
+    unproven: "moto 5.2.5 has no cognito; on the schema fake only"
+  - typeName: AWS::Cognito::UserPoolUser
+    unproven: "moto 5.2.5 has no cognito; on the schema fake only"
+  - typeName: AWS::Cognito::UserPoolUserToGroupAttachment
+    unproven: "moto 5.2.5 has no cognito; on the schema fake only"
+  - typeName: AWS::Comprehend::DocumentClassifier
+    unproven: "no moto backend yet (moto 5.2.5 has comprehend); on the schema fake only"
+  - typeName: AWS::Comprehend::DocumentClassifierEndpoint
+    unproven: "no moto backend yet (moto 5.2.5 has comprehend); on the schema fake only"
+  - typeName: AWS::Comprehend::EntityRecognizer
+    unproven: "no moto backend yet (moto 5.2.5 has comprehend); on the schema fake only"
+  - typeName: AWS::Comprehend::EntityRecognizerEndpoint
+    unproven: "no moto backend yet (moto 5.2.5 has comprehend); on the schema fake only"
+  - typeName: AWS::Comprehend::Flywheel
+    unproven: "no moto backend yet (moto 5.2.5 has comprehend); on the schema fake only"
+  - typeName: AWS::ComputeOptimizer::AutomationRule
+    unproven: "moto 5.2.5 has no computeoptimizer; on the schema fake only"
+  - typeName: AWS::Connect::AgentStatus
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::ApprovedOrigin
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::ContactFlow
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::ContactFlowModule
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::ContactFlowModuleAlias
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::ContactFlowModuleVersion
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::ContactFlowVersion
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::DataLakeAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::DataTable
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::DataTableAttribute
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::DataTableRecord
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::EmailAddress
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::HoursOfOperation
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::Instance
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::InstanceStorageConfig
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::IntegrationAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::Metric
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::Notification
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::PhoneNumber
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::PredefinedAttribute
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::Prompt
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::Queue
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::QuickConnect
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::RoutingProfile
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::Rule
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::SecurityKey
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::SecurityProfile
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::TaskTemplate
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::TestCase
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::TrafficDistributionGroup
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::UseCase
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::User
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::UserHierarchyGroup
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::UserHierarchyStructure
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::View
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::ViewVersion
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::Vocabulary
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::Connect::Workspace
+    unproven: "no moto backend yet (moto 5.2.5 has connect); on the schema fake only"
+  - typeName: AWS::ConnectCampaigns::Campaign
+    unproven: "no moto backend yet (moto 5.2.5 has connectcampaigns); on the schema fake only"
+  - typeName: AWS::ConnectCampaignsV2::Campaign
+    unproven: "moto 5.2.5 has no connectcampaignsv2; on the schema fake only"
+  - typeName: AWS::CUR::ReportDefinition
+    unproven: "moto 5.2.5 has no cur; on the schema fake only"
+  - typeName: AWS::CustomerProfiles::CalculatedAttributeDefinition
+    unproven: "moto 5.2.5 has no customerprofiles; on the schema fake only"
+  - typeName: AWS::CustomerProfiles::Domain
+    unproven: "moto 5.2.5 has no customerprofiles; on the schema fake only"
+  - typeName: AWS::CustomerProfiles::DomainObjectType
+    unproven: "moto 5.2.5 has no customerprofiles; on the schema fake only"
+  - typeName: AWS::CustomerProfiles::EventStream
+    unproven: "moto 5.2.5 has no customerprofiles; on the schema fake only"
+  - typeName: AWS::CustomerProfiles::EventTrigger
+    unproven: "moto 5.2.5 has no customerprofiles; on the schema fake only"
+  - typeName: AWS::CustomerProfiles::Integration
+    unproven: "moto 5.2.5 has no customerprofiles; on the schema fake only"
+  - typeName: AWS::CustomerProfiles::ObjectType
+    unproven: "moto 5.2.5 has no customerprofiles; on the schema fake only"
+  - typeName: AWS::CustomerProfiles::Recommender
+    unproven: "moto 5.2.5 has no customerprofiles; on the schema fake only"
+  - typeName: AWS::CustomerProfiles::RecommenderFilter
+    unproven: "moto 5.2.5 has no customerprofiles; on the schema fake only"
+  - typeName: AWS::CustomerProfiles::RecommenderSchema
+    unproven: "moto 5.2.5 has no customerprofiles; on the schema fake only"
+  - typeName: AWS::CustomerProfiles::SegmentDefinition
+    unproven: "moto 5.2.5 has no customerprofiles; on the schema fake only"
+  - typeName: AWS::DataBrew::Dataset
+    unproven: "no moto backend yet (moto 5.2.5 has databrew); on the schema fake only"
+  - typeName: AWS::DataBrew::Job
+    unproven: "no moto backend yet (moto 5.2.5 has databrew); on the schema fake only"
+  - typeName: AWS::DataBrew::Project
+    unproven: "no moto backend yet (moto 5.2.5 has databrew); on the schema fake only"
+  - typeName: AWS::DataBrew::Recipe
+    unproven: "no moto backend yet (moto 5.2.5 has databrew); on the schema fake only"
+  - typeName: AWS::DataBrew::Ruleset
+    unproven: "no moto backend yet (moto 5.2.5 has databrew); on the schema fake only"
+  - typeName: AWS::DataBrew::Schedule
+    unproven: "no moto backend yet (moto 5.2.5 has databrew); on the schema fake only"
+  - typeName: AWS::DataExchange::DataSet
+    unproven: "moto 5.2.5 has no dataexchange; on the schema fake only"
+  - typeName: AWS::DataExchange::EventAction
+    unproven: "moto 5.2.5 has no dataexchange; on the schema fake only"
+  - typeName: AWS::DataPipeline::Pipeline
+    unproven: "no moto backend yet (moto 5.2.5 has datapipeline); on the schema fake only"
+  - typeName: AWS::DataSync::Agent
+    unproven: "no moto backend yet (moto 5.2.5 has datasync); on the schema fake only"
+  - typeName: AWS::DataSync::LocationAzureBlob
+    unproven: "no moto backend yet (moto 5.2.5 has datasync); on the schema fake only"
+  - typeName: AWS::DataSync::LocationEFS
+    unproven: "no moto backend yet (moto 5.2.5 has datasync); on the schema fake only"
+  - typeName: AWS::DataSync::LocationFSxLustre
+    unproven: "no moto backend yet (moto 5.2.5 has datasync); on the schema fake only"
+  - typeName: AWS::DataSync::LocationFSxONTAP
+    unproven: "no moto backend yet (moto 5.2.5 has datasync); on the schema fake only"
+  - typeName: AWS::DataSync::LocationFSxOpenZFS
+    unproven: "no moto backend yet (moto 5.2.5 has datasync); on the schema fake only"
+  - typeName: AWS::DataSync::LocationFSxWindows
+    unproven: "no moto backend yet (moto 5.2.5 has datasync); on the schema fake only"
+  - typeName: AWS::DataSync::LocationHDFS
+    unproven: "no moto backend yet (moto 5.2.5 has datasync); on the schema fake only"
+  - typeName: AWS::DataSync::LocationNFS
+    unproven: "no moto backend yet (moto 5.2.5 has datasync); on the schema fake only"
+  - typeName: AWS::DataSync::LocationObjectStorage
+    unproven: "no moto backend yet (moto 5.2.5 has datasync); on the schema fake only"
+  - typeName: AWS::DataSync::LocationS3
+    unproven: "no moto backend yet (moto 5.2.5 has datasync); on the schema fake only"
+  - typeName: AWS::DataSync::LocationSMB
+    unproven: "no moto backend yet (moto 5.2.5 has datasync); on the schema fake only"
+  - typeName: AWS::DataSync::Task
+    unproven: "no moto backend yet (moto 5.2.5 has datasync); on the schema fake only"
+  - typeName: AWS::DataZone::Connection
+    unproven: "moto 5.2.5 has no datazone; on the schema fake only"
+  - typeName: AWS::DataZone::DataSource
+    unproven: "moto 5.2.5 has no datazone; on the schema fake only"
+  - typeName: AWS::DataZone::Domain
+    unproven: "moto 5.2.5 has no datazone; on the schema fake only"
+  - typeName: AWS::DataZone::DomainUnit
+    unproven: "moto 5.2.5 has no datazone; on the schema fake only"
+  - typeName: AWS::DataZone::Environment
+    unproven: "moto 5.2.5 has no datazone; on the schema fake only"
+  - typeName: AWS::DataZone::EnvironmentActions
+    unproven: "moto 5.2.5 has no datazone; on the schema fake only"
+  - typeName: AWS::DataZone::EnvironmentBlueprintConfiguration
+    unproven: "moto 5.2.5 has no datazone; on the schema fake only"
+  - typeName: AWS::DataZone::EnvironmentProfile
+    unproven: "moto 5.2.5 has no datazone; on the schema fake only"
+  - typeName: AWS::DataZone::FormType
+    unproven: "moto 5.2.5 has no datazone; on the schema fake only"
+  - typeName: AWS::DataZone::GroupProfile
+    unproven: "moto 5.2.5 has no datazone; on the schema fake only"
+  - typeName: AWS::DataZone::Owner
+    unproven: "moto 5.2.5 has no datazone; on the schema fake only"
+  - typeName: AWS::DataZone::PolicyGrant
+    unproven: "moto 5.2.5 has no datazone; on the schema fake only"
+  - typeName: AWS::DataZone::Project
+    unproven: "moto 5.2.5 has no datazone; on the schema fake only"
+  - typeName: AWS::DataZone::ProjectMembership
+    unproven: "moto 5.2.5 has no datazone; on the schema fake only"
+  - typeName: AWS::DataZone::ProjectProfile
+    unproven: "moto 5.2.5 has no datazone; on the schema fake only"
+  - typeName: AWS::DataZone::SubscriptionTarget
+    unproven: "moto 5.2.5 has no datazone; on the schema fake only"
+  - typeName: AWS::DAX::Cluster
+    unproven: "no moto backend yet (moto 5.2.5 has dax); on the schema fake only"
+  - typeName: AWS::DAX::ParameterGroup
+    unproven: "no moto backend yet (moto 5.2.5 has dax); on the schema fake only"
+  - typeName: AWS::DAX::SubnetGroup
+    unproven: "no moto backend yet (moto 5.2.5 has dax); on the schema fake only"
+  - typeName: AWS::Deadline::Budget
+    unproven: "moto 5.2.5 has no deadline; on the schema fake only"
+  - typeName: AWS::Deadline::Farm
+    unproven: "moto 5.2.5 has no deadline; on the schema fake only"
+  - typeName: AWS::Deadline::Fleet
+    unproven: "moto 5.2.5 has no deadline; on the schema fake only"
+  - typeName: AWS::Deadline::LicenseEndpoint
+    unproven: "moto 5.2.5 has no deadline; on the schema fake only"
+  - typeName: AWS::Deadline::Limit
+    unproven: "moto 5.2.5 has no deadline; on the schema fake only"
+  - typeName: AWS::Deadline::MeteredProduct
+    unproven: "moto 5.2.5 has no deadline; on the schema fake only"
+  - typeName: AWS::Deadline::Monitor
+    unproven: "moto 5.2.5 has no deadline; on the schema fake only"
+  - typeName: AWS::Deadline::Queue
+    unproven: "moto 5.2.5 has no deadline; on the schema fake only"
+  - typeName: AWS::Deadline::QueueEnvironment
+    unproven: "moto 5.2.5 has no deadline; on the schema fake only"
+  - typeName: AWS::Deadline::QueueFleetAssociation
+    unproven: "moto 5.2.5 has no deadline; on the schema fake only"
+  - typeName: AWS::Deadline::QueueLimitAssociation
+    unproven: "moto 5.2.5 has no deadline; on the schema fake only"
+  - typeName: AWS::Deadline::StorageProfile
+    unproven: "moto 5.2.5 has no deadline; on the schema fake only"
+  - typeName: AWS::Deadline::Worker
+    unproven: "moto 5.2.5 has no deadline; on the schema fake only"
+  - typeName: AWS::DevOpsAgent::AgentSpace
+    unproven: "no moto backend yet (moto 5.2.5 has devopsagent); on the schema fake only"
+  - typeName: AWS::DevOpsAgent::Asset
+    unproven: "no moto backend yet (moto 5.2.5 has devopsagent); on the schema fake only"
+  - typeName: AWS::DevOpsAgent::Association
+    unproven: "no moto backend yet (moto 5.2.5 has devopsagent); on the schema fake only"
+  - typeName: AWS::DevOpsAgent::PrivateConnection
+    unproven: "no moto backend yet (moto 5.2.5 has devopsagent); on the schema fake only"
+  - typeName: AWS::DevOpsAgent::Service
+    unproven: "no moto backend yet (moto 5.2.5 has devopsagent); on the schema fake only"
+  - typeName: AWS::DevOpsGuru::LogAnomalyDetectionIntegration
+    unproven: "moto 5.2.5 has no devopsguru; on the schema fake only"
+  - typeName: AWS::DevOpsGuru::NotificationChannel
+    unproven: "moto 5.2.5 has no devopsguru; on the schema fake only"
+  - typeName: AWS::DevOpsGuru::ResourceCollection
+    unproven: "moto 5.2.5 has no devopsguru; on the schema fake only"
+  - typeName: AWS::DirectoryService::MicrosoftAD
+    unproven: "moto 5.2.5 has no directoryservice; on the schema fake only"
+  - typeName: AWS::DirectoryService::SimpleAD
+    unproven: "moto 5.2.5 has no directoryservice; on the schema fake only"
+  - typeName: AWS::DLM::LifecyclePolicy
+    unproven: "moto 5.2.5 has no dlm; on the schema fake only"
+  - typeName: AWS::DocDB::DBClusterParameterGroup
+    unproven: "moto 5.2.5 has no docdb; on the schema fake only"
+  - typeName: AWS::DocDB::EventSubscription
+    unproven: "moto 5.2.5 has no docdb; on the schema fake only"
+  - typeName: AWS::DocDB::GlobalCluster
+    unproven: "moto 5.2.5 has no docdb; on the schema fake only"
+  - typeName: AWS::DocDBElastic::Cluster
+    unproven: "moto 5.2.5 has no docdbelastic; on the schema fake only"
+  - typeName: AWS::DocDBElastic::ClusterSnapshot
+    unproven: "moto 5.2.5 has no docdbelastic; on the schema fake only"
+  - typeName: AWS::DRS::LaunchConfigurationTemplate
+    unproven: "moto 5.2.5 has no drs; on the schema fake only"
+  - typeName: AWS::DRS::RecoveryPlan
+    unproven: "moto 5.2.5 has no drs; on the schema fake only"
+  - typeName: AWS::DRS::ReplicationConfigurationTemplate
+    unproven: "moto 5.2.5 has no drs; on the schema fake only"
+  - typeName: AWS::DRS::SourceNetwork
+    unproven: "moto 5.2.5 has no drs; on the schema fake only"
+  - typeName: AWS::ElasticBeanstalk::Application
+    unproven: "no moto backend yet (moto 5.2.5 has elasticbeanstalk); on the schema fake only"
+  - typeName: AWS::ElasticBeanstalk::ApplicationVersion
+    unproven: "no moto backend yet (moto 5.2.5 has elasticbeanstalk); on the schema fake only"
+  - typeName: AWS::ElasticBeanstalk::ConfigurationTemplate
+    unproven: "no moto backend yet (moto 5.2.5 has elasticbeanstalk); on the schema fake only"
+  - typeName: AWS::ElasticBeanstalk::Environment
+    unproven: "no moto backend yet (moto 5.2.5 has elasticbeanstalk); on the schema fake only"
+  - typeName: AWS::ElasticLoadBalancing::LoadBalancer
+    unproven: "moto 5.2.5 has no elasticloadbalancing; on the schema fake only"
+  - typeName: AWS::ElementalInference::Dictionary
+    unproven: "moto 5.2.5 has no elementalinference; on the schema fake only"
+  - typeName: AWS::ElementalInference::Feed
+    unproven: "moto 5.2.5 has no elementalinference; on the schema fake only"
+  - typeName: AWS::EMR::Step
+    unproven: "no moto backend yet (moto 5.2.5 has emr); on the schema fake only"
+  - typeName: AWS::EMR::Studio
+    unproven: "no moto backend yet (moto 5.2.5 has emr); on the schema fake only"
+  - typeName: AWS::EMR::StudioSessionMapping
+    unproven: "no moto backend yet (moto 5.2.5 has emr); on the schema fake only"
+  - typeName: AWS::EMR::WALWorkspace
+    unproven: "no moto backend yet (moto 5.2.5 has emr); on the schema fake only"
+  - typeName: AWS::EMRContainers::SecurityConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has emrcontainers); on the schema fake only"
+  - typeName: AWS::EntityResolution::IdMappingWorkflow
+    unproven: "moto 5.2.5 has no entityresolution; on the schema fake only"
+  - typeName: AWS::EntityResolution::IdNamespace
+    unproven: "moto 5.2.5 has no entityresolution; on the schema fake only"
+  - typeName: AWS::EntityResolution::MatchingWorkflow
+    unproven: "moto 5.2.5 has no entityresolution; on the schema fake only"
+  - typeName: AWS::EntityResolution::PolicyStatement
+    unproven: "moto 5.2.5 has no entityresolution; on the schema fake only"
+  - typeName: AWS::EntityResolution::SchemaMapping
+    unproven: "moto 5.2.5 has no entityresolution; on the schema fake only"
+  - typeName: AWS::EventsV2::EventBus
+    unproven: "moto 5.2.5 has no eventsv2; on the schema fake only"
+  - typeName: AWS::EventsV2::EventSource
+    unproven: "moto 5.2.5 has no eventsv2; on the schema fake only"
+  - typeName: AWS::EventsV2::ResourcePolicy
+    unproven: "moto 5.2.5 has no eventsv2; on the schema fake only"
+  - typeName: AWS::EventsV2::Subscriber
+    unproven: "moto 5.2.5 has no eventsv2; on the schema fake only"
+  - typeName: AWS::Evidently::Experiment
+    unproven: "moto 5.2.5 has no evidently; on the schema fake only"
+  - typeName: AWS::Evidently::Feature
+    unproven: "moto 5.2.5 has no evidently; on the schema fake only"
+  - typeName: AWS::Evidently::Launch
+    unproven: "moto 5.2.5 has no evidently; on the schema fake only"
+  - typeName: AWS::Evidently::Project
+    unproven: "moto 5.2.5 has no evidently; on the schema fake only"
+  - typeName: AWS::Evidently::Segment
+    unproven: "moto 5.2.5 has no evidently; on the schema fake only"
+  - typeName: AWS::EVS::Environment
+    unproven: "moto 5.2.5 has no evs; on the schema fake only"
+  - typeName: AWS::FinSpace::Environment
+    unproven: "moto 5.2.5 has no finspace; on the schema fake only"
+  - typeName: AWS::FIS::ExperimentTemplate
+    unproven: "no moto backend yet (moto 5.2.5 has fis); on the schema fake only"
+  - typeName: AWS::FIS::TargetAccountConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has fis); on the schema fake only"
+  - typeName: AWS::Forecast::Dataset
+    unproven: "no moto backend yet (moto 5.2.5 has forecast); on the schema fake only"
+  - typeName: AWS::Forecast::DatasetGroup
+    unproven: "no moto backend yet (moto 5.2.5 has forecast); on the schema fake only"
+  - typeName: AWS::FraudDetector::Detector
+    unproven: "moto 5.2.5 has no frauddetector; on the schema fake only"
+  - typeName: AWS::FraudDetector::EntityType
+    unproven: "moto 5.2.5 has no frauddetector; on the schema fake only"
+  - typeName: AWS::FraudDetector::EventType
+    unproven: "moto 5.2.5 has no frauddetector; on the schema fake only"
+  - typeName: AWS::FraudDetector::Label
+    unproven: "moto 5.2.5 has no frauddetector; on the schema fake only"
+  - typeName: AWS::FraudDetector::Outcome
+    unproven: "moto 5.2.5 has no frauddetector; on the schema fake only"
+  - typeName: AWS::FraudDetector::Variable
+    unproven: "moto 5.2.5 has no frauddetector; on the schema fake only"
+  - typeName: AWS::FSx::Backup
+    unproven: "no moto backend yet (moto 5.2.5 has fsx); on the schema fake only"
+  - typeName: AWS::FSx::FileCache
+    unproven: "no moto backend yet (moto 5.2.5 has fsx); on the schema fake only"
+  - typeName: AWS::FSx::Snapshot
+    unproven: "no moto backend yet (moto 5.2.5 has fsx); on the schema fake only"
+  - typeName: AWS::FSx::StorageVirtualMachine
+    unproven: "no moto backend yet (moto 5.2.5 has fsx); on the schema fake only"
+  - typeName: AWS::FSx::Volume
+    unproven: "no moto backend yet (moto 5.2.5 has fsx); on the schema fake only"
+  - typeName: AWS::GameLift::Alias
+    unproven: "moto 5.2.5 has no gamelift; on the schema fake only"
+  - typeName: AWS::GameLift::Build
+    unproven: "moto 5.2.5 has no gamelift; on the schema fake only"
+  - typeName: AWS::GameLift::ContainerFleet
+    unproven: "moto 5.2.5 has no gamelift; on the schema fake only"
+  - typeName: AWS::GameLift::ContainerGroupDefinition
+    unproven: "moto 5.2.5 has no gamelift; on the schema fake only"
+  - typeName: AWS::GameLift::Fleet
+    unproven: "moto 5.2.5 has no gamelift; on the schema fake only"
+  - typeName: AWS::GameLift::GameServerGroup
+    unproven: "moto 5.2.5 has no gamelift; on the schema fake only"
+  - typeName: AWS::GameLift::GameSessionQueue
+    unproven: "moto 5.2.5 has no gamelift; on the schema fake only"
+  - typeName: AWS::GameLift::Location
+    unproven: "moto 5.2.5 has no gamelift; on the schema fake only"
+  - typeName: AWS::GameLift::MatchmakingConfiguration
+    unproven: "moto 5.2.5 has no gamelift; on the schema fake only"
+  - typeName: AWS::GameLift::MatchmakingRuleSet
+    unproven: "moto 5.2.5 has no gamelift; on the schema fake only"
+  - typeName: AWS::GameLift::Script
+    unproven: "moto 5.2.5 has no gamelift; on the schema fake only"
+  - typeName: AWS::GlobalAccelerator::Accelerator
+    unproven: "moto 5.2.5 has no globalaccelerator; on the schema fake only"
+  - typeName: AWS::GlobalAccelerator::CrossAccountAttachment
+    unproven: "moto 5.2.5 has no globalaccelerator; on the schema fake only"
+  - typeName: AWS::GlobalAccelerator::EndpointGroup
+    unproven: "moto 5.2.5 has no globalaccelerator; on the schema fake only"
+  - typeName: AWS::GlobalAccelerator::Listener
+    unproven: "moto 5.2.5 has no globalaccelerator; on the schema fake only"
+  - typeName: AWS::Glue::Blueprint
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::Catalog
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::Classifier
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::Connection
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::ConnectionType
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::Crawler
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::CustomEntityType
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::DataCatalogEncryptionSettings
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::DataQualityRuleset
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::IdentityCenterConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::Integration
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::IntegrationResourceProperty
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::MLTransform
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::Partition
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::SchemaVersion
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::SchemaVersionMetadata
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::SecurityConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::Session
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::Table
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::TableOptimizer
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::Trigger
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::UsageProfile
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::UserDefinedFunction
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::Workflow
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Grafana::Workspace
+    unproven: "moto 5.2.5 has no grafana; on the schema fake only"
+  - typeName: AWS::GreengrassV2::ComponentVersion
+    unproven: "moto 5.2.5 has no greengrassv2; on the schema fake only"
+  - typeName: AWS::GreengrassV2::Deployment
+    unproven: "moto 5.2.5 has no greengrassv2; on the schema fake only"
+  - typeName: AWS::GroundStation::Config
+    unproven: "moto 5.2.5 has no groundstation; on the schema fake only"
+  - typeName: AWS::GroundStation::DataflowEndpointGroup
+    unproven: "moto 5.2.5 has no groundstation; on the schema fake only"
+  - typeName: AWS::GroundStation::DataflowEndpointGroupV2
+    unproven: "moto 5.2.5 has no groundstation; on the schema fake only"
+  - typeName: AWS::GroundStation::MissionProfile
+    unproven: "moto 5.2.5 has no groundstation; on the schema fake only"
+  - typeName: AWS::HealthAgent::Domain
+    unproven: "moto 5.2.5 has no healthagent; on the schema fake only"
+  - typeName: AWS::HealthImaging::Datastore
+    unproven: "moto 5.2.5 has no healthimaging; on the schema fake only"
+  - typeName: AWS::HealthLake::DataTransformationProfile
+    unproven: "moto 5.2.5 has no healthlake; on the schema fake only"
+  - typeName: AWS::HealthLake::FHIRDatastore
+    unproven: "moto 5.2.5 has no healthlake; on the schema fake only"
+  - typeName: AWS::ImageBuilder::Component
+    unproven: "moto 5.2.5 has no imagebuilder; on the schema fake only"
+  - typeName: AWS::ImageBuilder::ContainerRecipe
+    unproven: "moto 5.2.5 has no imagebuilder; on the schema fake only"
+  - typeName: AWS::ImageBuilder::DistributionConfiguration
+    unproven: "moto 5.2.5 has no imagebuilder; on the schema fake only"
+  - typeName: AWS::ImageBuilder::Image
+    unproven: "moto 5.2.5 has no imagebuilder; on the schema fake only"
+  - typeName: AWS::ImageBuilder::ImagePipeline
+    unproven: "moto 5.2.5 has no imagebuilder; on the schema fake only"
+  - typeName: AWS::ImageBuilder::ImageRecipe
+    unproven: "moto 5.2.5 has no imagebuilder; on the schema fake only"
+  - typeName: AWS::ImageBuilder::InfrastructureConfiguration
+    unproven: "moto 5.2.5 has no imagebuilder; on the schema fake only"
+  - typeName: AWS::ImageBuilder::LifecyclePolicy
+    unproven: "moto 5.2.5 has no imagebuilder; on the schema fake only"
+  - typeName: AWS::ImageBuilder::Workflow
+    unproven: "moto 5.2.5 has no imagebuilder; on the schema fake only"
+  - typeName: AWS::Interconnect::Connection
+    unproven: "moto 5.2.5 has no interconnect; on the schema fake only"
+  - typeName: AWS::InternetMonitor::Monitor
+    unproven: "moto 5.2.5 has no internetmonitor; on the schema fake only"
+  - typeName: AWS::Invoicing::InvoiceUnit
+    unproven: "moto 5.2.5 has no invoicing; on the schema fake only"
+  - typeName: AWS::Invoicing::ProcurementPortalPreference
+    unproven: "moto 5.2.5 has no invoicing; on the schema fake only"
+  - typeName: AWS::IoT::AccountAuditConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::Authorizer
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::BillingGroup
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::CACertificate
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::Certificate
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::CertificateProvider
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::Command
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::CustomMetric
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::Dimension
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::DomainConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::EncryptionConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::FleetMetric
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::Job
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::JobTemplate
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::Logging
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::MitigationAction
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::OTAUpdate
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::PolicyPrincipalAttachment
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::ProvisioningTemplate
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::ResourceSpecificLogging
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::RoleAlias
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::ScheduledAudit
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::SecurityProfile
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::SoftwarePackage
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::SoftwarePackageVersion
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::Stream
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::Thing
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::ThingGroup
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::ThingPrincipalAttachment
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::ThingType
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::TopicRule
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoT::TopicRuleDestination
+    unproven: "no moto backend yet (moto 5.2.5 has iot); on the schema fake only"
+  - typeName: AWS::IoTAnalytics::Channel
+    unproven: "moto 5.2.5 has no iotanalytics; on the schema fake only"
+  - typeName: AWS::IoTAnalytics::Dataset
+    unproven: "moto 5.2.5 has no iotanalytics; on the schema fake only"
+  - typeName: AWS::IoTAnalytics::Datastore
+    unproven: "moto 5.2.5 has no iotanalytics; on the schema fake only"
+  - typeName: AWS::IoTAnalytics::Pipeline
+    unproven: "moto 5.2.5 has no iotanalytics; on the schema fake only"
+  - typeName: AWS::IoTCoreDeviceAdvisor::SuiteDefinition
+    unproven: "moto 5.2.5 has no iotcoredeviceadvisor; on the schema fake only"
+  - typeName: AWS::IoTFleetWise::Campaign
+    unproven: "moto 5.2.5 has no iotfleetwise; on the schema fake only"
+  - typeName: AWS::IoTFleetWise::Fleet
+    unproven: "moto 5.2.5 has no iotfleetwise; on the schema fake only"
+  - typeName: AWS::IoTFleetWise::ModelManifest
+    unproven: "moto 5.2.5 has no iotfleetwise; on the schema fake only"
+  - typeName: AWS::IoTFleetWise::SignalCatalog
+    unproven: "moto 5.2.5 has no iotfleetwise; on the schema fake only"
+  - typeName: AWS::IoTFleetWise::StateTemplate
+    unproven: "moto 5.2.5 has no iotfleetwise; on the schema fake only"
+  - typeName: AWS::IoTFleetWise::Vehicle
+    unproven: "moto 5.2.5 has no iotfleetwise; on the schema fake only"
+  - typeName: AWS::IoTSecureTunneling::Tunnel
+    unproven: "moto 5.2.5 has no iotsecuretunneling; on the schema fake only"
+  - typeName: AWS::IoTSiteWise::AccessPolicy
+    unproven: "moto 5.2.5 has no iotsitewise; on the schema fake only"
+  - typeName: AWS::IoTSiteWise::Application
+    unproven: "moto 5.2.5 has no iotsitewise; on the schema fake only"
+  - typeName: AWS::IoTSiteWise::Asset
+    unproven: "moto 5.2.5 has no iotsitewise; on the schema fake only"
+  - typeName: AWS::IoTSiteWise::AssetModel
+    unproven: "moto 5.2.5 has no iotsitewise; on the schema fake only"
+  - typeName: AWS::IoTSiteWise::Dashboard
+    unproven: "moto 5.2.5 has no iotsitewise; on the schema fake only"
+  - typeName: AWS::IoTSiteWise::Dataset
+    unproven: "moto 5.2.5 has no iotsitewise; on the schema fake only"
+  - typeName: AWS::IoTSiteWise::Gateway
+    unproven: "moto 5.2.5 has no iotsitewise; on the schema fake only"
+  - typeName: AWS::IoTSiteWise::Pipeline
+    unproven: "moto 5.2.5 has no iotsitewise; on the schema fake only"
+  - typeName: AWS::IoTSiteWise::Portal
+    unproven: "moto 5.2.5 has no iotsitewise; on the schema fake only"
+  - typeName: AWS::IoTSiteWise::Project
+    unproven: "moto 5.2.5 has no iotsitewise; on the schema fake only"
+  - typeName: AWS::IoTSiteWise::Task
+    unproven: "moto 5.2.5 has no iotsitewise; on the schema fake only"
+  - typeName: AWS::IoTSiteWise::Workspace
+    unproven: "moto 5.2.5 has no iotsitewise; on the schema fake only"
+  - typeName: AWS::IoTTwinMaker::Scene
+    unproven: "moto 5.2.5 has no iottwinmaker; on the schema fake only"
+  - typeName: AWS::IoTTwinMaker::SyncJob
+    unproven: "moto 5.2.5 has no iottwinmaker; on the schema fake only"
+  - typeName: AWS::IoTTwinMaker::Workspace
+    unproven: "moto 5.2.5 has no iottwinmaker; on the schema fake only"
+  - typeName: AWS::IoTWireless::Destination
+    unproven: "moto 5.2.5 has no iotwireless; on the schema fake only"
+  - typeName: AWS::IoTWireless::DeviceProfile
+    unproven: "moto 5.2.5 has no iotwireless; on the schema fake only"
+  - typeName: AWS::IoTWireless::FuotaTask
+    unproven: "moto 5.2.5 has no iotwireless; on the schema fake only"
+  - typeName: AWS::IoTWireless::MulticastGroup
+    unproven: "moto 5.2.5 has no iotwireless; on the schema fake only"
+  - typeName: AWS::IoTWireless::NetworkAnalyzerConfiguration
+    unproven: "moto 5.2.5 has no iotwireless; on the schema fake only"
+  - typeName: AWS::IoTWireless::PartnerAccount
+    unproven: "moto 5.2.5 has no iotwireless; on the schema fake only"
+  - typeName: AWS::IoTWireless::ServiceProfile
+    unproven: "moto 5.2.5 has no iotwireless; on the schema fake only"
+  - typeName: AWS::IoTWireless::TaskDefinition
+    unproven: "moto 5.2.5 has no iotwireless; on the schema fake only"
+  - typeName: AWS::IoTWireless::WirelessDevice
+    unproven: "moto 5.2.5 has no iotwireless; on the schema fake only"
+  - typeName: AWS::IoTWireless::WirelessDeviceImportTask
+    unproven: "moto 5.2.5 has no iotwireless; on the schema fake only"
+  - typeName: AWS::IoTWireless::WirelessGateway
+    unproven: "moto 5.2.5 has no iotwireless; on the schema fake only"
+  - typeName: AWS::IVS::AdConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has ivs); on the schema fake only"
+  - typeName: AWS::IVS::Channel
+    unproven: "no moto backend yet (moto 5.2.5 has ivs); on the schema fake only"
+  - typeName: AWS::IVS::EncoderConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has ivs); on the schema fake only"
+  - typeName: AWS::IVS::IngestConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has ivs); on the schema fake only"
+  - typeName: AWS::IVS::PlaybackKeyPair
+    unproven: "no moto backend yet (moto 5.2.5 has ivs); on the schema fake only"
+  - typeName: AWS::IVS::PlaybackRestrictionPolicy
+    unproven: "no moto backend yet (moto 5.2.5 has ivs); on the schema fake only"
+  - typeName: AWS::IVS::PublicKey
+    unproven: "no moto backend yet (moto 5.2.5 has ivs); on the schema fake only"
+  - typeName: AWS::IVS::RecordingConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has ivs); on the schema fake only"
+  - typeName: AWS::IVS::Stage
+    unproven: "no moto backend yet (moto 5.2.5 has ivs); on the schema fake only"
+  - typeName: AWS::IVS::StorageConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has ivs); on the schema fake only"
+  - typeName: AWS::IVS::StreamKey
+    unproven: "no moto backend yet (moto 5.2.5 has ivs); on the schema fake only"
+  - typeName: AWS::IVSChat::LoggingConfiguration
+    unproven: "moto 5.2.5 has no ivschat; on the schema fake only"
+  - typeName: AWS::IVSChat::Room
+    unproven: "moto 5.2.5 has no ivschat; on the schema fake only"
+  - typeName: AWS::KafkaConnect::Connector
+    unproven: "moto 5.2.5 has no kafkaconnect; on the schema fake only"
+  - typeName: AWS::Kendra::DataSource
+    unproven: "moto 5.2.5 has no kendra; on the schema fake only"
+  - typeName: AWS::Kendra::Faq
+    unproven: "moto 5.2.5 has no kendra; on the schema fake only"
+  - typeName: AWS::Kendra::FeaturedResultsSet
+    unproven: "moto 5.2.5 has no kendra; on the schema fake only"
+  - typeName: AWS::Kendra::Index
+    unproven: "moto 5.2.5 has no kendra; on the schema fake only"
+  - typeName: AWS::Kendra::QuerySuggestionsBlockList
+    unproven: "moto 5.2.5 has no kendra; on the schema fake only"
+  - typeName: AWS::Kendra::Thesaurus
+    unproven: "moto 5.2.5 has no kendra; on the schema fake only"
+  - typeName: AWS::KendraRanking::ExecutionPlan
+    unproven: "moto 5.2.5 has no kendraranking; on the schema fake only"
+  - typeName: AWS::Kinesis::Channel
+    unproven: "no moto backend yet (moto 5.2.5 has kinesis); on the schema fake only"
+  - typeName: AWS::Kinesis::ResourcePolicy
+    unproven: "no moto backend yet (moto 5.2.5 has kinesis); on the schema fake only"
+  - typeName: AWS::KinesisAnalyticsV2::Application
+    unproven: "no moto backend yet (moto 5.2.5 has kinesisanalyticsv2); on the schema fake only"
+  - typeName: AWS::KinesisVideo::SignalingChannel
+    unproven: "no moto backend yet (moto 5.2.5 has kinesisvideo); on the schema fake only"
+  - typeName: AWS::KinesisVideo::Stream
+    unproven: "no moto backend yet (moto 5.2.5 has kinesisvideo); on the schema fake only"
+  - typeName: AWS::LakeFormation::DataCellsFilter
+    unproven: "no moto backend yet (moto 5.2.5 has lakeformation); on the schema fake only"
+  - typeName: AWS::LakeFormation::PrincipalPermissions
+    unproven: "no moto backend yet (moto 5.2.5 has lakeformation); on the schema fake only"
+  - typeName: AWS::LakeFormation::Resource
+    unproven: "no moto backend yet (moto 5.2.5 has lakeformation); on the schema fake only"
+  - typeName: AWS::LakeFormation::Tag
+    unproven: "no moto backend yet (moto 5.2.5 has lakeformation); on the schema fake only"
+  - typeName: AWS::LakeFormation::TagAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has lakeformation); on the schema fake only"
+  - typeName: AWS::LaunchWizard::Deployment
+    unproven: "moto 5.2.5 has no launchwizard; on the schema fake only"
+  - typeName: AWS::Lex::BotAlias
+    unproven: "moto 5.2.5 has no lex; on the schema fake only"
+  - typeName: AWS::Lex::BotVersion
+    unproven: "moto 5.2.5 has no lex; on the schema fake only"
+  - typeName: AWS::Lex::ResourcePolicy
+    unproven: "moto 5.2.5 has no lex; on the schema fake only"
+  - typeName: AWS::LicenseManager::Grant
+    unproven: "moto 5.2.5 has no licensemanager; on the schema fake only"
+  - typeName: AWS::LicenseManager::License
+    unproven: "moto 5.2.5 has no licensemanager; on the schema fake only"
+  - typeName: AWS::LicenseManager::LicenseAssetGroup
+    unproven: "moto 5.2.5 has no licensemanager; on the schema fake only"
+  - typeName: AWS::LicenseManager::LicenseAssetRuleSet
+    unproven: "moto 5.2.5 has no licensemanager; on the schema fake only"
+  - typeName: AWS::LicenseManager::LicenseConfiguration
+    unproven: "moto 5.2.5 has no licensemanager; on the schema fake only"
+  - typeName: AWS::LicenseManager::ReportGenerator
+    unproven: "moto 5.2.5 has no licensemanager; on the schema fake only"
+  - typeName: AWS::LicenseManagerLinuxSubscriptions::SubscriptionProvider
+    unproven: "moto 5.2.5 has no licensemanagerlinuxsubscriptions; on the schema fake only"
+  - typeName: AWS::LicenseManagerUserSubscriptions::LicenseServerEndpoint
+    unproven: "moto 5.2.5 has no licensemanagerusersubscriptions; on the schema fake only"
+  - typeName: AWS::Lightsail::Alarm
+    unproven: "moto 5.2.5 has no lightsail; on the schema fake only"
+  - typeName: AWS::Lightsail::Bucket
+    unproven: "moto 5.2.5 has no lightsail; on the schema fake only"
+  - typeName: AWS::Lightsail::Certificate
+    unproven: "moto 5.2.5 has no lightsail; on the schema fake only"
+  - typeName: AWS::Lightsail::ContactMethod
+    unproven: "moto 5.2.5 has no lightsail; on the schema fake only"
+  - typeName: AWS::Lightsail::Container
+    unproven: "moto 5.2.5 has no lightsail; on the schema fake only"
+  - typeName: AWS::Lightsail::Database
+    unproven: "moto 5.2.5 has no lightsail; on the schema fake only"
+  - typeName: AWS::Lightsail::DatabaseSnapshot
+    unproven: "moto 5.2.5 has no lightsail; on the schema fake only"
+  - typeName: AWS::Lightsail::Disk
+    unproven: "moto 5.2.5 has no lightsail; on the schema fake only"
+  - typeName: AWS::Lightsail::DiskSnapshot
+    unproven: "moto 5.2.5 has no lightsail; on the schema fake only"
+  - typeName: AWS::Lightsail::Distribution
+    unproven: "moto 5.2.5 has no lightsail; on the schema fake only"
+  - typeName: AWS::Lightsail::Domain
+    unproven: "moto 5.2.5 has no lightsail; on the schema fake only"
+  - typeName: AWS::Lightsail::Instance
+    unproven: "moto 5.2.5 has no lightsail; on the schema fake only"
+  - typeName: AWS::Lightsail::InstanceSnapshot
+    unproven: "moto 5.2.5 has no lightsail; on the schema fake only"
+  - typeName: AWS::Lightsail::KeyPair
+    unproven: "moto 5.2.5 has no lightsail; on the schema fake only"
+  - typeName: AWS::Lightsail::LoadBalancer
+    unproven: "moto 5.2.5 has no lightsail; on the schema fake only"
+  - typeName: AWS::Lightsail::LoadBalancerTlsCertificate
+    unproven: "moto 5.2.5 has no lightsail; on the schema fake only"
+  - typeName: AWS::Lightsail::StaticIp
+    unproven: "moto 5.2.5 has no lightsail; on the schema fake only"
+  - typeName: AWS::Location::APIKey
+    unproven: "moto 5.2.5 has no location; on the schema fake only"
+  - typeName: AWS::Location::GeofenceCollection
+    unproven: "moto 5.2.5 has no location; on the schema fake only"
+  - typeName: AWS::Location::Map
+    unproven: "moto 5.2.5 has no location; on the schema fake only"
+  - typeName: AWS::Location::PlaceIndex
+    unproven: "moto 5.2.5 has no location; on the schema fake only"
+  - typeName: AWS::Location::RouteCalculator
+    unproven: "moto 5.2.5 has no location; on the schema fake only"
+  - typeName: AWS::Location::Tracker
+    unproven: "moto 5.2.5 has no location; on the schema fake only"
+  - typeName: AWS::Location::TrackerConsumer
+    unproven: "moto 5.2.5 has no location; on the schema fake only"
+  - typeName: AWS::LookoutEquipment::InferenceScheduler
+    unproven: "moto 5.2.5 has no lookoutequipment; on the schema fake only"
+  - typeName: AWS::M2::Application
+    unproven: "moto 5.2.5 has no m2; on the schema fake only"
+  - typeName: AWS::M2::Deployment
+    unproven: "moto 5.2.5 has no m2; on the schema fake only"
+  - typeName: AWS::M2::Environment
+    unproven: "moto 5.2.5 has no m2; on the schema fake only"
+  - typeName: AWS::ManagedBlockchain::Accessor
+    unproven: "no moto backend yet (moto 5.2.5 has managedblockchain); on the schema fake only"
+  - typeName: AWS::MediaConnect::Bridge
+    unproven: "no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only"
+  - typeName: AWS::MediaConnect::BridgeOutput
+    unproven: "no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only"
+  - typeName: AWS::MediaConnect::BridgeSource
+    unproven: "no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only"
+  - typeName: AWS::MediaConnect::Flow
+    unproven: "no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only"
+  - typeName: AWS::MediaConnect::FlowEntitlement
+    unproven: "no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only"
+  - typeName: AWS::MediaConnect::FlowMediaStream
+    unproven: "no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only"
+  - typeName: AWS::MediaConnect::FlowOutput
+    unproven: "no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only"
+  - typeName: AWS::MediaConnect::FlowSource
+    unproven: "no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only"
+  - typeName: AWS::MediaConnect::FlowVpcInterface
+    unproven: "no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only"
+  - typeName: AWS::MediaConnect::Gateway
+    unproven: "no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only"
+  - typeName: AWS::MediaConnect::RouterInput
+    unproven: "no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only"
+  - typeName: AWS::MediaConnect::RouterNetworkInterface
+    unproven: "no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only"
+  - typeName: AWS::MediaConnect::RouterOutput
+    unproven: "no moto backend yet (moto 5.2.5 has mediaconnect); on the schema fake only"
+  - typeName: AWS::MediaConvert::CertificateAssociation
+    unproven: "moto 5.2.5 has no mediaconvert; on the schema fake only"
+  - typeName: AWS::MediaConvert::JobTemplate
+    unproven: "moto 5.2.5 has no mediaconvert; on the schema fake only"
+  - typeName: AWS::MediaConvert::Preset
+    unproven: "moto 5.2.5 has no mediaconvert; on the schema fake only"
+  - typeName: AWS::MediaConvert::Queue
+    unproven: "moto 5.2.5 has no mediaconvert; on the schema fake only"
+  - typeName: AWS::MediaLive::ChannelPlacementGroup
+    unproven: "no moto backend yet (moto 5.2.5 has medialive); on the schema fake only"
+  - typeName: AWS::MediaLive::CloudWatchAlarmTemplate
+    unproven: "no moto backend yet (moto 5.2.5 has medialive); on the schema fake only"
+  - typeName: AWS::MediaLive::CloudWatchAlarmTemplateGroup
+    unproven: "no moto backend yet (moto 5.2.5 has medialive); on the schema fake only"
+  - typeName: AWS::MediaLive::Cluster
+    unproven: "no moto backend yet (moto 5.2.5 has medialive); on the schema fake only"
+  - typeName: AWS::MediaLive::EventBridgeRuleTemplate
+    unproven: "no moto backend yet (moto 5.2.5 has medialive); on the schema fake only"
+  - typeName: AWS::MediaLive::EventBridgeRuleTemplateGroup
+    unproven: "no moto backend yet (moto 5.2.5 has medialive); on the schema fake only"
+  - typeName: AWS::MediaLive::Input
+    unproven: "no moto backend yet (moto 5.2.5 has medialive); on the schema fake only"
+  - typeName: AWS::MediaLive::InputSecurityGroup
+    unproven: "no moto backend yet (moto 5.2.5 has medialive); on the schema fake only"
+  - typeName: AWS::MediaLive::Multiplex
+    unproven: "no moto backend yet (moto 5.2.5 has medialive); on the schema fake only"
+  - typeName: AWS::MediaLive::Multiplexprogram
+    unproven: "no moto backend yet (moto 5.2.5 has medialive); on the schema fake only"
+  - typeName: AWS::MediaLive::Network
+    unproven: "no moto backend yet (moto 5.2.5 has medialive); on the schema fake only"
+  - typeName: AWS::MediaLive::Node
+    unproven: "no moto backend yet (moto 5.2.5 has medialive); on the schema fake only"
+  - typeName: AWS::MediaLive::SdiSource
+    unproven: "no moto backend yet (moto 5.2.5 has medialive); on the schema fake only"
+  - typeName: AWS::MediaLive::SignalMap
+    unproven: "no moto backend yet (moto 5.2.5 has medialive); on the schema fake only"
+  - typeName: AWS::MediaPackage::Asset
+    unproven: "no moto backend yet (moto 5.2.5 has mediapackage); on the schema fake only"
+  - typeName: AWS::MediaPackage::Channel
+    unproven: "no moto backend yet (moto 5.2.5 has mediapackage); on the schema fake only"
+  - typeName: AWS::MediaPackage::OriginEndpoint
+    unproven: "no moto backend yet (moto 5.2.5 has mediapackage); on the schema fake only"
+  - typeName: AWS::MediaPackage::PackagingConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has mediapackage); on the schema fake only"
+  - typeName: AWS::MediaPackage::PackagingGroup
+    unproven: "no moto backend yet (moto 5.2.5 has mediapackage); on the schema fake only"
+  - typeName: AWS::MediaPackageV2::Channel
+    unproven: "no moto backend yet (moto 5.2.5 has mediapackagev2); on the schema fake only"
+  - typeName: AWS::MediaPackageV2::ChannelGroup
+    unproven: "no moto backend yet (moto 5.2.5 has mediapackagev2); on the schema fake only"
+  - typeName: AWS::MediaPackageV2::OriginEndpoint
+    unproven: "no moto backend yet (moto 5.2.5 has mediapackagev2); on the schema fake only"
+  - typeName: AWS::MediaTailor::Channel
+    unproven: "moto 5.2.5 has no mediatailor; on the schema fake only"
+  - typeName: AWS::MediaTailor::Function
+    unproven: "moto 5.2.5 has no mediatailor; on the schema fake only"
+  - typeName: AWS::MediaTailor::LiveSource
+    unproven: "moto 5.2.5 has no mediatailor; on the schema fake only"
+  - typeName: AWS::MediaTailor::PlaybackConfiguration
+    unproven: "moto 5.2.5 has no mediatailor; on the schema fake only"
+  - typeName: AWS::MediaTailor::PrefetchSchedule
+    unproven: "moto 5.2.5 has no mediatailor; on the schema fake only"
+  - typeName: AWS::MediaTailor::Program
+    unproven: "moto 5.2.5 has no mediatailor; on the schema fake only"
+  - typeName: AWS::MediaTailor::SourceLocation
+    unproven: "moto 5.2.5 has no mediatailor; on the schema fake only"
+  - typeName: AWS::MediaTailor::VodSource
+    unproven: "moto 5.2.5 has no mediatailor; on the schema fake only"
+  - typeName: AWS::MGN::Application
+    unproven: "moto 5.2.5 has no mgn; on the schema fake only"
+  - typeName: AWS::MGN::Connector
+    unproven: "moto 5.2.5 has no mgn; on the schema fake only"
+  - typeName: AWS::MGN::LaunchConfigurationTemplate
+    unproven: "moto 5.2.5 has no mgn; on the schema fake only"
+  - typeName: AWS::MGN::NetworkMigrationDefinition
+    unproven: "moto 5.2.5 has no mgn; on the schema fake only"
+  - typeName: AWS::MGN::ReplicationConfigurationTemplate
+    unproven: "moto 5.2.5 has no mgn; on the schema fake only"
+  - typeName: AWS::MGN::Wave
+    unproven: "moto 5.2.5 has no mgn; on the schema fake only"
+  - typeName: AWS::MPA::IdentitySource
+    unproven: "moto 5.2.5 has no mpa; on the schema fake only"
+  - typeName: AWS::Neptune::DBCluster
+    unproven: "moto 5.2.5 has no neptune; on the schema fake only"
+  - typeName: AWS::Neptune::DBClusterParameterGroup
+    unproven: "moto 5.2.5 has no neptune; on the schema fake only"
+  - typeName: AWS::Neptune::DBInstance
+    unproven: "moto 5.2.5 has no neptune; on the schema fake only"
+  - typeName: AWS::Neptune::DBParameterGroup
+    unproven: "moto 5.2.5 has no neptune; on the schema fake only"
+  - typeName: AWS::Neptune::DBSubnetGroup
+    unproven: "moto 5.2.5 has no neptune; on the schema fake only"
+  - typeName: AWS::Neptune::EventSubscription
+    unproven: "moto 5.2.5 has no neptune; on the schema fake only"
+  - typeName: AWS::Neptune::GlobalCluster
+    unproven: "moto 5.2.5 has no neptune; on the schema fake only"
+  - typeName: AWS::NeptuneGraph::Graph
+    unproven: "moto 5.2.5 has no neptunegraph; on the schema fake only"
+  - typeName: AWS::NeptuneGraph::GraphSnapshot
+    unproven: "moto 5.2.5 has no neptunegraph; on the schema fake only"
+  - typeName: AWS::NeptuneGraph::PrivateGraphEndpoint
+    unproven: "moto 5.2.5 has no neptunegraph; on the schema fake only"
+  - typeName: AWS::NetworkFlowMonitor::Monitor
+    unproven: "moto 5.2.5 has no networkflowmonitor; on the schema fake only"
+  - typeName: AWS::NetworkFlowMonitor::Scope
+    unproven: "moto 5.2.5 has no networkflowmonitor; on the schema fake only"
+  - typeName: AWS::NetworkMonitor::Monitor
+    unproven: "moto 5.2.5 has no networkmonitor; on the schema fake only"
+  - typeName: AWS::NetworkMonitor::Probe
+    unproven: "moto 5.2.5 has no networkmonitor; on the schema fake only"
+  - typeName: AWS::NetworkSecurityManager::Deployment
+    unproven: "moto 5.2.5 has no networksecuritymanager; on the schema fake only"
+  - typeName: AWS::NetworkSecurityManager::Policy
+    unproven: "moto 5.2.5 has no networksecuritymanager; on the schema fake only"
+  - typeName: AWS::NetworkSecurityManager::Rule
+    unproven: "moto 5.2.5 has no networksecuritymanager; on the schema fake only"
+  - typeName: AWS::NetworkSecurityManager::Scope
+    unproven: "moto 5.2.5 has no networksecuritymanager; on the schema fake only"
+  - typeName: AWS::NetworkSecurityManager::Template
+    unproven: "moto 5.2.5 has no networksecuritymanager; on the schema fake only"
+  - typeName: AWS::Notifications::ChannelAssociation
+    unproven: "moto 5.2.5 has no notifications; on the schema fake only"
+  - typeName: AWS::Notifications::EventRule
+    unproven: "moto 5.2.5 has no notifications; on the schema fake only"
+  - typeName: AWS::Notifications::ManagedNotificationAccountContactAssociation
+    unproven: "moto 5.2.5 has no notifications; on the schema fake only"
+  - typeName: AWS::Notifications::ManagedNotificationAdditionalChannelAssociation
+    unproven: "moto 5.2.5 has no notifications; on the schema fake only"
+  - typeName: AWS::Notifications::NotificationConfiguration
+    unproven: "moto 5.2.5 has no notifications; on the schema fake only"
+  - typeName: AWS::Notifications::NotificationHub
+    unproven: "moto 5.2.5 has no notifications; on the schema fake only"
+  - typeName: AWS::Notifications::OrganizationalUnitAssociation
+    unproven: "moto 5.2.5 has no notifications; on the schema fake only"
+  - typeName: AWS::NotificationsContacts::EmailContact
+    unproven: "moto 5.2.5 has no notificationscontacts; on the schema fake only"
+  - typeName: AWS::NovaAct::WorkflowDefinition
+    unproven: "moto 5.2.5 has no novaact; on the schema fake only"
+  - typeName: AWS::Oam::Link
+    unproven: "moto 5.2.5 has no oam; on the schema fake only"
+  - typeName: AWS::Oam::Sink
+    unproven: "moto 5.2.5 has no oam; on the schema fake only"
+  - typeName: AWS::ObservabilityAdmin::DatasetIntegration
+    unproven: "moto 5.2.5 has no observabilityadmin; on the schema fake only"
+  - typeName: AWS::ObservabilityAdmin::OrganizationCentralizationRule
+    unproven: "moto 5.2.5 has no observabilityadmin; on the schema fake only"
+  - typeName: AWS::ObservabilityAdmin::OrganizationTelemetryRule
+    unproven: "moto 5.2.5 has no observabilityadmin; on the schema fake only"
+  - typeName: AWS::ObservabilityAdmin::S3TableIntegration
+    unproven: "moto 5.2.5 has no observabilityadmin; on the schema fake only"
+  - typeName: AWS::ObservabilityAdmin::TelemetryEnrichment
+    unproven: "moto 5.2.5 has no observabilityadmin; on the schema fake only"
+  - typeName: AWS::ObservabilityAdmin::TelemetryPipelines
+    unproven: "moto 5.2.5 has no observabilityadmin; on the schema fake only"
+  - typeName: AWS::ObservabilityAdmin::TelemetryRule
+    unproven: "moto 5.2.5 has no observabilityadmin; on the schema fake only"
+  - typeName: AWS::ODB::CloudAutonomousVmCluster
+    unproven: "moto 5.2.5 has no odb; on the schema fake only"
+  - typeName: AWS::ODB::CloudExadataInfrastructure
+    unproven: "moto 5.2.5 has no odb; on the schema fake only"
+  - typeName: AWS::ODB::OdbNetwork
+    unproven: "moto 5.2.5 has no odb; on the schema fake only"
+  - typeName: AWS::ODB::OdbPeeringConnection
+    unproven: "moto 5.2.5 has no odb; on the schema fake only"
+  - typeName: AWS::Omics::AnnotationStore
+    unproven: "moto 5.2.5 has no omics; on the schema fake only"
+  - typeName: AWS::Omics::Configuration
+    unproven: "moto 5.2.5 has no omics; on the schema fake only"
+  - typeName: AWS::Omics::ReferenceStore
+    unproven: "moto 5.2.5 has no omics; on the schema fake only"
+  - typeName: AWS::Omics::RunCache
+    unproven: "moto 5.2.5 has no omics; on the schema fake only"
+  - typeName: AWS::Omics::RunGroup
+    unproven: "moto 5.2.5 has no omics; on the schema fake only"
+  - typeName: AWS::Omics::SequenceStore
+    unproven: "moto 5.2.5 has no omics; on the schema fake only"
+  - typeName: AWS::Omics::VariantStore
+    unproven: "moto 5.2.5 has no omics; on the schema fake only"
+  - typeName: AWS::Omics::Workflow
+    unproven: "moto 5.2.5 has no omics; on the schema fake only"
+  - typeName: AWS::Omics::WorkflowVersion
+    unproven: "moto 5.2.5 has no omics; on the schema fake only"
+  - typeName: AWS::OpenSearch::DataSource
+    unproven: "moto 5.2.5 has no opensearch; on the schema fake only"
+  - typeName: AWS::OpenSearchServerless::CollectionIndex
+    unproven: "no moto backend yet (moto 5.2.5 has opensearchserverless); on the schema fake only"
+  - typeName: AWS::OpenSearchServerless::VpcEndpoint
+    unproven: "no moto backend yet (moto 5.2.5 has opensearchserverless); on the schema fake only"
+  - typeName: AWS::OSIS::Pipeline
+    unproven: "no moto backend yet (moto 5.2.5 has osis); on the schema fake only"
+  - typeName: AWS::OSIS::PipelineEndpoint
+    unproven: "no moto backend yet (moto 5.2.5 has osis); on the schema fake only"
+  - typeName: AWS::Outposts::Outpost
+    unproven: "moto 5.2.5 has no outposts; on the schema fake only"
+  - typeName: AWS::Outposts::Site
+    unproven: "moto 5.2.5 has no outposts; on the schema fake only"
+  - typeName: AWS::Panorama::ApplicationInstance
+    unproven: "moto 5.2.5 has no panorama; on the schema fake only"
+  - typeName: AWS::Panorama::Package
+    unproven: "moto 5.2.5 has no panorama; on the schema fake only"
+  - typeName: AWS::Panorama::PackageVersion
+    unproven: "moto 5.2.5 has no panorama; on the schema fake only"
+  - typeName: AWS::PaymentCryptography::Alias
+    unproven: "no moto backend yet (moto 5.2.5 has paymentcryptography); on the schema fake only"
+  - typeName: AWS::PaymentCryptography::Key
+    unproven: "no moto backend yet (moto 5.2.5 has paymentcryptography); on the schema fake only"
+  - typeName: AWS::PCAConnectorAD::Connector
+    unproven: "moto 5.2.5 has no pcaconnectorad; on the schema fake only"
+  - typeName: AWS::PCAConnectorAD::DirectoryRegistration
+    unproven: "moto 5.2.5 has no pcaconnectorad; on the schema fake only"
+  - typeName: AWS::PCAConnectorAD::ServicePrincipalName
+    unproven: "moto 5.2.5 has no pcaconnectorad; on the schema fake only"
+  - typeName: AWS::PCAConnectorAD::Template
+    unproven: "moto 5.2.5 has no pcaconnectorad; on the schema fake only"
+  - typeName: AWS::PCAConnectorAD::TemplateGroupAccessControlEntry
+    unproven: "moto 5.2.5 has no pcaconnectorad; on the schema fake only"
+  - typeName: AWS::PCAConnectorSCEP::Challenge
+    unproven: "moto 5.2.5 has no pcaconnectorscep; on the schema fake only"
+  - typeName: AWS::PCAConnectorSCEP::Connector
+    unproven: "moto 5.2.5 has no pcaconnectorscep; on the schema fake only"
+  - typeName: AWS::PCS::Cluster
+    unproven: "moto 5.2.5 has no pcs; on the schema fake only"
+  - typeName: AWS::PCS::ComputeNodeGroup
+    unproven: "moto 5.2.5 has no pcs; on the schema fake only"
+  - typeName: AWS::PCS::Queue
+    unproven: "moto 5.2.5 has no pcs; on the schema fake only"
+  - typeName: AWS::Personalize::Campaign
+    unproven: "no moto backend yet (moto 5.2.5 has personalize); on the schema fake only"
+  - typeName: AWS::Personalize::Dataset
+    unproven: "no moto backend yet (moto 5.2.5 has personalize); on the schema fake only"
+  - typeName: AWS::Personalize::DatasetGroup
+    unproven: "no moto backend yet (moto 5.2.5 has personalize); on the schema fake only"
+  - typeName: AWS::Personalize::EventTracker
+    unproven: "no moto backend yet (moto 5.2.5 has personalize); on the schema fake only"
+  - typeName: AWS::Personalize::Filter
+    unproven: "no moto backend yet (moto 5.2.5 has personalize); on the schema fake only"
+  - typeName: AWS::Personalize::MetricAttribution
+    unproven: "no moto backend yet (moto 5.2.5 has personalize); on the schema fake only"
+  - typeName: AWS::Personalize::Recommender
+    unproven: "no moto backend yet (moto 5.2.5 has personalize); on the schema fake only"
+  - typeName: AWS::Personalize::Schema
+    unproven: "no moto backend yet (moto 5.2.5 has personalize); on the schema fake only"
+  - typeName: AWS::Personalize::Solution
+    unproven: "no moto backend yet (moto 5.2.5 has personalize); on the schema fake only"
+  - typeName: AWS::PI::PerfReports
+    unproven: "moto 5.2.5 has no pi; on the schema fake only"
+  - typeName: AWS::Pinpoint::InAppTemplate
+    unproven: "no moto backend yet (moto 5.2.5 has pinpoint); on the schema fake only"
+  - typeName: AWS::Polly::Lexicon
+    unproven: "no moto backend yet (moto 5.2.5 has polly); on the schema fake only"
+  - typeName: AWS::PricingPlanManager::Subscription
+    unproven: "moto 5.2.5 has no pricingplanmanager; on the schema fake only"
+  - typeName: AWS::Proton::EnvironmentAccountConnection
+    unproven: "moto 5.2.5 has no proton; on the schema fake only"
+  - typeName: AWS::Proton::EnvironmentTemplate
+    unproven: "moto 5.2.5 has no proton; on the schema fake only"
+  - typeName: AWS::Proton::ServiceTemplate
+    unproven: "moto 5.2.5 has no proton; on the schema fake only"
+  - typeName: AWS::QBusiness::Application
+    unproven: "moto 5.2.5 has no qbusiness; on the schema fake only"
+  - typeName: AWS::QBusiness::Index
+    unproven: "moto 5.2.5 has no qbusiness; on the schema fake only"
+  - typeName: AWS::QBusiness::Permission
+    unproven: "moto 5.2.5 has no qbusiness; on the schema fake only"
+  - typeName: AWS::QBusiness::Plugin
+    unproven: "moto 5.2.5 has no qbusiness; on the schema fake only"
+  - typeName: AWS::QBusiness::Retriever
+    unproven: "moto 5.2.5 has no qbusiness; on the schema fake only"
+  - typeName: AWS::QBusiness::WebExperience
+    unproven: "moto 5.2.5 has no qbusiness; on the schema fake only"
+  - typeName: AWS::QLDB::Stream
+    unproven: "moto 5.2.5 has no qldb; on the schema fake only"
+  - typeName: AWS::QuickSight::ActionConnector
+    unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
+  - typeName: AWS::QuickSight::Agent
+    unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
+  - typeName: AWS::QuickSight::ApprovalPolicy
+    unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
+  - typeName: AWS::QuickSight::Assignment
+    unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
+  - typeName: AWS::QuickSight::Brand
+    unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
+  - typeName: AWS::QuickSight::Customization
+    unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
+  - typeName: AWS::QuickSight::CustomPermissions
+    unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
+  - typeName: AWS::QuickSight::DLPSetting
+    unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
+  - typeName: AWS::QuickSight::Folder
+    unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
+  - typeName: AWS::QuickSight::Group
+    unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
+  - typeName: AWS::QuickSight::LimitsProfile
+    unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
+  - typeName: AWS::QuickSight::OAuthClientApplication
+    unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
+  - typeName: AWS::QuickSight::Space
+    unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
+  - typeName: AWS::QuickSight::Theme
+    unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
+  - typeName: AWS::QuickSight::Topic
+    unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
+  - typeName: AWS::QuickSight::TopicV2
+    unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
+  - typeName: AWS::QuickSight::VPCConnection
+    unproven: "no moto backend yet (moto 5.2.5 has quicksight); on the schema fake only"
+  - typeName: AWS::RedshiftServerless::Namespace
+    unproven: "moto 5.2.5 has no redshiftserverless; on the schema fake only"
+  - typeName: AWS::RedshiftServerless::Workgroup
+    unproven: "moto 5.2.5 has no redshiftserverless; on the schema fake only"
+  - typeName: AWS::RefactorSpaces::Application
+    unproven: "moto 5.2.5 has no refactorspaces; on the schema fake only"
+  - typeName: AWS::RefactorSpaces::Environment
+    unproven: "moto 5.2.5 has no refactorspaces; on the schema fake only"
+  - typeName: AWS::RefactorSpaces::Route
+    unproven: "moto 5.2.5 has no refactorspaces; on the schema fake only"
+  - typeName: AWS::RefactorSpaces::Service
+    unproven: "moto 5.2.5 has no refactorspaces; on the schema fake only"
+  - typeName: AWS::Rekognition::Collection
+    unproven: "no moto backend yet (moto 5.2.5 has rekognition); on the schema fake only"
+  - typeName: AWS::Rekognition::Dataset
+    unproven: "no moto backend yet (moto 5.2.5 has rekognition); on the schema fake only"
+  - typeName: AWS::Rekognition::Project
+    unproven: "no moto backend yet (moto 5.2.5 has rekognition); on the schema fake only"
+  - typeName: AWS::Rekognition::StreamProcessor
+    unproven: "no moto backend yet (moto 5.2.5 has rekognition); on the schema fake only"
+  - typeName: AWS::ResilienceHub::App
+    unproven: "no moto backend yet (moto 5.2.5 has resiliencehub); on the schema fake only"
+  - typeName: AWS::ResilienceHub::ResiliencyPolicy
+    unproven: "no moto backend yet (moto 5.2.5 has resiliencehub); on the schema fake only"
+  - typeName: AWS::ResilienceHubV2::Policy
+    unproven: "moto 5.2.5 has no resiliencehubv2; on the schema fake only"
+  - typeName: AWS::ResilienceHubV2::Service
+    unproven: "moto 5.2.5 has no resiliencehubv2; on the schema fake only"
+  - typeName: AWS::ResilienceHubV2::ServiceFunction
+    unproven: "moto 5.2.5 has no resiliencehubv2; on the schema fake only"
+  - typeName: AWS::ResilienceHubV2::System
+    unproven: "moto 5.2.5 has no resiliencehubv2; on the schema fake only"
+  - typeName: AWS::ResilienceHubV2::UserJourney
+    unproven: "moto 5.2.5 has no resiliencehubv2; on the schema fake only"
+  - typeName: AWS::ResourceExplorer2::DefaultViewAssociation
+    unproven: "moto 5.2.5 has no resourceexplorer2; on the schema fake only"
+  - typeName: AWS::ResourceExplorer2::Index
+    unproven: "moto 5.2.5 has no resourceexplorer2; on the schema fake only"
+  - typeName: AWS::ResourceExplorer2::View
+    unproven: "moto 5.2.5 has no resourceexplorer2; on the schema fake only"
+  - typeName: AWS::ResourceGroups::Group
+    unproven: "no moto backend yet (moto 5.2.5 has resourcegroups); on the schema fake only"
+  - typeName: AWS::ResourceGroups::TagSyncTask
+    unproven: "no moto backend yet (moto 5.2.5 has resourcegroups); on the schema fake only"
+  - typeName: AWS::RoboMaker::Fleet
+    unproven: "moto 5.2.5 has no robomaker; on the schema fake only"
+  - typeName: AWS::RoboMaker::Robot
+    unproven: "moto 5.2.5 has no robomaker; on the schema fake only"
+  - typeName: AWS::RoboMaker::RobotApplication
+    unproven: "moto 5.2.5 has no robomaker; on the schema fake only"
+  - typeName: AWS::RoboMaker::RobotApplicationVersion
+    unproven: "moto 5.2.5 has no robomaker; on the schema fake only"
+  - typeName: AWS::RoboMaker::SimulationApplication
+    unproven: "moto 5.2.5 has no robomaker; on the schema fake only"
+  - typeName: AWS::RoboMaker::SimulationApplicationVersion
+    unproven: "moto 5.2.5 has no robomaker; on the schema fake only"
+  - typeName: AWS::Route53GlobalResolver::AccessSource
+    unproven: "moto 5.2.5 has no route53globalresolver; on the schema fake only"
+  - typeName: AWS::Route53GlobalResolver::AccessToken
+    unproven: "moto 5.2.5 has no route53globalresolver; on the schema fake only"
+  - typeName: AWS::Route53GlobalResolver::DnsView
+    unproven: "moto 5.2.5 has no route53globalresolver; on the schema fake only"
+  - typeName: AWS::Route53GlobalResolver::FirewallDomainList
+    unproven: "moto 5.2.5 has no route53globalresolver; on the schema fake only"
+  - typeName: AWS::Route53GlobalResolver::FirewallRule
+    unproven: "moto 5.2.5 has no route53globalresolver; on the schema fake only"
+  - typeName: AWS::Route53GlobalResolver::GlobalResolver
+    unproven: "moto 5.2.5 has no route53globalresolver; on the schema fake only"
+  - typeName: AWS::Route53GlobalResolver::HostedZoneAssociation
+    unproven: "moto 5.2.5 has no route53globalresolver; on the schema fake only"
+  - typeName: AWS::Route53RecoveryControl::Cluster
+    unproven: "moto 5.2.5 has no route53recoverycontrol; on the schema fake only"
+  - typeName: AWS::Route53RecoveryControl::ControlPanel
+    unproven: "moto 5.2.5 has no route53recoverycontrol; on the schema fake only"
+  - typeName: AWS::Route53RecoveryControl::RoutingControl
+    unproven: "moto 5.2.5 has no route53recoverycontrol; on the schema fake only"
+  - typeName: AWS::Route53RecoveryControl::SafetyRule
+    unproven: "moto 5.2.5 has no route53recoverycontrol; on the schema fake only"
+  - typeName: AWS::Route53RecoveryReadiness::Cell
+    unproven: "moto 5.2.5 has no route53recoveryreadiness; on the schema fake only"
+  - typeName: AWS::Route53RecoveryReadiness::ReadinessCheck
+    unproven: "moto 5.2.5 has no route53recoveryreadiness; on the schema fake only"
+  - typeName: AWS::Route53RecoveryReadiness::RecoveryGroup
+    unproven: "moto 5.2.5 has no route53recoveryreadiness; on the schema fake only"
+  - typeName: AWS::Route53RecoveryReadiness::ResourceSet
+    unproven: "moto 5.2.5 has no route53recoveryreadiness; on the schema fake only"
+  - typeName: AWS::RTBFabric::InboundExternalLink
+    unproven: "moto 5.2.5 has no rtbfabric; on the schema fake only"
+  - typeName: AWS::RTBFabric::Link
+    unproven: "moto 5.2.5 has no rtbfabric; on the schema fake only"
+  - typeName: AWS::RTBFabric::LinkRoutingRule
+    unproven: "moto 5.2.5 has no rtbfabric; on the schema fake only"
+  - typeName: AWS::RTBFabric::OutboundExternalLink
+    unproven: "moto 5.2.5 has no rtbfabric; on the schema fake only"
+  - typeName: AWS::RTBFabric::RequesterGateway
+    unproven: "moto 5.2.5 has no rtbfabric; on the schema fake only"
+  - typeName: AWS::RTBFabric::ResponderGateway
+    unproven: "moto 5.2.5 has no rtbfabric; on the schema fake only"
+  - typeName: AWS::RUM::AppMonitor
+    unproven: "moto 5.2.5 has no rum; on the schema fake only"
+  - typeName: AWS::S3Express::AccessPoint
+    unproven: "moto 5.2.5 has no s3express; on the schema fake only"
+  - typeName: AWS::S3ObjectLambda::AccessPoint
+    unproven: "moto 5.2.5 has no s3objectlambda; on the schema fake only"
+  - typeName: AWS::S3ObjectLambda::AccessPointPolicy
+    unproven: "moto 5.2.5 has no s3objectlambda; on the schema fake only"
+  - typeName: AWS::S3Outposts::AccessPoint
+    unproven: "moto 5.2.5 has no s3outposts; on the schema fake only"
+  - typeName: AWS::S3Outposts::Bucket
+    unproven: "moto 5.2.5 has no s3outposts; on the schema fake only"
+  - typeName: AWS::S3Outposts::BucketPolicy
+    unproven: "moto 5.2.5 has no s3outposts; on the schema fake only"
+  - typeName: AWS::S3Outposts::Endpoint
+    unproven: "moto 5.2.5 has no s3outposts; on the schema fake only"
+  - typeName: AWS::SageMaker::Action
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::AIWorkloadConfig
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::Algorithm
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::AppImageConfig
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::Artifact
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::Cluster
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::ClusterSchedulerConfig
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::CodeRepository
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::ComputeQuota
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::Context
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::DeviceFleet
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::Experiment
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::Hub
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::HumanTaskUi
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::Image
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::ImageVersion
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::InferenceExperiment
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::MlflowApp
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::MlflowTrackingServer
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::PartnerApp
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::StudioLifecycleConfig
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::TrialComponent
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::Workforce
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SageMaker::Workteam
+    unproven: "no moto backend yet (moto 5.2.5 has sagemaker); on the schema fake only"
+  - typeName: AWS::SCN::DataIntegrationFlow
+    unproven: "moto 5.2.5 has no scn; on the schema fake only"
+  - typeName: AWS::SCN::Dataset
+    unproven: "moto 5.2.5 has no scn; on the schema fake only"
+  - typeName: AWS::SCN::Instance
+    unproven: "moto 5.2.5 has no scn; on the schema fake only"
+  - typeName: AWS::SCN::Namespace
+    unproven: "moto 5.2.5 has no scn; on the schema fake only"
+  - typeName: AWS::SDB::Domain
+    unproven: "no moto backend yet (moto 5.2.5 has sdb); on the schema fake only"
+  - typeName: AWS::SecurityAgent::AgentSpace
+    unproven: "moto 5.2.5 has no securityagent; on the schema fake only"
+  - typeName: AWS::SecurityAgent::Application
+    unproven: "moto 5.2.5 has no securityagent; on the schema fake only"
+  - typeName: AWS::SecurityAgent::Artifact
+    unproven: "moto 5.2.5 has no securityagent; on the schema fake only"
+  - typeName: AWS::SecurityAgent::Integration
+    unproven: "moto 5.2.5 has no securityagent; on the schema fake only"
+  - typeName: AWS::SecurityAgent::Pentest
+    unproven: "moto 5.2.5 has no securityagent; on the schema fake only"
+  - typeName: AWS::SecurityAgent::PrivateConnection
+    unproven: "moto 5.2.5 has no securityagent; on the schema fake only"
+  - typeName: AWS::SecurityAgent::SecurityRequirementPack
+    unproven: "moto 5.2.5 has no securityagent; on the schema fake only"
+  - typeName: AWS::SecurityAgent::TargetDomain
+    unproven: "moto 5.2.5 has no securityagent; on the schema fake only"
+  - typeName: AWS::ServerlessRepo::Application
+    unproven: "moto 5.2.5 has no serverlessrepo; on the schema fake only"
+  - typeName: AWS::ServiceCatalog::AcceptedPortfolioShare
+    unproven: "no moto backend yet (moto 5.2.5 has servicecatalog); on the schema fake only"
+  - typeName: AWS::ServiceCatalog::CloudFormationProduct
+    unproven: "no moto backend yet (moto 5.2.5 has servicecatalog); on the schema fake only"
+  - typeName: AWS::ServiceCatalog::CloudFormationProvisionedProduct
+    unproven: "no moto backend yet (moto 5.2.5 has servicecatalog); on the schema fake only"
+  - typeName: AWS::ServiceCatalog::LaunchNotificationConstraint
+    unproven: "no moto backend yet (moto 5.2.5 has servicecatalog); on the schema fake only"
+  - typeName: AWS::ServiceCatalog::LaunchRoleConstraint
+    unproven: "no moto backend yet (moto 5.2.5 has servicecatalog); on the schema fake only"
+  - typeName: AWS::ServiceCatalog::LaunchTemplateConstraint
+    unproven: "no moto backend yet (moto 5.2.5 has servicecatalog); on the schema fake only"
+  - typeName: AWS::ServiceCatalog::Portfolio
+    unproven: "no moto backend yet (moto 5.2.5 has servicecatalog); on the schema fake only"
+  - typeName: AWS::ServiceCatalog::PortfolioPrincipalAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has servicecatalog); on the schema fake only"
+  - typeName: AWS::ServiceCatalog::PortfolioProductAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has servicecatalog); on the schema fake only"
+  - typeName: AWS::ServiceCatalog::PortfolioShare
+    unproven: "no moto backend yet (moto 5.2.5 has servicecatalog); on the schema fake only"
+  - typeName: AWS::ServiceCatalog::ResourceUpdateConstraint
+    unproven: "no moto backend yet (moto 5.2.5 has servicecatalog); on the schema fake only"
+  - typeName: AWS::ServiceCatalog::ServiceAction
+    unproven: "no moto backend yet (moto 5.2.5 has servicecatalog); on the schema fake only"
+  - typeName: AWS::ServiceCatalog::ServiceActionAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has servicecatalog); on the schema fake only"
+  - typeName: AWS::ServiceCatalog::StackSetConstraint
+    unproven: "no moto backend yet (moto 5.2.5 has servicecatalog); on the schema fake only"
+  - typeName: AWS::ServiceCatalog::TagOption
+    unproven: "no moto backend yet (moto 5.2.5 has servicecatalog); on the schema fake only"
+  - typeName: AWS::ServiceCatalog::TagOptionAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has servicecatalog); on the schema fake only"
+  - typeName: AWS::ServiceCatalogAppRegistry::Application
+    unproven: "no moto backend yet (moto 5.2.5 has servicecatalogappregistry); on the schema fake only"
+  - typeName: AWS::ServiceCatalogAppRegistry::AttributeGroup
+    unproven: "no moto backend yet (moto 5.2.5 has servicecatalogappregistry); on the schema fake only"
+  - typeName: AWS::ServiceCatalogAppRegistry::AttributeGroupAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has servicecatalogappregistry); on the schema fake only"
+  - typeName: AWS::ServiceCatalogAppRegistry::ResourceAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has servicecatalogappregistry); on the schema fake only"
+  - typeName: AWS::ServiceDiscovery::HttpNamespace
+    unproven: "no moto backend yet (moto 5.2.5 has servicediscovery); on the schema fake only"
+  - typeName: AWS::ServiceDiscovery::Instance
+    unproven: "no moto backend yet (moto 5.2.5 has servicediscovery); on the schema fake only"
+  - typeName: AWS::ServiceDiscovery::PrivateDnsNamespace
+    unproven: "no moto backend yet (moto 5.2.5 has servicediscovery); on the schema fake only"
+  - typeName: AWS::ServiceDiscovery::PublicDnsNamespace
+    unproven: "no moto backend yet (moto 5.2.5 has servicediscovery); on the schema fake only"
+  - typeName: AWS::ServiceDiscovery::Service
+    unproven: "no moto backend yet (moto 5.2.5 has servicediscovery); on the schema fake only"
+  - typeName: AWS::SES::ConfigurationSetEventDestination
+    unproven: "no moto backend yet (moto 5.2.5 has ses); on the schema fake only"
+  - typeName: AWS::SES::ContactList
+    unproven: "no moto backend yet (moto 5.2.5 has ses); on the schema fake only"
+  - typeName: AWS::SES::CustomVerificationEmailTemplate
+    unproven: "no moto backend yet (moto 5.2.5 has ses); on the schema fake only"
+  - typeName: AWS::SES::DedicatedIpPool
+    unproven: "no moto backend yet (moto 5.2.5 has ses); on the schema fake only"
+  - typeName: AWS::SES::EmailIdentity
+    unproven: "no moto backend yet (moto 5.2.5 has ses); on the schema fake only"
+  - typeName: AWS::SES::EmailIdentityCertificate
+    unproven: "no moto backend yet (moto 5.2.5 has ses); on the schema fake only"
+  - typeName: AWS::SES::MailManagerAddonInstance
+    unproven: "no moto backend yet (moto 5.2.5 has ses); on the schema fake only"
+  - typeName: AWS::SES::MailManagerAddonSubscription
+    unproven: "no moto backend yet (moto 5.2.5 has ses); on the schema fake only"
+  - typeName: AWS::SES::MailManagerAddressList
+    unproven: "no moto backend yet (moto 5.2.5 has ses); on the schema fake only"
+  - typeName: AWS::SES::MailManagerArchive
+    unproven: "no moto backend yet (moto 5.2.5 has ses); on the schema fake only"
+  - typeName: AWS::SES::MailManagerRelay
+    unproven: "no moto backend yet (moto 5.2.5 has ses); on the schema fake only"
+  - typeName: AWS::SES::MailManagerRuleSet
+    unproven: "no moto backend yet (moto 5.2.5 has ses); on the schema fake only"
+  - typeName: AWS::SES::MailManagerTrafficPolicy
+    unproven: "no moto backend yet (moto 5.2.5 has ses); on the schema fake only"
+  - typeName: AWS::SES::MultiRegionEndpoint
+    unproven: "no moto backend yet (moto 5.2.5 has ses); on the schema fake only"
+  - typeName: AWS::SES::ReceiptFilter
+    unproven: "no moto backend yet (moto 5.2.5 has ses); on the schema fake only"
+  - typeName: AWS::SES::ReceiptRule
+    unproven: "no moto backend yet (moto 5.2.5 has ses); on the schema fake only"
+  - typeName: AWS::SES::ReceiptRuleSet
+    unproven: "no moto backend yet (moto 5.2.5 has ses); on the schema fake only"
+  - typeName: AWS::SES::Template
+    unproven: "no moto backend yet (moto 5.2.5 has ses); on the schema fake only"
+  - typeName: AWS::SES::Tenant
+    unproven: "no moto backend yet (moto 5.2.5 has ses); on the schema fake only"
+  - typeName: AWS::SES::VdmAttributes
+    unproven: "no moto backend yet (moto 5.2.5 has ses); on the schema fake only"
+  - typeName: AWS::Shield::DRTAccess
+    unproven: "no moto backend yet (moto 5.2.5 has shield); on the schema fake only"
+  - typeName: AWS::Shield::ProactiveEngagement
+    unproven: "no moto backend yet (moto 5.2.5 has shield); on the schema fake only"
+  - typeName: AWS::Shield::Protection
+    unproven: "no moto backend yet (moto 5.2.5 has shield); on the schema fake only"
+  - typeName: AWS::Shield::ProtectionGroup
+    unproven: "no moto backend yet (moto 5.2.5 has shield); on the schema fake only"
+  - typeName: AWS::Signer::ProfilePermission
+    unproven: "no moto backend yet (moto 5.2.5 has signer); on the schema fake only"
+  - typeName: AWS::Signer::SigningProfile
+    unproven: "no moto backend yet (moto 5.2.5 has signer); on the schema fake only"
+  - typeName: AWS::SimSpaceWeaver::Simulation
+    unproven: "moto 5.2.5 has no simspaceweaver; on the schema fake only"
+  - typeName: AWS::SMSVOICE::ConfigurationSet
+    unproven: "moto 5.2.5 has no smsvoice; on the schema fake only"
+  - typeName: AWS::SMSVOICE::NotifyConfiguration
+    unproven: "moto 5.2.5 has no smsvoice; on the schema fake only"
+  - typeName: AWS::SMSVOICE::OptOutList
+    unproven: "moto 5.2.5 has no smsvoice; on the schema fake only"
+  - typeName: AWS::SMSVOICE::PhoneNumber
+    unproven: "moto 5.2.5 has no smsvoice; on the schema fake only"
+  - typeName: AWS::SMSVOICE::Pool
+    unproven: "moto 5.2.5 has no smsvoice; on the schema fake only"
+  - typeName: AWS::SMSVOICE::ProtectConfiguration
+    unproven: "moto 5.2.5 has no smsvoice; on the schema fake only"
+  - typeName: AWS::SMSVOICE::RcsAgent
+    unproven: "moto 5.2.5 has no smsvoice; on the schema fake only"
+  - typeName: AWS::SMSVOICE::Registration
+    unproven: "moto 5.2.5 has no smsvoice; on the schema fake only"
+  - typeName: AWS::SMSVOICE::RegistrationAttachment
+    unproven: "moto 5.2.5 has no smsvoice; on the schema fake only"
+  - typeName: AWS::SMSVOICE::ResourcePolicy
+    unproven: "moto 5.2.5 has no smsvoice; on the schema fake only"
+  - typeName: AWS::SMSVOICE::SenderId
+    unproven: "moto 5.2.5 has no smsvoice; on the schema fake only"
+  - typeName: AWS::SMSVOICE::VerifiedDestinationNumber
+    unproven: "moto 5.2.5 has no smsvoice; on the schema fake only"
+  - typeName: AWS::SSMContacts::Contact
+    unproven: "moto 5.2.5 has no ssmcontacts; on the schema fake only"
+  - typeName: AWS::SSMContacts::ContactChannel
+    unproven: "moto 5.2.5 has no ssmcontacts; on the schema fake only"
+  - typeName: AWS::SSMContacts::Plan
+    unproven: "moto 5.2.5 has no ssmcontacts; on the schema fake only"
+  - typeName: AWS::SSMContacts::Rotation
+    unproven: "moto 5.2.5 has no ssmcontacts; on the schema fake only"
+  - typeName: AWS::SSMGuiConnect::Preferences
+    unproven: "moto 5.2.5 has no ssmguiconnect; on the schema fake only"
+  - typeName: AWS::SSMIncidents::ReplicationSet
+    unproven: "moto 5.2.5 has no ssmincidents; on the schema fake only"
+  - typeName: AWS::SSMIncidents::ResponsePlan
+    unproven: "moto 5.2.5 has no ssmincidents; on the schema fake only"
+  - typeName: AWS::SSMQuickSetup::LifecycleAutomation
+    unproven: "moto 5.2.5 has no ssmquicksetup; on the schema fake only"
+  - typeName: AWS::StorageGateway::NFSFileShare
+    unproven: "moto 5.2.5 has no storagegateway; on the schema fake only"
+  - typeName: AWS::StorageGateway::SMBFileShare
+    unproven: "moto 5.2.5 has no storagegateway; on the schema fake only"
+  - typeName: AWS::StorageGateway::Tape
+    unproven: "moto 5.2.5 has no storagegateway; on the schema fake only"
+  - typeName: AWS::StorageGateway::TapePool
+    unproven: "moto 5.2.5 has no storagegateway; on the schema fake only"
+  - typeName: AWS::StorageGateway::Volume
+    unproven: "moto 5.2.5 has no storagegateway; on the schema fake only"
+  - typeName: AWS::SupportApp::AccountAlias
+    unproven: "moto 5.2.5 has no supportapp; on the schema fake only"
+  - typeName: AWS::SupportApp::SlackChannelConfiguration
+    unproven: "moto 5.2.5 has no supportapp; on the schema fake only"
+  - typeName: AWS::SupportApp::SlackWorkspaceConfiguration
+    unproven: "moto 5.2.5 has no supportapp; on the schema fake only"
+  - typeName: AWS::SupportAuthZ::SupportPermit
+    unproven: "moto 5.2.5 has no supportauthz; on the schema fake only"
+  - typeName: AWS::Synthetics::Canary
+    unproven: "no moto backend yet (moto 5.2.5 has synthetics); on the schema fake only"
+  - typeName: AWS::Synthetics::Group
+    unproven: "no moto backend yet (moto 5.2.5 has synthetics); on the schema fake only"
+  - typeName: AWS::SystemsManagerSAP::Application
+    unproven: "moto 5.2.5 has no systemsmanagersap; on the schema fake only"
+  - typeName: AWS::Textract::Adapter
+    unproven: "no moto backend yet (moto 5.2.5 has textract); on the schema fake only"
+  - typeName: AWS::Timestream::Database
+    unproven: "moto 5.2.5 has no timestream; on the schema fake only"
+  - typeName: AWS::Timestream::InfluxDBBackup
+    unproven: "moto 5.2.5 has no timestream; on the schema fake only"
+  - typeName: AWS::Timestream::InfluxDBCluster
+    unproven: "moto 5.2.5 has no timestream; on the schema fake only"
+  - typeName: AWS::Timestream::InfluxDBInstance
+    unproven: "moto 5.2.5 has no timestream; on the schema fake only"
+  - typeName: AWS::Timestream::ScheduledQuery
+    unproven: "moto 5.2.5 has no timestream; on the schema fake only"
+  - typeName: AWS::Timestream::Table
+    unproven: "moto 5.2.5 has no timestream; on the schema fake only"
+  - typeName: AWS::Transcribe::CallAnalyticsCategory
+    unproven: "no moto backend yet (moto 5.2.5 has transcribe); on the schema fake only"
+  - typeName: AWS::Transcribe::MedicalVocabulary
+    unproven: "no moto backend yet (moto 5.2.5 has transcribe); on the schema fake only"
+  - typeName: AWS::Transcribe::Vocabulary
+    unproven: "no moto backend yet (moto 5.2.5 has transcribe); on the schema fake only"
+  - typeName: AWS::Transcribe::VocabularyFilter
+    unproven: "no moto backend yet (moto 5.2.5 has transcribe); on the schema fake only"
+  - typeName: AWS::Transfer::Agreement
+    unproven: "no moto backend yet (moto 5.2.5 has transfer); on the schema fake only"
+  - typeName: AWS::Transfer::Certificate
+    unproven: "no moto backend yet (moto 5.2.5 has transfer); on the schema fake only"
+  - typeName: AWS::Transfer::Connector
+    unproven: "no moto backend yet (moto 5.2.5 has transfer); on the schema fake only"
+  - typeName: AWS::Transfer::HostKey
+    unproven: "no moto backend yet (moto 5.2.5 has transfer); on the schema fake only"
+  - typeName: AWS::Transfer::Profile
+    unproven: "no moto backend yet (moto 5.2.5 has transfer); on the schema fake only"
+  - typeName: AWS::Transfer::Server
+    unproven: "no moto backend yet (moto 5.2.5 has transfer); on the schema fake only"
+  - typeName: AWS::Transfer::User
+    unproven: "no moto backend yet (moto 5.2.5 has transfer); on the schema fake only"
+  - typeName: AWS::Transfer::WebApp
+    unproven: "no moto backend yet (moto 5.2.5 has transfer); on the schema fake only"
+  - typeName: AWS::Transfer::Workflow
+    unproven: "no moto backend yet (moto 5.2.5 has transfer); on the schema fake only"
+  - typeName: AWS::Translate::ParallelData
+    unproven: "moto 5.2.5 has no translate; on the schema fake only"
+  - typeName: AWS::Translate::Terminology
+    unproven: "moto 5.2.5 has no translate; on the schema fake only"
+  - typeName: AWS::UXC::AccountCustomization
+    unproven: "moto 5.2.5 has no uxc; on the schema fake only"
+  - typeName: AWS::VerifiedPermissions::IdentitySource
+    unproven: "moto 5.2.5 has no verifiedpermissions; on the schema fake only"
+  - typeName: AWS::VerifiedPermissions::Policy
+    unproven: "moto 5.2.5 has no verifiedpermissions; on the schema fake only"
+  - typeName: AWS::VerifiedPermissions::PolicyStore
+    unproven: "moto 5.2.5 has no verifiedpermissions; on the schema fake only"
+  - typeName: AWS::VerifiedPermissions::PolicyStoreAlias
+    unproven: "moto 5.2.5 has no verifiedpermissions; on the schema fake only"
+  - typeName: AWS::VerifiedPermissions::PolicyTemplate
+    unproven: "moto 5.2.5 has no verifiedpermissions; on the schema fake only"
+  - typeName: AWS::VoiceID::Domain
+    unproven: "moto 5.2.5 has no voiceid; on the schema fake only"
+  - typeName: AWS::VpcLattice::AccessLogSubscription
+    unproven: "no moto backend yet (moto 5.2.5 has vpclattice); on the schema fake only"
+  - typeName: AWS::VpcLattice::AuthPolicy
+    unproven: "no moto backend yet (moto 5.2.5 has vpclattice); on the schema fake only"
+  - typeName: AWS::VpcLattice::DomainVerification
+    unproven: "no moto backend yet (moto 5.2.5 has vpclattice); on the schema fake only"
+  - typeName: AWS::VpcLattice::Listener
+    unproven: "no moto backend yet (moto 5.2.5 has vpclattice); on the schema fake only"
+  - typeName: AWS::VpcLattice::ResourceConfiguration
+    unproven: "no moto backend yet (moto 5.2.5 has vpclattice); on the schema fake only"
+  - typeName: AWS::VpcLattice::ResourceGateway
+    unproven: "no moto backend yet (moto 5.2.5 has vpclattice); on the schema fake only"
+  - typeName: AWS::VpcLattice::ResourcePolicy
+    unproven: "no moto backend yet (moto 5.2.5 has vpclattice); on the schema fake only"
+  - typeName: AWS::VpcLattice::Rule
+    unproven: "no moto backend yet (moto 5.2.5 has vpclattice); on the schema fake only"
+  - typeName: AWS::VpcLattice::Service
+    unproven: "no moto backend yet (moto 5.2.5 has vpclattice); on the schema fake only"
+  - typeName: AWS::VpcLattice::ServiceNetwork
+    unproven: "no moto backend yet (moto 5.2.5 has vpclattice); on the schema fake only"
+  - typeName: AWS::VpcLattice::ServiceNetworkResourceAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has vpclattice); on the schema fake only"
+  - typeName: AWS::VpcLattice::ServiceNetworkServiceAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has vpclattice); on the schema fake only"
+  - typeName: AWS::VpcLattice::ServiceNetworkVpcAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has vpclattice); on the schema fake only"
+  - typeName: AWS::VpcLattice::TargetGroup
+    unproven: "no moto backend yet (moto 5.2.5 has vpclattice); on the schema fake only"
+  - typeName: AWS::WellArchitected::AgentContext
+    unproven: "moto 5.2.5 has no wellarchitected; on the schema fake only"
+  - typeName: AWS::WellArchitected::AgentGoal
+    unproven: "moto 5.2.5 has no wellarchitected; on the schema fake only"
+  - typeName: AWS::WellArchitected::AgentOrganizationalProfile
+    unproven: "moto 5.2.5 has no wellarchitected; on the schema fake only"
+  - typeName: AWS::WellArchitected::AgentProfile
+    unproven: "moto 5.2.5 has no wellarchitected; on the schema fake only"
+  - typeName: AWS::WellArchitected::AgentProfilePolicy
+    unproven: "moto 5.2.5 has no wellarchitected; on the schema fake only"
+  - typeName: AWS::WellArchitected::Lens
+    unproven: "moto 5.2.5 has no wellarchitected; on the schema fake only"
+  - typeName: AWS::WellArchitected::Profile
+    unproven: "moto 5.2.5 has no wellarchitected; on the schema fake only"
+  - typeName: AWS::WellArchitected::ReviewTemplate
+    unproven: "moto 5.2.5 has no wellarchitected; on the schema fake only"
+  - typeName: AWS::WellArchitected::Workload
+    unproven: "moto 5.2.5 has no wellarchitected; on the schema fake only"
+  - typeName: AWS::Wickr::Network
+    unproven: "moto 5.2.5 has no wickr; on the schema fake only"
+  - typeName: AWS::Wisdom::AIAgent
+    unproven: "moto 5.2.5 has no wisdom; on the schema fake only"
+  - typeName: AWS::Wisdom::AIAgentVersion
+    unproven: "moto 5.2.5 has no wisdom; on the schema fake only"
+  - typeName: AWS::Wisdom::AIGuardrail
+    unproven: "moto 5.2.5 has no wisdom; on the schema fake only"
+  - typeName: AWS::Wisdom::AIGuardrailVersion
+    unproven: "moto 5.2.5 has no wisdom; on the schema fake only"
+  - typeName: AWS::Wisdom::AIPrompt
+    unproven: "moto 5.2.5 has no wisdom; on the schema fake only"
+  - typeName: AWS::Wisdom::AIPromptVersion
+    unproven: "moto 5.2.5 has no wisdom; on the schema fake only"
+  - typeName: AWS::Wisdom::Assistant
+    unproven: "moto 5.2.5 has no wisdom; on the schema fake only"
+  - typeName: AWS::Wisdom::AssistantAssociation
+    unproven: "moto 5.2.5 has no wisdom; on the schema fake only"
+  - typeName: AWS::Wisdom::Content
+    unproven: "moto 5.2.5 has no wisdom; on the schema fake only"
+  - typeName: AWS::Wisdom::ContentAssociation
+    unproven: "moto 5.2.5 has no wisdom; on the schema fake only"
+  - typeName: AWS::Wisdom::KnowledgeBase
+    unproven: "moto 5.2.5 has no wisdom; on the schema fake only"
+  - typeName: AWS::Wisdom::MessageTemplate
+    unproven: "moto 5.2.5 has no wisdom; on the schema fake only"
+  - typeName: AWS::Wisdom::MessageTemplateVersion
+    unproven: "moto 5.2.5 has no wisdom; on the schema fake only"
+  - typeName: AWS::Wisdom::QuickResponse
+    unproven: "moto 5.2.5 has no wisdom; on the schema fake only"
+  - typeName: AWS::WorkSpaces::ConnectionAlias
+    unproven: "no moto backend yet (moto 5.2.5 has workspaces); on the schema fake only"
+  - typeName: AWS::WorkSpaces::Directory
+    unproven: "no moto backend yet (moto 5.2.5 has workspaces); on the schema fake only"
+  - typeName: AWS::WorkSpaces::Workspace
+    unproven: "no moto backend yet (moto 5.2.5 has workspaces); on the schema fake only"
+  - typeName: AWS::WorkSpaces::WorkspaceIpGroup
+    unproven: "no moto backend yet (moto 5.2.5 has workspaces); on the schema fake only"
+  - typeName: AWS::WorkSpaces::WorkspacesPool
+    unproven: "no moto backend yet (moto 5.2.5 has workspaces); on the schema fake only"
+  - typeName: AWS::WorkspacesInstances::Volume
+    unproven: "moto 5.2.5 has no workspacesinstances; on the schema fake only"
+  - typeName: AWS::WorkspacesInstances::VolumeAssociation
+    unproven: "moto 5.2.5 has no workspacesinstances; on the schema fake only"
+  - typeName: AWS::WorkspacesInstances::WorkspaceInstance
+    unproven: "moto 5.2.5 has no workspacesinstances; on the schema fake only"
+  - typeName: AWS::WorkSpacesThinClient::Environment
+    unproven: "moto 5.2.5 has no workspacesthinclient; on the schema fake only"
+  - typeName: AWS::WorkSpacesWeb::BrowserSettings
+    unproven: "no moto backend yet (moto 5.2.5 has workspacesweb); on the schema fake only"
+  - typeName: AWS::WorkSpacesWeb::DataProtectionSettings
+    unproven: "no moto backend yet (moto 5.2.5 has workspacesweb); on the schema fake only"
+  - typeName: AWS::WorkSpacesWeb::IdentityProvider
+    unproven: "no moto backend yet (moto 5.2.5 has workspacesweb); on the schema fake only"
+  - typeName: AWS::WorkSpacesWeb::IpAccessSettings
+    unproven: "no moto backend yet (moto 5.2.5 has workspacesweb); on the schema fake only"
+  - typeName: AWS::WorkSpacesWeb::NetworkSettings
+    unproven: "no moto backend yet (moto 5.2.5 has workspacesweb); on the schema fake only"
+  - typeName: AWS::WorkSpacesWeb::Portal
+    unproven: "no moto backend yet (moto 5.2.5 has workspacesweb); on the schema fake only"
+  - typeName: AWS::WorkSpacesWeb::SessionLogger
+    unproven: "no moto backend yet (moto 5.2.5 has workspacesweb); on the schema fake only"
+  - typeName: AWS::WorkSpacesWeb::TrustStore
+    unproven: "no moto backend yet (moto 5.2.5 has workspacesweb); on the schema fake only"
+  - typeName: AWS::WorkSpacesWeb::UserAccessLoggingSettings
+    unproven: "no moto backend yet (moto 5.2.5 has workspacesweb); on the schema fake only"
+  - typeName: AWS::WorkSpacesWeb::UserSettings
+    unproven: "no moto backend yet (moto 5.2.5 has workspacesweb); on the schema fake only"
+  - typeName: AWS::XRay::Group
+    unproven: "no moto backend yet (moto 5.2.5 has xray); on the schema fake only"
+  - typeName: AWS::XRay::ResourcePolicy
+    unproven: "no moto backend yet (moto 5.2.5 has xray); on the schema fake only"
+  - typeName: AWS::XRay::SamplingRule
+    unproven: "no moto backend yet (moto 5.2.5 has xray); on the schema fake only"
+  - typeName: AWS::XRay::TransactionSearchConfig
+    unproven: "no moto backend yet (moto 5.2.5 has xray); on the schema fake only"

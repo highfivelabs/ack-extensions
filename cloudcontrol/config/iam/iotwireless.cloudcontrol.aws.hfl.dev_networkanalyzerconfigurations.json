@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlIoTWirelessNetworkAnalyzerConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessNetworkAnalyzerConfigurationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:CreateNetworkAnalyzerConfiguration",
+        "iotwireless:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessNetworkAnalyzerConfigurationRead",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:GetNetworkAnalyzerConfiguration",
+        "iotwireless:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessNetworkAnalyzerConfigurationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:GetNetworkAnalyzerConfiguration",
+        "iotwireless:TagResource",
+        "iotwireless:UntagResource",
+        "iotwireless:UpdateNetworkAnalyzerConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IoTWirelessNetworkAnalyzerConfigurationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "iotwireless:DeleteNetworkAnalyzerConfiguration"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

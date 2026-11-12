@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlComprehendFlywheel",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ComprehendFlywheelCreate",
+      "Effect": "Allow",
+      "Action": [
+        "comprehend:CreateFlywheel",
+        "comprehend:DescribeFlywheel",
+        "comprehend:ListTagsForResource",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ComprehendFlywheelRead",
+      "Effect": "Allow",
+      "Action": [
+        "comprehend:DescribeFlywheel",
+        "comprehend:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ComprehendFlywheelUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "comprehend:DescribeFlywheel",
+        "comprehend:ListTagsForResource",
+        "comprehend:TagResource",
+        "comprehend:UntagResource",
+        "comprehend:UpdateFlywheel",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ComprehendFlywheelDelete",
+      "Effect": "Allow",
+      "Action": [
+        "comprehend:DeleteFlywheel",
+        "comprehend:DescribeFlywheel"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

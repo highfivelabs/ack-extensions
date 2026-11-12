@@ -1,0 +1,76 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlM2Environment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "M2EnvironmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateNetworkInterfacePermission",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcAttribute",
+        "ec2:DescribeVpcs",
+        "ec2:ModifyNetworkInterfaceAttribute",
+        "elasticfilesystem:DescribeMountTargets",
+        "elasticloadbalancing:AddTags",
+        "elasticloadbalancing:CreateLoadBalancer",
+        "elasticloadbalancing:DeleteLoadBalancer",
+        "fsx:DescribeFileSystems",
+        "iam:CreateServiceLinkedRole",
+        "kms:CreateGrant",
+        "kms:DescribeKey",
+        "m2:CreateEnvironment",
+        "m2:GetEnvironment",
+        "m2:ListTagsForResource",
+        "m2:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "M2EnvironmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "m2:GetEnvironment",
+        "m2:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "M2EnvironmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "kms:DescribeKey",
+        "m2:GetEnvironment",
+        "m2:ListTagsForResource",
+        "m2:TagResource",
+        "m2:UntagResource",
+        "m2:UpdateEnvironment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "M2EnvironmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "elasticloadbalancing:DeleteLoadBalancer",
+        "m2:DeleteEnvironment",
+        "m2:GetEnvironment"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

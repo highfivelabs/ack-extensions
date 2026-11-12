@@ -1,0 +1,70 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlOamLink",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OamLinkCreate",
+      "Effect": "Allow",
+      "Action": [
+        "application-signals:Link",
+        "applicationinsights:Link",
+        "cloudwatch:Link",
+        "internetmonitor:Link",
+        "logs:Link",
+        "oam:CreateLink",
+        "oam:GetLink",
+        "oam:ListTagsForResource",
+        "oam:TagResource",
+        "xray:Link"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OamLinkRead",
+      "Effect": "Allow",
+      "Action": [
+        "oam:GetLink",
+        "oam:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OamLinkUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "application-signals:Link",
+        "applicationinsights:Link",
+        "cloudwatch:Link",
+        "internetmonitor:Link",
+        "logs:Link",
+        "oam:GetLink",
+        "oam:ListTagsForResource",
+        "oam:TagResource",
+        "oam:UntagResource",
+        "oam:UpdateLink",
+        "xray:Link"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OamLinkDelete",
+      "Effect": "Allow",
+      "Action": [
+        "oam:DeleteLink",
+        "oam:GetLink"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
