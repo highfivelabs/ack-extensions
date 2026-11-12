@@ -845,8 +845,8 @@ AWS::Glue::IntegrationResourceProperty,glue,IntegrationResourceProperty,other,FU
 AWS::Glue::Job,glue,Job,other,FULLY_MUTABLE,Job,,ok,0,0,0,0,1,true
 AWS::Glue::MLTransform,glue,MLTransform,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::Glue::Partition,glue,Partition,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::Glue::Registry,glue,Registry,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::Glue::Schema,glue,Schema,other,FULLY_MUTABLE,,,ok,0,0,1,1,0,true
+AWS::Glue::Registry,glue,Registry,other,FULLY_MUTABLE,,Registry (Cloud Control),ok,0,0,0,0,0,true
+AWS::Glue::Schema,glue,Schema,other,FULLY_MUTABLE,,Schema (Cloud Control),ok,0,0,1,1,0,true
 AWS::Glue::SchemaVersion,glue,SchemaVersion,other,IMMUTABLE,,,ok,0,0,0,0,0,true
 AWS::Glue::SchemaVersionMetadata,glue,SchemaVersionMetadata,other,IMMUTABLE,,,ok,0,0,0,0,0,true
 AWS::Glue::SecurityConfiguration,glue,SecurityConfiguration,other,IMMUTABLE,,,ok,0,0,0,0,0,true
@@ -1025,8 +1025,8 @@ AWS::IVS::StreamKey,ivs,StreamKey,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::IVSChat::LoggingConfiguration,ivschat,LoggingConfiguration,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::IVSChat::Room,ivschat,Room,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::KafkaConnect::Connector,kafkaconnect,Connector,other,FULLY_MUTABLE,,,ok,0,0,0,0,2,true
-AWS::KafkaConnect::CustomPlugin,kafkaconnect,CustomPlugin,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::KafkaConnect::WorkerConfiguration,kafkaconnect,WorkerConfiguration,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::KafkaConnect::CustomPlugin,kafkaconnect,CustomPlugin,other,FULLY_MUTABLE,,CustomPlugin (Cloud Control),ok,0,0,0,0,0,true
+AWS::KafkaConnect::WorkerConfiguration,kafkaconnect,WorkerConfiguration,other,FULLY_MUTABLE,,WorkerConfiguration (Cloud Control),ok,0,0,0,0,0,true
 AWS::Kendra::DataSource,kendra,DataSource,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::Kendra::Faq,kendra,Faq,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
 AWS::Kendra::FeaturedResultsSet,kendra,FeaturedResultsSet,other,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
@@ -1539,7 +1539,7 @@ AWS::S3::StorageLens,s3,StorageLens,application,FULLY_MUTABLE,,StorageLens (Clou
 AWS::S3::StorageLensGroup,s3,StorageLensGroup,application,FULLY_MUTABLE,,StorageLensGroup (Cloud Control),ok,0,0,0,0,0,true
 AWS::S3Express::AccessPoint,s3express,AccessPoint,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::S3Express::BucketPolicy,s3express,BucketPolicy,other,FULLY_MUTABLE,,,ok,1,0,0,0,0,true
-AWS::S3Express::DirectoryBucket,s3express,DirectoryBucket,other,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
+AWS::S3Express::DirectoryBucket,s3express,DirectoryBucket,other,FULLY_MUTABLE,,DirectoryBucket (Cloud Control),ok,0,0,0,0,1,true
 AWS::S3Files::AccessPoint,s3files,AccessPoint,application,FULLY_MUTABLE,AccessPoint,,ok,0,0,0,0,0,true
 AWS::S3Files::FileSystem,s3files,FileSystem,application,FULLY_MUTABLE,FileSystem,,ok,0,0,0,1,2,true
 AWS::S3Files::FileSystemPolicy,s3files,FileSystemPolicy,application,FULLY_MUTABLE,,FileSystemPolicy (Cloud Control),ok,0,0,0,0,0,true
@@ -1554,10 +1554,10 @@ AWS::S3Tables::Namespace,s3tables,Namespace,application,IMMUTABLE,Namespace,,ok,
 AWS::S3Tables::Table,s3tables,Table,application,FULLY_MUTABLE,Table,,ok,1,0,1,2,0,true
 AWS::S3Tables::TableBucket,s3tables,TableBucket,application,FULLY_MUTABLE,TableBucket,,ok,0,0,0,0,1,true
 AWS::S3Tables::TableBucketPolicy,s3tables,TableBucketPolicy,application,FULLY_MUTABLE,,,ok,1,0,0,0,0,true
-AWS::S3Tables::TablePolicy,s3tables,TablePolicy,application,FULLY_MUTABLE,,,ok,1,0,0,0,0,true
+AWS::S3Tables::TablePolicy,s3tables,TablePolicy,application,FULLY_MUTABLE,,TablePolicy (Cloud Control),ok,1,0,0,0,0,true
 AWS::S3Vectors::Index,s3vectors,Index,application,FULLY_MUTABLE,Index,,ok,0,0,0,0,1,true
 AWS::S3Vectors::VectorBucket,s3vectors,VectorBucket,application,FULLY_MUTABLE,VectorBucket,,ok,0,0,0,0,0,true
-AWS::S3Vectors::VectorBucketPolicy,s3vectors,VectorBucketPolicy,application,FULLY_MUTABLE,,,ok,1,0,1,1,0,true
+AWS::S3Vectors::VectorBucketPolicy,s3vectors,VectorBucketPolicy,application,FULLY_MUTABLE,,VectorBucketPolicy (Cloud Control),ok,1,0,1,1,0,true
 AWS::SageMaker::Action,sagemaker,Action,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::SageMaker::AIWorkloadConfig,sagemaker,AIWorkloadConfig,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::SageMaker::Algorithm,sagemaker,Algorithm,other,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
@@ -1730,7 +1730,7 @@ AWS::SSM::OpsItem,ssm,OpsItem,application,FULLY_MUTABLE,,OpsItem (Cloud Control)
 AWS::SSM::Parameter,ssm,Parameter,application,FULLY_MUTABLE,Parameter,,ok,0,0,4,4,0,true
 AWS::SSM::PatchBaseline,ssm,PatchBaseline,application,FULLY_MUTABLE,PatchBaseline,,ok,0,0,0,0,0,true
 AWS::SSM::ResourceDataSync,ssm,ResourceDataSync,application,FULLY_MUTABLE,ResourceDataSync,,ok,0,0,0,0,0,true
-AWS::SSM::ResourcePolicy,ssm,ResourcePolicy,application,FULLY_MUTABLE,,,ok,1,0,0,0,0,true
+AWS::SSM::ResourcePolicy,ssm,ResourcePolicy,application,FULLY_MUTABLE,,ResourcePolicy (Cloud Control),ok,1,0,0,0,0,true
 AWS::SSM::ServiceSetting,ssm,ServiceSetting,application,FULLY_MUTABLE,,ServiceSetting (Cloud Control),ok,0,0,0,0,0,true
 AWS::SSMContacts::Contact,ssmcontacts,Contact,other,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
 AWS::SSMContacts::ContactChannel,ssmcontacts,ContactChannel,other,FULLY_MUTABLE,,,ok,0,0,0,1,0,true
