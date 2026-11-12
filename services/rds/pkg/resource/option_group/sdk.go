@@ -74,6 +74,7 @@ func (rm *resourceManager) sdkFind(
 	if err != nil {
 		return nil, err
 	}
+	describeByNameOnly(input)
 	var resp *svcsdk.DescribeOptionGroupsOutput
 	resp, err = rm.sdkapi.DescribeOptionGroups(ctx, input)
 	rm.metrics.RecordAPICall("READ_MANY", "DescribeOptionGroups", err)

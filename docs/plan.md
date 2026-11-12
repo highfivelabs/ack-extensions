@@ -738,6 +738,19 @@ against our regenerated code. Behaviour, as upstream wrote it:
   immutable (a CEL rule in the CRD).
 - **Tags** are synced separately.
 
+One change of ours (2026-11-11): the **read** names the group only.
+The PR's generated `DescribeOptionGroups` request sets every input field
+the spec has, so it sent `OptionGroupName` with `EngineName` and
+`MajorEngineVersion`. AWS's API reference says `OptionGroupName` "can't
+be supplied together with EngineName or MajorEngineVersion"; moto
+accepts it, aws-emulator refuses it (`docs/aws-emulator.md`). A
+`sdk_read_many_post_build_request` hook (`describeByNameOnly`,
+`option_group/read.go`) clears the two engine filters when the name is
+set; the engine is still read back from the reply.
+`TestReadNamesTheGroupOnly` checks the request against an endpoint that
+refuses the combination as AWS documents. Upstream's PR #257 (head
+`32c3cb23`, still open) has the same bug.
+
 ### 6.3 `rds.aws.hfl.dev` `DBProxyTarget`
 
 New. The spec names:
