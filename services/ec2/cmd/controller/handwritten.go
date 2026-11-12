@@ -11,4 +11,9 @@ import (
 	// read of an attachment; registering its package adds its manager
 	// factory.
 	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/volume_attachment"
+
+	// ResourceTag is one tag put with CreateTags, whose input is a list
+	// of resources and a list of tags, not one tag; the generator would
+	// make a kind of both lists.
+	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/resource_tag"
 )
