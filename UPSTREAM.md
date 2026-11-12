@@ -95,7 +95,6 @@ and what changed.
 | `services/lambda/pkg/resource/permission/sdk.go` (the calls and the reading of a policy statement) | lambda-controller `v1.19.0` `pkg/resource/alias/hooks.go` (`addPermission`, `removePermission`, `setPermissions`) | `86905357…` | one statement instead of an alias's set; `encoding/json` instead of `micahhausler/aws-iam-policy`; not-found handling |
 | `services/lambda/pkg/resource/permission/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton, by way of our `db_role_association` copy) | `78eb350e…` | package, kind, API group, Lambda client, ARN format, `IsSynced` (synced once read back), adoption fields |
 | `services/ec2/pkg/resource/volume_attachment/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton) | `78eb350e…` | package, kind, API group, service client, ARN form, adoption fields and the `IsSynced` hook (synced when attached) |
-| `services/wafv2/pkg/resource/web_acl_association/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton) | `78eb350e…` | package, kind, API group, service client, ARN form, adoption fields and the `IsSynced` hook (synced once read) |
 | `services/iam/pkg/resource/user_group_membership/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton) | `78eb350e…` | package, kind, ARN form, adoption fields and the `IsSynced` hook (synced once read) |
 | `services/iam/pkg/resource/ssh_public_key/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton) | `78eb350e…` | package, kind, ARN form, adoption by key ID and the `IsSynced` hook (synced once read) |
 | `services/iam/pkg/resource/account_alias/{descriptor,identifiers,manager,manager_factory,resource}.go` | iam-controller PR #184 `pkg/resource/role_policy_attachment/` (the hand-written skeleton) | `78eb350e…` | package, kind, ARN form, adoption field and the `IsSynced` hook (synced once read) |
@@ -156,8 +155,9 @@ Written here: `services/rds/apis/v1alpha1/db_proxy_target.go`,
 `services/iam/pkg/resource/virtual_mfa_device/{hooks,hooks_test}.go`,
 `services/ec2/apis/v1alpha1/volume_attachment.go`,
 `services/ec2/pkg/resource/volume_attachment/{sdk,delta,references,sdk_test}.go`,
-`services/wafv2/apis/v1alpha1/web_acl_association.go`,
-`services/wafv2/pkg/resource/web_acl_association/{sdk,delta,references,sdk_test}.go`,
+`services/wafv2/apis/v1alpha1/ack_kinds.go`,
+`services/wafv2/pkg/resource/web_acl_association/{hooks,hooks_test}.go`,
+`services/wafv2/templates/hooks/web_acl_association/*.go.tpl`,
 `services/*/cmd/controller/handwritten.go`, `pkg/`, `cmd/operator`,
 `tests/`, `hack/`, `config/operator`, `config/fake-aws`.
 

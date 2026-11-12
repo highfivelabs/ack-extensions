@@ -1,20 +1,83 @@
 # Generator configuration for ack-extensions's WAFv2 kinds (wafv2.aws.hfl.dev).
 #
-# A web ACL's association with a regional resource (an Application Load
-# Balancer, an API Gateway REST API stage, an AppSync API, a Cognito user
-# pool, an App Runner service, a Verified Access instance) has no
-# Create/Describe/Delete of its own (AssociateWebACL, GetWebACLForResource
-# and DisassociateWebACL), so the generator cannot produce
-# WebACLAssociation; it is written by hand on ACK's runtime
-# (services/wafv2/pkg/resource/web_acl_association). Every resource the
-# generator can find is ignored: ACK's wafv2-controller has IPSet,
-# RuleGroup and WebACL, and ignores APIKey and RegexPatternSet. It
-# generates only the service's scaffolding (the API group, the resource
-# registry, the controller's main).
+# WebACLAssociation, a regional web ACL associated with one regional
+# resource (an Application Load Balancer, an API Gateway REST API stage, an
+# AppSync API, a Cognito user pool, an App Runner service, a Verified
+# Access instance), is generated from AssociateWebACL (the create and the
+# update: associating again replaces the web ACL), GetWebACLForResource
+# (the read, by the resource's ARN) and DisassociateWebACL (the delete),
+# mapped below as AccountPlacement's MoveAccount is. Hooks (hooks.go and
+# templates/hooks/web_acl_association) read the web ACL's ARN and name from
+# the response's WebACL, treat no web ACL as not found, and leave alone on
+# delete a resource since associated with another web ACL. webACLRef names
+# ACK's WebACL through a type alias of ACK's type (apis/v1alpha1/ack_kinds.go).
+#
+# Every resource the generator finds by name is ignored: ACK's
+# wafv2-controller has IPSet, RuleGroup and WebACL, and ignores APIKey and
+# RegexPatternSet.
+operations:
+  AssociateWebACL:
+    operation_type:
+      - Create
+      - Update
+    resource_name: WebACLAssociation
+  GetWebACLForResource:
+    operation_type: ReadOne
+    resource_name: WebACLAssociation
+  DisassociateWebACL:
+    operation_type: Delete
+    resource_name: WebACLAssociation
 ignore:
+  field_paths:
+    # The web ACL whole, rules and all: its statements nest without end,
+    # which the generator cannot walk. The hooks read its ARN and name.
+    - GetWebACLForResourceOutput.WebACL
+  # The SDK's WebACL shape (no field of ours uses it) would clash with the
+  # alias of ACK's WebACL kind (apis/v1alpha1/ack_kinds.go).
+  shape_names:
+    - WebACL
   resource_names:
     - APIKey
     - IPSet
     - RegexPatternSet
     - RuleGroup
     - WebACL
+resources:
+  WebACLAssociation:
+    tags:
+      ignore: true
+    print:
+      add_age_column: true
+      add_synced_column: true
+      additional_columns:
+        - name: RESOURCE
+          json_path: .spec.resourceARN
+          type: string
+        - name: WEBACL
+          json_path: .status.webACLName
+          type: string
+    exceptions:
+      errors:
+        404:
+          code: WAFNonexistentItemException
+      terminal_codes:
+        - WAFInvalidParameterException
+        - WAFInvalidOperationException
+    fields:
+      ResourceARN:
+        is_primary_key: true
+        is_immutable: true
+      WebACLARN:
+        references:
+          resource: WebACL
+          path: Status.ACKResourceMetadata.ARN
+      WebACLName:
+        is_read_only: true
+        type: string
+    hooks:
+      sdk_read_one_post_request:
+        template_path: hooks/web_acl_association/sdk_read_one_post_request.go.tpl
+      sdk_read_one_post_set_output:
+        template_path: hooks/web_acl_association/sdk_read_one_post_set_output.go.tpl
+      sdk_delete_pre_build_request:
+        template_path: hooks/web_acl_association/sdk_delete_pre_build_request.go.tpl

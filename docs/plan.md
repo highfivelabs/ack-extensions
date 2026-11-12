@@ -1272,15 +1272,24 @@ It is Terraform's `aws_wafv2_web_acl_association`. ACK's wafv2-controller
 pull request or issue adds one (rechecked 2026-11-09). A CloudFront
 distribution names its web ACL in its own configuration instead.
 
-**Hand-written** on ACK's runtime, on PR #184's skeleton:
-`AssociateWebACL`, `GetWebACLForResource` and `DisassociateWebACL` are no
-create, describe and delete the generator reads. A new service,
-`services/wafv2`, where the generator ignores every resource it finds.
+**Generated** since 2026-11-12 (it was hand-written on PR #184's
+skeleton before): `AssociateWebACL` mapped as the create and the update,
+`GetWebACLForResource` as the read and `DisassociateWebACL` as the
+delete, in `services/wafv2/generator.yaml`, as `AccountPlacement`'s
+`MoveAccount` is. The response's `WebACL` is left out of the model
+(its rule statements nest without end, which the generator cannot walk);
+two hooks (`hooks.go`, about 40 lines, and three one-line templates) read
+its ARN and name, treat no web ACL as not found, and keep the delete off
+a resource since given another web ACL. About 97% of the kind's Go
+(about 1,500 lines) is now generated.
 
-- **Spec:** `resourceARN`, and `webACLARN` or `webACLRef` (ACK's own
-  `WebACL`, its `status.ackResourceMetadata.arn`; wafv2-controller
-  `v1.8.1` is a Go module here for its API types). Both are immutable,
-  as in Terraform.
+- **Spec:** `resourceARN` (immutable), and `webACLARN` or `webACLRef`
+  (ACK's own `WebACL`, its `status.ackResourceMetadata.arn`, through a
+  type alias, `apis/v1alpha1/ack_kinds.go`; wafv2-controller `v1.8.1` is
+  a Go module here for its API types). `webACLARN` is no longer
+  immutable: changing it associates the new web ACL, which replaces the
+  old one. Both set is refused at reconcile (ACK's generated references
+  code) rather than by the CRD.
 - **Read:** `GetWebACLForResource`. No web ACL, or no resource, is not
   found, so a disassociation outside Kubernetes is associated again.
   Another web ACL put on the resource outside Kubernetes is drift, and
@@ -1289,8 +1298,7 @@ create, describe and delete the generator reads. A new service,
   web ACL; one since given another web ACL is left alone.
 - **Synced** once read: an association has no pending state.
   `status.webACLName` names the web ACL. WAFv2 has no ARN for an
-  association; a WAFv2 ARN form with the resource's ARN appended stands
-  in, for ACK's metadata only.
+  association, and the generated kind sets none.
 - **Errors:** a resource or web ACL not there yet is retried; a bad
   parameter or operation (a `CLOUDFRONT` web ACL, a resource WAFv2 cannot
   protect) is terminal.

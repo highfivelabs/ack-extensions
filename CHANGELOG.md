@@ -5,6 +5,15 @@ design and the reasons are in `docs/plan.md`.
 
 ## Unreleased
 
+### Changed
+
+- **`wafv2.aws.hfl.dev` `WebACLAssociation` is generated** (`docs/plan.md`
+  section 6.17). Its behaviour is the same, except: `spec.webACLARN` may
+  change (the new web ACL is associated, replacing the old); setting both
+  `webACLARN` and `webACLRef` is refused at reconcile, not by the CRD;
+  the CRD has no `aws`/`hfl` categories or short name, as the other
+  generated kinds; `status.ackResourceMetadata.arn` is not set.
+
 ### Fixed
 
 - **`iam.aws.hfl.dev` `AccountAlias`: a new object for the account's
