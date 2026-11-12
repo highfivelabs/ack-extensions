@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlS3VectorsVectorBucketPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3VectorsVectorBucketPolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "s3vectors:GetVectorBucketPolicy",
+        "s3vectors:PutVectorBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3VectorsVectorBucketPolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "s3vectors:GetVectorBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3VectorsVectorBucketPolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "s3vectors:GetVectorBucketPolicy",
+        "s3vectors:PutVectorBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "S3VectorsVectorBucketPolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "s3vectors:DeleteVectorBucketPolicy",
+        "s3vectors:GetVectorBucketPolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
