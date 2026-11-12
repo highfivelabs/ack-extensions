@@ -361,7 +361,12 @@ task tools         # ACK's generator at the pin, controller-gen, goimports, setu
 task check         # generated files current, gofmt, vet, SPDX lines, build, tests
 task operator-e2e  # the operator on kind beside ACK's real rds-controller and per environment, against moto
 task ack:iam LIST=1  # every ACK-generated kind's IAM actions
+task test:slot-move  # a resource moved between two version slots, offline
 ```
+
+Every manager takes `--slot=<name>` (or `HFL_SLOT`): the version-slot
+guard, an opt-in lease that keeps two installs from writing one AWS
+resource during a move (`docs/slot-moves.md`).
 
 The tests use moto, a fake AWS, in server mode. Nothing here uses real
 AWS credentials. See `CONTRIBUTING.md`, and `docs/plan.md` for how the
