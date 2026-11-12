@@ -35,6 +35,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
@@ -86,6 +87,11 @@ type env struct {
 	logs     *syncBuffer
 	ctx      context.Context
 	schema   *runtime.Scheme
+	// What runManager needs to start another manager.
+	te       *envtest.Environment
+	endpoint fakeaws.Endpoint
+	root     string
+	managers int
 }
 
 // Target is where the end-to-end tests run, CLOUDCONTROL_E2E_TARGET:
@@ -336,6 +342,13 @@ func startFake(t *testing.T, root string) (*fake.Server, string, aws.Config) {
 // manager. It refuses to start unless both endpoints are local.
 func start(t *testing.T) *env {
 	t.Helper()
+	return startWith(t, nil, nil)
+}
+
+// startWith is start, the manager given extra arguments and environment
+// (a later flag wins).
+func startWith(t *testing.T, extraManagerArgs, extraManagerEnv []string) *env {
+	t.Helper()
 	if os.Getenv("KUBEBUILDER_ASSETS") == "" {
 		t.Skip("KUBEBUILDER_ASSETS is not set; run through task cloudcontrol:test")
 	}
@@ -403,10 +416,25 @@ func start(t *testing.T) *env {
 	if err := c.Create(ctx, &role); err != nil {
 		t.Fatal(err)
 	}
+	e := &env{c: c, cc: cc, ccURL: ccURL, moto: motoCfg, account: account, live: live, emulator: emu, ctx: context.Background(), schema: sch,
+		te: te, endpoint: endpoint, root: root}
+	e.logs = e.runManager(t, envNS, append(extraArgs, extraManagerArgs...), extraManagerEnv)
+	return e
+}
+
+// runManager starts the manager for one environment, as the operator
+// starts it for the namespace's CloudControlContext: the RoleBinding to
+// the generated ClusterRole, the manager's arguments, and the identity of
+// the environment's ServiceAccount. A second call runs a second manager
+// for another namespace (two version slots, docs/slot-moves.md).
+func (e *env) runManager(t *testing.T, ns string, extraArgs, extraEnv []string) *syncBuffer {
+	t.Helper()
+	ctx := context.Background()
 	cctx := &ccv1alpha1.CloudControlContext{
-		ObjectMeta: metav1.ObjectMeta{Name: ccv1alpha1.ContextName, Namespace: envNS, UID: "00000000-0000-0000-0000-000000000001"},
-		Spec:       ccv1alpha1.CloudControlContextSpec{RoleARN: "arn:aws:iam::" + account + ":role/team-a", Region: region},
+		ObjectMeta: metav1.ObjectMeta{Name: ccv1alpha1.ContextName, Namespace: ns, UID: types.UID(fmt.Sprintf("00000000-0000-0000-0000-%012d", e.managers+1))},
+		Spec:       ccv1alpha1.CloudControlContextSpec{RoleARN: "arn:aws:iam::" + e.account + ":role/" + ns, Region: region},
 	}
+	e.managers++
 	var kinds []string
 	for _, ty := range registry.Types {
 		kinds = append(kinds, ty.Ref())
@@ -417,7 +445,7 @@ func start(t *testing.T) *env {
 		switch o := o.(type) {
 		case *rbacv1.RoleBinding:
 			o.OwnerReferences = nil
-			if err := c.Create(ctx, o); err != nil {
+			if err := e.c.Create(ctx, o); err != nil {
 				t.Fatal(err)
 			}
 		case *appsv1.Deployment:
@@ -427,15 +455,15 @@ func start(t *testing.T) *env {
 	// The manager authenticates as the environment's ServiceAccount in the
 	// operator's namespace would.
 	sys := ccv1alpha1.DefaultSystemNamespace
-	user, err := te.AddUser(envtest.User{
-		Name:   "system:serviceaccount:" + sys + ":" + ccv1alpha1.ManagerName(envNS),
+	user, err := e.te.AddUser(envtest.User{
+		Name:   "system:serviceaccount:" + sys + ":" + ccv1alpha1.ManagerName(ns),
 		Groups: []string{"system:serviceaccounts", "system:serviceaccounts:" + sys, "system:authenticated"},
 	}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	bin := buildManager(t, root)
+	bin := buildManager(t, e.root)
 	logs := &syncBuffer{}
 	ctx, cancel := context.WithCancel(ctx)
 	// The operator's arguments, then the test's: local ports (a later flag
@@ -450,11 +478,13 @@ func start(t *testing.T) *env {
 		"--healthz-addr", fmt.Sprintf("127.0.0.1:%d", freePort(t)),
 	)
 	args = append(args, extraArgs...)
-	cmd, err := fakeaws.Command(ctx, endpoint, bin, args,
-		"KUBECONFIG="+writeKubeconfig(t, user.Config()),
-		"HOME="+t.TempDir(),
-		"PATH="+os.Getenv("PATH"),
-		"ACK_SYSTEM_NAMESPACE="+envNS,
+	cmd, err := fakeaws.Command(ctx, e.endpoint, bin, args,
+		append([]string{
+			"KUBECONFIG=" + writeKubeconfig(t, user.Config()),
+			"HOME=" + t.TempDir(),
+			"PATH=" + os.Getenv("PATH"),
+			"ACK_SYSTEM_NAMESPACE=" + ns,
+		}, extraEnv...)...,
 	)
 	if err != nil {
 		cancel()
@@ -468,13 +498,15 @@ func start(t *testing.T) *env {
 		cancel()
 		_ = cmd.Wait()
 		if t.Failed() {
-			t.Logf("manager output:\n%s", logs.String())
-			for _, c := range cc.Calls() {
-				t.Logf("cloud control call: %s %s %s %s", c.Action, c.TypeName, c.Identifier, c.Body)
+			t.Logf("manager (%s) output:\n%s", ns, logs.String())
+			if ns == envNS {
+				for _, c := range e.cc.Calls() {
+					t.Logf("cloud control call: %s %s %s %s", c.Action, c.TypeName, c.Identifier, c.Body)
+				}
 			}
 		}
 	})
-	return &env{c: c, cc: cc, ccURL: ccURL, moto: motoCfg, account: account, live: live, emulator: emu, logs: logs, ctx: context.Background(), schema: sch}
+	return logs
 }
 
 // ---- object helpers ----

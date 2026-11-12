@@ -91,6 +91,32 @@ func moduleDir(t testing.TB, root, module string) string {
 // ("applicationautoscaling", "autoscaling", "ec2", "ecr", "eventbridge", "iam", "kms", "lambda", "organizations", "rds", "scheduler", "wafv2"), and registers their teardown with t.Cleanup.
 func Start(t *testing.T, service string, scheme *runtime.Scheme) *Env {
 	t.Helper()
+	env, _ := StartControllers(t, service, scheme, Controller{})
+	return env
+}
+
+// Controller is one run of a service's controller: the arguments and
+// environment it gets beyond the Helm chart's (a later flag wins).
+type Controller struct {
+	Args []string
+	Env  []string
+}
+
+// Logs is a running controller's output.
+type Logs struct{ b *syncBuffer }
+
+// String is what the controller wrote so far.
+func (l *Logs) String() string {
+	l.b.mu.Lock()
+	defer l.b.mu.Unlock()
+	return l.b.b.String()
+}
+
+// StartControllers is Start with several runs of the service's controller
+// against the one API server and fake AWS: two version slots, each
+// watching its own namespace (docs/slot-moves.md). Env.Logs is the first's.
+func StartControllers(t *testing.T, service string, scheme *runtime.Scheme, ctrls ...Controller) (*Env, []*Logs) {
+	t.Helper()
 	if os.Getenv("KUBEBUILDER_ASSETS") == "" {
 		t.Skip("KUBEBUILDER_ASSETS is not set; run through task test")
 	}
@@ -137,9 +163,12 @@ func Start(t *testing.T, service string, scheme *runtime.Scheme) *Env {
 
 	kubeconfig := writeKubeconfig(t, cfg)
 	bin := buildController(t, root, service)
-	logs := runController(t, bin, kubeconfig, endpoint)
+	var all []*Logs
+	for _, ctl := range ctrls {
+		all = append(all, &Logs{b: runController(t, bin, kubeconfig, endpoint, ctl)})
+	}
 
-	return &Env{Client: c, MotoURL: motoURL, AWS: endpoint.Config(Region), Rest: cfg, logs: logs}
+	return &Env{Client: c, MotoURL: motoURL, AWS: endpoint.Config(Region), Rest: cfg, logs: all[0].b}, all
 }
 
 // Logs is what the controller wrote so far.
@@ -253,11 +282,11 @@ func (s *syncBuffer) Write(p []byte) (int, error) {
 // gives a controller (templates/helm/templates/deployment.yaml), and an
 // environment built from nothing: the kubeconfig, and what fakeaws.Command
 // adds for the endpoint (every endpoint, fake credentials, the dead proxy).
-func runController(t *testing.T, bin, kubeconfig string, endpoint fakeaws.Endpoint) *syncBuffer {
+func runController(t *testing.T, bin, kubeconfig string, endpoint fakeaws.Endpoint, ctl Controller) *syncBuffer {
 	t.Helper()
 	sb := &syncBuffer{}
 	ctx, cancel := context.WithCancel(context.Background())
-	cmd, err := fakeaws.Command(ctx, endpoint, bin, []string{
+	cmd, err := fakeaws.Command(ctx, endpoint, bin, append([]string{
 		"--aws-region", Region,
 		"--log-level", "debug",
 		"--enable-development-logging",
@@ -266,11 +295,13 @@ func runController(t *testing.T, bin, kubeconfig string, endpoint fakeaws.Endpoi
 		"--metrics-addr", fmt.Sprintf("127.0.0.1:%d", freePort(t)),
 		"--healthz-addr", fmt.Sprintf("127.0.0.1:%d", freePort(t)),
 		"--enable-carm=false",
-	},
-		"KUBECONFIG="+kubeconfig,
-		"HOME="+t.TempDir(),
-		"PATH="+os.Getenv("PATH"),
-		"ACK_SYSTEM_NAMESPACE=default",
+	}, ctl.Args...),
+		append([]string{
+			"KUBECONFIG=" + kubeconfig,
+			"HOME=" + t.TempDir(),
+			"PATH=" + os.Getenv("PATH"),
+			"ACK_SYSTEM_NAMESPACE=default",
+		}, ctl.Env...)...,
 	)
 	if err != nil {
 		cancel()

@@ -178,6 +178,20 @@ tasks:
           PKGS: '{{.PKGS}}{{if .RUN}} -run ''{{.RUN}}''{{end}}'
           TIMEOUT: '{{.TIMEOUT | default "30m"}}'
 
+  # The version-slot move (docs/slot-moves.md), offline: two managers as
+  # two slots against one moto, for ACK-generated kinds (ec2) and a Cloud
+  # Control kind. test and check run it too; this runs it alone.
+  "test:slot-move":
+    desc: 'A resource moved between two version slots, offline (envtest, moto, the fake Cloud Control): the slot guard''s unit tests and both TestSlotMove (docs/slot-moves.md).'
+    cmds:
+      - task: setup-envtest
+      - hack/moto.sh
+      - task: go:test-envtest
+        vars:
+          ENVTEST_K8S_VERSION: '{{.ENVTEST_K8S_VERSION}}'
+          PKGS: './pkg/slot/ ./cloudcontrol/pkg/resource/ ./tests/e2e/ ./cloudcontrol/test/e2e/ -v -run ''^(TestSlot.*|TestGuard|TestResolve|TestAddResourceTag|TestTaggedKinds|TestGeneratedTags)$'''
+          TIMEOUT: 30m
+
   noaws:
     desc: 'Fail if any test path could reach a real AWS endpoint: SDK clients, processes, HTTP clients and scripts in test paths all go through pkg/fakeaws (hack/noaws/main.go lists the rules).'
     cmds:
