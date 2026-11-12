@@ -722,6 +722,24 @@ The 22 left, by module uses:
 | `aws_dsql_cluster_policy`, `aws_networkfirewall_resource_policy` | 1 each | a resource policy with no CloudFormation type; ACK-generated kinds, not started |
 | `aws_s3files_synchronization_configuration` | 1 | not in the pinned CloudFormation schemas |
 
+**The catalog's charts, 2026-11-12.** The catalog's first AWS charts
+(`vpc`, `security-group`, `kms`, `s3-bucket`; catalog `docs/aws.md`
+section 8) list what stops them rendering a module in one pass. Each, and
+where it stands here:
+
+| Gap | Where it belongs | Status |
+| --- | --- | --- |
+| `VPNGateway.spec.vpcRef`, `VPNGatewayRoutePropagation.spec.routeTableRef` | ours | **waits on question 16**: both name ACK's ec2 kinds (`VPC`, `RouteTable`), which takes ACK's ec2-controller as a Go module here, a new upstream dependency. The charts make it the first gap of the `vpc` chart (`enable_vpn_gateway`, `propagate_*_route_tables_vgw`) |
+| Adopting a VPC's default VPC, security group, network ACL and main route table by `vpcRef` (`aws_default_*`) | ours, four new kinds | to build; the `vpcRef` waits on question 16 like the row above. Shape: read the default object by the VPC (`DescribeSecurityGroups` with `group-name=default`, `DescribeNetworkAcls` with `default=true`, `DescribeRouteTables` with `association.main=true`, `DescribeVpcs` with `isDefault=true`), manage its rules, entries or routes, and never delete it |
+| VPC Block Public Access options and exclusions; `SecurityGroupVpcAssociation` | ours | **served already**, by Cloud Control kinds: `ec2.cloudcontrol.aws.hfl.dev` `VPCBlockPublicAccessOptions`, `VPCBlockPublicAccessExclusion` and `SecurityGroupVpcAssociation` (schema fake only). The charts' `upstream/aws-kinds.yaml` can map them |
+| S3 directory buckets | ours | **served** by `s3express.cloudcontrol.aws.hfl.dev` `DirectoryBucket` (batch 14) |
+| `aws_s3_account_public_access_block` | ours | to build: a new `s3control` service here, generated from `PutPublicAccessBlock`, `GetPublicAccessBlock` and `DeletePublicAccessBlock` (an account singleton, as `AccountPasswordPolicy`) |
+| KMS `ExternalKey`, `ReplicaExternalKey` (`ImportKeyMaterial`, the material from a Secret) | ours | to build, hand-written |
+| Redshift `ClusterSubnetGroup` | ACK | ACK's redshift-controller has it merged, unreleased (`cloudcontrol/excluded.yaml`) |
+| `FlowLog` reference to the resource it logs; `egressOnlyInternetGatewayRef` on `RouteTable.routes`; a subnet's IPv6 block from its VPC's | ACK (fields of its kinds) | **upstream only.** ec2-controller `v1.25.0` has `FlowLog.resourceID` with no reference, and no `egressOnlyInternetGatewayRef` in a route; no open pull request or issue adds either (read-only, 2026-11-12). Not drafted: this repository opens nothing upstream (CLAUDE.md, "Never"), and has no policy that would allow it |
+| `Key`: `pendingWindowInDays` on delete, `rotationPeriodInDays`, `enabled` | ACK (fields of `Key`) | **question 1.** kms-controller's `Key` reports `enabled` and `pendingDeletionWindowInDays` in status only, and has no rotation period; no pull request adds them. A copy of `Key` here, or a patch, is what question 1 asks |
+| `force_destroy` (emptying a bucket on delete) | ACK (a field and hook on `Bucket`) | **question 1**; no pull request |
+
 Built before this ranking:
 
 - `RolePolicyAttachment`: iam-controller PR #184.
@@ -3144,6 +3162,13 @@ Before it can run on a real cluster:
 
     Recommended: the first, the same pattern as the IAM and
     Organizations references. Built meanwhile: the plain ID.
+
+    **Weight, 2026-11-12:** the catalog's `vpc` chart cannot wire a VPN
+    gateway to its VPC, or propagate its routes, in one render without
+    `VPNGateway.spec.vpcRef` and `VPNGatewayRoutePropagation.spec.routeTableRef`,
+    and the four default-object kinds it needs (`aws_default_*`) take a
+    `vpcRef` too. All of it waits on this answer (section 5, "The
+    catalog's charts").
     `VPNGatewayRoutePropagation`'s `routeTableRef` (PR #50) waits on the
     same answer.
 17. **The name of the per-environment context for the ACK-generated
