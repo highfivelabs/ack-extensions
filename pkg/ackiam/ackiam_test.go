@@ -57,6 +57,9 @@ func TestScan(t *testing.T) {
 		// an IAM namespace that is not the service's name
 		"APIDestination.eventbridge":             {"events:CreateApiDestination"},
 		"ScheduledAction.applicationautoscaling": {"application-autoscaling:PutScheduledAction"},
+		// actions IAM names otherwise than the operation (and the delete
+		// authorized as the put)
+		"PublicAccessBlock.s3control": {"s3:GetAccountPublicAccessBlock", "s3:PutAccountPublicAccessBlock"},
 		// curated
 		"DBRoleAssociation.rds": {"rds:AddRoleToDBInstance", "iam:PassRole"},
 	} {

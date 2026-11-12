@@ -1,6 +1,6 @@
 # ack-extensions plan
 
-Status, 2026-11-12: the repository has thirty-four kinds:
+Status, 2026-11-12: the repository has thirty-five kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
@@ -17,6 +17,7 @@ Status, 2026-11-12: the repository has thirty-four kinds:
 - `rds.aws.hfl.dev` `OptionGroup`;
 - `rds.aws.hfl.dev` `DBProxyTarget`;
 - `rds.aws.hfl.dev` `DBRoleAssociation`;
+- `s3control.aws.hfl.dev` `PublicAccessBlock`;
 - `scheduler.aws.hfl.dev` `ScheduleGroup` and `Schedule`;
 - `wafv2.aws.hfl.dev` `WebACLAssociation`.
 
@@ -625,6 +626,22 @@ controller to show it can fail:
   nor that the engine supports the feature (AWS does both). It refuses a
   second association with the same role or the same feature, as AWS
   does.
+- **S3 Control's account-level calls** (probed 2026-11-12, moto 5.2.5;
+  section 6.36). AWS serves them at `{AccountId}.s3-control.{region}`,
+  and the SDK's endpoint rules put the account in front of a custom
+  endpoint's host too (`123456789012.127.0.0.1:<port>`), which nothing
+  resolves; moto is reached on its own host (`pkg/endpoint`, with
+  `--allow-unsafe-aws-endpoint-urls`) and takes the account from the
+  `x-amz-account-id` header, routing `/v20180820/` paths signed for `s3`
+  to S3 Control. It keeps one account's block, reports all four settings
+  (false unless set), as AWS does, answers
+  `NoSuchPublicAccessBlockConfiguration` (404) when there is none, and
+  refuses another account's ID with `AccessDenied`. A delete with no
+  configuration succeeds; what AWS answers there is unchecked (the kind
+  never deletes twice: a not-found read ends the delete). Not modelled:
+  that a change takes a few minutes to apply on AWS, and that the
+  settings block anything (moto applies no account-level block to S3
+  calls).
 
 ## 5. Candidates, ranked
 
@@ -668,7 +685,7 @@ its master (5.2.5 is the pin).
 | 14 | Route 53 DNSSEC and `KeySigningKey`, VPC association authorization | ignored in route53-controller's `generator.yaml` | none | skipped: moto has none of it |
 | 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | built: `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy`; `AccessKey` (6.30; open question 10, answered) |
 | 16 | EC2 `PlacementGroup` | ignored in ec2-controller's `generator.yaml` | none | skipped: moto has none of it |
-| 17 | S3 `Object`, the account's public access block | none | yes | to build |
+| 17 | S3 `Object`, the account's public access block | none. Rechecked 2026-11-12 for the public access block: s3-controller `v1.16.0` (2026-11-10) has a bucket's `publicAccessBlock` only (a field of `Bucket`, `PutPublicAccessBlock` of S3, from its PR #56), and its two open pull requests (#252 bucket encryption defaults, #226 generated e2e tests) do not touch the account's; ACK's s3control-controller `v1.10.0` (2026-11-10; `v1.9.0` is the release on our runtime) has `AccessPoint` only, no open pull request, and no `community` issue asks for the account's block | yes (section 4.4: S3 Control's account-ID host) | the account's public access block built: `s3control.aws.hfl.dev` `PublicAccessBlock` (section 6.36). S3 `Object` to build |
 | 18 | EC2 `KeyPair` | ec2-controller PR #396: both reviews' changes made, main merged in 2026-11-04, mergeable | yes | skipped: close to merging; wait for the release |
 | 19 | Secrets Manager resource policy (`PutResourcePolicy`) | no issue or PR | yes | to build |
 | 20 | RDS event subscriptions | ignored in rds-controller's `generator.yaml` | create and delete yes, modify no | to build |
@@ -692,9 +709,9 @@ counting four):
 | --- | ---: | ---: | --- |
 | `ack` | 150 | 235 | an ACK kind |
 | `ack-field` | 63 | 91 | a field of an ACK kind (Terraform's sub-resource, such as `aws_iam_role_policy_attachment`, `aws_route`, the `aws_s3_bucket_*` configurations, `aws_sqs_queue_policy`); a kind here would fight ACK's sync (question 1) |
-| `ours` | 30 | 38 | an ACK-generated or hand-written kind of ours |
+| `ours` | 31 | 39 | an ACK-generated or hand-written kind of ours |
 | `ours-cc` | 54 | 56 | a Cloud Control kind of ours |
-| `neither` | 22 | 45 | no kind |
+| `neither` | 21 | 44 | no kind |
 | `not-a-resource` | 2 | 2 | `aws_acm_certificate_validation`, `aws_kms_ciphertext` |
 
 Built for it on 2026-11-12: `ec2.aws.hfl.dev` `ResourceTag`
@@ -702,9 +719,10 @@ Built for it on 2026-11-12: `ec2.aws.hfl.dev` `ResourceTag`
 Control batch 14 (pull request #92: Glue `Registry` and `Schema`, MSK
 Connect `CustomPlugin` and `WorkerConfiguration`, S3 Express
 `DirectoryBucket`, S3 Tables `TablePolicy`, S3 Vectors
-`VectorBucketPolicy`).
+`VectorBucketPolicy`), and `s3control.aws.hfl.dev` `PublicAccessBlock`
+(`aws_s3_account_public_access_block`; section 6.36).
 
-The 22 left, by module uses:
+The 21 left, by module uses:
 
 | Terraform type | Modules | Why not yet |
 | --- | ---: | --- |
@@ -714,7 +732,6 @@ The 22 left, by module uses:
 | `aws_key_pair` | 1 | ec2-controller pull request #396 (upstream first) |
 | `aws_elasticache_global_replication_group` | 1 | elasticache-controller pull request #237; moto has none |
 | `aws_redshift_subnet_group` | 1 | ACK's redshift-controller has it merged, unreleased |
-| `aws_s3_account_public_access_block` | 1 | rank 17, to build (S3 Control `PutPublicAccessBlock`) |
 | `aws_vpn_connection_route` | 1 | beside `VPNConnection`; moto has no `CreateVpnConnectionRoute` |
 | `aws_route53_vpc_association_authorization` | 1 | rank 14; moto has none |
 | `aws_ram_resource_share_accepter`, `aws_opensearch_outbound_connection`, `aws_opensearch_package_association`, `aws_rds_cluster_activity_stream`, `aws_db_instance_automated_backups_replication`, `aws_spot_instance_request` | 1 each | no CloudFormation type; ACK-generated kinds, not started |
@@ -733,7 +750,7 @@ where it stands here:
 | Adopting a VPC's default VPC, security group, network ACL and main route table by `vpcRef` (`aws_default_*`) | ours, four new kinds | to build; the `vpcRef` waits on question 16 like the row above. Shape: read the default object by the VPC (`DescribeSecurityGroups` with `group-name=default`, `DescribeNetworkAcls` with `default=true`, `DescribeRouteTables` with `association.main=true`, `DescribeVpcs` with `isDefault=true`), manage its rules, entries or routes, and never delete it |
 | VPC Block Public Access options and exclusions; `SecurityGroupVpcAssociation` | ours | **served already**, by Cloud Control kinds: `ec2.cloudcontrol.aws.hfl.dev` `VPCBlockPublicAccessOptions`, `VPCBlockPublicAccessExclusion` and `SecurityGroupVpcAssociation` (schema fake only). The charts' `upstream/aws-kinds.yaml` can map them |
 | S3 directory buckets | ours | **served** by `s3express.cloudcontrol.aws.hfl.dev` `DirectoryBucket` (batch 14) |
-| `aws_s3_account_public_access_block` | ours | to build: a new `s3control` service here, generated from `PutPublicAccessBlock`, `GetPublicAccessBlock` and `DeletePublicAccessBlock` (an account singleton, as `AccountPasswordPolicy`) |
+| `aws_s3_account_public_access_block` | ours | **built**: `s3control.aws.hfl.dev` `PublicAccessBlock`, a new `s3control` service here, generated from `PutPublicAccessBlock`, `GetPublicAccessBlock` and `DeletePublicAccessBlock` (an account singleton, as `AccountPasswordPolicy`; section 6.36). The charts' `upstream/aws-kinds.yaml` can map it |
 | KMS `ExternalKey`, `ReplicaExternalKey` (`ImportKeyMaterial`, the material from a Secret) | ours | to build, hand-written |
 | Redshift `ClusterSubnetGroup` | ACK | ACK's redshift-controller has it merged, unreleased (`cloudcontrol/excluded.yaml`) |
 | `FlowLog` reference to the resource it logs; `egressOnlyInternetGatewayRef` on `RouteTable.routes`; a subnet's IPv6 block from its VPC's | ACK (fields of its kinds) | **upstream only.** ec2-controller `v1.25.0` has `FlowLog.resourceID` with no reference, and no `egressOnlyInternetGatewayRef` in a route; no open pull request or issue adds either (read-only, 2026-11-12). Not drafted: this repository opens nothing upstream (CLAUDE.md, "Never"), and has no policy that would allow it |
@@ -2225,6 +2242,97 @@ Kubernetes put back; an empty value; the delete removes the tag only;
 which errors are terminal. **Not proven:** real AWS (a live run), and
 the tag limit.
 
+### 6.36 `s3control.aws.hfl.dev` `PublicAccessBlock`
+
+The AWS account's S3 Block Public Access settings: Terraform's
+`aws_s3_account_public_access_block` (one of the catalog's tracked
+modules uses it; its `s3-bucket` chart lists it as a gap, section 5).
+CloudFormation has no type for it, so Cloud Control cannot serve it.
+
+**Upstream** (read-only, 2026-11-12): ACK's s3-controller `v1.16.0` has a
+bucket's own block (`Bucket.publicAccessBlock`, S3's
+`PutPublicAccessBlock`), not the account's; its open pull requests (#252,
+#226) do not touch it. ACK *has* an S3 Control controller,
+`aws-controllers-k8s/s3control-controller` (`v1.10.0`, 2026-11-10; `v1.9.0`
+is the release on runtime `v0.67.0`, ours), with `AccessPoint` only; its
+`generator.yaml` ignores every other S3 Control resource, the account's
+block is not one the generator finds (no `Create`), and no pull request
+or `community` issue asks for it. So it is built here, in a new service,
+`services/s3control`, with S3 Control's SDK client at the
+s3control-controller `v1.9.0` pin (`service/s3control` `v1.68.4`, on the
+same SDK core).
+
+**Generated** from `PutPublicAccessBlock` (mapped as the create and the
+update: a put replaces the four settings), `GetPublicAccessBlock` (the
+read) and `DeletePublicAccessBlock` (the delete), in
+`services/s3control/generator.yaml`, as `WebACLAssociation`'s
+`AssociateWebACL` is. Hooks: three one-line templates, `hooks.go` (about
+60 lines), `custom_delta.go` (copied from applicationautoscaling-controller)
+and `pkg/endpoint` (below).
+
+- **Spec:** `publicAccessBlockConfiguration` with the four settings,
+  `blockPublicACLs`, `ignorePublicACLs`, `blockPublicPolicy` and
+  `restrictPublicBuckets`, as S3 Control's request and ACK's own
+  `Bucket.publicAccessBlock` name them. A setting left out is false, as
+  `PutPublicAccessBlock` takes it, and no drift when S3 reports false;
+  one set to true outside Kubernetes is drift and put back
+  (`custom_delta.go`).
+- **The account** is the manager's own (`rm.awsAccountID`: its role's, or
+  the one CARM maps the namespace to), set on every request in hooks; the
+  spec names none. One object per account: two would put theirs in
+  turn, as for `AccountPasswordPolicy`.
+- **One per account, taken over.** Until an object has put the settings
+  once (no ARN in its status) its read finds nothing, so a new object
+  takes over the account's existing settings, instead of ACK's "already
+  exists" (`docs/handoff.md`, account-wide singletons). S3 has no ARN for
+  the settings; the kind's identifier (`is_arn_primary_key`) is
+  `arn:<partition>:s3control:<region>:<account>:public-access-block`,
+  set by the create and the read, never sent to AWS.
+- **Read:** the response's configuration is its HTTP payload, which the
+  generator does not map; a hook sets the spec from it.
+- **Not found:** `NoSuchPublicAccessBlockConfiguration`.
+- **Update** puts all four (`PutPublicAccessBlock` replaces them), also
+  when changed outside Kubernetes.
+- **Delete** deletes the configuration (`DeletePublicAccessBlock`), so
+  the account has no account-level block; `deletion-policy: retain`
+  leaves it.
+- **Synced** once read: the settings have no pending state. S3 documents
+  that a change can take a few minutes to apply everywhere; the read
+  reports the put at once.
+- **IAM:** `s3:GetAccountPublicAccessBlock` and
+  `s3:PutAccountPublicAccessBlock`; S3 authorizes the delete as the put
+  (`pkg/ackiam` maps S3 Control's operations to these names; `task
+  ack:iam LIST=1`).
+- **Where it runs:** beside ACK's s3control-controller, as any service's
+  manager runs beside its own ACK controller, or per environment through
+  an `ACKContext` (section 8, item 15; open question 22).
+- **A fake's endpoint** (`services/s3control/pkg/endpoint`): S3 Control
+  puts the account ID in front of the host of every account-level call,
+  and its endpoint rules do so to a custom endpoint too, so
+  `--aws-endpoint-url=http://127.0.0.1:5000` becomes
+  `http://123456789012.127.0.0.1:5000`, which nothing resolves. With a
+  plain-HTTP endpoint and `--allow-unsafe-aws-endpoint-urls` (a fake;
+  AWS's endpoints, VPC endpoints included, are HTTPS) the manager's client
+  sends to the endpoint's own host, the account still in the
+  `x-amz-account-id` header; otherwise nothing changes
+  (`new_resource_manager_client_options` hook, unit-tested). The tests'
+  client does the same.
+
+**Proven on moto and on AWS Emulator** (`TestPublicAccessBlock`, the
+same test unchanged, 2026-11-12): the account has none before; the create
+puts two settings, the two left out read back false and are no drift
+across resyncs; an update is put; a change outside Kubernetes (another
+setting turned on) is put back; `deletion-policy: retain` leaves the
+settings; a new object takes over the settings left behind; the delete
+removes them (`NoSuchPublicAccessBlockConfiguration` after). Moto 5.2.5:
+offload run `off-ack-extensions-1112233804-10864` (39 s); AWS Emulator
+1.0.322 (`ACK_TEST_BACKEND=aws-emulator`, `docs/aws-emulator.md`):
+`off-ack-extensions-1112234526-327` (37 s). Unit tests: the delta (a
+setting left out against false and true), the read, the client option
+against the SDK's own rules. **Not proven:** real AWS (a live run): the
+IAM actions, the minutes a change takes to apply, and what AWS answers a
+delete with no configuration.
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)
@@ -2816,7 +2924,18 @@ Before it can run on a real cluster:
     have no field for it); two different versions as the two slots; a
     live move in the sandbox account; the 26 ACK-generated and 141 Cloud
     Control kinds without readable tags are unguarded (the sequence alone
-    keeps one writer).
+    keeps one writer); `PublicAccessBlock` (no tags) makes it 27.
+15. S3 Control (`PublicAccessBlock`, section 6.36) runs beside ACK's
+    **s3control-controller**, not beside ACK's s3 controller: ACK has an
+    S3 Control controller (`AccessPoint`), so ours is a service of its
+    own in `pkg/operator`, not a `Beside` entry as Scheduler is (item 12).
+    A cluster with our `PublicAccessBlock` and ACK's classic install
+    therefore needs ACK's s3control-controller installed, even with no
+    access points, and that controller's role needs
+    `s3:GetAccountPublicAccessBlock` and `s3:PutAccountPublicAccessBlock`.
+    Per environment (`ACKContext`, section 7.6) needs neither. Running it
+    beside ACK's s3 controller instead was asked for and is not built:
+    open question 22.
 
 ## 9. Open questions
 
@@ -3288,3 +3407,27 @@ Before it can run on a real cluster:
     default of 10 managed policies: the generator fails beyond it and
     `TestLiveRoleWithinManagedPolicyLimit` checks the committed template.
     The type freeze above is lifted.
+
+22. **Where S3 Control's manager runs beside ACK** (2026-11-12). The
+    brief for `PublicAccessBlock` (section 6.36) said S3 Control has no
+    ACK controller and asked for `Beside{"s3control": "s3"}`, as
+    Scheduler runs beside EventBridge. ACK does have one,
+    `aws-controllers-k8s/s3control-controller` (`v1.10.0`, chart
+    `s3control-chart`, `AccessPoint` only), so `pkg/operator` already
+    runs our s3control manager beside it, as for every service ACK has.
+    Adding the `Beside` entry too would run a second s3control manager
+    beside ACK's s3 controller wherever both ACK controllers are
+    installed: two identities reconciling the same objects. Options:
+    - beside ACK's s3control-controller only (built): a cluster that
+      wants the account's block in the classic install also installs
+      ACK's s3control-controller;
+    - beside ACK's s3 controller only (`Beside`), for clusters with ACK's
+      s3 controller and no s3control-controller: needs `servicesBeside`
+      to stop running our manager beside ACK's own s3control-controller;
+    - both, with the operator choosing one when both are installed.
+
+    Recommended: the first. It is what the operator does for every
+    service ACK has a controller for, it keeps one manager per service
+    per namespace, and per environment (`ACKContext`, the default for
+    account-level kinds) no ACK controller is needed at all. Not built:
+    the `Beside` entry, until the builder answers.

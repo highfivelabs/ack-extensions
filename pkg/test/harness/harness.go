@@ -94,7 +94,7 @@ func moduleDir(t testing.TB, root, module string) string {
 }
 
 // Start brings up moto, envtest and the controller of one service
-// ("applicationautoscaling", "autoscaling", "ec2", "ecr", "eventbridge", "iam", "kms", "lambda", "organizations", "rds", "scheduler", "wafv2"), and registers their teardown with t.Cleanup.
+// ("applicationautoscaling", "autoscaling", "ec2", "ecr", "eventbridge", "iam", "kms", "lambda", "organizations", "rds", "s3control", "scheduler", "wafv2"), and registers their teardown with t.Cleanup.
 func Start(t *testing.T, service string, scheme *runtime.Scheme) *Env {
 	t.Helper()
 	env, _ := StartControllers(t, service, scheme, Controller{})
