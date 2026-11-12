@@ -676,6 +676,52 @@ its master (5.2.5 is the pin).
 | 22 | ACM import from a Kubernetes TLS Secret | acm-controller PR #104 | | skipped: a field on an existing kind (open question 1) |
 | 23 | `Role` additive policy mode | iam-controller PR #184, second commit | | skipped: changes ACK's own `Role` (open question 3) |
 
+**The catalog's ranking, 2026-11-12.** The catalog repository now lists
+every Terraform resource type its 40 tracked modules use
+(`docs/coverage/resource-types.csv` at catalog `fd0be28c`, its AWS rows
+all "unclassified" there, as AWS charts are not started). Each of the 321
+AWS types is classified in [`docs/catalog-aws-types.csv`](catalog-aws-types.csv):
+matched to a CloudFormation resource through the Terraform estimate
+(`docs/coverage/inputs/terraform/terraform-resources.csv`) and then to
+ACK's or our kinds (`docs/coverage/resources.csv`), and by hand where the
+match is missing or wrong (sub-resources and Terraform-only types).
+Counted in types (and in module uses, a type used by four modules
+counting four):
+
+| Class | Types | Module uses | Meaning |
+| --- | ---: | ---: | --- |
+| `ack` | 150 | 235 | an ACK kind |
+| `ack-field` | 63 | 91 | a field of an ACK kind (Terraform's sub-resource, such as `aws_iam_role_policy_attachment`, `aws_route`, the `aws_s3_bucket_*` configurations, `aws_sqs_queue_policy`); a kind here would fight ACK's sync (question 1) |
+| `ours` | 30 | 38 | an ACK-generated or hand-written kind of ours |
+| `ours-cc` | 54 | 56 | a Cloud Control kind of ours |
+| `neither` | 22 | 45 | no kind |
+| `not-a-resource` | 2 | 2 | `aws_acm_certificate_validation`, `aws_kms_ciphertext` |
+
+Built for it on 2026-11-12: `ec2.aws.hfl.dev` `ResourceTag`
+(`aws_ec2_tag`, four modules; section 6.35, pull request #90) and Cloud
+Control batch 14 (pull request #92: Glue `Registry` and `Schema`, MSK
+Connect `CustomPlugin` and `WorkerConfiguration`, S3 Express
+`DirectoryBucket`, S3 Tables `TablePolicy`, S3 Vectors
+`VectorBucketPolicy`).
+
+The 22 left, by module uses:
+
+| Terraform type | Modules | Why not yet |
+| --- | ---: | --- |
+| `aws_vpc_security_group_ingress_rule`, `aws_vpc_security_group_egress_rule` | 11 each | open question 7 (a rule kind beside ACK's `SecurityGroup`, which syncs its rules as a set); the largest gap the catalog shows |
+| `aws_s3_object` | 3 | rank 17, to build (no CloudFormation type) |
+| `aws_security_group_rule` | 2 | open question 7 |
+| `aws_key_pair` | 1 | ec2-controller pull request #396 (upstream first) |
+| `aws_elasticache_global_replication_group` | 1 | elasticache-controller pull request #237; moto has none |
+| `aws_redshift_subnet_group` | 1 | ACK's redshift-controller has it merged, unreleased |
+| `aws_s3_account_public_access_block` | 1 | rank 17, to build (S3 Control `PutPublicAccessBlock`) |
+| `aws_vpn_connection_route` | 1 | beside `VPNConnection`; moto has no `CreateVpnConnectionRoute` |
+| `aws_route53_vpc_association_authorization` | 1 | rank 14; moto has none |
+| `aws_ram_resource_share_accepter`, `aws_opensearch_outbound_connection`, `aws_opensearch_package_association`, `aws_rds_cluster_activity_stream`, `aws_db_instance_automated_backups_replication`, `aws_spot_instance_request` | 1 each | no CloudFormation type; ACK-generated kinds, not started |
+| `aws_lambda_function_recursion_config`, `aws_prometheus_workspace_configuration`, `aws_efs_replication_configuration` | 1 each | a property of a CloudFormation resource ACK's kind lacks; a field there or a kind here (question 1) |
+| `aws_dsql_cluster_policy`, `aws_networkfirewall_resource_policy` | 1 each | a resource policy with no CloudFormation type; ACK-generated kinds, not started |
+| `aws_s3files_synchronization_configuration` | 1 | not in the pinned CloudFormation schemas |
+
 Built before this ranking:
 
 - `RolePolicyAttachment`: iam-controller PR #184.
@@ -2855,6 +2901,14 @@ Before it can run on a real cluster:
 
    Proposed: the second, the same answer as question 3, so the two
    behave alike.
+
+   **Weight, 2026-11-12:** the catalog's ranking (section 5) puts
+   `aws_vpc_security_group_ingress_rule` and `_egress_rule` at 11 of the
+   40 tracked modules each (and `aws_security_group_rule` at 2): the
+   largest gap left, and all of it waits on this answer. Cloud Control
+   has the types (`AWS::EC2::SecurityGroupIngress`, `...Egress`, kept out
+   in `cloudcontrol/excluded.yaml` for this question), so the first or
+   second option is a day's work either way.
 8. **A service ACK has no controller for** (EventBridge Scheduler,
    rank 10). The operator runs our manager beside an ACK controller, and
    takes its identity from it: the ServiceAccount's role annotations, the
