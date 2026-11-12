@@ -14,7 +14,6 @@ import (
 	ackv1alpha1 "github.com/aws-controllers-k8s/runtime/apis/core/v1alpha1"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
-	orgtypes "github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -46,9 +45,7 @@ func TestOrganizationsAccountPlacement(t *testing.T) {
 	cloud := organizations.NewFromConfig(env.AWS)
 	ctx := context.Background()
 
-	if _, err := cloud.CreateOrganization(ctx, &organizations.CreateOrganizationInput{FeatureSet: orgtypes.OrganizationFeatureSetAll}); err != nil {
-		t.Fatal(err)
-	}
+	managementOrganization(t, ctx, cloud)
 	roots, err := cloud.ListRoots(ctx, &organizations.ListRootsInput{})
 	if err != nil || len(roots.Roots) != 1 {
 		t.Fatalf("roots: %+v %v", roots, err)
