@@ -1,22 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="660" height="212" viewBox="0 0 660 212" role="img" aria-label="All services: official 7.0%, ours beyond official 4.0%, uncovered 89.0% of 85831 attributes; Terraform aws provider (estimate): 64.4% of 85773 attributes, at least 48.8%; resources: official 14.2%, ours beyond official 17.2%, uncovered 68.6% of 1878">
-<title>All services: official 7.0%, ours beyond official 4.0%, uncovered 89.0% of 85831 attributes; Terraform aws provider (estimate): 64.4% of 85773 attributes, at least 48.8%; resources: official 14.2%, ours beyond official 17.2%, uncovered 68.6% of 1878</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="660" height="212" viewBox="0 0 660 212" role="img" aria-label="All services: official 7.0%, ours beyond official 23.3%, uncovered 69.7% of 85831 attributes; Terraform aws provider (estimate): 64.4% of 85773 attributes, at least 48.8%; resources: official 14.2%, ours beyond official 73.1%, uncovered 12.7% of 1878">
+<title>All services: official 7.0%, ours beyond official 23.3%, uncovered 69.7% of 85831 attributes; Terraform aws provider (estimate): 64.4% of 85773 attributes, at least 48.8%; resources: official 14.2%, ours beyond official 73.1%, uncovered 12.7% of 1878</title>
 <rect x="0.5" y="0.5" width="659" height="211" rx="6" fill="#ffffff" stroke="#d0d7de"/>
 <text x="10" y="19" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" dominant-baseline="central">Attributes (85,831)</text>
 <rect x="10" y="28" width="640" height="26" rx="3" fill="#d0d7de"/>
 <rect x="10" y="28" width="45" height="26" fill="#2f81f7"/>
 <text x="32.5" y="42" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">7.0%</text>
-<rect x="55" y="28" width="25.4" height="26" fill="#2da44e"/>
-<rect x="80.4" y="28" width="569.6" height="26" fill="#d0d7de"/>
-<text x="365.2" y="42" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">89.0%</text>
+<rect x="55" y="28" width="148.8" height="26" fill="#2da44e"/>
+<text x="129.4" y="42" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">23.3%</text>
+<rect x="203.8" y="28" width="446.2" height="26" fill="#d0d7de"/>
+<text x="426.9" y="42" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">69.7%</text>
 <rect x="10.5" y="28.5" width="639" height="25" rx="3" fill="none" stroke="#8c959f"/>
 <text x="10" y="71" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" dominant-baseline="central">Resources (1,878)</text>
 <rect x="10" y="80" width="640" height="26" rx="3" fill="#d0d7de"/>
 <rect x="10" y="80" width="90.9" height="26" fill="#2f81f7"/>
 <text x="55.4" y="94" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">14.2%</text>
-<rect x="100.9" y="80" width="110.1" height="26" fill="#2da44e"/>
-<text x="155.9" y="94" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">17.2%</text>
-<rect x="211" y="80" width="439" height="26" fill="#d0d7de"/>
-<text x="430.5" y="94" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">68.6%</text>
+<rect x="100.9" y="80" width="467.6" height="26" fill="#2da44e"/>
+<text x="334.7" y="94" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">73.1%</text>
+<rect x="568.5" y="80" width="81.5" height="26" fill="#d0d7de"/>
+<text x="609.2" y="94" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">12.7%</text>
 <rect x="10.5" y="80.5" width="639" height="25" rx="3" fill="none" stroke="#8c959f"/>
 <text x="10" y="123" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" dominant-baseline="central">Terraform aws provider, attributes (85,773): an estimate, not a measure of a controller</text>
 <rect x="10" y="132" width="640" height="26" rx="3" fill="#d0d7de"/>

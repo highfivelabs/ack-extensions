@@ -1,8 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="300" height="33" viewBox="0 0 300 33" role="img" aria-label="connect: official 0.0%, ours beyond official 0.0%, uncovered 100.0% of 578 attributes; lower bar: Terraform aws provider (estimate): 17.3% of 578 attributes, at least 14.0%">
-<title>connect: official 0.0%, ours beyond official 0.0%, uncovered 100.0% of 578 attributes; lower bar: Terraform aws provider (estimate): 17.3% of 578 attributes, at least 14.0%</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="33" viewBox="0 0 300 33" role="img" aria-label="connect: official 0.0%, ours beyond official 84.8%, uncovered 15.2% of 578 attributes; lower bar: Terraform aws provider (estimate): 17.3% of 578 attributes, at least 14.0%">
+<title>connect: official 0.0%, ours beyond official 84.8%, uncovered 15.2% of 578 attributes; lower bar: Terraform aws provider (estimate): 17.3% of 578 attributes, at least 14.0%</title>
 <rect x="0" y="0" width="300" height="22" rx="3" fill="#d0d7de"/>
-<rect x="0" y="0" width="300" height="22" fill="#d0d7de"/>
-<text x="150" y="12" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#1f2328" text-anchor="middle" dominant-baseline="central">100.0%</text>
+<rect x="0" y="0" width="254.3" height="22" fill="#2da44e"/>
+<text x="127.1" y="12" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="12" font-weight="600" fill="#ffffff" text-anchor="middle" dominant-baseline="central">84.8%</text>
+<rect x="254.3" y="0" width="45.7" height="22" fill="#d0d7de"/>
 <rect x="0.5" y="0.5" width="299" height="21" rx="3" fill="none" stroke="#8c959f"/>
 <rect x="0" y="25" width="300" height="8" rx="3" fill="#d0d7de"/>
 <rect x="0" y="25" width="51.9" height="8" fill="#7b42bc"/>
