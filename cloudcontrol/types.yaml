@@ -742,3 +742,35 @@ types:
     unproven: "no moto backend yet (moto 5.2.5 has ssm); on the schema fake only"
   - typeName: AWS::StepFunctions::StateMachineVersion
     unproven: "no moto backend yet (moto 5.2.5 has stepfunctions); on the schema fake only"
+  # Batch 14 (docs/throughput.md), the types the catalog's tracked modules use
+  # that neither ACK nor Cloud Control served (the 2026-11-12 ranking,
+  # docs/plan.md section 5): Glue's schema registry, MSK Connect's plugin and
+  # worker configuration, S3 Express One Zone's directory bucket, added with
+  # hack/cloudcontrol-batch on 2026-11-12; ACK's glue-controller has neither
+  # Glue type and no pull request adds one, and ACK has no kafkaconnect or
+  # s3express controller (rechecked read-only that day). On the schema fake
+  # until a moto backend or a live run proves them.
+  - typeName: AWS::Glue::Registry
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::Glue::Schema
+    unproven: "no moto backend yet (moto 5.2.5 has glue); on the schema fake only"
+  - typeName: AWS::KafkaConnect::CustomPlugin
+    unproven: "moto 5.2.5 has no kafkaconnect; on the schema fake only"
+  - typeName: AWS::KafkaConnect::WorkerConfiguration
+    unproven: "moto 5.2.5 has no kafkaconnect; on the schema fake only"
+  - typeName: AWS::S3Express::DirectoryBucket
+    unproven: "moto 5.2.5 has no s3express; on the schema fake only"
+  # Batch 14, by hand: three policies of the application tier whose
+  # document is "object or string" in the registry schema, so the CRD keeps
+  # it as one x-kubernetes-preserve-unknown-fields node (as for
+  # SecretsManager::ResourcePolicy) and hack/cloudcontrol-batch skips them
+  # as not clean. Each is a gap: ACK's s3tables-controller Table, its
+  # s3vectors-controller VectorBucket and its ssm-controller kinds have no
+  # policy field (rechecked 2026-11-12). The catalog's modules use the first
+  # two (aws_s3tables_table_policy, aws_s3vectors_vector_bucket_policy).
+  - typeName: AWS::S3Tables::TablePolicy
+    unproven: "no moto backend yet (moto 5.2.5 has s3tables); on the schema fake only"
+  - typeName: AWS::S3Vectors::VectorBucketPolicy
+    unproven: "no moto backend yet (moto 5.2.5 has s3vectors); on the schema fake only"
+  - typeName: AWS::SSM::ResourcePolicy
+    unproven: "no moto backend yet (moto 5.2.5 has ssm); on the schema fake only"

@@ -783,6 +783,28 @@ rules:
   - patch
   - update
 - apiGroups:
+  - glue.cloudcontrol.aws.hfl.dev
+  resources:
+  - registries
+  - schemas
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - glue.cloudcontrol.aws.hfl.dev
+  resources:
+  - registries/status
+  - schemas/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - guardduty.cloudcontrol.aws.hfl.dev
   resources:
   - customdetectionruleassociations
@@ -892,6 +914,28 @@ rules:
   - codesecurityscanconfigurations/status
   - connectors/status
   - filters/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - kafkaconnect.cloudcontrol.aws.hfl.dev
+  resources:
+  - customplugins
+  - workerconfigurations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - kafkaconnect.cloudcontrol.aws.hfl.dev
+  resources:
+  - customplugins/status
+  - workerconfigurations/status
   verbs:
   - get
   - patch
@@ -1245,6 +1289,26 @@ rules:
   - patch
   - update
 - apiGroups:
+  - s3express.cloudcontrol.aws.hfl.dev
+  resources:
+  - directorybuckets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - s3express.cloudcontrol.aws.hfl.dev
+  resources:
+  - directorybuckets/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - s3files.cloudcontrol.aws.hfl.dev
   resources:
   - filesystempolicies
@@ -1260,6 +1324,46 @@ rules:
   - s3files.cloudcontrol.aws.hfl.dev
   resources:
   - filesystempolicies/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - s3tables.cloudcontrol.aws.hfl.dev
+  resources:
+  - tablepolicies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - s3tables.cloudcontrol.aws.hfl.dev
+  resources:
+  - tablepolicies/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - s3vectors.cloudcontrol.aws.hfl.dev
+  resources:
+  - vectorbucketpolicies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - s3vectors.cloudcontrol.aws.hfl.dev
+  resources:
+  - vectorbucketpolicies/status
   verbs:
   - get
   - patch
@@ -1372,6 +1476,7 @@ rules:
   - maintenancewindowtargets
   - maintenancewindowtasks
   - opsitems
+  - resourcepolicies
   - servicesettings
   verbs:
   - create
@@ -1389,6 +1494,7 @@ rules:
   - maintenancewindowtargets/status
   - maintenancewindowtasks/status
   - opsitems/status
+  - resourcepolicies/status
   - servicesettings/status
   verbs:
   - get

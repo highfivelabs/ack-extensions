@@ -292,3 +292,11 @@ resources:
   - ssm.cloudcontrol.aws.hfl.dev_opsitems.yaml
   - ssm.cloudcontrol.aws.hfl.dev_servicesettings.yaml
   - stepfunctions.cloudcontrol.aws.hfl.dev_statemachineversions.yaml
+  - glue.cloudcontrol.aws.hfl.dev_registries.yaml
+  - glue.cloudcontrol.aws.hfl.dev_schemas.yaml
+  - kafkaconnect.cloudcontrol.aws.hfl.dev_customplugins.yaml
+  - kafkaconnect.cloudcontrol.aws.hfl.dev_workerconfigurations.yaml
+  - s3express.cloudcontrol.aws.hfl.dev_directorybuckets.yaml
+  - s3tables.cloudcontrol.aws.hfl.dev_tablepolicies.yaml
+  - s3vectors.cloudcontrol.aws.hfl.dev_vectorbucketpolicies.yaml
+  - ssm.cloudcontrol.aws.hfl.dev_resourcepolicies.yaml
