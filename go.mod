@@ -20,6 +20,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.62.1
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.290.1
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.55.0
+	github.com/aws/aws-sdk-go-v2/service/ecs v1.78.0
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.36.7
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.52.6
 	github.com/aws/aws-sdk-go-v2/service/iam v1.38.8

@@ -15,6 +15,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	astypes "github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
+	ec2types "github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -45,14 +46,18 @@ func asgFixture(t *testing.T, ctx context.Context, env *harness.Env, cloud *auto
 	if err != nil || len(images.Images) == 0 {
 		t.Fatalf("no image in the fake cloud: %v", err)
 	}
-	if _, err := cloud.CreateLaunchConfiguration(ctx, &autoscaling.CreateLaunchConfigurationInput{
-		LaunchConfigurationName: aws.String("web"), ImageId: images.Images[0].ImageId, InstanceType: aws.String("t3.micro"),
+	// A launch template, not a launch configuration: AWS no longer lets new
+	// accounts make launch configurations.
+	if _, err := ec2.NewFromConfig(env.AWS).CreateLaunchTemplate(ctx, &ec2.CreateLaunchTemplateInput{
+		LaunchTemplateName: aws.String("web"),
+		LaunchTemplateData: &ec2types.RequestLaunchTemplateData{ImageId: images.Images[0].ImageId, InstanceType: ec2types.InstanceTypeT3Micro},
 	}); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := cloud.CreateAutoScalingGroup(ctx, &autoscaling.CreateAutoScalingGroupInput{
-		AutoScalingGroupName: aws.String("web"), LaunchConfigurationName: aws.String("web"),
-		MinSize: aws.Int32(0), MaxSize: aws.Int32(2), AvailabilityZones: []string{"us-west-2a"},
+		AutoScalingGroupName: aws.String("web"),
+		LaunchTemplate:       &astypes.LaunchTemplateSpecification{LaunchTemplateName: aws.String("web"), Version: aws.String("$Latest")},
+		MinSize:              aws.Int32(0), MaxSize: aws.Int32(2), AvailabilityZones: []string{"us-west-2a"},
 	}); err != nil {
 		t.Fatal(err)
 	}

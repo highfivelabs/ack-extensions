@@ -14,6 +14,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	aas "github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
 	aastypes "github.com/aws/aws-sdk-go-v2/service/applicationautoscaling/types"
+	"github.com/aws/aws-sdk-go-v2/service/ecs"
+	ecstypes "github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -23,6 +25,39 @@ import (
 )
 
 const ecsService = "service/app/web"
+
+// scalableTargetFixture makes the ECS service "web" in cluster "app" (no
+// tasks) and registers its desired count as a scalable target, directly in
+// the fake cloud: ACK's ecs- and applicationautoscaling-controllers would
+// on a real cluster.
+func scalableTargetFixture(t *testing.T, ctx context.Context, env *harness.Env) {
+	t.Helper()
+	e := ecs.NewFromConfig(env.AWS)
+	if _, err := e.CreateCluster(ctx, &ecs.CreateClusterInput{ClusterName: aws.String("app")}); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := e.RegisterTaskDefinition(ctx, &ecs.RegisterTaskDefinitionInput{
+		Family: aws.String("web"),
+		ContainerDefinitions: []ecstypes.ContainerDefinition{{
+			Name: aws.String("web"), Image: aws.String("public.ecr.aws/nginx/nginx:stable"), Memory: aws.Int32(128),
+		}},
+	}); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := e.CreateService(ctx, &ecs.CreateServiceInput{
+		Cluster: aws.String("app"), ServiceName: aws.String("web"), TaskDefinition: aws.String("web"),
+		DesiredCount: aws.Int32(0), LaunchType: ecstypes.LaunchTypeEc2,
+	}); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := aas.NewFromConfig(env.AWS).RegisterScalableTarget(ctx, &aas.RegisterScalableTargetInput{
+		ServiceNamespace: aastypes.ServiceNamespaceEcs, ResourceId: aws.String(ecsService),
+		ScalableDimension: aastypes.ScalableDimensionECSServiceDesiredCount,
+		MinCapacity:       aws.Int32(0), MaxCapacity: aws.Int32(4),
+	}); err != nil {
+		t.Fatal(err)
+	}
+}
 
 func cloudAppScheduledAction(ctx context.Context, c *aas.Client, name string) (*aastypes.ScheduledAction, error) {
 	out, err := c.DescribeScheduledActions(ctx, &aas.DescribeScheduledActionsInput{
@@ -52,9 +87,10 @@ func TestApplicationScheduledAction(t *testing.T) {
 	cloud := aas.NewFromConfig(env.AWS)
 	ctx := context.Background()
 
-	// No scalable target is registered: moto does not require one for a
-	// scheduled action (AWS does), and registering an ECS service's would
-	// need the ECS service itself in moto.
+	// The scalable target, registered as AWS requires before a scheduled
+	// action (moto does not; the AWS Emulator does), and the ECS service
+	// behind it, which RegisterScalableTarget checks.
+	scalableTargetFixture(t, ctx, env)
 
 	get := func(t *testing.T, obj *aasv1.ScheduledAction) *aasv1.ScheduledAction {
 		t.Helper()

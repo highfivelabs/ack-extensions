@@ -336,13 +336,18 @@ func TestVpnGateway(t *testing.T) {
 			t.Fatal(err)
 		}
 		gone(t, vgw)
-		g, err := cloudVpnGateway(ctx, cloud, id)
-		if err != nil {
-			t.Fatal(err)
-		}
-		if g.State != ec2types.VpnStateDeleted || attachedTo(g) != "" {
-			t.Fatalf("cloud gateway state %s attached to %q, want deleted and detached", g.State, attachedTo(g))
-		}
+		// DeleteVpnGateway is asynchronous on AWS: the gateway is deleting
+		// before it is deleted (moto deletes it at once).
+		harness.Eventually(t, 60*time.Second, "the gateway deleted and detached", func() error {
+			g, err := cloudVpnGateway(ctx, cloud, id)
+			if err != nil {
+				return err
+			}
+			if g.State != ec2types.VpnStateDeleted || attachedTo(g) != "" {
+				return fmt.Errorf("cloud gateway state %s attached to %q", g.State, attachedTo(g))
+			}
+			return nil
+		})
 	})
 }
 
@@ -543,8 +548,13 @@ func TestVolumeAttachment(t *testing.T) {
 
 	// The instance is a fixture: ACK's ec2-controller has Instance, and a
 	// reference to it is not built here.
+	// The image is one the backend has (moto's ids are not AWS's).
+	images, err := cloud.DescribeImages(ctx, &ec2.DescribeImagesInput{Owners: []string{"amazon"}})
+	if err != nil || len(images.Images) == 0 {
+		t.Fatalf("no image in the fake cloud: %v", err)
+	}
 	run, err := cloud.RunInstances(ctx, &ec2.RunInstancesInput{
-		ImageId: aws.String("ami-12c6146b"), InstanceType: ec2types.InstanceTypeT3Micro, MinCount: aws.Int32(1), MaxCount: aws.Int32(1),
+		ImageId: images.Images[0].ImageId, InstanceType: ec2types.InstanceTypeT3Micro, MinCount: aws.Int32(1), MaxCount: aws.Int32(1),
 		Placement: &ec2types.Placement{AvailabilityZone: aws.String("us-west-2a")},
 	})
 	if err != nil {
@@ -690,8 +700,17 @@ func TestVolumeAttachment(t *testing.T) {
 			t.Fatal(err)
 		}
 		gone(t, att)
-		if dev, err := volumeAttachedTo(ctx, cloud, volumeID, instance); err != nil || dev != "" {
-			t.Fatalf("still attached as %q: %v", dev, err)
-		}
+		// DetachVolume is asynchronous on AWS: the attachment is detaching
+		// before it is detached (moto detaches at once).
+		harness.Eventually(t, 60*time.Second, "the volume detached", func() error {
+			dev, err := volumeAttachedTo(ctx, cloud, volumeID, instance)
+			if err != nil {
+				return err
+			}
+			if dev != "" {
+				return fmt.Errorf("still attached as %q", dev)
+			}
+			return nil
+		})
 	})
 }

@@ -166,7 +166,7 @@ func TestIAMVirtualMFADevice(t *testing.T) {
 		ObjectMeta: metav1.ObjectMeta{Name: "break-glass", Namespace: "default"},
 		Spec:       iamv1.VirtualMFADeviceSpec{Name: aws.String("break-glass"), Path: aws.String("/platform/")},
 	}
-	const serial = "arn:aws:iam::123456789012:mfa/platform/break-glass"
+	serial := "arn:aws:iam::" + env.Account + ":mfa/platform/break-glass"
 	var seed, version string
 
 	t.Run("a device is made, its seed in a Secret the object owns, found past the list's first page, and settles", func(t *testing.T) {

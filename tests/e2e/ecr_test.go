@@ -46,8 +46,8 @@ func cloudReplication(ctx context.Context, c *ecr.Client) (registry string, rule
 	return aws.ToString(out.RegistryId), rules, nil
 }
 
-func replicationRule(region, filter string) *ecrv1.ReplicationRule {
-	r := &ecrv1.ReplicationRule{Destinations: []*ecrv1.ReplicationDestination{{Region: aws.String(region), RegistryID: aws.String("123456789012")}}}
+func replicationRule(account, region, filter string) *ecrv1.ReplicationRule {
+	r := &ecrv1.ReplicationRule{Destinations: []*ecrv1.ReplicationDestination{{Region: aws.String(region), RegistryID: aws.String(account)}}}
 	if filter != "" {
 		r.RepositoryFilters = []*ecrv1.RepositoryFilter{{Filter: aws.String(filter), FilterType: aws.String("PREFIX_MATCH")}}
 	}
@@ -56,9 +56,9 @@ func replicationRule(region, filter string) *ecrv1.ReplicationRule {
 
 // configurationOf is one rule to region, as someone outside Kubernetes
 // would put it.
-func configurationOf(region string) *ecrtypes.ReplicationConfiguration {
+func configurationOf(account, region string) *ecrtypes.ReplicationConfiguration {
 	return &ecrtypes.ReplicationConfiguration{Rules: []ecrtypes.ReplicationRule{{
-		Destinations: []ecrtypes.ReplicationDestination{{Region: aws.String(region), RegistryId: aws.String("123456789012")}},
+		Destinations: []ecrtypes.ReplicationDestination{{Region: aws.String(region), RegistryId: aws.String(account)}},
 	}}}
 }
 
@@ -74,6 +74,7 @@ func TestReplicationConfiguration(t *testing.T) {
 	env := harness.Start(t, "ecr", scheme)
 	cloud := ecr.NewFromConfig(env.AWS)
 	ctx := context.Background()
+	account := env.Account
 
 	waitRules := func(t *testing.T, obj *ecrv1.ReplicationConfiguration, want ...string) {
 		t.Helper()
@@ -109,7 +110,7 @@ func TestReplicationConfiguration(t *testing.T) {
 	registry := &ecrv1.ReplicationConfiguration{
 		ObjectMeta: metav1.ObjectMeta{Name: "registry", Namespace: "default"},
 		Spec: ecrv1.ReplicationConfigurationSpec{
-			ReplicationConfiguration: &ecrv1.ReplicationConfigurationForRegistry{Rules: []*ecrv1.ReplicationRule{replicationRule("us-east-1", "")}},
+			ReplicationConfiguration: &ecrv1.ReplicationConfigurationForRegistry{Rules: []*ecrv1.ReplicationRule{replicationRule(account, "us-east-1", "")}},
 		},
 	}
 
@@ -117,12 +118,12 @@ func TestReplicationConfiguration(t *testing.T) {
 		if err := env.Client.Create(ctx, registry); err != nil {
 			t.Fatal(err)
 		}
-		waitRules(t, registry, "us-east-1/123456789012 ")
+		waitRules(t, registry, "us-east-1/"+account+" ")
 		got := &ecrv1.ReplicationConfiguration{}
 		if err := env.Client.Get(ctx, client.ObjectKeyFromObject(registry), got); err != nil {
 			t.Fatal(err)
 		}
-		if aws.ToString(got.Status.RegistryID) != "123456789012" {
+		if aws.ToString(got.Status.RegistryID) != account {
 			t.Fatalf("status.registryID = %q", aws.ToString(got.Status.RegistryID))
 		}
 	})
@@ -132,20 +133,20 @@ func TestReplicationConfiguration(t *testing.T) {
 		if err := env.Client.Get(ctx, client.ObjectKeyFromObject(registry), obj); err != nil {
 			t.Fatal(err)
 		}
-		obj.Spec.ReplicationConfiguration.Rules = []*ecrv1.ReplicationRule{replicationRule("eu-west-1", "prod-")}
+		obj.Spec.ReplicationConfiguration.Rules = []*ecrv1.ReplicationRule{replicationRule(account, "eu-west-1", "prod-")}
 		if err := env.Client.Update(ctx, obj); err != nil {
 			t.Fatal(err)
 		}
-		waitRules(t, registry, "eu-west-1/123456789012 prod-:PREFIX_MATCH")
+		waitRules(t, registry, "eu-west-1/"+account+" prod-:PREFIX_MATCH")
 	})
 
 	t.Run("a rule changed outside Kubernetes is put back", func(t *testing.T) {
 		if _, err := cloud.PutReplicationConfiguration(ctx, &ecr.PutReplicationConfigurationInput{
-			ReplicationConfiguration: configurationOf("ap-south-1"),
+			ReplicationConfiguration: configurationOf(account, "ap-south-1"),
 		}); err != nil {
 			t.Fatal(err)
 		}
-		waitRules(t, registry, "eu-west-1/123456789012 prod-:PREFIX_MATCH")
+		waitRules(t, registry, "eu-west-1/"+account+" prod-:PREFIX_MATCH")
 	})
 
 	t.Run("the CRD refuses what ECR would", func(t *testing.T) {
@@ -156,7 +157,7 @@ func TestReplicationConfiguration(t *testing.T) {
 		}{
 			{"no rules", &ecrv1.ReplicationConfigurationForRegistry{Rules: []*ecrv1.ReplicationRule{}}, "spec.replicationConfiguration.rules"},
 			{"a filter type ECR does not have", &ecrv1.ReplicationConfigurationForRegistry{Rules: []*ecrv1.ReplicationRule{{
-				Destinations:      []*ecrv1.ReplicationDestination{{Region: aws.String("us-east-1"), RegistryID: aws.String("123456789012")}},
+				Destinations:      []*ecrv1.ReplicationDestination{{Region: aws.String("us-east-1"), RegistryID: aws.String(account)}},
 				RepositoryFilters: []*ecrv1.RepositoryFilter{{Filter: aws.String("x"), FilterType: aws.String("SUFFIX_MATCH")}},
 			}}}, "filterType"},
 			{"a registry that is not an account ID", &ecrv1.ReplicationConfigurationForRegistry{Rules: []*ecrv1.ReplicationRule{{
@@ -177,7 +178,7 @@ func TestReplicationConfiguration(t *testing.T) {
 		other := &ecrv1.ReplicationConfiguration{
 			ObjectMeta: metav1.ObjectMeta{Name: "other-account", Namespace: "default"},
 			Spec: ecrv1.ReplicationConfigurationSpec{RegistryID: aws.String("210987654321"),
-				ReplicationConfiguration: &ecrv1.ReplicationConfigurationForRegistry{Rules: []*ecrv1.ReplicationRule{replicationRule("us-east-1", "")}}},
+				ReplicationConfiguration: &ecrv1.ReplicationConfigurationForRegistry{Rules: []*ecrv1.ReplicationRule{replicationRule(account, "us-east-1", "")}}},
 		}
 		if err := env.Client.Create(ctx, other); err != nil {
 			t.Fatal(err)
@@ -199,7 +200,7 @@ func TestReplicationConfiguration(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if strings.Join(rules, ";") != "eu-west-1/123456789012 prod-:PREFIX_MATCH" {
+		if strings.Join(rules, ";") != "eu-west-1/"+account+" prod-:PREFIX_MATCH" {
 			t.Fatalf("the refused object changed the registry: %v", rules)
 		}
 		if err := env.Client.Delete(ctx, other); err != nil {
@@ -229,13 +230,13 @@ func TestReplicationConfiguration(t *testing.T) {
 				Annotations: map[string]string{ackv1alpha1.AnnotationDeletionPolicy: string(ackv1alpha1.DeletionPolicyRetain)},
 			},
 			Spec: ecrv1.ReplicationConfigurationSpec{
-				ReplicationConfiguration: &ecrv1.ReplicationConfigurationForRegistry{Rules: []*ecrv1.ReplicationRule{replicationRule("us-east-2", "")}},
+				ReplicationConfiguration: &ecrv1.ReplicationConfigurationForRegistry{Rules: []*ecrv1.ReplicationRule{replicationRule(account, "us-east-2", "")}},
 			},
 		}
 		if err := env.Client.Create(ctx, keep); err != nil {
 			t.Fatal(err)
 		}
-		waitRules(t, keep, "us-east-2/123456789012 ")
+		waitRules(t, keep, "us-east-2/"+account+" ")
 		if err := env.Client.Delete(ctx, keep); err != nil {
 			t.Fatal(err)
 		}
@@ -244,7 +245,7 @@ func TestReplicationConfiguration(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if strings.Join(rules, ";") != "us-east-2/123456789012 " {
+		if strings.Join(rules, ";") != "us-east-2/"+account+" " {
 			t.Fatalf("deletion-policy retain changed the rules: %v", rules)
 		}
 	})

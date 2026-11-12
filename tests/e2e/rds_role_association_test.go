@@ -19,6 +19,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
+	"github.com/highfivelabs/ack-extensions/pkg/test/awsemulator"
 	"github.com/highfivelabs/ack-extensions/pkg/test/harness"
 	rdsv1 "github.com/highfivelabs/ack-extensions/services/rds/apis/v1alpha1"
 )
@@ -260,6 +261,24 @@ func TestDBRoleAssociation(t *testing.T) {
 	t.Run("delete calls RemoveRoleFromDBCluster and waits for it", func(t *testing.T) {
 		if err := env.Client.Delete(ctx, s3Import); err != nil {
 			t.Fatal(err)
+		}
+		if awsemulator.Selected(t) {
+			// The AWS Emulator implements the removal (moto does not): the
+			// role leaves the cluster and the object goes.
+			gone(t, s3Import)
+			harness.Eventually(t, 60*time.Second, "the role removed from the cluster", func() error {
+				roles, err := cloudRoles(ctx, cloud, "app-aurora", "")
+				if err != nil {
+					return err
+				}
+				for _, r := range roles {
+					if strings.HasPrefix(r, account+"aurora-s3 ") {
+						return fmt.Errorf("still associated: %v", roles)
+					}
+				}
+				return nil
+			})
+			return
 		}
 		harness.Eventually(t, 90*time.Second, "the removal attempted and the object kept", func() error {
 			obj := &rdsv1.DBRoleAssociation{}
