@@ -27,6 +27,7 @@ import (
 	acktypes "github.com/aws-controllers-k8s/runtime/pkg/types"
 	ackrtutil "github.com/aws-controllers-k8s/runtime/pkg/util"
 	ackrtwebhook "github.com/aws-controllers-k8s/runtime/pkg/webhook"
+	hflslot "github.com/highfivelabs/ack-extensions/pkg/slot"
 	flag "github.com/spf13/pflag"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -83,8 +84,16 @@ func init() {
 func main() {
 	var ackCfg ackcfg.Config
 	ackCfg.BindFlags()
+	slotFlag := hflslot.BindFlags(flag.CommandLine)
 	flag.Parse()
 	ackCfg.SetupLogger()
+
+	// ack-extensions patch 0003: the version-slot guard (docs/slot-moves.md).
+	slot, err := hflslot.Setup(&ackCfg, *slotFlag)
+	if err != nil {
+		setupLog.Error(err, "Invalid slot", "aws.service", awsServiceAlias)
+		os.Exit(1)
+	}
 
 	managerFactories := svcresource.GetManagerFactories()
 	resourceGVKs := make([]schema.GroupVersionKind, 0, len(managerFactories))
@@ -187,7 +196,7 @@ func main() {
 	).WithLogger(
 		ctrlrt.Log,
 	).WithResourceManagerFactories(
-		svcresource.GetManagerFactories(),
+		hflslot.Wrap(svcresource.GetManagerFactories(), slot, mgr, hflslot.GeneratedTags),
 	).WithPrometheusRegistry(
 		ctrlrtmetrics.Registry,
 	)

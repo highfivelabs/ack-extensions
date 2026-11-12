@@ -122,6 +122,7 @@ pull_requests:
 patches:
   - {file: patches/code-generator/0001-api-group-suffix-flag.patch, pin: code-generator, upstream_candidate: "offered: aws-controllers-k8s/code-generator#762"}
   - {file: patches/code-generator/0002-sdk-v2-createvolume-output-shape.patch, pin: code-generator, upstream_candidate: "offered: aws-controllers-k8s/code-generator#763"}
+  - {file: patches/code-generator/0003-slot-guard.patch, pin: code-generator, upstream_candidate: "no: ours alone (the version-slot guard, docs/slot-moves.md)"}
 
 # "What is copied": here (our paths) and from (the source's paths at a
 # pin's release, or at a pull request's head; a directory ends in /).
