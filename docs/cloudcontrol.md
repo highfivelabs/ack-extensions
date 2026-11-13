@@ -114,6 +114,7 @@ through its own Provider, `hfl.aws-cloudcontrol`. `CloudControlContext` is
 | `createOnlyProperties` | CEL on the field: `self == oldSelf`; on its parent: `has(self.f) == has(oldSelf.f)` | the API server refuses the edit; paths inside arrays have no rule (a transition rule there needs a keyed list) and are refused by the reconciler instead |
 | `writeOnlyProperties` a type opts in (`secrets` in `types.yaml`: write-only strings only) | a Secret reference (`{name, namespace, key}`, ACK's `SecretKeyReference`) | resolved by ACK's runtime, which refuses a Secret in another namespace unless `--enable-cross-namespace` (the operator never sets it, and the manager's rights end at its namespace anyway); a digest in `status.cloudControl.writeOnlyDigest` notices a changed Secret, since Cloud Control never returns the value |
 | every other `writeOnlyProperties` | a plain field, never compared (the digest notices a change) | opt-in per field, decision 4: many are not secrets (an IPAM pool's netmask, a GuardDuty member's email, a SAML provider's key ID to remove). The generator refuses an opted-in pointer that is not a write-only string reachable through objects, and the report lists the remaining candidates |
+| a property the overlay gives a reference (`references` in `types.yaml`: a top-level, writable string) | a reference field beside it, ACK's `AWSResourceReferenceWrapper` (`vpcRef: {from: {name, namespace}}` beside `vpcId`); CEL asks for one of the two when the property is required and refuses both; a create-only property's reference is create-only too | resolved by the reconciler, as ACK's generated `references.go` does: the named object (ACK's kind or ours, read as unstructured, so no Go module of ACK's is needed) must be synced and not terminal, and its `path` (`status.vpcID`) is copied into the property; the object keeps only the reference, Cloud Control never sees it, and the manager's ClusterRole gets `get` on the kind. Another namespace needs `--enable-cross-namespace` (never set by the operator). Section 12, item 4 |
 | `primaryIdentifier` | `status.cloudControl.identifier` (values joined with `\|`), and the read-only parts in status | adoption takes it from ACK's `adoption-fields` annotation |
 | `required` | `required`, minus read-only | |
 | `tagging.tagProperty` | the tag list; ACK's default tags (`services.k8s.aws/*`) added on create in key order, filtered out of spec; compared as a multiset whatever its `insertionOrder` (a reordering alone is no change) | the drift rule |
@@ -787,7 +788,7 @@ whole JSON documents.
 | Speed | one or two direct calls per pass | asynchronous: a request, then one or more status polls (3 seconds apart here); handlers include stabilisation waits, so a create can take longer, but "ready" means ready. Every resync is a `GetResource`, which runs the read handler (several service calls for some types); Cloud Control's own rate limits were not measured |
 | Eventual consistency | handled by hooks and requeues, per kind | the handlers retry and stabilise (IAM propagation, "pending" states); the reconciler only polls |
 | Types with odd APIs | Put-shaped singletons, attach/detach pairs and wrapped responses each need a hand-written kind or hooks (plan §2) | uniform, if CloudFormation models the type; but CloudFormation's model decides the semantics: `AWS::Organizations::Policy.TargetIds` is the exclusive attachment foundation.md says not to build, and a non-provisionable type (`AWS::IAM::Policy`) cannot be served at all |
-| References | generated `fooRef` to ACK's kinds | none yet; only 27 of the 1,875 schemas carry `relationshipRef`, so references would come mostly from the overlay |
+| References | generated `fooRef` to ACK's kinds | from the overlay (`references` in `types.yaml`, section 2), per property: ACK's kinds or ours, by group, kind and the field holding the value; only 27 of the 1,875 schemas carry `relationshipRef`, so the overlay names them by hand |
 | Identity | runs beside ACK's controller with its identity | its own (section 10) |
 | Retirement into ACK | a group move with adoption | the same: adopt by identifier in ACK's group, delete ours with `retain` |
 | Generated share | about 88% per kind | 100% per kind; about 94% overall at the foundation-gap scale |
@@ -914,10 +915,11 @@ the trust policy's conditions. Everything on our side of that is proven
 - **Names.** Lower camel case from PascalCase is mechanical and mostly
   right; `IPv6CidrBlock` becomes `iPv6CidrBlock`. An overlay rename is needed
   for a handful; ACK's own names (`ipv6CIDRBlock`) come from its own rules.
-- **No references.** A route table names its gateway by ID; ACK's kinds
-  would take `transitGatewayRef`. Only 27 of the 1,875 schemas carry
-  `relationshipRef` (none of the three here), so references to ACK's kinds
-  and to other Cloud Control kinds would be overlay data; not built.
+- **No references** (the spike). A route table names its gateway by ID;
+  ACK's kinds would take `transitGatewayRef`. Only 27 of the 1,875 schemas
+  carry `relationshipRef` (none of the three here), so references to ACK's
+  kinds and to other Cloud Control kinds are overlay data: built since
+  (2026-11-12, section 12, item 4).
 - **Removing a field** from spec leaves AWS's value: the reconciler only
   manages what the spec sets. Tracking what it last applied would allow a
   `remove`; not built.
@@ -986,6 +988,26 @@ limits":
 4. The overlay: renames, references (from `relationshipRef` where a schema
    has it, otherwise overlay data; ACK's kinds first: `transitGatewayRef`
    to ACK's `TransitGateway`), removal of fields the spec drops.
+   **References built** (2026-11-12): `references` in `types.yaml`
+   (section 2's table has the mapping). First, the ones the catalog's AWS
+   charts asked for (its `docs/aws.md` section 8): `vpcRef` and
+   `subnetRef` on `VPCBlockPublicAccessExclusion` (ACK's `VPC` and
+   `Subnet`; the `vpc` chart), `groupRef` and `vpcRef` on
+   `SecurityGroupVpcAssociation` (ACK's `SecurityGroup` and `VPC`; the
+   `security-group` chart's `vpc_associations`), and `allocationRef`,
+   `instanceRef` and `networkInterfaceRef` on `EIPAssociation` (ACK's
+   `ElasticIPAddress` and `Instance`, our `NetworkInterface`; the
+   `ec2-instance` chart's `create_eip`, an Elastic IP associated with an
+   instance, which ACK's ec2-controller has no kind for). Proven:
+   `cfn`/`crdgen` unit tests (defaults, refusals, the CEL rules),
+   `resource` unit tests (resolution, ACK's errors for a reference not
+   synced, terminal, without its value, missing, in another namespace,
+   given with its ID; the delta and the observed spec), and `TestReferences`
+   on the schema fake (the manager's real binary, its generated rights,
+   stand-in CRDs for ACK's two kinds: refused by the CRD with both or
+   neither, waiting with `ACK.ReferencesResolved` Unknown until the
+   referenced objects sync, then the IDs sent to Cloud Control and only
+   the references kept). Renames and dropped fields are not built.
 5. Selective CRD installation (only the kinds some context enables), once
    the kind count makes installing them all costly.
 6. Currency: the factory's watcher diffs the schemas' behaviour keys; a

@@ -53,16 +53,22 @@ type config struct {
 	LiveTestActions []string `json:"liveTestActions"`
 	// LiveKinds are the types sampled on live runs: the sandbox account's
 	// role holds their permissions only (plan question 21).
-	LiveKinds []string `json:"liveKinds"`
-	Types     []struct {
-		TypeName string   `json:"typeName"`
-		Kind     string   `json:"kind"`
-		Secrets  []string `json:"secrets"`
-		Unproven string   `json:"unproven"`
-		// NeverDelete keeps the resource when its object is deleted
-		// (cloudcontrol/types.yaml).
-		NeverDelete bool `json:"neverDelete"`
-	} `json:"types"`
+	LiveKinds []string    `json:"liveKinds"`
+	Types     []typeEntry `json:"types"`
+}
+
+// typeEntry is one type of cloudcontrol/types.yaml.
+type typeEntry struct {
+	TypeName string   `json:"typeName"`
+	Kind     string   `json:"kind"`
+	Secrets  []string `json:"secrets"`
+	Unproven string   `json:"unproven"`
+	// NeverDelete keeps the resource when its object is deleted
+	// (cloudcontrol/types.yaml).
+	NeverDelete bool `json:"neverDelete"`
+	// References are the overlay's reference fields
+	// (cloudcontrol/types.yaml).
+	References []cfn.Reference `json:"references"`
 }
 
 func main() {
@@ -252,6 +258,7 @@ type generated struct {
 	Unproven                            string
 	NeverDelete                         bool
 	Live                                bool
+	References                          []cfn.Reference
 	Report                              *crdgen.Report
 	IAM                                 iamgen.Result
 }
@@ -287,7 +294,11 @@ func generate(root string, files map[string][]byte, cfg config) error {
 			kind = s.Resource()
 		}
 		group := groupOf(s, cfg.GroupSuffix)
-		crd, rep, err := crdgen.Generate(s, crdgen.Options{Group: group, Version: cfg.Version, Kind: kind, Secrets: t.Secrets, Unproven: t.Unproven, NeverDelete: t.NeverDelete})
+		refs, err := s.References(t.References)
+		if err != nil {
+			return err
+		}
+		crd, rep, err := crdgen.Generate(s, crdgen.Options{Group: group, Version: cfg.Version, Kind: kind, Secrets: t.Secrets, Unproven: t.Unproven, NeverDelete: t.NeverDelete, References: refs})
 		if err != nil {
 			return err
 		}
@@ -310,7 +321,7 @@ func generate(root string, files map[string][]byte, cfg config) error {
 		if err := writeFile(filepath.Join(out, "config/iam", base+".json"), append(pj, '\n')); err != nil {
 			return err
 		}
-		gens = append(gens, generated{TypeName: t.TypeName, Group: group, Kind: kind, Plural: crd.Spec.Names.Plural, File: file, Secrets: t.Secrets, Unproven: t.Unproven, NeverDelete: t.NeverDelete, Live: live[t.TypeName], Report: rep, IAM: pol})
+		gens = append(gens, generated{TypeName: t.TypeName, Group: group, Kind: kind, Plural: crd.Spec.Names.Plural, File: file, Secrets: t.Secrets, Unproven: t.Unproven, NeverDelete: t.NeverDelete, Live: live[t.TypeName], References: refs, Report: rep, IAM: pol})
 	}
 	if err := writeRBAC(out, gens); err != nil {
 		return err
@@ -375,6 +386,30 @@ func writeRBAC(out string, gens []generated) error {
 			rbacv1.PolicyRule{APIGroups: []string{g}, Resources: status, Verbs: []string{"get", "patch", "update"}},
 		)
 	}
+	// The kinds the overlay's references name (ACK's, most of them): read
+	// only, to copy the referenced value.
+	refGroups := map[string]map[string]bool{}
+	for _, g := range gens {
+		for _, r := range g.References {
+			if refGroups[r.Group] == nil {
+				refGroups[r.Group] = map[string]bool{}
+			}
+			refGroups[r.Group][r.Resource] = true
+		}
+	}
+	var rgnames []string
+	for g := range refGroups {
+		rgnames = append(rgnames, g)
+	}
+	sort.Strings(rgnames)
+	for _, g := range rgnames {
+		var res []string
+		for r := range refGroups[g] {
+			res = append(res, r)
+		}
+		sort.Strings(res)
+		role.Rules = append(role.Rules, rbacv1.PolicyRule{APIGroups: []string{g}, Resources: res, Verbs: []string{"get"}})
+	}
 	role.Rules = append(role.Rules,
 		rbacv1.PolicyRule{APIGroups: []string{"services.k8s.aws"}, Resources: []string{"fieldexports"}, Verbs: verbs},
 		rbacv1.PolicyRule{APIGroups: []string{"services.k8s.aws"}, Resources: []string{"fieldexports/status"}, Verbs: []string{"get", "patch", "update"}},
@@ -413,6 +448,17 @@ func writeRegistry(out string, cfg config, gens []generated) error {
 		if g.Live {
 			secrets += ", Live: true"
 		}
+		if len(g.References) > 0 {
+			secrets += ", References: []Reference{"
+			for i, r := range g.References {
+				if i > 0 {
+					secrets += ", "
+				}
+				secrets += fmt.Sprintf("{Property: %q, Field: %q, RefField: %q, Group: %q, Version: %q, Kind: %q, Resource: %q, Path: %q}",
+					r.Property, r.Field, r.RefField, r.Group, r.Version, r.Kind, r.Resource, r.Path)
+			}
+			secrets += "}"
+		}
 		fmt.Fprintf(&b, "\t{Group: %q, Version: %q, Kind: %q, Plural: %q, TypeName: %q, SchemaFile: %q%s},\n",
 			g.Group, cfg.Version, g.Kind, g.Plural, g.TypeName, "schemas/"+g.File, secrets)
 	}
@@ -440,6 +486,9 @@ func writeReport(out string, gens []generated) error {
 		r := g.Report
 		fmt.Fprintf(&b, "\n## `%s`\n\n", g.TypeName)
 		fmt.Fprintf(&b, "- Secret references (opted in, `secrets` in types.yaml): %s\n", list(r.SecretRefs))
+		if len(r.References) > 0 {
+			fmt.Fprintf(&b, "- Reference fields (the overlay, `references` in types.yaml): %s\n", list(r.References))
+		}
 		fmt.Fprintf(&b, "- Write-only kept as plain fields: %s\n", list(r.PlainWriteOnly))
 		fmt.Fprintf(&b, "- Of those, write-only strings that could be opted in if they are secrets: %s\n", list(r.SecretCandidate))
 		fmt.Fprintf(&b, "- Create-only paths without a CEL rule: %s\n", list(r.CELSkipped))

@@ -7581,6 +7581,22 @@ rules:
   - patch
   - update
 - apiGroups:
+  - ec2.cloudcontrol.aws.hfl.dev
+  resources:
+  - networkinterfaces
+  verbs:
+  - get
+- apiGroups:
+  - ec2.services.k8s.aws
+  resources:
+  - elasticipaddresses
+  - instances
+  - securitygroups
+  - subnets
+  - vpcs
+  verbs:
+  - get
+- apiGroups:
   - services.k8s.aws
   resources:
   - fieldexports

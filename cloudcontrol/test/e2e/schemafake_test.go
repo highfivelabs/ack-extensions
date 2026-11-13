@@ -225,6 +225,18 @@ func exampleSpec(t *testing.T, root string, ty *registry.Type, name string) (map
 	if spec == nil {
 		spec = map[string]any{}
 	}
+	// A required ID property with a reference (the overlay) is no longer
+	// required by the CRD on its own; the example gives the ID itself.
+	required := map[string]bool{}
+	for _, r := range ty.Schema().Required {
+		required["/properties/"+r] = true
+	}
+	for _, ref := range ty.References {
+		if _, ok := spec[ref.Field]; !ok && required[ref.Property] {
+			p := specSchema.Properties[ref.Field]
+			spec[ref.Field] = synth(&p, "spec."+ref.Field)
+		}
+	}
 	var secrets []client.Object
 	for i, p := range ty.SecretPaths() {
 		fields := ty.Schema().FieldPath(p)

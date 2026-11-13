@@ -17,6 +17,11 @@
 //     strings only) to Secret references (ACK's SecretKeyReference shape),
 //     resolved by the reconciler; every other write-only property is a
 //     plain field;
+//   - the overlay's references (Options.References) to reference fields
+//     beside the ID property they fill (vpcRef beside vpcId, ACK's
+//     AWSResourceReferenceWrapper shape), with CEL rules that one of the two
+//     is given, not both, and that a create-only property's reference does
+//     not change either;
 //   - primaryIdentifier to status.cloudControl.identifier (Cloud Control's
 //     identifier), beside the last request and a digest of write-only values;
 //   - the status fields every ACK kind has: ackResourceMetadata and
@@ -67,6 +72,9 @@ type Options struct {
 	Unproven string
 	// NeverDelete becomes the AnnotationNeverDelete annotation.
 	NeverDelete bool
+	// References are the overlay's reference fields, checked and filled by
+	// cfn.Schema.References.
+	References []cfn.Reference
 }
 
 // Report is what the generation could not map exactly.
@@ -76,6 +84,7 @@ type Report struct {
 	StatusFields    int
 	CELRules        int
 	SecretRefs      []string // write-only strings opted in to Secret references
+	References      []string // reference fields added by the overlay
 	PlainWriteOnly  []string // write-only properties kept as plain fields
 	SecretCandidate []string // plain write-only strings that could be opted in
 	CELSkipped      []string // create-only paths no CEL rule can reach
@@ -135,6 +144,7 @@ func Generate(s *cfn.Schema, o Options) (*apiextv1.CustomResourceDefinition, *Re
 	if err := g.createOnlyRules(&spec); err != nil {
 		return nil, nil, err
 	}
+	g.references(&spec, o.References)
 
 	status := statusSchema()
 	for _, name := range sortedKeys(s.Properties) {

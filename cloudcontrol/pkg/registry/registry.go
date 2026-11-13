@@ -49,12 +49,19 @@ type Type struct {
 	// permissions and the sweeper lists it. Every other type is proven on
 	// the fakes only.
 	Live bool
+	// References are the overlay's reference fields (cloudcontrol/types.yaml
+	// `references`): each lets a top-level ID property be given as another
+	// object's Kubernetes name instead.
+	References []Reference
 
 	once    sync.Once
 	schema  *cfn.Schema
 	secrets [][]string
 	err     error
 }
+
+// Reference is one reference field of the overlay (cfn.Reference).
+type Reference = cfn.Reference
 
 // GVK is the kind's group, version and kind.
 func (t *Type) GVK() schema.GroupVersionKind {

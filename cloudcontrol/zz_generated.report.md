@@ -134,7 +134,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::EC2::ClientVpnEndpoint` | `ClientVpnEndpoint.ec2.cloudcontrol.aws.hfl.dev` | 23 | 1 | 14 | 0 | 0 | 2 |
 | `AWS::EC2::ClientVpnRoute` | `ClientVpnRoute.ec2.cloudcontrol.aws.hfl.dev` | 4 | 1 | 8 | 0 | 0 | 0 |
 | `AWS::EC2::ClientVpnTargetNetworkAssociation` | `ClientVpnTargetNetworkAssociation.ec2.cloudcontrol.aws.hfl.dev` | 4 | 1 | 8 | 0 | 0 | 0 |
-| `AWS::EC2::EIPAssociation` | `EIPAssociation.ec2.cloudcontrol.aws.hfl.dev` | 5 | 1 | 10 | 0 | 0 | 0 |
+| `AWS::EC2::EIPAssociation` | `EIPAssociation.ec2.cloudcontrol.aws.hfl.dev` | 5 | 1 | 19 | 0 | 0 | 0 |
 | `AWS::EC2::EnclaveCertificateIamRoleAssociation` | `EnclaveCertificateIamRoleAssociation.ec2.cloudcontrol.aws.hfl.dev` | 2 | 3 | 4 | 0 | 0 | 2 |
 | `AWS::EC2::GatewayRouteTableAssociation` | `GatewayRouteTableAssociation.ec2.cloudcontrol.aws.hfl.dev` | 2 | 1 | 2 | 0 | 0 | 0 |
 | `AWS::EC2::InstanceConnectEndpoint` | `InstanceConnectEndpoint.ec2.cloudcontrol.aws.hfl.dev` | 5 | 11 | 8 | 0 | 0 | 0 |
@@ -165,7 +165,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::EC2::RouteServerPeer` | `RouteServerPeer.ec2.cloudcontrol.aws.hfl.dev` | 4 | 7 | 6 | 0 | 0 | 0 |
 | `AWS::EC2::RouteServerPropagation` | `RouteServerPropagation.ec2.cloudcontrol.aws.hfl.dev` | 2 | 0 | 4 | 0 | 0 | 0 |
 | `AWS::EC2::SecondaryNetwork` | `SecondaryNetwork.ec2.cloudcontrol.aws.hfl.dev` | 3 | 4 | 4 | 0 | 0 | 0 |
-| `AWS::EC2::SecurityGroupVpcAssociation` | `SecurityGroupVpcAssociation.ec2.cloudcontrol.aws.hfl.dev` | 2 | 3 | 4 | 0 | 0 | 0 |
+| `AWS::EC2::SecurityGroupVpcAssociation` | `SecurityGroupVpcAssociation.ec2.cloudcontrol.aws.hfl.dev` | 2 | 3 | 12 | 0 | 0 | 0 |
 | `AWS::EC2::Snapshot` | `Snapshot.ec2.cloudcontrol.aws.hfl.dev` | 3 | 10 | 4 | 0 | 0 | 0 |
 | `AWS::EC2::SnapshotBlockPublicAccess` | `SnapshotBlockPublicAccess.ec2.cloudcontrol.aws.hfl.dev` | 1 | 1 | 0 | 0 | 0 | 0 |
 | `AWS::EC2::SubnetCidrReservation` | `SubnetCidrReservation.ec2.cloudcontrol.aws.hfl.dev` | 5 | 3 | 8 | 0 | 0 | 1 |
@@ -189,7 +189,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::EC2::VerifiedAccessGroup` | `VerifiedAccessGroup.ec2.cloudcontrol.aws.hfl.dev` | 6 | 5 | 0 | 0 | 0 | 0 |
 | `AWS::EC2::VerifiedAccessInstance` | `VerifiedAccessInstance.ec2.cloudcontrol.aws.hfl.dev` | 7 | 4 | 0 | 0 | 0 | 0 |
 | `AWS::EC2::VerifiedAccessTrustProvider` | `VerifiedAccessTrustProvider.ec2.cloudcontrol.aws.hfl.dev` | 10 | 3 | 10 | 1 | 0 | 0 |
-| `AWS::EC2::VPCBlockPublicAccessExclusion` | `VPCBlockPublicAccessExclusion.ec2.cloudcontrol.aws.hfl.dev` | 4 | 1 | 4 | 0 | 0 | 0 |
+| `AWS::EC2::VPCBlockPublicAccessExclusion` | `VPCBlockPublicAccessExclusion.ec2.cloudcontrol.aws.hfl.dev` | 4 | 1 | 10 | 0 | 0 | 0 |
 | `AWS::EC2::VPCBlockPublicAccessOptions` | `VPCBlockPublicAccessOptions.ec2.cloudcontrol.aws.hfl.dev` | 1 | 2 | 0 | 0 | 0 | 0 |
 | `AWS::EC2::VPCEncryptionControl` | `VPCEncryptionControl.ec2.cloudcontrol.aws.hfl.dev` | 11 | 4 | 2 | 0 | 0 | 0 |
 | `AWS::EC2::VPCEndpointConnectionNotification` | `VPCEndpointConnectionNotification.ec2.cloudcontrol.aws.hfl.dev` | 4 | 1 | 4 | 0 | 0 | 0 |
@@ -2889,6 +2889,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::EIPAssociation`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml): `allocationRef`, `instanceRef`, `networkInterfaceRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3261,6 +3262,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::SecurityGroupVpcAssociation`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml): `groupRef`, `vpcRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3549,6 +3551,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::VPCBlockPublicAccessExclusion`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml): `subnetRef`, `vpcRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
