@@ -209,13 +209,7 @@ func TestLiveKindsChecked(t *testing.T) {
 	} {
 		var c config
 		for n, nd := range tc.types {
-			c.Types = append(c.Types, struct {
-				TypeName    string   `json:"typeName"`
-				Kind        string   `json:"kind"`
-				Secrets     []string `json:"secrets"`
-				Unproven    string   `json:"unproven"`
-				NeverDelete bool     `json:"neverDelete"`
-			}{TypeName: n, NeverDelete: nd})
+			c.Types = append(c.Types, typeEntry{TypeName: n, NeverDelete: nd})
 		}
 		c.LiveKinds = tc.live
 		if _, err := liveKinds(c); err == nil {

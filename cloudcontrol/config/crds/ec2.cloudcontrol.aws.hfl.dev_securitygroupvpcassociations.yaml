@@ -55,6 +55,26 @@ spec:
                 - message: 'groupId is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
+              groupRef:
+                description: 'A reference to a SecurityGroup (ec2.services.k8s.aws)
+                  whose status.id fills groupId: its Kubernetes name, and namespace
+                  when another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or groupId,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'groupRef is create-only, as groupId is: it cannot change
+                    after the resource is made'
+                  rule: self == oldSelf
               vpcId:
                 description: The ID of the VPC in the security group vpc association.
                 type: string
@@ -62,9 +82,25 @@ spec:
                 - message: 'vpcId is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
-            required:
-            - groupId
-            - vpcId
+              vpcRef:
+                description: 'A reference to a VPC (ec2.services.k8s.aws) whose status.vpcID
+                  fills vpcId: its Kubernetes name, and namespace when another (cross-namespace
+                  references need the manager''s --enable-cross-namespace). The value
+                  is read once that object is synced. Give this or vpcId, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'vpcRef is create-only, as vpcId is: it cannot change after
+                    the resource is made'
+                  rule: self == oldSelf
             type: object
             x-kubernetes-validations:
             - message: 'groupId is create-only (CloudFormation createOnlyProperties):
@@ -73,6 +109,20 @@ spec:
             - message: 'vpcId is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.vpcId) == has(oldSelf.vpcId)
+            - message: one of groupId or groupRef is required
+              rule: has(self.groupId) || has(self.groupRef)
+            - message: groupId and groupRef cannot both be given
+              rule: '!(has(self.groupId) && has(self.groupRef))'
+            - message: 'groupRef is create-only, as groupId is: it cannot be added
+                or removed after the resource is made'
+              rule: has(self.groupRef) == has(oldSelf.groupRef)
+            - message: one of vpcId or vpcRef is required
+              rule: has(self.vpcId) || has(self.vpcRef)
+            - message: vpcId and vpcRef cannot both be given
+              rule: '!(has(self.vpcId) && has(self.vpcRef))'
+            - message: 'vpcRef is create-only, as vpcId is: it cannot be added or
+                removed after the resource is made'
+              rule: has(self.vpcRef) == has(oldSelf.vpcRef)
           status:
             properties:
               ackResourceMetadata:

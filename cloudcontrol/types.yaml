@@ -32,6 +32,17 @@
 #             false (docs/cloudcontrol.md, section 3). Such a type also
 #             joins config/admission/retain-only.yaml, is left out of the
 #             live-test role and is never swept.
+#   references  the overlay's reference fields (docs/cloudcontrol.md,
+#             section 12, item 4): each lets a top-level ID property be
+#             given as another object's Kubernetes name, as ACK's kinds
+#             do (`vpcRef: {from: {name: ...}}`). Per entry: `property`
+#             (a pointer, /properties/VpcId), the referenced kind's
+#             `group`, `kind` and `path` (the field holding the value,
+#             status.vpcID), and optionally `version` (v1alpha1),
+#             `resource` (its plural) and `field` (the reference field's
+#             name; default the property's field without Id, Arn or Name,
+#             plus Ref). The reconciler reads the referenced object once it
+#             is synced; the manager's ClusterRole gets `get` on its kind.
 groupSuffix: cloudcontrol.aws.hfl.dev
 version: v1alpha1
 # The kinds sampled on live runs (plan question 21, answered 2026-11-11).
@@ -397,6 +408,23 @@ types:
     unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
   - typeName: AWS::EC2::EIPAssociation
     unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+    # An Elastic IP (ACK's ElasticIPAddress) associated with an instance
+    # (ACK's Instance) or a network interface (ours): the catalog's
+    # ec2-instance chart (create_eip).
+    references:
+      - property: /properties/AllocationId
+        group: ec2.services.k8s.aws
+        kind: ElasticIPAddress
+        resource: elasticipaddresses
+        path: status.allocationID
+      - property: /properties/InstanceId
+        group: ec2.services.k8s.aws
+        kind: Instance
+        path: status.instanceID
+      - property: /properties/NetworkInterfaceId
+        group: ec2.cloudcontrol.aws.hfl.dev
+        kind: NetworkInterface
+        path: status.id
   - typeName: AWS::EC2::EnclaveCertificateIamRoleAssociation
     unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
   - typeName: AWS::EC2::GatewayRouteTableAssociation
@@ -458,6 +486,17 @@ types:
     unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
   - typeName: AWS::EC2::SecurityGroupVpcAssociation
     unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+    # ACK's SecurityGroup and VPC: the catalog's security-group chart
+    # (vpc_associations).
+    references:
+      - property: /properties/GroupId
+        group: ec2.services.k8s.aws
+        kind: SecurityGroup
+        path: status.id
+      - property: /properties/VpcId
+        group: ec2.services.k8s.aws
+        kind: VPC
+        path: status.vpcID
   - typeName: AWS::EC2::Snapshot
     unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
   - typeName: AWS::EC2::SnapshotBlockPublicAccess
@@ -508,6 +547,17 @@ types:
     secrets: [/properties/NativeApplicationOidcOptions/ClientSecret]
   - typeName: AWS::EC2::VPCBlockPublicAccessExclusion
     unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+    # ACK's VPC or Subnet: the catalog's vpc chart (Block Public Access
+    # exclusions).
+    references:
+      - property: /properties/VpcId
+        group: ec2.services.k8s.aws
+        kind: VPC
+        path: status.vpcID
+      - property: /properties/SubnetId
+        group: ec2.services.k8s.aws
+        kind: Subnet
+        path: status.subnetID
   - typeName: AWS::EC2::VPCBlockPublicAccessOptions
     unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
   - typeName: AWS::EC2::VPCEncryptionControl

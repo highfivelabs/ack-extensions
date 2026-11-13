@@ -27,7 +27,6 @@ import (
 	cctypes "github.com/aws/aws-sdk-go-v2/service/cloudcontrol/types"
 	"github.com/go-logr/logr"
 	corev1 "k8s.io/api/core/v1"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/pkg/cfn"
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/pkg/registry"
@@ -112,7 +111,7 @@ func inProgress(ev *cctypes.ProgressEvent) error {
 // model is the object's spec as a CloudFormation model, with write-only
 // Secret references resolved, and a digest of the write-only values.
 func (m *manager) model(ctx context.Context, r *resource) (map[string]any, string, error) {
-	spec := cfn.Normalise(r.spec()).(map[string]any)
+	spec := cfn.Normalise(withoutReferences(m.t, r.spec())).(map[string]any)
 	writeOnly := map[string]any{}
 	for _, path := range m.t.SecretPaths() {
 		fields := m.s.FieldPath(path)
@@ -184,6 +183,12 @@ func (m *manager) observe(latest *resource, desired *resource, id string, props 
 			f := names.ToField[strings.Split(name, "/")[0]]
 			if v, ok := dspec[f]; ok {
 				spec[f] = v
+			}
+		}
+		// The references are the object's, not Cloud Control's.
+		for _, ref := range m.t.References {
+			if v, ok := dspec[ref.RefField]; ok {
+				spec[ref.RefField] = v
 			}
 		}
 		latest.setSpec(spec)
@@ -354,7 +359,7 @@ func (m *manager) Update(ctx context.Context, desiredRes, latestRes acktypes.AWS
 	if err != nil {
 		return m.onError(out, err)
 	}
-	observed := m.s.ToCFN(m.s.Root(), cfn.Normalise(latest.spec())).(map[string]any)
+	observed := m.s.ToCFN(m.s.Root(), cfn.Normalise(withoutReferences(m.t, latest.spec()))).(map[string]any)
 	ops, err := Patch(m.s, model, observed, digest != latest.digest())
 	if err != nil {
 		return m.onError(out, err)
@@ -507,19 +512,6 @@ func (m *manager) FilterSystemTags(res acktypes.AWSResource, systemTags []string
 		spec[f] = kept
 	}
 	r.setSpec(spec)
-}
-
-// ResolveReferences: Cloud Control kinds have no references yet (the
-// schemas' relationshipRef could generate them; docs/cloudcontrol.md).
-func (m *manager) ResolveReferences(_ context.Context, _ client.Reader, res acktypes.AWSResource) (acktypes.AWSResource, bool, error) {
-	return res, false, nil
-}
-
-// ClearResolvedReferences returns a copy, as ACK's generated managers do:
-// the runtime patches the object it gets back and writes the API server's
-// answer into it, which must not overwrite the caller's observed state.
-func (m *manager) ClearResolvedReferences(res acktypes.AWSResource) acktypes.AWSResource {
-	return res.DeepCopy()
 }
 
 // onError and onSuccess set ACK.Terminal and ACK.Recoverable as ACK's

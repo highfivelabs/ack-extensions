@@ -731,7 +731,8 @@ where it stands here:
 | --- | --- | --- |
 | `VPNGateway.spec.vpcRef`, `VPNGatewayRoutePropagation.spec.routeTableRef` | ours | **waits on question 16**: both name ACK's ec2 kinds (`VPC`, `RouteTable`), which takes ACK's ec2-controller as a Go module here, a new upstream dependency. The charts make it the first gap of the `vpc` chart (`enable_vpn_gateway`, `propagate_*_route_tables_vgw`) |
 | Adopting a VPC's default VPC, security group, network ACL and main route table by `vpcRef` (`aws_default_*`) | ours, four new kinds | to build; the `vpcRef` waits on question 16 like the row above. Shape: read the default object by the VPC (`DescribeSecurityGroups` with `group-name=default`, `DescribeNetworkAcls` with `default=true`, `DescribeRouteTables` with `association.main=true`, `DescribeVpcs` with `isDefault=true`), manage its rules, entries or routes, and never delete it |
-| VPC Block Public Access options and exclusions; `SecurityGroupVpcAssociation` | ours | **served already**, by Cloud Control kinds: `ec2.cloudcontrol.aws.hfl.dev` `VPCBlockPublicAccessOptions`, `VPCBlockPublicAccessExclusion` and `SecurityGroupVpcAssociation` (schema fake only). The charts' `upstream/aws-kinds.yaml` can map them |
+| VPC Block Public Access options and exclusions; `SecurityGroupVpcAssociation` | ours | **served**, by Cloud Control kinds: `ec2.cloudcontrol.aws.hfl.dev` `VPCBlockPublicAccessOptions`, `VPCBlockPublicAccessExclusion` and `SecurityGroupVpcAssociation` (schema fake only). **With references** since 2026-11-12 (`docs/cloudcontrol.md` section 12, item 4): `VPCBlockPublicAccessExclusion.spec.vpcRef` and `subnetRef` (ACK's `VPC`, `Subnet`), `SecurityGroupVpcAssociation.spec.groupRef` and `vpcRef` (ACK's `SecurityGroup`, `VPC`), so a chart wires them in one render. The charts' `upstream/aws-kinds.yaml` can map them |
+| An Elastic IP associated with an instance (`AssociateAddress`; the `ec2-instance` chart's `create_eip`) | ours | **served** by `ec2.cloudcontrol.aws.hfl.dev` `EIPAssociation` (schema fake only), with `allocationRef` (ACK's `ElasticIPAddress`), `instanceRef` (ACK's `Instance`) and `networkInterfaceRef` (our `NetworkInterface`) since 2026-11-12. ACK's ec2-controller has no association kind (checked at `v1.23.1` and `v1.24.0`); its `ElasticIPAddress` has no instance field |
 | S3 directory buckets | ours | **served** by `s3express.cloudcontrol.aws.hfl.dev` `DirectoryBucket` (batch 14) |
 | `aws_s3_account_public_access_block` | ours | to build: a new `s3control` service here, generated from `PutPublicAccessBlock`, `GetPublicAccessBlock` and `DeletePublicAccessBlock` (an account singleton, as `AccountPasswordPolicy`) |
 | KMS `ExternalKey`, `ReplicaExternalKey` (`ImportKeyMaterial`, the material from a Secret) | ours | to build, hand-written |
@@ -2844,7 +2845,8 @@ Before it can run on a real cluster:
     (`pkg/operator`, `ourServices`).
 13. Cloud Control (`docs/cloudcontrol.md` section 12): one real-AWS run per
     kind (the sandbox account), types in foundation order, the overlay
-    (renames, references, removed fields), selective CRD installation, and
+    (renames and removed fields; references are built, 2026-11-12),
+    selective CRD installation, and
     a non-EKS identity (documented in section 10, not built). The coverage
     dashboard does not count the Cloud Control kinds as ours yet.
 14. Version slots (`docs/slot-moves.md`, 2026-11-12): ACK's release, adopt
