@@ -1007,7 +1007,16 @@ limits":
    stand-in CRDs for ACK's two kinds: refused by the CRD with both or
    neither, waiting with `ACK.ReferencesResolved` Unknown until the
    referenced objects sync, then the IDs sent to Cloud Control and only
-   the references kept). Renames and dropped fields are not built.
+   the references kept). Added the same day:
+   `TestReferencesBlockPublicAccessExclusion` (`subnetRef` and `vpcRef`,
+   schema fake), and `TestEIPAssociation` **on moto** (a backend over
+   `AssociateAddress`; `allocationRef` and `instanceRef` resolved to
+   moto's allocation and instance, the association seen in EC2, the
+   delete disassociating). On AWS Emulator 1.0.338 `TestEIPAssociation`
+   resolves both references and sends the right IDs, but the emulator's
+   Cloud Control keeps the type in its own store: no association in EC2,
+   a UUID for the identifier, no `Id` read back (`docs/aws-emulator.md`).
+   Renames and dropped fields are not built.
 5. Selective CRD installation (only the kinds some context enables), once
    the kind count makes installing them all costly.
 6. Currency: the factory's watcher diffs the schemas' behaviour keys; a

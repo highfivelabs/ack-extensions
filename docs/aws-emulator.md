@@ -182,6 +182,19 @@ an unknown type (`TestIdentityStore`). Our moto backends translate each
 type into the service's API; that translation is exactly what the emulator
 does not have.
 
+**`EIPAssociation`, 2026-11-12, release 1.0.338.** `TestEIPAssociation`,
+proven on moto the same day, fails on the emulator for the same cause
+(offload run `off-ack-extensions-1113024313-28788`): the manager resolves
+`allocationRef` and `instanceRef` and sends `CreateResource` with moto's
+shape of IDs (`{"AllocationId":"eipalloc-...","InstanceId":"i-..."}`),
+the emulator answers `SUCCESS` with a UUID identifier, `GetResource`
+gives no `Id`, and `DescribeAddresses` shows the address on no instance.
+`SecurityGroupVpcAssociation` and `VPCBlockPublicAccessExclusion` have no
+moto backend (moto 5.2.5 lacks the operations); their reference tests
+run on the schema fake only, and the survey above (`works`, the
+association's identifier a UUID where AWS gives `GroupId|VpcId`) is all
+the emulator says of them.
+
 ## The ACK-generated kinds
 
 The 32 tests in `tests/e2e`, unchanged, with the emulator in moto's place

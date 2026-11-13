@@ -316,6 +316,8 @@ func startFake(t *testing.T, root string) (*fake.Server, string, aws.Config) {
 			b = fake.NewIdentityStoreGroupMembership(motoCfg)
 		case "AWS::EC2::NetworkInterface":
 			b = fake.NewNetworkInterface(motoCfg)
+		case "AWS::EC2::EIPAssociation":
+			b = fake.NewEIPAssociation(motoCfg)
 		default:
 			if ty.Unproven != "" {
 				// Marked in types.yaml: moto lacks the API, so the type
