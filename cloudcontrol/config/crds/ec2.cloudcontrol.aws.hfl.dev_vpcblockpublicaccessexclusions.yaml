@@ -63,6 +63,26 @@ spec:
                 - message: 'subnetId is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
+              subnetRef:
+                description: 'A reference to a Subnet (ec2.services.k8s.aws) whose
+                  status.subnetID fills subnetId: its Kubernetes name, and namespace
+                  when another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or subnetId,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'subnetRef is create-only, as subnetId is: it cannot change
+                    after the resource is made'
+                  rule: self == oldSelf
               tags:
                 description: An array of key-value pairs to apply to this resource.
                 items:
@@ -99,6 +119,25 @@ spec:
                 - message: 'vpcId is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
+              vpcRef:
+                description: 'A reference to a VPC (ec2.services.k8s.aws) whose status.vpcID
+                  fills vpcId: its Kubernetes name, and namespace when another (cross-namespace
+                  references need the manager''s --enable-cross-namespace). The value
+                  is read once that object is synced. Give this or vpcId, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'vpcRef is create-only, as vpcId is: it cannot change after
+                    the resource is made'
+                  rule: self == oldSelf
             required:
             - internetGatewayExclusionMode
             type: object
@@ -109,6 +148,16 @@ spec:
             - message: 'vpcId is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.vpcId) == has(oldSelf.vpcId)
+            - message: subnetId and subnetRef cannot both be given
+              rule: '!(has(self.subnetId) && has(self.subnetRef))'
+            - message: 'subnetRef is create-only, as subnetId is: it cannot be added
+                or removed after the resource is made'
+              rule: has(self.subnetRef) == has(oldSelf.subnetRef)
+            - message: vpcId and vpcRef cannot both be given
+              rule: '!(has(self.vpcId) && has(self.vpcRef))'
+            - message: 'vpcRef is create-only, as vpcId is: it cannot be added or
+                removed after the resource is made'
+              rule: has(self.vpcRef) == has(oldSelf.vpcRef)
           status:
             properties:
               ackResourceMetadata:

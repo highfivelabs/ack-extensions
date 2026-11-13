@@ -153,3 +153,69 @@ func Fields(s *cfn.Schema) []string {
 	sort.Strings(out)
 	return out
 }
+
+// references adds the overlay's reference fields to spec. Each sits beside
+// the property it fills: the property stops being required on its own, and
+// CEL rules ask for one of the two (when the property is required) and
+// refuse both, as ACK's generated validateReferenceFields does at
+// reconcile time. A create-only property's reference is create-only too.
+func (g *gen) references(spec *apiextv1.JSONSchemaProps, refs []cfn.Reference) {
+	for _, r := range refs {
+		spec.Properties[r.RefField] = referenceWrapper(r)
+		g.rep.References = append(g.rep.References, r.RefField)
+		required := false
+		var kept []string
+		for _, f := range spec.Required {
+			if f == r.Field {
+				required = true
+				continue
+			}
+			kept = append(kept, f)
+		}
+		spec.Required = kept
+		if required {
+			spec.XValidations = append(spec.XValidations, apiextv1.ValidationRule{
+				Rule:    fmt.Sprintf("has(self.%s) || has(self.%s)", r.Field, r.RefField),
+				Message: fmt.Sprintf("one of %s or %s is required", r.Field, r.RefField),
+			})
+		}
+		spec.XValidations = append(spec.XValidations, apiextv1.ValidationRule{
+			Rule:    fmt.Sprintf("!(has(self.%s) && has(self.%s))", r.Field, r.RefField),
+			Message: fmt.Sprintf("%s and %s cannot both be given", r.Field, r.RefField),
+		})
+		g.rep.CELRules++
+		if required {
+			g.rep.CELRules++
+		}
+		if g.sets.CreateOnly.Has(r.Property) {
+			node := spec.Properties[r.RefField]
+			node.XValidations = append(node.XValidations, apiextv1.ValidationRule{
+				Rule:    "self == oldSelf",
+				Message: fmt.Sprintf("%s is create-only, as %s is: it cannot change after the resource is made", r.RefField, r.Field),
+			})
+			spec.Properties[r.RefField] = node
+			spec.XValidations = append(spec.XValidations, apiextv1.ValidationRule{
+				Rule:    fmt.Sprintf("has(self.%s) == has(oldSelf.%s)", r.RefField, r.RefField),
+				Message: fmt.Sprintf("%s is create-only, as %s is: it cannot be added or removed after the resource is made", r.RefField, r.Field),
+			})
+			g.rep.CELRules += 2
+		}
+	}
+}
+
+// referenceWrapper is ACK's AWSResourceReferenceWrapper: {from: {name,
+// namespace}}.
+func referenceWrapper(r cfn.Reference) apiextv1.JSONSchemaProps {
+	str := apiextv1.JSONSchemaProps{Type: "string"}
+	return apiextv1.JSONSchemaProps{
+		Description: fmt.Sprintf("A reference to a %s (%s) whose %s fills %s: its Kubernetes name, and namespace when another (cross-namespace references need the manager's --enable-cross-namespace). The value is read once that object is synced. Give this or %s, not both.", r.Kind, r.Group, r.Path, r.Field, r.Field),
+		Type:        "object",
+		Properties: map[string]apiextv1.JSONSchemaProps{
+			"from": {
+				Description: "The referenced object.",
+				Type:        "object",
+				Properties:  map[string]apiextv1.JSONSchemaProps{"name": str, "namespace": str},
+			},
+		},
+	}
+}

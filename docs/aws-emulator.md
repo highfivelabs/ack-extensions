@@ -301,8 +301,56 @@ and answers put, get (all four settings), delete and
 says account-level settings are not enforced on S3 calls
 (`20261102T104655Z-s3control-account-level-publicaccessblock-operations-never-deny-the`,
 `20261024T210022Z-s3control-account-level-blockpublicpolicy-not-enforced-on-putbucketpolicy`);
-the kind never relies on that. The ACK-kind count above becomes 19 of
-33 on the emulator.
+the kind never relies on that. Run on 1.0.322 only: with it, that release
+passes 19 of 33 ACK-kind tests.
+
+**Fourth pass, 2026-11-12: release 1.0.338.** The builder's direction
+the same day: adopt AWS Emulator as the primary fake, moto the fallback
+where the emulator lacks an operation. The newest release (1.0.338,
+published 2026-11-12; the Debian package as for 1.0.322,
+`AWS_EMULATOR_VERSION=1.0.338 hack/aws-emulator.sh`) on one Spot VM
+(offload run `off-ack-extensions-1112224936-7200`):
+
+- **The Cloud Control survey**, now 1,343 kinds (the types added since
+  1.0.322's run): 899 work, 77 partial, 367 unsupported
+  ([`aws-emulator-1.0.338.csv`](aws-emulator-1.0.338.csv)). On the 292
+  kinds of 1.0.322's run nothing moved: 257, 16, 19, the same rows.
+- **The ACK-generated kinds**, 34 tests now (`TestResourceTag` and
+  `TestSlotMove` added since): **20 pass, 14 fail.** `TestDBProxyTarget`
+  passes: the emulator now gives the database's identifier in
+  `RdsResourceId`, as AWS does. `TestResourceTag` is new and fails
+  (`DescribeTags`). Every other failure is one of 1.0.322's, and every one
+  is the emulator's: nothing of ours to fix.
+
+### The 14 failures: candidate upstream contributions
+
+For the builder's approval: this repository files nothing upstream
+(CLAUDE.md, "Never"). AWS Emulator (CC0) tracks its gaps as files in its
+repository, `issues/things-that-do-not-work/` (read on `main`,
+2026-11-12); where one names our gap, it is given, so a contribution
+would be the implementation, not a new report.
+
+| Test | What the emulator lacks (1.0.338) | Its issue file | Contribution |
+| --- | --- | --- | --- |
+| `TestScalingPolicy` | Auto Scaling `DeletePolicy` (a scaffold): the object is never deleted. `DescribePolicies` now works | `20261111T072954Z-autoscaling-deletepolicy-stub`, `20261111T093414Z-autoscaling-cloudwatch-ec2-deletepolicy-answers-http-501-notimplemented` | implement `DeletePolicy` |
+| `TestScheduledAction` | Auto Scaling `DescribeScheduledActions` (501) | none found | report and implement `DescribeScheduledActions` |
+| `TestResourceTag` | EC2 `DescribeTags` (501) | `20261022T235108Z-ec2-describetags-stub` | implement `DescribeTags` (filters by resource ID and key) |
+| `TestVPNConnection` | EC2 `CreateVpnConnection` (a stub) | `20261023T102725Z-ec2-createvpnconnection-stub` | implement `CreateVpnConnection`, `DescribeVpnConnections` with its options and tunnels |
+| `TestConnection` | EventBridge `CreateConnection` makes no Secrets Manager secret for the credentials (`GetSecretValue` on its `SecretArn`: `ResourceNotFoundException`) | related, not the same: `20261029T235600Z-events-connection-lifecycle-never-authorizes-connectionstate-stays-creating` | report and implement the managed secret |
+| `TestAccountPasswordPolicy` | IAM `GetAccountPasswordPolicy` still answers a policy after `DeleteAccountPasswordPolicy`: the object is never deleted | `20261111T010549Z-iam-getaccountpasswordpolicy-answers-200-with-a-policy-after` | implement the delete |
+| `TestSSHPublicKey` | IAM `UpdateSSHPublicKey` (a scaffold); `GetSSHPublicKey` now works | `20261112T141524Z-iam-updatesshpublickey-stub` | implement `UpdateSSHPublicKey` |
+| `TestIAMVirtualMFADevice` | IAM `DeleteVirtualMFADevice` (a scaffold) | `20261105T054223Z-iam-deletevirtualmfadevice-stub` | implement it |
+| `TestReplicaKey` | the replica is made now (`ReplicateKey` works), but its key policy in `eu-west-1` never reads back as the one put (`kms_test.go:165`); not isolated further | none found | isolate (a policy put through the replica's Region), then report |
+| `TestOrganizationsOrganization` | `ListAWSServiceAccessForOrganization` (a scaffold); `EnablePolicyType` and `DisablePolicyType` refuse valid input ("1 validation error"); the account starts in an organization | `20261104T063936Z-account-organizations-describeorganization-reports-an-organization-on-a-freshly` (the starting organization) | implement `ListAWSServiceAccessForOrganization`, fix the two validations |
+| `TestOrganizationsPolicy`, `TestOrganizationsPolicyAttachment` | Organizations `CreatePolicy` gives no policy (the object's policy ID stays empty; 501 on 1.0.322) | none found | implement `CreatePolicy`, `UpdatePolicy`, `AttachPolicy`, `DetachPolicy` |
+| `TestOrganizationsDelegatedAdministrator`, `TestOrganizationsAccountPlacement` | Organizations `CreateAccount` (a scaffold) | none found | implement `CreateAccount` and `DescribeCreateAccountStatus` |
+
+Six of them are one operation each (`DeletePolicy`,
+`DescribeScheduledActions`, `DescribeTags`, `UpdateSSHPublicKey`,
+`DeleteVirtualMFADevice`, the password policy's delete); Organizations is
+the largest gap (five tests). Until they land, moto stays the test of
+record for these 14 (`task check`), and the emulator run is the one to
+read for the 20 it passes.
 
 ## The operator end to end
 

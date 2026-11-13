@@ -45,8 +45,8 @@ func (d *descriptor) Delta(a, b acktypes.AWSResource) *ackcompare.Delta {
 	ra, rb := a.(*resource), b.(*resource)
 	s := d.t.Schema()
 	names, _ := cfn.Names(s.Properties)
-	da := s.ToCFN(s.Root(), cfn.Normalise(ra.spec())).(map[string]any)
-	db := s.ToCFN(s.Root(), cfn.Normalise(rb.spec())).(map[string]any)
+	da := s.ToCFN(s.Root(), cfn.Normalise(withoutReferences(d.t, ra.spec()))).(map[string]any)
+	db := s.ToCFN(s.Root(), cfn.Normalise(withoutReferences(d.t, rb.spec()))).(map[string]any)
 	for _, k := range sortedMapKeys(da) {
 		if da[k] == nil {
 			continue

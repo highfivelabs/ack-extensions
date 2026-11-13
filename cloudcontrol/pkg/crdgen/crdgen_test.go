@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/highfivelabs/ack-extensions/cloudcontrol/pkg/cfn"
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/pkg/crdcheck"
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/pkg/crdgen"
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/pkg/registry"
@@ -91,6 +92,82 @@ func TestNeverDeleteAnnotation(t *testing.T) {
 		v, ok := crd.Annotations[crdgen.AnnotationNeverDelete]
 		if ok != never || (never && v != "true") {
 			t.Errorf("neverDelete=%v: annotation %q (present %v)", never, v, ok)
+		}
+	}
+}
+
+// The overlay's references: a reference field beside each ID property,
+// the property no longer required on its own, CEL asking for one of the
+// two and refusing both, and a create-only property's reference
+// create-only too.
+func TestReferenceFields(t *testing.T) {
+	ty := registry.ByTypeName("AWS::EC2::SecurityGroupVpcAssociation")
+	refs, err := ty.Schema().References([]cfn.Reference{
+		{Property: "/properties/GroupId", Group: "ec2.services.k8s.aws", Kind: "SecurityGroup", Path: "status.id"},
+		{Property: "/properties/VpcId", Group: "ec2.services.k8s.aws", Kind: "VPC", Path: "status.vpcID"},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if refs[0].RefField != "groupRef" || refs[1].RefField != "vpcRef" || refs[1].Resource != "vpcs" || refs[0].Version != "v1alpha1" {
+		t.Fatalf("defaults: %+v", refs)
+	}
+	crd, rep, err := crdgen.Generate(ty.Schema(), crdgen.Options{Group: ty.Group, Version: ty.Version, Kind: ty.Kind, References: refs})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := crdcheck.Validate(crd); err != nil {
+		t.Fatalf("the API server would refuse the CRD: %v", err)
+	}
+	spec := crd.Spec.Versions[0].Schema.OpenAPIV3Schema.Properties["spec"]
+	if len(spec.Required) != 0 {
+		t.Errorf("required %v: the IDs may come from references", spec.Required)
+	}
+	g := spec.Properties["groupRef"]
+	if g.Properties["from"].Properties["name"].Type != "string" {
+		t.Errorf("groupRef is not ACK's reference wrapper: %+v", g)
+	}
+	if len(g.XValidations) != 1 || g.XValidations[0].Rule != "self == oldSelf" {
+		t.Errorf("groupRef of a create-only property is not create-only: %+v", g.XValidations)
+	}
+	want := map[string]bool{
+		"has(self.groupId) || has(self.groupRef)":     false,
+		"!(has(self.groupId) && has(self.groupRef))":  false,
+		"has(self.groupRef) == has(oldSelf.groupRef)": false,
+		"has(self.vpcId) || has(self.vpcRef)":         false,
+		"!(has(self.vpcId) && has(self.vpcRef))":      false,
+	}
+	for _, v := range spec.XValidations {
+		if _, ok := want[v.Rule]; ok {
+			want[v.Rule] = true
+		}
+	}
+	for r, ok := range want {
+		if !ok {
+			t.Errorf("no rule %q", r)
+		}
+	}
+	if len(rep.References) != 2 {
+		t.Errorf("report references %v", rep.References)
+	}
+}
+
+// What the overlay refuses: a property that is not a writable top-level
+// string, a reference listed twice, a missing target, a field clash.
+func TestReferenceRefusals(t *testing.T) {
+	s := registry.ByTypeName("AWS::EC2::SecurityGroupVpcAssociation").Schema()
+	ok := cfn.Reference{Group: "g", Kind: "K", Path: "status.x"}
+	with := func(p string) cfn.Reference { r := ok; r.Property = p; return r }
+	for name, refs := range map[string][]cfn.Reference{
+		"unknown":   {with("/properties/Nope")},
+		"read-only": {with("/properties/State")},
+		"nested":    {with("/properties/GroupId/Inner")},
+		"twice":     {with("/properties/GroupId"), with("/properties/GroupId")},
+		"no target": {{Property: "/properties/GroupId"}},
+		"clash":     {func() cfn.Reference { r := with("/properties/GroupId"); r.RefField = "vpcId"; return r }()},
+	} {
+		if _, err := s.References(refs); err == nil {
+			t.Errorf("%s: accepted %+v", name, refs)
 		}
 	}
 }

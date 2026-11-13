@@ -7,6 +7,13 @@ design and the reasons are in `docs/plan.md`.
 
 ### Added
 
+- **References on Cloud Control kinds** (`docs/cloudcontrol.md` section
+  12, item 4): `ec2.cloudcontrol.aws.hfl.dev` `VPCBlockPublicAccessExclusion`
+  takes `vpcRef` and `subnetRef`, `SecurityGroupVpcAssociation` `groupRef`
+  and `vpcRef`, and `EIPAssociation` `allocationRef`, `instanceRef` and
+  `networkInterfaceRef`, each naming ACK's kind (or our
+  `NetworkInterface`) by its Kubernetes name. The ID fields they fill are
+  no longer required on their own: one of the ID or its reference is.
 - **`s3control.aws.hfl.dev` `PublicAccessBlock`**: the account's S3 Block
   Public Access settings, Terraform's `aws_s3_account_public_access_block`,
   in a new service, `services/s3control` (`docs/plan.md` section 6.36).
