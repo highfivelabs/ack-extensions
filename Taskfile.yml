@@ -131,8 +131,14 @@ tasks:
     cmds:
       - task: setup-envtest
       - hack/moto.sh
+      # go test's deadline per package binary. 45m, not the include's 30m:
+      # on GitHub's 4-vCPU runner, with every package at once (mode full),
+      # cloudcontrol/test/e2e took 1,582 s of 1,800 (2026-11-13, run
+      # 43341609833) and timed out once two more tests landed (#102); on
+      # the 16-vCPU gate VM it takes far less. A deadline, not a check:
+      # every test still runs and must pass.
       - task: go:test-envtest
-        vars: {ENVTEST_K8S_VERSION: '{{.ENVTEST_K8S_VERSION}}'}
+        vars: {ENVTEST_K8S_VERSION: '{{.ENVTEST_K8S_VERSION}}', TIMEOUT: 45m}
 
   check:
     desc: Generated files current, gofmt, vet, SPDX lines, build, tests.
