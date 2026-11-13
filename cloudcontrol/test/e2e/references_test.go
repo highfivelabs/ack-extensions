@@ -189,3 +189,122 @@ func conditionReason(u *unstructured.Unstructured, typ ackv1alpha1.ConditionType
 	}
 	return "", ""
 }
+
+// standIn makes ACK's ec2 kind's stand-in CRD (once) and an object of it
+// in the environment's namespace, with no status yet.
+func (e *env) standIn(t *testing.T, kind, plural, name string) *unstructured.Unstructured {
+	t.Helper()
+	const group = "ec2.services.k8s.aws"
+	if err := e.c.Create(e.ctx, standInCRD(group, kind, plural)); err != nil && !strings.Contains(err.Error(), "already exists") {
+		t.Fatal(err)
+	}
+	u := &unstructured.Unstructured{Object: map[string]any{"spec": map[string]any{}}}
+	u.SetGroupVersionKind(schema.GroupVersionKind{Group: group, Version: "v1alpha1", Kind: kind})
+	u.SetNamespace(envNS)
+	u.SetName(name)
+	eventually(t, 30*time.Second, "the stand-in "+kind+" served", func() error {
+		if err := e.c.Create(e.ctx, u.DeepCopy()); err != nil && !strings.Contains(err.Error(), "already exists") {
+			return err
+		}
+		return nil
+	})
+	return u
+}
+
+// setSynced sets a stand-in's ID field and ACK.ResourceSynced, as ACK's
+// controller would.
+func (e *env) setSynced(t *testing.T, u *unstructured.Unstructured, field, value string) {
+	t.Helper()
+	eventually(t, 10*time.Second, "status of "+u.GetName(), func() error {
+		cur := e.get(t, u)
+		_ = unstructured.SetNestedField(cur.Object, value, "status", field)
+		_ = unstructured.SetNestedSlice(cur.Object, []any{
+			map[string]any{"type": string(ackv1alpha1.ConditionTypeResourceSynced), "status": "True"},
+		}, "status", "conditions")
+		return e.c.Status().Update(e.ctx, cur)
+	})
+}
+
+// refTo is a reference to an object by name, in the object's namespace.
+func refTo(name string) map[string]any { return map[string]any{"from": map[string]any{"name": name}} }
+
+// TestReferencesBlockPublicAccessExclusion: a VPC Block Public Access
+// exclusion for a subnet named by reference to ACK's Subnet (subnetRef;
+// the catalog's vpc chart), and one for a VPC by reference to ACK's VPC
+// (vpcRef), on the schema fake: moto 5.2.5 has no
+// CreateVpcBlockPublicAccessExclusion, and AWS Emulator's Cloud Control
+// keeps the type in its own store, not in EC2 (docs/aws-emulator.md).
+// Nothing is sent before the referenced object syncs; then Cloud Control
+// gets its ID and the exclusion's mode, the object keeps the reference,
+// and the identifier is the exclusion's ID.
+func TestReferencesBlockPublicAccessExclusion(t *testing.T) {
+	e := start(t)
+	if e.live || e.emulator != nil {
+		t.Skip("on the schema fake only: the kind is unproven (cloudcontrol/types.yaml)")
+	}
+	const typeName = "AWS::EC2::VPCBlockPublicAccessExclusion"
+	store, ok := e.cc.(*fake.Server).Backend(typeName).(*fake.SchemaStore)
+	if !ok {
+		t.Fatalf("%s is not on the schema fake", typeName)
+	}
+	subnet := e.standIn(t, "Subnet", "subnets", "public-a")
+	vpc := e.standIn(t, "VPC", "vpcs", "main")
+
+	both := obj("VPCBlockPublicAccessExclusion", "both", map[string]any{
+		"vpcRef": refTo("main"), "vpcId": "vpc-1", "internetGatewayExclusionMode": "allow-egress",
+	})
+	if err := e.c.Create(e.ctx, both); err == nil || !strings.Contains(err.Error(), "cannot both be given") {
+		t.Errorf("an ID with its reference: %v; want the CRD's refusal", err)
+	}
+
+	for _, tc := range []struct {
+		name, ref, field, prop, id string
+		ackObj                     *unstructured.Unstructured
+		mode                       string
+	}{
+		{"public-a-egress", "subnetRef", "subnetID", "SubnetId", "subnet-0123456789abcdef0", subnet, "allow-egress"},
+		{"main-bidirectional", "vpcRef", "vpcID", "VpcId", "vpc-0123456789abcdef0", vpc, "allow-bidirectional"},
+	} {
+		x := obj("VPCBlockPublicAccessExclusion", tc.name, map[string]any{
+			tc.ref: refTo(tc.ackObj.GetName()), "internetGatewayExclusionMode": tc.mode,
+		})
+		if err := e.c.Create(e.ctx, x.DeepCopy()); err != nil {
+			t.Fatal(err)
+		}
+		eventually(t, 60*time.Second, tc.name+": references not resolved", func() error {
+			s, reason := conditionReason(e.get(t, x), ackv1alpha1.ConditionTypeReferencesResolved)
+			if s != "Unknown" || !strings.Contains(reason, "not synced") {
+				return fmt.Errorf("ACK.ReferencesResolved=%q: %s", s, reason)
+			}
+			return nil
+		})
+		before := len(e.calls("CreateResource", typeName))
+		e.setSynced(t, tc.ackObj, tc.field, tc.id)
+		got := e.waitSynced(t, x)
+		if n := len(e.calls("CreateResource", typeName)); n != before+1 {
+			t.Errorf("%s: %d CreateResource calls, want 1", tc.name, n-before)
+		}
+		id, _, _ := unstructured.NestedString(got.Object, "status", "cloudControl", "identifier")
+		model, ok := store.Model(id)
+		if !ok {
+			t.Fatalf("%s: no model for identifier %q", tc.name, id)
+		}
+		if model[tc.prop] != tc.id || model["InternetGatewayExclusionMode"] != tc.mode {
+			t.Errorf("%s: Cloud Control got %v: want %s %s and mode %s", tc.name, js(model), tc.prop, tc.id, tc.mode)
+		}
+		if ex, _, _ := unstructured.NestedString(got.Object, "status", "exclusionId"); ex == "" || ex != id {
+			t.Errorf("%s: status.exclusionId %q, identifier %q: want the exclusion's ID in both", tc.name, ex, id)
+		}
+		spec, _, _ := unstructured.NestedMap(got.Object, "spec")
+		if _, ok := spec[tc.ref]; !ok {
+			t.Errorf("%s: the object's spec %v lost %s", tc.name, spec, tc.ref)
+		}
+		if err := e.c.Delete(e.ctx, x); err != nil {
+			t.Fatal(err)
+		}
+		e.waitGone(t, x)
+		if _, ok := store.Model(id); ok {
+			t.Errorf("%s: %s still in the fake after the delete", tc.name, id)
+		}
+	}
+}

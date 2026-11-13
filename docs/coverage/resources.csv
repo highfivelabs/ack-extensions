@@ -584,7 +584,7 @@ ec2,DHCPOptions,8,DHCPOptions,2,,0,6,false,official_unmapped=3
 ec2,EC2Fleet,123,,0,,0,123,false,
 ec2,EgressOnlyInternetGateway,3,EgressOnlyInternetGateway,3,,0,0,false,
 ec2,EIP,9,ElasticIPAddress,5,,0,4,false,official_unmapped=1
-ec2,EIPAssociation,5,,0,EIPAssociation (Cloud Control),5,0,false,ours EIPAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
+ec2,EIPAssociation,5,,0,EIPAssociation (Cloud Control),5,0,false,
 ec2,EnclaveCertificateIamRoleAssociation,2,,0,EnclaveCertificateIamRoleAssociation (Cloud Control),2,0,false,ours EnclaveCertificateIamRoleAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,FlowLog,17,FlowLog,14,,0,3,false,
 ec2,FpgaImage,8,,0,,0,8,false,
