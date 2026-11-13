@@ -149,7 +149,7 @@ tasks:
       - task: upstream-check
       - task: upstream:yaml-check
       - task: go:fmt-check
-        vars: {DIRS: services apis pkg cmd tests cloudcontrol hack/cloudcontrol-gen hack/noaws hack/ack-iam}
+        vars: {DIRS: services apis pkg cmd tests cloudcontrol hack/cloudcontrol-gen hack/noaws hack/ack-iam hack/emulator-expect}
       - task: noaws
       - task: generate
       - task: go:committed
@@ -259,6 +259,20 @@ tasks:
         ACK_TEST_BACKEND=aws-emulator EMULATOR_TELEMETRY=off \
         ACK_EMULATOR_REPORT="{{.REPORT | default (print .ROOT_DIR "/offload-artifacts/aws-emulator.csv")}}" \
           go test -count=1 -timeout 60m {{.PKGS | default "./cloudcontrol/test/e2e/"}} -run '{{.RUN | default "TestEveryKindOnAWSEmulator"}}' -v
+
+  # The ACK-kind tests on AWS Emulator beside moto (docs/aws-emulator.md,
+  # "In CI"): every test in tests/e2e, the pinned release, judged against
+  # tests/e2e/aws-emulator-expected-failures.yaml. CI runs it
+  # (hack/ci/select.sh's emulator=true); task check does not.
+  "test:aws-emulator:ack":
+    desc: 'tests/e2e on AWS Emulator (the pinned release): fails unless every expected failure (tests/e2e/aws-emulator-expected-failures.yaml) fails and every other test passes (hack/ci/emulator-ack.sh).'
+    cmds:
+      - task: setup-envtest
+      - hack/aws-emulator.sh
+      - task: go:test-envtest
+        vars:
+          ENVTEST_K8S_VERSION: '{{.ENVTEST_K8S_VERSION}}'
+          CMD: hack/ci/emulator-ack.sh
 
   # Live tests against the real sandbox account (docs/live-runs.md). Never
   # run by check or any task it runs (hack/noaws checks that); refuse to

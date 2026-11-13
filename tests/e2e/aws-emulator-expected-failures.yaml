@@ -1,0 +1,61 @@
+# Copyright 2026 High Five Labs
+# SPDX-License-Identifier: Apache-2.0
+#
+# The ACK-kind tests (tests/e2e) expected to fail on AWS Emulator at the
+# pinned release, each because the emulator lacks an operation AWS has
+# (docs/aws-emulator.md, "The 14 failures: candidate upstream
+# contributions"). On the emulator only: every one of them passes on moto,
+# the test of record (task check).
+#
+# task test:aws-emulator:ack (hack/ci/emulator-ack.sh, checked by
+# hack/emulator-expect) fails when
+#   - a test listed here passes (the emulator gained the operation: take
+#     the test off this list),
+#   - any other test fails, skips or does not run,
+#   - a test listed here does not exist, or
+#   - the installed emulator is not this release.
+# Moving the pin (hack/aws-emulator.sh) means rereading this list.
+release: 1.0.338
+expected:
+  - test: TestScalingPolicy
+    missing: Auto Scaling DeletePolicy (a scaffold; the object is never deleted)
+    doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions
+  - test: TestScheduledAction
+    missing: Auto Scaling DescribeScheduledActions (501)
+    doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions
+  - test: TestResourceTag
+    missing: EC2 DescribeTags (501)
+    doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions
+  - test: TestVPNConnection
+    missing: EC2 CreateVpnConnection (a stub)
+    doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions
+  - test: TestConnection
+    missing: EventBridge CreateConnection's managed Secrets Manager secret (GetSecretValue on its SecretArn is ResourceNotFoundException)
+    doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions
+  - test: TestAccountPasswordPolicy
+    missing: IAM DeleteAccountPasswordPolicy (GetAccountPasswordPolicy still answers a policy after it)
+    doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions
+  - test: TestSSHPublicKey
+    missing: IAM UpdateSSHPublicKey (a scaffold)
+    doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions
+  - test: TestIAMVirtualMFADevice
+    missing: IAM DeleteVirtualMFADevice (a scaffold)
+    doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions
+  - test: TestReplicaKey
+    missing: KMS PutKeyPolicy on a replica key in a second Region (one Region per emulator; the policy never reads back)
+    doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions
+  - test: TestOrganizationsOrganization
+    missing: Organizations ListAWSServiceAccessForOrganization (a scaffold); EnablePolicyType and DisablePolicyType refuse valid input
+    doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions
+  - test: TestOrganizationsPolicy
+    missing: Organizations CreatePolicy (no policy made)
+    doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions
+  - test: TestOrganizationsPolicyAttachment
+    missing: Organizations CreatePolicy (no policy made)
+    doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions
+  - test: TestOrganizationsDelegatedAdministrator
+    missing: Organizations CreateAccount (a scaffold)
+    doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions
+  - test: TestOrganizationsAccountPlacement
+    missing: Organizations CreateAccount (a scaffold)
+    doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions

@@ -15,6 +15,11 @@
 #   mode=full    task check
 #   groups=...   the groups (mode=groups)
 #   e2e=true     task operator-e2e runs too (on a Spot runner)
+#   emulator=true  task test:aws-emulator:ack runs too: the ACK-kind tests
+#                on AWS Emulator, beside moto (docs/aws-emulator.md, "In
+#                CI"); for mode full, or a group with ACK kinds or their
+#                tests (a service, e2e:F), not for cloudcontrol or
+#                coverage alone
 #
 # Each path is one of:
 #   docs      *.md, docs/, LICENSE, NOTICE; UPSTREAM.md unless a row
@@ -105,9 +110,18 @@ plan() {
   [[ "$mode" == groups ]] || groups=""
   local e2e=false
   [[ "$mode" == none ]] || e2e=true
+  local emulator=false g
+  if [[ "$mode" == full ]]; then
+    emulator=true
+  elif [[ "$mode" == groups ]]; then
+    for g in $groups; do
+      case "$g" in cloudcontrol|coverage) ;; *) emulator=true ;; esac
+    done
+  fi
   echo "mode=$mode"
   echo "groups=$groups"
   echo "e2e=$e2e"
+  echo "emulator=$emulator"
   {
     echo "### What this pull request runs: $mode${groups:+ ($groups)}"
     echo
