@@ -59,6 +59,8 @@ spec:
               value: ko://github.com/highfivelabs/ack-extensions/services/organizations/cmd/controller
             - name: MANAGER_IMAGE_RDS
               value: ko://github.com/highfivelabs/ack-extensions/services/rds/cmd/controller
+            - name: MANAGER_IMAGE_S3CONTROL
+              value: ko://github.com/highfivelabs/ack-extensions/services/s3control/cmd/controller
             - name: MANAGER_IMAGE_SCHEDULER
               value: ko://github.com/highfivelabs/ack-extensions/services/scheduler/cmd/controller
             - name: MANAGER_IMAGE_WAFV2

@@ -1556,6 +1556,7 @@ s3,Bucket,153,Bucket,115,,0,38,false,official_unmapped=51
 s3,BucketPolicy,2,,0,,0,2,false,
 s3,MultiRegionAccessPoint,7,,0,MultiRegionAccessPoint (Cloud Control),7,0,false,ours MultiRegionAccessPoint (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has s3); on the schema fake only
 s3,MultiRegionAccessPointPolicy,2,,0,MultiRegionAccessPointPolicy (Cloud Control),2,0,false,ours MultiRegionAccessPointPolicy (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has s3); on the schema fake only
+s3,PublicAccessBlock,0,,0,PublicAccessBlock,0,0,false,outside-denominator;ours_crd_attributes=4
 s3,StorageLens,47,,0,StorageLens (Cloud Control),47,0,false,ours StorageLens (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has s3); on the schema fake only
 s3,StorageLensGroup,27,,0,StorageLensGroup (Cloud Control),27,0,false,ours StorageLensGroup (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has s3); on the schema fake only
 s3express,AccessPoint,13,,0,AccessPoint (Cloud Control),13,0,false,ours AccessPoint (Cloud Control) unproven on fake: moto 5.2.5 has no s3express; on the schema fake only

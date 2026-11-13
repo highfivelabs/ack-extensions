@@ -82,6 +82,11 @@ pins:
     version: v1.7.0
     commit: 5824700fd7
     use: Go module (API types of Account and OrganizationalUnit, which AccountPlacement, DelegatedAdministrator and PolicyAttachment reference); ACK's Account and OrganizationalUnit are left to it; the SDK client at its version
+  - name: s3control-controller
+    repo: aws-controllers-k8s/s3control-controller
+    version: v1.9.0
+    commit: 2ee9ccbfaaaa36ad2105143502a902e03906bfd8
+    use: ACK's AccessPoint is left to it; the SDK client at its version
   - name: aws-sdk-go-v2 models
     repo: aws/aws-sdk-go-v2
     version: v1.34.0
@@ -177,6 +182,8 @@ copied:
   - here: [services/iam/pkg/resource/login_profile/custom_delta.go]
     from: *custom_delta
   - here: [services/scheduler/pkg/resource/schedule/custom_delta.go]
+    from: *custom_delta
+  - here: [services/s3control/pkg/resource/public_access_block/custom_delta.go]
     from: *custom_delta
   - here: [services/autoscaling/pkg/resource/scheduled_action/custom_delta.go]
     from: *custom_delta

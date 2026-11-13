@@ -1,0 +1,8 @@
+service:
+  full_name: "Amazon S3 Control"
+  short_name: "S3 Control"
+  link: "https://aws.amazon.com/s3/"
+  documentation: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_Operations_AWS_S3_Control.html"
+api_versions:
+  - api_version: v1alpha1
+    status: available

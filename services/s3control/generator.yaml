@@ -1,0 +1,102 @@
+# Generator configuration for ack-extensions's S3 Control kinds
+# (s3control.aws.hfl.dev).
+#
+# PublicAccessBlock, the account's S3 Block Public Access settings
+# (Terraform's aws_s3_account_public_access_block), is generated from
+# PutPublicAccessBlock (the create and the update: a put replaces the four
+# settings), GetPublicAccessBlock (the read) and DeletePublicAccessBlock
+# (the delete), mapped below as WebACLAssociation's AssociateWebACL is. It
+# is an account singleton, as iam.aws.hfl.dev AccountPasswordPolicy is:
+#
+# - the account is the manager's own: every request's AccountId is set in
+#   hooks (rm.awsAccountID), so it is not a spec field;
+# - S3 has no ARN for the settings; the kind's identifier is an ARN of the
+#   manager's form (is_arn_primary_key), set by the create;
+# - until an object has put the settings once (no ARN in its status) its
+#   read finds nothing, so a new object takes over the account's existing
+#   settings rather than being refused as already existing;
+# - NoSuchPublicAccessBlockConfiguration is not found;
+# - a setting left out of the spec is S3's default, false, and no drift
+#   (custom_delta.go).
+#
+# hooks.go and templates/hooks/public_access_block hold the hooks;
+# pkg/endpoint keeps requests on a fake's own host (S3 Control puts the
+# account ID in front of a custom endpoint's host).
+#
+# Every resource the generator finds by name is ignored: ACK's
+# s3control-controller (v1.9.0) has AccessPoint and ignores the rest.
+operations:
+  PutPublicAccessBlock:
+    operation_type:
+      - Create
+      - Update
+    resource_name: PublicAccessBlock
+  GetPublicAccessBlock:
+    operation_type: ReadOne
+    resource_name: PublicAccessBlock
+    # Its one required member, AccountId, is the manager's (ignored below):
+    # nothing to find until the object has put the settings (hooks.go).
+    custom_check_required_fields_missing_method: notMade
+  DeletePublicAccessBlock:
+    operation_type: Delete
+    resource_name: PublicAccessBlock
+ignore:
+  field_paths:
+    # The manager's own account, set in hooks.
+    - PutPublicAccessBlockInput.AccountId
+    - GetPublicAccessBlockInput.AccountId
+    - DeletePublicAccessBlockInput.AccountId
+  resource_names:
+    - AccessGrant
+    - AccessGrantsInstance
+    - AccessGrantsLocation
+    - AccessPoint
+    - AccessPointForObjectLambda
+    - Bucket
+    - Job
+    - MultiRegionAccessPoint
+    - StorageLensGroup
+resources:
+  PublicAccessBlock:
+    tags:
+      ignore: true
+    print:
+      add_age_column: true
+      add_synced_column: true
+      additional_columns:
+        - name: BLOCK-ACLS
+          json_path: .spec.publicAccessBlockConfiguration.blockPublicACLs
+          type: boolean
+        - name: IGNORE-ACLS
+          json_path: .spec.publicAccessBlockConfiguration.ignorePublicACLs
+          type: boolean
+        - name: BLOCK-POLICY
+          json_path: .spec.publicAccessBlockConfiguration.blockPublicPolicy
+          type: boolean
+        - name: RESTRICT-BUCKETS
+          json_path: .spec.publicAccessBlockConfiguration.restrictPublicBuckets
+          type: boolean
+    exceptions:
+      errors:
+        404:
+          code: NoSuchPublicAccessBlockConfiguration
+    is_arn_primary_key: true
+    hooks:
+      new_resource_manager_client_options:
+        code: clientOptions(cfg)
+      delta_pre_compare:
+        code: customSetDefaults(a, b)
+      sdk_read_one_post_build_request:
+        template_path: hooks/public_access_block/sdk_post_build_request.go.tpl
+      sdk_read_one_post_set_output:
+        template_path: hooks/public_access_block/sdk_read_one_post_set_output.go.tpl
+      sdk_create_post_build_request:
+        template_path: hooks/public_access_block/sdk_post_build_request.go.tpl
+      sdk_create_post_set_output:
+        template_path: hooks/public_access_block/sdk_create_post_set_output.go.tpl
+      sdk_update_post_build_request:
+        template_path: hooks/public_access_block/sdk_post_build_request.go.tpl
+      sdk_delete_post_build_request:
+        template_path: hooks/public_access_block/sdk_post_build_request.go.tpl
+sdk_names:
+  model_name: s3-control

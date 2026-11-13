@@ -14,6 +14,9 @@ design and the reasons are in `docs/plan.md`.
   `networkInterfaceRef`, each naming ACK's kind (or our
   `NetworkInterface`) by its Kubernetes name. The ID fields they fill are
   no longer required on their own: one of the ID or its reference is.
+- **`s3control.aws.hfl.dev` `PublicAccessBlock`**: the account's S3 Block
+  Public Access settings, Terraform's `aws_s3_account_public_access_block`,
+  in a new service, `services/s3control` (`docs/plan.md` section 6.36).
 - **`ec2.aws.hfl.dev` `ResourceTag`**: one tag on an EC2 resource made
   elsewhere, Terraform's `aws_ec2_tag` (`docs/plan.md` section 6.35).
 

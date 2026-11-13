@@ -380,6 +380,7 @@ Services are sorted by tier, then by attributes covered, and every tier 1 servic
 | `kms.aws.hfl.dev/v1alpha1` `ReplicaKey` | A multi-Region KMS key's replica in another Region: created with `ReplicateKey` in the primary key's Region, then read, changed (policy, tags) and deleted in its own Region, never touching the primary key. | Copied from ACK kms-controller pull request #112 (open), with its Region handling corrected: the pull request's read, update and delete act on the primary key |
 | `lambda.aws.hfl.dev/v1alpha1` `Permission` | One statement of a Lambda function's resource-based policy (`AddPermission`), so that S3, an ALB, EventBridge or SNS may invoke the function; removed on delete, and added back if removed outside Kubernetes. ACK has permissions only inside an `Alias`. | New: the calls and policy reading are copied from ACK's `Alias`; no ACK pull request adds the kind |
 | `rds.aws.hfl.dev/v1alpha1` `DBRoleAssociation` | Associates an IAM role with an Aurora cluster or an RDS instance for one feature (`s3Import`, `s3Export`, `Lambda`, `S3_INTEGRATION`), and removes it on delete. ACK's `DBCluster` and `DBInstance` only report associated roles. It becomes synced once RDS reports the association `ACTIVE`. | New: no ACK code or pull request covers it |
+| `s3control.aws.hfl.dev/v1alpha1` `PublicAccessBlock` | The account's S3 Block Public Access settings (block and ignore public ACLs, block public bucket policies, restrict public buckets), Terraform's `aws_s3_account_public_access_block`: put with `PutPublicAccessBlock` for the manager's own account, put back if changed outside Kubernetes, and deleted on delete; a new object takes over the account's existing settings. ACK's s3control-controller has `AccessPoint` only, and ACK's `Bucket` a bucket's own block. | Generated (`PutPublicAccessBlock` as the create and the update, `GetPublicAccessBlock`, `DeletePublicAccessBlock`), with short hooks; no ACK pull request adds it |
 | `scheduler.aws.hfl.dev/v1alpha1` `Schedule` | An EventBridge Scheduler schedule: an expression that invokes a target as a role, in a group by name or by reference to our `ScheduleGroup`. ACK has no Scheduler controller. | Generated |
 | `scheduler.aws.hfl.dev/v1alpha1` `ScheduleGroup` | An EventBridge Scheduler schedule group, with its tags. ACK has no Scheduler controller; the manager runs beside ACK's EventBridge controller. | Generated, with eventbridge-controller's tag hooks |
 | `wafv2.aws.hfl.dev/v1alpha1` `WebACLAssociation` | A regional web ACL associated with a load balancer, API stage or other resource, by ARN or by reference to ACK's `WebACL`; associated again if removed outside Kubernetes, disassociated on delete. ACK's wafv2-controller has no association. | Generated (`AssociateWebACL` as the create and the update, `GetWebACLForResource`, `DisassociateWebACL`), with two short hooks; no ACK pull request adds it |
@@ -549,6 +550,11 @@ EventBridge Scheduler has no ACK controller. Its manager runs beside ACK's
 EventBridge controller, as that controller's identity, so that role needs
 `scheduler:*`, and `iam:PassRole` for the roles schedules invoke their
 targets with.
+
+The S3 Control manager (`PublicAccessBlock`) runs beside ACK's
+s3control-controller, as any other service's does; that controller's role
+then needs `s3:GetAccountPublicAccessBlock` and
+`s3:PutAccountPublicAccessBlock` (the delete is authorized as the put).
 
 With `--identity=ack`, or the annotation `aws.hfl.dev/identity: ack` on
 ACK's controller Deployment, our manager runs as ACK's ServiceAccount

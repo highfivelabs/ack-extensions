@@ -259,7 +259,7 @@ aws_route53_vpc_association_authorization,1,neither,,"plan section 5 rank 14; no
 aws_route53_zone,1,ack,route53 HostedZone,via CloudFormation route53::HostedZone
 aws_route_table,1,ack,ec2 RouteTable,via CloudFormation ec2::RouteTable
 aws_route_table_association,1,ack-field,ec2 Subnet.spec.routeTables; ours GatewayRouteTableAssociation (Cloud Control) for gateways,excluded.yaml: SubnetRouteTableAssociation
-aws_s3_account_public_access_block,1,neither,,plan section 5 rank 17; no CloudFormation type (S3 Control PutPublicAccessBlock)
+aws_s3_account_public_access_block,1,ours,s3control PublicAccessBlock,plan section 6.36; no CloudFormation type (S3 Control PutPublicAccessBlock)
 aws_s3_bucket,1,ack,s3 Bucket,via CloudFormation s3::Bucket
 aws_s3_bucket_accelerate_configuration,1,ack-field,s3 Bucket.spec (accelerate configuration),
 aws_s3_bucket_acl,1,ack-field,s3 Bucket.spec (acl),

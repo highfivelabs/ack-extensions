@@ -284,6 +284,26 @@ The Cloud Control survey on the same release is unchanged:
 `TestEveryKindOnAWSEmulator` with `ACK_EMULATOR_EXPECT=docs/aws-emulator-1.0.322.csv`
 gives 257 works, 16 partial, 19 unsupported.
 
+**`s3control.aws.hfl.dev` `PublicAccessBlock`, 2026-11-12.** A new kind
+written after the builder's direction that day (adopt the emulator as
+the primary fake, moto as the fallback), so its test was run on both
+from the start: `TestPublicAccessBlock` passes on the emulator, 37 s
+(offload run `off-ack-extensions-1112234526-327`), as on moto, 39 s
+(`off-ack-extensions-1112233804-10864`), unchanged (the account is
+`harness.Env.Account`). Both needed the same thing: S3 Control's
+endpoint rules put the account ID in front of a custom endpoint's host
+(`000000000000.127.0.0.1`), so the manager and the test keep the fake's
+own host (`services/s3control/pkg/endpoint`; `docs/plan.md` section 4.4)
+and the account travels in `x-amz-account-id`. The emulator (behind our
+re-signing proxy, signing name `s3`) routes `/v20180820/` to S3 Control
+and answers put, get (all four settings), delete and
+`NoSuchPublicAccessBlockConfiguration` as moto does. Its own issue list
+says account-level settings are not enforced on S3 calls
+(`20261102T104655Z-s3control-account-level-publicaccessblock-operations-never-deny-the`,
+`20261024T210022Z-s3control-account-level-blockpublicpolicy-not-enforced-on-putbucketpolicy`);
+the kind never relies on that. Run on 1.0.322 only: with it, that release
+passes 19 of 33 ACK-kind tests.
+
 **Fourth pass, 2026-11-12: release 1.0.338.** The builder's direction
 the same day: adopt AWS Emulator as the primary fake, moto the fallback
 where the emulator lacks an operation. The newest release (1.0.338,

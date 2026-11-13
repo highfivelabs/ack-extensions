@@ -28,6 +28,7 @@ factory's daily watch. Change both together; `task upstream:yaml-check`
 | iam-controller | `v1.11.3` | `91ed7f353255e54e2c6372b3ce757bd2e7fae4ad` | Go module: the API types of ACK's `Role` and `Policy`, which our kinds reference |
 | organizations-controller | `v1.7.0` | `5824700fd7` | Go module: the API types of ACK's `Account` and `OrganizationalUnit`, which `AccountPlacement`, `DelegatedAdministrator` and `PolicyAttachment` reference (and its CRDs, for the tests); ACK's `Account` and `OrganizationalUnit` are left to it (the generator ignores them); the Organizations SDK client is at its version (`service/organizations` `v1.37.4`) |
 | EventBridge Scheduler | none | | no ACK controller (`community` issue #2784); the Scheduler SDK client is `service/scheduler` `v1.12.13`, its version in aws-sdk-go-v2 `v1.34.0`, the release of the models below |
+| s3control-controller | `v1.9.0` | `2ee9ccbfaaaa36ad2105143502a902e03906bfd8` | not a module here: ACK's `AccessPoint` is left to it (the generator ignores every S3 Control resource but our `PublicAccessBlock`); the S3 Control SDK client is at its version (`service/s3control` `v1.68.4`) |
 | aws-sdk-go-v2 models | `v1.34.0` | tag | the Smithy model the generator reads (`--aws-sdk-go-version`), the version rds-controller `v1.14.2` was generated from |
 
 The runtime, code generator and controllers move together: ACK releases
@@ -79,6 +80,7 @@ and what changed.
 | `services/eventbridge/pkg/resource/api_destination/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; an API destination's rate limit instead of `SuspendedState` |
 | `services/iam/pkg/resource/login_profile/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; a login profile's `passwordResetRequired` instead of `SuspendedState` |
 | `services/scheduler/pkg/resource/schedule/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; a schedule's server defaults instead of `SuspendedState` |
+| `services/s3control/pkg/resource/public_access_block/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; the four settings of an account's public access block, and only S3's default (false) taken from the latest state |
 | `services/autoscaling/pkg/resource/scheduled_action/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; `ScheduledAction`'s server-defaulted fields (start time, time zone) |
 | `services/autoscaling/pkg/resource/scaling_policy/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; `ScalingPolicy`'s server-defaulted fields instead of `SuspendedState` |
 | `services/kms/apis/v1alpha1/replica_key.go` | kms-controller PR #112 `apis/v1alpha1/replica_key.go` | `eb4057e4…` (PR head) | written by hand here, so the generator's header is replaced; documentation shortened; ACK's `Tag` and `KeyMetadata`; `keyID`/`keyRef` exactly one, `keyID` immutable |
@@ -161,6 +163,9 @@ Written here: `services/rds/apis/v1alpha1/db_proxy_target.go`,
 `services/wafv2/apis/v1alpha1/ack_kinds.go`,
 `services/wafv2/pkg/resource/web_acl_association/{hooks,hooks_test}.go`,
 `services/wafv2/templates/hooks/web_acl_association/*.go.tpl`,
+`services/s3control/templates/hooks/public_access_block/*.go.tpl`,
+`services/s3control/pkg/resource/public_access_block/{hooks,custom_delta_test}.go`,
+`services/s3control/pkg/endpoint/`,
 `services/*/cmd/controller/handwritten.go`, `pkg/`, `cmd/operator`,
 `tests/`, `hack/`, `config/operator`, `config/fake-aws`.
 
