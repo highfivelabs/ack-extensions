@@ -3064,6 +3064,13 @@ Before it can run on a real cluster:
    work without (`Certificate` synced at `ISSUED`, `Bucket` emptied on
    delete) are the first candidates for a copy here if the release is not
    near.
+
+   **Answered** (2026-11-13, the builder: "Q1 extend in ack-extensions
+   with a note to upstream"): missing fields on ACK's own kinds (KMS
+   deletion window and rotation, S3 `force_destroy` and the rest of
+   section 5's "Gaps on ACK's own kinds") are filled here, by extending
+   ACK's kinds in ack-extensions, rather than waiting for the release;
+   each one is paired with a note (an issue or pull request) to upstream.
 2. **Database users and roles on RDS** have no AWS API. Out of scope
    here, or a separate project that speaks SQL (connection details from
    ACK's `DBInstance`, credentials from Secrets Manager)? Proposed: out of
@@ -3174,6 +3181,12 @@ Before it can run on a real cluster:
    has the types (`AWS::EC2::SecurityGroupIngress`, `...Egress`, kept out
    in `cloudcontrol/excluded.yaml` for this question), so the first or
    second option is a day's work either way.
+
+   **Answered** (2026-11-13, the builder: "Q7 yes, generated"): build the
+   standalone rule kinds (`aws_vpc_security_group_ingress_rule` and
+   `_egress_rule`), generated (from Cloud Control's
+   `AWS::EC2::SecurityGroupIngress` and `...Egress`, taken out of
+   `cloudcontrol/excluded.yaml`).
 8. **A service ACK has no controller for** (EventBridge Scheduler,
    rank 10). The operator runs our manager beside an ACK controller, and
    takes its identity from it: the ServiceAccount's role annotations, the
@@ -3422,6 +3435,12 @@ Before it can run on a real cluster:
     chart's `ebs_volumes`; section 5). The Cloud Control kinds no longer
     wait on it: their references read ACK's objects as unstructured, so
     need no Go module (`docs/cloudcontrol.md` section 12, item 4).
+
+    **Answered** (2026-11-13, the builder: "Q16 yes"): take ACK's
+    ec2-controller as a Go dependency (`v1.23.1`, the pinned version),
+    alias `TransitGateway` and the other ACK types the references need,
+    and add the `vpcRef`s, `routeTableRef`, `instanceRef` and the
+    `aws_default_*` kinds that wait on it.
 17. **The name of the per-environment context for the ACK-generated
     kinds** (section 7.6). Built as `core.aws.hfl.dev/v1alpha1`
     `ACKContext`, one per namespace, named `ack`: a sibling of
@@ -3555,3 +3574,7 @@ Before it can run on a real cluster:
     per namespace, and per environment (`ACKContext`, the default for
     account-level kinds) no ACK controller is needed at all. Not built:
     the `Beside` entry, until the builder answers.
+
+    **Answered** (2026-11-13, the builder: "Q22 keep as built"): our
+    s3control manager runs beside ACK's s3control-controller only, as for
+    every service ACK has; no `Beside` entry.
