@@ -438,7 +438,8 @@ There is nothing live to compare with yet: the one row in
   ACK-generated kinds. Against the services' own APIs it is stricter than
   moto in places AWS is strict, and it found a bug moto hides
   (`OptionGroup`). Run it by hand, or nightly, and read the failures; do
-  not gate on it.
+  not gate on it. (Superseded 2026-11-12: CI gates on it, with the
+  expected failures listed; "In CI" below.)
 - **Look again** when upstream wires Cloud Control to the services and
   validates against the registry schema (issues
   `20261102T095426Z-cloudcontrol-9-net-new-causes-desiredstate-patchdocument-are`,
@@ -451,20 +452,34 @@ Follow-ups: check the `OptionGroup` read and the `AccountAlias` takeover
 on a live run (both fixes are in). The moto-shaped fixtures were made
 real on 2026-11-12 ("Second pass" above).
 
-## In `task ci`, if adopted
+## In CI
 
-Nothing changes in `task check` or the merge gate. If the builder wants
-the emulator in CI, the cheapest shape:
+Adopted 2026-11-12 (the builder: the emulator is the primary fake, moto
+the fallback). The ACK-kind tests run on the emulator **beside** moto, not
+instead of it: `task check` still runs every test on moto, and nothing
+there changed.
 
-- The nightly run (`nightly.yml`'s job, run on an offload VM while Actions
-  is off), and `task ci` only when asked: after `task check`, run `task test:aws-emulator` (the survey; about a minute) and
-  `task test:aws-emulator PKGS=./tests/e2e/ RUN=.` (the ACK kinds; up to
-  45 minutes while tests fail on timeouts). The VM image would carry the
-  pinned package, installed by `hack/aws-emulator.sh`.
-- Gate only on change: the survey with `ACK_EMULATOR_EXPECT=` the committed
-  CSV fails when an outcome moves, so a new release that wires a service or
-  validates a schema shows up as a diff to review, and the pin moves with
-  it. The ACK-kind tests would need an expected-failures list in the same
-  spirit before any of them can gate.
-- Telemetry stays off (`EMULATOR_TELEMETRY=off`, `--telemetry off`, and the
-  dead proxy in its environment).
+| | |
+| --- | --- |
+| Run | `task test:aws-emulator:ack` (`hack/ci/emulator-ack.sh`): every test in `tests/e2e` with `ACK_TEST_BACKEND=aws-emulator`, `go test -json` |
+| Pin | **1.0.338**, `hack/aws-emulator.sh`'s default (the Debian package, signature checked) |
+| Expected failures | [`tests/e2e/aws-emulator-expected-failures.yaml`](../tests/e2e/aws-emulator-expected-failures.yaml): the 14 tests of "The 14 failures" above, each naming the operation the emulator lacks and linking here, on the emulator only |
+| Judged by | `hack/emulator-expect` (its own unit tests in `task check`). The run fails when a test not on the list fails, skips or does not finish (a panic, the binary's timeout); when a test on the list **passes** (the emulator gained the operation: take it off the list, so the list stays honest); when a listed test does not exist; or when the installed emulator is not the list's release. go test's exit status is not the result: the expected failures make it fail |
+| When | the plan's `emulator=true` (`hack/ci/select.sh`): mode full, or a group with ACK kinds or their tests (a service, `e2e:F`); not docs only, not `cloudcontrol` or `coverage` alone |
+| Where | the merge gate (`task ci`, `hack/ci/gate.sh`: a skippable step after `operator-e2e`, so a preempted VM resumes past it) and `ci.yml`'s `emulator` job, which the required `ci` status needs |
+| Telemetry | off (`EMULATOR_TELEMETRY=off`, `--telemetry off`, the dead proxy) |
+
+First run (offload run `off-ack-extensions-1113023721-5738`, c3d-standard-8):
+on 1.0.338 **21 of 35 pass** (`TestPublicAccessBlock` among them), the
+14 listed fail, and the judgement passes.
+
+Moving the pin: install the new release, run `task test:aws-emulator:ack`,
+and change the list to what that release does; a test that now passes
+comes off it, a new failure is read against the API reference first (fix
+ours, fix the test, or add it here with its missing operation).
+
+The Cloud Control kinds are not in this run: the emulator's Cloud Control
+keeps them in its own store (0 of 13 moto-proven tests pass, above), so
+the schema fake and moto stay their tests. `task test:aws-emulator` (the
+survey, `ACK_EMULATOR_EXPECT=docs/aws-emulator-1.0.338.csv`) remains by
+hand.

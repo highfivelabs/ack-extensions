@@ -6,10 +6,12 @@
 # version from its Debian package, the signature checked against the
 # publisher's key fingerprint first (docs/aws-emulator.md). Linux amd64 or
 # arm64 with apt only; does nothing when that version is already on PATH.
-# Opt-in: no task that check runs calls it.
+# Not part of task check; task test:aws-emulator:ack (CI's emulator run)
+# and task test:aws-emulator call it. The pin is 1.0.338; moving it means
+# rereading tests/e2e/aws-emulator-expected-failures.yaml.
 set -euo pipefail
 
-VERSION="${AWS_EMULATOR_VERSION:-1.0.322}"
+VERSION="${AWS_EMULATOR_VERSION:-1.0.338}"
 FINGERPRINT="98BCF336A3BE53B734E967C52E5BF49BD940F624"
 BASE="https://downloads.aws.com/aws-emulator/packages/aws-emulator/LTS"
 
