@@ -328,10 +328,14 @@ func TestSecurityGroupRuleBesideOwner(t *testing.T) {
 	}); err != nil {
 		t.Fatal(err)
 	}
+	// The old ACK.Terminal stands until that reconcile replaces it.
+	eventually(t, 60*time.Second, "the refusal cleared", func() error {
+		if s, msg := condition(e.get(t, in), ackv1alpha1.ConditionTypeTerminal); s == "True" {
+			return fmt.Errorf("ACK.Terminal still True: %s", msg)
+		}
+		return nil
+	})
 	got := e.waitSynced(t, in)
-	if s, _ := condition(got, ackv1alpha1.ConditionTypeTerminal); s == "True" {
-		t.Errorf("ACK.Terminal still True after the group's list was emptied")
-	}
 	id, _, _ := unstructured.NestedString(got.Object, "status", "id")
 	if !strings.HasPrefix(id, "sgr-") {
 		t.Errorf("status.id %q, want the rule ID", id)
