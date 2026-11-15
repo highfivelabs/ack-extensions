@@ -27,6 +27,7 @@ import (
 	acktypes "github.com/aws-controllers-k8s/runtime/pkg/types"
 	ackrtutil "github.com/aws-controllers-k8s/runtime/pkg/util"
 	ackrtwebhook "github.com/aws-controllers-k8s/runtime/pkg/webhook"
+	hflextend "github.com/highfivelabs/ack-extensions/pkg/extend"
 	hflslot "github.com/highfivelabs/ack-extensions/pkg/slot"
 	flag "github.com/spf13/pflag"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -213,6 +214,16 @@ func main() {
 	if err = sc.BindControllerManager(mgr, ackCfg); err != nil {
 		setupLog.Error(
 			err, "unable bind to controller manager to service controller",
+			"aws.service", awsServiceAlias,
+		)
+		os.Exit(1)
+	}
+
+	// ack-extensions patch 0004: controllers that extend ACK's own kinds
+	// (docs/extensions.md), registered by the service's hand-written code.
+	if err = hflextend.Setup(mgr, sc, ackCfg); err != nil {
+		setupLog.Error(
+			err, "unable to set up the extensions of ACK's kinds",
 			"aws.service", awsServiceAlias,
 		)
 		os.Exit(1)

@@ -62,6 +62,9 @@ func TestScan(t *testing.T) {
 		"PublicAccessBlock.s3control": {"s3:GetAccountPublicAccessBlock", "s3:PutAccountPublicAccessBlock"},
 		// curated
 		"DBRoleAssociation.rds": {"rds:AddRoleToDBInstance", "iam:PassRole"},
+		// extensions of ACK's own kinds (pkg/extend)
+		"Key.kms":   {"kms:DescribeKey", "kms:GetKeyRotationStatus", "kms:EnableKeyRotation", "kms:EnableKey", "kms:DisableKey"},
+		"Bucket.s3": {"s3:ListBucketVersions", "s3:DeleteObjectVersion", "s3:ListBucketMultipartUploads", "s3:AbortMultipartUpload", "s3:BypassGovernanceRetention"},
 	} {
 		k, ok := byRef[ref]
 		if !ok {

@@ -3,8 +3,8 @@
 
 package main
 
-// What main.go (generated) cannot know: the kinds written by hand, and the
-// ACK kinds they reference.
+// What main.go (generated) cannot know: the kinds written by hand, the ACK
+// kinds they reference, and the extensions of ACK's own kinds.
 
 import (
 	ackkmsapitypes "github.com/aws-controllers-k8s/kms-controller/apis/v1alpha1"
@@ -13,6 +13,10 @@ import (
 	// generator's single regional client cannot model; registering its
 	// package adds its manager factory.
 	_ "github.com/highfivelabs/ack-extensions/services/kms/pkg/resource/replica_key"
+
+	// Extends ACK's own Key with the rotation period and enabled
+	// (docs/extensions.md); its init registers it with pkg/extend.
+	_ "github.com/highfivelabs/ack-extensions/services/kms/pkg/extend/key"
 )
 
 func init() {

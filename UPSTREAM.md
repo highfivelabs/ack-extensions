@@ -17,7 +17,7 @@ factory's daily watch. Change both together; `task upstream:yaml-check`
 | rds-controller | `v1.14.2` | `ca4f0d529241be52349f6b38478be0cb4b9acb53` | Go module: the API types of ACK's `DBProxy`, `DBInstance` and `DBCluster`, which our kinds reference |
 | applicationautoscaling-controller | `v1.9.0` | `009baef3a28e7d8a49a61c520eb6c537c674d52b` | not a module here: the Application Auto Scaling SDK client is at its version (`service/applicationautoscaling` `v1.34.10`) |
 | autoscaling-controller | `v1.5.0` | `56316c75a5da8fdf8079917a16e540be4e84e986` | not a module here: the EC2 Auto Scaling SDK client is at its version (`service/autoscaling` `v1.64.3`) |
-| kms-controller | `v1.7.0` | `57250fba83d58aeb84a3ec2770cf3e9b45708895` | Go module: the API types of ACK's `Key` (which `ReplicaKey` references), `KeyMetadata` and `Tag`; the KMS SDK client at its version (`service/kms` `v1.37.14`) |
+| kms-controller | `v1.7.0` | `57250fba83d58aeb84a3ec2770cf3e9b45708895` | Go module: the API types of ACK's `Key` (which `ReplicaKey` references), `KeyMetadata` and `Tag`; the KMS SDK client at its version (`service/kms` `v1.37.14`); its controller (`cmd/controller`), built from the module, runs ACK's side of `TestKeyExtension` (`docs/extensions.md`) |
 | ec2-controller | `v1.23.1` | `9303654c2cffad05147e4260105439149f7c81bf` | not a module here (its `pkg/tags` is copied); the EC2 SDK client is at its version (`service/ec2` `v1.290.1`) |
 | ecr-controller | `v1.11.1` | `72590cedeb2a4a92d086175762a97aa2ed2bc979` | not a module here: ACK's ECR kinds are left to it (the generator ignores them); the ECR SDK client is at its version (`service/ecr` `v1.55.0`) |
 | ecr-controller PR #121 | head | `f6c7d57e0b169547ed2300cbba0c65b11691b0eb` | `ReplicationConfiguration`'s API, behaviour and conversions (open, conflicting, no review, 2026-11-09) |
@@ -29,6 +29,7 @@ factory's daily watch. Change both together; `task upstream:yaml-check`
 | organizations-controller | `v1.7.0` | `5824700fd7` | Go module: the API types of ACK's `Account` and `OrganizationalUnit`, which `AccountPlacement`, `DelegatedAdministrator` and `PolicyAttachment` reference (and its CRDs, for the tests); ACK's `Account` and `OrganizationalUnit` are left to it (the generator ignores them); the Organizations SDK client is at its version (`service/organizations` `v1.37.4`) |
 | EventBridge Scheduler | none | | no ACK controller (`community` issue #2784); the Scheduler SDK client is `service/scheduler` `v1.12.13`, its version in aws-sdk-go-v2 `v1.34.0`, the release of the models below |
 | s3control-controller | `v1.9.0` | `2ee9ccbfaaaa36ad2105143502a902e03906bfd8` | not a module here: ACK's `AccessPoint` is left to it (the generator ignores every S3 Control resource but our `PublicAccessBlock`); the S3 Control SDK client is at its version (`service/s3control` `v1.68.4`) |
+| s3-controller | `v1.15.0` | `874152a6dbff23e60fcbaf8eda1a074121207ee0` | not a module here (a new upstream dependency is the builder's call): ACK's `Bucket` is left to it, extended by our s3 manager (`docs/extensions.md`), which reads it as unstructured; its `Bucket` CRD is copied into `hack/ack-crds` for the tests; the S3 SDK client is at its version (`service/s3` `v1.97.3`). `v1.15.0` is the catalog's pin and the last release on runtime `v0.67.0` |
 | aws-sdk-go-v2 models | `v1.34.0` | tag | the Smithy model the generator reads (`--aws-sdk-go-version`), the version rds-controller `v1.14.2` was generated from |
 
 The runtime, code generator and controllers move together: ACK releases
@@ -43,6 +44,7 @@ them in step, and a pin move takes all of them to one ACK release.
 | `0001-api-group-suffix-flag.patch` | adds `--api-group-suffix` to `ack-generate apis` and `controller`, so kinds generate into `<service>.aws.hfl.dev`; the generator already supports a suffix internally (its Crossplane path uses one) but its ACK commands always pass the default | offered as aws-controllers-k8s/code-generator#762 (2026-11-10), which also passes the flag to `release` |
 | `0002-sdk-v2-createvolume-output-shape.patch` | takes EC2's `CreateVolume` off the generator's "shame list" of operations whose output keeps the v1 SDK's shape name: in aws-sdk-go-v2 the output is `CreateVolumeOutput`, and with the list entry the generator writes `*ec2.Volume`, which v2 does not have, so a generated `Volume` does not compile | offered as aws-controllers-k8s/code-generator#763 (2026-11-10), with an assertion in `TestEC2_Volume`; the other EC2 entries (`CreateSnapshot`, `AttachVolume`, `DetachVolume`) are probably the same case and were left alone |
 | `0003-slot-guard.patch` | the version-slot guard (`docs/slot-moves.md`): the `main.go` template binds `--slot`, adds the slot tag to ACK's default tags and wraps the resource manager factories with `pkg/slot`; the `registry.go` template adds the RBAC marker for core events (the guard's `SlotMismatch` events) | no: ours alone (it imports `pkg/slot`, an ack-extensions package) |
+| `0004-extend-ack-kinds.patch` | the `main.go` template calls `pkg/extend`'s `Setup` once ACK's service controller is bound to the manager, so a service's hand-written code can add controllers that extend ACK's own kinds (`docs/extensions.md`) | no: ours alone (it imports `pkg/extend`) |
 
 ## Pull requests we opened upstream
 
@@ -80,6 +82,7 @@ and what changed.
 | `services/eventbridge/pkg/resource/api_destination/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; an API destination's rate limit instead of `SuspendedState` |
 | `services/iam/pkg/resource/login_profile/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; a login profile's `passwordResetRequired` instead of `SuspendedState` |
 | `services/scheduler/pkg/resource/schedule/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; a schedule's server defaults instead of `SuspendedState` |
+| `hack/ack-crds/s3.services.k8s.aws_buckets.yaml` | s3-controller `v1.15.0` `config/crd/bases/s3.services.k8s.aws_buckets.yaml` | `874152a6…` (`v1.15.0`) | none: ACK's `Bucket` CRD, installed by the end-to-end tests' API server (`pkg/test/harness`) |
 | `services/s3control/pkg/resource/public_access_block/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; the four settings of an account's public access block, and only S3's default (false) taken from the latest state |
 | `services/autoscaling/pkg/resource/scheduled_action/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; `ScheduledAction`'s server-defaulted fields (start time, time zone) |
 | `services/autoscaling/pkg/resource/scaling_policy/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; `ScalingPolicy`'s server-defaulted fields instead of `SuspendedState` |
@@ -166,6 +169,7 @@ Written here: `services/rds/apis/v1alpha1/db_proxy_target.go`,
 `services/s3control/templates/hooks/public_access_block/*.go.tpl`,
 `services/s3control/pkg/resource/public_access_block/{hooks,custom_delta_test}.go`,
 `services/s3control/pkg/endpoint/`,
+`services/s3/` (all of it), `services/kms/pkg/extend/`,
 `services/*/cmd/controller/handwritten.go`, `pkg/`, `cmd/operator`,
 `tests/`, `hack/`, `config/operator`, `config/fake-aws`.
 

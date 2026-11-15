@@ -1,0 +1,29 @@
+diff --git a/templates/cmd/controller/main.go.tpl b/templates/cmd/controller/main.go.tpl
+index ba5bf9a..c9d2f3c 100644
+--- a/templates/cmd/controller/main.go.tpl
++++ b/templates/cmd/controller/main.go.tpl
+@@ -15,6 +15,7 @@ import (
+ 	ackrtutil "github.com/aws-controllers-k8s/runtime/pkg/util"
+ 	ackrtwebhook "github.com/aws-controllers-k8s/runtime/pkg/webhook"
+ 	flag "github.com/spf13/pflag"
++	hflextend "github.com/highfivelabs/ack-extensions/pkg/extend"
+ 	hflslot "github.com/highfivelabs/ack-extensions/pkg/slot"
+ 	"k8s.io/apimachinery/pkg/runtime/schema"
+ 	"k8s.io/apimachinery/pkg/runtime"
+@@ -222,6 +223,16 @@ func main() {
+ 		os.Exit(1)
+ 	}
+ 
++	// ack-extensions patch 0004: controllers that extend ACK's own kinds
++	// (docs/extensions.md), registered by the service's hand-written code.
++	if err = hflextend.Setup(mgr, sc, ackCfg); err != nil {
++		setupLog.Error(
++			err, "unable to set up the extensions of ACK's kinds",
++			"aws.service", awsServiceAlias,
++		)
++		os.Exit(1)
++	}
++
+ 	if err = mgr.AddHealthzCheck("health", ctrlrthealthz.Ping); err != nil {
+ 		setupLog.Error(
+ 			err, "unable to set up health check",

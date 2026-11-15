@@ -8,10 +8,11 @@
 // ACK's generator writes no IAM policy (each ACK controller ships a
 // curated one, config/iam/recommended-inline-policy). But the code it
 // generates names every AWS operation it calls, so the permissions are
-// read from it: each kind's package (services/<service>/pkg/resource/<kind>)
+// read from it: each kind's package (services/<service>/pkg/resource/<kind>,
+// and each extension of an ACK kind, services/<service>/pkg/extend/<kind>)
 // and the service's own packages it imports (ec2's tags) are scanned for
-// calls on the service's SDK client (rm.sdkapi.<Operation>, a client
-// variable's <Operation>, svcsdk.New<Operation>Paginator), and each name is
+// calls on the service's SDK client (rm.sdkapi.<Operation>, a client or
+// api variable's <Operation>, svcsdk.New<Operation>Paginator), and each name is
 // kept only if the SDK has that operation. IAM's action is the
 // operation's name in the service's IAM namespace, unless IAM names it
 // otherwise (actions: S3 Control's account-level operations). What a call needs
@@ -52,7 +53,19 @@ var prefixes = map[string]string{
 // account's (s3:GetAccountPublicAccessBlock, and
 // s3:PutAccountPublicAccessBlock for both the put and the delete; the
 // S3 API reference for each operation).
+//
+// S3's object operations are authorized by actions of other names too
+// (the S3 API reference and the Service Authorization Reference):
+// ListObjectVersions as s3:ListBucketVersions, ListMultipartUploads as
+// s3:ListBucketMultipartUploads, and DeleteObjects as the delete of each
+// object it names, s3:DeleteObjectVersion when the version is named, as
+// the Bucket extension always names it.
 var actions = map[string]map[string]string{
+	"s3": {
+		"ListObjectVersions":   "ListBucketVersions",
+		"ListMultipartUploads": "ListBucketMultipartUploads",
+		"DeleteObjects":        "DeleteObjectVersion",
+	},
 	"s3control": {
 		"GetPublicAccessBlock":    "GetAccountPublicAccessBlock",
 		"PutPublicAccessBlock":    "PutAccountPublicAccessBlock",
@@ -87,6 +100,9 @@ var Curated = map[string][]string{
 	// A connection's credentials are kept in a Secrets Manager secret that
 	// EventBridge makes, as the caller, under events!connection/.
 	"Connection.eventbridge": {"secretsmanager:CreateSecret", "secretsmanager:DescribeSecret", "secretsmanager:UpdateSecret", "secretsmanager:PutSecretValue", "secretsmanager:DeleteSecret"},
+	// The Bucket extension deletes with BypassGovernanceRetention, which
+	// needs its own action (S3 Object Lock, governance mode).
+	"Bucket.s3": {"s3:BypassGovernanceRetention"},
 	// ReplicateKey makes the replica: kms:CreateKey in the replica's region.
 	"ReplicaKey.kms": {"kms:CreateKey"},
 	// The first replication rule makes ECR's service-linked role.
@@ -140,7 +156,7 @@ func (k Kind) Sensitive() []string {
 var (
 	reKind      = regexp.MustCompile(`Kind:\s+"([A-Za-z0-9]+)"`)
 	reSDK       = regexp.MustCompile(`svcsdk\s+"([^"]+)"`)
-	reCall      = regexp.MustCompile(`\b(?:rm\.sdkapi|client)\.([A-Z][A-Za-z0-9]+)\(`)
+	reCall      = regexp.MustCompile(`\b(?:rm\.sdkapi|client|api)\.([A-Z][A-Za-z0-9]+)\(`)
 	rePaginator = regexp.MustCompile(`\bsvcsdk\.New([A-Z][A-Za-z0-9]+)Paginator\(`)
 	reOp        = regexp.MustCompile(`^api_op_([A-Za-z0-9]+)\.go$`)
 )
@@ -216,30 +232,45 @@ func Scan(root string) ([]Kind, error) {
 			continue
 		}
 		svc := s.Name()
-		resDir := filepath.Join(root, "services", svc, "pkg", "resource")
-		kinds, err := os.ReadDir(resDir)
-		if err != nil {
-			if os.IsNotExist(err) {
-				continue
-			}
-			return nil, err
-		}
 		local := regexp.MustCompile(`"` + regexp.QuoteMeta(Module+"/services/"+svc+"/pkg/") + `([^"]+)"`)
-		for _, k := range kinds {
-			if !k.IsDir() {
-				continue
+		// Our kinds (pkg/resource/<kind>), then the extensions of ACK's
+		// own kinds (pkg/extend/<kind>, docs/extensions.md), whose calls
+		// the same manager makes as the same identity.
+		var dirs []string
+		for _, sub := range []string{"resource", "extend"} {
+			base := filepath.Join(root, "services", svc, "pkg", sub)
+			ents, err := os.ReadDir(base)
+			if err != nil {
+				if os.IsNotExist(err) {
+					continue
+				}
+				return nil, err
 			}
-			dir := filepath.Join(resDir, k.Name())
+			for _, e := range ents {
+				if e.IsDir() {
+					dirs = append(dirs, filepath.Join(base, e.Name()))
+				}
+			}
+		}
+		for _, dir := range dirs {
 			files, err := goFiles(dir)
 			if err != nil {
 				return nil, err
 			}
 			sc := scanned{service: svc, names: map[string]bool{}}
 			// The kind's own GroupKind, which the generator writes in
-			// descriptor.go (references.go names other kinds).
+			// descriptor.go (references.go names other kinds); an
+			// extension names ACK's kind in its GroupVersionKind.
 			if d, err := os.ReadFile(filepath.Join(dir, "descriptor.go")); err == nil {
 				if m := reKind.FindSubmatch(d); m != nil {
 					sc.kind = string(m[1])
+				}
+			} else {
+				for _, b := range files {
+					if m := reKind.FindSubmatch(b); m != nil {
+						sc.kind = string(m[1])
+						break
+					}
 				}
 			}
 			seen := map[string]bool{}
