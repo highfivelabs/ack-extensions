@@ -154,6 +154,7 @@ func StartControllers(t *testing.T, service string, scheme *runtime.Scheme, ctrl
 	crds := []string{
 		filepath.Join(root, "config", "crds", "bases"),
 		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/runtime"), "config", "crd", "bases"),
+		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/ec2-controller"), "config", "crd", "bases"),
 		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/iam-controller"), "config", "crd", "bases"),
 		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/kms-controller"), "config", "crd", "bases"),
 		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/lambda-controller"), "config", "crd", "bases"),

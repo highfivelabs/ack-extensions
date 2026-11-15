@@ -66,9 +66,9 @@ spec:
               device (AttachVolume), and detaches it on delete (DetachVolume). It is
               Terraform's aws_volume_attachment.
 
-              Exactly one of volumeID and volumeRef must be set. Every field is
-              immutable: an attachment is identified by its volume, instance and
-              device.
+              Exactly one of volumeID and volumeRef, and exactly one of instanceID and
+              instanceRef, must be set. Every field is immutable: an attachment is
+              identified by its volume, instance and device.
             properties:
               deviceName:
                 description: |-
@@ -86,6 +86,22 @@ spec:
                 x-kubernetes-validations:
                 - message: Value is immutable once set
                   rule: self == oldSelf
+              instanceRef:
+                description: |-
+                  An ACK Instance (ec2.services.k8s.aws) whose status.instanceID is the
+                  instance.
+                properties:
+                  from:
+                    description: |-
+                      AWSResourceReference provides all the values necessary to reference another
+                      k8s resource for finding the identifier(Id/ARN/Name)
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               volumeID:
                 description: The ID of the EBS volume. Immutable.
                 type: string
@@ -109,11 +125,13 @@ spec:
                 type: object
             required:
             - deviceName
-            - instanceID
             type: object
             x-kubernetes-validations:
             - message: exactly one of volumeID and volumeRef must be set
               rule: '[has(self.volumeID), has(self.volumeRef)].filter(x, x).size()
+                == 1'
+            - message: exactly one of instanceID and instanceRef must be set
+              rule: '[has(self.instanceID), has(self.instanceRef)].filter(x, x).size()
                 == 1'
           status:
             description: VolumeAttachmentStatus defines the observed state of VolumeAttachment.

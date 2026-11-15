@@ -11,6 +11,7 @@ import (
 	"testing"
 	"time"
 
+	ackec2 "github.com/aws-controllers-k8s/ec2-controller/apis/v1alpha1"
 	ackv1alpha1 "github.com/aws-controllers-k8s/runtime/apis/core/v1alpha1"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
@@ -46,6 +47,7 @@ func TestVPNConnection(t *testing.T) {
 	scheme := runtime.NewScheme()
 	_ = ec2v1.AddToScheme(scheme)
 	_ = corev1.AddToScheme(scheme)
+	_ = ackec2.AddToScheme(scheme)
 	env := harness.Start(t, "ec2", scheme)
 	cloud := ec2.NewFromConfig(env.AWS)
 	ctx := context.Background()
@@ -216,6 +218,58 @@ func TestVPNConnection(t *testing.T) {
 			}
 			return nil
 		})
+	})
+
+	t.Run("transitGatewayRef connects to ACK's TransitGateway", func(t *testing.T) {
+		// The transit gateway is made in moto, and ACK's TransitGateway
+		// object stands for it as ACK's ec2-controller would leave it once
+		// synced (open question 16).
+		tgw, err := cloud.CreateTransitGateway(ctx, &ec2.CreateTransitGatewayInput{Description: aws.String("hub")})
+		if err != nil {
+			t.Fatal(err)
+		}
+		tgwID := aws.ToString(tgw.TransitGateway.TransitGatewayId)
+		ackTransitGateway(t, ctx, env.Client, "core", tgwID)
+		viaTGW := &ec2v1.VPNConnection{
+			ObjectMeta: metav1.ObjectMeta{Name: "office-core", Namespace: "default"},
+			Spec: ec2v1.VPNConnectionSpec{
+				Type:               aws.String("ipsec.1"),
+				CustomerGatewayRef: ref("office"),
+				TransitGatewayRef:  ref("core"),
+			},
+		}
+		if err := env.Client.Create(ctx, viaTGW); err != nil {
+			t.Fatal(err)
+		}
+		syncedObj(t, viaTGW, func() []*ackv1alpha1.Condition { return viaTGW.Status.Conditions })
+		viaID := aws.ToString(viaTGW.Status.VPNConnectionID)
+		c, err := cloudVpnConnection(ctx, cloud, viaID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if aws.ToString(c.TransitGatewayId) != tgwID || aws.ToString(c.VpnGatewayId) != "" {
+			t.Fatalf("cloud connection tgw %q vgw %q, want tgw %q", aws.ToString(c.TransitGatewayId), aws.ToString(c.VpnGatewayId), tgwID)
+		}
+		if viaTGW.Spec.TransitGatewayID != nil {
+			t.Fatalf("spec.transitGatewayID %q written into the stored spec", aws.ToString(viaTGW.Spec.TransitGatewayID))
+		}
+		if err := env.Client.Delete(ctx, viaTGW); err != nil {
+			t.Fatal(err)
+		}
+		harness.Eventually(t, 60*time.Second, "the transit gateway connection gone", func() error {
+			err := env.Client.Get(ctx, client.ObjectKeyFromObject(viaTGW), &ec2v1.VPNConnection{})
+			if err == nil {
+				return fmt.Errorf("object still present")
+			}
+			return client.IgnoreNotFound(err)
+		})
+		c, err = cloudVpnConnection(ctx, cloud, viaID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if c.State != ec2types.VpnStateDeleted {
+			t.Fatalf("cloud state %q", c.State)
+		}
 	})
 
 	t.Run("delete deletes the connection", func(t *testing.T) {

@@ -2037,41 +2037,6 @@ type ImportVolumeTaskDetails struct {
 	Description      *string `json:"description,omitempty"`
 }
 
-// Describes an instance.
-type Instance struct {
-	AMILaunchIndex        *int64       `json:"amiLaunchIndex,omitempty"`
-	CapacityReservationID *string      `json:"capacityReservationID,omitempty"`
-	ClientToken           *string      `json:"clientToken,omitempty"`
-	EBSOptimized          *bool        `json:"ebsOptimized,omitempty"`
-	ENASupport            *bool        `json:"enaSupport,omitempty"`
-	ImageID               *string      `json:"imageID,omitempty"`
-	InstanceID            *string      `json:"instanceID,omitempty"`
-	IPv6Address           *string      `json:"ipv6Address,omitempty"`
-	KernelID              *string      `json:"kernelID,omitempty"`
-	KeyName               *string      `json:"keyName,omitempty"`
-	LaunchTime            *metav1.Time `json:"launchTime,omitempty"`
-	// Describes whether the resource is managed by an service provider and, if
-	// so, describes the service provider that manages it.
-	Operator              *OperatorResponse `json:"operator,omitempty"`
-	OutpostARN            *string           `json:"outpostARN,omitempty"`
-	PlatformDetails       *string           `json:"platformDetails,omitempty"`
-	PrivateDNSName        *string           `json:"privateDNSName,omitempty"`
-	PrivateIPAddress      *string           `json:"privateIPAddress,omitempty"`
-	PublicDNSName         *string           `json:"publicDNSName,omitempty"`
-	PublicIPAddress       *string           `json:"publicIPAddress,omitempty"`
-	RAMDiskID             *string           `json:"ramDiskID,omitempty"`
-	RootDeviceName        *string           `json:"rootDeviceName,omitempty"`
-	SourceDestCheck       *bool             `json:"sourceDestCheck,omitempty"`
-	SpotInstanceRequestID *string           `json:"spotInstanceRequestID,omitempty"`
-	SRIOVNetSupport       *string           `json:"sriovNetSupport,omitempty"`
-	StateTransitionReason *string           `json:"stateTransitionReason,omitempty"`
-	SubnetID              *string           `json:"subnetID,omitempty"`
-	Tags                  []*Tag            `json:"tags,omitempty"`
-	TPMSupport            *string           `json:"tpmSupport,omitempty"`
-	UsageOperation        *string           `json:"usageOperation,omitempty"`
-	VPCID                 *string           `json:"vpcID,omitempty"`
-}
-
 // ENA Express uses Amazon Web Services Scalable Reliable Datagram (SRD) technology
 // to increase the maximum bandwidth used per stream and minimize tail latency
 // of network traffic between EC2 instances. With ENA Express, you can communicate
@@ -3746,17 +3711,6 @@ type Route struct {
 	VPCPeeringConnectionID      *string `json:"vpcPeeringConnectionID,omitempty"`
 }
 
-// Describes a route table.
-type RouteTable struct {
-	Associations    []*RouteTableAssociation `json:"associations,omitempty"`
-	OwnerID         *string                  `json:"ownerID,omitempty"`
-	PropagatingVGWs []*PropagatingVGW        `json:"propagatingVGWs,omitempty"`
-	RouteTableID    *string                  `json:"routeTableID,omitempty"`
-	Routes          []*Route                 `json:"routes,omitempty"`
-	Tags            []*Tag                   `json:"tags,omitempty"`
-	VPCID           *string                  `json:"vpcID,omitempty"`
-}
-
 // Describes an association between a route table and a subnet or gateway.
 type RouteTableAssociation struct {
 	// Describes the state of an association between a route table and a subnet
@@ -4524,16 +4478,6 @@ type TrafficMirrorTarget struct {
 	TrafficMirrorTargetID         *string `json:"trafficMirrorTargetID,omitempty"`
 }
 
-// Describes a transit gateway.
-type TransitGateway struct {
-	CreationTime      *metav1.Time `json:"creationTime,omitempty"`
-	Description       *string      `json:"description,omitempty"`
-	OwnerID           *string      `json:"ownerID,omitempty"`
-	Tags              []*Tag       `json:"tags,omitempty"`
-	TransitGatewayARN *string      `json:"transitGatewayARN,omitempty"`
-	TransitGatewayID  *string      `json:"transitGatewayID,omitempty"`
-}
-
 // Describes an association between a resource attachment and a transit gateway
 // route table.
 type TransitGatewayAssociation struct {
@@ -4909,16 +4853,6 @@ type VGWTelemetry struct {
 	OutsideIPAddress   *string      `json:"outsideIPAddress,omitempty"`
 	Status             *string      `json:"status,omitempty"`
 	StatusMessage      *string      `json:"statusMessage,omitempty"`
-}
-
-// Describes a VPC.
-type VPC struct {
-	CIDRBlock     *string `json:"cidrBlock,omitempty"`
-	DHCPOptionsID *string `json:"dhcpOptionsID,omitempty"`
-	IsDefault     *bool   `json:"isDefault,omitempty"`
-	OwnerID       *string `json:"ownerID,omitempty"`
-	Tags          []*Tag  `json:"tags,omitempty"`
-	VPCID         *string `json:"vpcID,omitempty"`
 }
 
 // Describes an attachment between a virtual private gateway and a VPC.

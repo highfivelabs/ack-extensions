@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	ackec2 "github.com/aws-controllers-k8s/ec2-controller/apis/v1alpha1"
 	ackv1alpha1 "github.com/aws-controllers-k8s/runtime/apis/core/v1alpha1"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
@@ -203,12 +204,13 @@ func attachedTo(g *ec2types.VpnGateway) string {
 func TestVpnGateway(t *testing.T) {
 	scheme := runtime.NewScheme()
 	_ = ec2v1.AddToScheme(scheme)
+	_ = ackec2.AddToScheme(scheme)
 	env := harness.Start(t, "ec2", scheme)
 	cloud := ec2.NewFromConfig(env.AWS)
 	ctx := context.Background()
 
 	var vpcs []string
-	for _, cidr := range []string{"10.40.0.0/16", "10.41.0.0/16"} {
+	for _, cidr := range []string{"10.40.0.0/16", "10.41.0.0/16", "10.42.0.0/16"} {
 		v, err := cloud.CreateVpc(ctx, &ec2.CreateVpcInput{CidrBlock: aws.String(cidr)})
 		if err != nil {
 			t.Fatal(err)
@@ -305,6 +307,44 @@ func TestVpnGateway(t *testing.T) {
 		if err == nil || !strings.Contains(err.Error(), "immutable") {
 			t.Fatalf("changing amazonSideASN: got %v, want the CRD's immutability refusal", err)
 		}
+	})
+
+	t.Run("vpcRef attaches it to ACK's VPC", func(t *testing.T) {
+		// The VPC as ACK's ec2-controller would leave it once synced (open
+		// question 16): the runtime resolves vpcRef on each reconcile and
+		// does not write the ID into the stored spec, so the cloud shows
+		// which VPC it was attached to.
+		ackVPC(t, ctx, env.Client, "edge", "10.42.0.0/16", vpcs[2])
+		byRef := &ec2v1.VPNGateway{
+			ObjectMeta: metav1.ObjectMeta{Name: "edge-vgw", Namespace: "default"},
+			Spec: ec2v1.VPNGatewaySpec{
+				Type:   aws.String("ipsec.1"),
+				VPCRef: &ackv1alpha1.AWSResourceReferenceWrapper{From: &ackv1alpha1.AWSResourceReference{Name: aws.String("edge")}},
+			},
+		}
+		if err := env.Client.Create(ctx, byRef); err != nil {
+			t.Fatal(err)
+		}
+		got := waitSynced(t, byRef)
+		refID := aws.ToString(got.Status.VPNGatewayID)
+		waitAttached(t, refID, vpcs[2])
+		if got.Spec.VPC != nil {
+			t.Fatalf("spec.vpc %q written into the stored spec", aws.ToString(got.Spec.VPC))
+		}
+		if err := env.Client.Delete(ctx, byRef); err != nil {
+			t.Fatal(err)
+		}
+		gone(t, byRef)
+		harness.Eventually(t, 60*time.Second, "the referenced gateway deleted and detached", func() error {
+			g, err := cloudVpnGateway(ctx, cloud, refID)
+			if err != nil {
+				return err
+			}
+			if g.State != ec2types.VpnStateDeleted || attachedTo(g) != "" {
+				return fmt.Errorf("cloud gateway state %s attached to %q", g.State, attachedTo(g))
+			}
+			return nil
+		})
 	})
 
 	t.Run("deletion-policy retain leaves the gateway attached", func(t *testing.T) {
@@ -542,13 +582,15 @@ func volumeAttachedTo(ctx context.Context, c *ec2.Client, volume, instance strin
 func TestVolumeAttachment(t *testing.T) {
 	scheme := runtime.NewScheme()
 	_ = ec2v1.AddToScheme(scheme)
+	_ = ackec2.AddToScheme(scheme)
 	env := harness.Start(t, "ec2", scheme)
 	cloud := ec2.NewFromConfig(env.AWS)
 	ctx := context.Background()
 
-	// The instance is a fixture: ACK's ec2-controller has Instance, and a
-	// reference to it is not built here.
-	// The image is one the backend has (moto's ids are not AWS's).
+	// The instance is a fixture made in moto, and ACK's Instance object
+	// stands for it as ACK's ec2-controller would leave it once synced
+	// (instanceRef; open question 16). The image is one the backend has
+	// (moto's ids are not AWS's).
 	images, err := cloud.DescribeImages(ctx, &ec2.DescribeImagesInput{Owners: []string{"amazon"}})
 	if err != nil || len(images.Images) == 0 {
 		t.Fatalf("no image in the fake cloud: %v", err)
@@ -561,6 +603,7 @@ func TestVolumeAttachment(t *testing.T) {
 		t.Fatal(err)
 	}
 	instance := aws.ToString(run.Instances[0].InstanceId)
+	ackInstance(t, ctx, env.Client, "app", instance, "us-west-2a")
 
 	waitSynced := func(t *testing.T, key client.ObjectKey, obj client.Object, conds func() []*ackv1alpha1.Condition) {
 		t.Helper()
@@ -585,9 +628,14 @@ func TestVolumeAttachment(t *testing.T) {
 		})
 	}
 
+	// The volume is made in the instance's Availability Zone, read from
+	// ACK's Instance by availabilityZoneRef (open question 16).
 	vol := &ec2v1.Volume{
 		ObjectMeta: metav1.ObjectMeta{Name: "data", Namespace: "default"},
-		Spec:       ec2v1.VolumeSpec{AvailabilityZone: aws.String("us-west-2a"), Size: aws.Int64(10)},
+		Spec: ec2v1.VolumeSpec{
+			AvailabilityZoneRef: &ackv1alpha1.AWSResourceReferenceWrapper{From: &ackv1alpha1.AWSResourceReference{Name: aws.String("app")}},
+			Size:                aws.Int64(10),
+		},
 	}
 	if err := env.Client.Create(ctx, vol); err != nil {
 		t.Fatal(err)
@@ -595,24 +643,31 @@ func TestVolumeAttachment(t *testing.T) {
 	gotVol := &ec2v1.Volume{}
 	waitSynced(t, client.ObjectKeyFromObject(vol), gotVol, func() []*ackv1alpha1.Condition { return gotVol.Status.Conditions })
 	volumeID := aws.ToString(gotVol.Status.VolumeID)
+	if cv, err := cloudVolume(ctx, cloud, volumeID); err != nil || aws.ToString(cv.AvailabilityZone) != "us-west-2a" {
+		t.Fatalf("volume made from availabilityZoneRef: %+v, %v", cv, err)
+	}
+	if gotVol.Spec.AvailabilityZone != nil {
+		t.Fatalf("spec.availabilityZone %q written into the stored spec", aws.ToString(gotVol.Spec.AvailabilityZone))
+	}
 
 	att := &ec2v1.VolumeAttachment{
 		ObjectMeta: metav1.ObjectMeta{Name: "data-on-app", Namespace: "default"},
 		Spec: ec2v1.VolumeAttachmentSpec{
-			VolumeRef:  &ackv1alpha1.AWSResourceReferenceWrapper{From: &ackv1alpha1.AWSResourceReference{Name: aws.String("data")}},
-			InstanceID: aws.String(instance), DeviceName: aws.String("/dev/sdf"),
+			VolumeRef:   &ackv1alpha1.AWSResourceReferenceWrapper{From: &ackv1alpha1.AWSResourceReference{Name: aws.String("data")}},
+			InstanceRef: &ackv1alpha1.AWSResourceReferenceWrapper{From: &ackv1alpha1.AWSResourceReference{Name: aws.String("app")}},
+			DeviceName:  aws.String("/dev/sdf"),
 		},
 	}
 	gotAtt := &ec2v1.VolumeAttachment{}
 
-	t.Run("the referenced volume is attached and settles", func(t *testing.T) {
+	t.Run("the referenced volume is attached to the referenced instance and settles", func(t *testing.T) {
 		if err := env.Client.Create(ctx, att); err != nil {
 			t.Fatal(err)
 		}
 		waitSynced(t, client.ObjectKeyFromObject(att), gotAtt, func() []*ackv1alpha1.Condition { return gotAtt.Status.Conditions })
-		// The runtime resolves volumeRef for each reconcile and does not
-		// write the volume ID into the stored spec; the cloud shows which
-		// volume it attached.
+		// The runtime resolves volumeRef and instanceRef for each reconcile
+		// and does not write the IDs into the stored spec; the cloud shows
+		// which volume it attached to which instance.
 		if aws.ToString(gotAtt.Status.State) != "attached" {
 			t.Fatalf("status.state %q", aws.ToString(gotAtt.Status.State))
 		}
@@ -633,6 +688,28 @@ func TestVolumeAttachment(t *testing.T) {
 		time.Sleep(15 * time.Second)
 		if n := updates(); n != before {
 			t.Fatalf("updated %d times across resyncs", n-before)
+		}
+	})
+
+	t.Run("instanceID and instanceRef together are refused", func(t *testing.T) {
+		both := &ec2v1.VolumeAttachment{
+			ObjectMeta: metav1.ObjectMeta{Name: "both", Namespace: "default"},
+			Spec: ec2v1.VolumeAttachmentSpec{
+				VolumeID:    aws.String(volumeID),
+				InstanceID:  aws.String(instance),
+				InstanceRef: &ackv1alpha1.AWSResourceReferenceWrapper{From: &ackv1alpha1.AWSResourceReference{Name: aws.String("app")}},
+				DeviceName:  aws.String("/dev/sdj"),
+			},
+		}
+		err := env.Client.Create(ctx, both)
+		if err == nil || !strings.Contains(err.Error(), "exactly one of instanceID and instanceRef") {
+			t.Fatalf("both set: got %v, want the CRD's refusal", err)
+		}
+		neither := both.DeepCopy()
+		neither.Name, neither.Spec.InstanceID, neither.Spec.InstanceRef = "neither", nil, nil
+		err = env.Client.Create(ctx, neither)
+		if err == nil || !strings.Contains(err.Error(), "exactly one of instanceID and instanceRef") {
+			t.Fatalf("neither set: got %v, want the CRD's refusal", err)
 		}
 	})
 

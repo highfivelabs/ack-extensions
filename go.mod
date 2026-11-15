@@ -3,6 +3,7 @@ module github.com/highfivelabs/ack-extensions
 go 1.25.0
 
 require (
+	github.com/aws-controllers-k8s/ec2-controller v1.23.1
 	github.com/aws-controllers-k8s/iam-controller v1.11.3
 	github.com/aws-controllers-k8s/kms-controller v1.7.0
 	github.com/aws-controllers-k8s/lambda-controller v1.19.0

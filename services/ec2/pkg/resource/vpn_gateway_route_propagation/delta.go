@@ -59,6 +59,9 @@ func newResourceDelta(
 			delta.Add("Spec.RouteTableID", a.ko.Spec.RouteTableID, b.ko.Spec.RouteTableID)
 		}
 	}
+	if !equality.Semantic.Equalities.DeepEqual(a.ko.Spec.RouteTableRef, b.ko.Spec.RouteTableRef) {
+		delta.Add("Spec.RouteTableRef", a.ko.Spec.RouteTableRef, b.ko.Spec.RouteTableRef)
+	}
 
 	return delta
 }

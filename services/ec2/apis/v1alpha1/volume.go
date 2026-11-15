@@ -28,8 +28,8 @@ type VolumeSpec struct {
 	// The ID of the Availability Zone in which to create the volume. For example,
 	// us-east-1a.
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable once set"
-	// +kubebuilder:validation:Required
-	AvailabilityZone *string `json:"availabilityZone"`
+	AvailabilityZone    *string                                  `json:"availabilityZone,omitempty"`
+	AvailabilityZoneRef *ackv1alpha1.AWSResourceReferenceWrapper `json:"availabilityZoneRef,omitempty"`
 	// Indicates whether the volume should be encrypted. The effect of setting the
 	// encryption state to true depends on the volume origin (new or from a snapshot),
 	// starting encryption state, ownership, and whether encryption by default is

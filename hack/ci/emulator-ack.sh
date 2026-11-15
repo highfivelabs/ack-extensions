@@ -35,10 +35,19 @@ go test -list . ./tests/e2e/ >"$OUT/list.txt"
 echo "emulator-ack: tests/e2e on AWS Emulator $version; expected failures: $EXPECT"
 # go test fails on the expected failures, so its status is not the
 # result: emulator-expect reads every test's result from the events.
+# Each top-level test's result is printed as it ends: the run takes most of
+# offload's 45 minutes without a log line (--idle-minutes), after which it
+# deletes the VM (exit 124), and the lines say which test was running.
 set +e
 ACK_TEST_BACKEND=aws-emulator EMULATOR_TELEMETRY=off \
-  go test -json -count=1 -timeout "${TIMEOUT:-120m}" ./tests/e2e/ >"$OUT/events.json"
-rc=$?
+  go test -json -count=1 -timeout "${TIMEOUT:-120m}" ./tests/e2e/ |
+  tee "$OUT/events.json" |
+  awk '/"Action":"(pass|fail|skip)"/ && /"Test":"[^"\/]*"/ {
+    match($0, /"Action":"[a-z]+"/); a = substr($0, RSTART + 10, RLENGTH - 11)
+    match($0, /"Test":"[^"]*"/); t = substr($0, RSTART + 8, RLENGTH - 9)
+    print "emulator-ack: " t " " a; fflush()
+  }'
+rc=${PIPESTATUS[0]}
 set -e
 echo "emulator-ack: go test exited $rc; events in $OUT/events.json"
 go run ./hack/emulator-expect -expect "$EXPECT" -list "$OUT/list.txt" -json "$OUT/events.json" -version "$version"

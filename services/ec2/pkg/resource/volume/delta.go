@@ -20,6 +20,7 @@ import (
 
 	ackcompare "github.com/aws-controllers-k8s/runtime/pkg/compare"
 	acktags "github.com/aws-controllers-k8s/runtime/pkg/tags"
+	"k8s.io/apimachinery/pkg/api/equality"
 )
 
 // Hack to avoid import errors during build...
@@ -48,6 +49,9 @@ func newResourceDelta(
 		if *a.ko.Spec.AvailabilityZone != *b.ko.Spec.AvailabilityZone {
 			delta.Add("Spec.AvailabilityZone", a.ko.Spec.AvailabilityZone, b.ko.Spec.AvailabilityZone)
 		}
+	}
+	if !equality.Semantic.Equalities.DeepEqual(a.ko.Spec.AvailabilityZoneRef, b.ko.Spec.AvailabilityZoneRef) {
+		delta.Add("Spec.AvailabilityZoneRef", a.ko.Spec.AvailabilityZoneRef, b.ko.Spec.AvailabilityZoneRef)
 	}
 	if ackcompare.HasNilDifference(a.ko.Spec.Encrypted, b.ko.Spec.Encrypted) {
 		delta.Add("Spec.Encrypted", a.ko.Spec.Encrypted, b.ko.Spec.Encrypted)

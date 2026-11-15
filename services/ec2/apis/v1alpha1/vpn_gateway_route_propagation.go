@@ -32,8 +32,8 @@ type VPNGatewayRoutePropagationSpec struct {
 	// The ID of the route table. The routing table must be associated with the
 	// same VPC that the virtual private gateway is attached to.
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable once set"
-	// +kubebuilder:validation:Required
-	RouteTableID *string `json:"routeTableID"`
+	RouteTableID  *string                                  `json:"routeTableID,omitempty"`
+	RouteTableRef *ackv1alpha1.AWSResourceReferenceWrapper `json:"routeTableRef,omitempty"`
 }
 
 // VPNGatewayRoutePropagationStatus defines the observed state of VPNGatewayRoutePropagation

@@ -34,6 +34,10 @@ import (
 	"github.com/highfivelabs/ack-extensions/services/ec2/pkg/tags"
 )
 
+// availabilityZoneRef names ACK's Instance (ec2.services.k8s.aws), read by
+// the generated references code (apis/v1alpha1/ack_kinds.go).
+// +kubebuilder:rbac:groups=ec2.services.k8s.aws,resources=instances,verbs=get;list;watch
+
 // modifiable are the fields ModifyVolume changes.
 var modifiable = []string{"Spec.Size", "Spec.VolumeType", "Spec.IOPS", "Spec.Throughput", "Spec.MultiAttachEnabled"}
 

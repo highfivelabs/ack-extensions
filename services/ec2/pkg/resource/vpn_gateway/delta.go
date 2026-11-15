@@ -20,6 +20,7 @@ import (
 
 	ackcompare "github.com/aws-controllers-k8s/runtime/pkg/compare"
 	acktags "github.com/aws-controllers-k8s/runtime/pkg/tags"
+	"k8s.io/apimachinery/pkg/api/equality"
 )
 
 // Hack to avoid import errors during build...
@@ -73,6 +74,9 @@ func newResourceDelta(
 		if *a.ko.Spec.VPC != *b.ko.Spec.VPC {
 			delta.Add("Spec.VPC", a.ko.Spec.VPC, b.ko.Spec.VPC)
 		}
+	}
+	if !equality.Semantic.Equalities.DeepEqual(a.ko.Spec.VPCRef, b.ko.Spec.VPCRef) {
+		delta.Add("Spec.VPCRef", a.ko.Spec.VPCRef, b.ko.Spec.VPCRef)
 	}
 
 	return delta

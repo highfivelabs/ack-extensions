@@ -44,7 +44,8 @@ type VPNGatewaySpec struct {
 	// +kubebuilder:validation:Required
 	Type *string `json:"type_"`
 	// The ID of the VPC.
-	VPC *string `json:"vpc,omitempty"`
+	VPC    *string                                  `json:"vpc,omitempty"`
+	VPCRef *ackv1alpha1.AWSResourceReferenceWrapper `json:"vpcRef,omitempty"`
 }
 
 // VPNGatewayStatus defines the observed state of VPNGateway

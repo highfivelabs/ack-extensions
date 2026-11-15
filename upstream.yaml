@@ -47,7 +47,7 @@ pins:
     repo: aws-controllers-k8s/ec2-controller
     version: v1.23.1
     commit: 9303654c2cffad05147e4260105439149f7c81bf
-    use: copied from (pkg/tags, hooks); the SDK client at its version
+    use: Go module (API types our references name); copied from (pkg/tags, hooks); the SDK client at its version
   - name: ecr-controller
     repo: aws-controllers-k8s/ecr-controller
     version: v1.11.1
@@ -247,6 +247,15 @@ copied:
       - services/ec2/pkg/resource/resource_tag/manager_factory.go
       - services/ec2/pkg/resource/resource_tag/resource.go
     from: *skeleton
+  - here:
+      - services/ec2/pkg/resource/default_security_group/descriptor.go
+      - services/ec2/pkg/resource/default_security_group/identifiers.go
+      - services/ec2/pkg/resource/default_security_group/manager.go
+      - services/ec2/pkg/resource/default_security_group/manager_factory.go
+      - services/ec2/pkg/resource/default_security_group/resource.go
+    from: *skeleton
+  - here: [services/ec2/pkg/resource/default_security_group/rules.go]
+    from: {pin: ec2-controller, paths: [pkg/resource/security_group/hooks.go, pkg/resource/security_group/sdk.go]}
   - here:
       - services/iam/pkg/resource/user_group_membership/descriptor.go
       - services/iam/pkg/resource/user_group_membership/identifiers.go
