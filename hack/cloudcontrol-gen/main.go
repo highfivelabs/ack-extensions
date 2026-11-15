@@ -332,7 +332,7 @@ func generate(root string, files map[string][]byte, cfg config) error {
 	if err := writeRegistry(out, cfg, gens); err != nil {
 		return err
 	}
-	if err := writeLiveTemplate(out, cfg, gens); err != nil {
+	if err := writeLiveTemplate(root, out, cfg, gens); err != nil {
 		return err
 	}
 	return writeReport(out, gens)

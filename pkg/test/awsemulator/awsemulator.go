@@ -56,12 +56,14 @@ const Backend = "aws-emulator"
 // value but "", "moto" and "aws-emulator" fails the test.
 func Selected(t testing.TB) bool {
 	switch v := os.Getenv("ACK_TEST_BACKEND"); v {
-	case "", "moto":
+	case "", "moto", "live":
+		// live: the sandbox account through tests/e2e's live forwarder
+		// (task test-live SUITE=ack, docs/live-runs.md), not a fake.
 		return false
 	case Backend:
 		return true
 	default:
-		t.Fatalf("ACK_TEST_BACKEND=%q: moto (the default) or %s", v, Backend)
+		t.Fatalf("ACK_TEST_BACKEND=%q: moto (the default), live or %s", v, Backend)
 		return false
 	}
 }

@@ -12,6 +12,9 @@
 //	go run -tags live ./hack/live/sweep            delete leftovers of runs older than 2h
 //	go run -tags live ./hack/live/sweep --run ID   delete everything of run ID
 //	go run -tags live ./hack/live/sweep --list     list every live-run resource
+//
+// --suite cloudcontrol or ack sweeps only that suite's kinds (the default,
+// all, sweeps both); hack/live/run.sh passes its own suite.
 package main
 
 import (
@@ -35,8 +38,13 @@ func main() {
 	run := flag.String("run", "", "delete everything of this run")
 	list := flag.Bool("list", false, "list only")
 	older := flag.Duration("older", 2*time.Hour, "without --run: delete runs started longer ago than this")
+	suite := flag.String("suite", "all", "all, cloudcontrol (the Cloud Control kinds) or ack (the ACK-generated kinds)")
 	flag.Parse()
-	if err := sweep(context.Background(), *run, *list, *older); err != nil {
+	if *suite != "all" && *suite != "cloudcontrol" && *suite != "ack" {
+		fmt.Fprintln(os.Stderr, "sweep: --suite is all, cloudcontrol or ack")
+		os.Exit(2)
+	}
+	if err := sweep(context.Background(), *run, *list, *older, *suite); err != nil {
 		fmt.Fprintln(os.Stderr, "sweep:", err)
 		os.Exit(1)
 	}
@@ -59,7 +67,7 @@ func started(id string, now time.Time) (time.Time, bool) {
 	return t, true
 }
 
-func sweep(ctx context.Context, run string, list bool, older time.Duration) error {
+func sweep(ctx context.Context, run string, list bool, older time.Duration, suite string) error {
 	r, err := live.Account(ctx, ".")
 	if err != nil {
 		return err
@@ -68,6 +76,9 @@ func sweep(ctx context.Context, run string, list bool, older time.Duration) erro
 	now := time.Now().UTC()
 	found, deleted, failed := 0, 0, 0
 	for _, ty := range registry.Types {
+		if suite == "ack" {
+			break
+		}
 		// The live-test role holds only the live kinds' permissions (plan
 		// question 21), and no live run makes any other kind.
 		if !ty.Live {
@@ -117,6 +128,10 @@ func sweep(ctx context.Context, run string, list bool, older time.Duration) erro
 				deleted++
 			}
 		}
+	}
+	if suite != "cloudcontrol" {
+		f, d, x := ackSweep(ctx, r.Config, run, list, older)
+		found, deleted, failed = found+f, deleted+d, failed+x
 	}
 	fmt.Printf("sweep: %d live-test resource(s) found, %d deleted, %d failure(s)\n", found, deleted, failed)
 	if failed > 0 {

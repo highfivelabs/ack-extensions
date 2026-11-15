@@ -65,6 +65,18 @@ type Env struct {
 	logs    *syncBuffer
 }
 
+// Live starts a live run's forwarder (docs/live-runs.md): a loopback URL
+// in moto's place that signs every request again with the run's
+// federated credentials and sends it to the sandbox account. It is set
+// only by tests/e2e/live_test.go, built with -tags live (task test-live
+// SUITE=ack), never by task check; ACK_TEST_BACKEND=live without it fails.
+// It returns the URL, the account and the managers' extra flags (the
+// run's tag on everything they make).
+var Live func(t *testing.T) (url, account string, args []string)
+
+// IsLive reports whether this is a live run (ACK_TEST_BACKEND=live).
+func IsLive() bool { return os.Getenv("ACK_TEST_BACKEND") == "live" }
+
 // MotoAccount is the account moto answers as.
 const MotoAccount = "123456789012"
 
@@ -138,7 +150,13 @@ func StartControllers(t *testing.T, service string, scheme *runtime.Scheme, ctrl
 	root := RepoRoot(t)
 
 	motoURL, account := os.Getenv("MOTO_URL"), MotoAccount
-	if awsemulator.Selected(t) {
+	var liveArgs []string
+	if IsLive() {
+		if Live == nil {
+			t.Fatal("ACK_TEST_BACKEND=live, but the tests were built without -tags live (task test-live SUITE=ack)")
+		}
+		motoURL, account, liveArgs = Live(t)
+	} else if awsemulator.Selected(t) {
 		account = awsemulator.Account
 		// ACK_TEST_BACKEND=aws-emulator: AWS Emulator in moto's place, behind
 		// its loopback proxy (docs/aws-emulator.md).
@@ -187,6 +205,7 @@ func StartControllers(t *testing.T, service string, scheme *runtime.Scheme, ctrl
 			main = "./services/" + service + "/cmd/controller"
 		}
 		bin := buildController(t, root, main)
+		ctl.Args = append(append([]string(nil), liveArgs...), ctl.Args...)
 		all = append(all, &Logs{b: runController(t, bin, kubeconfig, endpoint, ctl)})
 	}
 

@@ -30,8 +30,9 @@
 //     nothing, is allowed), and the Taskfile sets
 //     CLOUDCONTROL_E2E_TARGET to fake for every task;
 //   - L2: Go files built only with -tags live (the only code that may reach
-//     real AWS) live only in cloudcontrol/test/live, hack/live and
-//     cloudcontrol/test/e2e/live_test.go; the rules above skip them, since
+//     real AWS) live only in cloudcontrol/test/live, hack/live,
+//     cloudcontrol/test/e2e/live_test.go and tests/e2e/live_test.go; the
+//     rules above skip them, since
 //     no task check builds them.
 //
 // Test paths are every _test.go file and everything under pkg/test,
@@ -210,7 +211,7 @@ func Scan(root string) (*Report, error) {
 			if liveFile(src) {
 				r.LiveFiles++
 				if !liveAllowed(rel) {
-					r.add(rel, 1, "L2", "built with -tags live outside cloudcontrol/test/live, hack/live and cloudcontrol/test/e2e/live_test.go")
+					r.add(rel, 1, "L2", "built with -tags live outside cloudcontrol/test/live, hack/live, cloudcontrol/test/e2e/live_test.go and tests/e2e/live_test.go")
 				}
 				return nil
 			}
@@ -251,7 +252,7 @@ var buildLive = regexp.MustCompile(`(?m)^//go:build .*\blive\b`)
 func liveFile(src []byte) bool { return buildLive.Match(src) }
 
 func liveAllowed(rel string) bool {
-	return strings.HasPrefix(rel, "cloudcontrol/test/live/") || strings.HasPrefix(rel, "hack/live/") || rel == "cloudcontrol/test/e2e/live_test.go"
+	return strings.HasPrefix(rel, "cloudcontrol/test/live/") || strings.HasPrefix(rel, "hack/live/") || rel == "cloudcontrol/test/e2e/live_test.go" || rel == "tests/e2e/live_test.go"
 }
 
 var liveTasks = map[string]bool{"test-live": true, "live-sweep": true, "live-list": true}

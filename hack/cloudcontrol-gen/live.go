@@ -65,7 +65,7 @@ func liveKinds(cfg config) (map[string]bool, error) {
 //     the sweeper never deletes one (liveKinds may not name one);
 //   - a monthly cost budget with e-mail alerts at 80% of actual and 100%
 //     of forecast spend.
-func writeLiveTemplate(out string, cfg config, gens []generated) error {
+func writeLiveTemplate(root, out string, cfg config, gens []generated) error {
 	var results []iamgen.Result
 	extra := map[string]bool{"cloudformation:ListResources": true}
 	for _, g := range gens {
@@ -91,6 +91,13 @@ func writeLiveTemplate(out string, cfg config, gens []generated) error {
 	// and the first deployed role had no sweeper or fixture permissions.
 	merged := iamgen.Merge(results)
 	merged.Statement = append(merged.Statement, iamgen.Statement{Sid: "LiveRunSweeperAndFixtures", Effect: "Allow", Action: acts, Resource: "*"})
+	// The ACK-kind tests' (task test-live SUITE=ack): the kinds' calls and
+	// the tests' fixtures (liveACKActions).
+	ack, err := liveACKActions(root)
+	if err != nil {
+		return err
+	}
+	merged.Statement = append(merged.Statement, iamgen.Statement{Sid: "LiveRunACKKinds", Effect: "Allow", Action: ack, Resource: "*"})
 	// Compacted (one statement per service, the same actions): every type's
 	// handler statements kept apart would pass IAM's ten managed policies
 	// per role at about 70 types (docs/throughput.md).
