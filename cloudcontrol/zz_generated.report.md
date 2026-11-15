@@ -165,6 +165,8 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::EC2::RouteServerPeer` | `RouteServerPeer.ec2.cloudcontrol.aws.hfl.dev` | 4 | 7 | 6 | 0 | 0 | 0 |
 | `AWS::EC2::RouteServerPropagation` | `RouteServerPropagation.ec2.cloudcontrol.aws.hfl.dev` | 2 | 0 | 4 | 0 | 0 | 0 |
 | `AWS::EC2::SecondaryNetwork` | `SecondaryNetwork.ec2.cloudcontrol.aws.hfl.dev` | 3 | 4 | 4 | 0 | 0 | 0 |
+| `AWS::EC2::SecurityGroupEgress` | `SecurityGroupEgress.ec2.cloudcontrol.aws.hfl.dev` | 9 | 1 | 26 | 0 | 0 | 0 |
+| `AWS::EC2::SecurityGroupIngress` | `SecurityGroupIngress.ec2.cloudcontrol.aws.hfl.dev` | 12 | 1 | 31 | 0 | 0 | 0 |
 | `AWS::EC2::SecurityGroupVpcAssociation` | `SecurityGroupVpcAssociation.ec2.cloudcontrol.aws.hfl.dev` | 2 | 3 | 12 | 0 | 0 | 0 |
 | `AWS::EC2::Snapshot` | `Snapshot.ec2.cloudcontrol.aws.hfl.dev` | 3 | 10 | 4 | 0 | 0 | 0 |
 | `AWS::EC2::SnapshotBlockPublicAccess` | `SnapshotBlockPublicAccess.ec2.cloudcontrol.aws.hfl.dev` | 1 | 1 | 0 | 0 | 0 | 0 |
@@ -3256,6 +3258,32 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - Nodes made `x-kubernetes-preserve-unknown-fields`: none
 - Read-only properties nested in writable objects (dropped): none
 - IAM actions (11): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:CreateSecondaryNetwork`, `ec2:CreateTags`, `ec2:DeleteSecondaryNetwork`, `ec2:DeleteTags`, `ec2:DescribeSecondaryNetworks`, `ec2:DescribeTags`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::EC2::SecurityGroupEgress`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml): `destinationPrefixListRef`, `destinationSecurityGroupRef`, `groupRef`
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (9): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:AuthorizeSecurityGroupEgress`, `ec2:DescribeSecurityGroupRules`, `ec2:RevokeSecurityGroupEgress`, `ec2:UpdateSecurityGroupRuleDescriptionsEgress`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::EC2::SecurityGroupIngress`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml): `groupRef`, `sourcePrefixListRef`, `sourceSecurityGroupRef`
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (10): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:AuthorizeSecurityGroupIngress`, `ec2:DescribeSecurityGroupRules`, `ec2:DescribeSecurityGroups`, `ec2:RevokeSecurityGroupIngress`, `ec2:UpdateSecurityGroupRuleDescriptionsIngress`
 - Sensitive IAM actions: none
 - Left out (list handler only): none
 

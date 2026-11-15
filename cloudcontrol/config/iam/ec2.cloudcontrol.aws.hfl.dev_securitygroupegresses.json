@@ -1,0 +1,52 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlEC2SecurityGroupEgress",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2SecurityGroupEgressCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AuthorizeSecurityGroupEgress",
+        "ec2:DescribeSecurityGroupRules",
+        "ec2:RevokeSecurityGroupEgress"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2SecurityGroupEgressRead",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeSecurityGroupRules"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2SecurityGroupEgressUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:UpdateSecurityGroupRuleDescriptionsEgress"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EC2SecurityGroupEgressDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeSecurityGroupRules",
+        "ec2:RevokeSecurityGroupEgress"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

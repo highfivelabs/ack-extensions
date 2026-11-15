@@ -318,6 +318,10 @@ func startFake(t *testing.T, root string) (*fake.Server, string, aws.Config) {
 			b = fake.NewNetworkInterface(motoCfg)
 		case "AWS::EC2::EIPAssociation":
 			b = fake.NewEIPAssociation(motoCfg)
+		case "AWS::EC2::SecurityGroupIngress":
+			b = fake.NewSecurityGroupIngress(motoCfg)
+		case "AWS::EC2::SecurityGroupEgress":
+			b = fake.NewSecurityGroupEgress(motoCfg)
 		default:
 			if ty.Unproven != "" {
 				// Marked in types.yaml: moto lacks the API, so the type

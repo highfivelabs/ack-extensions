@@ -159,6 +159,8 @@ resources:
   - ec2.cloudcontrol.aws.hfl.dev_routeserverpeers.yaml
   - ec2.cloudcontrol.aws.hfl.dev_routeserverpropagations.yaml
   - ec2.cloudcontrol.aws.hfl.dev_secondarynetworks.yaml
+  - ec2.cloudcontrol.aws.hfl.dev_securitygroupegresses.yaml
+  - ec2.cloudcontrol.aws.hfl.dev_securitygroupingresses.yaml
   - ec2.cloudcontrol.aws.hfl.dev_securitygroupvpcassociations.yaml
   - ec2.cloudcontrol.aws.hfl.dev_snapshots.yaml
   - ec2.cloudcontrol.aws.hfl.dev_snapshotblockpublicaccesses.yaml

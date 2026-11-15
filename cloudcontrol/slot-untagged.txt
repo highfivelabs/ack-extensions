@@ -176,6 +176,8 @@ AWS::EC2::NetworkInterfaceAttachment
 AWS::EC2::NetworkPerformanceMetricSubscription
 AWS::EC2::RouteServerAssociation
 AWS::EC2::RouteServerPropagation
+AWS::EC2::SecurityGroupEgress
+AWS::EC2::SecurityGroupIngress
 AWS::EC2::SecurityGroupVpcAssociation
 AWS::EC2::SnapshotBlockPublicAccess
 AWS::EC2::TransitGatewayAttachmentNatConfiguration

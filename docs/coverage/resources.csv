@@ -638,8 +638,8 @@ ec2,RouteServerPropagation,2,,0,RouteServerPropagation (Cloud Control),2,0,false
 ec2,RouteTable,3,RouteTable,3,,0,0,false,official_unmapped=14
 ec2,SecondaryNetwork,4,,0,SecondaryNetwork (Cloud Control),4,0,false,ours SecondaryNetwork (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,SecurityGroup,23,SecurityGroup,23,,0,0,false,official_unmapped=14
-ec2,SecurityGroupEgress,9,,0,,0,9,false,
-ec2,SecurityGroupIngress,12,,0,,0,12,false,
+ec2,SecurityGroupEgress,9,,0,SecurityGroupEgress (Cloud Control),9,0,false,
+ec2,SecurityGroupIngress,12,,0,SecurityGroupIngress (Cloud Control),12,0,false,
 ec2,SecurityGroupVpcAssociation,2,,0,SecurityGroupVpcAssociation (Cloud Control),2,0,false,ours SecurityGroupVpcAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,Snapshot,4,,0,Snapshot (Cloud Control),4,0,false,ours Snapshot (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,SnapshotBlockPublicAccess,1,,0,SnapshotBlockPublicAccess (Cloud Control),1,0,false,ours SnapshotBlockPublicAccess (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only

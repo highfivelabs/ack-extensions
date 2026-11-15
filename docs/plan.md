@@ -674,7 +674,7 @@ its master (5.2.5 is the pin).
 | 3 | RDS role associations | none | adds yes, removes no (section 4.4) | built: `DBRoleAssociation` |
 | 4 | EC2 Auto Scaling `ScalingPolicy` and `ScheduledAction`; Application Auto Scaling `ScheduledAction` | none: autoscaling-controller `v1.5.0` has only `AutoScalingGroup`; applicationautoscaling-controller `v1.9.0` has `ScalableTarget` and `ScalingPolicy` | yes | built: `ScalingPolicy`, EC2 Auto Scaling `ScheduledAction`, Application Auto Scaling `ScheduledAction` |
 | 5 | KMS `ReplicaKey` | kms-controller PR #112: open, conflicts with base, not approved; an ACK maintainer's review finds its read, update and delete act on the primary key | `ReplicateKey` yes, `UpdatePrimaryRegion` no | built: `ReplicaKey` |
-| 6 | Standalone security group rules | none; ec2-controller has rule-sync fixes open (#394, #385) | yes | skipped: open question 7 |
+| 6 | Standalone security group rules | none; ec2-controller has rule-sync fixes open (#394, #385) | yes | built (2026-11-15, question 7): Cloud Control `SecurityGroupIngress`, `SecurityGroupEgress` |
 | 7 | EC2 `VPNGateway` (attachment, route propagation), `CustomerGateway` | ignored in ec2-controller `v1.23.1`'s `generator.yaml` | yes, except `EnableVgwRoutePropagation` | built: `CustomerGateway`, `VPNGateway` (attachment); route propagation not built (moto has none of it) |
 | 8 | EBS `Volume`, `VolumeAttachment` | ignored in ec2-controller's `generator.yaml`; `aws-controllers-k8s/ebs-controller` is an empty scaffold for the EBS direct API (no kinds, no release) | yes | built: `Volume`, `VolumeAttachment` |
 | 9 | CloudWatch Logs `MetricFilter`; CloudWatch `CompositeAlarm` | metric filters: cloudwatchlogs-controller PR #61, as a field on ACK's `LogGroup`. `CompositeAlarm`: ignored in cloudwatch-controller `v1.11.0`. | metric filters yes; `PutCompositeAlarm` no | skipped. Metric filters wait on open question 1. `CompositeAlarm`: moto has none of it. |
@@ -726,9 +726,9 @@ The 21 left, by module uses:
 
 | Terraform type | Modules | Why not yet |
 | --- | ---: | --- |
-| `aws_vpc_security_group_ingress_rule`, `aws_vpc_security_group_egress_rule` | 11 each | open question 7 (a rule kind beside ACK's `SecurityGroup`, which syncs its rules as a set); the largest gap the catalog shows |
+| `aws_vpc_security_group_ingress_rule`, `aws_vpc_security_group_egress_rule` | 11 each | **built** 2026-11-15 (question 7): `ec2.cloudcontrol.aws.hfl.dev` `SecurityGroupIngress` and `SecurityGroupEgress`, proven on moto (`TestSecurityGroupRules`) |
 | `aws_s3_object` | 3 | rank 17, to build (no CloudFormation type) |
-| `aws_security_group_rule` | 2 | open question 7 |
+| `aws_security_group_rule` | 2 | served by the same two kinds (its `type` picks one) since 2026-11-15 |
 | `aws_key_pair` | 1 | ec2-controller pull request #396 (upstream first) |
 | `aws_elasticache_global_replication_group` | 1 | elasticache-controller pull request #237; moto has none |
 | `aws_redshift_subnet_group` | 1 | ACK's redshift-controller has it merged, unreleased |
@@ -3187,6 +3187,25 @@ Before it can run on a real cluster:
    `_egress_rule`), generated (from Cloud Control's
    `AWS::EC2::SecurityGroupIngress` and `...Egress`, taken out of
    `cloudcontrol/excluded.yaml`).
+
+   **Done** (2026-11-15): `ec2.cloudcontrol.aws.hfl.dev`
+   `SecurityGroupIngress` and `SecurityGroupEgress`, generated
+   (`task cloudcontrol:generate`), with `groupRef`,
+   `sourceSecurityGroupRef`/`destinationSecurityGroupRef` (ACK's
+   `SecurityGroup`, `status.id`) and `sourcePrefixListRef`/
+   `destinationPrefixListRef` (ACK's `ManagedPrefixList`, `status.id`).
+   Proven on moto by `TestSecurityGroupRules` (a backend over
+   `AuthorizeSecurityGroupIngress/Egress`, `DescribeSecurityGroupRules`,
+   `UpdateSecurityGroupRuleDescriptions*` and revoke by rule ID): the
+   references resolved from ACK stand-ins, the rule ID (`sgr-...`) as the
+   identifier, the description changed in place, each delete revoking its
+   own rule only. Not proven on the fake: `GroupName`/`SourceSecurityGroupName`
+   (EC2-Classic and the default VPC), and a description on a rule to a
+   group or prefix list (moto keeps a description on CIDR rules only).
+   The tug of war is documented, not refused: a rule on a group whose ACK
+   `SecurityGroup` lists `ingressRules`/`egressRules` is revoked at that
+   group's next sync. Refusing it, as question 3 proposes for
+   `RolePolicyAttachment`, waits on the builder (a new question).
 8. **A service ACK has no controller for** (EventBridge Scheduler,
    rank 10). The operator runs our manager beside an ACK controller, and
    takes its identity from it: the ServiceAccount's role annotations, the

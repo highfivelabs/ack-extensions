@@ -12,7 +12,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 
 | Category | Services | Resources | ACK | Ours beyond | None | Attributes | ACK | Ours beyond | Uncovered |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 16 | 241 | 55 (22.8%) | 126 (52.3%) | 60 | 2,418 | 28.0% | 36.5% | 35.6% |
+| platform-foundation | 16 | 241 | 55 (22.8%) | 128 (53.1%) | 58 | 2,418 | 28.0% | 37.3% | 34.7% |
 | security-adjacent | 18 | 112 | 14 (12.5%) | 76 (67.9%) | 22 | 2,082 | 37.6% | 50.9% | 11.6% |
 | application | 33 | 263 | 106 (40.3%) | 116 (44.1%) | 41 | 4,788 | 47.9% | 29.3% | 22.7% |
 | other | 238 | 1262 | 92 (7.3%) | 1048 (83.0%) | 122 | 76,543 | 3.0% | 21.6% | 75.4% |
@@ -24,7 +24,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | 1 | `organizations` | 5 | 2 | 2 | 1 | 42.9% / 38.1% / 19.0% | `organizations-controller` v1.8.0 |
 | 2 | `sso` | 6 | 0 | 5 | 1 | 0.0% / 92.7% / 7.3% | none |
 | 3 | `iam` | 16 | 7 | 4 | 5 | 41.2% / 25.9% / 32.9% | `iam-controller` v1.12.0 |
-| 4 | `ec2` | 126 | 20 | 78 | 28 | 22.7% / 42.3% / 35.0% | `ec2-controller` v1.24.0 |
+| 4 | `ec2` | 126 | 20 | 80 | 26 | 22.7% / 43.7% / 33.6% | `ec2-controller` v1.24.0 |
 | 5 | `controltower` | 3 | 0 | 3 | 0 | 0.0% / 100.0% / 0.0% | none |
 | 6 | `route53` | 11 | 3 | 7 | 1 | 47.9% / 18.8% / 33.3% | `route53-controller` v1.9.0 |
 | 7 | `route53resolver` | 12 | 5 | 6 | 1 | 35.1% / 44.2% / 20.8% | `route53resolver-controller` v1.12.0 |
@@ -404,8 +404,8 @@ One section per service in queue order; inside a service, resources that still n
 | `TransitGatewayAttachment` | none | - | whole resource (9 attrs) | ACK has the VPC type only (`TransitGatewayVPCAttachment`); peering, Connect and VPN types are ignored | 0 | service-level only: moto `ec2`: 232 of 809 operations | S | one kind per attachment type: `TransitGatewayPeeringAttachment` (F04); VPN attachments come with `VPNConnection` (F05) |  |
 | `VPCEndpointService` | `VPCEndpointServiceConfiguration` v1.24.0: 8/10 | - | 2 of 10 attrs: `ContributorInsightsEnabled`, `PayerResponsibility` | kind released; the rest is not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | S | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
 | `VPCPeeringConnection` | `VPCPeeringConnection` v1.24.0: 6/8 | - | 2 of 8 attrs: `AssumeRoleRegion`, `PeerRoleArn` | kind released; the rest is not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | S | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
-| `SecurityGroupEgress` | none | - | 9 attrs, covered inline: ACK `SecurityGroup.spec.egressRules[]` | controller exists; resource not in it | 12 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline) |  |
-| `SecurityGroupIngress` | none | - | 12 attrs, covered inline: ACK `SecurityGroup.spec.ingressRules[]` | controller exists; resource not in it | 12 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline); a standalone rule kind is a design question (catalog gap 6) |  |
+| `SecurityGroupEgress` | none | `SecurityGroupEgress (Cloud Control)`: +9 | none | controller exists; resource not in it | 12 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline) |  |
+| `SecurityGroupIngress` | none | `SecurityGroupIngress (Cloud Control)`: +12 | none | controller exists; resource not in it | 12 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline); a standalone rule kind is a design question (catalog gap 6) |  |
 | `SecurityGroup` | `SecurityGroup` v1.24.0: 23/23 | - | none | released | 12 | service-level only: moto `ec2`: 232 of 809 operations | - | none (covered) |  |
 | `VPCGatewayAttachment` | none | - | 3 attrs, covered inline: ACK `InternetGateway.spec.vpc`; ours `VPNGateway.spec.vpc` | controller exists; resource not in it | 2 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline) |  |
 | `Route` | none | - | 16 attrs, covered inline: ACK `RouteTable.spec.routes[]` (14 route fields) | ignored in ACK's generator.yaml | 2 | service-level only: moto `ec2`: 232 of 809 operations | - | none (inline) |  |

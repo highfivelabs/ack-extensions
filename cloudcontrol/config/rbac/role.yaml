@@ -2560,6 +2560,8 @@ rules:
   - routeserverpropagations
   - routeservers
   - secondarynetworks
+  - securitygroupegresses
+  - securitygroupingresses
   - securitygroupvpcassociations
   - snapshotblockpublicaccesses
   - snapshots
@@ -2642,6 +2644,8 @@ rules:
   - routeserverpropagations/status
   - routeservers/status
   - secondarynetworks/status
+  - securitygroupegresses/status
+  - securitygroupingresses/status
   - securitygroupvpcassociations/status
   - snapshotblockpublicaccesses/status
   - snapshots/status
@@ -7591,6 +7595,7 @@ rules:
   resources:
   - elasticipaddresses
   - instances
+  - managedprefixlists
   - securitygroups
   - subnets
   - vpcs

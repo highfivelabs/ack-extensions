@@ -1016,6 +1016,16 @@ limits":
    resolves both references and sends the right IDs, but the emulator's
    Cloud Control keeps the type in its own store: no association in EC2,
    a UUID for the identifier, no `Id` read back (`docs/aws-emulator.md`).
+   Added 2026-11-15 (plan question 7): `SecurityGroupIngress` and
+   `SecurityGroupEgress` take `groupRef` and the peer group's reference
+   (ACK's `SecurityGroup`) and the prefix list's (ACK's
+   `ManagedPrefixList`); `TestSecurityGroupRules` proves them **on moto**
+   (a backend over `AuthorizeSecurityGroupIngress/Egress`,
+   `DescribeSecurityGroupRules`, the description update and revoke by
+   rule ID). ACK's `SecurityGroup` syncs its `ingressRules` and
+   `egressRules` as the whole set: a rule kind on a group whose ACK object
+   lists rules is revoked at that group's next sync. This is documented,
+   not refused.
    Renames and dropped fields are not built.
 5. Selective CRD installation (only the kinds some context enables), once
    the kind count makes installing them all costly.
