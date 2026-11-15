@@ -23,6 +23,9 @@ func TestScan(t *testing.T) {
 	}
 	byRef := map[string]Kind{}
 	for _, k := range kinds {
+		if _, dup := byRef[k.Ref()]; dup {
+			t.Errorf("%s scanned twice", k.Ref())
+		}
 		byRef[k.Ref()] = k
 	}
 	// Every kind with a CRD has its permissions.
@@ -63,8 +66,12 @@ func TestScan(t *testing.T) {
 		// curated
 		"DBRoleAssociation.rds": {"rds:AddRoleToDBInstance", "iam:PassRole"},
 		// extensions of ACK's own kinds (pkg/extend)
-		"Key.kms":   {"kms:DescribeKey", "kms:GetKeyRotationStatus", "kms:EnableKeyRotation", "kms:EnableKey", "kms:DisableKey"},
-		"Bucket.s3": {"s3:ListBucketVersions", "s3:DeleteObjectVersion", "s3:ListBucketMultipartUploads", "s3:AbortMultipartUpload", "s3:BypassGovernanceRetention"},
+		"Key.kms": {"kms:DescribeKey", "kms:GetKeyRotationStatus", "kms:EnableKeyRotation", "kms:EnableKey", "kms:DisableKey"},
+		"Bucket.s3": {"s3:ListBucketVersions", "s3:DeleteObjectVersion", "s3:ListBucketMultipartUploads", "s3:AbortMultipartUpload", "s3:BypassGovernanceRetention",
+			// our copy of ACK's Bucket (one kind with the extension), under
+			// S3's own action names
+			"s3:CreateBucket", "s3:DeleteBucket", "s3:GetEncryptionConfiguration", "s3:PutEncryptionConfiguration", "s3:GetBucketCORS",
+			"s3:PutBucketTagging", "s3:GetBucketPublicAccessBlock", "s3:GetBucketObjectLockConfiguration", "iam:PassRole"},
 	} {
 		k, ok := byRef[ref]
 		if !ok {
