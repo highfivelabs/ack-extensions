@@ -22,9 +22,9 @@ import (
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/test/live"
 )
 
-// ackRegions are where the ACK-kind tests make things: the tests' region,
-// and the replica regions of the KMS and ECR tests.
-var ackRegions = []string{"us-west-2", "us-east-1", "us-east-2"}
+// ackRegions are where the ACK-kind tests make things: the run's region,
+// the only one the sandbox account's organization allows (live.Region).
+var ackRegions = []string{live.Region()}
 
 // leftover is one thing an ACK-kind live run made.
 type leftover struct {

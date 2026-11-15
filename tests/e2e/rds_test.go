@@ -177,7 +177,7 @@ func proxyFixtures(t *testing.T, ctx context.Context, env *harness.Env, cloud *r
 		t.Fatal(err)
 	}
 	var subnets []string
-	for i, az := range []string{"us-west-2a", "us-west-2b"} {
+	for i, az := range []string{harness.Region + "a", harness.Region + "b"} {
 		sn, err := net.CreateSubnet(ctx, &ec2.CreateSubnetInput{VpcId: vpc.Vpc.VpcId, CidrBlock: aws.String(fmt.Sprintf("10.20.%d.0/24", i)), AvailabilityZone: aws.String(az)})
 		if err != nil {
 			t.Fatal(err)

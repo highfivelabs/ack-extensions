@@ -205,7 +205,7 @@ func TestSchedule(t *testing.T) {
 	// The role is made here, trusting Scheduler, as AWS (and the AWS
 	// Emulator) requires of a schedule's execution role; moto checks
 	// neither the role nor the target.
-	queue := "arn:aws:sqs:us-west-2:" + env.Account + ":jobs"
+	queue := "arn:aws:sqs:" + harness.Region + ":" + env.Account + ":jobs"
 	made, err := iam.NewFromConfig(env.AWS).CreateRole(ctx, &iam.CreateRoleInput{
 		RoleName: aws.String("scheduler-sqs"),
 		AssumeRolePolicyDocument: aws.String(`{"Version":"2012-10-17","Statement":[{"Effect":"Allow",` +

@@ -57,7 +57,7 @@ func asgFixture(t *testing.T, ctx context.Context, env *harness.Env, cloud *auto
 	if _, err := cloud.CreateAutoScalingGroup(ctx, &autoscaling.CreateAutoScalingGroupInput{
 		AutoScalingGroupName: aws.String("web"),
 		LaunchTemplate:       &astypes.LaunchTemplateSpecification{LaunchTemplateName: aws.String("web"), Version: aws.String("$Latest")},
-		MinSize:              aws.Int32(0), MaxSize: aws.Int32(2), AvailabilityZones: []string{"us-west-2a"},
+		MinSize:              aws.Int32(0), MaxSize: aws.Int32(2), AvailabilityZones: []string{harness.Region + "a"},
 	}); err != nil {
 		t.Fatal(err)
 	}

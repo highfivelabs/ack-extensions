@@ -20,6 +20,9 @@ import (
 // the tests' SDK clients keep pkg/fakeaws's loopback endpoint and fake
 // keys, and only this process holds the run's credentials.
 func init() {
+	if harness.IsLive() {
+		harness.Region = live.Region()
+	}
 	harness.Live = func(t *testing.T) (string, string, []string) {
 		t.Helper()
 		run, err := live.Check(context.Background(), harness.RepoRoot(t))

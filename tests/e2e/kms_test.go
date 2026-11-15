@@ -65,7 +65,7 @@ func TestReplicaKey(t *testing.T) {
 	_ = ackkms.AddToScheme(scheme)
 	env := harness.Start(t, "kms", scheme)
 	ctx := context.Background()
-	primaryKMS, euKMS := kmsIn(env, "us-west-2"), kmsIn(env, "eu-west-1")
+	primaryKMS, euKMS := kmsIn(env, harness.Region), kmsIn(env, "eu-west-1")
 
 	primary, err := primaryKMS.CreateKey(ctx, &kms.CreateKeyInput{MultiRegion: aws.Bool(true), Description: aws.String("primary")})
 	if err != nil {

@@ -50,8 +50,9 @@ import (
 	"github.com/highfivelabs/ack-extensions/pkg/test/awsemulator"
 )
 
-// Region is the AWS region every test uses.
-const Region = "us-west-2"
+// Region is the AWS region every test uses: us-west-2 on the fakes, the
+// live run's region on a live run (tests/e2e/live_test.go sets it).
+var Region = "us-west-2"
 
 // Env is a running test environment.
 type Env struct {

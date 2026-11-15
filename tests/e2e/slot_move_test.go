@@ -46,7 +46,7 @@ var moveKinds = []moveKind{
 		kind: "Volume", idField: "volumeID",
 		spec: func(app string) map[string]any {
 			return map[string]any{
-				"availabilityZone": "us-west-2a", "size": int64(20), "volumeType": "gp3",
+				"availabilityZone": harness.Region + "a", "size": int64(20), "volumeType": "gp3",
 				"tags": []any{map[string]any{"key": "app", "value": app}},
 			}
 		},
