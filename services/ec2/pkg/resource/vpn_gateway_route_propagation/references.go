@@ -42,6 +42,10 @@ func (rm *resourceManager) ClearResolvedReferences(res acktypes.AWSResource) ack
 		ko.Spec.GatewayID = nil
 	}
 
+	if ko.Spec.RouteTableRef != nil {
+		ko.Spec.RouteTableID = nil
+	}
+
 	return &resource{ko}
 }
 
@@ -67,6 +71,12 @@ func (rm *resourceManager) ResolveReferences(
 		resourceHasReferences = resourceHasReferences || fieldHasReferences
 	}
 
+	if fieldHasReferences, err := rm.resolveReferenceForRouteTableID(ctx, apiReader, ko); err != nil {
+		return &resource{ko}, (resourceHasReferences || fieldHasReferences), err
+	} else {
+		resourceHasReferences = resourceHasReferences || fieldHasReferences
+	}
+
 	return &resource{ko}, resourceHasReferences, err
 }
 
@@ -79,6 +89,13 @@ func validateReferenceFields(ko *svcapitypes.VPNGatewayRoutePropagation) error {
 	}
 	if ko.Spec.GatewayRef == nil && ko.Spec.GatewayID == nil {
 		return ackerr.ResourceReferenceOrIDRequiredFor("GatewayID", "GatewayRef")
+	}
+
+	if ko.Spec.RouteTableRef != nil && ko.Spec.RouteTableID != nil {
+		return ackerr.ResourceReferenceAndIDNotSupportedFor("RouteTableID", "RouteTableRef")
+	}
+	if ko.Spec.RouteTableRef == nil && ko.Spec.RouteTableID == nil {
+		return ackerr.ResourceReferenceOrIDRequiredFor("RouteTableID", "RouteTableRef")
 	}
 	return nil
 }
@@ -167,6 +184,94 @@ func getReferencedResourceState_VPNGateway(
 			"VPNGateway",
 			namespace, name,
 			"Status.VPNGatewayID")
+	}
+	return nil
+}
+
+// resolveReferenceForRouteTableID reads the resource referenced
+// from RouteTableRef field and sets the RouteTableID
+// from referenced resource. Returns a boolean indicating whether a reference
+// contains references, or an error
+func (rm *resourceManager) resolveReferenceForRouteTableID(
+	ctx context.Context,
+	apiReader client.Reader,
+	ko *svcapitypes.VPNGatewayRoutePropagation,
+) (hasReferences bool, err error) {
+	if ko.Spec.RouteTableRef != nil && ko.Spec.RouteTableRef.From != nil {
+		hasReferences = true
+		arr := ko.Spec.RouteTableRef.From
+		if arr.Name == nil || *arr.Name == "" {
+			return hasReferences, fmt.Errorf("provided resource reference is nil or empty: RouteTableRef")
+		}
+		namespace, _, err := ackrt.ValidateCrossNamespaceReference(
+			rm.cfg.EnableCrossNamespace,
+			ko.ObjectMeta.GetNamespace(),
+			arr.Namespace,
+			*arr.Name,
+		)
+		if err != nil {
+			return hasReferences, err
+		}
+		obj := &svcapitypes.RouteTable{}
+		if err := getReferencedResourceState_RouteTable(ctx, apiReader, obj, *arr.Name, namespace); err != nil {
+			return hasReferences, err
+		}
+		ko.Spec.RouteTableID = (*string)(obj.Status.RouteTableID)
+	}
+
+	return hasReferences, nil
+}
+
+// getReferencedResourceState_RouteTable looks up whether a referenced resource
+// exists and is in a ACK.ResourceSynced=True state. If the referenced resource does exist and is
+// in a Synced state, returns nil, otherwise returns `ackerr.ResourceReferenceTerminalFor` or
+// `ResourceReferenceNotSyncedFor` depending on if the resource is in a Terminal state.
+func getReferencedResourceState_RouteTable(
+	ctx context.Context,
+	apiReader client.Reader,
+	obj *svcapitypes.RouteTable,
+	name string, // the Kubernetes name of the referenced resource
+	namespace string, // the Kubernetes namespace of the referenced resource
+) error {
+	namespacedName := types.NamespacedName{
+		Namespace: namespace,
+		Name:      name,
+	}
+	err := apiReader.Get(ctx, namespacedName, obj)
+	if err != nil {
+		return err
+	}
+	var refResourceTerminal bool
+	for _, cond := range obj.Status.Conditions {
+		if cond.Type == ackv1alpha1.ConditionTypeTerminal &&
+			cond.Status == corev1.ConditionTrue {
+			return ackerr.ResourceReferenceTerminalFor(
+				"RouteTable",
+				namespace, name)
+		}
+	}
+	if refResourceTerminal {
+		return ackerr.ResourceReferenceTerminalFor(
+			"RouteTable",
+			namespace, name)
+	}
+	var refResourceSynced bool
+	for _, cond := range obj.Status.Conditions {
+		if cond.Type == ackv1alpha1.ConditionTypeResourceSynced &&
+			cond.Status == corev1.ConditionTrue {
+			refResourceSynced = true
+		}
+	}
+	if !refResourceSynced {
+		return ackerr.ResourceReferenceNotSyncedFor(
+			"RouteTable",
+			namespace, name)
+	}
+	if obj.Status.RouteTableID == nil {
+		return ackerr.ResourceReferenceMissingTargetFieldFor(
+			"RouteTable",
+			namespace, name,
+			"Status.RouteTableID")
 	}
 	return nil
 }

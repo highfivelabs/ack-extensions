@@ -39,7 +39,8 @@ type VPNConnectionSpec struct {
 	// The ID of the transit gateway. If you specify a transit gateway, you cannot
 	// specify a virtual private gateway.
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable once set"
-	TransitGatewayID *string `json:"transitGatewayID,omitempty"`
+	TransitGatewayID  *string                                  `json:"transitGatewayID,omitempty"`
+	TransitGatewayRef *ackv1alpha1.AWSResourceReferenceWrapper `json:"transitGatewayRef,omitempty"`
 	// The type of VPN connection (ipsec.1).
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable once set"
 	// +kubebuilder:validation:Required

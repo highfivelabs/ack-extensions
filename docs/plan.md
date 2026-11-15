@@ -746,8 +746,8 @@ where it stands here:
 
 | Gap | Where it belongs | Status |
 | --- | --- | --- |
-| `VPNGateway.spec.vpcRef`, `VPNGatewayRoutePropagation.spec.routeTableRef` | ours | **waits on question 16**: both name ACK's ec2 kinds (`VPC`, `RouteTable`), which takes ACK's ec2-controller as a Go module here, a new upstream dependency. The charts make it the first gap of the `vpc` chart (`enable_vpn_gateway`, `propagate_*_route_tables_vgw`) |
-| Adopting a VPC's default VPC, security group, network ACL and main route table by `vpcRef` (`aws_default_*`) | ours, four new kinds | to build; the `vpcRef` waits on question 16 like the row above. Shape: read the default object by the VPC (`DescribeSecurityGroups` with `group-name=default`, `DescribeNetworkAcls` with `default=true`, `DescribeRouteTables` with `association.main=true`, `DescribeVpcs` with `isDefault=true`), manage its rules, entries or routes, and never delete it |
+| `VPNGateway.spec.vpcRef`, `VPNGatewayRoutePropagation.spec.routeTableRef` | ours | **built** (2026-11-15; question 16 answered): ACK's ec2-controller `v1.23.1` is a Go module here and its `VPC`, `RouteTable`, `TransitGateway` and `Instance` are aliased in `services/ec2/apis/v1alpha1/ack_kinds.go`. `vpcRef` proven on moto; `routeTableRef` by unit tests (moto has no `EnableVgwRoutePropagation`). The charts' first `vpc` gap (`enable_vpn_gateway`, `propagate_*_route_tables_vgw`) |
+| Adopting a VPC's default VPC, security group, network ACL and main route table by `vpcRef` (`aws_default_*`) | ours, four new kinds | to build (question 16 answered: build them); `vpcRef` now works as on `VPNGateway`. Shape: read the default object by the VPC (`DescribeSecurityGroups` with `group-name=default`, `DescribeNetworkAcls` with `default=true`, `DescribeRouteTables` with `association.main=true`, `DescribeVpcs` with `isDefault=true`), manage its rules, entries or routes, and never delete it |
 | VPC Block Public Access options and exclusions; `SecurityGroupVpcAssociation` | ours | **served**, by Cloud Control kinds: `ec2.cloudcontrol.aws.hfl.dev` `VPCBlockPublicAccessOptions`, `VPCBlockPublicAccessExclusion` and `SecurityGroupVpcAssociation` (schema fake only: moto 5.2.5 has neither `CreateVpcBlockPublicAccessExclusion` nor `AssociateSecurityGroupVpc`, and AWS Emulator's Cloud Control does not reach EC2; references tested there by `TestReferences` and `TestReferencesBlockPublicAccessExclusion`). **With references** since 2026-11-12 (`docs/cloudcontrol.md` section 12, item 4): `VPCBlockPublicAccessExclusion.spec.vpcRef` and `subnetRef` (ACK's `VPC`, `Subnet`), `SecurityGroupVpcAssociation.spec.groupRef` and `vpcRef` (ACK's `SecurityGroup`, `VPC`), so a chart wires them in one render. The charts' `upstream/aws-kinds.yaml` can map them |
 | An Elastic IP associated with an instance (`AssociateAddress`; the `ec2-instance` chart's `create_eip`) | ours | **served** by `ec2.cloudcontrol.aws.hfl.dev` `EIPAssociation`, **proven on moto** since 2026-11-12 (`TestEIPAssociation`: a moto backend over `AssociateAddress`, `DescribeAddresses`, `DisassociateAddress`; both references resolved from ACK stand-ins; on AWS Emulator 1.0.338 it fails as every moto-proven Cloud Control kind does, its Cloud Control keeping the type in its own store, `docs/aws-emulator.md`), with `allocationRef` (ACK's `ElasticIPAddress`), `instanceRef` (ACK's `Instance`) and `networkInterfaceRef` (our `NetworkInterface`) since 2026-11-12. ACK's ec2-controller has no association kind (checked at `v1.23.1` and `v1.24.0`); its `ElasticIPAddress` has no instance field |
 | S3 directory buckets | ours | **served** by `s3express.cloudcontrol.aws.hfl.dev` `DirectoryBucket` (batch 14) |
@@ -778,7 +778,7 @@ way that works without either.
 | --- | --- | --- | --- | --- | --- | --- |
 | ec2 `Instance` | `securityGroupRefs` | `securityGroupIDs` (IDs), `securityGroups` (names) | `RunInstances` `SecurityGroupIds` | **merged on `main`**: ec2-controller PR #406 (2026-11-11, closes community#3132); release PR #411 (`v1.25.0`) open | wait for `v1.25.0` (the upstream-first rule) and move the catalog's pin | no; with `v1.25.0` |
 | ec2 `Instance` | `networkInterfaces[].groups`, `networkInterfaces[].primaryIPv6`, `enablePrimaryIPv6`, `placement.groupID`, `cpuOptions.amdSevSnp` | each in `generator.yaml`'s `ignore.field_paths` at both versions; `placement` has `groupName`; `cpuOptions` has `coreCount`, `threadsPerCore`, `nestedVirtualization` | `RunInstances` `NetworkInterfaces[].Groups`, `.PrimaryIpv6`, `EnablePrimaryIpv6`, `Placement.GroupId`, `CpuOptions.AmdSevSnp` | community#2765 (groups on network interfaces, open, 2026-09-21); nothing for the other four | one upstream change: take the four paths off `ignore`, with a `references` to `SecurityGroup` on `groups` as #406 did for the instance | `placement.groupName` for a placement group (our `ec2.cloudcontrol.aws.hfl.dev` `PlacementGroup` makes one); the rest no |
-| ours: ec2 `VolumeAttachment`, `Volume` | `instanceRef`; a volume's Availability Zone from an instance | `instanceID` (required ID), `volumeID`/`volumeRef`; `Volume.availabilityZone` a plain string | `AttachVolume` `InstanceId`; `CreateVolume` `AvailabilityZone` | ours | the generator's `references` to ACK's `Instance` (`Status.InstanceID`; `Spec.Placement.AvailabilityZone`, which ACK's read fills from `DescribeInstances`), once question 16 adds ec2-controller as a module | no: waits on question 16 |
+| ours: ec2 `VolumeAttachment`, `Volume` | `instanceRef`; a volume's Availability Zone from an instance | `instanceID` (required ID), `volumeID`/`volumeRef`; `Volume.availabilityZone` a plain string | `AttachVolume` `InstanceId`; `CreateVolume` `AvailabilityZone` | ours | the generator's `references` to ACK's `Instance` (`Status.InstanceID`; `Spec.Placement.AvailabilityZone`, which ACK's read fills from `DescribeInstances`), once question 16 adds ec2-controller as a module | **yes** (2026-11-15): `VolumeAttachment.spec.instanceRef` and `Volume.spec.availabilityZoneRef`, both proven on moto |
 | rds `DBInstance` | Active Directory domain | `domain`, `domainIAMRoleName`; `DomainFqdn`, `DomainOu`, `DomainAuthSecretArn`, `DomainDnsIps` in `ignore.field_paths` (on create and both restores) | `CreateDBInstance` `Domain*` | none | upstream: take them off `ignore` (`domainAuthSecretARN` with a reference to ACK's `Secret`) | AWS-managed AD only (`domain`, `domainIAMRoleName`) |
 | rds `DBInstance` | point-in-time restore | restores from a snapshot (`dbSnapshotIdentifier`, a custom create calling `RestoreDBInstanceFromDBSnapshot`); `sourceDBInstanceIdentifier` means a read replica (`CreateDBInstanceReadReplica`); `DBCluster` has point-in-time restore (`restoreToTime`, `useLatestRestorableTime`) | `RestoreDBInstanceToPointInTime` `SourceDBInstanceIdentifier`, `SourceDbiResourceId`, `RestoreTime`, `UseLatestRestorableTime` | none (community#1665 was the cluster's, closed when it shipped) | upstream: a branch of the custom create, as `DBCluster`'s, chosen by `restoreTime` or `useLatestRestorableTime` (not by `sourceDBInstanceIdentifier`, which already means a replica) | no |
 | rds `DBInstance` | restore from S3 | none | `RestoreDBInstanceFromS3` `S3BucketName`, `S3Prefix`, `S3IngestionRoleArn`, `SourceEngine`, `SourceEngineVersion` | none | upstream: the same shape as the point-in-time branch | no |
@@ -793,7 +793,7 @@ way that works without either.
 
 So of the 14, one is usable today (the KMS deletion window, by
 annotation) and one lands with the next ec2-controller release
-(`securityGroupRefs`); one is ours and waits on question 16; the
+(`securityGroupRefs`); one is ours and is built (question 16); the
 other eleven are fields of ACK's kinds, which question 1 decides. This
 repository opens nothing upstream (CLAUDE.md), so none is filed.
 
@@ -1215,10 +1215,14 @@ models its `InternetGateway`'s, with that controller's hooks copied:
 Tags and readiness work as for `CustomerGateway`. The type, Amazon-side
 ASN and Availability Zone are immutable.
 
-**Not built: a reference to ACK's `VPC`,** the same-service limit
-(section 8). **Not built: route propagation**
-(`EnableVgwRoutePropagation` on a route table): moto does not implement
-it, so nothing about it could be proven.
+**`vpcRef`** (2026-11-15, open question 16): `spec.vpcRef` names ACK's
+`VPC` (`ec2.services.k8s.aws`, `Status.VPCID`), through a type alias of
+ACK's kind (`services/ec2/apis/v1alpha1/ack_kinds.go`) with ACK's
+ec2-controller `v1.23.1` as a Go module; proven on moto
+(`TestVpnGateway`, "vpcRef attaches it to ACK's VPC": ACK's `VPC`
+stands in for the moto VPC, the gateway is attached to it, the ID is
+not written into the stored spec). Route propagation is its own kind,
+`VPNGatewayRoutePropagation` (section 6.34).
 
 **Not proven: detaching takes time on AWS.** A delete right after the
 detach can be refused while the gateway is `detaching`. The runtime
@@ -1269,6 +1273,14 @@ regenerates differently.
   `InternetGateway`.
 - **Immutable:** the Availability Zone, snapshot, encryption, KMS key and
   Outpost.
+- **`availabilityZoneRef`** (2026-11-15, open question 16): the
+  Availability Zone read from ACK's `Instance`
+  (`Spec.Placement.AvailabilityZone`, which ACK's read fills from
+  `DescribeInstances`), so a volume is made beside the instance it is
+  for (the catalog's `ec2-instance` chart's `ebs_volumes`). The name is
+  the generator's (`<field>Ref`); it names an `Instance`, not a zone.
+  Proven on moto in `TestVolumeAttachment` (the volume it attaches is
+  made by this reference).
 - **Server defaults are no drift.** EC2 fills in the type, IOPS,
   throughput, multi-attach and encryption, each for some volume types
   only. `custom_delta.go` keeps them from reading as drift, as for the
@@ -1314,9 +1326,13 @@ but the volume's own (`DescribeVolumes`).
 - **Delete** detaches; a volume or attachment already gone is detached.
 - **Errors:** a bad parameter is terminal; a volume or instance not there
   yet, or a volume still attached elsewhere (`VolumeInUse`), is retried.
-- **No `instanceRef`.** ACK's ec2-controller has `Instance`, but a
-  reference to it needs ec2-controller as a module here (section 8,
-  item 10). `instanceID` takes the ID.
+- **`instanceRef`** (2026-11-15, open question 16): ACK's `Instance`
+  (`Status.InstanceID`), resolved by the hand-written `references.go`
+  as ACK's generated code resolves one; exactly one of `instanceID` and
+  `instanceRef` (a CEL rule on the CRD). Proven on moto in
+  `TestVolumeAttachment`: ACK's `Instance` stands in for the moto
+  instance, the volume is attached to it, and both or neither of the
+  two fields is refused by the CRD.
 
 **Not proven:** the `attaching` and `detaching` states lasting (moto
 does both at once), `VolumeInUse` (moto does not refuse a second
@@ -2142,9 +2158,12 @@ the static routes).
   attachment and the number of tunnels are refused (terminal): EC2 cannot
   change them. Changing the gateways (`ModifyVpnConnection`) is not
   offered: the fields are immutable, and a new connection is the way.
-- **Not built:** a reference to ACK's `TransitGateway` (`transitGatewayID`
-  is a plain ID): it needs ACK's ec2-controller as a Go module, a new
-  upstream dependency (open question 16). The newer
+- **`transitGatewayRef`** (2026-11-15, open question 16): ACK's
+  `TransitGateway` (`Status.TransitGatewayID`), through the type alias
+  in `services/ec2/apis/v1alpha1/ack_kinds.go`. Proven on moto
+  (`TestVPNConnection`, "transitGatewayRef connects to ACK's
+  TransitGateway": a moto transit gateway, ACK's `TransitGateway`
+  standing in for it, the connection made to it and deleted). The newer
   `PreSharedKeyStorage` (keys in Secrets Manager) and
   `VpnConcentratorId` are not in the code generator's pinned EC2 model.
 
@@ -2222,9 +2241,12 @@ generated update refuses.
 
 - **Spec:** `gatewayID` or `gatewayRef` (our `VPNGateway`), and
   `routeTableID`, all immutable. **Status:** only the runtime's.
-- **Not built:** a reference to ACK's `RouteTable`: it needs ACK's
-  ec2-controller as a Go module, a new upstream dependency (open question 16,
-  raised by `VPNConnection`'s `transitGatewayRef` in PR #48).
+- **`routeTableRef`** (2026-11-15, open question 16): ACK's `RouteTable`
+  (`Status.RouteTableID`), generated. moto has no
+  `EnableVgwRoutePropagation`, so it is proven by unit tests only
+  (`references_test.go`: resolved from ACK's synced `RouteTable` and our
+  `VPNGateway`, cleared from the stored spec, waiting on a table not
+  synced, refusing an ID with a reference).
 - **A propagation that exists already** (made outside Kubernetes) is
   found by the first read, so the object adopts it, and its delete stops
   it. Two objects for one gateway and table would share it; the first
@@ -2940,7 +2962,9 @@ Before it can run on a real cluster:
     ours. It needs the rewrite limited to the packages generated here, or
     a hand-written references file. `PolicyAttachment` (section 6.26)
     does it with a type alias of ACK's kind in our API package instead;
-    `ScalingPolicy` could do the same.
+    `ScalingPolicy` could do the same. EC2's references to ACK's `VPC`,
+    `RouteTable`, `TransitGateway` and `Instance` do (2026-11-15,
+    question 16).
 11. The heavy checks run on a Spot VM (`../offload`), not the laptop. A
     fresh VM has no `third_party/` (gitignored), so the command is
     `task tools && task check && task operator-e2e`.
@@ -3460,6 +3484,17 @@ Before it can run on a real cluster:
     alias `TransitGateway` and the other ACK types the references need,
     and add the `vpcRef`s, `routeTableRef`, `instanceRef` and the
     `aws_default_*` kinds that wait on it.
+
+    **Progress** (2026-11-15): built, ACK's ec2-controller `v1.23.1` as a
+    Go module (`UPSTREAM.md`), its `VPC`, `RouteTable`, `TransitGateway`
+    and `Instance` aliased in `services/ec2/apis/v1alpha1/ack_kinds.go`
+    (the SDK shapes of those names ignored in `generator.yaml`), its
+    CRDs in the test harness, and `VPNGateway.spec.vpcRef`,
+    `VPNConnection.spec.transitGatewayRef`,
+    `VPNGatewayRoutePropagation.spec.routeTableRef`,
+    `VolumeAttachment.spec.instanceRef` and `Volume.spec.availabilityZoneRef`
+    (sections 6.11, 6.13, 6.14, 6.32, 6.34). Left: the four
+    `aws_default_*` kinds (section 5, "The catalog's charts").
 17. **The name of the per-environment context for the ACK-generated
     kinds** (section 7.6). Built as `core.aws.hfl.dev/v1alpha1`
     `ACKContext`, one per namespace, named `ack`: a sibling of

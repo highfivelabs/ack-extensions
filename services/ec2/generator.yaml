@@ -83,6 +83,11 @@ resources:
         from:
           operation: AttachVpnGateway
           path: VpcId
+        # vpcRef: ACK's VPC (ec2.services.k8s.aws), aliased in
+        # apis/v1alpha1/ack_kinds.go (open question 16, answered).
+        references:
+          resource: VPC
+          path: Status.VPCID
       VPNGatewayID:
         print:
           name: ID
@@ -141,6 +146,11 @@ resources:
           path: Status.VPNGatewayID
       TransitGatewayID:
         is_immutable: true
+        # transitGatewayRef: ACK's TransitGateway (ec2.services.k8s.aws),
+        # aliased in apis/v1alpha1/ack_kinds.go (open question 16, answered).
+        references:
+          resource: TransitGateway
+          path: Status.TransitGatewayID
       Type:
         is_required: true
         is_immutable: true
@@ -226,6 +236,11 @@ resources:
         is_primary_key: true
         is_required: true
         is_immutable: true
+        # routeTableRef: ACK's RouteTable (ec2.services.k8s.aws), aliased in
+        # apis/v1alpha1/ack_kinds.go (open question 16, answered).
+        references:
+          resource: RouteTable
+          path: Status.RouteTableID
     hooks:
       sdk_read_many_post_build_request:
         template_path: hooks/vpn_gateway_route_propagation/sdk_read_many_post_build_request.go.tpl
@@ -246,6 +261,13 @@ resources:
           name: ID
       AvailabilityZone:
         is_immutable: true
+        # availabilityZoneRef: the Availability Zone of ACK's Instance
+        # (ec2.services.k8s.aws; its read fills spec.placement from
+        # DescribeInstances), so a volume is made beside the instance it is
+        # for (the ec2-instance chart's ebs_volumes; open question 16).
+        references:
+          resource: Instance
+          path: Spec.Placement.AvailabilityZone
       SnapshotID:
         is_immutable: true
       Encrypted:
@@ -275,6 +297,14 @@ resources:
             - available
             - in-use
 ignore:
+  shape_names:
+    # The SDK's shapes named like ACK's ec2 kinds that our references name
+    # (apis/v1alpha1/ack_kinds.go) would clash with the aliases; no field of
+    # ours uses them.
+    - Instance
+    - RouteTable
+    - TransitGateway
+    - Vpc
   field_paths:
     # Deprecated: IpAddress replaces it (EC2 API reference).
     - CreateCustomerGatewayInput.PublicIp

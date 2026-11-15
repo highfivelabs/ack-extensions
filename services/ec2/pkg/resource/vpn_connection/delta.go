@@ -145,6 +145,9 @@ func newResourceDelta(
 			delta.Add("Spec.TransitGatewayID", a.ko.Spec.TransitGatewayID, b.ko.Spec.TransitGatewayID)
 		}
 	}
+	if !equality.Semantic.Equalities.DeepEqual(a.ko.Spec.TransitGatewayRef, b.ko.Spec.TransitGatewayRef) {
+		delta.Add("Spec.TransitGatewayRef", a.ko.Spec.TransitGatewayRef, b.ko.Spec.TransitGatewayRef)
+	}
 	if ackcompare.HasNilDifference(a.ko.Spec.Type, b.ko.Spec.Type) {
 		delta.Add("Spec.Type", a.ko.Spec.Type, b.ko.Spec.Type)
 	} else if a.ko.Spec.Type != nil && b.ko.Spec.Type != nil {

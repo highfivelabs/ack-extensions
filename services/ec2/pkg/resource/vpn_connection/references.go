@@ -42,6 +42,10 @@ func (rm *resourceManager) ClearResolvedReferences(res acktypes.AWSResource) ack
 		ko.Spec.CustomerGatewayID = nil
 	}
 
+	if ko.Spec.TransitGatewayRef != nil {
+		ko.Spec.TransitGatewayID = nil
+	}
+
 	if ko.Spec.VPNGatewayRef != nil {
 		ko.Spec.VPNGatewayID = nil
 	}
@@ -71,6 +75,12 @@ func (rm *resourceManager) ResolveReferences(
 		resourceHasReferences = resourceHasReferences || fieldHasReferences
 	}
 
+	if fieldHasReferences, err := rm.resolveReferenceForTransitGatewayID(ctx, apiReader, ko); err != nil {
+		return &resource{ko}, (resourceHasReferences || fieldHasReferences), err
+	} else {
+		resourceHasReferences = resourceHasReferences || fieldHasReferences
+	}
+
 	if fieldHasReferences, err := rm.resolveReferenceForVPNGatewayID(ctx, apiReader, ko); err != nil {
 		return &resource{ko}, (resourceHasReferences || fieldHasReferences), err
 	} else {
@@ -89,6 +99,10 @@ func validateReferenceFields(ko *svcapitypes.VPNConnection) error {
 	}
 	if ko.Spec.CustomerGatewayRef == nil && ko.Spec.CustomerGatewayID == nil {
 		return ackerr.ResourceReferenceOrIDRequiredFor("CustomerGatewayID", "CustomerGatewayRef")
+	}
+
+	if ko.Spec.TransitGatewayRef != nil && ko.Spec.TransitGatewayID != nil {
+		return ackerr.ResourceReferenceAndIDNotSupportedFor("TransitGatewayID", "TransitGatewayRef")
 	}
 
 	if ko.Spec.VPNGatewayRef != nil && ko.Spec.VPNGatewayID != nil {
@@ -181,6 +195,94 @@ func getReferencedResourceState_CustomerGateway(
 			"CustomerGateway",
 			namespace, name,
 			"Status.CustomerGatewayID")
+	}
+	return nil
+}
+
+// resolveReferenceForTransitGatewayID reads the resource referenced
+// from TransitGatewayRef field and sets the TransitGatewayID
+// from referenced resource. Returns a boolean indicating whether a reference
+// contains references, or an error
+func (rm *resourceManager) resolveReferenceForTransitGatewayID(
+	ctx context.Context,
+	apiReader client.Reader,
+	ko *svcapitypes.VPNConnection,
+) (hasReferences bool, err error) {
+	if ko.Spec.TransitGatewayRef != nil && ko.Spec.TransitGatewayRef.From != nil {
+		hasReferences = true
+		arr := ko.Spec.TransitGatewayRef.From
+		if arr.Name == nil || *arr.Name == "" {
+			return hasReferences, fmt.Errorf("provided resource reference is nil or empty: TransitGatewayRef")
+		}
+		namespace, _, err := ackrt.ValidateCrossNamespaceReference(
+			rm.cfg.EnableCrossNamespace,
+			ko.ObjectMeta.GetNamespace(),
+			arr.Namespace,
+			*arr.Name,
+		)
+		if err != nil {
+			return hasReferences, err
+		}
+		obj := &svcapitypes.TransitGateway{}
+		if err := getReferencedResourceState_TransitGateway(ctx, apiReader, obj, *arr.Name, namespace); err != nil {
+			return hasReferences, err
+		}
+		ko.Spec.TransitGatewayID = (*string)(obj.Status.TransitGatewayID)
+	}
+
+	return hasReferences, nil
+}
+
+// getReferencedResourceState_TransitGateway looks up whether a referenced resource
+// exists and is in a ACK.ResourceSynced=True state. If the referenced resource does exist and is
+// in a Synced state, returns nil, otherwise returns `ackerr.ResourceReferenceTerminalFor` or
+// `ResourceReferenceNotSyncedFor` depending on if the resource is in a Terminal state.
+func getReferencedResourceState_TransitGateway(
+	ctx context.Context,
+	apiReader client.Reader,
+	obj *svcapitypes.TransitGateway,
+	name string, // the Kubernetes name of the referenced resource
+	namespace string, // the Kubernetes namespace of the referenced resource
+) error {
+	namespacedName := types.NamespacedName{
+		Namespace: namespace,
+		Name:      name,
+	}
+	err := apiReader.Get(ctx, namespacedName, obj)
+	if err != nil {
+		return err
+	}
+	var refResourceTerminal bool
+	for _, cond := range obj.Status.Conditions {
+		if cond.Type == ackv1alpha1.ConditionTypeTerminal &&
+			cond.Status == corev1.ConditionTrue {
+			return ackerr.ResourceReferenceTerminalFor(
+				"TransitGateway",
+				namespace, name)
+		}
+	}
+	if refResourceTerminal {
+		return ackerr.ResourceReferenceTerminalFor(
+			"TransitGateway",
+			namespace, name)
+	}
+	var refResourceSynced bool
+	for _, cond := range obj.Status.Conditions {
+		if cond.Type == ackv1alpha1.ConditionTypeResourceSynced &&
+			cond.Status == corev1.ConditionTrue {
+			refResourceSynced = true
+		}
+	}
+	if !refResourceSynced {
+		return ackerr.ResourceReferenceNotSyncedFor(
+			"TransitGateway",
+			namespace, name)
+	}
+	if obj.Status.TransitGatewayID == nil {
+		return ackerr.ResourceReferenceMissingTargetFieldFor(
+			"TransitGateway",
+			namespace, name,
+			"Status.TransitGatewayID")
 	}
 	return nil
 }

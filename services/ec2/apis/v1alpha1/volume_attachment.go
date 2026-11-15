@@ -12,11 +12,12 @@ import (
 // device (AttachVolume), and detaches it on delete (DetachVolume). It is
 // Terraform's aws_volume_attachment.
 //
-// Exactly one of volumeID and volumeRef must be set. Every field is
-// immutable: an attachment is identified by its volume, instance and
-// device.
+// Exactly one of volumeID and volumeRef, and exactly one of instanceID and
+// instanceRef, must be set. Every field is immutable: an attachment is
+// identified by its volume, instance and device.
 //
 // +kubebuilder:validation:XValidation:rule="[has(self.volumeID), has(self.volumeRef)].filter(x, x).size() == 1",message="exactly one of volumeID and volumeRef must be set"
+// +kubebuilder:validation:XValidation:rule="[has(self.instanceID), has(self.instanceRef)].filter(x, x).size() == 1",message="exactly one of instanceID and instanceRef must be set"
 type VolumeAttachmentSpec struct {
 	// The ID of the EBS volume. Immutable.
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable once set"
@@ -25,9 +26,11 @@ type VolumeAttachmentSpec struct {
 	VolumeRef *ackv1alpha1.AWSResourceReferenceWrapper `json:"volumeRef,omitempty"`
 	// The ID of the EC2 instance, in the volume's Availability Zone.
 	// Immutable.
-	// +kubebuilder:validation:Required
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable once set"
-	InstanceID *string `json:"instanceID"`
+	InstanceID *string `json:"instanceID,omitempty"`
+	// An ACK Instance (ec2.services.k8s.aws) whose status.instanceID is the
+	// instance.
+	InstanceRef *ackv1alpha1.AWSResourceReferenceWrapper `json:"instanceRef,omitempty"`
 	// The device name the instance sees, for example /dev/sdf or
 	// /dev/xvdf. Immutable.
 	// +kubebuilder:validation:Required

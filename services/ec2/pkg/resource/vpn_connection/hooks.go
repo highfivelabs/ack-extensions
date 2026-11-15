@@ -43,6 +43,10 @@ import (
 	"github.com/highfivelabs/ack-extensions/services/ec2/pkg/tags"
 )
 
+// transitGatewayRef names ACK's TransitGateway (ec2.services.k8s.aws), read by
+// the generated references code (apis/v1alpha1/ack_kinds.go).
+// +kubebuilder:rbac:groups=ec2.services.k8s.aws,resources=transitgateways,verbs=get;list;watch
+
 func (rm *resourceManager) customUpdateVpnConnection(
 	ctx context.Context,
 	desired *resource,

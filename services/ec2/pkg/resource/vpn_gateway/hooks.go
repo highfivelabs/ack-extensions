@@ -36,6 +36,10 @@ import (
 	"github.com/highfivelabs/ack-extensions/services/ec2/pkg/tags"
 )
 
+// vpcRef names ACK's VPC (ec2.services.k8s.aws), read by the generated
+// references code (apis/v1alpha1/ack_kinds.go).
+// +kubebuilder:rbac:groups=ec2.services.k8s.aws,resources=vpcs,verbs=get;list;watch
+
 func (rm *resourceManager) customUpdateVpnGateway(
 	ctx context.Context,
 	desired *resource,

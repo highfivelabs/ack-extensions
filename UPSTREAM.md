@@ -18,7 +18,7 @@ factory's daily watch. Change both together; `task upstream:yaml-check`
 | applicationautoscaling-controller | `v1.9.0` | `009baef3a28e7d8a49a61c520eb6c537c674d52b` | not a module here: the Application Auto Scaling SDK client is at its version (`service/applicationautoscaling` `v1.34.10`) |
 | autoscaling-controller | `v1.5.0` | `56316c75a5da8fdf8079917a16e540be4e84e986` | not a module here: the EC2 Auto Scaling SDK client is at its version (`service/autoscaling` `v1.64.3`) |
 | kms-controller | `v1.7.0` | `57250fba83d58aeb84a3ec2770cf3e9b45708895` | Go module: the API types of ACK's `Key` (which `ReplicaKey` references), `KeyMetadata` and `Tag`; the KMS SDK client at its version (`service/kms` `v1.37.14`) |
-| ec2-controller | `v1.23.1` | `9303654c2cffad05147e4260105439149f7c81bf` | not a module here (its `pkg/tags` is copied); the EC2 SDK client is at its version (`service/ec2` `v1.290.1`) |
+| ec2-controller | `v1.23.1` | `9303654c2cffad05147e4260105439149f7c81bf` | Go module (since 2026-11-15, open question 16): the API types of ACK's `VPC`, `RouteTable`, `TransitGateway` and `Instance`, which `VPNGateway`, `VPNGatewayRoutePropagation`, `VPNConnection` and `VolumeAttachment` reference (and its CRDs, for the tests); its `pkg/tags` is copied; the EC2 SDK client is at its version (`service/ec2` `v1.290.1`) |
 | ecr-controller | `v1.11.1` | `72590cedeb2a4a92d086175762a97aa2ed2bc979` | not a module here: ACK's ECR kinds are left to it (the generator ignores them); the ECR SDK client is at its version (`service/ecr` `v1.55.0`) |
 | ecr-controller PR #121 | head | `f6c7d57e0b169547ed2300cbba0c65b11691b0eb` | `ReplicationConfiguration`'s API, behaviour and conversions (open, conflicting, no review, 2026-11-09) |
 | eventbridge-controller | `v1.9.2` | `fd084a0bb4d9025f294516d6319b88293be1de8d` | not a module here: the EventBridge SDK client is at its version (`service/eventbridge` `v1.36.7`) |
@@ -117,7 +117,8 @@ Written here: `services/rds/apis/v1alpha1/db_proxy_target.go`,
 `services/ec2/templates/hooks/network_interface_permission/*.go.tpl`,
 `services/ec2/pkg/resource/network_interface_permission/sdk_test.go`,
 `services/ec2/templates/hooks/vpn_gateway_route_propagation/*.go.tpl`,
-`services/ec2/pkg/resource/vpn_gateway_route_propagation/{hooks,sdk_test}.go`,
+`services/ec2/pkg/resource/vpn_gateway_route_propagation/{hooks,sdk_test,references_test}.go`,
+`services/ec2/apis/v1alpha1/ack_kinds.go`,
 `services/ecr/pkg/resource/replication_configuration/{delta,references,sdk_test}.go`,
 `services/eventbridge/pkg/resource/connection/{hooks,hooks_test}.go`,
 `services/eventbridge/pkg/resource/api_destination/custom_delta_test.go`,

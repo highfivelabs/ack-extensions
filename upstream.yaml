@@ -47,7 +47,7 @@ pins:
     repo: aws-controllers-k8s/ec2-controller
     version: v1.23.1
     commit: 9303654c2cffad05147e4260105439149f7c81bf
-    use: copied from (pkg/tags, hooks); the SDK client at its version
+    use: Go module (API types our references name); copied from (pkg/tags, hooks); the SDK client at its version
   - name: ecr-controller
     repo: aws-controllers-k8s/ecr-controller
     version: v1.11.1

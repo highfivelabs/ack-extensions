@@ -64,6 +64,17 @@ rules:
   - patch
   - update
 - apiGroups:
+  - ec2.services.k8s.aws
+  resources:
+  - instances
+  - routetables
+  - transitgateways
+  - vpcs
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - services.k8s.aws
   resources:
   - fieldexports

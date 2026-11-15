@@ -35,5 +35,8 @@ func newResourceDelta(a *resource, b *resource) *ackcompare.Delta {
 	if !equality.Semantic.DeepEqual(a.ko.Spec.VolumeRef, b.ko.Spec.VolumeRef) {
 		delta.Add("Spec.VolumeRef", a.ko.Spec.VolumeRef, b.ko.Spec.VolumeRef)
 	}
+	if !equality.Semantic.DeepEqual(a.ko.Spec.InstanceRef, b.ko.Spec.InstanceRef) {
+		delta.Add("Spec.InstanceRef", a.ko.Spec.InstanceRef, b.ko.Spec.InstanceRef)
+	}
 	return delta
 }

@@ -54,6 +54,23 @@ spec:
                 x-kubernetes-validations:
                 - message: Value is immutable once set
                   rule: self == oldSelf
+              availabilityZoneRef:
+                description: "AWSResourceReferenceWrapper provides a wrapper around
+                  *AWSResourceReference\ntype to provide more user friendly syntax
+                  for references using 'from' field\nEx:\nAPIIDRef:\n\n\tfrom:\n\t
+                  \ name: my-api"
+                properties:
+                  from:
+                    description: |-
+                      AWSResourceReference provides all the values necessary to reference another
+                      k8s resource for finding the identifier(Id/ARN/Name)
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               encrypted:
                 description: |-
                   Indicates whether the volume should be encrypted. The effect of setting the
@@ -209,8 +226,6 @@ spec:
 
                   Default: gp2
                 type: string
-            required:
-            - availabilityZone
             type: object
           status:
             description: VolumeStatus defines the observed state of Volume
