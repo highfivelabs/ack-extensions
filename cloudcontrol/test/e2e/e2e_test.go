@@ -137,9 +137,15 @@ func TestSAMLProvider(t *testing.T) {
 		t.Errorf("spec.addPrivateKey lost: %v", got.Object["spec"])
 	}
 	// The create was asynchronous: followed to the end.
+	// The fake's request tokens end in the operation; real Cloud Control's
+	// are UUIDs (run ackx-11151722-eda8), so on a live run the polls of the
+	// create are those before the first update.
 	var polls int
-	for _, c := range e.calls("GetResourceRequestStatus", "") {
-		if strings.HasSuffix(c.Identifier, "-create") {
+	for _, c := range e.cc.Calls() {
+		if e.live && c.Action == "UpdateResource" {
+			break
+		}
+		if c.Action == "GetResourceRequestStatus" && (e.live || strings.HasSuffix(c.Identifier, "-create")) {
 			polls++
 		}
 	}
