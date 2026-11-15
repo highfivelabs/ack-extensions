@@ -786,7 +786,7 @@ where it stands here:
 | Gap | Where it belongs | Status |
 | --- | --- | --- |
 | `VPNGateway.spec.vpcRef`, `VPNGatewayRoutePropagation.spec.routeTableRef` | ours | **built** (2026-11-15; question 16 answered): ACK's ec2-controller `v1.23.1` is a Go module here and its `VPC`, `RouteTable`, `TransitGateway` and `Instance` are aliased in `services/ec2/apis/v1alpha1/ack_kinds.go`. `vpcRef` proven on moto; `routeTableRef` by unit tests (moto has no `EnableVgwRoutePropagation`). The charts' first `vpc` gap (`enable_vpn_gateway`, `propagate_*_route_tables_vgw`) |
-| Adopting a VPC's default VPC, security group, network ACL and main route table by `vpcRef` (`aws_default_*`) | ours, four new kinds | **`DefaultSecurityGroup` built** (2026-11-15, section 6.37, proven on moto); `DefaultNetworkACL`, `DefaultRouteTable` and `DefaultVPC` to build (question 16 answered: build them), on its pattern. Shape: read the default object by the VPC (`DescribeSecurityGroups` with `group-name=default`, `DescribeNetworkAcls` with `default=true`, `DescribeRouteTables` with `association.main=true`, `DescribeVpcs` with `isDefault=true`), manage its rules, entries or routes, and never delete it |
+| Adopting a VPC's default VPC, security group, network ACL and main route table by `vpcRef` (`aws_default_*`) | ours, four new kinds | **Built** (2026-11-15, proven on moto): `DefaultSecurityGroup` (section 6.37), `DefaultNetworkACL`, `DefaultRouteTable` and `DefaultVPC` (sections 6.38 to 6.40; ACKQ16-1). Shape: read the default object by the VPC (`DescribeSecurityGroups` with `group-name=default`, `DescribeNetworkAcls` with `default=true`, `DescribeRouteTables` with `association.main=true`, `DescribeVpcs` with `isDefault=true`), manage its rules, entries or routes, and never delete it |
 | VPC Block Public Access options and exclusions; `SecurityGroupVpcAssociation` | ours | **served**, by Cloud Control kinds: `ec2.cloudcontrol.aws.hfl.dev` `VPCBlockPublicAccessOptions`, `VPCBlockPublicAccessExclusion` and `SecurityGroupVpcAssociation` (schema fake only: moto 5.2.5 has neither `CreateVpcBlockPublicAccessExclusion` nor `AssociateSecurityGroupVpc`, and AWS Emulator's Cloud Control does not reach EC2; references tested there by `TestReferences` and `TestReferencesBlockPublicAccessExclusion`). **With references** since 2026-11-12 (`docs/cloudcontrol.md` section 12, item 4): `VPCBlockPublicAccessExclusion.spec.vpcRef` and `subnetRef` (ACK's `VPC`, `Subnet`), `SecurityGroupVpcAssociation.spec.groupRef` and `vpcRef` (ACK's `SecurityGroup`, `VPC`), so a chart wires them in one render. The charts' `upstream/aws-kinds.yaml` can map them |
 | An Elastic IP associated with an instance (`AssociateAddress`; the `ec2-instance` chart's `create_eip`) | ours | **served** by `ec2.cloudcontrol.aws.hfl.dev` `EIPAssociation`, **proven on moto** since 2026-11-12 (`TestEIPAssociation`: a moto backend over `AssociateAddress`, `DescribeAddresses`, `DisassociateAddress`; both references resolved from ACK stand-ins; on AWS Emulator 1.0.338 it fails as every moto-proven Cloud Control kind does, its Cloud Control keeping the type in its own store, `docs/aws-emulator.md`), with `allocationRef` (ACK's `ElasticIPAddress`), `instanceRef` (ACK's `Instance`) and `networkInterfaceRef` (our `NetworkInterface`) since 2026-11-12. ACK's ec2-controller has no association kind (checked at `v1.23.1` and `v1.24.0`); its `ElasticIPAddress` has no instance field |
 | S3 directory buckets | ours | **served** by `s3express.cloudcontrol.aws.hfl.dev` `DirectoryBucket` (batch 14) |
@@ -2487,6 +2487,133 @@ group has no self-referencing ingress rule (AWS's has one, which the
 take-over revokes unless the spec lists it): **not proven** against
 AWS's own default rules, nor `RulesPerSecurityGroupLimitExceeded`.
 
+### 6.38 `ec2.aws.hfl.dev` `DefaultNetworkACL`
+
+A VPC's default network ACL, taken over: Terraform's
+`aws_default_network_acl` (the catalog's `vpc` chart,
+`manage_default_network_acl`; open question 16, ACKQ16-1 answered
+2026-11-15). ACK's ec2-controller `v1.23.1` has no default-object kind
+(its `NetworkACL` makes ACLs), and no pull request adds one.
+
+**Hand-written** on `DefaultSecurityGroup`'s skeleton (section 6.37). The
+entry calls are copied from ACK `NetworkACL`'s hooks (`entries.go`), and
+an entry is ACK's own `NetworkACLEntry`, so it reads as on ACK's
+`NetworkACL` (`entries`, `egress: true` for outbound).
+
+- **Spec:** `vpcID` or `vpcRef` (ACK's `VPC`; exactly one; immutable),
+  `entries`, `subnetIDs` or `subnetRefs` (ACK's `Subnet`), `tags`.
+  **Status:** `id`, `unlistedSubnetIDs`.
+- **Found by the VPC** (`DescribeNetworkAcls`, `vpc-id` and
+  `default=true`), not by the ACL's ID as Terraform's
+  `default_network_acl_id` is (assumed, ACKQ16-1-A1: a chart has the VPC
+  in hand through `vpcRef`, not the default ACL's ID, which only ACK's
+  VPC read could give; an `id` field can be added beside it if a chart
+  needs it). No ACL yet (the VPC not made) is retried.
+- **Exclusive**, as Terraform's: an entry not in the spec is deleted, EC2's
+  default allow-all entries (rule 100 in and out) included; one the spec
+  changes at the same rule number and direction is replaced in place
+  (`ReplaceNetworkAclEntry`). EC2's deny-all entries (32767) are neither
+  listed nor touched. Entries compare canonically (protocol `tcp` and `6`
+  alike, the action's case, ports only for TCP and UDP). Tags likewise,
+  except AWS's own (`aws:`).
+- **Subnets:** a listed subnet is moved onto the default ACL from
+  whatever ACL it is on (`ReplaceNetworkAclAssociation`), and moved back
+  if moved off outside Kubernetes. A subnet on the default ACL that the
+  spec does not list cannot be taken off it from here (EC2 moves a subnet
+  only onto another ACL; Terraform's kind has the same limit), so it is
+  left there and reported in `status.unlistedSubnetIDs`. A subnet listed
+  here and also by an ACK `NetworkACL`'s `associations` is a tug of war,
+  as with question 7's rules.
+- **Delete** leaves the ACL, its entries and its subnets.
+
+**Proven on moto** (`TestDefaultNetworkACL`): taken over by `vpcRef`, EC2's
+allow-all entries deleted and the spec's put; a subnet moved onto it by
+`subnetRefs` from another ACL; an unlisted subnet reported; no update
+across resyncs; an entry added outside Kubernetes deleted and a subnet
+moved off moved back; an entry replaced in place and one added; the
+CRD's refusal of both VPC fields; the delete leaving the entries.
+**Not proven:** IPv6 entries (AWS adds rule 101 for IPv6 to a VPC with an
+IPv6 block), `NetworkAclEntryLimitExceeded`, ICMP entries.
+
+### 6.39 `ec2.aws.hfl.dev` `DefaultRouteTable`
+
+A VPC's main route table, taken over: Terraform's
+`aws_default_route_table` (`manage_default_route_table`; ACKQ16-1). ACK's
+`RouteTable` makes tables; nothing in ACK takes over the main one.
+
+**Hand-written** on the same skeleton. The route code is copied from ACK
+`RouteTable` (`routes.go`: the comparison, the create and delete inputs,
+the reading of a route, the set difference), and a route is ACK's own
+`CreateRouteInput`, references included: `gatewayRef` (ACK's
+`InternetGateway`), `natGatewayRef`, `transitGatewayRef`,
+`vpcEndpointRef`, `vpcPeeringConnectionRef`, resolved as ACK's
+`RouteTable` resolves them.
+
+- **Spec:** `vpcID` or `vpcRef` (exactly one; immutable), `routes`,
+  `propagatingVGWs`, `tags`. **Status:** `id`.
+- **Found by the VPC** (`DescribeRouteTables`, `vpc-id` and
+  `association.main=true`), not by `default_route_table_id`
+  (ACKQ16-1-A1, as above).
+- **Exclusive**, as Terraform's: every route made with `CreateRoute` that
+  the spec does not list is deleted, and the spec's are created; a route
+  whose target changes is deleted and made again. The local route
+  (origin `CreateRouteTable`), routes a VPN gateway propagates (origin
+  `EnableVgwRoutePropagation`) and VPC gateway endpoint routes (`vpce-` to
+  a prefix list, which Terraform's kind ignores too) are EC2's and left
+  alone. `propagatingVGWs` is exclusive too: a gateway not listed has its
+  propagation disabled, so a `VPNGatewayRoutePropagation` (section 6.34)
+  on the main table fights this kind (use one or the other). Tags
+  likewise, except AWS's own.
+- **Delete** leaves the table, its routes and its propagations.
+
+**Proven on moto** (`TestDefaultRouteTable`): taken over by `vpcID`, a
+route made outside Kubernetes before the take-over deleted and the
+spec's route put by `gatewayRef` (ACK's `InternetGateway` standing in),
+the local route kept, the reference kept in the spec; a VPN gateway's
+propagation enabled; no update across resyncs; a route added outside
+Kubernetes deleted; the routes and propagation changed; the delete
+leaving the route. **Not proven:** routes to an instance (AWS reads them
+back with the instance's network interface too, which the comparison
+would see as drift), IPv6 and prefix-list destinations, `RouteLimitExceeded`.
+
+### 6.40 `ec2.aws.hfl.dev` `DefaultVPC`
+
+The region's default VPC, taken over: Terraform's `aws_default_vpc`
+(`manage_default_vpc`; ACKQ16-1: "DefaultVPC adopts the region's default
+VPC (isDefault=true) and manages its DNS settings and tags, with no
+vpcRef"). ACK's `VPC` makes VPCs and adopts one only by ID.
+
+- **Spec:** `enableDNSSupport` and `enableDNSHostnames` (default `true`,
+  as Terraform's and EC2's for a default VPC),
+  `enableNetworkAddressUsageMetrics` (managed only when set), `tags`. No
+  VPC ID and no reference: the region (the object's
+  `services.k8s.aws/region` annotation or the manager's) names the VPC.
+  **Status:** `vpcID`, `cidrBlock`, `dhcpOptionsID`, `ownerID`.
+- **Found** with `DescribeVpcs` (`is-default=true`). A region with no
+  default VPC is retried (`ACK.Recoverable`, "region ... has no default
+  VPC"), not terminal, and taken over once one is made
+  (`CreateDefaultVpc`, outside Kubernetes). Not made here: Terraform's
+  `aws_default_vpc` does not make one either, and making one is an
+  account decision.
+- **Exclusive:** the settings put back when changed outside Kubernetes
+  (`ModifyVpcAttribute`, one attribute per call); tags, except AWS's own.
+  Not offered: `assign_generated_ipv6_cidr_block`, IPAM pools and
+  Terraform's `force_destroy` (assumed, ACKQ16-1-A2: the answer names the
+  DNS settings and tags; the IPv6 block is a create-time association
+  rather than a setting).
+- **One per region:** two `DefaultVPC` objects for one region (in two
+  namespaces of one account) would both manage it; nothing refuses that.
+- **Delete** leaves the VPC.
+
+**Proven on moto** (`TestDefaultVPC`): moto's default VPC deleted, the
+object retried with a recoverable condition naming it; a default VPC
+made, then taken over with no reference, the DNS hostnames setting
+turned off and the tag put, `enableDNSSupport` defaulted by the CRD; no
+update across resyncs; the setting changed outside Kubernetes put back;
+the delete leaving the VPC. **Not proven:** the Network Address Usage
+metrics setting (not exercised; moto's support for it is not checked),
+and AWS's own default VPC (moto's has no `aws:` tags).
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)
@@ -3662,6 +3789,13 @@ Before it can run on a real cluster:
     with no vpcRef.)"): the three remaining kinds are exclusive like
     `DefaultSecurityGroup` and never deleted; `DefaultVPC` takes the
     region's default VPC with no `vpcRef`.
+
+    **Done** (2026-11-15): `DefaultNetworkACL`, `DefaultRouteTable` and
+    `DefaultVPC` (sections 6.38 to 6.40), proven on moto. With
+    `DefaultSecurityGroup` the four `aws_default_*` kinds the catalog's
+    `vpc` chart needs are built. Assumed: ACKQ16-1-A1 (found by the VPC,
+    not by the default object's ID) and ACKQ16-1-A2 (no IPv6 block or
+    `force_destroy` on `DefaultVPC`).
 17. **The name of the per-environment context for the ACK-generated
     kinds** (section 7.6). Built as `core.aws.hfl.dev/v1alpha1`
     `ACKContext`, one per namespace, named `ack`: a sibling of
