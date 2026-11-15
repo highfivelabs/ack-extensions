@@ -21,18 +21,12 @@ import (
 // TestOnlySomeCRDsInstalled (RECCC, docs/cloudcontrol.md section 11): a
 // cluster with two Cloud Control CRDs installed, Secrets Manager's
 // ResourcePolicy and EC2's EIPAssociation, and the manager started as the
-// operator starts it for a context that names no kinds. The catalog's
-// fake-AWS run is such a cluster: there the manager started controllers for
-// every kind in the registry, the ones with no CRD never synced their
-// caches, and after controller-runtime's two-minute cache sync timeout the
-// manager exited, so each object kept its first reconcile ("Unable to
-// determine if desired resource state matches latest observed state") or
-// none at all.
-//
-// Both objects sync (ACK.ResourceSynced and Ready True), the manager says
-// which kinds it does not serve, and after the cache sync timeout it still
-// reconciles: a policy changed then reaches Secrets Manager, and the
-// association is deleted from EC2.
+// operator starts it for a context that names no kinds. The manager serves
+// those two alone and says how many it leaves out; both objects sync
+// (ACK.ResourceSynced and Ready True); and no controller waits on a kind
+// without a CRD: past controller-runtime's two-minute cache sync timeout
+// the manager still reconciles, a changed policy reaches Secrets Manager
+// and the association's delete reaches EC2.
 func TestOnlySomeCRDsInstalled(t *testing.T) {
 	if target(t) == "real" {
 		t.Skip("a cluster shape, not a service: the fake is enough")

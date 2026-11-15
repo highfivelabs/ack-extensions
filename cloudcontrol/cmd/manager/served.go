@@ -20,14 +20,11 @@ type resourceLister interface {
 	ServerResourcesForGroupVersion(groupVersion string) (*metav1.APIResourceList, error)
 }
 
-// servedTypes keeps the types whose CRD the API server serves. A
-// controller for a kind with no CRD never syncs its cache: after
-// controller-runtime's cache sync timeout (two minutes) it fails, and with
-// it the whole manager, so the pod restarts and backs off, and every other
-// kind it serves stops between restarts. A cluster that installs only the
-// CRDs it uses (the catalog's fake-AWS run, docs/cloudcontrol.md section 11)
-// had every Cloud Control object stuck at its first reconcile, "Unable to
-// determine if desired resource state matches latest observed state".
+// servedTypes keeps the types whose CRD the API server serves. Each kind
+// served costs about 0.36 MiB at rest (docs/cloudcontrol.md section 11,
+// RECCC: 533 MB for all 1,345), and a controller for a kind with no CRD has
+// nothing to watch; in a cluster that installs only the Cloud Control CRDs
+// it uses, the manager is then sized to those.
 //
 // With every kind asked for (no --cloudcontrol-kinds) the types without a
 // CRD are left out and named in the log. Kinds asked for by name must all
