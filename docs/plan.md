@@ -2984,7 +2984,10 @@ Before it can run on a real cluster:
    operator copies ACK's `--watch-namespace`, but always binds our role
    cluster-wide.
 3. One run against a real AWS account per kind, to check moto against
-   AWS:
+   AWS. The path is built (2026-11-15, HFL-623): `task test-live
+   SUITE=ack` runs `tests/e2e` on the sandbox account through a
+   forwarder in moto's place (`docs/live-runs.md`); the ledger there
+   has one row per kind. What each run must check:
    - proxy target health over time;
    - option group behaviour with real option settings;
    - `TrackedClusterId` for cluster members;
@@ -3136,6 +3139,19 @@ Before it can run on a real cluster:
     Per environment (`ACKContext`, section 7.6) needs neither. Running it
     beside ACK's s3 controller instead was asked for and is not built:
     open question 22.
+17. Live runs (HFL-623, 2026-11-15; `docs/live-runs.md`): the ACK-kind
+    suite (`task test-live SUITE=ack`) is built and waits for the sandbox
+    stack to be redeployed from the regenerated template (the deployed
+    role has the Cloud Control live kinds' permissions only). Found so
+    far: the organization's service control policy allows regional
+    services in us-east-2 only, so live runs go there and the tests that
+    need a second region (`ReplicaKey`) cannot run live; the sandbox
+    account has no Identity Center instance (`PermissionSet`,
+    `Assignment` pending); and the Cloud Control manager lost its leader
+    lease seconds after start in two of three live runs (the renewal
+    waits in the client rate limiter behind 1,345 kinds' informers),
+    which a lease renewal on its own client, or fewer kinds per manager,
+    would avoid.
 
 ## 9. Open questions
 

@@ -38,13 +38,11 @@ harness ("no fake backend"). Nothing in a test path can reach AWS
   only with a reason and its teardown checked. One ledger row per kind per
   run in `docs/live-runs.md`; a kind is "untested on real AWS" until it has
   one.
-- **Today:** the deployed role lacks the sweeper's and the fixtures'
-  permissions until the builder redeploys the stack from pull request #68
-  (register O26b). `hack/live/run.sh` sweeps first, so a run stops before
-  any test until then. On 2026-11-12 the run stopped earlier still:
-  `AssumeRoleWithWebIdentity` into the role was refused
-  (`docs/live-runs.md`, ledger), so no live run can start until the
-  builder checks the role's trust.
+- **Today (2026-11-15):** the stack is deployed in the AWS test account
+  `hfl-test` and its trust works (`docs/live-runs.md`). The ACK-kind
+  suite (`task test-live SUITE=ack`, HFL-623) needs the stack redeployed
+  from the regenerated template first: the deployed role holds only the
+  Cloud Control live kinds' permissions.
 
 ## Rechecking the fake against real AWS
 

@@ -20,7 +20,10 @@ not repeat them.
   - rank 18 (`KeyPair`): ec2-controller PR #396 is close to merging.
 - The kinds built here have no ACK controller to compare with and no real
   AWS run: everything is proven against moto only (`docs/plan.md` §8 item 3
-  lists what to check against real AWS, one run per kind).
+  lists what to check against real AWS, one run per kind). Since 2026-11-15
+  (HFL-623) `task test-live SUITE=ack` runs `tests/e2e` on the sandbox
+  account; it waits for the stack to be redeployed, and
+  `docs/live-runs.md` ("Kinds") has each kind's state.
 - **Next to build, in rank order:** the rest of rank 11 (ECR
   `RegistryPolicy`, `RegistryScanningConfiguration`), rank 17 (S3 `Object`,
   the account's public access block), rank 19 (Secrets Manager resource

@@ -1,18 +1,33 @@
-# Live runs: the Cloud Control kinds against a real AWS account
+# Live runs: the kinds against a real AWS account
 
-Every Cloud Control kind is **untested on real AWS** until it has a row in
-the ledger below (`docs/cloudcontrol.md`, decision 1). This
+Every kind, Cloud Control or ACK-generated, is **untested on real AWS**
+until it has a row in the ledger below (`docs/cloudcontrol.md`, decision
+1; for the ACK-generated kinds `docs/plan.md` section 8 item 3 lists what
+each run must check). Two suites run live: the Cloud Control tests
+(`cloudcontrol/test/e2e`, `SUITE=cloudcontrol`, the default) and the
+ACK-kind tests (`tests/e2e`, `SUITE=ack`, since 2026-11-15, HFL-623). This
 file says how a live run is made, what keeps it apart from everything else,
 and what each run found. The GCP repository's `docs/live-runs.md` is the
 model.
+
+**Region (2026-11-15, run `ackx-11151659-72c3`):** live runs go to
+us-east-2 (`LIVE_REGION`, default `live.DefaultRegion`). The sandbox
+account's organization has a service control policy that denies every
+other region's regional services: in us-west-2, where the tests ran
+before, Cloud Control `ListResources` was refused "with an explicit deny
+in a service control policy", and EC2 is refused in us-west-2 and
+us-east-1 alike. The tests keep us-west-2 on the fakes; on a live run
+both suites take the run's region (`region` in `cloudcontrol/test/e2e`,
+`harness.Region` in `tests/e2e`). A kind whose test needs a second
+region (a KMS replica key, ECR cross-region replication) cannot run
+live until the policy allows one.
 
 **Status, 2026-11-15:** the sandbox account is the AWS test account
 `hfl-test` (`$AWS_SANDBOX_ACCOUNT_ID`), created 2026-11-14 for tests only.
 The stack of 2026-11-10 sat in the wrong account and the builder deleted
 it (Open decisions O26c), which is why runs from 2026-11-12 were refused.
 Earlier (2026-11-10): the sandbox account was the O5 account. The builder deployed the stack
-`ack-extensions-live-tests` there (in us-east-2; IAM is global, the tests
-run in us-west-2), trusting the offload runner service account
+`ack-extensions-live-tests` there (in us-east-2; IAM is global), trusting the offload runner service account
 `$OFFLOAD_SA` in the new organization's dev project, so live runs start
 offload VMs in that project. The identifiers come from the environment
 (a git-ignored `.env`; `.env.example` lists them), never from the
@@ -32,13 +47,23 @@ cannot take it:
 
 | Lock | Where |
 | --- | --- |
-| The code that holds real credentials is compiled only with `-tags live` | `cloudcontrol/test/live`, `hack/live/sweep`, `cloudcontrol/test/e2e/live_test.go` |
+| The code that holds real credentials is compiled only with `-tags live` | `cloudcontrol/test/live`, `hack/live/sweep`, `cloudcontrol/test/e2e/live_test.go`, `tests/e2e/live_test.go` |
 | No task but `test-live`, `live-sweep` and `live-list` mentions `hack/live`, `-tags live` or the real target, and none calls them; `task check` compiles the live code with `go vet` and runs none of it | `hack/noaws` rules L1 and L2, in `task check` |
 | The Taskfile sets `CLOUDCONTROL_E2E_TARGET=fake` for every task; built without `-tags live`, `real` fails | `Taskfile.yml`, `cloudcontrol/test/e2e/harness_test.go` |
 | An explicit opt-in on every run: `ACK_EXT_LIVE=create-real-aws-resources` | `hack/live/run.sh`, `cloudcontrol/test/live` |
 | The account must be `AWS_SANDBOX_ACCOUNT_ID` (from the environment; unset refuses the run), and STS must say the credentials are that account's | the same |
 | Federated credentials only; stored keys, a profile or an endpoint override in the environment refuse the run | `hack/live/credentials.sh`, `cloudcontrol/test/live` |
 | The manager never holds real credentials: it still runs under `pkg/fakeaws` (fake keys, dead proxy, a loopback endpoint), and a recorder in the test process signs its requests again with the run's credentials and forwards only Cloud Control and STS `GetCallerIdentity` | `cloudcontrol/test/live/recorder.go` |
+
+For the ACK-kind tests the forwarder (`cloudcontrol/test/live/forward.go`)
+stands where moto stands: the managers and the tests' own SDK clients
+keep pkg/fakeaws's loopback endpoint and fake keys; the forwarder reads
+each request's service and region from its fake SigV4 scope, signs it
+again with the run's credentials, and sends it to that service's real
+endpoint (IAM and Organizations at their global endpoints, S3 Control at
+the sandbox account's own host). Services not on its list are refused.
+The tests reach the forwarder through `harness.Live`, which only
+`tests/e2e/live_test.go` sets (`ACK_TEST_BACKEND=live`).
 
 The recorder also keeps the tests' call-log checks (one `replace` per change,
 no update on a resync) valid on a live run: it records every Cloud Control
@@ -84,6 +109,16 @@ AWS test account only, with that account's admin role. It holds:
   only (plan question 21): a live run of a test whose kind is not in
   `liveKinds` is refused by IAM. Adding a kind to `liveKinds` needs the
   stack redeployed;
+- for the ACK-kind suite (statement `LiveRunACKKinds`,
+  `hack/cloudcontrol-gen/liveack.go`): every ACK-generated kind's calls
+  as `task ack:iam` reads them (`pkg/ackiam`), the Organizations kinds
+  left out (they need the organization's management account, which the
+  sandbox account is not); every SDK operation the tests call themselves
+  (each `&<service>.<Operation>Input` in `tests/e2e`, the Organizations
+  tests left out); and `tests/e2e/live-actions.yaml` (ACK's own kms and
+  s3 controllers that the extension tests run, fixtures' extra actions,
+  the sweeper's ACK pass). A test that adds a fixture call needs the
+  template regenerated and the stack redeployed;
 - `BudgetAlarm`: a monthly cost budget (default USD 50) with e-mail alerts
   at 80% of actual and 100% of forecast spend.
 
@@ -142,13 +177,26 @@ On an offload VM (credentials need its service account):
 ```
 
 `hack/live/run.sh` runs the tests against the fake, then against the
-account with `CLOUDCONTROL_E2E_TARGET=real`. Every resource the manager
+account with `CLOUDCONTROL_E2E_TARGET=real`. `SUITE=ack` runs `tests/e2e`
+instead (moto, then `ACK_TEST_BACKEND=live`); `TESTS` picks tests in
+either suite. One `-run` pattern per run: give several tests as one
+quoted value, `TESTS='TestA TestB'`. Every resource the manager
 makes carries the tag `hfl.dev/live-run=<run ID>` (ACK's `--resource-tags`,
 filtered from specs like ACK's own tags). Before the run, leftovers of runs
 older than 2 hours are swept; after it, pass or fail, everything of the run
 is swept and what is left is listed. Output:
 `offload-artifacts/live/<run ID>/` (`summary.md`, `fake.log`, `live.log`,
 `left.txt`).
+
+The sweeper's ACK pass (`--suite ack`, or `all`, the default) finds what
+the ACK managers made by the run tag where it is billed or lasts: EC2
+volumes, customer gateways, VPN gateways and connections, and KMS keys
+(scheduled for deletion, 7 days), in us-west-2, us-east-1 and
+us-east-2; every other ACK kind and every untagged fixture is deleted by
+its test. `--list` also prints the IAM users, groups, customer-managed
+policies, virtual MFA devices, account alias and password policy, none
+of which the sandbox account has of its own. `run.sh` sweeps its own
+suite only.
 
 The sweeper (`task live-sweep`, `task live-list`, the same opt-in and
 federated credentials) lists every live kind (`liveKinds`; no live run
@@ -181,3 +229,59 @@ policy letting Route 53 write to it, which the test does not make yet. Each is a
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 2026-11-10 | `ackx-11101802-5696` | `a448a3d` + the account | `$AWS_SANDBOX_ACCOUNT_ID` | TestDetector | PASS | not run | Trust passed. The sweep before the run was refused `cloudformation:ListResources` (the template dropped `LiveRunSweeperAndFixtures`); the run stopped there, nothing created |
 | 2026-11-12 | `ackx-11121603-a0b7` | `52556a2` | `$AWS_SANDBOX_ACCOUNT_ID` | TestSAMLProvider | PASS | not run | **Trust refused.** From an offload VM run with `--sa "$OFFLOAD_SA"` in `$OFFLOAD_PROJECT`, `AssumeRoleWithWebIdentity` into `ack-extensions-live-tests` answered `AccessDenied: Not authorized to perform sts:AssumeRoleWithWebIdentity` (four tries: the sweep before, and the clean-up after). Nothing reached AWS beyond STS, nothing was created. The same trust passed on 2026-11-10; the role's trust policy, the OIDC provider's client IDs or the service account's unique ID has changed since. Needs the builder (IAM is not changed from here) |
+| 2026-11-15 | `ackx-11151659-72c3` | `3fd2f99` | `$AWS_SANDBOX_ACCOUNT_ID` | TestSAMLProvider, TestIdentityCenter (in us-west-2) | PASS | not run | **Trust passed** (the built-in Google principal, PR #107). The sweep before the tests was refused `cloudformation:ListResources` in us-west-2 "with an explicit deny in a service control policy": the organization allows regional services in us-east-2 only. Live runs moved to us-east-2 (`LIVE_REGION`). Nothing created |
+| 2026-11-15 | `ackx-11151707-7cc5` | `5b4c2bb` | `$AWS_SANDBOX_ACCOUNT_ID` | TestSAMLProvider, TestIdentityCenter | PASS | not run | The sweep listed `AWS::IAM::SAMLProvider` (none left); `AWS::SSO::PermissionSet`'s list was refused without the instance ("Required property: [InstanceArn]"). The sweeper now lists per Identity Center instance. Nothing created |
+| 2026-11-15 | `ackx-11151713-11b9` | `7c50294` | `$AWS_SANDBOX_ACCOUNT_ID` | TestSAMLProvider, TestIdentityCenter | PASS | FAIL | Sweeps clean (no Identity Center instance in the account: nothing to list). **IdentityCenter (`PermissionSet`, `Assignment`): pending**: the sandbox account has no Identity Center instance (`sso:ListInstances` is empty; the organization's instance lives in its management account), so the test stops before it makes anything. **SAMLProvider**: the manager lost its leader lease 12 s after start (the client rate limiter, while 1,345 kinds' informers started) and exited, so the object was never reconciled; nothing reached IAM. Rerun once (the handoff's rule for a timeout) |
+| 2026-11-15 | `ackx-11151722-eda8` | `7c50294` | `$AWS_SANDBOX_ACCOUNT_ID` | TestSAMLProvider | PASS | FAIL | **IAM `SAMLProvider` on real Cloud Control:** the create with a write-only private key from a Secret, the ARN in status, the metadata read back through IAM, an update sent as one replace of `/SamlMetadataDocument`, the create-only refusals, and the delete all passed. Real IAM parses the metadata's certificate and the private key (the fixture now makes a real pair; moto took placeholders). One check failed on a fake-only detail: the fake's request tokens end in `-create`, real ones are UUIDs, so the count of the create's status polls was 0; the test now counts the polls before the first update on a live run. Sweeps clean |
+| 2026-11-15 | `ackx-11151728-fbe4` | `3cfe5f4` | `$AWS_SANDBOX_ACCOUNT_ID` | TestSAMLProvider | PASS | FAIL | The manager lost its leader lease 7 s after start, as in `ackx-11151713-11b9` ("Failed to update lease optimistically ... client rate limiter Wait returned an error: context deadline exceeded", then "leader election lost"), and exited; nothing reached IAM. Two of three live runs of the Cloud Control manager so far, none of the fake runs: the lease renewal waits behind the start of 1,345 kinds' informers in the one client rate limiter. Recorded in plan section 8 |
+| 2026-11-15 | `ackx-11151735-cca8` | `3cfe5f4` | `$AWS_SANDBOX_ACCOUNT_ID` | TestSAMLProvider | PASS | PASS | **IAM `SAMLProvider` (Cloud Control) passes on real AWS**, us-east-2: create with the write-only private key, status, one-replace update, create-only refusals, delete; the create's status polled once (real Cloud Control) where the fake answers IN_PROGRESS twice. Sweeps clean, nothing left (`left.txt` empty) |
+
+## Kinds
+
+One row per kind: its last live result, or why it has none. Updated with
+each run; the ledger above has the runs.
+
+| Route | Service | Kind | Test | Live |
+| --- | --- | --- | --- | --- |
+| Cloud Control | iam | SAMLProvider | TestSAMLProvider | PASS, `ackx-11151735-cca8` (2026-11-15); the manager lost its lease in two earlier runs (plan section 8 item 17) |
+| Cloud Control | sso | PermissionSet | TestIdentityCenter | pending: no Identity Center instance in the sandbox account (the organization's is in its management account) |
+| Cloud Control | sso | Assignment | TestIdentityCenter | pending: as PermissionSet |
+| ACK | applicationautoscaling | ScheduledAction | TestApplicationScheduledAction | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestApplicationScheduledAction` |
+| ACK | autoscaling | ScalingPolicy | TestScalingPolicy | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestScalingPolicy` |
+| ACK | autoscaling | ScheduledAction | TestScheduledAction | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestScheduledAction` |
+| ACK | ec2 | CustomerGateway | TestCustomerGateway | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestCustomerGateway` |
+| ACK | ec2 | DefaultSecurityGroup | TestDefaultSecurityGroup | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestDefaultSecurityGroup` |
+| ACK | ec2 | NetworkInterfacePermission | (none: moto has no API) | pending: no test yet (moto has none of the API, plan 6.33); a live test needs a second account to grant to, and the stack redeployed |
+| ACK | ec2 | ResourceTag | TestResourceTag | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestResourceTag` |
+| ACK | ec2 | Volume | TestVolume | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestVolume` |
+| ACK | ec2 | VolumeAttachment | TestVolumeAttachment | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestVolumeAttachment` |
+| ACK | ec2 | VPNConnection | TestVPNConnection | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestVPNConnection` |
+| ACK | ec2 | VPNGateway | TestVpnGateway | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestVpnGateway` |
+| ACK | ec2 | VPNGatewayRoutePropagation | (none: moto has neither call) | pending: no e2e test yet (moto has neither call, plan 6.34); a live test needs one written against a VPC route table, and the stack redeployed |
+| ACK | ecr | ReplicationConfiguration | TestReplicationConfiguration | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestReplicationConfiguration` |
+| ACK | eventbridge | APIDestination | TestApiDestination | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestApiDestination` |
+| ACK | eventbridge | Connection | TestConnection | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestConnection` |
+| ACK | iam | AccessKey | TestIAMAccessKey | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestIAMAccessKey` |
+| ACK | iam | AccountAlias | TestAccountAlias | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestAccountAlias` |
+| ACK | iam | AccountPasswordPolicy | TestAccountPasswordPolicy | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestAccountPasswordPolicy` |
+| ACK | iam | LoginProfile | TestLoginProfile | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestLoginProfile` |
+| ACK | iam | RolePolicyAttachment | TestRolePolicyAttachment | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestRolePolicyAttachment` |
+| ACK | iam | SSHPublicKey | TestSSHPublicKey | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestSSHPublicKey` |
+| ACK | iam | UserGroupMembership | TestUserGroupMembership | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestUserGroupMembership` |
+| ACK | iam | VirtualMFADevice | TestIAMVirtualMFADevice | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestIAMVirtualMFADevice` |
+| ACK | kms | ReplicaKey | TestReplicaKey | pending: needs a second region, which the organization's service control policy denies (us-east-2 only); and the stack redeployed |
+| ACK | kms | Key extension (ACK's Key) | TestKeyExtension | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestKeyExtension` |
+| ACK | lambda | Permission | TestPermission | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestPermission` |
+| ACK | organizations | AccountPlacement | TestOrganizationsAccountPlacement | pending: organization-level identity (plan 7.5); the sandbox account is a member, not the management account |
+| ACK | organizations | DelegatedAdministrator | TestOrganizationsDelegatedAdministrator | pending: organization-level identity (plan 7.5); the sandbox account is a member, not the management account |
+| ACK | organizations | Organization | TestOrganizationsOrganization | pending: organization-level identity (plan 7.5); the sandbox account is a member, not the management account |
+| ACK | organizations | Policy | TestOrganizationsPolicy | pending: organization-level identity (plan 7.5); the sandbox account is a member, not the management account |
+| ACK | organizations | PolicyAttachment | TestOrganizationsPolicyAttachment | pending: organization-level identity (plan 7.5); the sandbox account is a member, not the management account |
+| ACK | rds | DBProxyTarget | TestDBProxyTarget | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestDBProxyTarget` |
+| ACK | rds | DBRoleAssociation | TestDBRoleAssociation | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestDBRoleAssociation` |
+| ACK | rds | OptionGroup | TestOptionGroup | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestOptionGroup` |
+| ACK | s3 | Bucket extension (ACK's Bucket) | TestBucketExtension | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestBucketExtension` |
+| ACK | s3control | PublicAccessBlock | TestPublicAccessBlock | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestPublicAccessBlock` |
+| ACK | scheduler | Schedule | TestSchedule | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestSchedule` |
+| ACK | scheduler | ScheduleGroup | TestScheduleGroup | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestScheduleGroup` |
+| ACK | wafv2 | WebACLAssociation | TestWebACLAssociation | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestWebACLAssociation` |
