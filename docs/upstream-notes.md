@@ -29,6 +29,8 @@ acm-controller `v1.12.0`, route53-controller `v1.9.0`.
 | 10 | ACM `Certificate`: synced only once `ISSUED` | community issue | no | not yet |
 | 11 | ACM `Certificate`: `validationMethod` | community issue | no: create-time | not yet |
 | 12 | Route 53 `RecordSet`: overwrite on create | community issue | no | not yet |
+| 13 | moto: `RemoveRoleFromDBCluster` and `RemoveRoleFromDBInstance` | getmoto/moto pull request | no: `DBRoleAssociation`'s delete is proven on a stand-in | not yet |
+| 14 | S3 `Bucket`: `customFindBucket` panics without default encryption | community issue, or reopen community#2990 (text in `docs/plan.md` section 8 item 15) | yes, `s3.aws.hfl.dev` `Bucket`, a fixed copy (intentional overlap) | not yet: the builder files it (UPBUG, 2026-11-15); `TODO(builder): link once filed` |
 
 EC2 `Instance.securityGroupRefs` needs no note: ec2-controller PR #406
 merged it (closing community#3132) and `v1.25.0` ships it.
@@ -332,3 +334,39 @@ file; if the person filing wants to add weight, a short comment:
 > **Describe the solution you'd like**
 > A field `spec.allowOverwrite` (boolean, default false); when true,
 > `sdk_create_post_build_request` sends `UPSERT` instead of `CREATE`.
+
+---
+
+## 13. moto: `RemoveRoleFromDBCluster` and `RemoveRoleFromDBInstance`
+
+The builder's answer to `docs/plan.md` open question 6 (2026-11-15, item
+ACKQ): contribute the two operations to moto and leave the stand-in until
+the pin moves to a release that has them. A person opens the pull request;
+this is the draft.
+
+**Where:** a pull request to `getmoto/moto` (Apache-2.0), `moto/rds/`.
+
+**Title:** RDS: implement RemoveRoleFromDBCluster and RemoveRoleFromDBInstance
+
+**Body:**
+
+> moto implements `AddRoleToDBCluster` and `AddRoleToDBInstance`, and
+> reports the roles in `DescribeDBClusters`/`DescribeDBInstances`
+> (`AssociatedRoles`), but not their inverses, so a client that removes a
+> role gets `NotImplementedError`. This adds both:
+>
+> - `RemoveRoleFromDBCluster(DBClusterIdentifier, RoleArn, FeatureName)`:
+>   removes the role from the cluster's associated roles;
+>   `DBClusterNotFoundFault` for an unknown cluster,
+>   `DBClusterRoleNotFound` when the role is not associated.
+> - `RemoveRoleFromDBInstance(DBInstanceIdentifier, RoleArn, FeatureName)`:
+>   the same for an instance; `DBInstanceNotFound`,
+>   `DBInstanceRoleNotFound`.
+>
+> Both return an empty result, as AWS does. Tests in
+> `tests/test_rds/` add a role, remove it, check `AssociatedRoles` is empty,
+> and check both faults.
+
+Before filing, check moto's latest release and `master` for the two
+operations (they were absent from the release `hack/moto.sh` pins when
+question 6 was written, `docs/plan.md` section 4.4).

@@ -163,6 +163,31 @@ with the patch.
      `adoption-fields`).
   3. Delete ours with `services.k8s.aws/deletion-policy: retain`.
   4. After a support window, remove our kind.
+- **Fixed copies of ACK's kinds** (the builder's standing rule,
+  2026-11-15, item ACKQ1-1: "Never copy an ACK kind into our group
+  unless we're extending it with known bits that it is missing or
+  broken." and "for any kinds that are broken or have missing
+  attributes, we should fill those gaps and ship the fixes in our own
+  krm-extensions repos for those identtical but fixed kinds"). Where one
+  of ACK's kinds is broken or lacks attributes a chart needs, and the gap
+  cannot be filled beside it (an annotation acted on by our manager,
+  `docs/extensions.md`), we ship the same kind in our group
+  (`<service>.aws.hfl.dev`), generated from the controller's own
+  `generator.yaml` and hooks at the pinned version, with only the fix or
+  the missing fields added, each recorded in `UPSTREAM.md` as a change to
+  the copy and paired with a note to upstream (`docs/upstream-notes.md`).
+  Such a kind is an **intentional overlap** with ACK's: its section says
+  why it exists (with the upstream issue's link), which of the two to
+  use, never to point both at one AWS resource, and when it retires
+  (above). No copy is made without a known missing or broken bit.
+
+  Applied, 2026-11-15: s3-controller's `Bucket` (broken: the read panics
+  on a bucket without default encryption, section 8 item 15). Not
+  applied, by the same answer: `Instance` and ACM `Certificate`'s
+  validation method wait for upstream (open question 23); the other
+  create-time gaps of section 5 ("Gaps on ACK's own kinds": `DBInstance`
+  restores, `RecordSet` overwrite) are candidates under this rule when a
+  chart needs them and upstream has not taken the note.
 
 ## 4. Testing with a fake AWS
 
@@ -1961,6 +1986,8 @@ ARN.
   `services.k8s.aws/deletion-policy: retain`. Were the builder to want a
   delete to move the account back to the root, the kind would map
   `MoveAccount` as the delete too and leave the policy.
+  **Confirmed** (2026-11-15, item ACKQ, the builder: "ACKQ: as recommended (Q19 tags stay as ACK has them (exclusive) and listing takes an entry over, as built; AccountPlacement retain-only, delete leaves the account; IAM database auth, no Data API kind; contribute the two moto operations upstream and leave it until then.)"):
+  retain-only, as built.
 - **One object per account.** Two placements of one account move it
   back and forth (#2369 names this); make one.
 - **Terminal:** `InvalidInputException`, `ConstraintViolationException`.
@@ -3125,6 +3152,27 @@ Before it can run on a real cluster:
     > `if err == nil && getEncryptionResponse.ServerSideEncryptionConfiguration != nil && getEncryptionResponse.ServerSideEncryptionConfiguration.Rules != nil`,
     > and keep `ko.Spec.Encryption = nil` otherwise. Earlier report:
     > community#2990 (closed without a fix).
+
+    **Answered** (2026-11-15, item UPBUG, the builder: "UPBUG: i will
+    file both, non-urgent but you should create linear tasks due monday
+    eve that contains the bug text or even a gh command to create them.
+    dont surface until then. Cover the S3 and ASO gaps in krm-extensions
+    as intentional overlap, linked to the upstream issues."): the builder
+    files the issue above. **Upstream issue: not filed yet**
+    (`TODO(builder): link once filed`; until then community#2990). The S3
+    gap is covered here as an **intentional overlap** with ACK's `Bucket`,
+    under the rule in section 3, "Fixed copies of ACK's kinds":
+    `s3.aws.hfl.dev` `Bucket`, ACK's kind with the read guarded.
+    - **Why it overlaps:** ACK's `Bucket` panics on every read of a bucket
+      without default encryption (this item). The fix is upstream's; ours
+      exists until it ships.
+    - **Which to use:** ours wherever the panic can fire (S3-compatible
+      stores, fakes such as moto, a bucket whose encryption was removed);
+      ACK's is equivalent on AWS today. Never point both at one bucket:
+      two controllers would both own it.
+    - **When it retires:** when an s3-controller release has the guard,
+      charts move back to ACK's `Bucket` (section 3, "Retiring a kind")
+      and ours is deprecated with a migration note.
 16. S3 Control (`PublicAccessBlock`, section 6.36) runs beside ACK's
     **s3control-controller**, not beside ACK's s3 controller: ACK has an
     S3 Control controller (`AccessPoint`), so ours is a service of its
@@ -3220,6 +3268,12 @@ Before it can run on a real cluster:
    path (ACK's field, an IAM policy with `rds-db:connect`, one `GRANT
    rds_iam` per user at bootstrap); a Data API kind for Aurora roles only
    if the builder wants SQL spoken here (open, not built).
+
+   **Answered** (2026-11-15, item ACKQ, the builder: "ACKQ: as recommended (Q19 tags stay as ACK has them (exclusive) and listing takes an entry over, as built; AccountPlacement retain-only, delete leaves the account; IAM database auth, no Data API kind; contribute the two moto operations upstream and leave it until then.)"):
+   IAM database authentication is the path for database users (ACK's
+   `enableIAMDatabaseAuthentication`, an IAM policy with `rds-db:connect`,
+   `GRANT rds_iam` at bootstrap); no Data API kind is built, and no SQL is
+   spoken here.
 3. **`RolePolicyAttachment` on a role an ACK `Role` manages** loses the
    tug of war with ACK's `Role` (section 6.1). Options:
    - document it (done);
@@ -3228,6 +3282,15 @@ Before it can run on a real cluster:
      a fork.
 
    Proposed: refuse such a `roleRef` until upstream ships the mode.
+
+   **Answered** (2026-11-15, item ACKQ7-1, the builder: "ACKQ7-1: as
+   recommended (Yes. Refuse it with a terminal condition that names the
+   conflict, the same answer proposed for ack question 3
+   (RolePolicyAttachment on an ACK Role with policies), so both
+   rule-beside-owner kinds behave alike. Until then it is only
+   documented.)"): refuse a `RolePolicyAttachment` whose role is an ACK
+   `Role` with `spec.policies`, with a terminal condition naming the
+   conflict, by the same mechanism as question 7's rule kinds.
 4. **Identity default.** `own` is the default (narrower Kubernetes
    rights, one AWS grant per role); `ack` needs no AWS step. Keep `own`?
 
@@ -3260,6 +3323,12 @@ Before it can run on a real cluster:
 
    Proposed: contribute them to moto, and leave it until then. It does
    not change the kind.
+
+   **Answered** (2026-11-15, item ACKQ, the builder: "ACKQ: as recommended (Q19 tags stay as ACK has them (exclusive) and listing takes an entry over, as built; AccountPlacement retain-only, delete leaves the account; IAM database auth, no Data API kind; contribute the two moto operations upstream and leave it until then.)"):
+   contribute the two operations to moto and leave the stand-in until the
+   pin moves to a moto that has them. Agents open nothing upstream
+   (CLAUDE.md), so the contribution is a draft for a person:
+   `docs/upstream-notes.md` note 13.
 7. **Standalone security group rules** (rank 6 in section 5). ACK's
    `SecurityGroup` holds its rules inline (`ingressRules`, `egressRules`)
    and syncs them as the whole set. A rule kind, for a stack that adds a
@@ -3307,6 +3376,16 @@ Before it can run on a real cluster:
    `SecurityGroup` lists `ingressRules`/`egressRules` is revoked at that
    group's next sync. Refusing it, as question 3 proposes for
    `RolePolicyAttachment`, waits on the builder (a new question).
+
+   **Answered** (2026-11-15, item ACKQ7-1, the builder: "ACKQ7-1: as
+   recommended (Yes. Refuse it with a terminal condition that names the
+   conflict, the same answer proposed for ack question 3
+   (RolePolicyAttachment on an ACK Role with policies), so both
+   rule-beside-owner kinds behave alike. Until then it is only
+   documented.)"): a `SecurityGroupIngress` or `SecurityGroupEgress`
+   whose group is an ACK `SecurityGroup` listing inline rules goes
+   terminal with a condition naming the conflict, and question 3's
+   `RolePolicyAttachment` the same way.
 8. **A service ACK has no controller for** (EventBridge Scheduler,
    rank 10). The operator runs our manager beside an ACK controller, and
    takes its identity from it: the ServiceAccount's role annotations, the
@@ -3574,6 +3653,15 @@ Before it can run on a real cluster:
     `aws_default_*` kinds (section 5, "The catalog's charts").
     Then `DefaultSecurityGroup` (section 6.37); left: `DefaultNetworkACL`,
     `DefaultRouteTable`, `DefaultVPC`.
+
+    **Answered** (2026-11-15, item ACKQ16-1, the builder: "ACKQ16-1: as
+    recommended (Yes to both, as Terraform does: network ACL entries and
+    subnet associations, route table routes and propagating VPN gateways,
+    all exclusive and never deleted. DefaultVPC adopts the region's
+    default VPC (isDefault=true) and manages its DNS settings and tags,
+    with no vpcRef.)"): the three remaining kinds are exclusive like
+    `DefaultSecurityGroup` and never deleted; `DefaultVPC` takes the
+    region's default VPC with no `vpcRef`.
 17. **The name of the per-environment context for the ACK-generated
     kinds** (section 7.6). Built as `core.aws.hfl.dev/v1alpha1`
     `ACKContext`, one per namespace, named `ack`: a sibling of
@@ -3620,6 +3708,10 @@ Before it can run on a real cluster:
     organization's settings, and a tag is not one); listing takes an entry
     on, as built, since that is what importing it means. Not changed until
     the builder answers.
+
+    **Answered** (2026-11-15, item ACKQ, the builder: "ACKQ: as recommended (Q19 tags stay as ACK has them (exclusive) and listing takes an entry over, as built; AccountPlacement retain-only, delete leaves the account; IAM database auth, no Data API kind; contribute the two moto operations upstream and leave it until then.)"):
+    as recommended and as built. Tags stay exclusive, as ACK syncs them;
+    listing an entry already enabled takes it over. Nothing changes.
 
 20. **Validation on Cloud Control kinds' status** (found by
     `TestEveryKindOnSchemaFake`, 2026-11-11). The generated CRDs keep the
@@ -3741,3 +3833,24 @@ Before it can run on a real cluster:
     first: the `acm` chart needs "ready when issued") if their notes are
     declined or not taken up in a release; never a copy of an ACK kind.
     Not built until the builder answers.
+
+    **Answered** (2026-11-15, item ACKQ1-1, the builder, verbatim):
+
+    > Wait for upstream on the Instance and ACM validation fields. Build
+    > two small kinds of ours beside ACK's (CertificateValidation first,
+    > then DBInstanceRestore) if their upstream notes are declined. Never
+    > copy an ACK kind into our group unless we're extending it with known
+    > bits that it is missing or broken.
+    >
+    > for any kinds that are broken or have missing attributes, we should
+    > fill those gaps and ship the fixes in our own krm-extensions repos
+    > for those identtical but fixed kinds
+
+    So: the `Instance` and ACM validation-method fields wait for upstream
+    (`docs/upstream-notes.md` notes 5 and 11); `CertificateValidation`,
+    then `DBInstanceRestore`, are built if their notes are declined. The
+    second paragraph is a standing rule for the repository, recorded in
+    section 3, "Fixed copies of ACK's kinds": where an ACK kind is broken
+    or misses attributes, we ship the identical kind with the fix in our
+    group. Applied first to s3-controller's `Bucket` (the read panic,
+    section 8 item 15).
