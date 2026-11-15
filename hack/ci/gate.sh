@@ -27,6 +27,10 @@
 #           check; mode=groups: hack/ci/select.sh run GROUPS); mode=none
 #           (docs only): nothing
 #   e2e     when the plan says e2e=true: task operator-e2e
+#   emulator  when the plan says emulator=true: task test:aws-emulator:ack,
+#           the ACK-kind tests on AWS Emulator beside moto, judged against
+#           tests/e2e/aws-emulator-expected-failures.yaml
+#           (docs/aws-emulator.md, "In CI")
 # with ci.yml's versions: the command-line tools (task among them) at
 # hack/ci/tools.sh's pins, which .github/actions/tools installs too, and
 # Go at go.mod's version, as setup-go's go-version-file picks it
@@ -105,7 +109,8 @@ cat "$TMP/summary"
 mode="$(sed -n 's/^mode=//p' "$TMP/plan")"
 groups="$(sed -n 's/^groups=//p' "$TMP/plan")"
 e2e="$(sed -n 's/^e2e=//p' "$TMP/plan")"
-echo "gate: $REPO $SHA against $BASE: mode=$mode${groups:+ groups=$groups} e2e=$e2e"
+emulator="$(sed -n 's/^emulator=//p' "$TMP/plan")"
+echo "gate: $REPO $SHA against $BASE: mode=$mode${groups:+ groups=$groups} e2e=$e2e emulator=$emulator"
 
 # Go as setup-go picks it from go.mod: the toolchain line, else the go line.
 gover="$(sed -n -E 's/^toolchain go([0-9.]+).*/\1/p' "$SRC/go.mod")"
@@ -126,6 +131,9 @@ case "$mode" in
     steps=(--prep "hack/ci/tools.sh" --prep "$task tools"
       --step-skippable "$task ci:check MODE=$mode GROUPS='$groups'")
     if [[ "$e2e" == true ]]; then steps+=(--step "$task operator-e2e"); what="$what, operator-e2e"; fi
+    if [[ "$emulator" == true ]]; then
+      steps+=(--step-skippable "$task test:aws-emulator:ack"); what="$what, emulator"
+    fi
     set +e
     OFFLOAD_FALLBACK="${OFFLOAD_FALLBACK-8}" "$OFFLOAD" run --dir "$SRC" "${steps[@]}" </dev/null 2>&1 | tee "$TMP/log"
     rc=${PIPESTATUS[0]}

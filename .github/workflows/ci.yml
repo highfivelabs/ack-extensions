@@ -13,10 +13,16 @@
 #           CHECK_ON_SPOT is 'true' too.
 #   e2e     task operator-e2e on a Spot VM: no Actions minutes. Skipped
 #           while the Spot runners are off (the plan's summary says so).
+#   emulator  task test:aws-emulator:ack: the ACK-kind tests on AWS
+#           Emulator (the pinned release) beside moto, judged against
+#           tests/e2e/aws-emulator-expected-failures.yaml
+#           (docs/aws-emulator.md, "In CI"); when the plan says
+#           emulator=true.
 #   ci      the one status to require: fails if any job above failed or
 #           was cancelled; a skipped job is fine.
 #
-# Everything runs against moto, the fake AWS: no credentials reach a test.
+# Everything runs against the fakes (moto; AWS Emulator in the emulator
+# job): no credentials reach a test.
 # The whole suite runs nightly on main (nightly.yml).
 name: ci
 
@@ -45,6 +51,7 @@ jobs:
       mode: ${{ steps.plan.outputs.mode }}
       groups: ${{ steps.plan.outputs.groups }}
       e2e: ${{ steps.plan.outputs.e2e }}
+      emulator: ${{ steps.plan.outputs.emulator }}
       check-runner: ${{ steps.runners.outputs.check }}
       e2e-runner: ${{ steps.runners.outputs.e2e }}
     steps:
@@ -139,9 +146,36 @@ jobs:
         if: failure()
         run: task operator-e2e:debug
 
+  emulator:
+    needs: plan
+    if: needs.plan.outputs.emulator == 'true'
+    runs-on: ${{ needs.plan.outputs.check-runner }}
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/factory-access
+        with:
+          app-id: ${{ secrets.FACTORY_APP_ID }}
+          private-key: ${{ secrets.FACTORY_APP_PRIVATE_KEY }}
+      - if: runner.environment == 'github-hosted'
+        uses: ./.github/actions/tools
+      - name: Repository tools cache (the pinned generator, bin/, moto)
+        if: runner.environment == 'github-hosted'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            third_party/code-generator
+            bin
+            .cache/moto-venv
+          key: repo-tools-${{ runner.os }}-${{ hashFiles('UPSTREAM.md', 'patches/**', 'Taskfile.yml', 'taskfiles/**', 'hack/moto-requirements.txt') }}
+      - run: task tools
+      - run: task test:aws-emulator:ack
+
   # The one status branch protection requires.
   ci:
-    needs: [plan, check, e2e]
+    needs: [plan, check, e2e, emulator]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 5

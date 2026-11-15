@@ -13,7 +13,7 @@ set -euo pipefail
 
 read -ra results <<<"$*"
 [[ ${#results[@]} -gt 0 ]] || { echo "no job results" >&2; exit 1; }
-echo "plan, check, e2e: ${results[*]}"
+echo "plan, check, e2e, emulator: ${results[*]}"
 for r in "${results[@]}"; do
   case "${r}" in
     success|skipped) ;;

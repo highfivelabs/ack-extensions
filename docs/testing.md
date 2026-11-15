@@ -9,10 +9,12 @@ moto has the service; the third is sampled over time.
 | moto | `task check`, a backend in `cloudcontrol/test/fake` and a test in `cloudcontrol/test/e2e` (Cloud Control kinds), or `tests/e2e` (ACK-generated kinds) | the above, and what the service does in moto: values it validates, state it keeps, drift made through the service's own API put back | proven on fake (no note) |
 | Live | the sandbox account only, sampled (below) | the real service: defaults, validation, eventual consistency, what moto gets wrong | a row in `docs/live-runs.md`'s ledger |
 
-A third backend, AWS Emulator, can stand in for both fakes on request
-(`ACK_TEST_BACKEND=aws-emulator`, `task test:aws-emulator`); it is not part
-of `task check`. What it covers and what it gets wrong:
-`docs/aws-emulator.md`.
+A third backend, AWS Emulator, can stand in for both fakes
+(`ACK_TEST_BACKEND=aws-emulator`). It is not part of `task check`; CI runs
+the ACK-kind tests on it beside moto (`task test:aws-emulator:ack`,
+pinned to 1.0.338, judged against the expected failures in
+`tests/e2e/aws-emulator-expected-failures.yaml`). What it covers and what
+it gets wrong, and how the CI run is judged: `docs/aws-emulator.md`.
 
 ## In `task check`
 
@@ -64,6 +66,7 @@ CI runs the same way on a laptop, an offload VM or GitHub's runner:
 | ci.yml plan | `hack/ci/select.sh plan origin/main HEAD` |
 | ci.yml check | `task ci:check MODE=full` (or `MODE=groups GROUPS="iam"`) |
 | ci.yml e2e | `task operator-e2e`; `task operator-e2e:debug` after a failure |
+| ci.yml emulator | `task test:aws-emulator:ack` (Linux with apt: it installs the pinned emulator) |
 | nightly.yml full | `task tools`, `task check`, `task operator-e2e` |
 | release.yml images | `task release TAG=v0.1.0` (needs registry write access) |
 | all of ci.yml, as one | `task ci` (below) |
@@ -97,9 +100,11 @@ worktree, makes `ci.yml`'s plan (`hack/ci/select.sh plan`, against the
 merge base with `origin/main`), and runs on one VM what the plan
 selects: `task tools`, then `task check` (mode full) or
 `hack/ci/select.sh run GROUPS` (mode groups), then `task operator-e2e`
-when the plan says `e2e=true`. A docs-only change runs nothing. The VM is
+when the plan says `e2e=true`, then `task test:aws-emulator:ack` when it
+says `emulator=true`. A docs-only change runs nothing. The VM is
 16 vCPUs and 64 GB (8 and 32 GB on a quota error, never smaller: `go vet`
-needs the memory). Only moto: no credentials reach a test.
+needs the memory). Only the fakes (moto, AWS Emulator): no credentials
+reach a test.
 
 It then posts the commit status `offload/ci` (success or failure, the
 machine type and the minutes; no link and no environment identifiers,
