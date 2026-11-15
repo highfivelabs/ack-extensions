@@ -939,6 +939,17 @@ the trust policy's conditions. Everything on our side of that is proven
   of many objects; whether the handler permission lists suffice; how long
   request tokens live; whether a type the schema says is provisionable is
   served by Cloud Control in every region.
+- **Not Ready on the fake in the catalog's runs** (item RECCC,
+  2026-11-15). The catalog's fake-AWS layer (catalog PR #211) saw
+  `secretsmanager` `ResourcePolicy` stay un-Ready on both AWS Emulator and
+  moto, with ACK's "Unable to determine if desired resource state matches
+  latest observed state"; the same open case as `EIPAssociation` and
+  others. The builder (2026-11-15, verbatim): "RECCC: as recommended
+  (Yes. Open an ack-extensions ticket to capture the Cloud Control
+  manager's logs in the fake run and fix the "Unable to determine if
+  desired resource state matches latest observed state" state.)" Ticket
+  HFL-635. Being worked: the manager's logs captured in the fake run, the cause found
+  and fixed, and a test that the kinds reach `ResourceSynced=True`.
 
 ## 12. Decisions taken, and the plan
 

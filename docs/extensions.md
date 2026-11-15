@@ -54,6 +54,15 @@ time, a certificate validated by email) is not filled this way. Those are
 listed under "Not filled here" below, and `docs/plan.md` open question 23
 asks how the builder wants them filled.
 
+**Answered, 2026-11-15** (item ACKQ1-1; `docs/plan.md` section 3, "Fixed
+copies of ACK's kinds"): the annotation stays the first choice where it
+can fill the gap. Where it cannot, and ACK's kind is broken or misses
+attributes, we ship the identical kind with the fix in our group, as an
+intentional overlap with ACK's, never a copy without a known missing or
+broken bit. The `Instance` and ACM validation-method fields wait for
+upstream; the first fixed copy is s3-controller's `Bucket` (its read
+panics on a bucket without default encryption).
+
 ## How it is built
 
 - `pkg/extend`: a registry. A service's hand-written code registers an
