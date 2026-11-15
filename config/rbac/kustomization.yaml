@@ -13,6 +13,7 @@ resources:
   - lambda-manager-role.yaml
   - organizations-manager-role.yaml
   - rds-manager-role.yaml
+  - s3-manager-role.yaml
   - s3control-manager-role.yaml
   - scheduler-manager-role.yaml
   - wafv2-manager-role.yaml

@@ -1,0 +1,18 @@
+# Generator configuration for ack-extensions's S3 manager (s3.aws.hfl.dev).
+#
+# There is no kind of ours here. The manager runs beside ACK's
+# s3-controller to extend ACK's own Bucket (docs/extensions.md): a bucket
+# annotated s3.aws.hfl.dev/force-destroy is emptied when it is deleted
+# (Terraform's force_destroy), by a controller written by hand
+# (services/s3/pkg/extend/bucket) and registered in
+# cmd/controller/handwritten.go. Every resource the generator can find is
+# ignored: ACK's s3-controller has Bucket, and the rest are not resources a
+# controller manages. It generates only the service's scaffolding (the API
+# group, the resource registry, the controller's main), as kms's does.
+ignore:
+  resource_names:
+    - Bucket
+    - BucketMetadataConfiguration
+    - BucketMetadataTableConfiguration
+    - MultipartUpload
+    - Session

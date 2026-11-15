@@ -10,9 +10,12 @@
 //   - the Kubernetes API is envtest's real kube-apiserver and etcd, with
 //     our CRDs, ACK's core CRDs (services.k8s.aws) and the CRDs of the ACK
 //     controllers our kinds reference, all read from the Go modules at the
-//     versions go.mod pins;
+//     versions go.mod pins, and the copies in hack/ack-crds of ACK's CRDs
+//     whose controllers are not modules here (UPSTREAM.md);
 //   - the controller is the service's real binary
-//     (services/<svc>/cmd/controller), built once and started with the
+//     (services/<svc>/cmd/controller), or another main package a
+//     Controller names (ACK's own controller, from its Go module), built
+//     once and started with the
 //     flags ACK's Helm chart passes, pointed at moto by one setting
 //     (pkg/fakeaws): every endpoint it has, fake credentials and a dead
 //     proxy, verified before it starts.
@@ -94,7 +97,7 @@ func moduleDir(t testing.TB, root, module string) string {
 }
 
 // Start brings up moto, envtest and the controller of one service
-// ("applicationautoscaling", "autoscaling", "ec2", "ecr", "eventbridge", "iam", "kms", "lambda", "organizations", "rds", "s3control", "scheduler", "wafv2"), and registers their teardown with t.Cleanup.
+// ("applicationautoscaling", "autoscaling", "ec2", "ecr", "eventbridge", "iam", "kms", "lambda", "organizations", "rds", "s3", "s3control", "scheduler", "wafv2"), and registers their teardown with t.Cleanup.
 func Start(t *testing.T, service string, scheme *runtime.Scheme) *Env {
 	t.Helper()
 	env, _ := StartControllers(t, service, scheme, Controller{})
@@ -106,6 +109,12 @@ func Start(t *testing.T, service string, scheme *runtime.Scheme) *Env {
 type Controller struct {
 	Args []string
 	Env  []string
+	// Main is the main package to build, a Go import path; empty is the
+	// service's own manager (./services/<service>/cmd/controller). ACK's
+	// controller of a module go.mod pins, such as
+	// github.com/aws-controllers-k8s/kms-controller/cmd/controller, runs
+	// ACK's side of a test of an extension of ACK's kinds.
+	Main string
 }
 
 // Logs is a running controller's output.
@@ -151,6 +160,7 @@ func StartControllers(t *testing.T, service string, scheme *runtime.Scheme, ctrl
 		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/organizations-controller"), "config", "crd", "bases"),
 		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/rds-controller"), "config", "crd", "bases"),
 		filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/wafv2-controller"), "config", "crd", "bases"),
+		filepath.Join(root, "hack", "ack-crds"),
 	}
 	te := &envtest.Environment{CRDDirectoryPaths: crds, ErrorIfCRDPathMissing: true}
 	cfg, err := te.Start()
@@ -169,9 +179,13 @@ func StartControllers(t *testing.T, service string, scheme *runtime.Scheme, ctrl
 	}
 
 	kubeconfig := writeKubeconfig(t, cfg)
-	bin := buildController(t, root, service)
 	var all []*Logs
 	for _, ctl := range ctrls {
+		main := ctl.Main
+		if main == "" {
+			main = "./services/" + service + "/cmd/controller"
+		}
+		bin := buildController(t, root, main)
 		all = append(all, &Logs{b: runController(t, bin, kubeconfig, endpoint, ctl)})
 	}
 
@@ -242,7 +256,7 @@ func writeKubeconfig(t *testing.T, cfg *rest.Config) string {
 }
 
 var (
-	buildOnce sync.Map // service -> *builtBinary
+	buildOnce sync.Map // main package -> *builtBinary
 )
 
 type builtBinary struct {
@@ -251,18 +265,18 @@ type builtBinary struct {
 	err  error
 }
 
-func buildController(t *testing.T, root, service string) string {
+func buildController(t *testing.T, root, main string) string {
 	t.Helper()
-	v, _ := buildOnce.LoadOrStore(service, &builtBinary{})
+	v, _ := buildOnce.LoadOrStore(main, &builtBinary{})
 	b := v.(*builtBinary)
 	b.once.Do(func() {
-		dir, err := os.MkdirTemp("", "ack-ext-"+service)
+		dir, err := os.MkdirTemp("", "ack-ext-controller")
 		if err != nil {
 			b.err = err
 			return
 		}
-		b.path = filepath.Join(dir, service+"-controller")
-		cmd := exec.Command("go", "build", "-o", b.path, "./services/"+service+"/cmd/controller")
+		b.path = filepath.Join(dir, "controller")
+		cmd := exec.Command("go", "build", "-o", b.path, main)
 		cmd.Dir = root
 		if out, err := cmd.CombinedOutput(); err != nil {
 			b.err = fmt.Errorf("go build: %v\n%s", err, out)

@@ -217,10 +217,10 @@ our_region="$(kubectl -n "${ACK_NS}" get deploy ack-extensions-rds-manager -o js
 [[ "${ack_region}" == "${our_region}" ]] || fail "region: ACK ${ack_region}, ours ${our_region}"
 ok "same credentials Secret (${our_secret}), region (${our_region}) and endpoint as ACK's controller"
 verify_no_real_aws
-for svc in applicationautoscaling autoscaling ec2 ecr eventbridge iam kms lambda organizations s3control scheduler wafv2; do
+for svc in applicationautoscaling autoscaling ec2 ecr eventbridge iam kms lambda organizations s3 s3control scheduler wafv2; do
   kubectl get deploy -A -l "aws.hfl.dev/service=${svc}" -o name | grep -q . && fail "a ${svc} manager without an ACK ${svc} controller"
 done
-ok "no applicationautoscaling, autoscaling, ec2, ecr, eventbridge, iam, kms, lambda, organizations, s3control, scheduler or wafv2 manager: none of their ACK controllers (EventBridge's, for scheduler) is installed"
+ok "no applicationautoscaling, autoscaling, ec2, ecr, eventbridge, iam, kms, lambda, organizations, s3, s3control, scheduler or wafv2 manager: none of their ACK controllers (EventBridge's, for scheduler) is installed"
 
 can() { kubectl auth can-i "$1" "$2" --as="system:serviceaccount:${ACK_NS}:$3" ${4:+-n "$4"} 2>/dev/null; }
 [[ "$(can create dbproxytargets.rds.aws.hfl.dev ack-extensions-rds-manager default)" == yes ]] || fail "our manager cannot create dbproxytargets"
