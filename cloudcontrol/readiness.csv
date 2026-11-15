@@ -630,8 +630,8 @@ AWS::EC2::RouteServerPropagation,ec2,RouteServerPropagation,platform-foundation,
 AWS::EC2::RouteTable,ec2,RouteTable,platform-foundation,FULLY_MUTABLE,RouteTable,,ok,0,0,0,0,0,true
 AWS::EC2::SecondaryNetwork,ec2,SecondaryNetwork,platform-foundation,FULLY_MUTABLE,,SecondaryNetwork (Cloud Control),ok,0,0,0,0,0,true
 AWS::EC2::SecurityGroup,ec2,SecurityGroup,platform-foundation,FULLY_MUTABLE,SecurityGroup,,ok,0,0,0,1,0,true
-AWS::EC2::SecurityGroupEgress,ec2,SecurityGroupEgress,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::EC2::SecurityGroupIngress,ec2,SecurityGroupIngress,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
+AWS::EC2::SecurityGroupEgress,ec2,SecurityGroupEgress,platform-foundation,FULLY_MUTABLE,,SecurityGroupEgress (Cloud Control),ok,0,0,0,0,0,true
+AWS::EC2::SecurityGroupIngress,ec2,SecurityGroupIngress,platform-foundation,FULLY_MUTABLE,,SecurityGroupIngress (Cloud Control),ok,0,0,0,0,0,true
 AWS::EC2::SecurityGroupVpcAssociation,ec2,SecurityGroupVpcAssociation,platform-foundation,IMMUTABLE,,SecurityGroupVpcAssociation (Cloud Control),ok,0,0,0,0,0,true
 AWS::EC2::Snapshot,ec2,Snapshot,platform-foundation,FULLY_MUTABLE,,Snapshot (Cloud Control),ok,0,0,0,0,0,true
 AWS::EC2::SnapshotBlockPublicAccess,ec2,SnapshotBlockPublicAccess,platform-foundation,FULLY_MUTABLE,,SnapshotBlockPublicAccess (Cloud Control),ok,0,0,0,0,0,true

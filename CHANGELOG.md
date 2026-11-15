@@ -7,6 +7,15 @@ design and the reasons are in `docs/plan.md`.
 
 ### Added
 
+- **`ec2.cloudcontrol.aws.hfl.dev` `SecurityGroupIngress` and
+  `SecurityGroupEgress`**: standalone security group rules, Terraform's
+  `aws_vpc_security_group_ingress_rule` and `_egress_rule` (`docs/plan.md`
+  section 9, question 7), generated from Cloud Control's
+  `AWS::EC2::SecurityGroupIngress` and `...Egress`. `groupRef` and the
+  peer group's reference name ACK's `SecurityGroup`, the prefix list's
+  ACK's `ManagedPrefixList`. A rule on a group whose ACK `SecurityGroup`
+  lists rules is revoked at that group's next sync (documented; not
+  refused).
 - **References on Cloud Control kinds** (`docs/cloudcontrol.md` section
   12, item 4): `ec2.cloudcontrol.aws.hfl.dev` `VPCBlockPublicAccessExclusion`
   takes `vpcRef` and `subnetRef`, `SecurityGroupVpcAssociation` `groupRef`

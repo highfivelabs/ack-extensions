@@ -22,8 +22,6 @@ types:
   AWS::IAM::GroupPolicy: "ACK's Group has inlinePolicies (plan question 1)"
   AWS::S3::BucketPolicy: "ACK's s3-controller Bucket has policy"
   AWS::S3Tables::TableBucketPolicy: "ACK's s3tables-controller TableBucket has policy"
-  AWS::EC2::SecurityGroupIngress: "plan question 7 (security group rules beside ACK's SecurityGroup)"
-  AWS::EC2::SecurityGroupEgress: "plan question 7 (security group rules beside ACK's SecurityGroup)"
   # Upstream has it close to merging (CLAUDE.md: upstream first).
   AWS::EC2::KeyPair: "ACK ec2-controller pull request #396"
   AWS::SecretsManager::RotationSchedule: "ACK secretsmanager-controller pull request #69"

@@ -10,11 +10,11 @@ not repeat them.
 
 - The kinds built so far are in the README table and the status line of
   `docs/plan.md` (§5 says which rank each answers); `gh pr list` shows what
-  is open. Built: ranks 1, 3, 4, 5, 7, 8, 10, 12 and 15, and rank 11 in part.
+  is open. Built: ranks 1, 3, 4, 5, 6 (Cloud Control, question 7), 7, 8, 10, 12 and 15, and rank 11 in part.
 - **Not built, and why** (the table in §5 has the rest):
   - ranks 2, 9 (metric filters), 22: fields on existing ACK kinds (open
     question 1);
-  - rank 6 (security group rules): open question 7; rank 23: open question 3;
+  - rank 23: open question 3;
   - rank 15 `AccessKey`: open question 10, recommended out;
   - ranks 9 (`CompositeAlarm`), 13, 14, 16, 21: moto has none of the API;
   - rank 18 (`KeyPair`): ec2-controller PR #396 is close to merging.

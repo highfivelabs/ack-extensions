@@ -483,6 +483,46 @@ types:
     unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
   - typeName: AWS::EC2::SecondaryNetwork
     unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
+  - typeName: AWS::EC2::SecurityGroupEgress
+    # One outbound rule on a security group, beside the group's other
+    # rules: Terraform's aws_vpc_security_group_egress_rule (plan question
+    # 7, answered 2026-11-13). The group and the peer group are ACK's
+    # SecurityGroup, the prefix list ACK's ManagedPrefixList. ACK's
+    # SecurityGroup syncs its egressRules as the whole set: a rule here on
+    # a group whose object lists rules is revoked at that group's next sync
+    # (docs/plan.md section 9, question 7; docs/cloudcontrol.md section
+    # 12, item 4).
+    references:
+      - property: /properties/GroupId
+        group: ec2.services.k8s.aws
+        kind: SecurityGroup
+        path: status.id
+      - property: /properties/DestinationSecurityGroupId
+        group: ec2.services.k8s.aws
+        kind: SecurityGroup
+        path: status.id
+      - property: /properties/DestinationPrefixListId
+        group: ec2.services.k8s.aws
+        kind: ManagedPrefixList
+        path: status.id
+  - typeName: AWS::EC2::SecurityGroupIngress
+    # One inbound rule on a security group: Terraform's
+    # aws_vpc_security_group_ingress_rule (plan question 7, answered
+    # 2026-11-13). References as for SecurityGroupEgress; the same caveat
+    # about ACK's SecurityGroup and its ingressRules.
+    references:
+      - property: /properties/GroupId
+        group: ec2.services.k8s.aws
+        kind: SecurityGroup
+        path: status.id
+      - property: /properties/SourceSecurityGroupId
+        group: ec2.services.k8s.aws
+        kind: SecurityGroup
+        path: status.id
+      - property: /properties/SourcePrefixListId
+        group: ec2.services.k8s.aws
+        kind: ManagedPrefixList
+        path: status.id
   - typeName: AWS::EC2::SecurityGroupVpcAssociation
     unproven: "no moto backend yet (moto 5.2.5 has ec2); on the schema fake only"
     # ACK's SecurityGroup and VPC: the catalog's security-group chart
