@@ -92,6 +92,8 @@ type env struct {
 	endpoint fakeaws.Endpoint
 	root     string
 	managers int
+	// allKinds: the manager runs with no --cloudcontrol-kinds (startOptions.crds).
+	allKinds bool
 }
 
 // Target is where the end-to-end tests run, CLOUDCONTROL_E2E_TARGET:
@@ -355,6 +357,24 @@ func start(t *testing.T) *env {
 // (a later flag wins).
 func startWith(t *testing.T, extraManagerArgs, extraManagerEnv []string) *env {
 	t.Helper()
+	return startWithOptions(t, startOptions{managerArgs: extraManagerArgs, managerEnv: extraManagerEnv})
+}
+
+// startOptions shape the cluster and the manager start brings up.
+type startOptions struct {
+	managerArgs, managerEnv []string
+	// crds, when set, are the only Cloud Control CRDs installed (file
+	// names under cloudcontrol/config/crds), and the manager is started as
+	// the operator starts it for a context that names no kinds: no
+	// --cloudcontrol-kinds, every kind in the registry asked for. That is
+	// a cluster that installs only the CRDs it uses, as the catalog's
+	// fake-AWS run does (docs/cloudcontrol.md section 11, RECCC).
+	crds []string
+}
+
+func startWithOptions(t *testing.T, o startOptions) *env {
+	t.Helper()
+	extraManagerArgs, extraManagerEnv := o.managerArgs, o.managerEnv
 	if os.Getenv("KUBEBUILDER_ASSETS") == "" {
 		t.Skip("KUBEBUILDER_ASSETS is not set; run through task cloudcontrol:test")
 	}
@@ -389,6 +409,12 @@ func startWith(t *testing.T, extraManagerArgs, extraManagerEnv []string) *env {
 
 	crdDir := filepath.Join(root, "cloudcontrol", "config", "crds")
 	files, _ := filepath.Glob(filepath.Join(crdDir, "*_*.yaml"))
+	if o.crds != nil {
+		files = nil
+		for _, f := range o.crds {
+			files = append(files, filepath.Join(crdDir, f))
+		}
+	}
 	paths := append(files, filepath.Join(moduleDir(t, root, "github.com/aws-controllers-k8s/runtime"), "config", "crd", "bases"))
 	te := &envtest.Environment{CRDDirectoryPaths: paths, ErrorIfCRDPathMissing: true}
 	cfg, err := te.Start()
@@ -424,6 +450,7 @@ func startWith(t *testing.T, extraManagerArgs, extraManagerEnv []string) *env {
 	}
 	e := &env{c: c, cc: cc, ccURL: ccURL, moto: motoCfg, account: account, live: live, emulator: emu, ctx: context.Background(), schema: sch,
 		te: te, endpoint: endpoint, root: root}
+	e.allKinds = o.crds != nil
 	e.logs = e.runManager(t, envNS, append(extraArgs, extraManagerArgs...), extraManagerEnv)
 	return e
 }
@@ -442,8 +469,10 @@ func (e *env) runManager(t *testing.T, ns string, extraArgs, extraEnv []string) 
 	}
 	e.managers++
 	var kinds []string
-	for _, ty := range registry.Types {
-		kinds = append(kinds, ty.Ref())
+	if !e.allKinds {
+		for _, ty := range registry.Types {
+			kinds = append(kinds, ty.Ref())
+		}
 	}
 	op := &operator.ContextReconciler{Image: "unused"}
 	var managerArgs []string
