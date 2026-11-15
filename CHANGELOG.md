@@ -17,6 +17,14 @@ design and the reasons are in `docs/plan.md`.
 - **References to ACK's ec2 kinds** (open question 16): `VPNGateway.vpcRef`,
   `VPNConnection.transitGatewayRef`, `VPNGatewayRoutePropagation.routeTableRef`,
   `VolumeAttachment.instanceRef`, `Volume.availabilityZoneRef`.
+- **Fields ACK's own kinds lack, as annotations on ACK's objects**
+  (`docs/extensions.md`; open question 1, answered 2026-11-13): on ACK's
+  `Key`, `kms.aws.hfl.dev/rotation-period-in-days` (the rotation period)
+  and `kms.aws.hfl.dev/enabled` (enable or disable the key), set by our
+  kms manager; on ACK's `Bucket`, `s3.aws.hfl.dev/force-destroy` (empty
+  the bucket on delete), by a new S3 manager beside ACK's s3-controller
+  (`services/s3`). Every service manager now calls `pkg/extend` (generator
+  patch 0004). Notes to upstream drafted in `docs/upstream-notes.md`.
 - **`ec2.cloudcontrol.aws.hfl.dev` `SecurityGroupIngress` and
   `SecurityGroupEgress`**: standalone security group rules, Terraform's
   `aws_vpc_security_group_ingress_rule` and `_egress_rule` (`docs/plan.md`

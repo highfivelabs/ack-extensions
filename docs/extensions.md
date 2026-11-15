@@ -1,0 +1,130 @@
+# Extending ACK's own kinds
+
+The builder's answer to `docs/plan.md` open question 1 (2026-11-13: "extend
+in ack-extensions with a note to upstream"): a field one of ACK's kinds
+lacks is filled here, without waiting for ACK's release, and each one is
+paired with a note to upstream ([`upstream-notes.md`](upstream-notes.md),
+drafts; this repository files nothing upstream).
+
+## The shape: an annotation on ACK's object, a controller beside ACK's
+
+ACK's kind, its CRD, its controller and its status stay ACK's. The missing
+field is an **annotation in our group** on ACK's own object, and **our
+manager beside ACK's controller** (the operator runs it with ACK's
+controller's arguments and identity, `docs/plan.md` section 7) acts on it:
+
+```yaml
+apiVersion: kms.services.k8s.aws/v1alpha1     # ACK's Key, unchanged
+kind: Key
+metadata:
+  name: app
+  annotations:
+    kms.aws.hfl.dev/rotation-period-in-days: "180"   # ours
+    kms.aws.hfl.dev/enabled: "true"                  # ours
+    kms.services.k8s.aws/pending-window-in-days: "30" # ACK's own
+spec:
+  enableKeyRotation: true
+```
+
+Why this shape, and not the other two `docs/plan.md` section 5 named:
+
+- **A copy of ACK's kind in our group** (`kms.aws.hfl.dev` `Key`) would be
+  a second kind for one AWS resource: every chart and user would choose
+  between ours and ACK's, two controllers could manage one key, and
+  retiring ours when ACK ships the field means migrating every object
+  (section 3, "Retiring a kind"). It would also copy all of ACK's hooks
+  for that kind (s3-controller's `Bucket` has about twenty).
+- **A patch to ACK's controller** would mean building and shipping our own
+  image of ACK's controller: a fork, which this repository does not do
+  (section 2, "What is not forked").
+- **An annotation** is how ACK itself carries what its spec lacks (its
+  `kms.services.k8s.aws/pending-window-in-days`, `services.k8s.aws/deletion-policy`,
+  `services.k8s.aws/region`). A chart sets it on the object it already
+  renders; when ACK ships the field, the chart moves the value from the
+  annotation to the spec and our controller is retired, with no object
+  migrated.
+
+What an annotation cannot do: it is not validated by ACK's CRD (our
+controller checks it and records a Warning Event, `InvalidAnnotation`),
+and our controller cannot write ACK's status, so what it did is recorded
+as Events on the object. It also cannot change what ACK's own create call
+sends: a gap that is a **create-time parameter** of ACK's create (an
+instance's network interface groups, a database restored to a point in
+time, a certificate validated by email) is not filled this way. Those are
+listed under "Not filled here" below, and `docs/plan.md` open question 23
+asks how the builder wants them filled.
+
+## How it is built
+
+- `pkg/extend`: a registry. A service's hand-written code registers an
+  extension in an `init` function; the generated `main.go` calls
+  `extend.Setup(mgr, sc, ackCfg)` once ACK's service controller is bound
+  (`patches/code-generator/0004-extend-ack-kinds.patch`, ours alone). An
+  extension gets the manager, ACK's service controller (so its AWS
+  configuration is made by ACK's runtime, with ACK's endpoint, credentials
+  and HTTP settings) and ACK's flags (region, deletion policy, resync).
+- An extension is a plain controller-runtime controller on ACK's kind in
+  `services/<service>/pkg/extend/<kind>/`, with its RBAC markers there
+  (`hack/generate.sh` reads `services/<service>/pkg/...`) and its AWS calls
+  read into the environment's IAM role by `pkg/ackiam` like any kind's
+  (`task ack:iam LIST=1` lists them as `Key.kms`, `Bucket.s3`).
+- It waits until ACK has made the resource (ACK's `status.ackResourceMetadata`),
+  acts only in the manager's own account (an object ACK reached through a
+  cross-account role map, CARM, gets a Warning Event and is left alone),
+  changes nothing for a read-only object (`services.k8s.aws/read-only`),
+  and rereads AWS on ACK's resync period, putting back a change made
+  outside Kubernetes.
+
+## What is filled
+
+| ACK kind | Annotation (ours) | What it does | AWS calls | Terraform | Proven |
+| --- | --- | --- | --- | --- | --- |
+| kms `Key` | `kms.aws.hfl.dev/rotation-period-in-days` (90 to 2560) | the automatic rotation period, while ACK's `spec.enableKeyRotation` is true (ACK turns rotation on and off; this sets its period) | `GetKeyRotationStatus`, `EnableKeyRotation` with `RotationPeriodInDays` | `rotation_period_in_days` | on moto with ACK's own kms-controller (`TestKeyExtension`), except the period itself: moto takes it and never returns it (`docs/plan.md` section 4.4), so the request's shape is shown by the unit tests (`services/kms/pkg/extend/key`) |
+| kms `Key` | `kms.aws.hfl.dev/enabled` (`true`/`false`) | the key enabled or disabled; without it the key's state is left as it is | `DescribeKey`, `EnableKey`, `DisableKey` | `is_enabled` | on moto with ACK's kms-controller: disable, enable, a key disabled outside Kubernetes enabled again |
+| kms `Key` | none: ACK's own `kms.services.k8s.aws/pending-window-in-days` (7 to 30, default 7) | the deletion window | ACK's `ScheduleKeyDeletion` | `deletion_window_in_days` | on moto with ACK's kms-controller: a 30-day window reaches `ScheduleKeyDeletion` |
+| s3 `Bucket` | `s3.aws.hfl.dev/force-destroy` (`true`/`false`) | empties the bucket when the Bucket is deleted, so ACK's `DeleteBucket` succeeds | `ListObjectVersions`, `DeleteObjects` (with `BypassGovernanceRetention`), `ListMultipartUploads`, `AbortMultipartUpload` | `force_destroy` | on moto (`TestBucketExtension`), the test playing ACK's side of the delete (s3-controller is not a Go module here); paging and batches by unit test |
+
+### The `Bucket`'s delete, step by step
+
+1. While the annotation is `"true"`, our controller holds its own
+   finalizer, `s3.aws.hfl.dev/force-destroy`, on ACK's `Bucket` (and drops
+   it when the annotation goes).
+2. The `Bucket` is deleted. ACK's controller calls `DeleteBucket`, which
+   fails with `BucketNotEmpty` while objects remain, and retries.
+3. Our controller checks that ACK will delete the bucket: the deletion
+   policy (the object's `services.k8s.aws/deletion-policy`, then the
+   namespace's `s3.services.k8s.aws/deletion-policy`, then the
+   controller's `--deletion-policy`, as ACK's reconciler reads it) is not
+   `retain`; the object is not read-only; ACK made or adopted the bucket;
+   it is in the manager's own account. If any is not so, it drops its
+   finalizer and empties nothing (with an Event saying why).
+4. It deletes every object version and delete marker, 1,000 a call, and
+   aborts every multipart upload, and repeats every five seconds until
+   ACK's finalizer (`finalizers.s3.services.k8s.aws/Bucket`) is gone,
+   that is until ACK's `DeleteBucket` has succeeded; an object written
+   meanwhile is deleted on the next pass. Then it drops its own finalizer.
+5. An object version that cannot be deleted (compliance-mode Object Lock,
+   a legal hold) is a Warning Event, `BucketEmptyFailed`, and is retried;
+   the `Bucket` stays until it can be deleted, as with Terraform.
+
+The S3 manager is a new service here, `services/s3`, with no kind of its
+own: the operator runs it beside ACK's s3-controller (`MANAGER_IMAGE_S3`),
+and an `ACKContext` lists it as `s3`.
+
+## Not filled here
+
+The rest of `docs/plan.md` section 5's "Gaps on ACK's own kinds", and why
+each is not an annotation here (each has its upstream note in
+[`upstream-notes.md`](upstream-notes.md)):
+
+| ACK kind | Gap | Why not here |
+| --- | --- | --- |
+| ec2 `Instance` | `securityGroupRefs` | merged upstream (ec2-controller #406); comes with `v1.25.0`, when the catalog moves its pin |
+| ec2 `Instance` | `networkInterfaces[].groups`, `networkInterfaces[].primaryIPv6`, `enablePrimaryIPv6`, `placement.groupID`, `cpuOptions.amdSevSnp` | create-time parameters of `RunInstances` (open question 23) |
+| rds `DBInstance` | self-managed Active Directory (`domainFqdn`, `domainOu`, `domainAuthSecretARN`, `domainDNSIPs`) | `ModifyDBInstance` takes them too, so an extension could set them after ACK's create, but ACK's `spec.domain` is read back from the instance's domain membership and would fight it; needs care and a moto that has domains (it has none) |
+| rds `DBInstance` | point-in-time restore; restore from S3 | create-time: a different create call (open question 23) |
+| rds | blue/green deployments | a kind of its own, not a field (an operation with a switchover); moto has none of it |
+| acm `Certificate` | synced only once `ISSUED` | ACK's condition is ACK's; the fallback is a small kind here (`CertificateValidation`, ready when `ISSUED`), to build if the note upstream is declined |
+| acm `Certificate` | `validationMethod` `EMAIL` | create-time: ACK's create hook sets `DNS` (open question 23) |
+| route53 `RecordSet` | overwrite on create (`allowOverwrite`) | ACK's create sends `CREATE`; an extension cannot turn it into `UPSERT` without racing ACK's create. ACK's `adopt-or-create` annotation is the way once route53-controller #121 lands |
+| ours: ec2 `VolumeAttachment`, `Volume` | `instanceRef` | ours; waits on open question 16 |

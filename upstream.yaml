@@ -87,6 +87,11 @@ pins:
     version: v1.9.0
     commit: 2ee9ccbfaaaa36ad2105143502a902e03906bfd8
     use: ACK's AccessPoint is left to it; the SDK client at its version
+  - name: s3-controller
+    repo: aws-controllers-k8s/s3-controller
+    version: v1.15.0
+    commit: 874152a6dbff23e60fcbaf8eda1a074121207ee0
+    use: not a module; ACK's Bucket is left to it, extended by our s3 manager; its Bucket CRD copied for the tests; the SDK client at its version
   - name: aws-sdk-go-v2 models
     repo: aws/aws-sdk-go-v2
     version: v1.34.0
@@ -128,10 +133,13 @@ patches:
   - {file: patches/code-generator/0001-api-group-suffix-flag.patch, pin: code-generator, upstream_candidate: "offered: aws-controllers-k8s/code-generator#762"}
   - {file: patches/code-generator/0002-sdk-v2-createvolume-output-shape.patch, pin: code-generator, upstream_candidate: "offered: aws-controllers-k8s/code-generator#763"}
   - {file: patches/code-generator/0003-slot-guard.patch, pin: code-generator, upstream_candidate: "no: ours alone (the version-slot guard, docs/slot-moves.md)"}
+  - {file: patches/code-generator/0004-extend-ack-kinds.patch, pin: code-generator, upstream_candidate: "no: ours alone (extensions of ACK's kinds, docs/extensions.md)"}
 
 # "What is copied": here (our paths) and from (the source's paths at a
 # pin's release, or at a pull request's head; a directory ends in /).
 copied:
+  - here: [hack/ack-crds/s3.services.k8s.aws_buckets.yaml]
+    from: {pin: s3-controller, paths: [config/crd/bases/s3.services.k8s.aws_buckets.yaml]}
   - here: [services/iam/apis/v1alpha1/role_policy_attachment.go]
     from: {pr: aws-controllers-k8s/iam-controller#184, paths: [apis/v1alpha1/role_policy_attachment.go]}
   - here:

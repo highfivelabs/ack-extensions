@@ -642,6 +642,20 @@ controller to show it can fail:
   that a change takes a few minutes to apply on AWS, and that the
   settings block anything (moto applies no account-level block to S3
   calls).
+- **A KMS key's rotation period** (probed 2026-11-15, moto 5.2.5; the
+  `Key` extension, `docs/extensions.md`). moto takes `EnableKeyRotation`
+  with `RotationPeriodInDays` and never returns it: `GetKeyRotationStatus`
+  has `KeyRotationEnabled` only, with or without a period. So the
+  extension sets the period again on every resync on moto (it cannot
+  compare), and the period reaching AWS is shown by unit tests of the
+  request, not end to end. `EnableKey`, `DisableKey` and
+  `ScheduleKeyDeletion`'s window (`DeletionDate`) behave as on AWS.
+- **Emptying a bucket** (probed 2026-11-15, moto 5.2.5; the `Bucket`
+  extension). moto has versioning, delete markers, `ListObjectVersions`,
+  `DeleteObjects` (with `BypassGovernanceRetention`, which it accepts),
+  multipart uploads, and refuses `DeleteBucket` with `BucketNotEmpty`, as
+  AWS does. Not modelled: Object Lock refusing a delete (unit-tested
+  instead), and paging past 1,000 versions (unit-tested).
 
 ## 5. Candidates, ranked
 
@@ -755,14 +769,21 @@ where it stands here:
 | KMS `ExternalKey`, `ReplicaExternalKey` (`ImportKeyMaterial`, the material from a Secret) | ours | to build, hand-written |
 | Redshift `ClusterSubnetGroup` | ACK | ACK's redshift-controller has it merged, unreleased (`cloudcontrol/excluded.yaml`) |
 | `FlowLog` reference to the resource it logs; `egressOnlyInternetGatewayRef` on `RouteTable.routes`; a subnet's IPv6 block from its VPC's | ACK (fields of its kinds) | **upstream only.** ec2-controller `v1.25.0` has `FlowLog.resourceID` with no reference, and no `egressOnlyInternetGatewayRef` in a route; no open pull request or issue adds either (read-only, 2026-11-12). Not drafted: this repository opens nothing upstream (CLAUDE.md, "Never"), and has no policy that would allow it |
-| `Key`: `pendingWindowInDays` on delete, `rotationPeriodInDays`, `enabled` | ACK (fields of `Key`) | **question 1.** kms-controller's `Key` reports `enabled` and `pendingDeletionWindowInDays` in status only, and has no rotation period; no pull request adds them. A copy of `Key` here, or a patch, is what question 1 asks |
-| `force_destroy` (emptying a bucket on delete) | ACK (a field and hook on `Bucket`) | **question 1**; no pull request |
+| `Key`: `pendingWindowInDays` on delete, `rotationPeriodInDays`, `enabled` | ACK (fields of `Key`) | **filled here** (question 1, answered; `docs/extensions.md`): `kms.aws.hfl.dev/rotation-period-in-days` and `kms.aws.hfl.dev/enabled` on ACK's own `Key`, acted on by our kms manager; the window is ACK's own annotation `kms.services.k8s.aws/pending-window-in-days`. Notes to upstream drafted (`docs/upstream-notes.md` 1 to 3) |
+| `force_destroy` (emptying a bucket on delete) | ACK (a field and hook on `Bucket`) | **filled here**: `s3.aws.hfl.dev/force-destroy` on ACK's own `Bucket`, acted on by a new s3 manager beside ACK's s3-controller (`docs/extensions.md`). Note to upstream drafted (`docs/upstream-notes.md` 4) |
 
 **Gaps on ACK's own kinds, each placed (2026-11-12).** The catalog's
 `ec2-instance`, `rds`, `acm`, `kms` and `s3-bucket` charts (its
 `docs/aws.md` section 8) need fields ACK's kinds lack. Nothing here
-changes ACK's kinds: whether a field ACK lacks is added by a copy of the
-kind in our group or by a patch is question 1, unanswered. Read
+changed ACK's kinds when this was written: whether a field ACK lacks is
+added by a copy of the kind in our group or by a patch was question 1.
+Question 1 is answered (2026-11-13: extend here, with a note to
+upstream); `docs/extensions.md` says how (an annotation in our group on
+ACK's own object, acted on by our manager beside ACK's controller), which
+gaps are filled (the three on `Key`, `force_destroy` on `Bucket`) and why
+the others are not (most are create-time parameters of ACK's own create:
+open question 23). Each gap's note to upstream is drafted in
+`docs/upstream-notes.md`. Read
 read-only with `gh` at the catalog's pins (ec2-controller `v1.23.1`,
 rds-controller `v1.14.2`, s3-controller `v1.15.0`, kms-controller
 `v1.7.0`, acm-controller `v1.11.0`, route53-controller `v1.8.0`), at each
@@ -786,16 +807,20 @@ way that works without either.
 | acm `Certificate` | synced only once `ISSUED` | no `synced` block for `Certificate` (only `AcmeEndpoint`, `AcmeDomainValidation`): `ACK.ResourceSynced` is true while `status.status` is `PENDING_VALIDATION` | `DescribeCertificate` `Certificate.Status` | none | upstream: `synced: when: [{path: Status.Status, in: [ISSUED]}]`, opt-in so current users are not held; if declined, a small `CertificateValidation` kind here (`certificateRef`, ready when `ISSUED`; Terraform's `aws_acm_certificate_validation`) | no |
 | acm `Certificate` | `validationMethod` (`EMAIL`) | `RequestCertificateInput.ValidationMethod` in `ignore.field_paths`; the create hook sets `DNS` ("We only support DNS-based validation") | `RequestCertificate` `ValidationMethod`, `DomainValidationOptions[].ValidationDomain` | none | upstream: off `ignore`, the hook defaulting to `DNS` | no |
 | route53 `RecordSet` | overwrite on create (`UPSERT`; Terraform's `allow_overwrite`) | create sends `CREATE` (`sdk_create_post_build_request`), update `UPSERT` (`customUpdateRecordSet`); no field | `ChangeResourceRecordSets` `Changes[].Action` | none; adoption of an existing record by `adoption-fields` is broken until route53-controller PR #121 (open, 2026-10-14; community#2981) | upstream: a spec field (`allowOverwrite`) switching the create to `UPSERT`; meanwhile ACK's `adopt-or-create` annotation, once #121 lands, is the way to take over a record | no (`adopt-or-create` after #121) |
-| kms `Key` | deletion window | the annotation `kms.services.k8s.aws/pending-window-in-days` (default 7; `status.pendingDeletionWindowInDays`) | `ScheduleKeyDeletion` `PendingWindowInDays` | community#1787 (immediate delete, open) | the annotation: the chart sets `deletion_window_in_days` on it; a spec field upstream is optional | **yes**, the annotation |
-| kms `Key` | `rotationPeriodInDays` | `enableKeyRotation` (`EnableKeyRotation`/`DisableKeyRotation` in a hook), no period | `EnableKeyRotation` `RotationPeriodInDays` (90 to 2,560) | none | upstream: the field, passed in the existing call | no |
-| kms `Key` | `enabled` | `status.enabled` only | `EnableKey`, `DisableKey` | none | upstream: a spec field with a hook | no |
-| s3 `Bucket` | empty the bucket on delete (`force_destroy`) | `DeleteBucket` only (no delete hook); a bucket with objects fails `BucketNotEmpty` and retries | `ListObjectVersions`, `ListMultipartUploads`, `DeleteObjects` (1,000 a call), `AbortMultipartUpload`, then `DeleteBucket`; Object Lock needs `BypassGovernanceRetention` | community#1393 (closed as stale, 2025-09-16, no pull request) | upstream: a field or annotation and an `sdk_delete_pre_build_request` hook that empties the bucket | no (a chart could run a pre-delete job; not done) |
+| kms `Key` | deletion window | the annotation `kms.services.k8s.aws/pending-window-in-days` (default 7; `status.pendingDeletionWindowInDays`) | `ScheduleKeyDeletion` `PendingWindowInDays` | community#1787 (immediate delete, open) | the annotation: the chart sets `deletion_window_in_days` on it; a spec field upstream is optional | **yes**, the annotation (proven with ACK's kms-controller on moto, `TestKeyExtension`) |
+| kms `Key` | `rotationPeriodInDays` | `enableKeyRotation` (`EnableKeyRotation`/`DisableKeyRotation` in a hook), no period | `EnableKeyRotation` `RotationPeriodInDays` (90 to 2,560) | none | upstream: the field, passed in the existing call | **yes**, `kms.aws.hfl.dev/rotation-period-in-days` (2026-11-15, `docs/extensions.md`) |
+| kms `Key` | `enabled` | `status.enabled` only | `EnableKey`, `DisableKey` | none | upstream: a spec field with a hook | **yes**, `kms.aws.hfl.dev/enabled` (2026-11-15) |
+| s3 `Bucket` | empty the bucket on delete (`force_destroy`) | `DeleteBucket` only (no delete hook); a bucket with objects fails `BucketNotEmpty` and retries | `ListObjectVersions`, `ListMultipartUploads`, `DeleteObjects` (1,000 a call), `AbortMultipartUpload`, then `DeleteBucket`; Object Lock needs `BypassGovernanceRetention` | community#1393 (closed as stale, 2025-09-16, no pull request) | upstream: a field or annotation and an `sdk_delete_pre_build_request` hook that empties the bucket | **yes**, `s3.aws.hfl.dev/force-destroy` (2026-11-15) |
 
-So of the 14, one is usable today (the KMS deletion window, by
-annotation) and one lands with the next ec2-controller release
-(`securityGroupRefs`); one is ours and is built (question 16); the
-other eleven are fields of ACK's kinds, which question 1 decides. This
-repository opens nothing upstream (CLAUDE.md), so none is filed.
+So of the 14, four are usable today (the KMS deletion window by ACK's
+annotation; since 2026-11-15 the rotation period, `enabled` and
+`force_destroy` by our annotations, `docs/extensions.md`) and one lands
+with the next ec2-controller release (`securityGroupRefs`); one is ours
+and is built (question 16); the other eight are create-time parameters,
+a condition or a kind of ACK's that an annotation beside ACK cannot
+fill (`docs/extensions.md`, "Not filled here"; open question 23). This
+repository opens nothing upstream (CLAUDE.md), so each note is drafted in
+`docs/upstream-notes.md` for a person to file.
 
 Built before this ranking:
 
@@ -3135,6 +3160,18 @@ Before it can run on a real cluster:
    section 5's "Gaps on ACK's own kinds") are filled here, by extending
    ACK's kinds in ack-extensions, rather than waiting for the release;
    each one is paired with a note (an issue or pull request) to upstream.
+
+   **Built** (2026-11-15, `docs/extensions.md`): an annotation in our
+   group on ACK's own object, acted on by our manager beside ACK's
+   controller (`pkg/extend`, generator patch 0004), not a copy of the
+   kind and not a patched ACK controller. Filled: KMS `Key`'s rotation
+   period (`kms.aws.hfl.dev/rotation-period-in-days`) and enabled state
+   (`kms.aws.hfl.dev/enabled`); its deletion window was already ACK's
+   annotation; S3 `Bucket`'s `force_destroy`
+   (`s3.aws.hfl.dev/force-destroy`, in a new s3 manager). The notes to
+   upstream are drafts in `docs/upstream-notes.md`, not filed. The
+   other gaps of section 5 are create-time parameters an annotation
+   cannot fill: open question 23.
 2. **Database users and roles on RDS** have no AWS API. Out of scope
    here, or a separate project that speaks SQL (connection details from
    ACK's `DBInstance`, credentials from Secrets Manager)? Proposed: out of
@@ -3674,3 +3711,33 @@ Before it can run on a real cluster:
     **Answered** (2026-11-13, the builder: "Q22 keep as built"): our
     s3control manager runs beside ACK's s3control-controller only, as for
     every service ACK has; no `Beside` entry.
+
+23. **Create-time gaps on ACK's own kinds** (2026-11-15, from question
+    1's answer). Question 1's answer is built as annotations on ACK's own
+    objects, acted on by our manager beside ACK's controller
+    (`docs/extensions.md`). That fills a field our manager can set after
+    ACK has made the resource (a key's rotation period, its enabled
+    state) or around ACK's delete (emptying a bucket). It cannot fill a
+    parameter of ACK's own create call: an instance's network interface
+    groups, primary IPv6, placement group ID and SEV-SNP
+    (`RunInstances`), a database restored to a point in time or from S3
+    (a different create call), a certificate validated by email
+    (`RequestCertificate`), a record set created with `UPSERT`. Options:
+    - **wait for upstream** for these, with the notes in
+      `docs/upstream-notes.md` filed by a person;
+    - **a copy of ACK's kind in our group** (for example
+      `ec2.aws.hfl.dev` `Instance`), generated here from the controller's
+      own `generator.yaml` with the fields off `ignore`: a second kind for
+      one resource, which charts would have to choose, and a migration
+      (section 3, "Retiring a kind") when ACK ships the field;
+    - **a small kind of ours beside ACK's** where the gap is a step, not
+      a field: `CertificateValidation` (ready when the certificate is
+      `ISSUED`), `DBInstanceRestore` (a restore that ACK's `DBInstance`
+      then adopts by `adopt-or-create`).
+
+    Recommended: wait for upstream for the `Instance` and ACM
+    validation-method fields (the catalog's charts do not need them to
+    render), and build the two small kinds (`CertificateValidation`
+    first: the `acm` chart needs "ready when issued") if their notes are
+    declined or not taken up in a release; never a copy of an ACK kind.
+    Not built until the builder answers.

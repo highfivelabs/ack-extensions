@@ -29,7 +29,7 @@ export GOTOOLCHAIN=local
 
 SDK_VERSION="v1.34.0"         # UPSTREAM.md, "aws-sdk-go-v2 models"
 GROUP_SUFFIX="aws.hfl.dev"
-SERVICES=(applicationautoscaling autoscaling ec2 ecr eventbridge iam kms lambda organizations rds s3control scheduler wafv2)
+SERVICES=(applicationautoscaling autoscaling ec2 ecr eventbridge iam kms lambda organizations rds s3 s3control scheduler wafv2)
 GEN="${ROOT}/bin/ack-generate"
 CONTROLLER_GEN="${ROOT}/bin/controller-gen"
 GOIMPORTS="${ROOT}/bin/goimports"
@@ -92,7 +92,7 @@ mkdir -p config/crds/bases
 mkdir -p config/rbac
 for svc in "${SERVICES[@]}"; do
   rbac="${work}/rbac-${svc}"
-  "${CONTROLLER_GEN}" rbac:roleName="ack-extensions-${svc}-manager" "paths=./services/${svc}/pkg/resource/..." output:rbac:artifacts:config="${rbac}"
+  "${CONTROLLER_GEN}" rbac:roleName="ack-extensions-${svc}-manager" "paths=./services/${svc}/pkg/..." output:rbac:artifacts:config="${rbac}"
   cp "${rbac}/role.yaml" "config/rbac/${svc}-manager-role.yaml"
 done
 
