@@ -63,6 +63,10 @@ itself lives in its own repository and is never changed from here.
 - Merge only when the `offload/ci` status on the PR head is success
   (`task ci`, which the pre-push hook runs; `docs/testing.md`, "The
   merge gate").
+- After `task ci` is green, run `../factory/review/run.sh --post` and loop
+  as factory's `review/README.md` says. In this repository that is every
+  pull request that touches hand-written code, plus a weekly sweep;
+  `.review-generated` lists the generated paths the review skips.
 - Commit as this repository's configured author (a GitHub no-reply
   address). Never change `user.email`.
 - Keep one change per commit, described plainly.
