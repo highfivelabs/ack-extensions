@@ -29,6 +29,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudcontrol"
 	cctypes "github.com/aws/aws-sdk-go-v2/service/cloudcontrol/types"
+	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
 
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/pkg/registry"
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/test/live"
@@ -94,38 +95,46 @@ func sweep(ctx context.Context, run string, list bool, older time.Duration, suit
 			continue
 		}
 		field := strings.TrimPrefix(tp, "/properties/")
-		p := cloudcontrol.NewListResourcesPaginator(cc, &cloudcontrol.ListResourcesInput{TypeName: aws.String(ty.TypeName)})
-		for p.HasMorePages() {
-			page, err := p.NextPage(ctx)
-			if err != nil {
-				fmt.Printf("sweep: %s: list: %v\n", ty.TypeName, err)
-				failed++
-				break
-			}
-			for _, d := range page.ResourceDescriptions {
-				var props map[string]any
-				_ = json.Unmarshal([]byte(aws.ToString(d.Properties)), &props)
-				id := runOf(props[field])
-				if id == "" {
-					continue
-				}
-				found++
-				due := run != "" && id == run
-				if run == "" {
-					if t, ok := started(id, now); ok && now.Sub(t) > older {
-						due = true
-					}
-				}
-				fmt.Printf("sweep: %s %s (run %s)%s\n", ty.TypeName, aws.ToString(d.Identifier), id, map[bool]string{true: ": deleting", false: ""}[due && !list])
-				if !due || list {
-					continue
-				}
-				if err := del(ctx, cc, ty.TypeName, aws.ToString(d.Identifier)); err != nil {
-					fmt.Printf("sweep: %s %s: %v\n", ty.TypeName, aws.ToString(d.Identifier), err)
+		models, err := listModels(ctx, r.Config, ty.TypeName)
+		if err != nil {
+			fmt.Printf("sweep: %s: %v\n", ty.TypeName, err)
+			failed++
+			continue
+		}
+		for _, model := range models {
+			p := cloudcontrol.NewListResourcesPaginator(cc, &cloudcontrol.ListResourcesInput{TypeName: aws.String(ty.TypeName), ResourceModel: model})
+			for p.HasMorePages() {
+				page, err := p.NextPage(ctx)
+				if err != nil {
+					fmt.Printf("sweep: %s: list: %v\n", ty.TypeName, err)
 					failed++
-					continue
+					break
 				}
-				deleted++
+				for _, d := range page.ResourceDescriptions {
+					var props map[string]any
+					_ = json.Unmarshal([]byte(aws.ToString(d.Properties)), &props)
+					id := runOf(props[field])
+					if id == "" {
+						continue
+					}
+					found++
+					due := run != "" && id == run
+					if run == "" {
+						if t, ok := started(id, now); ok && now.Sub(t) > older {
+							due = true
+						}
+					}
+					fmt.Printf("sweep: %s %s (run %s)%s\n", ty.TypeName, aws.ToString(d.Identifier), id, map[bool]string{true: ": deleting", false: ""}[due && !list])
+					if !due || list {
+						continue
+					}
+					if err := del(ctx, cc, ty.TypeName, aws.ToString(d.Identifier)); err != nil {
+						fmt.Printf("sweep: %s %s: %v\n", ty.TypeName, aws.ToString(d.Identifier), err)
+						failed++
+						continue
+					}
+					deleted++
+				}
 			}
 		}
 	}
@@ -138,6 +147,29 @@ func sweep(ctx context.Context, run string, list bool, older time.Duration, suit
 		return fmt.Errorf("%d failure(s)", failed)
 	}
 	return nil
+}
+
+// listModels are the resource models a type's list handler is called
+// with: none for most, one per parent for a type whose list needs one
+// (a permission set's Identity Center instance: "Required property:
+// [InstanceArn]", run ackx-11151707-7cc5).
+func listModels(ctx context.Context, cfg aws.Config, typeName string) ([]*string, error) {
+	if typeName != "AWS::SSO::PermissionSet" {
+		return []*string{nil}, nil
+	}
+	out, err := ssoadmin.NewFromConfig(cfg).ListInstances(ctx, &ssoadmin.ListInstancesInput{})
+	if err != nil {
+		return nil, err
+	}
+	if len(out.Instances) == 0 {
+		fmt.Printf("sweep: %s: no Identity Center instance in the account; nothing to list\n", typeName)
+	}
+	var models []*string
+	for _, in := range out.Instances {
+		b, _ := json.Marshal(map[string]string{"InstanceArn": aws.ToString(in.InstanceArn)})
+		models = append(models, aws.String(string(b)))
+	}
+	return models, nil
 }
 
 // runOf is the run tag's value in a tag list, or "".
