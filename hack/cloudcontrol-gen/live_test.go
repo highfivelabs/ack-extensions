@@ -16,7 +16,8 @@ import (
 
 // The live-test role has no permissions for a never-deleted type (a
 // landing zone): no live test may make one. Checked on the committed
-// template: every action only such a type needs is absent.
+// template: every action only such a type needs (no other Cloud Control
+// type and no ACK-kind test needs it) is absent.
 func TestLiveRoleLeavesOutNeverDeleted(t *testing.T) {
 	raw, err := os.ReadFile(filepath.Join("..", "..", "cloudcontrol", "config", "live", "sandbox-account.yaml"))
 	if err != nil {
@@ -33,6 +34,15 @@ func TestLiveRoleLeavesOutNeverDeleted(t *testing.T) {
 		for _, a := range iamgen.ForType(ty.Schema()).Actions {
 			others[a] = true
 		}
+	}
+	// The ACK-kind tests' actions (statement LiveRunACKKinds) are another
+	// kind's too: iam:DetachRolePolicy is RolePolicyAttachment's.
+	ack, err := liveACKActions(filepath.Join("..", ".."))
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, a := range ack {
+		others[a] = true
 	}
 	if len(never) == 0 {
 		t.Skip("no type is marked neverDelete")
