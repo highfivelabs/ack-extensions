@@ -893,6 +893,26 @@ ACK's `Role` for exactly this case. Until that ships, the kind is for
 roles ACK does not manage. The `roleRef` test shows that references
 resolve; ACK's iam-controller does not run in it. Open question 3.
 
+**Refused** (2026-11-15, open question 3, item ACKQ7-1): a `roleRef` to
+an ACK `Role` whose `spec.policies` is not empty goes `ACK.Terminal`
+before IAM is asked anything, the message naming the Role and the field
+("Role default/app lists spec.policies, which it syncs as a whole: this
+RolePolicyAttachment would be undone at that object's next sync. Add the
+entry to that list instead, or empty the list to keep this
+RolePolicyAttachment"), whether or not the Role has synced. A plain
+`roleName` is not checked, as for the Cloud Control rule kinds: the role's
+owner may be in another namespace, cluster or tool, and the two
+rule-beside-owner kinds behave alike. Every field is immutable and a
+terminal object is not resynced, so once the Role's list is emptied the
+object is made again (deleted and recreated); deleting a refused object
+detaches nothing. Changes to the copied files: `references.go`
+(`resolveReferenceForRole`), `resource.go` (the `conflict` field),
+`manager.go` (`ReadOne` refuses). Proven on moto
+(`TestRolePolicyAttachment`, "refused beside an ACK Role that lists
+policies": ACK's `Role` as a stand-in, the refusal and its message,
+nothing attached, then attached once the list is emptied and the object
+recreated).
+
 ### 6.2 `rds.aws.hfl.dev` `OptionGroup`
 
 Generated from PR #257's `generator.yaml` entry and hook templates, with
@@ -3291,6 +3311,9 @@ Before it can run on a real cluster:
    documented.)"): refuse a `RolePolicyAttachment` whose role is an ACK
    `Role` with `spec.policies`, with a terminal condition naming the
    conflict, by the same mechanism as question 7's rule kinds.
+
+   **Built** (2026-11-15): section 6.1, "Refused". A `roleRef` only; a
+   plain `roleName` is not checked.
 4. **Identity default.** `own` is the default (narrower Kubernetes
    rights, one AWS grant per role); `ack` needs no AWS step. Keep `own`?
 
@@ -3386,6 +3409,15 @@ Before it can run on a real cluster:
    whose group is an ACK `SecurityGroup` listing inline rules goes
    terminal with a condition naming the conflict, and question 3's
    `RolePolicyAttachment` the same way.
+
+   **Built** (2026-11-15): `refuseWhenSet` on a reference in
+   `cloudcontrol/types.yaml`, honoured by the generic Cloud Control
+   reconciler (`docs/cloudcontrol.md` section 12, item 4):
+   `SecurityGroupIngress`'s `groupRef` is refused when the ACK
+   `SecurityGroup` lists `spec.ingressRules`, `SecurityGroupEgress`'s
+   when it lists `spec.egressRules` (only the direction the group owns).
+   A plain `groupId` is not checked. Proven on moto by
+   `TestSecurityGroupRuleBesideOwner`.
 8. **A service ACK has no controller for** (EventBridge Scheduler,
    rank 10). The operator runs our manager beside an ACK controller, and
    takes its identity from it: the ServiceAccount's role annotations, the

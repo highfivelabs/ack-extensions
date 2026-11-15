@@ -6,6 +6,7 @@ package e2e
 import (
 	"context"
 	"fmt"
+	"strings"
 	"testing"
 	"time"
 
@@ -129,6 +130,97 @@ func TestRolePolicyAttachment(t *testing.T) {
 		}
 		harness.Eventually(t, 60*time.Second, "attached through roleRef", func() error {
 			m, err := attached(ctx, cloud, "ack-made")
+			if err != nil {
+				return err
+			}
+			if !m[policyARN] {
+				return fmt.Errorf("not attached yet: %v", m)
+			}
+			return nil
+		})
+	})
+
+	// Plan question 3 (answered 2026-11-15): ACK's Role syncs
+	// spec.policies as the whole set and would detach an attachment made
+	// beside it, so a roleRef to a Role that lists policies is refused with
+	// ACK.Terminal naming the Role and the field, and nothing is attached.
+	// The kind's fields are immutable and a terminal object is not
+	// resynced, so once the Role's list is emptied the object is made again
+	// (deleted and recreated); its delete detaches nothing.
+	t.Run("refused beside an ACK Role that lists policies", func(t *testing.T) {
+		if _, err := cloud.CreateRole(ctx, &iam.CreateRoleInput{RoleName: aws.String("ack-owned"), AssumeRolePolicyDocument: aws.String(trust)}); err != nil {
+			t.Fatal(err)
+		}
+		owned := &ackiam.Role{
+			ObjectMeta: metav1.ObjectMeta{Name: "ack-owned", Namespace: "default"},
+			Spec: ackiam.RoleSpec{Name: aws.String("ack-owned"), AssumeRolePolicyDocument: aws.String(trust),
+				Policies: []*string{aws.String("arn:aws:iam::aws:policy/ReadOnlyAccess")}},
+		}
+		if err := env.Client.Create(ctx, owned); err != nil {
+			t.Fatal(err)
+		}
+		owned.Status.Conditions = []*ackv1alpha1.Condition{{Type: ackv1alpha1.ConditionTypeResourceSynced, Status: corev1.ConditionTrue}}
+		if err := env.Client.Status().Update(ctx, owned); err != nil {
+			t.Fatal(err)
+		}
+		beside := func() *iamv1.RolePolicyAttachment {
+			return &iamv1.RolePolicyAttachment{
+				ObjectMeta: metav1.ObjectMeta{Name: "beside-owner", Namespace: "default"},
+				Spec: iamv1.RolePolicyAttachmentSpec{
+					RoleRef:   &ackv1alpha1.AWSResourceReferenceWrapper{From: &ackv1alpha1.AWSResourceReference{Name: aws.String("ack-owned")}},
+					PolicyARN: aws.String(policyARN),
+				},
+			}
+		}
+		refused := beside()
+		if err := env.Client.Create(ctx, refused); err != nil {
+			t.Fatal(err)
+		}
+		want := "Role default/ack-owned lists spec.policies"
+		harness.Eventually(t, 60*time.Second, "refused with ACK.Terminal", func() error {
+			got := &iamv1.RolePolicyAttachment{}
+			if err := env.Client.Get(ctx, client.ObjectKeyFromObject(refused), got); err != nil {
+				return err
+			}
+			for _, c := range got.Status.Conditions {
+				if c.Type == ackv1alpha1.ConditionTypeTerminal && c.Status == corev1.ConditionTrue {
+					if msg := aws.ToString(c.Message); !strings.Contains(msg, want) || !strings.Contains(msg, "this RolePolicyAttachment would be undone") {
+						return fmt.Errorf("ACK.Terminal's message %q does not name the conflict", msg)
+					}
+					return nil
+				}
+			}
+			return fmt.Errorf("no ACK.Terminal: %v", got.Status.Conditions)
+		})
+		if m, err := attached(ctx, cloud, "ack-owned"); err != nil || m[policyARN] {
+			t.Fatalf("a refused attachment reached IAM: %v %v", m, err)
+		}
+
+		// The Role's list emptied; the object made again is attached.
+		harness.Eventually(t, 30*time.Second, "Role's policies emptied", func() error {
+			cur := &ackiam.Role{}
+			if err := env.Client.Get(ctx, client.ObjectKeyFromObject(owned), cur); err != nil {
+				return err
+			}
+			cur.Spec.Policies = nil
+			return env.Client.Update(ctx, cur)
+		})
+		if err := env.Client.Delete(ctx, refused); err != nil {
+			t.Fatal(err)
+		}
+		harness.Eventually(t, 60*time.Second, "refused object gone", func() error {
+			err := env.Client.Get(ctx, client.ObjectKeyFromObject(refused), &iamv1.RolePolicyAttachment{})
+			if err == nil {
+				return fmt.Errorf("object still present")
+			}
+			return client.IgnoreNotFound(err)
+		})
+		again := beside()
+		if err := env.Client.Create(ctx, again); err != nil {
+			t.Fatal(err)
+		}
+		harness.Eventually(t, 60*time.Second, "attached once the Role lists no policies", func() error {
+			m, err := attached(ctx, cloud, "ack-owned")
 			if err != nil {
 				return err
 			}

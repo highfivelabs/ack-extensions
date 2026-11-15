@@ -178,3 +178,75 @@ func TestReferencesInDeltaAndObserve(t *testing.T) {
 		t.Errorf("delta %v: want none", d.Differences)
 	}
 }
+
+// A reference whose object lists one of its refuseWhenSet fields
+// (cloudcontrol/types.yaml: SecurityGroupIngress's groupRef and an ACK
+// SecurityGroup's spec.ingressRules) resolves without an error but carries
+// a terminal conflict, synced or not; ReadOne then refuses the object with
+// ACK.Terminal and asks Cloud Control nothing (api is nil here), except
+// while it is being deleted. An empty list is no conflict.
+func TestResolveReferencesRefuseWhenSet(t *testing.T) {
+	ty := registry.ByTypeName("AWS::EC2::SecurityGroupIngress")
+	var groupRef registry.Reference
+	for _, r := range ty.References {
+		if r.RefField == "groupRef" {
+			groupRef = r
+		}
+	}
+	if len(groupRef.RefuseWhenSet) != 1 || groupRef.RefuseWhenSet[0] != "spec.ingressRules" {
+		t.Fatalf("SecurityGroupIngress groupRef refuseWhenSet %v, want [spec.ingressRules] (cloudcontrol/types.yaml)", groupRef.RefuseWhenSet)
+	}
+	owner := ackObject("SecurityGroup", "team-a", "owner", "id", "")
+	owner.Object["spec"] = map[string]any{"ingressRules": []any{map[string]any{"ipProtocol": "tcp"}}}
+	empty := ackObject("SecurityGroup", "team-a", "empty", "id", "sg-e", synced)
+	empty.Object["spec"] = map[string]any{"ingressRules": []any{}, "egressRules": []any{map[string]any{"ipProtocol": "-1"}}}
+	b := fake.NewClientBuilder().WithScheme(runtime.NewScheme()).WithObjects(owner, empty).Build()
+	m := &manager{t: ty, s: ty.Schema(), log: logr.Discard()}
+	rule := func(group string) *resource {
+		u := &unstructured.Unstructured{Object: map[string]any{"spec": map[string]any{
+			"groupRef": ref(group), "ipProtocol": "tcp", "cidrIp": "10.0.0.0/8", "fromPort": int64(443), "toPort": int64(443),
+		}}}
+		u.SetNamespace("team-a")
+		u.SetName("rule")
+		return &resource{t: ty, u: u}
+	}
+
+	got, has, err := m.ResolveReferences(context.Background(), b, rule("owner"))
+	if err != nil || !has {
+		t.Fatalf("ResolveReferences: has %v, err %v; want the conflict carried, not an error", has, err)
+	}
+	r := got.(*resource)
+	if r.conflict == nil || !strings.Contains(r.conflict.Error(), "SecurityGroup team-a/owner lists spec.ingressRules") ||
+		!strings.Contains(r.conflict.Error(), "this SecurityGroupIngress would be undone") {
+		t.Fatalf("conflict %v: want one naming the group and its field", r.conflict)
+	}
+	if _, ok := r.spec()["groupId"]; ok {
+		t.Errorf("a refused reference filled groupId: %v", r.spec())
+	}
+	if c := r.DeepCopy().(*resource).conflict; c == nil {
+		t.Errorf("DeepCopy dropped the conflict")
+	}
+	latest, err := m.ReadOne(context.Background(), r)
+	if err == nil {
+		t.Fatalf("ReadOne of a refused object: no error")
+	}
+	s, msg := "", ""
+	for _, c := range latest.Conditions() {
+		if c.Type == "ACK.Terminal" {
+			s = string(c.Status)
+			if c.Message != nil {
+				msg = *c.Message
+			}
+		}
+	}
+	if s != "True" || !strings.Contains(msg, "lists spec.ingressRules") {
+		t.Errorf("ACK.Terminal=%q %q; want True naming the conflict", s, msg)
+	}
+
+	// Egress rules do not matter to an inbound rule, and an empty list is
+	// no conflict.
+	got, _, err = m.ResolveReferences(context.Background(), b, rule("empty"))
+	if err != nil || got.(*resource).conflict != nil || got.(*resource).spec()["groupId"] != "sg-e" {
+		t.Errorf("empty ingressRules: err %v, conflict %v, spec %v; want resolved", err, got.(*resource).conflict, got.(*resource).spec())
+	}
+}

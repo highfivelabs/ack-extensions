@@ -37,6 +37,13 @@ type Reference struct {
 	// Path is the referenced object's field holding the value
 	// (status.vpcID).
 	Path string `json:"path"`
+	// RefuseWhenSet lists fields of the referenced object (dotted paths,
+	// spec.ingressRules) that own, as a whole set, what this kind adds one
+	// entry to. When one of them is not empty, the reference is refused
+	// with ACK.Terminal: that object's next sync would undo this one (the
+	// rule-beside-owner conflict, plan questions 3 and 7, answered
+	// 2026-11-15).
+	RefuseWhenSet []string `json:"refuseWhenSet,omitempty"`
 }
 
 // GVK is the referenced kind.
@@ -83,6 +90,11 @@ func (s *Schema) References(refs []Reference) ([]Reference, error) {
 		seen[r.Property] = true
 		if r.Group == "" || r.Kind == "" || r.Path == "" {
 			return nil, fmt.Errorf("%s: reference %s needs group, kind and path", s.TypeName, r.Property)
+		}
+		for _, f := range r.RefuseWhenSet {
+			if f == "" || strings.HasPrefix(f, ".") || strings.HasSuffix(f, ".") || strings.Contains(f, "..") {
+				return nil, fmt.Errorf("%s: reference %s: refuseWhenSet %q is not a dotted path (spec.ingressRules)", s.TypeName, r.Property, f)
+			}
 		}
 		r.Field = names.ToField[name]
 		if r.RefField == "" {

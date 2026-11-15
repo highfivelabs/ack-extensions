@@ -232,6 +232,14 @@ func (m *manager) identifierFromSpec(r *resource) string {
 func (m *manager) ReadOne(ctx context.Context, res acktypes.AWSResource) (acktypes.AWSResource, error) {
 	r := res.(*resource)
 	latest := r.DeepCopy().(*resource)
+	// A reference refused (refuseWhenSet): terminal before anything is
+	// asked of Cloud Control. Not while the object is being deleted (its
+	// own resource is still deleted) or a request is in flight (finished
+	// first, then refused on the next pass).
+	if latest.conflict != nil && !latest.IsBeingDeleted() && !latest.request().pending() {
+		latest.conflict = nil
+		return m.onError(latest, r.conflict)
+	}
 	if q := latest.request(); q.pending() {
 		out, err := m.api.GetResourceRequestStatus(ctx, &cloudcontrol.GetResourceRequestStatusInput{RequestToken: aws.String(q.Token)})
 		if err != nil {

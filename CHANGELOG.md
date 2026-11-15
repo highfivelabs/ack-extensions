@@ -5,6 +5,19 @@ design and the reasons are in `docs/plan.md`.
 
 ## Unreleased
 
+### Changed
+
+- **A rule beside an owner that syncs the whole set is refused**
+  (open questions 3 and 7, answered 2026-11-15): a
+  `SecurityGroupIngress`/`SecurityGroupEgress` whose `groupRef` names an
+  ACK `SecurityGroup` listing `ingressRules`/`egressRules` (the same
+  direction), and a `RolePolicyAttachment` whose `roleRef` names an ACK
+  `Role` listing `policies`, now go `ACK.Terminal` with a message naming
+  the owner and its field, and nothing is sent to AWS. Before, they were
+  made and then undone at the owner's next sync. A plain `groupId` or
+  `roleName` is not checked. The Cloud Control rule is `refuseWhenSet` on
+  a reference in `cloudcontrol/types.yaml`.
+
 ### Added
 
 - **`ec2.aws.hfl.dev` `DefaultSecurityGroup`** (open question 16;
