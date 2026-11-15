@@ -157,7 +157,7 @@ func TestReplicaKey(t *testing.T) {
 		if err := env.Client.Get(ctx, client.ObjectKeyFromObject(eu), obj); err != nil {
 			t.Fatal(err)
 		}
-		policy := `{"Version":"2012-10-17","Statement":[{"Sid":"root","Effect":"Allow","Principal":{"AWS":"arn:aws:iam::123456789012:root"},"Action":"kms:*","Resource":"*"}]}`
+		policy := `{"Version":"2012-10-17","Statement":[{"Sid":"root","Effect":"Allow","Principal":{"AWS":"arn:aws:iam::` + env.Account + `:root"},"Action":"kms:*","Resource":"*"}]}`
 		obj.Spec.Policy = aws.String(policy)
 		if err := env.Client.Update(ctx, obj); err != nil {
 			t.Fatal(err)
