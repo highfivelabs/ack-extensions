@@ -1,10 +1,10 @@
 # ack-extensions plan
 
-Status, 2026-11-12: the repository has thirty-five kinds:
+Status, 2026-11-15: the repository has thirty-six kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
-- `ec2.aws.hfl.dev` `CustomerGateway`, `VPNGateway`, `VPNConnection`,
+- `ec2.aws.hfl.dev` `CustomerGateway`, `DefaultSecurityGroup`, `VPNGateway`, `VPNConnection`,
   `VPNGatewayRoutePropagation`, `NetworkInterfacePermission`, `ResourceTag`,
   `Volume` and `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
@@ -747,7 +747,7 @@ where it stands here:
 | Gap | Where it belongs | Status |
 | --- | --- | --- |
 | `VPNGateway.spec.vpcRef`, `VPNGatewayRoutePropagation.spec.routeTableRef` | ours | **built** (2026-11-15; question 16 answered): ACK's ec2-controller `v1.23.1` is a Go module here and its `VPC`, `RouteTable`, `TransitGateway` and `Instance` are aliased in `services/ec2/apis/v1alpha1/ack_kinds.go`. `vpcRef` proven on moto; `routeTableRef` by unit tests (moto has no `EnableVgwRoutePropagation`). The charts' first `vpc` gap (`enable_vpn_gateway`, `propagate_*_route_tables_vgw`) |
-| Adopting a VPC's default VPC, security group, network ACL and main route table by `vpcRef` (`aws_default_*`) | ours, four new kinds | to build (question 16 answered: build them); `vpcRef` now works as on `VPNGateway`. Shape: read the default object by the VPC (`DescribeSecurityGroups` with `group-name=default`, `DescribeNetworkAcls` with `default=true`, `DescribeRouteTables` with `association.main=true`, `DescribeVpcs` with `isDefault=true`), manage its rules, entries or routes, and never delete it |
+| Adopting a VPC's default VPC, security group, network ACL and main route table by `vpcRef` (`aws_default_*`) | ours, four new kinds | **`DefaultSecurityGroup` built** (2026-11-15, section 6.37, proven on moto); `DefaultNetworkACL`, `DefaultRouteTable` and `DefaultVPC` to build (question 16 answered: build them), on its pattern. Shape: read the default object by the VPC (`DescribeSecurityGroups` with `group-name=default`, `DescribeNetworkAcls` with `default=true`, `DescribeRouteTables` with `association.main=true`, `DescribeVpcs` with `isDefault=true`), manage its rules, entries or routes, and never delete it |
 | VPC Block Public Access options and exclusions; `SecurityGroupVpcAssociation` | ours | **served**, by Cloud Control kinds: `ec2.cloudcontrol.aws.hfl.dev` `VPCBlockPublicAccessOptions`, `VPCBlockPublicAccessExclusion` and `SecurityGroupVpcAssociation` (schema fake only: moto 5.2.5 has neither `CreateVpcBlockPublicAccessExclusion` nor `AssociateSecurityGroupVpc`, and AWS Emulator's Cloud Control does not reach EC2; references tested there by `TestReferences` and `TestReferencesBlockPublicAccessExclusion`). **With references** since 2026-11-12 (`docs/cloudcontrol.md` section 12, item 4): `VPCBlockPublicAccessExclusion.spec.vpcRef` and `subnetRef` (ACK's `VPC`, `Subnet`), `SecurityGroupVpcAssociation.spec.groupRef` and `vpcRef` (ACK's `SecurityGroup`, `VPC`), so a chart wires them in one render. The charts' `upstream/aws-kinds.yaml` can map them |
 | An Elastic IP associated with an instance (`AssociateAddress`; the `ec2-instance` chart's `create_eip`) | ours | **served** by `ec2.cloudcontrol.aws.hfl.dev` `EIPAssociation`, **proven on moto** since 2026-11-12 (`TestEIPAssociation`: a moto backend over `AssociateAddress`, `DescribeAddresses`, `DisassociateAddress`; both references resolved from ACK stand-ins; on AWS Emulator 1.0.338 it fails as every moto-proven Cloud Control kind does, its Cloud Control keeping the type in its own store, `docs/aws-emulator.md`), with `allocationRef` (ACK's `ElasticIPAddress`), `instanceRef` (ACK's `Instance`) and `networkInterfaceRef` (our `NetworkInterface`) since 2026-11-12. ACK's ec2-controller has no association kind (checked at `v1.23.1` and `v1.24.0`); its `ElasticIPAddress` has no instance field |
 | S3 directory buckets | ours | **served** by `s3express.cloudcontrol.aws.hfl.dev` `DirectoryBucket` (batch 14) |
@@ -2395,6 +2395,46 @@ against the SDK's own rules. **Not proven:** real AWS (a live run): the
 IAM actions, the minutes a change takes to apply, and what AWS answers a
 delete with no configuration.
 
+### 6.37 `ec2.aws.hfl.dev` `DefaultSecurityGroup`
+
+A VPC's default security group, taken over: Terraform's
+`aws_default_security_group`, the first of the four `aws_default_*` kinds
+the catalog's `vpc` chart needs (`manage_default_security_group`; open
+question 16, answered 2026-11-13). ACK's ec2-controller `v1.23.1` has no
+default-object kind, and no pull request adds one (its `SecurityGroup`
+makes groups; it can adopt one only by ID).
+
+**Hand-written** on PR #184's skeleton (by way of `ResourceTag`'s copy):
+there is no create or delete. ACK `SecurityGroup`'s rule code is copied
+(`rules.go`: the canonicalisation behind its delta, `syncSGRules`, the
+Authorize/Revoke calls, the rule conversions), and the rules are ACK's
+own `IPPermission` type, so a rule reads as on ACK's `SecurityGroup`.
+
+- **Spec:** `vpcID` or `vpcRef` (ACK's `VPC`; exactly one, a CEL rule;
+  immutable), `ingressRules`, `egressRules`, `tags`. A rule's
+  `userIDGroupPairs[].groupRef` is refused (terminal): give `groupID`.
+  **Status:** `id`, `groupName`.
+- **Take-over:** until `status.id` is set the read finds nothing (the
+  singleton pattern, `docs/handoff.md`), so the create path finds the
+  group (`DescribeSecurityGroups`, `vpc-id` and `group-name=default`)
+  and makes its rules and tags the spec's. No group yet (the VPC not
+  made) is retried.
+- **Exclusive**, as Terraform's: every rule not in the spec is revoked,
+  EC2's default egress rule (all traffic to `0.0.0.0/0`) included; an
+  empty spec leaves no rule (the CIS benchmark's recommendation). Tags
+  likewise, except AWS's own (`aws:`).
+- **Delete** leaves the group and its rules: EC2 deletes a default group
+  only with its VPC.
+
+**Proven on moto** (`TestDefaultSecurityGroup`): taken over by `vpcRef`
+(ACK's `VPC` standing in), the default egress rule revoked, the spec's
+ingress rule and tag put; no update across resyncs; a rule added
+outside Kubernetes revoked; rules and tags changed; the CRD's refusal of
+both or neither VPC field; the delete leaving the rules. moto's default
+group has no self-referencing ingress rule (AWS's has one, which the
+take-over revokes unless the spec lists it): **not proven** against
+AWS's own default rules, nor `RulesPerSecurityGroupLimitExceeded`.
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)
@@ -3495,6 +3535,8 @@ Before it can run on a real cluster:
     `VolumeAttachment.spec.instanceRef` and `Volume.spec.availabilityZoneRef`
     (sections 6.11, 6.13, 6.14, 6.32, 6.34). Left: the four
     `aws_default_*` kinds (section 5, "The catalog's charts").
+    Then `DefaultSecurityGroup` (section 6.37); left: `DefaultNetworkACL`,
+    `DefaultRouteTable`, `DefaultVPC`.
 17. **The name of the per-environment context for the ACK-generated
     kinds** (section 7.6). Built as `core.aws.hfl.dev/v1alpha1`
     `ACKContext`, one per namespace, named `ack`: a sibling of

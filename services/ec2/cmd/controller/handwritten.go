@@ -19,6 +19,11 @@ import (
 	// of resources and a list of tags, not one tag; the generator would
 	// make a kind of both lists.
 	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/resource_tag"
+
+	// DefaultSecurityGroup takes over a VPC's default security group,
+	// found by the VPC and never made or deleted: no Create/Delete pair
+	// the generator reads.
+	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/default_security_group"
 )
 
 func init() {

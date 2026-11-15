@@ -240,6 +240,15 @@ copied:
       - services/ec2/pkg/resource/resource_tag/resource.go
     from: *skeleton
   - here:
+      - services/ec2/pkg/resource/default_security_group/descriptor.go
+      - services/ec2/pkg/resource/default_security_group/identifiers.go
+      - services/ec2/pkg/resource/default_security_group/manager.go
+      - services/ec2/pkg/resource/default_security_group/manager_factory.go
+      - services/ec2/pkg/resource/default_security_group/resource.go
+    from: *skeleton
+  - here: [services/ec2/pkg/resource/default_security_group/rules.go]
+    from: {pin: ec2-controller, paths: [pkg/resource/security_group/hooks.go, pkg/resource/security_group/sdk.go]}
+  - here:
       - services/iam/pkg/resource/user_group_membership/descriptor.go
       - services/iam/pkg/resource/user_group_membership/identifiers.go
       - services/iam/pkg/resource/user_group_membership/manager.go

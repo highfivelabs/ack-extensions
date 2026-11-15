@@ -7,6 +7,16 @@ design and the reasons are in `docs/plan.md`.
 
 ### Added
 
+- **`ec2.aws.hfl.dev` `DefaultSecurityGroup`** (open question 16;
+  Terraform's `aws_default_security_group`): takes over a VPC's default
+  security group, found by `vpcID` or `vpcRef` (ACK's `VPC`). Its rules
+  and tags become the spec's, exclusively: EC2's default egress rule is
+  revoked unless listed, and a rule added outside Kubernetes (or by a
+  `SecurityGroupIngress`/`SecurityGroupEgress` on the same group) is revoked.
+  Deleting the object leaves the group and its rules.
+- **References to ACK's ec2 kinds** (open question 16): `VPNGateway.vpcRef`,
+  `VPNConnection.transitGatewayRef`, `VPNGatewayRoutePropagation.routeTableRef`,
+  `VolumeAttachment.instanceRef`, `Volume.availabilityZoneRef`.
 - **`ec2.cloudcontrol.aws.hfl.dev` `SecurityGroupIngress` and
   `SecurityGroupEgress`**: standalone security group rules, Terraform's
   `aws_vpc_security_group_ingress_rule` and `_egress_rule` (`docs/plan.md`

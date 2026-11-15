@@ -33,6 +33,7 @@ rules:
   - ec2.aws.hfl.dev
   resources:
   - customergateways
+  - defaultsecuritygroups
   - networkinterfacepermissions
   - resourcetags
   - volumeattachments
@@ -52,6 +53,7 @@ rules:
   - ec2.aws.hfl.dev
   resources:
   - customergateways/status
+  - defaultsecuritygroups/status
   - networkinterfacepermissions/status
   - resourcetags/status
   - volumeattachments/status
