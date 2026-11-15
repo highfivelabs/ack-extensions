@@ -6,8 +6,11 @@ file says how a live run is made, what keeps it apart from everything else,
 and what each run found. The GCP repository's `docs/live-runs.md` is the
 model.
 
-**Status, 2026-11-10:** the sandbox account is `$AWS_SANDBOX_ACCOUNT_ID`
-(the O5 sandbox). The builder deployed the stack
+**Status, 2026-11-15:** the sandbox account is the AWS test account
+`hfl-test` (`$AWS_SANDBOX_ACCOUNT_ID`), created 2026-11-14 for tests only.
+The stack of 2026-11-10 sat in the wrong account and the builder deleted
+it (Open decisions O26c), which is why runs from 2026-11-12 were refused.
+Earlier (2026-11-10): the sandbox account was the O5 account. The builder deployed the stack
 `ack-extensions-live-tests` there (in us-east-2; IAM is global, the tests
 run in us-west-2), trusting the offload runner service account
 `$OFFLOAD_SA` in the new organization's dev project, so live runs start
@@ -51,18 +54,26 @@ writes it to a file, and exports `AWS_WEB_IDENTITY_TOKEN_FILE` and
 background loop writes a fresh token every 30 minutes (tokens last an
 hour); the role's sessions last an hour at most.
 
-## The sandbox account's template (the builder deploys it)
+## The sandbox account's template
 
 `cloudcontrol/config/live/sandbox-account.yaml`, generated from
 `cloudcontrol/types.yaml` by `task cloudcontrol:generate` (so its
 permissions follow the served types; `task check` fails if it is stale).
-Nothing is deployed by an agent. It holds:
+On the builder's request (O26c, 2026-11-15) an agent deploys it, in the
+AWS test account only, with that account's admin role. It holds:
 
-- `GoogleOIDCProvider`: an IAM OIDC provider for `https://accounts.google.com`,
-  client IDs the audience and the service account's unique ID;
+- no IAM OIDC provider. An IAM OIDC provider for `https://accounts.google.com`
+  takes over every Google ID token in the account and refuses any whose
+  audience is not on its client ID list: the first deploy in `hfl-test`
+  (2026-11-15) broke the account's other Google-federated role
+  (`hfl-test-admin`, audience `sts.amazonaws.com`) until the stack was
+  deleted. The role trusts IAM's built-in `accounts.google.com` principal
+  instead;
 - `LiveTestRole` (`ack-extensions-live-tests`): `sts:AssumeRoleWithWebIdentity`
-  through that provider, only when `accounts.google.com:sub` is the
-  service account's unique ID (a parameter), at most an hour; managed
+  from `accounts.google.com`, only when `accounts.google.com:sub` is the
+  service account's unique ID (a parameter) and `accounts.google.com:oaud`
+  (the token's `aud`) is the audience `ack-extensions-live-tests`, at most
+  an hour; managed
   policies with the Cloud Control actions and handler permissions of the
   kinds sampled on live runs (`liveKinds` in `types.yaml`), their list
   handlers' and `cloudformation:ListResources` for the sweeper, and the
@@ -76,11 +87,12 @@ Nothing is deployed by an agent. It holds:
 - `BudgetAlarm`: a monthly cost budget (default USD 50) with e-mail alerts
   at 80% of actual and 100% of forecast spend.
 
-To deploy, in the sandbox account:
+To deploy, in the sandbox account (profile `hfl-test`, the account's
+keyless admin role; never the management or Identity Center account):
 
 ```sh
 gcloud iam service-accounts describe <offload VM service account> --format='value(uniqueId)'
-aws cloudformation deploy --stack-name ack-extensions-live-tests \
+AWS_PROFILE=hfl-test aws cloudformation deploy --stack-name ack-extensions-live-tests --region us-east-2 \
   --template-file cloudcontrol/config/live/sandbox-account.yaml \
   --capabilities CAPABILITY_NAMED_IAM \
   --parameter-overrides GoogleServiceAccountUniqueId=<unique ID> AlertEmail=<address>
