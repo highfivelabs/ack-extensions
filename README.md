@@ -400,6 +400,25 @@ ACK's runtime: `services.k8s.aws/deletion-policy: retain`,
 `services.k8s.aws/region`, adoption, the cross-account role maps (CARM)
 and `IAMRoleSelector`.
 
+### Fields ACK's own kinds lack
+
+Some fields ACK's own kinds lack are filled here as annotations in our
+group on ACK's object, acted on by our manager beside ACK's controller
+(`docs/extensions.md`; each with a note to upstream drafted in
+`docs/upstream-notes.md`). ACK's kind, CRD and status are unchanged.
+
+| ACK kind | Annotation | What it does |
+| --- | --- | --- |
+| `kms.services.k8s.aws` `Key` | `kms.aws.hfl.dev/rotation-period-in-days: "180"` | the automatic rotation period (90 to 2560 days) while `spec.enableKeyRotation` is true; Terraform's `rotation_period_in_days` |
+| `kms.services.k8s.aws` `Key` | `kms.aws.hfl.dev/enabled: "false"` | disables the key (`"true"` enables it); Terraform's `is_enabled` |
+| `kms.services.k8s.aws` `Key` | ACK's own `kms.services.k8s.aws/pending-window-in-days: "30"` | the deletion window (7 to 30 days); Terraform's `deletion_window_in_days` |
+| `s3.services.k8s.aws` `Bucket` | `s3.aws.hfl.dev/force-destroy: "true"` | empties the bucket (every version, delete marker and multipart upload) when the `Bucket` is deleted, unless its deletion policy is `retain`; Terraform's `force_destroy` |
+
+The `Bucket`'s runs in an S3 manager (`services/s3`, no kind of its own)
+beside ACK's s3-controller. What an annotation cannot fill (a parameter of
+ACK's own create call) is listed in `docs/extensions.md` and asked in
+`docs/plan.md` open question 23.
+
 ## Cloud Control kinds
 
 For AWS types ACK has no controller for, a second route: kinds generated
@@ -552,6 +571,15 @@ EventBridge Scheduler has no ACK controller. Its manager runs beside ACK's
 EventBridge controller, as that controller's identity, so that role needs
 `scheduler:*`, and `iam:PassRole` for the roles schedules invoke their
 targets with.
+
+The S3 manager (the `Bucket` extension, `docs/extensions.md`) runs beside
+ACK's s3-controller; that controller's role then needs
+`s3:ListBucketVersions`, `s3:DeleteObjectVersion`,
+`s3:ListBucketMultipartUploads`, `s3:AbortMultipartUpload` and
+`s3:BypassGovernanceRetention`. The kms manager's `Key` extension needs
+`kms:DescribeKey`, `kms:GetKeyRotationStatus`, `kms:EnableKeyRotation`,
+`kms:EnableKey` and `kms:DisableKey`. Per environment, `task ack:iam`
+writes them (`Key.kms`, `Bucket.s3`).
 
 The S3 Control manager (`PublicAccessBlock`) runs beside ACK's
 s3control-controller, as any other service's does; that controller's role
