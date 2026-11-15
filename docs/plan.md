@@ -2569,10 +2569,11 @@ the reading of a route, the set difference), and a route is ACK's own
 **Proven on moto** (`TestDefaultRouteTable`): taken over by `vpcID`, a
 route made outside Kubernetes before the take-over deleted and the
 spec's route put by `gatewayRef` (ACK's `InternetGateway` standing in),
-the local route kept, the reference kept in the spec; a VPN gateway's
-propagation enabled; no update across resyncs; a route added outside
-Kubernetes deleted; the routes and propagation changed; the delete
-leaving the route. **Not proven:** routes to an instance (AWS reads them
+the local route kept, the reference kept in the spec; no update across
+resyncs; a route added outside Kubernetes deleted; the routes changed;
+the delete leaving the route. **Not proven:** `propagatingVGWs` (moto
+answers `EnableVgwRoutePropagation` with a server error, section 4.4, as
+for `VPNGatewayRoutePropagation`); routes to an instance (AWS reads them
 back with the instance's network interface too, which the comparison
 would see as drift), IPv6 and prefix-list destinations, `RouteLimitExceeded`.
 

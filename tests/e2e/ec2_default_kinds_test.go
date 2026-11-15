@@ -302,8 +302,8 @@ func routeStrings(routes []ec2types.Route) string {
 }
 
 // DefaultRouteTable: a VPC's main route table taken over by vpcID, its
-// routes (one by gatewayRef to ACK's InternetGateway), propagating
-// gateways and tags made the spec's.
+// routes (one by gatewayRef to ACK's InternetGateway) and tags made the
+// spec's.
 func TestDefaultRouteTable(t *testing.T) {
 	env, cloud := defaultKindsEnv(t)
 	ctx := context.Background()
@@ -330,15 +330,9 @@ func TestDefaultRouteTable(t *testing.T) {
 	}
 	igwObj := &ackec2.InternetGateway{ObjectMeta: metav1.ObjectMeta{Name: "igw", Namespace: "default"}}
 	ackEC2Synced(t, ctx, env.Client, igwObj, &igwObj.Status.Conditions, func() { igwObj.Status.InternetGatewayID = aws.String(igwID) })
-	vgw, err := cloud.CreateVpnGateway(ctx, &ec2.CreateVpnGatewayInput{Type: ec2types.GatewayTypeIpsec1})
-	if err != nil {
-		t.Fatal(err)
-	}
-	vgwID := aws.ToString(vgw.VpnGateway.VpnGatewayId)
-	if _, err := cloud.AttachVpnGateway(ctx, &ec2.AttachVpnGatewayInput{VpnGatewayId: aws.String(vgwID), VpcId: aws.String(vpcID)}); err != nil {
-		t.Fatal(err)
-	}
 	// A route made outside Kubernetes before the take-over: removed.
+	// (No VPN gateway: moto has no EnableVgwRoutePropagation, plan
+	// section 4.4, so propagatingVGWs is unproven on the fake.)
 	if _, err := cloud.CreateRoute(ctx, &ec2.CreateRouteInput{RouteTableId: aws.String(tableID), DestinationCidrBlock: aws.String("192.168.0.0/16"), GatewayId: aws.String(igwID)}); err != nil {
 		t.Fatal(err)
 	}
@@ -360,14 +354,6 @@ func TestDefaultRouteTable(t *testing.T) {
 			return nil
 		})
 	}
-	propagating := func() string {
-		var out []string
-		for _, p := range cloudTable().PropagatingVgws {
-			out = append(out, aws.ToString(p.GatewayId))
-		}
-		return strings.Join(out, ",")
-	}
-
 	obj := &ec2v1.DefaultRouteTable{
 		ObjectMeta: metav1.ObjectMeta{Name: "main-rt", Namespace: "default"},
 		Spec: ec2v1.DefaultRouteTableSpec{
@@ -376,13 +362,12 @@ func TestDefaultRouteTable(t *testing.T) {
 				DestinationCIDRBlock: aws.String("0.0.0.0/0"),
 				GatewayRef:           &ackv1alpha1.AWSResourceReferenceWrapper{From: &ackv1alpha1.AWSResourceReference{Name: aws.String("igw")}},
 			}},
-			PropagatingVGWs: []*string{aws.String(vgwID)},
-			Tags:            []*ec2v1.Tag{{Key: aws.String("team"), Value: aws.String("net")}},
+			Tags: []*ec2v1.Tag{{Key: aws.String("team"), Value: aws.String("net")}},
 		},
 	}
 	conds := func() []*ackv1alpha1.Condition { return obj.Status.Conditions }
 
-	t.Run("the main route table is taken over: routes, propagation and tags become the spec's", func(t *testing.T) {
+	t.Run("the main route table is taken over: routes and tags become the spec's", func(t *testing.T) {
 		if err := env.Client.Create(ctx, obj); err != nil {
 			t.Fatal(err)
 		}
@@ -400,12 +385,6 @@ func TestDefaultRouteTable(t *testing.T) {
 		if !hasLocal {
 			t.Fatalf("the local route is gone: %v", cloudTable().Routes)
 		}
-		harness.Eventually(t, 30*time.Second, "the VPN gateway propagates", func() error {
-			if got := propagating(); got != vgwID {
-				return fmt.Errorf("propagating %q", got)
-			}
-			return nil
-		})
 		if ec2TagMap(cloudTable().Tags)["team"] != "net" {
 			t.Fatalf("cloud tags %v", ec2TagMap(cloudTable().Tags))
 		}
@@ -430,23 +409,16 @@ func TestDefaultRouteTable(t *testing.T) {
 		waitRoutes(t, "the outside route deleted", "0.0.0.0/0->"+igwID)
 	})
 
-	t.Run("routes and propagation change", func(t *testing.T) {
+	t.Run("routes change", func(t *testing.T) {
 		harness.Eventually(t, 30*time.Second, "spec updated", func() error {
 			o := &ec2v1.DefaultRouteTable{}
 			if err := env.Client.Get(ctx, client.ObjectKeyFromObject(obj), o); err != nil {
 				return err
 			}
 			o.Spec.Routes = []*ackec2.CreateRouteInput{{DestinationCIDRBlock: aws.String("10.99.0.0/16"), GatewayID: aws.String(igwID)}}
-			o.Spec.PropagatingVGWs = nil
 			return env.Client.Update(ctx, o)
 		})
 		waitRoutes(t, "the new route only", "10.99.0.0/16->"+igwID)
-		harness.Eventually(t, 30*time.Second, "propagation off", func() error {
-			if got := propagating(); got != "" {
-				return fmt.Errorf("propagating %q", got)
-			}
-			return nil
-		})
 	})
 
 	t.Run("delete leaves the table and its routes", func(t *testing.T) {
