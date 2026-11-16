@@ -68,6 +68,14 @@ design and the reasons are in `docs/plan.md`.
 
 ### Fixed
 
+- **The Cloud Control manager of a context naming no kinds no longer runs
+  out of memory** (RECCC, `docs/cloudcontrol.md` section 11). It served
+  all 1,345 kinds in a fixed 256Mi and was OOMKilled within seconds of
+  each start, so Cloud Control objects stayed at their first reconcile
+  ("Unable to determine if desired resource state matches latest observed
+  state"). The operator now sizes its memory to the kinds served (801Mi
+  limit for all of them), and the manager serves only the kinds whose CRD
+  is installed.
 - **`iam.aws.hfl.dev` `AccountAlias`: a new object for the account's
   current alias takes it over.** When `CreateAccountAlias` answers
   `EntityAlreadyExists` (an error IAM's API reference lists for it) and
