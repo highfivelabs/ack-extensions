@@ -16,9 +16,9 @@ import (
 
 // The live-test role has no permissions for a never-deleted type (a
 // landing zone): no live test may make one. Checked on the committed
-// template: every action only such a type needs is absent.
+// policies: every action only such a type needs is absent.
 func TestLiveRoleLeavesOutNeverDeleted(t *testing.T) {
-	raw, err := os.ReadFile(filepath.Join("..", "..", "cloudcontrol", "config", "live", "sandbox-account.yaml"))
+	raw, err := os.ReadFile(filepath.Join("..", "..", "cloudcontrol", "config", "live", "role-policies.yaml"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -54,50 +54,20 @@ func TestLiveRoleLeavesOutNeverDeleted(t *testing.T) {
 	}
 }
 
-// The committed sandbox template grants the sweeper's and the tests' own
+// The committed live-test policies grant the sweeper's and the tests' own
 // actions: the first deployed role had neither (a one-statement result
 // passed to iamgen.Merge was dropped), so the first live run's sweep was
 // refused cloudformation:ListResources.
 func TestLiveTemplateGrantsSweeperAndFixtures(t *testing.T) {
-	root := filepath.Join("..", "..")
 	var cfg config
-	b, err := os.ReadFile(filepath.Join(root, "cloudcontrol/types.yaml"))
+	b, err := os.ReadFile(filepath.Join("..", "..", "cloudcontrol/types.yaml"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	if err := yaml.Unmarshal(b, &cfg); err != nil {
 		t.Fatal(err)
 	}
-	b, err = os.ReadFile(filepath.Join(root, "cloudcontrol/config/live/sandbox-account.yaml"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	var tpl struct {
-		Resources map[string]struct {
-			Type       string `json:"Type"`
-			Properties struct {
-				PolicyDocument struct {
-					Statement []struct {
-						Action []string `json:"Action"`
-					} `json:"Statement"`
-				} `json:"PolicyDocument"`
-			} `json:"Properties"`
-		} `json:"Resources"`
-	}
-	if err := yaml.Unmarshal(b, &tpl); err != nil {
-		t.Fatal(err)
-	}
-	granted := map[string]bool{}
-	for _, r := range tpl.Resources {
-		if r.Type != "AWS::IAM::ManagedPolicy" {
-			continue
-		}
-		for _, st := range r.Properties.PolicyDocument.Statement {
-			for _, a := range st.Action {
-				granted[a] = true
-			}
-		}
-	}
+	granted, _, _ := committedLiveRole(t)
 	for _, a := range append([]string{"cloudformation:ListResources"}, cfg.LiveTestActions...) {
 		if !granted[a] {
 			t.Errorf("the live-test role's policies do not grant %s", a)
@@ -105,46 +75,53 @@ func TestLiveTemplateGrantsSweeperAndFixtures(t *testing.T) {
 	}
 }
 
-// committedLiveRole reads the committed sandbox template: the actions its
-// managed policies grant, how many managed policies it has, and how many
-// the role attaches.
+// committedLiveRole reads the committed live-test policies
+// (config/live/role-policies.yaml, the catalog chart instance's policies
+// value): the actions they grant, how many managed policies there are, and
+// how many the role attaches (the chart attaches every one).
 func committedLiveRole(t *testing.T) (granted map[string]bool, policies, attached int) {
 	t.Helper()
+	b, err := os.ReadFile(filepath.Join("..", "..", "cloudcontrol/config/live/role-policies.yaml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var vals struct {
+		Policies map[string]livePolicy `json:"policies"`
+	}
+	if err := yaml.Unmarshal(b, &vals); err != nil {
+		t.Fatal(err)
+	}
+	granted = map[string]bool{}
+	for _, p := range vals.Policies {
+		policies++
+		for _, st := range p.Statements {
+			for _, a := range st.Actions {
+				granted[a] = true
+			}
+		}
+	}
+	return granted, policies, policies
+}
+
+// The sandbox account's CloudFormation template holds the budget alarm
+// only: the live-test role and its policies are the catalog chart instance
+// on ACK (AWSROLE-ADOPT, 2026-11-15), never CloudFormation again.
+func TestSandboxTemplateHoldsTheBudgetOnly(t *testing.T) {
 	b, err := os.ReadFile(filepath.Join("..", "..", "cloudcontrol/config/live/sandbox-account.yaml"))
 	if err != nil {
 		t.Fatal(err)
 	}
 	var tpl struct {
 		Resources map[string]struct {
-			Type       string `json:"Type"`
-			Properties struct {
-				ManagedPolicyArns []any `json:"ManagedPolicyArns"`
-				PolicyDocument    struct {
-					Statement []struct {
-						Action []string `json:"Action"`
-					} `json:"Statement"`
-				} `json:"PolicyDocument"`
-			} `json:"Properties"`
+			Type string `json:"Type"`
 		} `json:"Resources"`
 	}
 	if err := yaml.Unmarshal(b, &tpl); err != nil {
 		t.Fatal(err)
 	}
-	granted = map[string]bool{}
-	for _, r := range tpl.Resources {
-		switch r.Type {
-		case "AWS::IAM::ManagedPolicy":
-			policies++
-			for _, st := range r.Properties.PolicyDocument.Statement {
-				for _, a := range st.Action {
-					granted[a] = true
-				}
-			}
-		case "AWS::IAM::Role":
-			attached += len(r.Properties.ManagedPolicyArns)
-		}
+	if len(tpl.Resources) != 1 || tpl.Resources["BudgetAlarm"].Type != "AWS::Budgets::Budget" {
+		t.Errorf("the sandbox template holds %v; it should hold the budget alarm only", tpl.Resources)
 	}
-	return granted, policies, attached
 }
 
 // The committed live-test role stays within IAM's default of 10 managed
@@ -153,7 +130,7 @@ func committedLiveRole(t *testing.T) (granted map[string]bool, policies, attache
 func TestLiveRoleWithinManagedPolicyLimit(t *testing.T) {
 	_, policies, attached := committedLiveRole(t)
 	if policies == 0 {
-		t.Fatal("the sandbox template has no managed policy")
+		t.Fatal("the live-test role has no managed policy")
 	}
 	if policies > 10 || attached > 10 {
 		t.Errorf("the live-test role has %d managed policies (%d attached), over IAM's default of 10 per role", policies, attached)

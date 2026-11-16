@@ -59,82 +59,106 @@ hour); the role's sessions last an hour at most.
 Setup like this role goes through Bundt's own machinery, catalog charts on
 ACK, never hand-written CloudFormation or CLI commands (the builder's rule,
 bundt `asks/estate-answers.md`, 2026-11-13). The role
-`ack-extensions-live-tests` is now expressed as an instance of the
+`ack-extensions-live-tests` is an instance of the
 catalog's
 [`google-federated-role`](https://github.com/highfivelabs/catalog/tree/main/charts/aws/google-federated-role)
 chart: `charts/aws/google-federated-role/tests/ack-extensions-live-tests.values.yaml`
 there. It renders the same role, trust (IAM's built-in
 `accounts.google.com` principal, conditions on `sub` and `oaud`, no IAM
 OIDC provider), session limit, tag and managed policy statements as the
-template below at `7d67acc`, compared statement for statement on
-2026-11-15 (the chart's README, "The ack-extensions live-test role"). It
-differs in two ways: its managed policy is named
+CloudFormation template that made it (`7d67acc`), compared statement for
+statement on 2026-11-15 (the chart's README, "The ack-extensions live-test
+role"). It differs in two ways: its managed policy is named
 `ack-extensions-live-tests-part-1` (CloudFormation generated one), and the
 budget alarm is not in it (no ACK controller or ack-extensions kind serves
-AWS Budgets yet: a gap here).
+AWS Budgets yet: a gap here, so the alarm stays in the stack).
 
 The instance carries a placeholder unique ID (the catalog is public); the
-real one is set where it is deployed, as the template takes it as a
-parameter. Its statements are generated from the template below: when
-`liveKinds` or `liveTestActions` change, regenerate the template
-(`task cloudcontrol:generate`), then the instance's statements from it.
+real one is set where it is deployed (`--set-string
+google_service_account_unique_id=...`, from `gcloud iam service-accounts
+describe "$OFFLOAD_SA" --format='value(uniqueId)'`).
 
-**Status, 2026-11-15:** not deployed. The role the CloudFormation stack
-made in the test account works today and stays until the chart instance
-is proven there (adopting the stack's role or replacing it is the
-builder's call). Until then the template and the stack below are the
-current deployment; once the instance is proven, the stack is deleted and
-the template's role and policies go (the generator keeps producing the
-statements the instance takes).
+**The builder's answer (2026-11-15, item AWSROLE-ADOPT):** "as recommended
+(Deploy the chart instance through ACK with the role adopted in place (same
+name, no gap in live runs), check one task test-live run, then delete the
+CloudFormation stack and drop the template's role and policies from the
+generator's output. Keep the budget alarm as the one CloudFormation piece
+until ack-extensions serves AWS Budgets.)"
 
-## The sandbox account's template (current deployment, until the chart is proven)
+**Status, 2026-11-15: deployed, the role adopted in place.** On an offload
+Spot VM, a kind cluster ran ACK's iam-controller v1.11.3 (the catalog's
+pin) with the test account's admin credentials (region us-east-2, the only
+one the organization's SCP allows; ACK's own resource tags off). The chart
+instance was rendered with the offload service account's real unique ID,
+`deletion_policy: ABANDON` (so deleting an object never deletes the role or
+policy) and the stack's two tags (`hfl.dev/owner`, `hfl.dev/purpose`) beside
+the chart's `purpose`; the `Role` carried
+`services.k8s.aws/adoption-policy: adopt-or-create`. What it showed:
 
-`cloudcontrol/config/live/sandbox-account.yaml`, generated from
-`cloudcontrol/types.yaml` by `task cloudcontrol:generate` (so its
-permissions follow the served types; `task check` fails if it is stale).
-On the builder's request (O26c, 2026-11-15) an agent deploys it, in the
-AWS test account only, with that account's admin role. It holds:
+- before applying, the render's trust policy and managed policy document
+  equalled the live role's, statement for statement;
+- ACK adopted the role (`services.k8s.aws/adopted: "true"`, both objects
+  `ACK.ResourceSynced`); its one change was the attached policy: it made
+  `ack-extensions-live-tests-part-1` (the same document) and attached it in
+  place of the stack's `ack-extensions-live-tests-LiveTestPolicy1-...`. The
+  role kept its `RoleId` and creation date: it was never deleted or
+  recreated;
+- the kind cluster and the VM were deleted after; nothing in a cluster
+  manages the role now. To change it (a new `liveKinds` entry), apply the
+  instance again the same way (`adopt-or-create` adopts it again);
+- `task test-live` assumed the adopted role on the next run (ledger,
+  2026-11-15).
 
-- no IAM OIDC provider. An IAM OIDC provider for `https://accounts.google.com`
-  takes over every Google ID token in the account and refuses any whose
-  audience is not on its client ID list: the first deploy in `hfl-test`
-  (2026-11-15) broke the account's other Google-federated role
-  (`hfl-test-admin`, audience `sts.amazonaws.com`) until the stack was
-  deleted. The role trusts IAM's built-in `accounts.google.com` principal
-  instead;
-- `LiveTestRole` (`ack-extensions-live-tests`): `sts:AssumeRoleWithWebIdentity`
-  from `accounts.google.com`, only when `accounts.google.com:sub` is the
-  service account's unique ID (a parameter) and `accounts.google.com:oaud`
-  (the token's `aud`) is the audience `ack-extensions-live-tests`, at most
-  an hour; managed
-  policies with the Cloud Control actions and handler permissions of the
-  kinds sampled on live runs (`liveKinds` in `types.yaml`), their list
-  handlers' and `cloudformation:ListResources` for the sweeper, and the
-  tests' own fixtures (`liveTestActions`), split to IAM's 6,144-character
-  limit and kept within IAM's default of 10 managed policies per role
-  (the generator fails beyond it, and `TestLiveRoleWithinManagedPolicyLimit`
-  checks the committed template). Every other kind is proven on the fakes
-  only (plan question 21): a live run of a test whose kind is not in
-  `liveKinds` is refused by IAM. Adding a kind to `liveKinds` needs the
-  stack redeployed (and the catalog instance's statements regenerated);
-- `BudgetAlarm`: a monthly cost budget (default USD 50) with e-mail alerts
-  at 80% of actual and 100% of forecast spend.
+Then the stack let go of the role and its policy without deleting them: an
+update set `DeletionPolicy: Retain` on both, and the next update, from the
+regenerated template, removed them (`DELETE_SKIPPED`, 2026-11-16). The
+stack-made policy `ack-extensions-live-tests-LiveTestPolicy1-...` is still
+in the account, detached (no attachments) and in no stack: nothing uses it,
+and deleting it is left to the builder. The stack keeps the budget alarm
+only.
 
-How the existing stack was deployed, kept only to redeploy it until the
-catalog instance replaces it (not for new setup), in the sandbox account
-(profile `hfl-test`, the account's keyless admin role; never the
-management or Identity Center account):
+## The live-test role's policies and the sandbox account's template
+
+`task cloudcontrol:generate` writes both from `cloudcontrol/types.yaml`
+(`task check` fails if either is stale):
+
+- `cloudcontrol/config/live/role-policies.yaml`: the role's managed
+  policies, as the chart instance's `policies` value (keys `part-1`, ...).
+  They hold the Cloud Control actions and handler permissions of the kinds
+  sampled on live runs (`liveKinds` in `types.yaml`), their list handlers'
+  and `cloudformation:ListResources` for the sweeper, and the tests' own
+  fixtures (`liveTestActions`), split to IAM's 6,144-character limit and
+  kept within IAM's default of 10 managed policies per role (the generator
+  fails beyond it, and `TestLiveRoleWithinManagedPolicyLimit` checks the
+  committed file). Every other kind is proven on the fakes only (plan
+  question 21): a live run of a test whose kind is not in `liveKinds` is
+  refused by IAM. Adding a kind to `liveKinds` needs these statements
+  copied into the catalog instance and the instance applied again. The
+  trust (IAM's built-in `accounts.google.com` principal, conditions on
+  `accounts.google.com:sub`, the service account's unique ID, and
+  `accounts.google.com:oaud`, the audience `ack-extensions-live-tests`, at
+  most an hour) is the chart's. No IAM OIDC provider: one for
+  `https://accounts.google.com` takes over every Google ID token in the
+  account and refuses any whose audience is not on its client ID list; the
+  first deploy in `hfl-test` (2026-11-15) broke the account's other
+  Google-federated role (`hfl-test-admin`, audience `sts.amazonaws.com`)
+  until the stack was deleted.
+- `cloudcontrol/config/live/sandbox-account.yaml`: the stack
+  `ack-extensions-live-tests` (us-east-2), holding only `BudgetAlarm`, a
+  monthly cost budget (default USD 50) with e-mail alerts at 80% of actual
+  and 100% of forecast spend. It stays CloudFormation until an ACK
+  controller or an ack-extensions kind serves AWS Budgets. To change it, in
+  the sandbox account only (profile `hfl-test`, the account's keyless admin
+  role; never the management or Identity Center account):
 
 ```sh
-gcloud iam service-accounts describe <offload VM service account> --format='value(uniqueId)'
 AWS_PROFILE=hfl-test aws cloudformation deploy --stack-name ack-extensions-live-tests --region us-east-2 \
   --template-file cloudcontrol/config/live/sandbox-account.yaml \
-  --capabilities CAPABILITY_NAMED_IAM \
-  --parameter-overrides GoogleServiceAccountUniqueId=<unique ID> AlertEmail=<address>
+  --parameter-overrides AlertEmail=<address>
 ```
 
-then set `AWS_SANDBOX_ACCOUNT_ID` to the account ID in the `.env` of
-whoever starts live runs (never in the repository).
+Set `AWS_SANDBOX_ACCOUNT_ID` to the account ID in the `.env` of whoever
+starts live runs (never in the repository).
 
 **Found on the first deploy (2026-11-10, run `ackx-11101802-5696`):** the
 trust works. The VM's ID token for `$OFFLOAD_SA`
@@ -216,3 +240,7 @@ policy letting Route 53 write to it, which the test does not make yet. Each is a
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 2026-11-10 | `ackx-11101802-5696` | `a448a3d` + the account | `$AWS_SANDBOX_ACCOUNT_ID` | TestDetector | PASS | not run | Trust passed. The sweep before the run was refused `cloudformation:ListResources` (the template dropped `LiveRunSweeperAndFixtures`); the run stopped there, nothing created |
 | 2026-11-12 | `ackx-11121603-a0b7` | `52556a2` | `$AWS_SANDBOX_ACCOUNT_ID` | TestSAMLProvider | PASS | not run | **Trust refused.** From an offload VM run with `--sa "$OFFLOAD_SA"` in `$OFFLOAD_PROJECT`, `AssumeRoleWithWebIdentity` into `ack-extensions-live-tests` answered `AccessDenied: Not authorized to perform sts:AssumeRoleWithWebIdentity` (four tries: the sweep before, and the clean-up after). Nothing reached AWS beyond STS, nothing was created. The same trust passed on 2026-11-10; the role's trust policy, the OIDC provider's client IDs or the service account's unique ID has changed since. Needs the builder (IAM is not changed from here) |
+| 2026-11-16 | `ackx-11160005-069c` | `93aafbe` | `$AWS_SANDBOX_ACCOUNT_ID` | TestSAMLProvider | PASS | not run | First run on the role adopted by ACK (AWSROLE-ADOPT): **trust passed** (`AssumeRoleWithWebIdentity` into the adopted role). The sweep before was refused `cloudformation:ListResources` in us-west-2 by the organization's SCP (main still defaults to us-west-2; PR #111 moves live runs to us-east-2). Nothing created |
+| 2026-11-16 | `ackx-11160010-bf3d` | `93aafbe` | `$AWS_SANDBOX_ACCOUNT_ID` | TestSAMLProvider (`LIVE_REGION=us-east-2`) | PASS | not run | The adopted role's policy let the sweep list `AWS::IAM::SAMLProvider` in us-east-2; main's sweeper then failed on `AWS::SSO::PermissionSet` ("Missing Or Invalid ResourceModel", no `InstanceArn`; fixed in PR #111). Nothing created |
+| 2026-11-16 | `ackx-11160028-462f` | `4c56e3e` (PR #111) | `$AWS_SANDBOX_ACCOUNT_ID` | TestSAMLProvider | PASS | FAIL | Sweeps clean. The manager lost its leader lease 7 s after start (client rate limiter), as in `ackx-11151713-11b9`; nothing reached IAM. Rerun once |
+| 2026-11-16 | `ackx-11160035-feaf` | `4c56e3e` (PR #111) | `$AWS_SANDBOX_ACCOUNT_ID` | TestSAMLProvider | PASS | PASS | **The catalog chart instance's role passes a live run** (adopted by ACK in place, policy `ack-extensions-live-tests-part-1`), us-east-2. Sweeps clean, nothing left. The CloudFormation stack then let go of the role and policy (budget alarm only) |
