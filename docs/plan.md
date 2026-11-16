@@ -3896,6 +3896,14 @@ Before it can run on a real cluster:
     Connector's context is in `core.cnrm.cloud.google.com`. Names and API
     groups are the builder's. Recommended: keep it; a rename now costs a
     CRD and the docs, later it costs every environment's object.
+
+    **Answered** (2026-11-15, item ACKCTX, the builder: "as recommended
+    (Q17 keep ACKContext `ack` in core.aws.hfl.dev (renaming later costs
+    every environment's object). Q18 the operator also runs ACK's own
+    controllers for each context, so an environment has one role and one
+    place that says what it runs.)"): the name stays,
+    `core.aws.hfl.dev/v1alpha1` `ACKContext`, one per namespace, named
+    `ack`.
 18. **ACK's own controllers per environment.** An `ACKContext` runs our
     managers per environment; ACK's own controllers (its `DBInstance`,
     `Role`, `VPC`) still run wherever ACK's chart put them, cluster-wide
@@ -3916,6 +3924,13 @@ Before it can run on a real cluster:
     Recommended: the first, as the next change, so an environment has one
     role and one place that says what it runs. Not built until the
     builder answers.
+
+    **Answered** (2026-11-15, item ACKCTX, the builder: "as recommended
+    (Q17 keep ACKContext `ack` in core.aws.hfl.dev (renaming later costs
+    every environment's object). Q18 the operator also runs ACK's own
+    controllers for each context, so an environment has one role and one
+    place that says what it runs.)"): the first option. Designed and
+    built in section 7.7.
 
 19. **Do other list-like fields follow A3?** Decision A3 made
     `Organization`'s two lists additive (A3, 2026-11-10; section 6.28):
