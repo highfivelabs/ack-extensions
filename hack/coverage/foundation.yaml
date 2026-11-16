@@ -574,5 +574,5 @@ queue:
     moto: "Macie, Inspector2: partial. Access Analyzer, Detective, FMS, Audit Manager, Security Lake: none. **Blocked** for those five."
     modules: "0 of 40."
     size: "L each for a new service"
-    approach: "Defer until the foundation items above are built; ask the builder whether security teams need them before the foundation is done."
-    done: "A decision from the builder."
+    approach: "Deferred (2026-11-15, item ACKF18, the builder: \"as recommended (Defer until the other foundation items are built; then Macie and Inspector first on the fake AWS.)\"). Build after every other foundation item; then Macie first, Inspector second, each proved on the fake AWS; the other five after them."
+    done: "Macie (`Session`, `FindingsFilter`), then Inspector (`Filter`), proved on the fake AWS once the other foundation items are built."
