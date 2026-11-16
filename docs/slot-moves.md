@@ -88,8 +88,8 @@ lease, a tag on the AWS resource.
 The guard reads the tag from what the manager reads back, so it covers a
 kind only when the kind has tags and its read returns them.
 
-- **ACK-generated**: guarded are the 8 kinds in `slot.TaggedKinds`
-  (`CustomerGateway`, `Volume`, `VPNConnection`, `VPNGateway` (ec2);
+- **ACK-generated**: guarded are the 9 kinds in `slot.TaggedKinds`
+  (`CustomerGateway`, `LaunchTemplate`, `Volume`, `VPNConnection`, `VPNGateway` (ec2);
   `ReplicaKey` (kms); `Policy` (organizations); `OptionGroup` (rds);
   `ScheduleGroup` (scheduler)); `TestTaggedKinds` keeps the list equal to
   the generated reads. The other 26 are unguarded: they have no tags in

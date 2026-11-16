@@ -2740,10 +2740,14 @@ generate); use `securityGroupRefs`.
   version, `defaultVersion` set with `ModifyLaunchTemplate`, tags synced.
 
 **Proven on moto** (`TestLaunchTemplate`): nothing is made while the
-`SecurityGroup` is not synced; then the template's one version carries the
-group's ID, the stored spec keeps `securityGroupRefs` and not the ID; no new
-version and no lost reference across resyncs; the delete removes the
-template. **Not proven:** `subnetRef` and `kmsKeyRef` (generated as
+`SecurityGroup` is not synced; then the template's latest version carries
+the group's ID, the stored spec keeps `securityGroupRefs` and not the ID;
+no growth in versions and no lost reference across resyncs; the delete
+removes the template. A moto difference (section 4.4): moto copies
+`CreateLaunchTemplate`'s `TagSpecifications` (the template's own tags,
+ACK's default tags among them) into the first version's data, which EC2
+does not, so ACK's read makes one second version on moto; ACK's own
+`LaunchTemplate` does the same there. **Not proven:** `subnetRef` and `kmsKeyRef` (generated as
 `securityGroupRefs` is, not exercised), a change to `spec.data` with
 references (a second version), and real AWS (a live run).
 
