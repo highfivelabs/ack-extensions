@@ -1,0 +1,98 @@
+# Copied from aws-controllers-k8s/autoscaling-controller v1.5.0 (56316c75a5da8fdf8079917a16e540be4e84e986)
+# config/rbac/cluster-role-controller.yaml. Modified by High Five Labs for
+# ack-extensions: renamed ack-autoscaling-controller -> ack-extensions-ack-autoscaling-controller
+# (hack/ack-controllers.sh). SPDX-License-Identifier: Apache-2.0
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ack-extensions-ack-autoscaling-controller
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  - secrets
+  verbs:
+  - get
+  - list
+  - patch
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - autoscaling.services.k8s.aws
+  resources:
+  - autoscalinggroups
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - autoscaling.services.k8s.aws
+  resources:
+  - autoscalinggroups/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - ec2.services.k8s.aws
+  resources:
+  - capacityreservations
+  - capacityreservations/status
+  - instances
+  - instances/status
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - elbv2.services.k8s.aws
+  resources:
+  - targetgroups
+  - targetgroups/status
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - iam.services.k8s.aws
+  resources:
+  - roles
+  - roles/status
+  - servicelinkedroles
+  - servicelinkedroles/status
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - services.k8s.aws
+  resources:
+  - fieldexports
+  - iamroleselectors
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - services.k8s.aws
+  resources:
+  - fieldexports/status
+  - iamroleselectors/status
+  verbs:
+  - get
+  - patch
+  - update

@@ -3162,10 +3162,179 @@ service an environment should use one or the other, not both: the
 agent exchanging the pod's token for the role's credentials) and AWS
 honouring the trust policy's conditions, as for Cloud Control.
 
-**Not built:** running ACK's own controllers per environment (open
-question 18). Today ACK's kinds in an environment are reconciled by
-ACK's controller wherever it is installed, as its identity; only our
-kinds follow the environment's role.
+ACK's own controllers per environment (open question 18) are section
+7.7.
+
+### 7.7 ACK's own controllers per environment (open question 18, answered)
+
+Decided 2026-11-15 (item ACKCTX): the operator also runs ACK's own
+service controllers for each context, so an environment has one role and
+one place that says what it runs. Before this, an `ACKContext` ran only
+our managers; ACK's `DBInstance`, `Role` and `VPC` were reconciled by
+ACK's controller wherever ACK's chart put it, cluster-wide, as ACK's
+role. Now one context entry, `service: rds`, runs both of the service's
+controllers for the namespace, as the namespace's role:
+
+```text
+ack-extensions-system (the operator's namespace)     team-a-prod (the environment)
+  Deployment ack-extensions-rds-team-a-prod  ──┐       ACKContext ack: {service: rds}
+    (ours: OptionGroup, DBProxyTarget, ...)    ├─ watch ─> OptionGroup, DBInstance, ...
+  Deployment ack-rds-controller-team-a-prod  ──┘       RoleBinding ack-extensions-rds-environment
+    (ACK's: DBInstance, DBCluster, ...)                RoleBinding ack-rds-controller-environment
+  both ServiceAccounts -> Pod Identity -> arn:...:role/team-a-prod-ack
+```
+
+**Which controllers a context runs.** For each entry (a service and
+optional kinds), the operator reads two groups from the API server: ours,
+`<service>.aws.hfl.dev`, and ACK's, `<service>.services.k8s.aws` (its
+preferred version). Then:
+
+| | Ours | ACK's |
+| --- | --- | --- |
+| runs when | the operator has our image for the service, our kinds are served, and `kinds` is empty or names one of ours | the operator has ACK's image for the service, ACK's kinds are served, and `kinds` is empty or names one of ACK's |
+| `--reconcile-resources` | the named kinds that are ours | the named kinds that are ACK's |
+
+A kind both groups serve (s3's `Bucket`, ours a fixed copy of ACK's,
+section 6.38) goes to both. A kind neither serves is `UnknownKinds`, and
+what already runs is left alone, as before. An entry that runs neither is
+`UnknownService`. So `{service: rds}` runs both; `{service: rds, kinds:
+[OptionGroup]}` runs ours alone; `{service: rds, kinds: [DBInstance,
+OptionGroup]}` runs both, each with its one kind; `{service: scheduler}`
+runs ours alone (ACK has no Scheduler controller).
+
+The operator has ACK's image for the twelve account-level services
+`UPSTREAM.md` pins: applicationautoscaling, autoscaling, ec2, ecr,
+eventbridge, iam, kms, lambda, rds, s3, s3control and wafv2. Not
+organizations (refused, `OrganizationScoped`, section 7.5), not
+secretsmanager (pinned only for a test client), and no service it does
+not pin (sns, route53, acm and the rest; assumed ACKCTX-A2: another
+service is a pin added to `UPSTREAM.md` first, then one line here).
+
+**What the operator makes** for ACK's controller, beside what section 7.6
+makes for ours:
+
+| Where | What | Why |
+| --- | --- | --- |
+| the operator's namespace | ServiceAccount `ack-<service>-controller-<environment>`, no IRSA annotation | the identity the Pod Identity association names (the name the answer's option gave) |
+| the operator's namespace | Deployment `ack-<service>-controller-<environment>`: ACK's image at the pin, `./bin/controller` (as ACK's chart runs it), the flags section 7.6 gives ours (`--watch-namespace=<environment>`, `--aws-region`, `--deletion-policy`, `--enable-carm=false`, leader election in the environment), `--reconcile-resources` when the context names ACK's kinds, ACK's chart's security settings | one ACK controller per service per environment |
+| the environment's namespace, owned by the context | RoleBinding `ack-<service>-controller-environment` to ClusterRole `ack-extensions-ack-<service>-controller`, and a leader-election Role and RoleBinding `ack-<service>-controller-leader-election` | ACK's own Kubernetes rights, in that namespace only |
+| the context | `status.managers` (each now says `controller: ack` or `ack-extensions`), `podIdentityAssociations` (one per Deployment), `Ready` once both roll out | one place that says what runs |
+
+The leader-election leases do not collide: ACK's runtime names its lease
+`ack-<service>.services.k8s.aws`, ours `ack-<service>.aws.hfl.dev`.
+
+**RBAC.** `config/ack-controllers/` holds ACK's ClusterRole of each
+pinned controller (`config/rbac/cluster-role-controller.yaml` at the
+pinned commit), renamed `ack-extensions-ack-<service>-controller` so it
+never fights the `ack-<service>-controller` that ACK's chart makes in a
+cluster that also installs ACK the classic way; nothing else is changed
+(`UPSTREAM.md`, "What is copied"). It is bound only by a RoleBinding in
+the environment, so its cluster-wide rules (namespaces, and Secrets and
+ConfigMaps everywhere) give nothing outside that namespace; ACK's runtime
+with one watch namespace and CARM off needs none of them, as our managers
+on the same runtime (`v0.67.0`) already show. The operator may `bind`
+those twelve ClusterRoles by name, as it may bind ours.
+
+**Coexistence with ACK installed the classic way.** The `NamespaceClaimed`
+refusal widens: a service is refused for an environment when any ACK
+controller the operator did not make (found as section 7.2 finds them:
+the chart's label or `aws.hfl.dev/ack-service`) serves that service, or
+is the one its manager runs beside (scheduler beside eventbridge), and
+watches the environment. Before, it took our manager beside that
+controller; now ACK's controller alone already reconciles ACK's kinds
+there, and a second would reconcile them as a second identity. The
+migration from a cluster-wide ACK install is: generate the environment's
+role with ACK's policy (below), narrow the classic controller off the
+environment (ACK's chart: `installScope: namespace` with
+`watchNamespace`; the chart ignores `watchNamespace` alone), and the
+context's entry comes back
+from `NamespaceClaimed` with both controllers. The objects need nothing:
+ACK's controllers keep no state outside the objects, so the new
+controller takes them up on its first sync, as the environment's role.
+
+**ACK's CRDs are not the operator's** (assumed ACKCTX-A1). ACK's kinds
+(`<service>.services.k8s.aws`) and its common kinds (`services.k8s.aws`
+`FieldExport`, `AdoptedResource`, `IAMRoleSelector`) are installed from
+ACK's chart's `crds/` at the pinned version, as they are today for the
+beside mode and for the ACK kinds our managers reference. The operator
+runs ACK's side only when they are served, so a cluster without them
+runs ours as before. Shipping them in our install would make two
+installers of one cluster-wide object wherever ACK's chart is also
+installed.
+
+**IAM** (`task ack:iam`). For each entry whose ACK side the context
+enables (`kinds` empty, or naming a kind ACK's ClusterRole serves), the
+role also gets ACK's own recommendation, copied at the pin into
+`pkg/ackiam/recommended/<service>/`: `recommended-policy-arn` (AWS
+managed policies such as `AmazonRDSFullAccess`) is written to
+`managed-policies.txt`, to attach; `recommended-inline-policy` (iam, kms,
+lambda, s3) goes into `permissions-<n>.json` beside our kinds' actions.
+`trust.json` lists ACK's ServiceAccounts with ours. ACK's recommendation
+is broad (full access to the service; assumed ACKCTX-A3, as the answer's
+option said); a narrower policy, scanned from ACK's generated code as
+`pkg/ackiam` scans ours, is left for later (section 8). Managed policies
+count against IAM's ten per role: an environment with every service
+enabled needs AWS's quota raised, or fewer services per role.
+
+**Pinning and upgrade.** `hack/ack-controllers.sh` writes, from
+`upstream.yaml`'s pins, each controller's image (`crane digest` of
+`public.ecr.aws/aws-controllers-k8s/<service>-controller:<version>`, the
+whole reference `...:<version>@sha256:<digest>` in
+`config/operator/operator.yaml` as `ACK_IMAGE_<SERVICE>`), its ClusterRole
+and its IAM recommendation, all read at the pinned commit (GitHub,
+read-only). `TestACKControllerPins` (in `task check`, offline) fails when
+an image's version is not the pin's, or a pinned controller lacks its
+ClusterRole, its recommendation or the operator's right to bind it;
+`task operator-e2e` checks the digests online. A pin move (section 3: the
+runtime, the generator and the controllers move together) is: move the
+pins, run the script, install the new ACK CRDs, roll out the operator.
+Each environment's ACK controller then rolls to the new image (one
+replica; leader election keeps one active), as ours do.
+
+**Proven** (`TestACKControllers`, `TestACKControllerPins` and
+`TestACKContext` against envtest with ACK's rds CRDs at the pin;
+`TestRecommended`, `TestIsACKKind`; `tests/operator/run.sh` on kind):
+
+- one context entry, `rds`, runs ACK's rds-controller
+  (`ack-rds-controller-<env>`, ACK's image by digest, `./bin/controller`,
+  `--watch-namespace` the environment, CARM off) beside our rds manager,
+  each as its own ServiceAccount with no IRSA annotation, both in
+  `status.managers` (with `controller`) and in the associations; neither
+  Deployment's selector matches the other's pods; `kms` with ACK's image
+  but none of ACK's kms CRDs installed runs ours alone; `scheduler` ours
+  alone;
+- ACK's controller's rights (SubjectAccessReviews): its kinds, its lease
+  and its Secrets in the environment only; nothing in another
+  environment or the operator's namespace, no namespace list, none of our
+  kinds;
+- `kinds` chooses the controllers: `[DBParameterGroup]` runs ACK's alone,
+  `[OptionGroup]` ours alone (ACK's Deployment and binding removed),
+  both names both, each with its one kind; an unknown kind leaves both
+  running;
+- a classic ACK rds-controller watching every namespace refuses `rds`
+  (`NamespaceClaimed`, both controllers removed); narrowed to another
+  namespace, both come back; the context deleted takes both, another
+  environment's stay;
+- the pins: every `ACK_IMAGE_` is `public.ecr.aws/...:<pin>@sha256:...`
+  at `upstream.yaml`'s version, with its ClusterRole (copied at that
+  version, in the kustomization), the operator's `bind` and an IAM
+  recommendation; on kind, every digest is the registry's;
+- on kind, with ACK's classic rds-controller narrowed to its own
+  namespace: env-d's context runs ACK's real rds-controller `v1.14.2` and
+  our rds manager, `Ready`; an ACK `DBParameterGroup` in env-d syncs
+  against moto through env-d's ACK controller and is deleted through it;
+  one in env-c (no context) is never touched and never reaches moto;
+- `task ack:iam` on a context with `rds`, `iam` (Role, AccessKey),
+  `kms` (ReplicaKey) and `scheduler`: `AmazonRDSFullAccess` in
+  `managed-policies.txt`, ACK's iam inline policy as a file, nothing of
+  ACK's kms (only our kind named), and ACK's two ServiceAccounts in the
+  trust policy.
+
+**Not proven:** EKS Pod Identity and the trust policy on real AWS (as in
+section 7.6); ACK's controllers other than rds on kind (the same code
+path, other images); whether ACK's recommended policies suffice for
+every kind (they are ACK's; `applicationautoscaling`'s is
+`PowerUserAccess`, the broadest of them).
 
 ## 3a. The coverage dashboard
 
@@ -3409,6 +3578,22 @@ Before it can run on a real cluster:
     waits in the client rate limiter behind 1,345 kinds' informers),
     which a lease renewal on its own client, or fewer kinds per manager,
     would avoid.
+18. ACK's own controllers per environment (section 7.7) are left with:
+    - **Only the twelve pinned services.** A context cannot run ACK's
+      route53, acm, sns, sqs, dynamodb, eks, elasticache or
+      secretsmanager controller: each needs a pin in `UPSTREAM.md` first
+      (a new upstream dependency, the builder's call), then
+      `hack/ack-controllers.sh`.
+    - **ACK's IAM recommendation is broad** (AWS managed full-access
+      policies; `PowerUserAccess` for applicationautoscaling). A narrower
+      policy could be scanned from ACK's generated code as `pkg/ackiam`
+      scans ours (the six controllers that are Go modules here have their
+      source in the module cache).
+    - **ACK's CRDs** are installed outside the operator (assumed
+      ACKCTX-A1); the catalog's install of them, without ACK's
+      cluster-wide controller, is Bundt's to build.
+    - **A real run** of a context with ACK's controllers on EKS (Pod
+      Identity, the managed policies) is for `docs/live-runs.md`.
 
 ## 9. Open questions
 
@@ -3913,6 +4098,14 @@ Before it can run on a real cluster:
     Connector's context is in `core.cnrm.cloud.google.com`. Names and API
     groups are the builder's. Recommended: keep it; a rename now costs a
     CRD and the docs, later it costs every environment's object.
+
+    **Answered** (2026-11-15, item ACKCTX, the builder: "as recommended
+    (Q17 keep ACKContext `ack` in core.aws.hfl.dev (renaming later costs
+    every environment's object). Q18 the operator also runs ACK's own
+    controllers for each context, so an environment has one role and one
+    place that says what it runs.)"): the name stays,
+    `core.aws.hfl.dev/v1alpha1` `ACKContext`, one per namespace, named
+    `ack`.
 18. **ACK's own controllers per environment.** An `ACKContext` runs our
     managers per environment; ACK's own controllers (its `DBInstance`,
     `Role`, `VPC`) still run wherever ACK's chart put them, cluster-wide
@@ -3933,6 +4126,13 @@ Before it can run on a real cluster:
     Recommended: the first, as the next change, so an environment has one
     role and one place that says what it runs. Not built until the
     builder answers.
+
+    **Answered** (2026-11-15, item ACKCTX, the builder: "as recommended
+    (Q17 keep ACKContext `ack` in core.aws.hfl.dev (renaming later costs
+    every environment's object). Q18 the operator also runs ACK's own
+    controllers for each context, so an environment has one role and one
+    place that says what it runs.)"): the first option. Designed and
+    built in section 7.7.
 
 19. **Do other list-like fields follow A3?** Decision A3 made
     `Organization`'s two lists additive (A3, 2026-11-10; section 6.28):

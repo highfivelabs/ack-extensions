@@ -13,7 +13,9 @@
 # For ACKContexts the same, per controller the context enables: a
 # ServiceAccount and a manager Deployment in its own namespace, and in the
 # context's namespace a RoleBinding to that service's manager ClusterRole
-# and a leader-election Role and RoleBinding.
+# and a leader-election Role and RoleBinding; and the same for ACK's own
+# controller of each service it enables, bound to ACK's ClusterRole
+# (config/ack-controllers).
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -38,6 +40,12 @@ rules:
     resources: ["clusterroles"]
     verbs: ["bind"]
     resourceNames: ["ack-extensions-applicationautoscaling-manager", "ack-extensions-autoscaling-manager", "ack-extensions-ec2-manager", "ack-extensions-ecr-manager", "ack-extensions-eventbridge-manager", "ack-extensions-iam-manager", "ack-extensions-kms-manager", "ack-extensions-lambda-manager", "ack-extensions-organizations-manager", "ack-extensions-rds-manager", "ack-extensions-s3-manager", "ack-extensions-s3control-manager", "ack-extensions-scheduler-manager", "ack-extensions-wafv2-manager", "ack-extensions-cloudcontrol-manager"]
+  # ACK's own controllers' ClusterRoles (config/ack-controllers), bound per
+  # environment by an ACKContext (docs/plan.md, section 7.7).
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["clusterroles"]
+    verbs: ["bind"]
+    resourceNames: ["ack-extensions-ack-applicationautoscaling-controller", "ack-extensions-ack-autoscaling-controller", "ack-extensions-ack-ec2-controller", "ack-extensions-ack-ecr-controller", "ack-extensions-ack-eventbridge-controller", "ack-extensions-ack-iam-controller", "ack-extensions-ack-kms-controller", "ack-extensions-ack-lambda-controller", "ack-extensions-ack-rds-controller", "ack-extensions-ack-s3-controller", "ack-extensions-ack-s3control-controller", "ack-extensions-ack-wafv2-controller"]
   - apiGroups: ["core.aws.hfl.dev"]
     resources: ["ackcontexts"]
     verbs: ["get", "list", "watch", "update", "patch"]

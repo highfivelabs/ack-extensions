@@ -313,8 +313,8 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 - **moto (5.2.5):** Macie, Inspector2: partial. Access Analyzer, Detective, FMS, Audit Manager, Security Lake: none. **Blocked** for those five.
 - **Modules:** 0 of 40.
 - **Size:** L each for a new service
-- **Approach:** Defer until the foundation items above are built; ask the builder whether security teams need them before the foundation is done.
-- **Done when:** A decision from the builder.
+- **Approach:** Deferred (2026-11-15, item ACKF18, the builder: "as recommended (Defer until the other foundation items are built; then Macie and Inspector first on the fake AWS.)"). Build after every other foundation item; then Macie first, Inspector second, each proved on the fake AWS; the other five after them.
+- **Done when:** Macie (`Session`, `FindingsFilter`), then Inspector (`Filter`), proved on the fake AWS once the other foundation items are built.
 
 ## Every resource, ranked
 

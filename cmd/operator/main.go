@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // The operator: runs our managers beside ACK's service controllers, as
-// the same AWS identity; one manager per controller for each namespace
-// that has an ACKContext, and a Cloud Control manager for each namespace
+// the same AWS identity; one manager per controller, and ACK's own
+// controller of the service, for each namespace that has an ACKContext, and a Cloud Control manager for each namespace
 // that has a CloudControlContext, as that namespace's own identity
 // (pkg/operator).
 package main
@@ -36,6 +36,20 @@ func imagesFromEnv() map[string]string {
 	for _, kv := range os.Environ() {
 		k, v, _ := strings.Cut(kv, "=")
 		if svc, ok := strings.CutPrefix(k, "MANAGER_IMAGE_"); ok && v != "" {
+			out[strings.ToLower(svc)] = v
+		}
+	}
+	return out
+}
+
+// ackImagesFromEnv reads ACK_IMAGE_<SERVICE>: ACK's own controller of each
+// service, at the version UPSTREAM.md pins (hack/ack-controllers.sh writes
+// them in config/operator; docs/plan.md, section 7.7).
+func ackImagesFromEnv() map[string]string {
+	out := map[string]string{}
+	for _, kv := range os.Environ() {
+		k, v, _ := strings.Cut(kv, "=")
+		if svc, ok := strings.CutPrefix(k, "ACK_IMAGE_"); ok && v != "" {
 			out[strings.ToLower(svc)] = v
 		}
 	}
@@ -79,6 +93,13 @@ func main() {
 	setup := ctrl.Log.WithName("setup")
 
 	imgs, err := parseImages(images)
+	ackImages := ackImagesFromEnv()
+	for svc := range ackImages {
+		if operator.OrganizationScoped[svc] {
+			setup.Error(fmt.Errorf("ACK_IMAGE_%s", strings.ToUpper(svc)), "bad environment: an organization-scoped controller never runs per environment (docs/plan.md, section 7.5)")
+			os.Exit(2)
+		}
+	}
 	if err != nil {
 		setup.Error(err, "bad flags")
 		os.Exit(2)
@@ -135,6 +156,8 @@ func main() {
 	ack := &operator.ACKContextReconciler{
 		Client: mgr.GetClient(), Namespace: os.Getenv("POD_NAMESPACE"), Images: imgs,
 		Kinds: operator.DiscoveryKinds(dc), FakeAWS: fake,
+		// ACK's own controllers per context (docs/plan.md, section 7.7).
+		ACKImages: ackImages, ACKKinds: operator.DiscoveryACKKinds(dc),
 	}
 	if err := ack.SetupWithManager(mgr); err != nil {
 		setup.Error(err, "ackcontext controller")
@@ -152,7 +175,7 @@ func main() {
 	}
 	_ = mgr.AddHealthzCheck("healthz", healthz.Ping)
 	_ = mgr.AddReadyzCheck("readyz", healthz.Ping)
-	setup.Info("starting", "images", imgs, "identity", identity, "fakeAWS", fakeEndpoint)
+	setup.Info("starting", "images", imgs, "ackImages", ackImages, "identity", identity, "fakeAWS", fakeEndpoint)
 	if err := mgr.Start(ctrl.SetupSignalHandler()); err != nil {
 		setup.Error(err, "manager stopped")
 		os.Exit(1)

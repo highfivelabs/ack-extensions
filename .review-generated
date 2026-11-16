@@ -311,3 +311,5 @@ services/wafv2/pkg/resource/web_acl_association/references.go
 services/wafv2/pkg/resource/web_acl_association/resource.go
 services/wafv2/pkg/resource/web_acl_association/sdk.go
 services/wafv2/pkg/version/version.go
+config/ack-controllers/*
+pkg/ackiam/recommended/*

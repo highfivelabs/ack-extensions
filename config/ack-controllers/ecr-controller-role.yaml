@@ -1,0 +1,98 @@
+# Copied from aws-controllers-k8s/ecr-controller v1.11.1 (72590cedeb2a4a92d086175762a97aa2ed2bc979)
+# config/rbac/cluster-role-controller.yaml. Modified by High Five Labs for
+# ack-extensions: renamed ack-ecr-controller -> ack-extensions-ack-ecr-controller
+# (hack/ack-controllers.sh). SPDX-License-Identifier: Apache-2.0
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ack-extensions-ack-ecr-controller
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  - secrets
+  verbs:
+  - get
+  - list
+  - patch
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ecr.services.k8s.aws
+  resources:
+  - pullthroughcacherules
+  - repositories
+  - repositorycreationtemplates
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ecr.services.k8s.aws
+  resources:
+  - pullthroughcacherules/status
+  - repositories/status
+  - repositorycreationtemplates/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - iam.services.k8s.aws
+  resources:
+  - roles
+  - roles/status
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - kms.services.k8s.aws
+  resources:
+  - keys
+  - keys/status
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - secretsmanager.services.k8s.aws
+  resources:
+  - secrets
+  - secrets/status
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - services.k8s.aws
+  resources:
+  - fieldexports
+  - iamroleselectors
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - services.k8s.aws
+  resources:
+  - fieldexports/status
+  - iamroleselectors/status
+  verbs:
+  - get
+  - patch
+  - update

@@ -1,0 +1,132 @@
+# Copied from aws-controllers-k8s/ec2-controller v1.23.1 (9303654c2cffad05147e4260105439149f7c81bf)
+# config/rbac/cluster-role-controller.yaml. Modified by High Five Labs for
+# ack-extensions: renamed ack-ec2-controller -> ack-extensions-ack-ec2-controller
+# (hack/ack-controllers.sh). SPDX-License-Identifier: Apache-2.0
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ack-extensions-ack-ec2-controller
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  - secrets
+  verbs:
+  - get
+  - list
+  - patch
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cloudwatchlogs.services.k8s.aws
+  resources:
+  - loggroups
+  - loggroups/status
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - ec2.services.k8s.aws
+  resources:
+  - capacityreservations
+  - dhcpoptions
+  - egressonlyinternetgateways
+  - elasticipaddresses
+  - flowlogs
+  - instances
+  - internetgateways
+  - launchtemplates
+  - managedprefixlists
+  - natgateways
+  - networkacls
+  - routetables
+  - securitygroups
+  - subnets
+  - transitgateways
+  - transitgatewayvpcattachments
+  - vpcendpoints
+  - vpcendpointserviceconfigurations
+  - vpcpeeringconnections
+  - vpcs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ec2.services.k8s.aws
+  resources:
+  - capacityreservations/status
+  - dhcpoptions/status
+  - egressonlyinternetgateways/status
+  - elasticipaddresses/status
+  - flowlogs/status
+  - instances/status
+  - internetgateways/status
+  - launchtemplates/status
+  - managedprefixlists/status
+  - natgateways/status
+  - networkacls/status
+  - routetables/status
+  - securitygroups/status
+  - subnets/status
+  - transitgateways/status
+  - transitgatewayvpcattachments/status
+  - vpcendpoints/status
+  - vpcendpointserviceconfigurations/status
+  - vpcpeeringconnections/status
+  - vpcs/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - elbv2.services.k8s.aws
+  resources:
+  - loadbalancers
+  - loadbalancers/status
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - iam.services.k8s.aws
+  resources:
+  - roles
+  - roles/status
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - services.k8s.aws
+  resources:
+  - fieldexports
+  - iamroleselectors
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - services.k8s.aws
+  resources:
+  - fieldexports/status
+  - iamroleselectors/status
+  verbs:
+  - get
+  - patch
+  - update

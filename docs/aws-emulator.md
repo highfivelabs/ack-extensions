@@ -343,6 +343,11 @@ repository, `issues/things-that-do-not-work/` (read on `main`,
 2026-11-12); where one names our gap, it is given, so a contribution
 would be the implementation, not a new report.
 
+**Approved** (2026-11-15, item ACKF18): agents may propose these
+upstream as drafts the builder files; moto stays the test of record
+until they land. The drafts, one per service, are in
+[`upstream-notes.md`](upstream-notes.md) section 15.
+
 | Test | What the emulator lacks (1.0.338) | Its issue file | Contribution |
 | --- | --- | --- | --- |
 | `TestScalingPolicy` | Auto Scaling `DeletePolicy` (a scaffold): the object is never deleted. `DescribePolicies` now works | `20261111T072954Z-autoscaling-deletepolicy-stub`, `20261111T093414Z-autoscaling-cloudwatch-ec2-deletepolicy-answers-http-501-notimplemented` | implement `DeletePolicy` |

@@ -1,0 +1,82 @@
+# Copied from aws-controllers-k8s/iam-controller v1.11.3 (91ed7f353255e54e2c6372b3ce757bd2e7fae4ad)
+# config/rbac/cluster-role-controller.yaml. Modified by High Five Labs for
+# ack-extensions: renamed ack-iam-controller -> ack-extensions-ack-iam-controller
+# (hack/ack-controllers.sh). SPDX-License-Identifier: Apache-2.0
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ack-extensions-ack-iam-controller
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  - secrets
+  verbs:
+  - get
+  - list
+  - patch
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - iam.services.k8s.aws
+  resources:
+  - groups
+  - instanceprofiles
+  - openidconnectproviders
+  - policies
+  - roles
+  - servicelinkedroles
+  - users
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - iam.services.k8s.aws
+  resources:
+  - groups/status
+  - instanceprofiles/status
+  - openidconnectproviders/status
+  - policies/status
+  - roles/status
+  - servicelinkedroles/status
+  - users/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - services.k8s.aws
+  resources:
+  - fieldexports
+  - iamroleselectors
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - services.k8s.aws
+  resources:
+  - fieldexports/status
+  - iamroleselectors/status
+  verbs:
+  - get
+  - patch
+  - update

@@ -1,0 +1,18 @@
+# Copyright 2026 High Five Labs
+# SPDX-License-Identifier: Apache-2.0
+# ACK's own controllers' ClusterRoles, copied at the pins and renamed
+# (hack/ack-controllers.sh). The operator binds them per environment
+# (docs/plan.md, section 7.7).
+resources:
+  - applicationautoscaling-controller-role.yaml
+  - autoscaling-controller-role.yaml
+  - ec2-controller-role.yaml
+  - ecr-controller-role.yaml
+  - eventbridge-controller-role.yaml
+  - iam-controller-role.yaml
+  - kms-controller-role.yaml
+  - lambda-controller-role.yaml
+  - rds-controller-role.yaml
+  - s3-controller-role.yaml
+  - s3control-controller-role.yaml
+  - wafv2-controller-role.yaml

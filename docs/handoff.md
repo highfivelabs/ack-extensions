@@ -93,8 +93,10 @@ agent.** PR 1 (`agent/cloudcontrol`) is the core. Still to do:
   on a test double, `TestLandingZone`), F08/F09 Route 53 and its Resolver firewall (batch 4: `TestDNS`; two of ten proven on moto, the DNS Firewall, DNSSEC signing, key-signing key, CIDR collection and resolver configuration types unproven), F14 Config (batch 5: `TestConfig`; six of eleven proven on moto, the organization config rule, conformance pack, remediation, stored query and connector unproven), F15 GuardDuty (batch 6: `Filter` on moto, six unproven), F16 Security Hub (batch 7: `Hub` and `OrganizationConfiguration` on moto, seven unproven; map-shaped tags get no ACK default tags, `docs/cloudcontrol.md` section 7), F17 (batch 8:
   `ResourcePolicy` on moto; `RotationSchedule` waits for ACK's pull
   request #69).
-  **Next, F18** (`docs/coverage/foundation.md` says to ask the builder
-  first; the coordinator's brief of 2026-11-10 lists F15 to F18), probed
+  **F18, deferred** (the builder, 2026-11-15, item ACKF18: "as
+  recommended (Defer until the other foundation items are built; then
+  Macie and Inspector first on the fake AWS.)"): not next; build it after
+  every other foundation item, Macie first, then Inspector. Probed
   on moto 5.2.5: `macie2` has Enable/Get/DisableMacie (no
   `UpdateMacieSession`) and invitations, no findings filters, allow lists,
   custom data identifiers or `CreateMember`; `inspector2` has

@@ -29,6 +29,11 @@
 #      only that namespace; two contexts cannot claim one namespace; a
 #      controller already served there beside ACK's controller, and the
 #      organization-scoped one, are refused.
+#   8. ACK's own controllers per environment: the pinned images' digests;
+#      once ACK's classic rds-controller is narrowed to its namespace, a
+#      context with rds runs ACK's rds-controller (ACK's image) beside ours,
+#      as the environment's ServiceAccount, with rights there only, and an
+#      ACK DBParameterGroup syncs against moto through it.
 #
 # Needs docker, kind, kubectl, helm, ko, crane, and hack/moto.sh (boto3
 # for the fixtures). Nothing touches real AWS.
@@ -610,5 +615,86 @@ kubectl -n env-a delete schedulegroup.scheduler.aws.hfl.dev env-a-group --wait=t
 kubectl -n env-c delete schedulegroup.scheduler.aws.hfl.dev env-c-group --wait=false >/dev/null
 kubectl -n env-a delete ackcontext ack --wait=true --timeout=120s >/dev/null || fail "env-a's context was not deleted"
 ok "env-a's ScheduleGroup deleted through its manager, then its context"
+
+echo "== ACK's own controllers per environment, as the environment's identity (docs/plan.md 7.7)"
+# Every ACK image the operator may run is the registry's image at the pin.
+while read -r ref; do
+  got="$(retry crane digest "${ref%@*}")"
+  [[ "${got}" == "${ref#*@}" ]] || fail "${ref%@*} is now ${got}; config/operator/operator.yaml pins ${ref#*@} (rerun hack/ack-controllers.sh)"
+done < <(sed -n 's/^ *value: \(public\.ecr\.aws\/aws-controllers-k8s\/[a-z0-9]*-controller:[0-9.]*@sha256:[0-9a-f]*\)$/\1/p' config/operator/operator.yaml)
+ok "every ACK_IMAGE_ in config/operator/operator.yaml has the digest the registry gives its tag"
+# kind has ACK's rds image loaded by tag (its digest was just checked); the
+# operator's reference is by digest, which kind would pull again.
+kubectl -n "${OP_NS}" set env deploy/ack-extensions-operator "ACK_IMAGE_RDS=${ACK_RDS_IMAGE}" >/dev/null
+kubectl -n "${OP_NS}" rollout status deploy/ack-extensions-operator --timeout=180s >/dev/null
+# The migration path: ACK's classic rds-controller narrowed to its own
+# namespace; then env-d's context runs both rds controllers.
+# ACK's chart takes watchNamespace only with installScope namespace (its
+# _helpers.tpl; a first run, 2026-11-16, set watchNamespace alone and the
+# controller still watched every namespace).
+helm upgrade ack-rds "${ACK_RDS_DIR}/helm" -n "${ACK_NS}" --reuse-values \
+  --set installScope=namespace --set watchNamespace="${ACK_NS}" --wait --timeout 180s >/dev/null
+# shellcheck disable=SC2046
+kubectl -n "${ACK_NS}" set env "deploy/${ACK_DEPLOY}" $(go run ./hack/noaws env "${FAKE_AWS}" "${KUBE_HOST}") >/dev/null
+kubectl -n "${ACK_NS}" rollout status "deploy/${ACK_DEPLOY}" --timeout=180s >/dev/null
+watched="$(kubectl -n "${ACK_NS}" get deploy "${ACK_DEPLOY}" -o jsonpath='{.spec.template.spec.containers[0].env[?(@.name=="ACK_WATCH_NAMESPACE")].value}')"
+[[ "${watched}" == "${ACK_NS}" ]] || fail "ACK's classic rds-controller watches '${watched}', not ${ACK_NS}"
+ok "ACK's classic rds-controller watches only ${ACK_NS}"
+kubectl create namespace env-d --dry-run=client -o yaml | kubectl apply -f - >/dev/null
+cat <<YAML | kubectl apply -f - >/dev/null
+apiVersion: core.aws.hfl.dev/v1alpha1
+kind: ACKContext
+metadata: {name: ack, namespace: env-d}
+spec:
+  roleARN: "arn:aws:iam::123456789012:role/env-d-ack"
+  region: us-west-2
+  controllers: [{service: rds}]
+YAML
+ack_wait 300 "ACKContext env-d/ack Ready: ACK's rds-controller and our rds manager rolled out" ack_ready env-d
+D_ACK=ack-rds-controller-env-d
+D_OURS=ack-extensions-rds-env-d
+for d in "${D_ACK}" "${D_OURS}"; do
+  [[ "$(kubectl -n "${OP_NS}" get deploy "${d}" -o jsonpath='{.spec.template.spec.serviceAccountName}')" == "${d}" ]] || fail "${d} does not run as ${OP_NS}/${d}"
+  kubectl -n "${OP_NS}" get sa "${d}" -o jsonpath='{.metadata.annotations}' | grep -q 'eks.amazonaws.com' && fail "an IRSA annotation on ${d}: the identity is EKS Pod Identity"
+done
+args="$(kubectl -n "${OP_NS}" get deploy "${D_ACK}" -o jsonpath='{.spec.template.spec.containers[0].args}')"
+for a in --watch-namespace=env-d --aws-region=us-west-2 --enable-carm=false; do
+  grep -q -- "${a}" <<<"${args}" || fail "${D_ACK} args lack ${a}: ${args}"
+done
+[[ "$(kubectl -n "${OP_NS}" get deploy "${D_ACK}" -o jsonpath='{.spec.template.spec.containers[0].image}')" == "${ACK_RDS_IMAGE}" ]] || fail "${D_ACK} does not run ${ACK_RDS_IMAGE}"
+pia="$(kubectl -n env-d get ackcontext ack -o jsonpath='{range .status.podIdentityAssociations[*]}{.serviceAccount} -> {.roleARN}{"\n"}{end}' | sort)"
+[[ "${pia}" == "${D_OURS} -> arn:aws:iam::123456789012:role/env-d-ack"$'\n'"${D_ACK} -> arn:aws:iam::123456789012:role/env-d-ack" ]] || fail "env-d status.podIdentityAssociations: ${pia}"
+ok "env-d: ${OP_NS}/${D_ACK} (ACK's image at the pin) and ${OP_NS}/${D_OURS}, each as its own ServiceAccount, both on env-d's role in status"
+verify_no_real_aws
+[[ "$(asar "${D_ACK}" create rds.services.k8s.aws dbparametergroups env-d)" == true ]] || fail "env-d's ACK rds-controller cannot create DBParameterGroups in env-d"
+for n in env-a env-c "${OP_NS}" "${ACK_NS}"; do
+  [[ "$(asar "${D_ACK}" create rds.services.k8s.aws dbparametergroups "${n}")" == false ]] || fail "env-d's ACK rds-controller may create DBParameterGroups in ${n}"
+  [[ "$(asar "${D_ACK}" get "" secrets "${n}")" == false ]] || fail "env-d's ACK rds-controller may read ${n}'s Secrets"
+done
+[[ "$(asar "${D_ACK}" list "" namespaces "")" == false ]] || fail "env-d's ACK rds-controller may list namespaces"
+ok "rights: env-d's ACK rds-controller manages ACK's rds kinds in env-d only, nothing cluster-wide"
+for n in env-d env-c; do
+  cat <<YAML | kubectl apply -f - >/dev/null
+apiVersion: rds.services.k8s.aws/v1alpha1
+kind: DBParameterGroup
+metadata: {name: ${n}-params, namespace: ${n}}
+spec: {name: ${n}-params, family: postgres16, description: "${n} through its own ACK controller"}
+YAML
+done
+ack_wait 180 "ACK's DBParameterGroup env-d/env-d-params synced through env-d's own ACK rds-controller" synced_in env-d dbparametergroup.rds.services.k8s.aws/env-d-params
+sleep 15
+[[ -z "$(kubectl -n env-c get dbparametergroup.rds.services.k8s.aws env-c-params -o jsonpath='{.metadata.finalizers}{.status}')" ]] || fail "env-c's DBParameterGroup was touched (no context in env-c, and ACK's classic controller watches only ${ACK_NS})"
+fake_py - <<'PYEOF'
+import boto3
+kw = dict(endpoint_url="http://127.0.0.1:15000", region_name="us-west-2", aws_access_key_id="testing", aws_secret_access_key="testing")
+names = [g["DBParameterGroupName"] for g in boto3.client("rds", **kw).describe_db_parameter_groups()["DBParameterGroups"]]
+assert "env-d-params" in names and "env-c-params" not in names, names
+print("ok: in moto: env-d-params, and no env-c-params")
+PYEOF
+kubectl -n env-d delete dbparametergroup.rds.services.k8s.aws env-d-params --wait=true --timeout=120s >/dev/null || fail "env-d's DBParameterGroup was not deleted through its ACK controller"
+kubectl -n env-c delete dbparametergroup.rds.services.k8s.aws env-c-params --wait=false >/dev/null
+kubectl -n env-d delete ackcontext ack --wait=true --timeout=120s >/dev/null || fail "env-d's context was not deleted"
+d_gone() { ! kubectl -n "${OP_NS}" get deploy "${D_ACK}" >/dev/null 2>&1 && ! kubectl -n "${OP_NS}" get sa "${D_ACK}" >/dev/null 2>&1 && ! kubectl -n "${OP_NS}" get deploy "${D_OURS}" >/dev/null 2>&1; }
+ack_wait 120 "env-d's context deleted: ACK's controller, ours and their ServiceAccounts go with it" d_gone
 
 echo "all checks passed (cluster ${CLUSTER} left running; kind delete cluster --name ${CLUSTER})"
