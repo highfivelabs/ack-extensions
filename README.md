@@ -384,6 +384,7 @@ Services are sorted by tier, then by attributes covered, and every tier 1 servic
 | `kms.aws.hfl.dev/v1alpha1` `ReplicaKey` | A multi-Region KMS key's replica in another Region: created with `ReplicateKey` in the primary key's Region, then read, changed (policy, tags) and deleted in its own Region, never touching the primary key. | Copied from ACK kms-controller pull request #112 (open), with its Region handling corrected: the pull request's read, update and delete act on the primary key |
 | `lambda.aws.hfl.dev/v1alpha1` `Permission` | One statement of a Lambda function's resource-based policy (`AddPermission`), so that S3, an ALB, EventBridge or SNS may invoke the function; removed on delete, and added back if removed outside Kubernetes. ACK has permissions only inside an `Alias`. | New: the calls and policy reading are copied from ACK's `Alias`; no ACK pull request adds the kind |
 | `rds.aws.hfl.dev/v1alpha1` `DBRoleAssociation` | Associates an IAM role with an Aurora cluster or an RDS instance for one feature (`s3Import`, `s3Export`, `Lambda`, `S3_INTEGRATION`), and removes it on delete. ACK's `DBCluster` and `DBInstance` only report associated roles. It becomes synced once RDS reports the association `ACTIVE`. | New: no ACK code or pull request covers it |
+| `s3.aws.hfl.dev/v1alpha1` `Bucket` | ACK's own S3 `Bucket`, the same spec, status and behaviour, fixed: ACK s3-controller `v1.15.0`'s read panics (a nil pointer) on a bucket whose `GetBucketEncryption` answers `ServerSideEncryptionConfigurationNotFoundError`, which S3-compatible stores and fakes (moto) give and AWS rarely does; ours reads such a bucket as having no default encryption. An intentional overlap with ACK's `Bucket`, retired when ACK releases the fix (`docs/plan.md` section 6.38): use it where the panic hits, and never point it and ACK's `Bucket` at one bucket. `s3.aws.hfl.dev/force-destroy` works on it as on ACK's. | Generated from s3-controller `v1.15.0`'s own `generator.yaml`, hook templates and hand-written code, with the one fix (and a hook template rearranged for `go vet`); a copy of an ACK kind under the builder's rule for broken kinds (`docs/plan.md` section 3, "Fixed copies of ACK's kinds") |
 | `s3control.aws.hfl.dev/v1alpha1` `PublicAccessBlock` | The account's S3 Block Public Access settings (block and ignore public ACLs, block public bucket policies, restrict public buckets), Terraform's `aws_s3_account_public_access_block`: put with `PutPublicAccessBlock` for the manager's own account, put back if changed outside Kubernetes, and deleted on delete; a new object takes over the account's existing settings. ACK's s3control-controller has `AccessPoint` only, and ACK's `Bucket` a bucket's own block. | Generated (`PutPublicAccessBlock` as the create and the update, `GetPublicAccessBlock`, `DeletePublicAccessBlock`), with short hooks; no ACK pull request adds it |
 | `scheduler.aws.hfl.dev/v1alpha1` `Schedule` | An EventBridge Scheduler schedule: an expression that invokes a target as a role, in a group by name or by reference to our `ScheduleGroup`. ACK has no Scheduler controller. | Generated |
 | `scheduler.aws.hfl.dev/v1alpha1` `ScheduleGroup` | An EventBridge Scheduler schedule group, with its tags. ACK has no Scheduler controller; the manager runs beside ACK's EventBridge controller. | Generated, with eventbridge-controller's tag hooks |
@@ -416,10 +417,10 @@ group on ACK's object, acted on by our manager beside ACK's controller
 | `kms.services.k8s.aws` `Key` | `kms.aws.hfl.dev/rotation-period-in-days: "180"` | the automatic rotation period (90 to 2560 days) while `spec.enableKeyRotation` is true; Terraform's `rotation_period_in_days` |
 | `kms.services.k8s.aws` `Key` | `kms.aws.hfl.dev/enabled: "false"` | disables the key (`"true"` enables it); Terraform's `is_enabled` |
 | `kms.services.k8s.aws` `Key` | ACK's own `kms.services.k8s.aws/pending-window-in-days: "30"` | the deletion window (7 to 30 days); Terraform's `deletion_window_in_days` |
-| `s3.services.k8s.aws` `Bucket` | `s3.aws.hfl.dev/force-destroy: "true"` | empties the bucket (every version, delete marker and multipart upload) when the `Bucket` is deleted, unless its deletion policy is `retain`; Terraform's `force_destroy` |
+| `s3.services.k8s.aws` `Bucket` | `s3.aws.hfl.dev/force-destroy: "true"` | empties the bucket (every version, delete marker and multipart upload) when the `Bucket` is deleted, unless its deletion policy is `retain`; Terraform's `force_destroy`. The same annotation works on our fixed copy, `s3.aws.hfl.dev` `Bucket` |
 
-The `Bucket`'s runs in an S3 manager (`services/s3`, no kind of its own)
-beside ACK's s3-controller. What an annotation cannot fill (a parameter of
+The `Bucket`'s runs in the S3 manager (`services/s3`, which also serves
+our fixed copy of ACK's `Bucket`) beside ACK's s3-controller. What an annotation cannot fill (a parameter of
 ACK's own create call) is listed in `docs/extensions.md` and asked in
 `docs/plan.md` open question 23.
 
@@ -576,11 +577,14 @@ EventBridge controller, as that controller's identity, so that role needs
 `scheduler:*`, and `iam:PassRole` for the roles schedules invoke their
 targets with.
 
-The S3 manager (the `Bucket` extension, `docs/extensions.md`) runs beside
-ACK's s3-controller; that controller's role then needs
-`s3:ListBucketVersions`, `s3:DeleteObjectVersion`,
-`s3:ListBucketMultipartUploads`, `s3:AbortMultipartUpload` and
-`s3:BypassGovernanceRetention`. The kms manager's `Key` extension needs
+The S3 manager (the `Bucket` extension, `docs/extensions.md`, and our
+fixed copy of ACK's `Bucket`) runs beside ACK's s3-controller; that
+controller's role then needs `s3:ListBucketVersions`,
+`s3:DeleteObjectVersion`, `s3:ListBucketMultipartUploads`,
+`s3:AbortMultipartUpload` and `s3:BypassGovernanceRetention`, and for our
+`Bucket` what ACK's own s3-controller needs (its recommended policy is
+`s3:*`, `s3express:*` and `iam:PassRole` to S3; `task ack:iam` lists the
+actions it calls). The kms manager's `Key` extension needs
 `kms:DescribeKey`, `kms:GetKeyRotationStatus`, `kms:EnableKeyRotation`,
 `kms:EnableKey` and `kms:DisableKey`. Per environment, `task ack:iam`
 writes them (`Key.kms`, `Bucket.s3`).

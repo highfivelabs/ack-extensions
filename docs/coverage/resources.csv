@@ -1556,7 +1556,7 @@ s3,AccessGrant,9,,0,AccessGrant (Cloud Control),9,0,false,ours AccessGrant (Clou
 s3,AccessGrantsInstance,3,,0,AccessGrantsInstance (Cloud Control),3,0,false,ours AccessGrantsInstance (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has s3); on the schema fake only
 s3,AccessGrantsLocation,4,,0,AccessGrantsLocation (Cloud Control),4,0,false,ours AccessGrantsLocation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has s3); on the schema fake only
 s3,AccessPoint,11,AccessPoint,11,,0,0,false,official_unmapped=1
-s3,Bucket,153,Bucket,115,,0,38,false,official_unmapped=51
+s3,Bucket,153,Bucket,115,Bucket,0,38,false,official_unmapped=51;ours_unmapped=114
 s3,BucketPolicy,2,,0,,0,2,false,
 s3,MultiRegionAccessPoint,7,,0,MultiRegionAccessPoint (Cloud Control),7,0,false,ours MultiRegionAccessPoint (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has s3); on the schema fake only
 s3,MultiRegionAccessPointPolicy,2,,0,MultiRegionAccessPointPolicy (Cloud Control),2,0,false,ours MultiRegionAccessPointPolicy (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has s3); on the schema fake only

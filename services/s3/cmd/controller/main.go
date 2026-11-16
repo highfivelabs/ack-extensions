@@ -21,6 +21,7 @@ import (
 	goruntime "runtime"
 	"runtime/debug"
 
+	iamapitypes "github.com/aws-controllers-k8s/iam-controller/apis/v1alpha1"
 	ackv1alpha1 "github.com/aws-controllers-k8s/runtime/apis/core/v1alpha1"
 	ackcfg "github.com/aws-controllers-k8s/runtime/pkg/config"
 	ackrt "github.com/aws-controllers-k8s/runtime/pkg/runtime"
@@ -42,6 +43,8 @@ import (
 
 	svctypes "github.com/highfivelabs/ack-extensions/services/s3/apis/v1alpha1"
 	svcresource "github.com/highfivelabs/ack-extensions/services/s3/pkg/resource"
+
+	_ "github.com/highfivelabs/ack-extensions/services/s3/pkg/resource/bucket"
 
 	"github.com/highfivelabs/ack-extensions/services/s3/pkg/version"
 )
@@ -73,6 +76,7 @@ func init() {
 
 	_ = svctypes.AddToScheme(scheme)
 	_ = ackv1alpha1.AddToScheme(scheme)
+	_ = iamapitypes.AddToScheme(scheme)
 }
 
 func main() {
