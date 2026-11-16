@@ -60,11 +60,70 @@ var prefixes = map[string]string{
 // s3:ListBucketMultipartUploads, and DeleteObjects as the delete of each
 // object it names, s3:DeleteObjectVersion when the version is named, as
 // the Bucket extension always names it.
+//
+// So are most of a bucket's configuration operations, which our copy of
+// ACK's Bucket calls (section 6.38; the Service Authorization Reference,
+// "Amazon S3", each action's API operations): a configuration's Get*, its
+// Put* and its Delete* are authorized as the configuration's Get and Put
+// actions; HeadBucket as s3:ListBucket, ListBuckets as
+// s3:ListAllMyBuckets.
 var actions = map[string]map[string]string{
 	"s3": {
 		"ListObjectVersions":   "ListBucketVersions",
 		"ListMultipartUploads": "ListBucketMultipartUploads",
 		"DeleteObjects":        "DeleteObjectVersion",
+
+		"HeadBucket":  "ListBucket",
+		"ListBuckets": "ListAllMyBuckets",
+
+		"GetBucketAccelerateConfiguration": "GetAccelerateConfiguration",
+		"PutBucketAccelerateConfiguration": "PutAccelerateConfiguration",
+
+		"ListBucketAnalyticsConfigurations":  "GetAnalyticsConfiguration",
+		"PutBucketAnalyticsConfiguration":    "PutAnalyticsConfiguration",
+		"DeleteBucketAnalyticsConfiguration": "PutAnalyticsConfiguration",
+
+		"GetBucketCors":    "GetBucketCORS",
+		"PutBucketCors":    "PutBucketCORS",
+		"DeleteBucketCors": "PutBucketCORS",
+
+		"GetBucketEncryption":    "GetEncryptionConfiguration",
+		"PutBucketEncryption":    "PutEncryptionConfiguration",
+		"DeleteBucketEncryption": "PutEncryptionConfiguration",
+
+		"ListBucketIntelligentTieringConfigurations":  "GetIntelligentTieringConfiguration",
+		"PutBucketIntelligentTieringConfiguration":    "PutIntelligentTieringConfiguration",
+		"DeleteBucketIntelligentTieringConfiguration": "PutIntelligentTieringConfiguration",
+
+		"ListBucketInventoryConfigurations":  "GetInventoryConfiguration",
+		"PutBucketInventoryConfiguration":    "PutInventoryConfiguration",
+		"DeleteBucketInventoryConfiguration": "PutInventoryConfiguration",
+
+		"GetBucketLifecycleConfiguration": "GetLifecycleConfiguration",
+		"PutBucketLifecycleConfiguration": "PutLifecycleConfiguration",
+		"DeleteBucketLifecycle":           "PutLifecycleConfiguration",
+
+		"ListBucketMetricsConfigurations":  "GetMetricsConfiguration",
+		"PutBucketMetricsConfiguration":    "PutMetricsConfiguration",
+		"DeleteBucketMetricsConfiguration": "PutMetricsConfiguration",
+
+		"GetBucketNotificationConfiguration": "GetBucketNotification",
+		"PutBucketNotificationConfiguration": "PutBucketNotification",
+
+		"DeleteBucketOwnershipControls": "PutBucketOwnershipControls",
+
+		"GetPublicAccessBlock":    "GetBucketPublicAccessBlock",
+		"PutPublicAccessBlock":    "PutBucketPublicAccessBlock",
+		"DeletePublicAccessBlock": "PutBucketPublicAccessBlock",
+
+		"GetBucketReplication":    "GetReplicationConfiguration",
+		"PutBucketReplication":    "PutReplicationConfiguration",
+		"DeleteBucketReplication": "PutReplicationConfiguration",
+
+		"DeleteBucketTagging": "PutBucketTagging",
+
+		"GetObjectLockConfiguration": "GetBucketObjectLockConfiguration",
+		"PutObjectLockConfiguration": "PutBucketObjectLockConfiguration",
 	},
 	"s3control": {
 		"GetPublicAccessBlock":    "GetAccountPublicAccessBlock",
@@ -101,8 +160,19 @@ var Curated = map[string][]string{
 	// EventBridge makes, as the caller, under events!connection/.
 	"Connection.eventbridge": {"secretsmanager:CreateSecret", "secretsmanager:DescribeSecret", "secretsmanager:UpdateSecret", "secretsmanager:PutSecretValue", "secretsmanager:DeleteSecret"},
 	// The Bucket extension deletes with BypassGovernanceRetention, which
-	// needs its own action (S3 Object Lock, governance mode).
-	"Bucket.s3": {"s3:BypassGovernanceRetention"},
+	// needs its own action (S3 Object Lock, governance mode). Our copy of
+	// ACK's Bucket (section 6.38): a replication rule's role is handed to
+	// S3, and a directory bucket's calls are authorized in s3express
+	// (its tags through S3 Control's ListTagsForResource, TagResource and
+	// UntagResource, which the scan, reading only S3's client, misses).
+	"Bucket.s3": {
+		"s3:BypassGovernanceRetention", "iam:PassRole",
+		"s3express:CreateBucket", "s3express:DeleteBucket",
+		"s3express:GetEncryptionConfiguration", "s3express:PutEncryptionConfiguration",
+		"s3express:GetLifecycleConfiguration", "s3express:PutLifecycleConfiguration",
+		"s3express:GetBucketPolicy", "s3express:PutBucketPolicy", "s3express:DeleteBucketPolicy",
+		"s3express:ListTagsForResource", "s3express:TagResource", "s3express:UntagResource",
+	},
 	// ReplicateKey makes the replica: kms:CreateKey in the replica's region.
 	"ReplicaKey.kms": {"kms:CreateKey"},
 	// The first replication rule makes ECR's service-linked role.
@@ -304,7 +374,22 @@ func Scan(root string) ([]Kind, error) {
 				return nil, fmt.Errorf("%s: no GroupKind or svcsdk import found", dir)
 			}
 			sdks[sc.sdk] = true
-			found = append(found, sc)
+			// A kind of ours that is also extended (s3's Bucket: our
+			// fixed copy of ACK's, and the extension acting on both) is
+			// one kind: its calls are merged, so its statement is one.
+			merged := false
+			for i := range found {
+				if found[i].service == sc.service && found[i].kind == sc.kind && found[i].sdk == sc.sdk {
+					for n := range sc.names {
+						found[i].names[n] = true
+					}
+					merged = true
+					break
+				}
+			}
+			if !merged {
+				found = append(found, sc)
+			}
 		}
 	}
 	var pkgs []string
