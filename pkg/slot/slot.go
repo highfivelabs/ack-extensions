@@ -133,16 +133,17 @@ type TagsFunc func(gk schema.GroupKind, observed acktypes.AWSResource) (map[stri
 // TaggedKinds are the ACK-generated kinds (Kind.group) whose read fills
 // spec.tags from AWS. TestTaggedKinds keeps it equal to the generated code.
 var TaggedKinds = map[string]bool{
-	"CustomerGateway.ec2.aws.hfl.dev":       true,
-	"Volume.ec2.aws.hfl.dev":                true,
-	"VPNConnection.ec2.aws.hfl.dev":         true,
-	"VPNGateway.ec2.aws.hfl.dev":            true,
-	"LaunchTemplate.ec2.aws.hfl.dev":        true,
-	"ReplicaKey.kms.aws.hfl.dev":            true,
-	"Policy.organizations.aws.hfl.dev":      true,
-	"OptionGroup.rds.aws.hfl.dev":           true,
-	"ScheduleGroup.scheduler.aws.hfl.dev":   true,
-	"OpenIDConnectProvider.iam.aws.hfl.dev": true,
+	"AutoScalingGroup.autoscaling.aws.hfl.dev": true,
+	"CustomerGateway.ec2.aws.hfl.dev":          true,
+	"Volume.ec2.aws.hfl.dev":                   true,
+	"VPNConnection.ec2.aws.hfl.dev":            true,
+	"VPNGateway.ec2.aws.hfl.dev":               true,
+	"LaunchTemplate.ec2.aws.hfl.dev":           true,
+	"ReplicaKey.kms.aws.hfl.dev":               true,
+	"Policy.organizations.aws.hfl.dev":         true,
+	"OptionGroup.rds.aws.hfl.dev":              true,
+	"ScheduleGroup.scheduler.aws.hfl.dev":      true,
+	"OpenIDConnectProvider.iam.aws.hfl.dev":    true,
 }
 
 // GeneratedTags is the TagsFunc of the ACK-generated managers: spec.tags,

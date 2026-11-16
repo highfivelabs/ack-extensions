@@ -17,6 +17,9 @@
 # Moving the pin (hack/aws-emulator.sh) means rereading this list.
 release: 1.0.338
 expected:
+  - test: TestAutoScalingGroup
+    missing: Auto Scaling CreateOrUpdateTags (501, a scaffold)
+    doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions
   - test: TestScalingPolicy
     missing: Auto Scaling DeletePolicy (a scaffold; the object is never deleted)
     doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions

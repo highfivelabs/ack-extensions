@@ -18,7 +18,7 @@ How much of AWS the official ACK controllers cover, and how much more this repos
 
 `quicksight` alone is 51,640 of the 85,831 attributes, so the attribute bar mostly describes it; the resource bar counts a resource as covered if ACK has a kind for it, however few of its fields.
 
-Of 85,831 attributes in 1878 resources across 305 services, ACK covers 6,044 (7.0%) and ours adds 19,913 more (23.2%), 22 of them copied from open upstream pull requests. By resource, ACK has a released kind for 267 of 1,878 (14.2%) and ours adds 1368 more (72.8%).
+Of 85,831 attributes in 1878 resources across 305 services, ACK covers 6,044 (7.0%) and ours adds 19,915 more (23.2%), 22 of them copied from open upstream pull requests. By resource, ACK has a released kind for 267 of 1,878 (14.2%) and ours adds 1368 more (72.8%).
 
 The purple bar is **Terraform** for comparison: the share of the same attributes that a writable attribute of the Terraform `aws` provider matches, about 64.4% (at least 48.8%, the dark tick, by the strict rule). It is an estimate from the High Five Labs catalog repository, pinned like every other input, with the error of its matching; see [Terraform](docs/coverage/README.md#terraform).
 
@@ -30,7 +30,7 @@ Not every service matters equally. Each service has a **category**: *platform-fo
 | --- | ---: | ---: | ---: | ---: |
 | platform-foundation | 16 | 22.8% / 53.1% | 28.0% / 37.6% | ~51.5% (≥43.5%) |
 | security-adjacent | 18 | 12.5% / 67.9% | 37.6% / 50.9% | ~74.1% (≥72.0%) |
-| application | 33 | 40.3% / 44.1% | 47.9% / 29.3% | ~50.8% (≥46.4%) |
+| application | 33 | 40.3% / 44.1% | 47.9% / 29.4% | ~50.8% (≥46.4%) |
 | other | 238 | 7.3% / 83.0% | 3.0% / 21.6% | ~65.4% (≥48.5%) |
 
 The ranked work queue for the foundation and security categories, resource by resource, with what upstream has and what to build first, is [docs/coverage/foundation.md](docs/coverage/foundation.md).
@@ -75,7 +75,7 @@ The ranked work queue for the foundation and security categories, resource by re
 | 2 | application | `s3` | ![s3](docs/coverage/bars/s3.svg) | 47.5% | 37.4% | 15.1% | ~21.5% (≥17.7%) |
 | 2 | application | `cloudwatch` | ![cloudwatch](docs/coverage/bars/cloudwatch.svg) | 23.1% | 62.9% | 13.9% | ~41.9% (≥40.6%) |
 | 2 | application | `lambda` | ![lambda](docs/coverage/bars/lambda.svg) | 42.6% | 40.2% | 17.2% | ~57.0% (≥57.0%) |
-| 2 | application | `autoscaling` | ![autoscaling](docs/coverage/bars/autoscaling.svg) | 38.5% | 41.6% | 19.9% | ~74.9% (≥74.0%) |
+| 2 | application | `autoscaling` | ![autoscaling](docs/coverage/bars/autoscaling.svg) | 38.5% | 42.4% | 19.0% | ~74.9% (≥74.0%) |
 | 2 | application | `apigatewayv2` | ![apigatewayv2](docs/coverage/bars/apigatewayv2.svg) | 62.0% | 32.3% | 5.7% | ~72.8% (≥72.8%) |
 | 2 | security-adjacent | `inspectorv2` | ![inspectorv2](docs/coverage/bars/inspectorv2.svg) | 0.0% | 100.0% | 0.0% | ~69.8% (≥69.8%) |
 | 2 | application | `elasticloadbalancingv2` | ![elasticloadbalancingv2](docs/coverage/bars/elasticloadbalancingv2.svg) | 76.0% | 6.1% | 17.9% | ~11.7% (≥11.7%) |

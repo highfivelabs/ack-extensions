@@ -1,17 +1,29 @@
 # Generator configuration for ack-extensions's EC2 Auto Scaling kinds
 # (autoscaling.aws.hfl.dev).
 #
-# ACK's autoscaling-controller (v1.5.0) has AutoScalingGroup only; a group
-# without scaling policies does not scale. ScalingPolicy is generated the
-# way ACK's applicationautoscaling-controller (v1.9.0) generates its own
-# ScalingPolicy from a Put operation: PutScalingPolicy creates and updates,
-# DescribePolicies reads and DeletePolicy deletes. ScheduledAction is
-# generated the same way, from PutScheduledUpdateGroupAction,
-# DescribeScheduledActions and DeleteScheduledAction. The resources ACK
-# has are ignored.
+# AutoScalingGroup is a fixed copy of ACK's autoscaling-controller v1.5.0
+# AutoScalingGroup (docs/plan.md section 3, "Fixed copies of ACK's kinds")
+# adding launchTemplateRef on all three LaunchTemplateSpecification paths
+# (naming ack-extensions's ec2.aws.hfl.dev LaunchTemplate), spec.context,
+# and per-tag propagateAtLaunch.
+#
+# ScalingPolicy is generated the way ACK's applicationautoscaling-controller
+# (v1.9.0) generates its own ScalingPolicy from a Put operation:
+# PutScalingPolicy creates and updates, DescribePolicies reads and
+# DeletePolicy deletes. ScheduledAction is generated the same way, from
+# PutScheduledUpdateGroupAction, DescribeScheduledActions and
+# DeleteScheduledAction.
 sdk_names:
   model_name: auto-scaling
 operations:
+  DeleteAutoScalingGroup:
+    override_values:
+      # Always force delete to avoid "ScalingActivityInProgress" errors.
+      ForceDelete: aws.Bool(true)
+  DescribeAutoScalingGroups:
+    override_values:
+      # Exclude instance details from the response to avoid bloating etcd.
+      IncludeInstances: aws.Bool(false)
   PutScalingPolicy:
     operation_type:
       - Create
@@ -39,6 +51,145 @@ operations:
       - Delete
     resource_name: ScheduledAction
 resources:
+  AutoScalingGroup:
+    fields:
+      Name:
+        is_primary_key: true
+        is_immutable: true
+      AvailabilityZoneDistribution:
+        late_initialize:
+          skip_incomplete_check: {}
+      AvailabilityZones:
+        late_initialize:
+          skip_incomplete_check: {}
+      CapacityReservationSpecification:
+        late_initialize:
+          skip_incomplete_check: {}
+        set:
+          - method: Create
+            ignore: true
+          - method: Update
+            ignore: true
+      CapacityReservationSpecification.CapacityReservationTarget.CapacityReservationIDs:
+        references:
+          resource: CapacityReservation
+          service_name: ec2
+          path: Status.CapacityReservationID
+      InstanceLifecyclePolicy:
+        late_initialize:
+          skip_incomplete_check: {}
+      NewInstancesProtectedFromScaleIn:
+        late_initialize:
+          skip_incomplete_check: {}
+      TerminationPolicies:
+        late_initialize:
+          skip_incomplete_check: {}
+      CreatedTime:
+        is_read_only: true
+        from:
+          operation: DescribeAutoScalingGroups
+          path: AutoScalingGroups.CreatedTime
+      EnabledMetrics:
+        is_read_only: true
+        from:
+          operation: DescribeAutoScalingGroups
+          path: AutoScalingGroups.EnabledMetrics
+      SuspendedProcesses:
+        is_read_only: true
+        from:
+          operation: DescribeAutoScalingGroups
+          path: AutoScalingGroups.SuspendedProcesses
+      Status:
+        is_read_only: true
+        from:
+          operation: DescribeAutoScalingGroups
+          path: AutoScalingGroups.Status
+      PredictedCapacity:
+        is_read_only: true
+        from:
+          operation: DescribeAutoScalingGroups
+          path: AutoScalingGroups.PredictedCapacity
+      WarmPoolConfiguration:
+        is_read_only: true
+        from:
+          operation: DescribeAutoScalingGroups
+          path: AutoScalingGroups.WarmPoolConfiguration
+      WarmPoolSize:
+        is_read_only: true
+        from:
+          operation: DescribeAutoScalingGroups
+          path: AutoScalingGroups.WarmPoolSize
+      TrafficSources.Type:
+        go_tag: json:"type,omitempty"
+      InstanceID:
+        references:
+          resource: Instance
+          service_name: ec2
+          path: Status.InstanceID
+      ServiceLinkedRoleARN:
+        late_initialize:
+          skip_incomplete_check: {}
+        references:
+          resource: ServiceLinkedRole
+          service_name: iam
+          path: Status.ACKResourceMetadata.ARN
+      LifecycleHookSpecificationList.RoleARN:
+        references:
+          resource: Role
+          service_name: iam
+          path: Status.ACKResourceMetadata.ARN
+      # Cross-resource references to ec2.aws.hfl.dev LaunchTemplate across all
+      # three LaunchTemplateSpecification positions.
+      LaunchTemplate.LaunchTemplateName:
+        references:
+          service_name: ec2
+          resource: LaunchTemplate
+          path: Spec.Name
+      MixedInstancesPolicy.LaunchTemplate.LaunchTemplateSpecification.LaunchTemplateName:
+        references:
+          service_name: ec2
+          resource: LaunchTemplate
+          path: Spec.Name
+      MixedInstancesPolicy.LaunchTemplate.Overrides.LaunchTemplateSpecification.LaunchTemplateName:
+        references:
+          service_name: ec2
+          resource: LaunchTemplate
+          path: Spec.Name
+      TargetGroupARNs:
+        references:
+          resource: TargetGroup
+          service_name: elbv2
+          path: Status.ACKResourceMetadata.ARN
+    exceptions:
+      terminal_codes:
+        - ValidationError
+        - AlreadyExists
+        - LimitExceeded
+    renames:
+      operations:
+        CreateAutoScalingGroup:
+          input_fields:
+            AutoScalingGroupName: Name
+        UpdateAutoScalingGroup:
+          input_fields:
+            AutoScalingGroupName: Name
+        DeleteAutoScalingGroup:
+          input_fields:
+            AutoScalingGroupName: Name
+        DescribeAutoScalingGroups:
+          input_fields:
+            AutoScalingGroupNames: Names
+          output_fields:
+            AutoScalingGroupName: Name
+    hooks:
+      delta_pre_compare:
+        template_path: hooks/auto_scaling_group/delta_pre_compare.go.tpl
+      sdk_read_many_post_set_output:
+        template_path: hooks/auto_scaling_group/sdk_read_many_post_set_output.go.tpl
+      sdk_update_pre_build_request:
+        template_path: hooks/auto_scaling_group/sdk_update_pre_build_request.go.tpl
+      sdk_create_post_set_output:
+        template_path: hooks/auto_scaling_group/sdk_create_post_set_output.go.tpl
   ScalingPolicy:
     hooks:
       sdk_read_many_post_build_request:
@@ -89,6 +240,22 @@ ignore:
     # Deprecated: StartTime replaces it (EC2 Auto Scaling API reference).
     - PutScheduledUpdateGroupActionInput.Time
     - ScheduledUpdateGroupAction.Time
+    # DeletionProtection is a new SDK field not yet supported in v1.34.0 models
+    - CreateAutoScalingGroupInput.DeletionProtection
+    - UpdateAutoScalingGroupInput.DeletionProtection
+    - DescribeAutoScalingGroupsOutput.AutoScalingGroups.DeletionProtection
+    # Ignore LaunchTemplateId to avoid ID vs Name conflict.
+    - CreateAutoScalingGroupInput.LaunchTemplate.LaunchTemplateId
+    - UpdateAutoScalingGroupInput.LaunchTemplate.LaunchTemplateId
+    - DescribeAutoScalingGroupsOutput.AutoScalingGroups.LaunchTemplate.LaunchTemplateId
+    - DescribeAutoScalingGroupsOutput.AutoScalingGroups.MixedInstancesPolicy.LaunchTemplate.LaunchTemplateSpecification.LaunchTemplateId
+    - DescribeAutoScalingGroupsOutput.AutoScalingGroups.MixedInstancesPolicy.LaunchTemplate.Overrides.LaunchTemplateSpecification.LaunchTemplateId
+    # Keep Key, Value, and PropagateAtLaunch for tags - remove ResourceId, ResourceType
+    - Tag.ResourceId
+    - Tag.ResourceType
+    - TagDescription.ResourceId
+    - TagDescription.ResourceType
+    # Exclude Instances from the DescribeAutoScalingGroups output.
+    - DescribeAutoScalingGroupsOutput.AutoScalingGroups.Instances
   resource_names:
-    - AutoScalingGroup
     - LaunchConfiguration

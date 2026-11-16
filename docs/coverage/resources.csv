@@ -143,7 +143,7 @@ athena,PreparedStatement,4,PreparedStatement,4,,0,0,false,
 athena,WorkGroup,74,WorkGroup,19,,0,55,false,official_unmapped=7
 auditmanager,Assessment,28,,0,Assessment (Cloud Control),28,0,false,ours Assessment (Cloud Control) unproven on fake: moto 5.2.5 has no auditmanager; on the schema fake only
 auditmanager,AssessmentFramework,7,,0,AssessmentFramework (Cloud Control),7,0,false,ours AssessmentFramework (Cloud Control) unproven on fake: moto 5.2.5 has no auditmanager; on the schema fake only
-autoscaling,AutoScalingGroup,105,AutoScalingGroup,89,,0,16,false,official_unmapped=2
+autoscaling,AutoScalingGroup,105,AutoScalingGroup,89,AutoScalingGroup,2,14,false,official_unmapped=2;ours_unmapped=2
 autoscaling,LaunchConfiguration,30,,0,,0,30,false,
 autoscaling,LifecycleHook,8,,0,LifecycleHook (Cloud Control),8,0,false,ours LifecycleHook (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has autoscaling); on the schema fake only
 autoscaling,ScalingPolicy,75,,0,ScalingPolicy,75,0,false,ours_unmapped=3

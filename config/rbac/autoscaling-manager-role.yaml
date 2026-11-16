@@ -32,6 +32,7 @@ rules:
 - apiGroups:
   - autoscaling.aws.hfl.dev
   resources:
+  - autoscalinggroups
   - scalingpolicies
   - scheduledactions
   verbs:
@@ -45,12 +46,51 @@ rules:
 - apiGroups:
   - autoscaling.aws.hfl.dev
   resources:
+  - autoscalinggroups/status
   - scalingpolicies/status
   - scheduledactions/status
   verbs:
   - get
   - patch
   - update
+- apiGroups:
+  - ec2.aws.hfl.dev
+  resources:
+  - launchtemplates
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ec2.services.k8s.aws
+  resources:
+  - capacityreservations
+  - capacityreservations/status
+  - instances
+  - instances/status
+  - launchtemplates
+  - launchtemplates/status
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - elbv2.services.k8s.aws
+  resources:
+  - targetgroups
+  - targetgroups/status
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - iam.services.k8s.aws
+  resources:
+  - roles
+  - roles/status
+  - servicelinkedroles
+  - servicelinkedroles/status
+  verbs:
+  - get
+  - list
 - apiGroups:
   - services.k8s.aws
   resources:

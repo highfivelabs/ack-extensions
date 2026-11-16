@@ -1,0 +1,1 @@
+preserveLaunchTemplateReferenceFields(r.ko, ko)

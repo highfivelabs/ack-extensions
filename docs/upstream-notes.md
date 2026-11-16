@@ -569,3 +569,27 @@ for the tests it passes.
 > `references` on `OpenIDConnectProvider`'s `URL` in iam-controller's
 > `generator.yaml`: `service_name: eks`, `resource: Cluster`,
 > `path: Status.Identity.OIDC.Issuer`, giving `spec.urlRef`.
+
+---
+
+## `autoscaling-controller`: `AutoScalingGroup` `launchTemplateRef`, `context`, and per-tag `propagateAtLaunch`
+
+**Title:** autoscaling-controller: enable `launchTemplateRef` on `LaunchTemplateSpecification`, `spec.context`, and per-tag `propagateAtLaunch`
+
+**Labels:** `kind/enhancement`, `service/autoscaling`
+
+**Body:**
+
+> **Is your feature request related to a problem?**
+> Without `launchTemplateRef` on `AutoScalingGroup`'s `launchTemplate` and
+> `mixedInstancesPolicy.launchTemplate`, a chart declaring an `AutoScalingGroup`
+> alongside a `LaunchTemplate` (and its IAM instance profile) cannot order
+> creation until the `LaunchTemplate` is synced in AWS, causing first-apply
+> failures. In addition, `CreateAutoScalingGroupInput.Context` and
+> `Tag.PropagateAtLaunch` are currently ignored in `generator.yaml`.
+>
+> **Describe the solution you'd like**
+> Wire `LaunchTemplate.LaunchTemplateName` references across all three
+> `LaunchTemplateSpecification` paths (preserving `*Ref` across reads and
+> normalizing `Overrides` in `delta_pre_compare`), un-ignore `Context`, and
+> support per-tag `PropagateAtLaunch` in `pkg/tags`.
