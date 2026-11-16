@@ -70,6 +70,16 @@ func TestBucketExtension(t *testing.T) {
 			t.Logf("cleanup: bucket %s: %v", keptBucket, err)
 		}
 	})
+	// plain-bucket and changed-bucket are made and never deleted by the
+	// subtests (no ACK delete is played for them): empty, deleted here
+	// (live runs ackx-11160729-366f and ackx-11160805-57c4 left them).
+	t.Cleanup(func() {
+		for _, b := range []string{plainBucket, changedBucket} {
+			if _, err := api.DeleteBucket(ctx, &s3.DeleteBucketInput{Bucket: aws.String(b)}); err != nil {
+				t.Logf("cleanup: bucket %s: %v", b, err)
+			}
+		}
+	})
 	// locked-bucket holds an object under governance retention: if its
 	// subtest stops before the extension empties it, delete it here.
 	t.Cleanup(func() {
