@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	ackelbv2 "github.com/aws-controllers-k8s/elbv2-controller/apis/v1alpha1"
 	ackv1alpha1 "github.com/aws-controllers-k8s/runtime/apis/core/v1alpha1"
 	ackwafv2 "github.com/aws-controllers-k8s/wafv2-controller/apis/v1alpha1"
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -44,6 +45,7 @@ func TestWebACLAssociation(t *testing.T) {
 	scheme := runtime.NewScheme()
 	_ = wafv2v1.AddToScheme(scheme)
 	_ = ackwafv2.AddToScheme(scheme)
+	_ = ackelbv2.AddToScheme(scheme)
 	env := harness.Start(t, "wafv2", scheme)
 	cloud := wafv2.NewFromConfig(env.AWS)
 	ctx := context.Background()
@@ -173,6 +175,55 @@ func TestWebACLAssociation(t *testing.T) {
 			}
 			return nil
 		})
+	})
+
+	// resourceRef: the load balancer as ACK's elbv2 LoadBalancer (the
+	// catalog's alb chart), its ARN read from the object's status once it
+	// is synced; nothing is associated before.
+	t.Run("a load balancer named by resourceRef is associated once synced", func(t *testing.T) {
+		const lb3 = "arn:aws:elasticloadbalancing:us-west-2:123456789012:loadbalancer/app/api/7e1fd0a2c3b4d5e6"
+		ackLB := &ackelbv2.LoadBalancer{
+			ObjectMeta: metav1.ObjectMeta{Name: "api", Namespace: "default"},
+			Spec:       ackelbv2.LoadBalancerSpec{Name: aws.String("api")},
+		}
+		if err := env.Client.Create(ctx, ackLB); err != nil {
+			t.Fatal(err)
+		}
+		byRef := &wafv2v1.WebACLAssociation{
+			ObjectMeta: metav1.ObjectMeta{Name: "api", Namespace: "default"},
+			Spec: wafv2v1.WebACLAssociationSpec{
+				ResourceRef: &ackv1alpha1.AWSResourceReferenceWrapper{From: &ackv1alpha1.AWSResourceReference{Name: aws.String("api")}},
+				WebACLARN:   aws.String(aclARN),
+			},
+		}
+		if err := env.Client.Create(ctx, byRef); err != nil {
+			t.Fatal(err)
+		}
+		time.Sleep(5 * time.Second)
+		if a, err := webACLOf(ctx, cloud, lb3); err != nil || a != "" {
+			t.Fatalf("associated (%q, %v) before the LoadBalancer synced", a, err)
+		}
+		// As ACK's elbv2-controller leaves it once synced; it does not run here.
+		lbARN := ackv1alpha1.AWSResourceName(lb3)
+		ackLB.Status.ACKResourceMetadata = &ackv1alpha1.ResourceMetadata{ARN: &lbARN, OwnerAccountID: &account, Region: &region}
+		ackLB.Status.Conditions = []*ackv1alpha1.Condition{{Type: ackv1alpha1.ConditionTypeResourceSynced, Status: corev1.ConditionTrue}}
+		if err := env.Client.Status().Update(ctx, ackLB); err != nil {
+			t.Fatal(err)
+		}
+		got := waitSynced(t, byRef)
+		if aws.ToString(got.Spec.ResourceARN) != "" {
+			t.Errorf("the stored spec holds the resolved resourceARN %q; it keeps the reference only", aws.ToString(got.Spec.ResourceARN))
+		}
+		if a, err := webACLOf(ctx, cloud, lb3); err != nil || a != aclARN {
+			t.Fatalf("cloud web ACL for the referenced load balancer %q: %v", a, err)
+		}
+		if err := env.Client.Delete(ctx, byRef); err != nil {
+			t.Fatal(err)
+		}
+		gone(t, byRef)
+		if a, err := webACLOf(ctx, cloud, lb3); err != nil || a != "" {
+			t.Fatalf("still associated with %q after the delete: %v", a, err)
+		}
 	})
 
 	t.Run("deletion-policy retain leaves the association", func(t *testing.T) {

@@ -10,7 +10,9 @@
 # templates/hooks/web_acl_association) read the web ACL's ARN and name from
 # the response's WebACL, treat no web ACL as not found, and leave alone on
 # delete a resource since associated with another web ACL. webACLRef names
-# ACK's WebACL through a type alias of ACK's type (apis/v1alpha1/ack_kinds.go).
+# ACK's WebACL through a type alias of ACK's type (apis/v1alpha1/ack_kinds.go);
+# resourceRef names ACK's elbv2 LoadBalancer (another controller's kind,
+# imported from its module as s3's Replication.Role names iam's Role).
 #
 # Every resource the generator finds by name is ignored: ACK's
 # wafv2-controller has IPSet, RuleGroup and WebACL, and ignores APIKey and
@@ -67,6 +69,14 @@ resources:
       ResourceARN:
         is_primary_key: true
         is_immutable: true
+        # An Application Load Balancer as ACK's elbv2 LoadBalancer (its
+        # status.ackResourceMetadata.arn): the catalog's alb chart (the WAF
+        # association; catalog PR #234). elbv2-controller v1.9.0 is a Go
+        # module here for its API types (UPSTREAM.md).
+        references:
+          service_name: elbv2
+          resource: LoadBalancer
+          path: Status.ACKResourceMetadata.ARN
       WebACLARN:
         references:
           resource: WebACL

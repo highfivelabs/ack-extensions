@@ -208,6 +208,9 @@ func (g *gen) references(spec *apiextv1.JSONSchemaProps, refs []cfn.Reference) {
 func referenceWrapper(r cfn.Reference) apiextv1.JSONSchemaProps {
 	str := apiextv1.JSONSchemaProps{Type: "string"}
 	desc := fmt.Sprintf("A reference to a %s (%s) whose %s fills %s: its Kubernetes name, and namespace when another (cross-namespace references need the manager's --enable-cross-namespace). The value is read once that object is synced. Give this or %s, not both.", r.Kind, r.Group, r.Path, r.Field, r.Field)
+	if r.TrimPrefix != "" {
+		desc += fmt.Sprintf(" The value is taken without its leading %s.", r.TrimPrefix)
+	}
 	if len(r.RefuseWhenSet) > 0 {
 		desc += fmt.Sprintf(" Refused (ACK.Terminal) when that %s lists %s: it owns that list as a whole and its next sync would undo this object.", r.Kind, strings.Join(r.RefuseWhenSet, " or "))
 	}

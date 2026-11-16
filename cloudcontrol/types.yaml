@@ -143,8 +143,30 @@ types:
   - typeName: AWS::Route53::QueryLoggingConfig
   - typeName: AWS::Route53::DNSSEC
     unproven: "moto 5.2.5 has no EnableHostedZoneDNSSEC or DisableHostedZoneDNSSEC"
+    # The zone as ACK's HostedZone (route53-controller), whose status.id
+    # is /hostedzone/Z123: the catalog's route53 chart (DNSSEC; catalog
+    # PR #234).
+    references:
+      - property: /properties/HostedZoneId
+        group: route53.services.k8s.aws
+        kind: HostedZone
+        path: status.id
+        trimPrefix: /hostedzone/
   - typeName: AWS::Route53::KeySigningKey
     unproven: "moto 5.2.5 has no Create/Activate/Deactivate/DeleteKeySigningKey"
+    # The zone as ACK's HostedZone, as for DNSSEC; the key as ACK's KMS
+    # Key (an ECC_NIST_P256 signing key in us-east-1 whose policy lets
+    # dnssec-route53.amazonaws.com use it).
+    references:
+      - property: /properties/HostedZoneId
+        group: route53.services.k8s.aws
+        kind: HostedZone
+        path: status.id
+        trimPrefix: /hostedzone/
+      - property: /properties/KeyManagementServiceArn
+        group: kms.services.k8s.aws
+        kind: Key
+        path: status.ackResourceMetadata.arn
   - typeName: AWS::Route53::CidrCollection
     unproven: "moto 5.2.5 has no Create/List/Change/DeleteCidrCollection"
   # F09: Route 53 Resolver beyond ACK's route53resolver-controller v1.11.0

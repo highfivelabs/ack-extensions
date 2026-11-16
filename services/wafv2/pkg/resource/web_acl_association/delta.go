@@ -49,6 +49,9 @@ func newResourceDelta(
 			delta.Add("Spec.ResourceARN", a.ko.Spec.ResourceARN, b.ko.Spec.ResourceARN)
 		}
 	}
+	if !equality.Semantic.Equalities.DeepEqual(a.ko.Spec.ResourceRef, b.ko.Spec.ResourceRef) {
+		delta.Add("Spec.ResourceRef", a.ko.Spec.ResourceRef, b.ko.Spec.ResourceRef)
+	}
 	if ackcompare.HasNilDifference(a.ko.Spec.WebACLARN, b.ko.Spec.WebACLARN) {
 		delta.Add("Spec.WebACLARN", a.ko.Spec.WebACLARN, b.ko.Spec.WebACLARN)
 	} else if a.ko.Spec.WebACLARN != nil && b.ko.Spec.WebACLARN != nil {

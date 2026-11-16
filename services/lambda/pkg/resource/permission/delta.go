@@ -43,5 +43,8 @@ func newResourceDelta(a *resource, b *resource) *ackcompare.Delta {
 	if !equality.Semantic.DeepEqual(sa.FunctionRef, sb.FunctionRef) {
 		delta.Add("Spec.FunctionRef", sa.FunctionRef, sb.FunctionRef)
 	}
+	if !equality.Semantic.DeepEqual(sa.TargetGroupRef, sb.TargetGroupRef) {
+		delta.Add("Spec.TargetGroupRef", sa.TargetGroupRef, sb.TargetGroupRef)
+	}
 	return delta
 }

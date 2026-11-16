@@ -14,6 +14,7 @@ import (
 	"testing"
 	"time"
 
+	ackelbv2 "github.com/aws-controllers-k8s/elbv2-controller/apis/v1alpha1"
 	acklambda "github.com/aws-controllers-k8s/lambda-controller/apis/v1alpha1"
 	ackv1alpha1 "github.com/aws-controllers-k8s/runtime/apis/core/v1alpha1"
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -114,6 +115,7 @@ func TestPermission(t *testing.T) {
 	scheme := runtime.NewScheme()
 	_ = lambdav1.AddToScheme(scheme)
 	_ = acklambda.AddToScheme(scheme)
+	_ = ackelbv2.AddToScheme(scheme)
 	env := harness.Start(t, "lambda", scheme)
 	cloud := lambda.NewFromConfig(env.AWS)
 	ctx := context.Background()
@@ -287,6 +289,71 @@ func TestPermission(t *testing.T) {
 		}
 		waitSynced(t, byRef)
 		waitStatement(t, "events", true)
+	})
+
+	// targetGroupRef: the source as ACK's elbv2 TargetGroup (the catalog's
+	// alb chart, a lambda target group's invoke permission), its ARN read
+	// from the object's status once it is synced; nothing is added before.
+	t.Run("targetGroupRef fills the source ARN from ACK's TargetGroup", func(t *testing.T) {
+		tgARN := fmt.Sprintf("arn:aws:elasticloadbalancing:us-west-2:%s:targetgroup/app-fn/3f2a1b0c9d8e7f60", env.Account)
+		tg := &ackelbv2.TargetGroup{
+			ObjectMeta: metav1.ObjectMeta{Name: "app-fn", Namespace: "default"},
+			Spec:       ackelbv2.TargetGroupSpec{Name: aws.String("app-fn"), TargetType: aws.String("lambda")},
+		}
+		if err := env.Client.Create(ctx, tg); err != nil {
+			t.Fatal(err)
+		}
+		both := &lambdav1.Permission{
+			ObjectMeta: metav1.ObjectMeta{Name: "both", Namespace: "default"},
+			Spec: lambdav1.PermissionSpec{
+				FunctionName: aws.String("app"), StatementID: aws.String("both"), Action: aws.String("lambda:InvokeFunction"),
+				Principal: aws.String("elasticloadbalancing.amazonaws.com"), SourceARN: aws.String(tgARN),
+				TargetGroupRef: &ackv1alpha1.AWSResourceReferenceWrapper{From: &ackv1alpha1.AWSResourceReference{Name: aws.String("app-fn")}},
+			},
+		}
+		if err := env.Client.Create(ctx, both); err == nil || !strings.Contains(err.Error(), "cannot both be set") {
+			t.Errorf("sourceARN with targetGroupRef: got %v, want the CRD's refusal", err)
+		}
+		alb := &lambdav1.Permission{
+			ObjectMeta: metav1.ObjectMeta{Name: "alb", Namespace: "default"},
+			Spec: lambdav1.PermissionSpec{
+				FunctionName: aws.String("app"), StatementID: aws.String("alb"), Action: aws.String("lambda:InvokeFunction"),
+				Principal:      aws.String("elasticloadbalancing.amazonaws.com"),
+				TargetGroupRef: &ackv1alpha1.AWSResourceReferenceWrapper{From: &ackv1alpha1.AWSResourceReference{Name: aws.String("app-fn")}},
+			},
+		}
+		if err := env.Client.Create(ctx, alb); err != nil {
+			t.Fatal(err)
+		}
+		time.Sleep(5 * time.Second)
+		if m, err := cloudStatements(ctx, cloud, "app", ""); err != nil {
+			t.Fatal(err)
+		} else if _, ok := m["alb"]; ok {
+			t.Fatalf("statement added before the TargetGroup synced")
+		}
+		// As ACK's elbv2-controller leaves it once synced; it does not run here.
+		arn := ackv1alpha1.AWSResourceName(tgARN)
+		account := ackv1alpha1.AWSAccountID(env.Account)
+		region := ackv1alpha1.AWSRegion(harness.Region)
+		tg.Status.ACKResourceMetadata = &ackv1alpha1.ResourceMetadata{ARN: &arn, OwnerAccountID: &account, Region: &region}
+		tg.Status.Conditions = []*ackv1alpha1.Condition{{Type: ackv1alpha1.ConditionTypeResourceSynced, Status: corev1.ConditionTrue}}
+		if err := env.Client.Status().Update(ctx, tg); err != nil {
+			t.Fatal(err)
+		}
+		got := waitSynced(t, alb)
+		if aws.ToString(got.Spec.SourceARN) != "" {
+			t.Errorf("the stored spec holds the resolved sourceARN %q; it keeps the reference only", aws.ToString(got.Spec.SourceARN))
+		}
+		st := waitStatement(t, "alb", true)
+		b, _ := json.Marshal(st)
+		if !strings.Contains(string(b), `"AWS:SourceArn":"`+tgARN+`"`) {
+			t.Errorf("cloud statement %s lacks the target group's ARN %s", b, tgARN)
+		}
+		if err := env.Client.Delete(ctx, alb); err != nil {
+			t.Fatal(err)
+		}
+		gone(t, alb)
+		waitStatement(t, "alb", false)
 	})
 
 	t.Run("deletion-policy retain leaves the statement", func(t *testing.T) {

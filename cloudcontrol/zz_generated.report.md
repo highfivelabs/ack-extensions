@@ -20,8 +20,8 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::ControlTower::EnabledBaseline` | `EnabledBaseline.controltower.cloudcontrol.aws.hfl.dev` | 5 | 1 | 4 | 0 | 1 | 4 |
 | `AWS::ControlTower::LandingZone` | `LandingZone.controltower.cloudcontrol.aws.hfl.dev` | 4 | 5 | 0 | 0 | 1 | 3 |
 | `AWS::Route53::QueryLoggingConfig` | `QueryLoggingConfig.route53.cloudcontrol.aws.hfl.dev` | 2 | 2 | 4 | 0 | 0 | 1 |
-| `AWS::Route53::DNSSEC` | `DNSSEC.route53.cloudcontrol.aws.hfl.dev` | 1 | 0 | 2 | 0 | 0 | 1 |
-| `AWS::Route53::KeySigningKey` | `KeySigningKey.route53.cloudcontrol.aws.hfl.dev` | 4 | 0 | 6 | 0 | 0 | 2 |
+| `AWS::Route53::DNSSEC` | `DNSSEC.route53.cloudcontrol.aws.hfl.dev` | 1 | 0 | 6 | 0 | 0 | 1 |
+| `AWS::Route53::KeySigningKey` | `KeySigningKey.route53.cloudcontrol.aws.hfl.dev` | 4 | 0 | 14 | 0 | 0 | 2 |
 | `AWS::Route53::CidrCollection` | `CidrCollection.route53.cloudcontrol.aws.hfl.dev` | 2 | 2 | 2 | 0 | 0 | 1 |
 | `AWS::Route53Resolver::ResolverDNSSECConfig` | `ResolverDNSSECConfig.route53resolver.cloudcontrol.aws.hfl.dev` | 1 | 3 | 2 | 0 | 0 | 0 |
 | `AWS::Route53Resolver::ResolverConfig` | `ResolverConfig.route53resolver.cloudcontrol.aws.hfl.dev` | 2 | 3 | 4 | 0 | 0 | 0 |
@@ -1523,6 +1523,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Route53::DNSSEC`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml): `hostedZoneRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -1535,6 +1536,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Route53::KeySigningKey`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml): `hostedZoneRef`, `keyManagementServiceRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none

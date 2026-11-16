@@ -1090,7 +1090,18 @@ limits":
    syncs as a whole: this SecurityGroupIngress would be undone at that
    object's next sync. Add the entry to that list instead, or empty the
    list to keep this SecurityGroupIngress"). It holds whether or not the
-   group has synced. Only the direction the group lists is refused: an
+   group has synced. **`trimPrefix`** (2026-11-16): a reference may name
+   a prefix to drop from the value read, where the referenced kind keeps
+   a longer form of the ID than the property takes. ACK's route53
+   `HostedZone` keeps `status.id` as `/hostedzone/Z123`; `AWS::Route53::DNSSEC`
+   and `KeySigningKey` take `Z123`, so their `hostedZoneRef` drops
+   `/hostedzone/` (a value that is only the prefix is a missing value).
+   `KeySigningKey` also takes its KMS key as ACK's `Key`
+   (`keyManagementServiceRef`, `status.ackResourceMetadata.arn`). The
+   catalog's route53 chart refused DNSSEC for want of these (catalog PR
+   #234). Proven on the schema fake (`TestReferencesDNSSEC`; moto has no
+   DNSSEC calls) and by unit test (`TestResolveReferencesTrimPrefix`).
+   Only the direction the group lists is refused: an
    egress rule on a group listing only `ingressRules` is made. A plain
    `groupId` is not checked: the manager reads only the objects a
    reference names (`get`), and the owner of a group may be in another

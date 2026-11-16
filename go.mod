@@ -4,6 +4,7 @@ go 1.25.0
 
 require (
 	github.com/aws-controllers-k8s/ec2-controller v1.23.1
+	github.com/aws-controllers-k8s/elbv2-controller v1.9.0
 	github.com/aws-controllers-k8s/iam-controller v1.11.3
 	github.com/aws-controllers-k8s/kms-controller v1.7.0
 	github.com/aws-controllers-k8s/lambda-controller v1.19.0
@@ -43,6 +44,7 @@ require (
 	github.com/aws/smithy-go v1.28.8
 	github.com/evanphx/json-patch/v5 v5.9.11
 	github.com/go-logr/logr v1.4.3
+	github.com/pkg/errors v0.9.1
 	github.com/spf13/pflag v1.0.9
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/net v0.56.0
@@ -102,7 +104,6 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.3-0.20250322232337-35a7c28c31ee // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/prometheus/client_golang v1.23.2 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect

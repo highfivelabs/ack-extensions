@@ -54,13 +54,38 @@ spec:
                 - message: 'hostedZoneId is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
-            required:
-            - hostedZoneId
+              hostedZoneRef:
+                description: 'A reference to a HostedZone (route53.services.k8s.aws)
+                  whose status.id fills hostedZoneId: its Kubernetes name, and namespace
+                  when another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or hostedZoneId,
+                  not both. The value is taken without its leading /hostedzone/.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'hostedZoneRef is create-only, as hostedZoneId is: it cannot
+                    change after the resource is made'
+                  rule: self == oldSelf
             type: object
             x-kubernetes-validations:
             - message: 'hostedZoneId is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.hostedZoneId) == has(oldSelf.hostedZoneId)
+            - message: one of hostedZoneId or hostedZoneRef is required
+              rule: has(self.hostedZoneId) || has(self.hostedZoneRef)
+            - message: hostedZoneId and hostedZoneRef cannot both be given
+              rule: '!(has(self.hostedZoneId) && has(self.hostedZoneRef))'
+            - message: 'hostedZoneRef is create-only, as hostedZoneId is: it cannot
+                be added or removed after the resource is made'
+              rule: has(self.hostedZoneRef) == has(oldSelf.hostedZoneRef)
           status:
             properties:
               ackResourceMetadata:

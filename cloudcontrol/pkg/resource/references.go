@@ -129,6 +129,10 @@ func (m *manager) resolve(ctx context.Context, apiReader client.Reader, owner st
 	if !found || val == "" {
 		return "", "", ackerr.ResourceReferenceMissingTargetFieldFor(ref.Kind, namespace, name, ref.Path)
 	}
+	val = strings.TrimPrefix(val, ref.TrimPrefix)
+	if val == "" {
+		return "", "", ackerr.ResourceReferenceMissingTargetFieldFor(ref.Kind, namespace, name, ref.Path)
+	}
 	return val, "", nil
 }
 

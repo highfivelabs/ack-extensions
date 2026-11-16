@@ -7,6 +7,7 @@ package main
 // ACK kinds they reference.
 
 import (
+	ackelbv2apitypes "github.com/aws-controllers-k8s/elbv2-controller/apis/v1alpha1"
 	acklambdaapitypes "github.com/aws-controllers-k8s/lambda-controller/apis/v1alpha1"
 
 	// Permission is added with AddPermission and read with GetPolicy, which
@@ -19,4 +20,6 @@ func init() {
 	// functionRef names ACK's own Function (lambda.services.k8s.aws), read
 	// through the manager's client.
 	_ = acklambdaapitypes.AddToScheme(scheme)
+	// targetGroupRef names ACK's elbv2 TargetGroup (elbv2.services.k8s.aws).
+	_ = ackelbv2apitypes.AddToScheme(scheme)
 }
