@@ -36,20 +36,43 @@ func scalableTargetFixture(t *testing.T, ctx context.Context, env *harness.Env) 
 	if _, err := e.CreateCluster(ctx, &ecs.CreateClusterInput{ClusterName: aws.String("app")}); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := e.RegisterTaskDefinition(ctx, &ecs.RegisterTaskDefinitionInput{
+	// The cluster, service, task definition and scalable target are
+	// deleted after the test: on a live run nothing else would (live run
+	// ackx-11160302-80c8 left them, and the next run's CreateService was
+	// refused as not idempotent).
+	cleanupLog(t, "ECS cluster app", func() error {
+		var err error
+		for i := 0; i < 12; i++ { // the service drains first
+			if _, err = e.DeleteCluster(ctx, &ecs.DeleteClusterInput{Cluster: aws.String("app")}); err == nil {
+				return nil
+			}
+			time.Sleep(5 * time.Second)
+		}
+		return err
+	})
+	td, err := e.RegisterTaskDefinition(ctx, &ecs.RegisterTaskDefinitionInput{
 		Family: aws.String("web"),
 		ContainerDefinitions: []ecstypes.ContainerDefinition{{
 			Name: aws.String("web"), Image: aws.String("public.ecr.aws/nginx/nginx:stable"), Memory: aws.Int32(128),
 		}},
-	}); err != nil {
+	})
+	if err != nil {
 		t.Fatal(err)
 	}
+	cleanupLog(t, "ECS task definition web", func() error {
+		_, err := e.DeregisterTaskDefinition(ctx, &ecs.DeregisterTaskDefinitionInput{TaskDefinition: td.TaskDefinition.TaskDefinitionArn})
+		return err
+	})
 	if _, err := e.CreateService(ctx, &ecs.CreateServiceInput{
 		Cluster: aws.String("app"), ServiceName: aws.String("web"), TaskDefinition: aws.String("web"),
 		DesiredCount: aws.Int32(0), LaunchType: ecstypes.LaunchTypeEc2,
 	}); err != nil {
 		t.Fatal(err)
 	}
+	cleanupLog(t, "ECS service web", func() error {
+		_, err := e.DeleteService(ctx, &ecs.DeleteServiceInput{Cluster: aws.String("app"), Service: aws.String("web"), Force: aws.Bool(true)})
+		return err
+	})
 	if _, err := aas.NewFromConfig(env.AWS).RegisterScalableTarget(ctx, &aas.RegisterScalableTargetInput{
 		ServiceNamespace: aastypes.ServiceNamespaceEcs, ResourceId: aws.String(ecsService),
 		ScalableDimension: aastypes.ScalableDimensionECSServiceDesiredCount,
@@ -57,6 +80,13 @@ func scalableTargetFixture(t *testing.T, ctx context.Context, env *harness.Env) 
 	}); err != nil {
 		t.Fatal(err)
 	}
+	cleanupLog(t, "scalable target "+ecsService, func() error {
+		_, err := aas.NewFromConfig(env.AWS).DeregisterScalableTarget(ctx, &aas.DeregisterScalableTargetInput{
+			ServiceNamespace: aastypes.ServiceNamespaceEcs, ResourceId: aws.String(ecsService),
+			ScalableDimension: aastypes.ScalableDimensionECSServiceDesiredCount,
+		})
+		return err
+	})
 }
 
 func cloudAppScheduledAction(ctx context.Context, c *aas.Client, name string) (*aastypes.ScheduledAction, error) {

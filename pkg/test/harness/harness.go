@@ -75,6 +75,9 @@ type Env struct {
 // run's tag on everything they make).
 var Live func(t *testing.T) (url, account string, args []string)
 
+// LiveSlowdown is how much longer Eventually waits on a live run.
+const LiveSlowdown = 5
+
 // IsLive reports whether this is a live run (ACK_TEST_BACKEND=live).
 func IsLive() bool { return os.Getenv("ACK_TEST_BACKEND") == "live" }
 
@@ -365,9 +368,15 @@ func runController(t *testing.T, bin, kubeconfig string, endpoint fakeaws.Endpoi
 	return sb
 }
 
-// Eventually polls f until it returns nil or the timeout passes.
+// Eventually polls f until it returns nil or the timeout passes. On a live
+// run the timeout is LiveSlowdown times longer: real AWS takes minutes
+// where moto answers at once (a VPN gateway's detach, live run
+// ackx-11160326-b656).
 func Eventually(t *testing.T, timeout time.Duration, what string, f func() error) {
 	t.Helper()
+	if IsLive() {
+		timeout *= LiveSlowdown
+	}
 	deadline := time.Now().Add(timeout)
 	var last error
 	for time.Now().Before(deadline) {

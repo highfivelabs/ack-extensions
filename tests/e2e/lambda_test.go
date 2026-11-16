@@ -67,17 +67,29 @@ func lambdaFixture(t *testing.T, ctx context.Context, env *harness.Env, cloud *l
 	if err != nil {
 		t.Fatal(err)
 	}
+	cleanupLog(t, "role app-fn", func() error {
+		_, err := iam.NewFromConfig(env.AWS).DeleteRole(ctx, &iam.DeleteRoleInput{RoleName: aws.String("app-fn")})
+		return err
+	})
 	var code bytes.Buffer
 	zw := zip.NewWriter(&code)
 	w, _ := zw.Create("index.py")
 	_, _ = w.Write([]byte("def handler(event, context):\n    return 1\n"))
 	_ = zw.Close()
-	if _, err := cloud.CreateFunction(ctx, &lambda.CreateFunctionInput{
-		FunctionName: aws.String("app"), Runtime: lambdatypes.RuntimePython312, Role: role.Role.Arn,
-		Handler: aws.String("index.handler"), Code: &lambdatypes.FunctionCode{ZipFile: code.Bytes()},
-	}); err != nil {
-		t.Fatal(err)
-	}
+	// A new role reaches Lambda some seconds after IAM made it: until then
+	// CreateFunction answers that Lambda cannot assume it (live run
+	// ackx-11160339-2424).
+	harness.Eventually(t, 60*time.Second, "function app made", func() error {
+		_, err := cloud.CreateFunction(ctx, &lambda.CreateFunctionInput{
+			FunctionName: aws.String("app"), Runtime: lambdatypes.RuntimePython312, Role: role.Role.Arn,
+			Handler: aws.String("index.handler"), Code: &lambdatypes.FunctionCode{ZipFile: code.Bytes()},
+		})
+		return err
+	})
+	cleanupLog(t, "function app", func() error {
+		_, err := cloud.DeleteFunction(ctx, &lambda.DeleteFunctionInput{FunctionName: aws.String("app")})
+		return err
+	})
 	v, err := cloud.PublishVersion(ctx, &lambda.PublishVersionInput{FunctionName: aws.String("app")})
 	if err != nil {
 		t.Fatal(err)

@@ -42,6 +42,7 @@ func TestSSHPublicKey(t *testing.T) {
 	if _, err := cloud.CreateUser(ctx, &iam.CreateUserInput{UserName: aws.String("erin")}); err != nil {
 		t.Fatal(err)
 	}
+	cleanupLog(t, "user erin", func() error { return deleteIAMUser(ctx, cloud, "erin") })
 
 	waitSynced := func(t *testing.T, obj *iamv1.SSHPublicKey) *iamv1.SSHPublicKey {
 		t.Helper()

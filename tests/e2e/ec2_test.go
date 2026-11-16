@@ -801,12 +801,17 @@ func TestVolumeAttachment(t *testing.T) {
 // deleteVPCs deletes VPCs a test made with the SDK (fixtures no object
 // owns): on a live run nothing else deletes them, and the account allows
 // five VPCs per region (live run ackx-11160252-142c: VpcLimitExceeded).
-// A VPC whose gateway is still detaching is tried again for a minute.
+// A VPC whose gateway is still detaching is tried again for a minute
+// (five on a live run).
 func deleteVPCs(t *testing.T, ctx context.Context, cloud *ec2.Client, ids ...string) {
 	t.Helper()
 	for _, id := range ids {
 		var err error
-		for i := 0; i < 12; i++ {
+		tries := 12
+		if harness.IsLive() {
+			tries *= harness.LiveSlowdown
+		}
+		for i := 0; i < tries; i++ {
 			if _, err = cloud.DeleteVpc(ctx, &ec2.DeleteVpcInput{VpcId: aws.String(id)}); err == nil {
 				break
 			}

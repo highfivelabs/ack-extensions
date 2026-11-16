@@ -53,11 +53,13 @@ func TestUserGroupMembership(t *testing.T) {
 		if _, err := cloud.CreateUser(ctx, &iam.CreateUserInput{UserName: aws.String(u)}); err != nil {
 			t.Fatal(err)
 		}
+		cleanupLog(t, "user "+u, func() error { return deleteIAMUser(ctx, cloud, u) })
 	}
 	for _, g := range []string{"dev", "ops", "oncall", "audit"} {
 		if _, err := cloud.CreateGroup(ctx, &iam.CreateGroupInput{GroupName: aws.String(g)}); err != nil {
 			t.Fatal(err)
 		}
+		cleanupLog(t, "group "+g, func() error { return deleteIAMGroup(ctx, cloud, g) })
 	}
 	// alice is in audit through something else, not this object.
 	if _, err := cloud.AddUserToGroup(ctx, &iam.AddUserToGroupInput{UserName: aws.String("alice"), GroupName: aws.String("audit")}); err != nil {
