@@ -9,7 +9,10 @@ resources:
   - bases/ec2.aws.hfl.dev_customergateways.yaml
   - bases/ec2.aws.hfl.dev_networkinterfacepermissions.yaml
   - bases/ec2.aws.hfl.dev_resourcetags.yaml
+  - bases/ec2.aws.hfl.dev_defaultnetworkacls.yaml
+  - bases/ec2.aws.hfl.dev_defaultroutetables.yaml
   - bases/ec2.aws.hfl.dev_defaultsecuritygroups.yaml
+  - bases/ec2.aws.hfl.dev_defaultvpcs.yaml
   - bases/ec2.aws.hfl.dev_volumeattachments.yaml
   - bases/ec2.aws.hfl.dev_volumes.yaml
   - bases/ec2.aws.hfl.dev_vpngateways.yaml

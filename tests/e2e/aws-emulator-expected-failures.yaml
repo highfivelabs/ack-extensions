@@ -59,3 +59,6 @@ expected:
   - test: TestOrganizationsAccountPlacement
     missing: Organizations CreateAccount (a scaffold)
     doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions
+  - test: TestDefaultNetworkACL
+    missing: EC2 CreateTags on a network ACL (InvalidNetworkAclID.NotFound for the default ACL DescribeNetworkAcls returned)
+    doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions

@@ -365,6 +365,15 @@ the largest gap (five tests). Until they land, moto stays the test of
 record for these 14 (`task check`), and the emulator run is the one to
 read for the 20 it passes.
 
+A fifteenth, added 2026-11-15 with the `aws_default_*` kinds (ACKQ16-1),
+is kept under this heading so the expected-failures list's links hold:
+
+| Test | What the emulator lacks (1.0.338) | Its issue file | Contribution |
+| --- | --- | --- | --- |
+| `TestDefaultNetworkACL` | EC2 `CreateTags` on a network ACL: `InvalidNetworkAclID.NotFound` for the default ACL that `DescribeNetworkAcls` just returned (moto and AWS tag it) | not looked for | report and implement tags on network ACLs |
+
+`TestDefaultRouteTable` and `TestDefaultVPC` pass on the emulator.
+
 ## The operator end to end
 
 Not run. `task operator-e2e` runs moto as a pinned image in the kind

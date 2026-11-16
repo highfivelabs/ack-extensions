@@ -24,6 +24,13 @@ import (
 	// found by the VPC and never made or deleted: no Create/Delete pair
 	// the generator reads.
 	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/default_security_group"
+
+	// DefaultNetworkACL, DefaultRouteTable and DefaultVPC take over a VPC's
+	// default network ACL and main route table, and the region's default
+	// VPC, in the same way.
+	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/default_network_acl"
+	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/default_route_table"
+	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/default_vpc"
 )
 
 func init() {

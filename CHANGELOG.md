@@ -17,6 +17,13 @@ design and the reasons are in `docs/plan.md`.
   bucket. `s3.aws.hfl.dev/force-destroy` works on it as on ACK's. The s3
   manager now needs the S3 actions of a bucket's configuration
   (`task ack:iam`).
+- **`ec2.aws.hfl.dev` `DefaultNetworkACL`, `DefaultRouteTable` and
+  `DefaultVPC`** (ACKQ16-1; Terraform's `aws_default_network_acl`,
+  `aws_default_route_table`, `aws_default_vpc`): take over a VPC's default
+  network ACL and main route table (by `vpcID` or `vpcRef`) and the
+  region's default VPC (no reference). Entries, subnet associations,
+  routes, propagating VPN gateways, DNS settings and tags become the
+  spec's, exclusively; nothing is created or deleted.
 - **`ec2.aws.hfl.dev` `DefaultSecurityGroup`** (open question 16;
   Terraform's `aws_default_security_group`): takes over a VPC's default
   security group, found by `vpcID` or `vpcRef` (ACK's `VPC`). Its rules
