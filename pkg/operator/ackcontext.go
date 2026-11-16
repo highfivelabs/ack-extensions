@@ -50,11 +50,19 @@ import (
 //     (config/rbac), and a leader-election Role and RoleBinding, so its
 //     Kubernetes rights hold there only.
 //
+// And for ACK's own controller of the service (docs/plan.md, section 7.7;
+// decided 2026-11-15, open question 18): the same three things, named
+// ack-<service>-controller-<environment>, running ACK's image at the pin
+// and bound to ACK's own ClusterRole (config/ack-controllers), so the
+// environment's ACK kinds are reconciled as the environment's role too.
+// Each of the two runs when the operator has its image, its kinds are
+// installed, and the context's kinds (if any) name one of them.
+//
 // It refuses, with the reason in status, a controller that is unknown,
 // organization-scoped (the Organizations kinds keep their own install,
-// docs/plan.md section 7.5), or whose kinds in that namespace are already
-// served by a manager beside an ACK controller that watches it (two
-// managers, as two identities, would reconcile the same objects).
+// docs/plan.md section 7.5), or whose namespace an ACK controller
+// installed some other way already watches (two controllers, as two
+// identities, would reconcile the same objects).
 const (
 	// componentACK marks what an ACKContext made, so the beside side's
 	// clean-up and the Cloud Control side leave it alone.
@@ -97,16 +105,65 @@ func DiscoveryKinds(dc discovery.DiscoveryInterface) KindsFunc {
 	}
 }
 
+// DiscoveryACKKinds reads the kinds of ACK's own controller of a service
+// from the API server: the kinds of the CRDs installed in
+// <service>.services.k8s.aws, at the group's preferred version.
+func DiscoveryACKKinds(dc discovery.DiscoveryInterface) KindsFunc {
+	return func(_ context.Context, service string) ([]string, error) {
+		groups, err := dc.ServerGroups()
+		if err != nil {
+			return nil, err
+		}
+		for _, g := range groups.Groups {
+			if g.Name != ACKGroup(service) {
+				continue
+			}
+			rl, err := dc.ServerResourcesForGroupVersion(g.PreferredVersion.GroupVersion)
+			if apierrors.IsNotFound(err) {
+				return nil, nil
+			}
+			if err != nil {
+				return nil, err
+			}
+			var out []string
+			for _, r := range rl.APIResources {
+				if !strings.Contains(r.Name, "/") {
+					out = append(out, r.Kind)
+				}
+			}
+			sort.Strings(out)
+			return out, nil
+		}
+		return nil, nil
+	}
+}
+
+// ACKGroup is the API group of ACK's own kinds of a service.
+func ACKGroup(service string) string { return service + ".services.k8s.aws" }
+
+// ACKControllerRole is the ClusterRole of ACK's own controller of a
+// service, as config/ack-controllers installs it: ACK's
+// ack-<service>-controller, renamed so it never fights the one ACK's chart
+// makes.
+func ACKControllerRole(service string) string { return Name + "-ack-" + service + "-controller" }
+
 // ACKContextReconciler runs, for each namespace with an ACKContext, one
-// manager per controller the context enables.
+// manager per controller the context enables, and ACK's own controller of
+// each of those services.
 type ACKContextReconciler struct {
 	Client client.Client
 	// Namespace is the operator's own, where the managers run.
 	Namespace string
 	// Images is the manager image of each service (Options.Images).
 	Images map[string]string
+	// ACKImages is ACK's own controller image of each service, at the
+	// version UPSTREAM.md pins (ACK_IMAGE_<SERVICE>; docs/plan.md 7.7).
+	ACKImages map[string]string
 	// Kinds says which kinds a service serves (DiscoveryKinds).
 	Kinds KindsFunc
+	// ACKKinds says which kinds ACK's controller of a service serves
+	// (DiscoveryACKKinds); nil: none.
+	ACKKinds KindsFunc
 	// FakeAWS, for tests and kind only, points every manager at a fake AWS,
 	// set from the operator's flag, never from a context.
 	FakeAWS *FakeAWS
@@ -204,14 +261,18 @@ func WatchNamespaces(d *appsv1.Deployment) (all bool, namespaces map[string]bool
 	return false, namespaces
 }
 
-// ClaimedBy is the ACK controller Deployment (namespace/name) beside which
-// a manager of service runs that watches namespace env, or "". deps are
-// every Deployment in the cluster; images the operator's manager images.
-func ClaimedBy(deps []appsv1.Deployment, images map[string]string, service, env string) string {
+// ClaimedBy is the ACK controller Deployment (namespace/name), installed
+// other than by a context (ACK's chart, or aws.hfl.dev/ack-service), that
+// watches namespace env and serves service there, itself or through the
+// manager that runs beside it (Beside), or "". deps are every Deployment in
+// the cluster. Since ACK's own controller also runs per context
+// (docs/plan.md, section 7.7), ACK's controller alone is the overlap: it
+// already reconciles the service's ACK kinds in env, as another identity.
+func ClaimedBy(deps []appsv1.Deployment, service, env string) string {
 	for i := range deps {
 		d := &deps[i]
 		ack := ACKService(d)
-		if ack == "" || !d.DeletionTimestamp.IsZero() || !slices.Contains(servicesBeside(images, ack), service) {
+		if ack == "" || !d.DeletionTimestamp.IsZero() || (ack != service && Beside[service] != ack) {
 			continue
 		}
 		if all, nss := WatchNamespaces(d); all || nss[env] {
@@ -221,15 +282,37 @@ func ClaimedBy(deps []appsv1.Deployment, images map[string]string, service, env 
 	return ""
 }
 
-func ackLabels(service, env string) map[string]string {
+// LabelController on what a context made says which of a service's two
+// controllers it is for: corev1alpha1.ControllerACK or ControllerExtensions.
+// Objects made before ACK's controllers ran per context have none; they are
+// ours.
+const LabelController = "aws.hfl.dev/controller"
+
+func ackLabels(service, env, controller string) map[string]string {
+	name := managerName(service)
+	if controller == corev1alpha1.ControllerACK {
+		name = "ack-" + service + "-controller"
+	}
 	return map[string]string{
 		LabelManagedBy:           managedBy,
 		LabelComponent:           componentACK,
 		LabelEnvironment:         env,
 		LabelService:             service,
-		"app.kubernetes.io/name": managerName(service),
+		LabelController:          controller,
+		"app.kubernetes.io/name": name,
 	}
 }
+
+// controllerOf is the controller an object a context made is for.
+func controllerOf(o client.Object) string {
+	if c := o.GetLabels()[LabelController]; c != "" {
+		return c
+	}
+	return corev1alpha1.ControllerExtensions
+}
+
+// side is one of a service's controllers in a context.
+func side(service, controller string) string { return service + "/" + controller }
 
 func ackOwner(ac *corev1alpha1.ACKContext) []metav1.OwnerReference {
 	return []metav1.OwnerReference{*metav1.NewControllerRef(ac, corev1alpha1.GroupVersion.WithKind("ACKContext"))}
@@ -240,6 +323,9 @@ func ackOwner(ac *corev1alpha1.ACKContext) []metav1.OwnerReference {
 // leader-election Role and RoleBinding. Not the beside manager's names, so
 // an ACK controller installed in the environment's namespace keeps its own.
 func environmentBinding(service string) string { return Name + "-" + service + "-environment" }
+
+// ackEnvironmentBinding is environmentBinding for ACK's own controller.
+func ackEnvironmentBinding(service string) string { return "ack-" + service + "-controller-environment" }
 
 // ManagerArgsFor is a manager's command line for a context: ACK's runtime
 // flags, scoped to the environment's namespace; --reconcile-resources only
@@ -271,16 +357,38 @@ func ManagerArgsFor(ac *corev1alpha1.ACKContext, kinds []string) []string {
 // RoleBinding and leader-election Role and RoleBinding in the context's.
 // kinds are the kinds the context names (empty: every kind).
 func (r *ACKContextReconciler) PlanController(ac *corev1alpha1.ACKContext, service string, kinds []string) []client.Object {
+	return r.plan(ac, service, corev1alpha1.ControllerExtensions, kinds)
+}
+
+// PlanACKController is PlanController for ACK's own controller of the
+// service: its image at the pin, run as ACK's chart runs it, bound to
+// ACK's ClusterRole; kinds are ACK's kinds the context names (empty:
+// every kind).
+func (r *ACKContextReconciler) PlanACKController(ac *corev1alpha1.ACKContext, service string, kinds []string) []client.Object {
+	return r.plan(ac, service, corev1alpha1.ControllerACK, kinds)
+}
+
+func (r *ACKContextReconciler) plan(ac *corev1alpha1.ACKContext, service, controller string, kinds []string) []client.Object {
 	env, sys := ac.Namespace, r.systemNamespace()
-	name := corev1alpha1.ManagerName(service, env)
-	lbl := ackLabels(service, env)
+	name, binding, role, image := corev1alpha1.ManagerName(service, env), environmentBinding(service), ManagerRole(service), r.Images[service]
+	// Ours keep the pod labels and selector they had (a selector cannot
+	// change); ACK's share none of the keys ours select on, so neither
+	// Deployment's selector matches the other's pods.
 	podLabels := map[string]string{LabelComponent: componentACK, LabelEnvironment: env, LabelService: service}
+	var command []string
+	if controller == corev1alpha1.ControllerACK {
+		name, binding, role, image = corev1alpha1.ACKControllerName(service, env), ackEnvironmentBinding(service), ACKControllerRole(service), r.ACKImages[service]
+		podLabels = map[string]string{"app.kubernetes.io/name": "ack-" + service + "-controller", LabelEnvironment: env, LabelController: controller}
+		// As ACK's chart runs it.
+		command = []string{"./bin/controller"}
+	}
+	lbl := ackLabels(service, env, controller)
 	sa := []rbacv1.Subject{{Kind: rbacv1.ServiceAccountKind, Name: name, Namespace: sys}}
-	le := environmentBinding(service) + "-leader-election"
+	le := binding + "-leader-election"
 	return []client.Object{
 		&rbacv1.RoleBinding{
-			ObjectMeta: metav1.ObjectMeta{Name: environmentBinding(service), Namespace: env, Labels: lbl, OwnerReferences: ackOwner(ac)},
-			RoleRef:    rbacv1.RoleRef{APIGroup: rbacv1.GroupName, Kind: "ClusterRole", Name: ManagerRole(service)},
+			ObjectMeta: metav1.ObjectMeta{Name: binding, Namespace: env, Labels: lbl, OwnerReferences: ackOwner(ac)},
+			RoleRef:    rbacv1.RoleRef{APIGroup: rbacv1.GroupName, Kind: "ClusterRole", Name: role},
 			Subjects:   sa,
 		},
 		&rbacv1.Role{
@@ -317,9 +425,10 @@ func (r *ACKContextReconciler) PlanController(ac *corev1alpha1.ACKContext, servi
 							SeccompProfile: &corev1.SeccompProfile{Type: corev1.SeccompProfileTypeRuntimeDefault},
 						},
 						Containers: []corev1.Container{{
-							Name:  "manager",
-							Image: r.Images[service],
-							Args:  ManagerArgsFor(ac, kinds),
+							Name:    "manager",
+							Image:   image,
+							Command: command,
+							Args:    ManagerArgsFor(ac, kinds),
 							// ACK's runtime looks for its own ConfigMaps (CARM,
 							// off here) in this namespace.
 							Env:   []corev1.EnvVar{{Name: "ACK_SYSTEM_NAMESPACE", Value: env}},
@@ -343,8 +452,9 @@ func (r *ACKContextReconciler) PlanController(ac *corev1alpha1.ACKContext, servi
 	}
 }
 
-// removeManagers deletes what a context made for the services not in
-// keep: the managers and ServiceAccounts in the operator's namespace, and
+// removeManagers deletes what a context made for the controllers not in
+// keep (side(service, controller)): the managers and ServiceAccounts in
+// the operator's namespace, and
 // the RoleBindings and Roles in the environment's (on the context's
 // deletion those also go by their owner reference).
 func (r *ACKContextReconciler) removeManagers(ctx context.Context, env string, keep map[string]bool) error {
@@ -367,7 +477,7 @@ func (r *ACKContextReconciler) removeManagers(ctx context.Context, env string, k
 			return err
 		}
 		for _, o := range items {
-			if keep[o.GetLabels()[LabelService]] {
+			if keep[side(o.GetLabels()[LabelService], controllerOf(o))] {
 				continue
 			}
 			if err := r.Client.Delete(ctx, o, client.PropagationPolicy(metav1.DeletePropagationBackground)); client.IgnoreNotFound(err) != nil {
@@ -428,64 +538,106 @@ func (r *ACKContextReconciler) Reconcile(ctx context.Context, req reconcile.Requ
 			refuse(svc, ReasonUnknownService, "Cloud Control kinds are enabled by a CloudControlContext, not an ACKContext")
 			continue
 		}
-		if _, ok := r.Images[svc]; !ok {
-			refuse(svc, ReasonUnknownService, fmt.Sprintf("the operator has no manager for service %q", svc))
+		// The two controllers of the service: ours and ACK's own, each
+		// with its image and the kinds installed for it.
+		type route struct {
+			controller, image, group string
+			kinds                    KindsFunc
+			served, named            []string
+		}
+		routes := []*route{
+			{controller: corev1alpha1.ControllerExtensions, image: r.Images[svc], group: svc + ".aws.hfl.dev", kinds: r.Kinds},
+			{controller: corev1alpha1.ControllerACK, image: r.ACKImages[svc], group: ACKGroup(svc), kinds: r.ACKKinds},
+		}
+		var readErr bool
+		var installed []string
+		for _, rt := range routes {
+			if rt.image == "" || rt.kinds == nil {
+				continue
+			}
+			served, err := rt.kinds(ctx, svc)
+			if err != nil {
+				// Leave whatever runs alone until the kinds can be read.
+				readErr = true
+				errs = append(errs, fmt.Sprintf("%s: reading the kinds of %s: %v", svc, rt.group, err))
+				continue
+			}
+			rt.served = served
+			installed = append(installed, served...)
+		}
+		if readErr {
+			keep[side(svc, corev1alpha1.ControllerExtensions)], keep[side(svc, corev1alpha1.ControllerACK)] = true, true
 			continue
 		}
-		served, err := r.Kinds(ctx, svc)
-		if err != nil {
-			// Leave whatever runs alone until the kinds can be read.
-			keep[svc] = true
-			errs = append(errs, fmt.Sprintf("%s: reading its kinds: %v", svc, err))
+		if len(installed) == 0 {
+			if r.Images[svc] == "" && r.ACKImages[svc] == "" {
+				refuse(svc, ReasonUnknownService, fmt.Sprintf("the operator has no manager and no ACK controller for service %q", svc))
+			} else {
+				refuse(svc, ReasonUnknownService, fmt.Sprintf("no kinds of %s.aws.hfl.dev or %s are installed", svc, ACKGroup(svc)))
+			}
 			continue
 		}
-		if len(served) == 0 {
-			refuse(svc, ReasonUnknownService, fmt.Sprintf("no kinds of %s.aws.hfl.dev are installed", svc))
-			continue
-		}
+		slices.Sort(installed)
+		installed = slices.Compact(installed)
 		var unknown []string
 		for _, k := range ctl.Kinds {
-			if !slices.Contains(served, k) {
+			if !slices.Contains(installed, k) {
 				unknown = append(unknown, k)
 			}
 		}
 		if len(unknown) > 0 {
 			// Leave whatever runs alone until the context is fixed.
-			keep[svc] = true
+			keep[side(svc, corev1alpha1.ControllerExtensions)], keep[side(svc, corev1alpha1.ControllerACK)] = true, true
 			sort.Strings(unknown)
-			refuse(svc, ReasonUnknownKinds, fmt.Sprintf("no such %s kind: %s (served: %s)", svc, strings.Join(unknown, ", "), strings.Join(served, ", ")))
+			refuse(svc, ReasonUnknownKinds, fmt.Sprintf("no such %s kind: %s (served: %s)", svc, strings.Join(unknown, ", "), strings.Join(installed, ", ")))
 			continue
 		}
-		if by := ClaimedBy(deps.Items, r.Images, svc, env); by != "" {
-			refuse(svc, ReasonNamespaceClaimed, fmt.Sprintf("namespace %s is already served by the %s manager beside ACK's controller %s, which watches it; two managers would reconcile the same objects as two identities. Narrow that controller's --watch-namespace (ACK's chart: watchNamespace) or leave %s out of this context", env, svc, by, svc))
+		if by := ClaimedBy(deps.Items, svc, env); by != "" {
+			refuse(svc, ReasonNamespaceClaimed, fmt.Sprintf("namespace %s is already watched by ACK's %s controller %s, installed outside this context; a second controller would reconcile the same objects as another identity. Narrow that controller's --watch-namespace (ACK's chart: watchNamespace) or leave %s out of this context", env, svc, by, svc))
 			continue
 		}
-		kinds := slices.Clone(ctl.Kinds)
-		sort.Strings(kinds)
-		var errsHere []string
-		for _, o := range r.PlanController(&ac, svc, kinds) {
-			if d, ok := o.(*appsv1.Deployment); ok {
-				if err := r.FakeAWS.Fake(&d.Spec.Template.Spec.Containers[0]); err != nil {
-					// Refused: nothing that could reach real AWS is made.
-					errsHere = append(errsHere, fmt.Sprintf("Deployment %s/%s: %v", d.Namespace, d.Name, err))
-					continue
+		for _, rt := range routes {
+			if len(rt.served) == 0 {
+				continue
+			}
+			for _, k := range ctl.Kinds {
+				if slices.Contains(rt.served, k) {
+					rt.named = append(rt.named, k)
 				}
 			}
-			if err := applyObject(ctx, r.Client, o); err != nil {
-				errsHere = append(errsHere, fmt.Sprintf("%s %s/%s: %v", kindOf(o), o.GetNamespace(), o.GetName(), err))
+			if len(ctl.Kinds) > 0 && len(rt.named) == 0 {
+				// The context names only the other controller's kinds.
+				continue
 			}
+			sort.Strings(rt.named)
+			plan := r.PlanController(&ac, svc, rt.named)
+			name := corev1alpha1.ManagerName(svc, env)
+			if rt.controller == corev1alpha1.ControllerACK {
+				plan = r.PlanACKController(&ac, svc, rt.named)
+				name = corev1alpha1.ACKControllerName(svc, env)
+			}
+			for _, o := range plan {
+				if d, ok := o.(*appsv1.Deployment); ok {
+					if err := r.FakeAWS.Fake(&d.Spec.Template.Spec.Containers[0]); err != nil {
+						// Refused: nothing that could reach real AWS is made.
+						errs = append(errs, fmt.Sprintf("Deployment %s/%s: %v", d.Namespace, d.Name, err))
+						continue
+					}
+				}
+				if err := applyObject(ctx, r.Client, o); err != nil {
+					errs = append(errs, fmt.Sprintf("%s %s/%s: %v", kindOf(o), o.GetNamespace(), o.GetName(), err))
+				}
+			}
+			keep[side(svc, rt.controller)] = true
+			shown := rt.named
+			if len(shown) == 0 {
+				shown = rt.served
+			}
+			status.Managers = append(status.Managers, corev1alpha1.ACKManager{Service: svc, Controller: rt.controller, ServiceAccount: sys + "/" + name, Kinds: shown})
+			status.PodIdentityAssociations = append(status.PodIdentityAssociations, corev1alpha1.PodIdentityAssociation{
+				Namespace: sys, ServiceAccount: name, RoleARN: ac.Spec.RoleARN,
+			})
 		}
-		errs = append(errs, errsHere...)
-		keep[svc] = true
-		name := corev1alpha1.ManagerName(svc, env)
-		shown := kinds
-		if len(shown) == 0 {
-			shown = served
-		}
-		status.Managers = append(status.Managers, corev1alpha1.ACKManager{Service: svc, ServiceAccount: sys + "/" + name, Kinds: shown})
-		status.PodIdentityAssociations = append(status.PodIdentityAssociations, corev1alpha1.PodIdentityAssociation{
-			Namespace: sys, ServiceAccount: name, RoleARN: ac.Spec.RoleARN,
-		})
 	}
 	if err := r.removeManagers(ctx, env, keep); err != nil {
 		errs = append(errs, err.Error())
@@ -504,9 +656,10 @@ func (r *ACKContextReconciler) Reconcile(ctx context.Context, req reconcile.Requ
 		var waiting []string
 		for _, m := range status.Managers {
 			var dep appsv1.Deployment
-			err := r.Client.Get(ctx, types.NamespacedName{Namespace: sys, Name: corev1alpha1.ManagerName(m.Service, env)}, &dep)
+			_, name, _ := strings.Cut(m.ServiceAccount, "/")
+			err := r.Client.Get(ctx, types.NamespacedName{Namespace: sys, Name: name}, &dep)
 			if err != nil || dep.Status.ObservedGeneration < dep.Generation || dep.Status.AvailableReplicas < 1 || dep.Status.UpdatedReplicas < 1 {
-				waiting = append(waiting, m.Service)
+				waiting = append(waiting, name)
 			}
 		}
 		if len(waiting) > 0 {

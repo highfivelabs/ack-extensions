@@ -70,24 +70,29 @@ spec:
                   Controllers are the services whose managers run for this namespace,
                   one manager each.
                 items:
-                  description: ACKController enables one service's manager in the
-                    namespace.
+                  description: |-
+                    ACKController enables one service's controllers in the namespace: ours
+                    (the kinds in <service>.aws.hfl.dev) and ACK's own (the kinds in
+                    <service>.services.k8s.aws), each where the operator has its image and
+                    its kinds are installed (docs/plan.md, section 7.7).
                   properties:
                     kinds:
                       description: |-
-                        Kinds are the kinds of the service the manager serves (OptionGroup,
-                        DBProxyTarget). Empty: every kind of the service. An object of a
-                        kind not listed is left alone, and the role need not carry its
-                        permissions.
+                        Kinds are the kinds of the service to serve, ours or ACK's
+                        (OptionGroup, DBInstance). Empty: every kind of the service, on both
+                        controllers. A controller none of whose kinds is listed does not
+                        run; an object of a kind not listed is left alone, and the role need
+                        not carry its permissions.
                       items:
                         type: string
                       type: array
                       x-kubernetes-list-type: set
                     service:
                       description: |-
-                        Service is the service, as in the API group <service>.aws.hfl.dev:
-                        iam, rds, scheduler. organizations is refused: it keeps an
-                        organization-scoped install of its own (docs/plan.md, section 7.5).
+                        Service is the service, as in the API groups <service>.aws.hfl.dev
+                        and <service>.services.k8s.aws: iam, rds, scheduler. organizations is
+                        refused: it keeps an organization-scoped install of its own
+                        (docs/plan.md, section 7.5).
                       pattern: ^[a-z0-9]+$
                       type: string
                   required:
@@ -200,6 +205,11 @@ spec:
                 items:
                   description: ACKManager is a manager the operator runs for the context.
                   properties:
+                    controller:
+                      description: |-
+                        Controller is ack (ACK's own service controller) or ack-extensions
+                        (ours).
+                      type: string
                     kinds:
                       description: Kinds are the kinds it serves.
                       items:

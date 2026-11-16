@@ -59,18 +59,23 @@ type ACKContextSpec struct {
 	DeletionPolicy string `json:"deletionPolicy,omitempty"`
 }
 
-// ACKController enables one service's manager in the namespace.
+// ACKController enables one service's controllers in the namespace: ours
+// (the kinds in <service>.aws.hfl.dev) and ACK's own (the kinds in
+// <service>.services.k8s.aws), each where the operator has its image and
+// its kinds are installed (docs/plan.md, section 7.7).
 type ACKController struct {
-	// Service is the service, as in the API group <service>.aws.hfl.dev:
-	// iam, rds, scheduler. organizations is refused: it keeps an
-	// organization-scoped install of its own (docs/plan.md, section 7.5).
+	// Service is the service, as in the API groups <service>.aws.hfl.dev
+	// and <service>.services.k8s.aws: iam, rds, scheduler. organizations is
+	// refused: it keeps an organization-scoped install of its own
+	// (docs/plan.md, section 7.5).
 	// +kubebuilder:validation:Pattern=`^[a-z0-9]+$`
 	Service string `json:"service"`
 
-	// Kinds are the kinds of the service the manager serves (OptionGroup,
-	// DBProxyTarget). Empty: every kind of the service. An object of a
-	// kind not listed is left alone, and the role need not carry its
-	// permissions.
+	// Kinds are the kinds of the service to serve, ours or ACK's
+	// (OptionGroup, DBInstance). Empty: every kind of the service, on both
+	// controllers. A controller none of whose kinds is listed does not
+	// run; an object of a kind not listed is left alone, and the role need
+	// not carry its permissions.
 	// +optional
 	// +listType=set
 	Kinds []string `json:"kinds,omitempty"`
@@ -84,10 +89,31 @@ type PodIdentityAssociation struct {
 	RoleARN        string `json:"roleARN"`
 }
 
+// Controller values of ACKManager: which of a service's two controllers.
+const (
+	// ControllerACK is ACK's own service controller, at the version
+	// UPSTREAM.md pins (docs/plan.md, section 7.7).
+	ControllerACK = "ack"
+	// ControllerExtensions is ours, the ACK-generated manager of the
+	// service's kinds in <service>.aws.hfl.dev.
+	ControllerExtensions = "ack-extensions"
+)
+
+// ACKControllerName names ACK's own controller of one service for one
+// environment: its Deployment and its ServiceAccount, in the operator's
+// namespace, as ManagerName does for ours.
+func ACKControllerName(service, environment string) string {
+	return "ack-" + service + "-controller-" + environment
+}
+
 // ACKManager is a manager the operator runs for the context.
 type ACKManager struct {
 	// Service is the controller's service.
 	Service string `json:"service"`
+	// Controller is ack (ACK's own service controller) or ack-extensions
+	// (ours).
+	// +optional
+	Controller string `json:"controller,omitempty"`
 	// ServiceAccount is the manager's, namespace/name.
 	ServiceAccount string `json:"serviceAccount"`
 	// Kinds are the kinds it serves.
