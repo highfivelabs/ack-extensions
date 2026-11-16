@@ -334,7 +334,8 @@ func TestPermission(t *testing.T) {
 		// As ACK's elbv2-controller leaves it once synced; it does not run here.
 		arn := ackv1alpha1.AWSResourceName(tgARN)
 		account := ackv1alpha1.AWSAccountID(env.Account)
-		tg.Status.ACKResourceMetadata = &ackv1alpha1.ResourceMetadata{ARN: &arn, OwnerAccountID: &account}
+		region := ackv1alpha1.AWSRegion(harness.Region)
+		tg.Status.ACKResourceMetadata = &ackv1alpha1.ResourceMetadata{ARN: &arn, OwnerAccountID: &account, Region: &region}
 		tg.Status.Conditions = []*ackv1alpha1.Condition{{Type: ackv1alpha1.ConditionTypeResourceSynced, Status: corev1.ConditionTrue}}
 		if err := env.Client.Status().Update(ctx, tg); err != nil {
 			t.Fatal(err)
