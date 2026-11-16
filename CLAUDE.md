@@ -37,8 +37,9 @@ itself lives in its own repository and is never changed from here.
   `CloudControlContext`), as that environment's own role through EKS Pod
   Identity (`docs/cloudcontrol.md` section 10). The ACK-generated managers
   run the same way, one per controller per environment (a namespace with
-  an `ACKContext`; `docs/plan.md` section 7.6); the Organizations kinds
-  keep their organization-scoped install (section 7.5).
+  an `ACKContext`; `docs/plan.md` section 7.6), and so does ACK's own
+  controller of each service the context enables (section 7.7); the
+  Organizations kinds keep their organization-scoped install (section 7.5).
 
 ## Adding or changing a kind
 

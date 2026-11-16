@@ -508,10 +508,14 @@ An environment is a namespace. An `ACKContext` named `ack` in it lists
 the controllers (services) the environment uses; for each, the operator
 runs one manager, in `ack-extensions-system`, as the ServiceAccount
 `ack-extensions-<service>-<namespace>`, watching only that namespace and
-holding Kubernetes rights only there. One EKS Pod Identity association
-per manager binds it to the environment's IAM role (decided 2026-11-10: the same
-environment-scoped Pod Identity model as Cloud Control, one manager per
-controller per namespace):
+holding Kubernetes rights only there. It also runs ACK's own controller of
+the service, `ack-<service>-controller-<namespace>`, ACK's image at the
+version `UPSTREAM.md` pins, scoped the same way, so an environment has one
+role and one place that says what it runs (decided 2026-11-15; the twelve
+account-level services pinned; ACK's CRDs come from ACK's charts). One EKS
+Pod Identity association per manager binds it to the environment's IAM
+role (decided 2026-11-10: the same environment-scoped Pod Identity model
+as Cloud Control, one manager per controller per namespace):
 
 ```yaml
 apiVersion: core.aws.hfl.dev/v1alpha1
@@ -522,7 +526,7 @@ spec:
   region: us-west-2
   controllers:
     - service: rds
-      kinds: [OptionGroup, DBProxyTarget]   # optional; empty: every kind of the service
+      kinds: [OptionGroup, DBProxyTarget]   # optional; ours or ACK's; empty: every kind, both controllers
     - service: scheduler
 ```
 
@@ -531,11 +535,13 @@ spec:
 writes the role's permission policies (the actions of the kinds enabled,
 read from the generated code, plus a few curated ones such as
 `iam:PassRole`) and its trust policy (only these managers'
-ServiceAccounts, by Pod Identity's session tags). The operator refuses,
-in `status.refused`, `organizations` (it keeps its own install, below),
-an unknown service or kind, and a service whose kinds in that namespace
-are already served by our manager beside an ACK controller that watches
-it. `docs/plan.md`, section 7.6, has the details.
+ServiceAccounts, by Pod Identity's session tags); for ACK's controllers it
+adds ACK's own recommended policies (`managed-policies.txt`,
+`ack-<service>-inline-policy.json`). The operator refuses, in
+`status.refused`, `organizations` (it keeps its own install, below), an
+unknown service or kind, and a service whose namespace an ACK controller
+installed the classic way already watches. `docs/plan.md`, sections 7.6
+and 7.7, have the details.
 
 ### Beside ACK's controller
 
