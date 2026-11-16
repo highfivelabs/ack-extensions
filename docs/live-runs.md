@@ -156,12 +156,17 @@ adopted by its ARN, not its name: each existing one also carries
 than iamgen measures). The temporary admin credentials went to the
 offload bucket for the run and were deleted after it.
 
-**Not yet in the instance (2026-11-16):** the calls of the default EC2
-kinds merged after the last apply (ACKQ16-1: `DefaultVPC`,
+**Applied a fifth time, 2026-11-16 (HFL-623 follow-ups):** with the
+calls of the default EC2 kinds (ACKQ16-1: `DefaultVPC`,
 `DefaultNetworkACL`, `DefaultRouteTable`; `ec2:CreateDefaultVpc`,
-`ec2:ReplaceNetworkAclEntry` and others) are in `role-policies.yaml` but
-not in the catalog instance. Copy them there and apply it again before
-those kinds' first live run.
+`ec2:ReplaceNetworkAclEntry` and others), their fixtures' clean-up
+(`ec2:DeleteNetworkAcl`) and `s3:PutObjectRetention` (the Bucket
+extension's Object Lock test), from the catalog branch of the follow-up
+PR, the same way (offload run `off-apply-1116064933-4643`; all four
+objects `ACK.ResourceSynced`, each existing policy adopted by its ARN).
+Each policy's default version was then read back with the account's
+admin profile: all three equal the render, statement for statement, each
+attached once. The temporary credentials object was deleted after.
 
 ## The live-test role's policies and the sandbox account's template
 
@@ -334,6 +339,10 @@ policy letting Route 53 write to it, which the test does not make yet. Each is a
 | 2026-11-16 | `ackx-11160402-fec2` | `cf0b4d2` (PR #111) | `$AWS_SANDBOX_ACCOUNT_ID` | SUITE=ack: TestVpnGateway, TestVPNConnection | PASS | FAIL | **EC2 `VPNGateway` passes on real AWS** (677 s: its moves between VPCs wait on real detaches). VPNConnection FAIL again: after VpnGateway, `office-hub` never synced in five minutes and `office-core` (through a transit gateway) neither; it passed alone in `ackx-11160252-142c`. Left behind and deleted by hand: the transit gateway (still attached when the test's clean-up ran) and one VPC |
 | 2026-11-16 | `ackx-11160411-5872` | `fb675a1` (PR #111) | `$AWS_SANDBOX_ACCOUNT_ID` | SUITE=ack: TestPermission, TestBucketExtension | PASS | FAIL | Permission FAIL: real Lambda refused the test's principal (`InvalidParameterValueException: The provided principal was invalid`); the fixture needs a principal real AWS accepts. BucketExtension FAIL: ACK's `DeleteBucket` of `force-bucket-<run>` was refused 409 (not empty) for five minutes: the force-destroy emptying did not empty the versioned bucket on real S3. Needs a look before the extension is called proven. Left behind and deleted by hand: the three buckets of the run (one with five versions) |
 | 2026-11-16 | `ackx-11160415-8b7c` | `fb675a1` (PR #111) | `$AWS_SANDBOX_ACCOUNT_ID` | SUITE=ack: TestOptionGroup | PASS | FAIL | Real RDS kept no options on `app-mysql` (`MARIADB_AUDIT_PLUGIN`, `MEMCACHED`) in 7.5 minutes; MEMCACHED needs settings and a security group on real RDS. The option group was deleted by the test |
+| 2026-11-16 | `ackx-11160729-366f` | `e084e97` (HFL-623 follow-ups) | `$AWS_SANDBOX_ACCOUNT_ID` | SUITE=ack: TestBucketExtension, TestPermission, TestOptionGroup | FAIL | FAIL | **The S3 Bucket extension's force-destroy empties a versioned bucket on real S3** (five versions and delete markers, one multipart upload; ACK's `DeleteBucket` then succeeded). The cause of `ackx-11160411-5872` was ours: every `DeleteObjects` asked to bypass governance retention, which real S3 refuses with `InvalidArgument` on a bucket without Object Lock (moto and the AWS Emulator accept it); the extension now reads the bucket's Object Lock configuration and bypasses only under Object Lock. **Lambda `Permission` passes** (the alias granted to the sandbox account itself: real Lambda refuses an account principal that is no account). **RDS `OptionGroup` passes** (`oracle-se2` 19 with `STATSPACK` and `TIMEZONE_FILE_AUTOUPGRADE`, options that need no settings, port or security group). The new Object Lock subtest failed on moto and on AWS alike: S3 needs `Content-MD5` on a put with Object Lock parameters (fixed in the test). Sweeps clean; the tests deleted their buckets, function, role and option group |
+| 2026-11-16 | `ackx-11160805-57c4` | `8fe266c` (HFL-623 follow-ups) | `$AWS_SANDBOX_ACCOUNT_ID` | SUITE=ack: TestBucketExtension | PASS | PASS | **The S3 Bucket extension passes on real AWS**, every subtest: force-destroy of a versioned bucket (no governance bypass asked), and of an Object Lock bucket holding an object under governance retention (the bypass asked, and the bucket deleted), the retain policy, the annotation removed, a Bucket ACK never made. Sweeps clean. Left behind and deleted by hand: the empty buckets `plain-bucket-*` and `changed-bucket-*` of this run and `ackx-11160729-366f` (the test now deletes them) |
+| 2026-11-16 | `ackx-11160847-4089` | `8fe266c` (HFL-623 follow-ups) | `$AWS_SANDBOX_ACCOUNT_ID` | SUITE=ack: TestDefaultNetworkACL, TestDefaultRouteTable, TestDefaultVPC, TestVpnGateway, TestVPNConnection | PASS | PASS | **EC2 `DefaultNetworkACL`, `DefaultRouteTable` and `DefaultVPC` pass on real AWS** (role from catalog #238); the default VPC was replaced and left with EC2's settings and no tags. **EC2 `VPNConnection` passes on real AWS, after `VPNGateway` in the same run** (VPNGateway passes again, 723 s). It had never passed live: `ackx-11160252-142c`, recorded as a pass, failed as `ackx-11160326-b656` and `ackx-11160402-fec2` did. The cause was not the order. A real connection takes about six to ten minutes to become available (346 s here, 9.5 minutes in `fec2`), longer than the test's five; the tests now wait 20 minutes on a live run. Also, real EC2's `CreateVpnConnection` answers without the type, so the spec patch after the create was refused (`spec.type_: Required value`); the controller now keeps the type asked for. Real EC2 lists deleted connections for a while, so the settle check counts only live ones; a connection being deleted counts as deleted; the transit gateway's clean-up waits for its attachment to go. Sweeps deleted two VPN gateways and a customer gateway by tag. Left behind and deleted by hand: one VPC whose gateway was still detaching |
+| 2026-11-16 | `ackx-11161114-80b7` | `27eeb4b` (HFL-623 follow-ups) | `$AWS_SANDBOX_ACCOUNT_ID` | SUITE=ack: TestOptionGroup | PASS | PASS | **RDS `OptionGroup` passes again with `STATSPACK` and `NATIVE_NETWORK_ENCRYPTION`**: the merge gate's AWS Emulator run refused `TIMEZONE_FILE_AUTOUPGRADE` (it publishes only `NATIVE_NETWORK_ENCRYPTION`, `OEM` and `STATSPACK` for `oracle-se2`), so the fixture moved to an option both publish. The option group was deleted by the test; sweeps clean |
 
 ## Kinds
 
@@ -350,12 +359,15 @@ each run; the ledger above has the runs.
 | ACK | autoscaling | ScheduledAction | TestScheduledAction | PASS, `ackx-11160326-bbdb` (2026-11-16) |
 | ACK | ec2 | CustomerGateway | TestCustomerGateway | PASS, `ackx-11160326-b656` (2026-11-16) |
 | ACK | ec2 | DefaultSecurityGroup | TestDefaultSecurityGroup | PASS, `ackx-11160326-b656` (2026-11-16) |
+| ACK | ec2 | DefaultNetworkACL | TestDefaultNetworkACL | PASS, `ackx-11160847-4089` (2026-11-16) |
+| ACK | ec2 | DefaultRouteTable | TestDefaultRouteTable | PASS, `ackx-11160847-4089` (2026-11-16) |
+| ACK | ec2 | DefaultVPC | TestDefaultVPC | PASS, `ackx-11160847-4089` (2026-11-16); the test replaces the region's default VPC (deletes it, then `CreateDefaultVpc`) and afterwards leaves a default VPC with EC2's settings and none of its tags |
 | ACK | ec2 | NetworkInterfacePermission | (none: moto has no API) | pending: no test yet (moto has none of the API, plan 6.33); a live test needs a second account to grant to, and the catalog instance updated and applied again |
 | ACK | ec2 | ResourceTag | TestResourceTag | PASS, `ackx-11160326-b656` (2026-11-16) |
 | ACK | ec2 | Volume | TestVolume | PASS, `ackx-11160326-b656` (2026-11-16) |
 | ACK | ec2 | VolumeAttachment | TestVolumeAttachment | PASS, `ackx-11160326-b656` (2026-11-16) |
-| ACK | ec2 | VPNConnection | TestVPNConnection | PASS, `ackx-11160252-142c` (2026-11-16); FAIL when run after TestVpnGateway (`ackx-11160326-b656`, `ackx-11160402-fec2`: the connections never synced in five minutes). Needs a look |
-| ACK | ec2 | VPNGateway | TestVpnGateway | PASS, `ackx-11160402-fec2` (2026-11-16) |
+| ACK | ec2 | VPNConnection | TestVPNConnection | PASS, `ackx-11160847-4089` (2026-11-16), after TestVpnGateway; its three earlier runs failed (a real connection takes six to ten minutes to become available, and the create's answer carries no type), not because of the order |
+| ACK | ec2 | VPNGateway | TestVpnGateway | PASS, `ackx-11160847-4089` (2026-11-16) |
 | ACK | ec2 | VPNGatewayRoutePropagation | (none: moto has neither call) | pending: no e2e test yet (moto has neither call, plan 6.34); a live test needs one written against a VPC route table, and the catalog instance updated and applied again |
 | ACK | ecr | ReplicationConfiguration | TestReplicationConfiguration | pending: the test replicates to its own region and account, which real ECR keeps no rule for (`ackx-11160339-2424`); a live run needs a second region, which the organization's service control policy denies (us-east-2 only) |
 | ACK | eventbridge | APIDestination | TestApiDestination | PASS, `ackx-11160339-689d` (2026-11-16) |
@@ -370,7 +382,7 @@ each run; the ledger above has the runs.
 | ACK | iam | VirtualMFADevice | TestIAMVirtualMFADevice | PASS, `ackx-11160402-b8de` (2026-11-16) |
 | ACK | kms | ReplicaKey | TestReplicaKey | pending: needs a second region, which the organization's service control policy denies (us-east-2 only) |
 | ACK | kms | Key extension (ACK's Key) | TestKeyExtension | PASS, `ackx-11160339-2424` (2026-11-16) |
-| ACK | lambda | Permission | TestPermission | FAIL, `ackx-11160411-5872` (2026-11-16): real Lambda refused the fixture's principal as invalid; the fixture needs a principal AWS accepts |
+| ACK | lambda | Permission | TestPermission | PASS, `ackx-11160729-366f` (2026-11-16); a live run grants the alias to the sandbox account itself (real Lambda refused a made-up account, `ackx-11160411-5872`) |
 | ACK | organizations | AccountPlacement | TestOrganizationsAccountPlacement | pending: organization-level identity (plan 7.5); the sandbox account is a member, not the management account |
 | ACK | organizations | DelegatedAdministrator | TestOrganizationsDelegatedAdministrator | pending: organization-level identity (plan 7.5); the sandbox account is a member, not the management account |
 | ACK | organizations | Organization | TestOrganizationsOrganization | pending: organization-level identity (plan 7.5); the sandbox account is a member, not the management account |
@@ -378,8 +390,8 @@ each run; the ledger above has the runs.
 | ACK | organizations | PolicyAttachment | TestOrganizationsPolicyAttachment | pending: organization-level identity (plan 7.5); the sandbox account is a member, not the management account |
 | ACK | rds | DBProxyTarget | TestDBProxyTarget | pending: not run live yet; its fixtures (a DB instance and cluster, a proxy) take many minutes and cost money, and the test does not delete them on a live run yet |
 | ACK | rds | DBRoleAssociation | TestDBRoleAssociation | pending: not run live yet; its fixtures (a DB instance and cluster) take many minutes and cost money, and the test does not delete them on a live run yet |
-| ACK | rds | OptionGroup | TestOptionGroup | FAIL, `ackx-11160415-8b7c` (2026-11-16): real RDS kept no options; the fixture's MEMCACHED option needs settings and a security group on real RDS |
-| ACK | s3 | Bucket extension (ACK's Bucket) | TestBucketExtension | FAIL, `ackx-11160411-5872` (2026-11-16): ACK's DeleteBucket of the force-destroy bucket refused 409 for five minutes; the emptying did not empty the versioned bucket on real S3. Needs a look |
+| ACK | rds | OptionGroup | TestOptionGroup | PASS, `ackx-11161114-80b7` (2026-11-16), on `oracle-se2` 19's `STATSPACK` and `NATIVE_NETWORK_ENCRYPTION`, which need no setting, port or security group (MySQL's MEMCACHED needs a port and a security group, so real RDS refused the whole change in `ackx-11160415-8b7c`) |
+| ACK | s3 | Bucket extension (ACK's Bucket) | TestBucketExtension | PASS, `ackx-11160805-57c4` (2026-11-16); its force-destroy had asked real S3 to bypass governance retention on buckets without Object Lock, which S3 refuses (`ackx-11160411-5872`), fixed |
 | ACK | s3control | PublicAccessBlock | TestPublicAccessBlock | PASS, `ackx-11160402-b394` (2026-11-16) |
 | ACK | scheduler | Schedule | TestSchedule | PASS, `ackx-11160339-689d` (2026-11-16) |
 | ACK | scheduler | ScheduleGroup | TestScheduleGroup | PASS, `ackx-11160339-689d` (2026-11-16) |

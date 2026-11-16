@@ -35,6 +35,9 @@ actions:
   - s3:GetObject
   - s3:DeleteObject
   - s3:DeleteObjectVersion
+  # TestBucketExtension's Object Lock bucket: an object put under governance
+  # retention (PutObject with a lock mode is authorized as this too).
+  - s3:PutObjectRetention
   # Fixtures: roles handed to the services the tests set up.
   - iam:PassRole
   - ec2:DescribeAvailabilityZones

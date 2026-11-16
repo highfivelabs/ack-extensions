@@ -59,16 +59,25 @@ func TestOptionGroup(t *testing.T) {
 	env, cloud := rdsEnv(t)
 	ctx := context.Background()
 
+	// Two options that need no required setting, port, security group or
+	// version on real RDS (DescribeOptionGroupOptions, oracle-se2 19), and
+	// that AWS Emulator also publishes for the engine: MySQL's MEMCACHED
+	// needs a port and a security group, so real RDS refused the whole
+	// ModifyOptionGroup and kept no options (live run ackx-11160415-8b7c);
+	// TIMEZONE_FILE_AUTOUPGRADE passed on real RDS (ackx-11160729-366f)
+	// but the emulator publishes only NATIVE_NETWORK_ENCRYPTION, OEM and
+	// STATSPACK for oracle-se2. An option group without a DB instance
+	// costs nothing and needs no licence.
 	og := &rdsv1.OptionGroup{
-		ObjectMeta: metav1.ObjectMeta{Name: "app-mysql", Namespace: "default"},
+		ObjectMeta: metav1.ObjectMeta{Name: "app-oracle", Namespace: "default"},
 		Spec: rdsv1.OptionGroupSpec{
-			Name:               aws.String("app-mysql"),
-			Description:        aws.String("audit and memcached for the app database"),
-			EngineName:         aws.String("mysql"),
-			MajorEngineVersion: aws.String("8.0"),
+			Name:               aws.String("app-oracle"),
+			Description:        aws.String("statspack and network encryption for the app database"),
+			EngineName:         aws.String("oracle-se2"),
+			MajorEngineVersion: aws.String("19"),
 			Options: []*rdsv1.OptionConfiguration{
-				{OptionName: aws.String("MARIADB_AUDIT_PLUGIN")},
-				{OptionName: aws.String("MEMCACHED")},
+				{OptionName: aws.String("STATSPACK")},
+				{OptionName: aws.String("NATIVE_NETWORK_ENCRYPTION")},
 			},
 			Tags: []*rdsv1.Tag{{Key: aws.String("team"), Value: aws.String("payments")}},
 		},
@@ -77,7 +86,7 @@ func TestOptionGroup(t *testing.T) {
 	waitOptions := func(t *testing.T, want []string) {
 		t.Helper()
 		harness.Eventually(t, 90*time.Second, fmt.Sprintf("options %v in the cloud and synced", want), func() error {
-			got, err := cloudOptions(ctx, cloud, "app-mysql")
+			got, err := cloudOptions(ctx, cloud, "app-oracle")
 			if err != nil {
 				return err
 			}
@@ -102,8 +111,8 @@ func TestOptionGroup(t *testing.T) {
 		if err := env.Client.Create(ctx, og); err != nil {
 			t.Fatal(err)
 		}
-		waitOptions(t, []string{"MARIADB_AUDIT_PLUGIN", "MEMCACHED"})
-		out, err := cloud.DescribeOptionGroups(ctx, &rds.DescribeOptionGroupsInput{OptionGroupName: aws.String("app-mysql")})
+		waitOptions(t, []string{"NATIVE_NETWORK_ENCRYPTION", "STATSPACK"})
+		out, err := cloud.DescribeOptionGroups(ctx, &rds.DescribeOptionGroupsInput{OptionGroupName: aws.String("app-oracle")})
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -121,11 +130,11 @@ func TestOptionGroup(t *testing.T) {
 		if err := env.Client.Get(ctx, client.ObjectKeyFromObject(og), obj); err != nil {
 			t.Fatal(err)
 		}
-		obj.Spec.Options = []*rdsv1.OptionConfiguration{{OptionName: aws.String("MARIADB_AUDIT_PLUGIN")}}
+		obj.Spec.Options = []*rdsv1.OptionConfiguration{{OptionName: aws.String("STATSPACK")}}
 		if err := env.Client.Update(ctx, obj); err != nil {
 			t.Fatal(err)
 		}
-		waitOptions(t, []string{"MARIADB_AUDIT_PLUGIN"})
+		waitOptions(t, []string{"STATSPACK"})
 	})
 
 	t.Run("the engine cannot change", func(t *testing.T) {
@@ -133,7 +142,7 @@ func TestOptionGroup(t *testing.T) {
 		if err := env.Client.Get(ctx, client.ObjectKeyFromObject(og), obj); err != nil {
 			t.Fatal(err)
 		}
-		obj.Spec.EngineName = aws.String("mariadb")
+		obj.Spec.EngineName = aws.String("oracle-ee")
 		err := env.Client.Update(ctx, obj)
 		if err == nil || !strings.Contains(err.Error(), "immutable") {
 			t.Fatalf("changing engineName: got %v, want the CRD's immutability refusal", err)
@@ -145,7 +154,7 @@ func TestOptionGroup(t *testing.T) {
 			t.Fatal(err)
 		}
 		harness.Eventually(t, 60*time.Second, "group gone from the cloud", func() error {
-			_, err := cloudOptions(ctx, cloud, "app-mysql")
+			_, err := cloudOptions(ctx, cloud, "app-oracle")
 			if err == nil {
 				return fmt.Errorf("still there")
 			}

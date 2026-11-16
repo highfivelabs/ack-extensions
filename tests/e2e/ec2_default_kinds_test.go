@@ -133,6 +133,18 @@ func TestDefaultNetworkACL(t *testing.T) {
 		t.Fatal(err)
 	}
 	idA, idB := aws.ToString(subnetA.Subnet.SubnetId), aws.ToString(subnetB.Subnet.SubnetId)
+	// Fixtures no object owns: on a live run nothing else deletes them.
+	t.Cleanup(func() {
+		for _, sn := range []string{idA, idB} {
+			if _, err := cloud.DeleteSubnet(ctx, &ec2.DeleteSubnetInput{SubnetId: aws.String(sn)}); err != nil {
+				t.Logf("cleanup: subnet %s: %v", sn, err)
+			}
+		}
+		if _, err := cloud.DeleteNetworkAcl(ctx, &ec2.DeleteNetworkAclInput{NetworkAclId: other.NetworkAcl.NetworkAclId}); err != nil {
+			t.Logf("cleanup: network ACL %s: %v", aws.ToString(other.NetworkAcl.NetworkAclId), err)
+		}
+		deleteVPCs(t, ctx, cloud, vpcID)
+	})
 	moveTo := func(subnet, acl string) {
 		t.Helper()
 		out, err := cloud.DescribeNetworkAcls(ctx, &ec2.DescribeNetworkAclsInput{Filters: []ec2types.Filter{{Name: aws.String("association.subnet-id"), Values: []string{subnet}}}})
@@ -325,6 +337,16 @@ func TestDefaultRouteTable(t *testing.T) {
 		t.Fatal(err)
 	}
 	igwID := aws.ToString(igw.InternetGateway.InternetGatewayId)
+	// Fixtures no object owns: on a live run nothing else deletes them.
+	t.Cleanup(func() {
+		if _, err := cloud.DetachInternetGateway(ctx, &ec2.DetachInternetGatewayInput{InternetGatewayId: aws.String(igwID), VpcId: aws.String(vpcID)}); err != nil {
+			t.Logf("cleanup: detach internet gateway %s: %v", igwID, err)
+		}
+		if _, err := cloud.DeleteInternetGateway(ctx, &ec2.DeleteInternetGatewayInput{InternetGatewayId: aws.String(igwID)}); err != nil {
+			t.Logf("cleanup: internet gateway %s: %v", igwID, err)
+		}
+		deleteVPCs(t, ctx, cloud, vpcID)
+	})
 	if _, err := cloud.AttachInternetGateway(ctx, &ec2.AttachInternetGatewayInput{InternetGatewayId: aws.String(igwID), VpcId: aws.String(vpcID)}); err != nil {
 		t.Fatal(err)
 	}
@@ -433,6 +455,34 @@ func TestDefaultRouteTable(t *testing.T) {
 func TestDefaultVPC(t *testing.T) {
 	env, cloud := defaultKindsEnv(t)
 	ctx := context.Background()
+
+	// On a live run the account's default VPC is replaced by the one the
+	// test makes: afterwards there is a default VPC again, with EC2's
+	// settings (DNS hostnames on) and none of the test's or the run's tags.
+	if harness.IsLive() {
+		t.Cleanup(func() {
+			vpcs, err := cloud.DescribeVpcs(ctx, &ec2.DescribeVpcsInput{Filters: []ec2types.Filter{{Name: aws.String("is-default"), Values: []string{"true"}}}})
+			if err != nil {
+				t.Logf("cleanup: default VPC: %v", err)
+				return
+			}
+			if len(vpcs.Vpcs) == 0 {
+				made, err := cloud.CreateDefaultVpc(ctx, &ec2.CreateDefaultVpcInput{})
+				if err != nil {
+					t.Logf("cleanup: no default VPC, and making one: %v", err)
+					return
+				}
+				vpcs.Vpcs = []ec2types.Vpc{*made.Vpc}
+			}
+			id := vpcs.Vpcs[0].VpcId
+			if _, err := cloud.ModifyVpcAttribute(ctx, &ec2.ModifyVpcAttributeInput{VpcId: id, EnableDnsHostnames: &ec2types.AttributeBooleanValue{Value: aws.Bool(true)}}); err != nil {
+				t.Logf("cleanup: default VPC DNS hostnames: %v", err)
+			}
+			if _, err := cloud.DeleteTags(ctx, &ec2.DeleteTagsInput{Resources: []string{aws.ToString(id)}, Tags: []ec2types.Tag{{Key: aws.String("Name")}, {Key: aws.String("hfl.dev/live-run")}}}); err != nil {
+				t.Logf("cleanup: default VPC tags: %v", err)
+			}
+		})
+	}
 
 	// moto makes the region's default VPC; delete it (with its default
 	// subnets and internet gateway) so the object first finds none.

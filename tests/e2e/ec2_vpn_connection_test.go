@@ -36,6 +36,12 @@ func cloudVpnConnection(ctx context.Context, c *ec2.Client, id string) (*ec2type
 	return &out.VpnConnections[0], nil
 }
 
+// deletedVpn reports whether a connection's delete has been made: moto
+// answers deleted at once, real EC2 deleting for minutes first.
+func deletedVpn(s ec2types.VpnState) bool {
+	return s == ec2types.VpnStateDeleted || (harness.IsLive() && s == ec2types.VpnStateDeleting)
+}
+
 // VPNConnection: a site-to-site VPN connection between our CustomerGateway
 // and our VPNGateway, its tunnels' pre-shared keys from a Secret. ACK's
 // ec2-controller (v1.23.1) ignores VpnConnection. moto has no
@@ -52,9 +58,19 @@ func TestVPNConnection(t *testing.T) {
 	cloud := ec2.NewFromConfig(env.AWS)
 	ctx := context.Background()
 
-	syncedObj := func(t *testing.T, obj client.Object, conds func() []*ackv1alpha1.Condition) {
+	// A connection is synced once it is available, which real EC2 takes
+	// about ten minutes to reach (live run ackx-11160402-fec2: 9.5
+	// minutes), longer through a transit gateway that is itself still
+	// pending; harness.Eventually makes connWait five times longer on a
+	// live run.
+	const gatewayWait, connWait = 60 * time.Second, 240 * time.Second
+	syncedObj := func(t *testing.T, obj client.Object, conds func() []*ackv1alpha1.Condition, wait ...time.Duration) {
 		t.Helper()
-		harness.Eventually(t, 60*time.Second, obj.GetName()+" synced", func() error {
+		timeout := gatewayWait
+		if len(wait) > 0 {
+			timeout = wait[0]
+		}
+		harness.Eventually(t, timeout, obj.GetName()+" synced", func() error {
 			if err := env.Client.Get(ctx, client.ObjectKeyFromObject(obj), obj); err != nil {
 				return err
 			}
@@ -119,7 +135,7 @@ func TestVPNConnection(t *testing.T) {
 		}
 		syncedObj(t, office, func() []*ackv1alpha1.Condition { return office.Status.Conditions })
 		syncedObj(t, vgw, func() []*ackv1alpha1.Condition { return vgw.Status.Conditions })
-		syncedObj(t, conn, func() []*ackv1alpha1.Condition { return conn.Status.Conditions })
+		syncedObj(t, conn, func() []*ackv1alpha1.Condition { return conn.Status.Conditions }, connWait)
 		id = aws.ToString(conn.Status.VPNConnectionID)
 		if !strings.HasPrefix(id, "vpn-") || aws.ToString(conn.Status.State) != "available" {
 			t.Fatalf("status id %q state %q", id, aws.ToString(conn.Status.State))
@@ -146,8 +162,16 @@ func TestVPNConnection(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if len(out.VpnConnections) != 1 {
-			t.Fatalf("%d connections", len(out.VpnConnections))
+		// Real EC2 lists deleted connections for a while after (earlier
+		// runs' too): count those still there.
+		n := 0
+		for _, c := range out.VpnConnections {
+			if c.State != ec2types.VpnStateDeleted && c.State != ec2types.VpnStateDeleting {
+				n++
+			}
+		}
+		if n != 1 {
+			t.Fatalf("%d connections", n)
 		}
 	})
 
@@ -199,7 +223,7 @@ func TestVPNConnection(t *testing.T) {
 			}
 			return nil
 		})
-		syncedObj(t, conn, func() []*ackv1alpha1.Condition { return conn.Status.Conditions })
+		syncedObj(t, conn, func() []*ackv1alpha1.Condition { return conn.Status.Conditions }, connWait)
 	})
 
 	t.Run("its gateways cannot change", func(t *testing.T) {
@@ -230,8 +254,24 @@ func TestVPNConnection(t *testing.T) {
 		}
 		tgwID := aws.ToString(tgw.TransitGateway.TransitGatewayId)
 		t.Cleanup(func() {
-			if _, err := cloud.DeleteTransitGateway(ctx, &ec2.DeleteTransitGatewayInput{TransitGatewayId: aws.String(tgwID)}); err != nil {
-				t.Logf("cleanup: transit gateway %s: %v", tgwID, err)
+			// Real EC2 refuses the delete while the connection's attachment
+			// is still being deleted (live run ackx-11160402-fec2: "has
+			// non-deleted VPN Attachments"), for minutes: try again.
+			wait := time.Minute
+			if harness.IsLive() {
+				wait = 15 * time.Minute
+			}
+			deadline := time.Now().Add(wait)
+			for {
+				_, err := cloud.DeleteTransitGateway(ctx, &ec2.DeleteTransitGatewayInput{TransitGatewayId: aws.String(tgwID)})
+				if err == nil {
+					return
+				}
+				if time.Now().After(deadline) {
+					t.Logf("cleanup: transit gateway %s: %v", tgwID, err)
+					return
+				}
+				time.Sleep(10 * time.Second)
 			}
 		})
 		ackTransitGateway(t, ctx, env.Client, "core", tgwID)
@@ -246,7 +286,7 @@ func TestVPNConnection(t *testing.T) {
 		if err := env.Client.Create(ctx, viaTGW); err != nil {
 			t.Fatal(err)
 		}
-		syncedObj(t, viaTGW, func() []*ackv1alpha1.Condition { return viaTGW.Status.Conditions })
+		syncedObj(t, viaTGW, func() []*ackv1alpha1.Condition { return viaTGW.Status.Conditions }, connWait)
 		viaID := aws.ToString(viaTGW.Status.VPNConnectionID)
 		c, err := cloudVpnConnection(ctx, cloud, viaID)
 		if err != nil {
@@ -272,7 +312,7 @@ func TestVPNConnection(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if c.State != ec2types.VpnStateDeleted {
+		if !deletedVpn(c.State) {
 			t.Fatalf("cloud state %q", c.State)
 		}
 	})
@@ -292,7 +332,7 @@ func TestVPNConnection(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if c.State != ec2types.VpnStateDeleted {
+		if !deletedVpn(c.State) {
 			t.Fatalf("cloud state %q", c.State)
 		}
 		for _, o := range []client.Object{vgw, office} {

@@ -15,11 +15,16 @@
 // Bucket is deleted, and ACK will delete the bucket (its deletion policy
 // is delete, the Bucket is not read-only, ACK made or adopted it), it
 // deletes every object version and delete marker (DeleteObjects, 1,000 a
-// call, with BypassGovernanceRetention as Terraform's force_destroy does)
-// and aborts every multipart upload, and repeats that until ACK's own
+// call, each naming its version) and aborts every multipart upload, and repeats that until ACK's own
 // finalizer is gone (ACK's DeleteBucket has succeeded), then removes its
-// own. An object under compliance-mode Object Lock or a legal hold cannot
-// be deleted by anyone: the error is recorded as an Event and retried.
+// own. On a bucket with Object Lock enabled the deletes bypass governance
+// retention, as Terraform's force_destroy does; on any other bucket they
+// must not ask to, since real S3 refuses the header there ("InvalidArgument:
+// x-amz-bypass-governance-retention is only applicable to Object Lock
+// enabled buckets", live run ackx-11160411-5872; moto and the AWS
+// Emulator accept it). An object under compliance-mode Object Lock or a
+// legal hold cannot be deleted by anyone: the error is recorded as an
+// Event and retried.
 //
 // The same annotation acts on our fixed copy of ACK's Bucket
 // (s3.aws.hfl.dev, docs/plan.md section 6.38), whose controller is
@@ -109,6 +114,7 @@ func init() { hflextend.Register("s3-bucket", Setup) }
 
 // API is the part of S3's client the controller calls.
 type API interface {
+	GetObjectLockConfiguration(context.Context, *svcsdk.GetObjectLockConfigurationInput, ...func(*svcsdk.Options)) (*svcsdk.GetObjectLockConfigurationOutput, error)
 	ListObjectVersions(context.Context, *svcsdk.ListObjectVersionsInput, ...func(*svcsdk.Options)) (*svcsdk.ListObjectVersionsOutput, error)
 	DeleteObjects(context.Context, *svcsdk.DeleteObjectsInput, ...func(*svcsdk.Options)) (*svcsdk.DeleteObjectsOutput, error)
 	ListMultipartUploads(context.Context, *svcsdk.ListMultipartUploadsInput, ...func(*svcsdk.Options)) (*svcsdk.ListMultipartUploadsOutput, error)
@@ -125,12 +131,42 @@ func notFound(err error) bool {
 	return errors.As(err, &ae) && (ae.ErrorCode() == "NoSuchBucket" || ae.ErrorCode() == "NotFound")
 }
 
+// objectLocked reports whether the bucket has Object Lock enabled. A
+// bucket without an Object Lock configuration answers
+// ObjectLockConfigurationNotFoundError.
+func objectLocked(ctx context.Context, api API, bucket string) (locked, gone bool, err error) {
+	out, err := api.GetObjectLockConfiguration(ctx, &svcsdk.GetObjectLockConfigurationInput{Bucket: aws.String(bucket)})
+	var ae smithy.APIError
+	switch {
+	case notFound(err):
+		return false, true, nil
+	case errors.As(err, &ae) && ae.ErrorCode() == "ObjectLockConfigurationNotFoundError":
+		return false, false, nil
+	case err != nil:
+		return false, false, fmt.Errorf("GetObjectLockConfiguration: %w", err)
+	}
+	return out.ObjectLockConfiguration != nil && out.ObjectLockConfiguration.ObjectLockEnabled == svcsdktypes.ObjectLockEnabledEnabled, false, nil
+}
+
 // Empty deletes every object version and delete marker in the bucket and
 // aborts every multipart upload. A bucket that does not exist is empty.
-// Objects that cannot be deleted (Object Lock) make an error naming the
-// first of them, after everything else is deleted.
+// The deletes bypass governance retention only when the bucket has Object
+// Lock enabled (S3 refuses the header on any other bucket). Objects that
+// cannot be deleted (compliance mode, a legal hold) make an error naming
+// the first of them, after everything else is deleted.
 func Empty(ctx context.Context, api API, bucket string) (Emptied, error) {
 	var n Emptied
+	locked, gone, err := objectLocked(ctx, api, bucket)
+	if gone {
+		return n, nil
+	}
+	if err != nil {
+		return n, err
+	}
+	var bypass *bool
+	if locked {
+		bypass = aws.Bool(true)
+	}
 	var keyMarker, versionMarker *string
 	var undeletable []string
 	for {
@@ -159,7 +195,7 @@ func Empty(ctx context.Context, api API, bucket string) (Emptied, error) {
 			del, err := api.DeleteObjects(ctx, &svcsdk.DeleteObjectsInput{
 				Bucket:                    aws.String(bucket),
 				Delete:                    &svcsdktypes.Delete{Objects: batch, Quiet: aws.Bool(true)},
-				BypassGovernanceRetention: aws.Bool(true),
+				BypassGovernanceRetention: bypass,
 			})
 			if notFound(err) {
 				return n, nil

@@ -680,7 +680,13 @@ controller to show it can fail:
   `DeleteObjects` (with `BypassGovernanceRetention`, which it accepts),
   multipart uploads, and refuses `DeleteBucket` with `BucketNotEmpty`, as
   AWS does. Not modelled: Object Lock refusing a delete (unit-tested
-  instead), and paging past 1,000 versions (unit-tested).
+  instead), and paging past 1,000 versions (unit-tested). Nor that real
+  S3 refuses `BypassGovernanceRetention` on a bucket without Object Lock
+  (`InvalidArgument`, live run `ackx-11160411-5872`), which the extension
+  then sent on every delete, so force-destroy never emptied a bucket on
+  real S3; it now reads the bucket's Object Lock configuration first and
+  bypasses only when Object Lock is enabled (the unit tests' fake refuses
+  the header as S3 does).
 
 ## 5. Candidates, ranked
 
