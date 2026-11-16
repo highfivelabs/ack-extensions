@@ -629,10 +629,16 @@ kubectl -n "${OP_NS}" set env deploy/ack-extensions-operator "ACK_IMAGE_RDS=${AC
 kubectl -n "${OP_NS}" rollout status deploy/ack-extensions-operator --timeout=180s >/dev/null
 # The migration path: ACK's classic rds-controller narrowed to its own
 # namespace; then env-d's context runs both rds controllers.
-helm upgrade ack-rds "${ACK_RDS_DIR}/helm" -n "${ACK_NS}" --reuse-values --set watchNamespace="${ACK_NS}" --wait --timeout 180s >/dev/null
+# ACK's chart takes watchNamespace only with installScope namespace (its
+# _helpers.tpl; a first run, 2026-11-16, set watchNamespace alone and the
+# controller still watched every namespace).
+helm upgrade ack-rds "${ACK_RDS_DIR}/helm" -n "${ACK_NS}" --reuse-values \
+  --set installScope=namespace --set watchNamespace="${ACK_NS}" --wait --timeout 180s >/dev/null
 # shellcheck disable=SC2046
 kubectl -n "${ACK_NS}" set env "deploy/${ACK_DEPLOY}" $(go run ./hack/noaws env "${FAKE_AWS}" "${KUBE_HOST}") >/dev/null
 kubectl -n "${ACK_NS}" rollout status "deploy/${ACK_DEPLOY}" --timeout=180s >/dev/null
+watched="$(kubectl -n "${ACK_NS}" get deploy "${ACK_DEPLOY}" -o jsonpath='{.spec.template.spec.containers[0].env[?(@.name=="ACK_WATCH_NAMESPACE")].value}')"
+[[ "${watched}" == "${ACK_NS}" ]] || fail "ACK's classic rds-controller watches '${watched}', not ${ACK_NS}"
 ok "ACK's classic rds-controller watches only ${ACK_NS}"
 kubectl create namespace env-d --dry-run=client -o yaml | kubectl apply -f - >/dev/null
 cat <<YAML | kubectl apply -f - >/dev/null
