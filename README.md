@@ -579,9 +579,11 @@ targets with.
 
 The S3 manager (the `Bucket` extension, `docs/extensions.md`, and our
 fixed copy of ACK's `Bucket`) runs beside ACK's s3-controller; that
-controller's role then needs `s3:ListBucketVersions`,
-`s3:DeleteObjectVersion`, `s3:ListBucketMultipartUploads`,
-`s3:AbortMultipartUpload` and `s3:BypassGovernanceRetention`, and for our
+controller's role then needs `s3:GetBucketObjectLockConfiguration`,
+`s3:ListBucketVersions`, `s3:DeleteObjectVersion`,
+`s3:ListBucketMultipartUploads`, `s3:AbortMultipartUpload` and
+`s3:BypassGovernanceRetention` (used only on a bucket with Object Lock
+enabled), and for our
 `Bucket` what ACK's own s3-controller needs (its recommended policy is
 `s3:*`, `s3express:*` and `iam:PassRole` to S3; `task ack:iam` lists the
 actions it calls). The kms manager's `Key` extension needs

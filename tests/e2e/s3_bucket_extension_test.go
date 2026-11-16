@@ -4,7 +4,10 @@
 package e2e
 
 import (
+	"bytes"
 	"context"
+	"crypto/md5"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"os"
@@ -236,8 +239,13 @@ func TestBucketExtension(t *testing.T) {
 	t.Run("force-destroy bypasses governance retention on an Object Lock bucket", func(t *testing.T) {
 		u := newBucket(t, lockedBucket, map[string]string{bucket.AnnotationForceDestroy: "true"}, true, true)
 		waitFinalizer(t, lockedBucket, true)
+		// S3 needs Content-MD5 (or a checksum header) on a put with Object
+		// Lock parameters (live run ackx-11160729-366f: InvalidRequest).
+		body := []byte("year,total\n2026,0\n")
+		sum := md5.Sum(body)
 		if _, err := api.PutObject(ctx, &s3.PutObjectInput{
 			Bucket: aws.String(lockedBucket), Key: aws.String("ledger/2026.csv"),
+			Body: bytes.NewReader(body), ContentMD5: aws.String(base64.StdEncoding.EncodeToString(sum[:])),
 			ObjectLockMode:            s3types.ObjectLockModeGovernance,
 			ObjectLockRetainUntilDate: aws.Time(time.Now().Add(24 * time.Hour)),
 		}); err != nil {
