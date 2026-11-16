@@ -663,7 +663,7 @@ for a in --watch-namespace=env-d --aws-region=us-west-2 --enable-carm=false; do
 done
 [[ "$(kubectl -n "${OP_NS}" get deploy "${D_ACK}" -o jsonpath='{.spec.template.spec.containers[0].image}')" == "${ACK_RDS_IMAGE}" ]] || fail "${D_ACK} does not run ${ACK_RDS_IMAGE}"
 pia="$(kubectl -n env-d get ackcontext ack -o jsonpath='{range .status.podIdentityAssociations[*]}{.serviceAccount} -> {.roleARN}{"\n"}{end}' | sort)"
-[[ "${pia}" == "${D_ACK} -> arn:aws:iam::123456789012:role/env-d-ack"$'\n'"${D_OURS} -> arn:aws:iam::123456789012:role/env-d-ack" ]] || fail "env-d status.podIdentityAssociations: ${pia}"
+[[ "${pia}" == "${D_OURS} -> arn:aws:iam::123456789012:role/env-d-ack"$'\n'"${D_ACK} -> arn:aws:iam::123456789012:role/env-d-ack" ]] || fail "env-d status.podIdentityAssociations: ${pia}"
 ok "env-d: ${OP_NS}/${D_ACK} (ACK's image at the pin) and ${OP_NS}/${D_OURS}, each as its own ServiceAccount, both on env-d's role in status"
 verify_no_real_aws
 [[ "$(asar "${D_ACK}" create rds.services.k8s.aws dbparametergroups env-d)" == true ]] || fail "env-d's ACK rds-controller cannot create DBParameterGroups in env-d"
