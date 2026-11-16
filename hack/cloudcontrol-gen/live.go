@@ -42,29 +42,34 @@ func liveKinds(cfg config) (map[string]bool, error) {
 	return live, nil
 }
 
-// The sandbox account's CloudFormation template (docs/live-runs.md), for
-// the builder to deploy; nothing here deploys it. Generated so its
-// permissions follow cloudcontrol/types.yaml:
+// The live-test role's managed policies and the sandbox account's
+// CloudFormation template (docs/live-runs.md); nothing here deploys either.
 //
-//   - no IAM OIDC provider: the role trusts IAM's built-in
-//     accounts.google.com principal (a provider for accounts.google.com
-//     would take over every Google token in the account);
-//   - the live-test role, assumable only with AssumeRoleWithWebIdentity
-//     by that one Google service account (its unique ID, the token's sub)
-//     with the audience the offload VM asks for (the token's aud, oaud),
-//     for an hour at most; its permissions: the handler permissions and
-//     Cloud Control actions of the kinds sampled on live runs (liveKinds
-//     in types.yaml, as task cloudcontrol:iam writes for an environment),
-//     their list handlers' and cloudformation:ListResources for the
-//     sweeper, and the tests' own fixtures (liveTestActions), one
-//     statement per service (iamgen.Compact), split into managed policies
-//     of at most 6,144 characters, ten at most (IAM's default per role);
-//     every other kind is proven on the fakes only (plan question 21);
+// The role ack-extensions-live-tests is an instance of the catalog's
+// google-federated-role chart (its tests/ack-extensions-live-tests.values.yaml),
+// deployed through ACK, which adopted the role the first stack made
+// (2026-11-15, AWSROLE-ADOPT). What it may do follows
+// cloudcontrol/types.yaml, so its policies are generated here, in that
+// chart's values shape (config/live/role-policies.yaml, the instance's
+// policies value):
+//
+//   - the handler permissions and Cloud Control actions of the kinds
+//     sampled on live runs (liveKinds in types.yaml, as task
+//     cloudcontrol:iam writes for an environment), their list handlers'
+//     and cloudformation:ListResources for the sweeper, the tests' own
+//     fixtures (liveTestActions), and the ACK-kind suite's calls
+//     (statement LiveRunACKKinds, liveACKActions), one statement per service
+//     (iamgen.Compact), split into managed policies of at most 6,144
+//     characters, ten at most (IAM's default per role); every other kind
+//     is proven on the fakes only (plan question 21);
 //   - no permissions for a type marked neverDelete (a landing zone): no
 //     live test makes one, since a test cannot delete what it made, and
-//     the sweeper never deletes one (liveKinds may not name one);
-//   - a monthly cost budget with e-mail alerts at 80% of actual and 100%
-//     of forecast spend.
+//     the sweeper never deletes one (liveKinds may not name one).
+//
+// The CloudFormation template (config/live/sandbox-account.yaml) keeps
+// only the monthly cost budget with e-mail alerts at 80% of actual and
+// 100% of forecast spend, until an ACK controller or an ack-extensions
+// kind serves AWS Budgets.
 func writeLiveTemplate(root, out string, cfg config, gens []generated) error {
 	var results []iamgen.Result
 	extra := map[string]bool{"cloudformation:ListResources": true}
@@ -108,81 +113,37 @@ func writeLiveTemplate(root, out string, cfg config, gens []generated) error {
 	if len(policies) > maxLivePolicies {
 		return fmt.Errorf("the live-test role needs %d managed policies, over IAM's default of %d per role: sample fewer liveKinds in cloudcontrol/types.yaml", len(policies), maxLivePolicies)
 	}
+	if err := writeLivePolicies(out, policies); err != nil {
+		return err
+	}
 	ref := func(n string) map[string]any { return map[string]any{"Ref": n} }
-	resources := map[string]any{
-		"BudgetAlarm": map[string]any{
-			"Type": "AWS::Budgets::Budget",
-			"Properties": map[string]any{
-				"Budget": map[string]any{
-					"BudgetName": "ack-extensions-live-tests", "BudgetType": "COST", "TimeUnit": "MONTHLY",
-					"BudgetLimit": map[string]any{"Amount": ref("MonthlyBudgetUSD"), "Unit": "USD"},
-				},
-				"NotificationsWithSubscribers": []any{
-					map[string]any{
-						"Notification": map[string]any{"NotificationType": "ACTUAL", "ComparisonOperator": "GREATER_THAN", "Threshold": 80, "ThresholdType": "PERCENTAGE"},
-						"Subscribers":  []any{map[string]any{"SubscriptionType": "EMAIL", "Address": ref("AlertEmail")}},
-					},
-					map[string]any{
-						"Notification": map[string]any{"NotificationType": "FORECASTED", "ComparisonOperator": "GREATER_THAN", "Threshold": 100, "ThresholdType": "PERCENTAGE"},
-						"Subscribers":  []any{map[string]any{"SubscriptionType": "EMAIL", "Address": ref("AlertEmail")}},
-					},
-				},
-			},
-		},
-	}
-	var arns []any
-	for i, p := range policies {
-		name := fmt.Sprintf("LiveTestPolicy%d", i+1)
-		resources[name] = map[string]any{
-			"Type":       "AWS::IAM::ManagedPolicy",
-			"Properties": map[string]any{"Description": "ack-extensions live tests, part " + fmt.Sprint(i+1), "PolicyDocument": p},
-		}
-		arns = append(arns, ref(name))
-	}
-	resources["LiveTestRole"] = map[string]any{
-		"Type": "AWS::IAM::Role",
-		"Properties": map[string]any{
-			"RoleName":           "ack-extensions-live-tests",
-			"Description":        "Assumed only by the offload VMs' Google service account, through web identity federation, for task test-live (ack-extensions docs/live-runs.md).",
-			"MaxSessionDuration": 3600,
-			"ManagedPolicyArns":  arns,
-			"Tags":               []any{map[string]any{"Key": "purpose", "Value": "ack-extensions-live-tests"}},
-			"AssumeRolePolicyDocument": map[string]any{
-				"Version": "2012-10-17",
-				"Statement": []any{map[string]any{
-					"Sid":    "OnlyTheOffloadServiceAccount",
-					"Effect": "Allow",
-					// IAM's built-in Google principal, not an IAM OIDC provider:
-					// a provider for accounts.google.com in the account takes
-					// over every Google token there and refuses any whose
-					// audience is not on its list, which broke the account's
-					// other Google-federated roles (hfl-test-admin) on the
-					// first deploy in hfl-test (2026-11-15).
-					"Principal": map[string]any{"Federated": "accounts.google.com"},
-					"Action":    "sts:AssumeRoleWithWebIdentity",
-					"Condition": map[string]any{"StringEquals": map[string]any{
-						// sub is the service account's unique ID, which no
-						// other principal's token carries; oaud is the token's
-						// aud claim, the audience credentials.sh asks for.
-						"accounts.google.com:sub":  ref("GoogleServiceAccountUniqueId"),
-						"accounts.google.com:oaud": ref("Audience"),
-					}},
-				}},
-			},
-		},
-	}
 	tpl := map[string]any{
 		"AWSTemplateFormatVersion": "2010-09-09",
-		"Description":              "ack-extensions live tests: the test role, trusting the offload VMs' Google service account through IAM's built-in Google federation, and a budget alarm. Generated by hack/cloudcontrol-gen from cloudcontrol/types.yaml; deployed in the AWS test account only (docs/live-runs.md).",
+		"Description":              "ack-extensions live tests: the sandbox account's monthly budget alarm. The live-test role is a catalog google-federated-role instance on ACK (docs/live-runs.md). Generated by hack/cloudcontrol-gen; deployed in the AWS test account only.",
 		"Parameters": map[string]any{
-			"GoogleServiceAccountUniqueId": map[string]any{"Type": "String", "AllowedPattern": "^[0-9]{21}$", "Description": "The offload VMs' Google service account's unique ID (gcloud iam service-accounts describe EMAIL --format='value(uniqueId)')."},
-			"Audience":                     map[string]any{"Type": "String", "Default": "ack-extensions-live-tests", "Description": "The audience hack/live/credentials.sh asks Google's metadata server for."},
-			"MonthlyBudgetUSD":             map[string]any{"Type": "Number", "Default": 50, "MinValue": 1},
-			"AlertEmail":                   map[string]any{"Type": "String", "Description": "Where the budget alerts go."},
+			"MonthlyBudgetUSD": map[string]any{"Type": "Number", "Default": 50, "MinValue": 1},
+			"AlertEmail":       map[string]any{"Type": "String", "Description": "Where the budget alerts go."},
 		},
-		"Resources": resources,
-		"Outputs": map[string]any{
-			"RoleArn": map[string]any{"Value": map[string]any{"Fn::GetAtt": []any{"LiveTestRole", "Arn"}}, "Description": "LIVE_ROLE_ARN for task test-live"},
+		"Resources": map[string]any{
+			"BudgetAlarm": map[string]any{
+				"Type": "AWS::Budgets::Budget",
+				"Properties": map[string]any{
+					"Budget": map[string]any{
+						"BudgetName": "ack-extensions-live-tests", "BudgetType": "COST", "TimeUnit": "MONTHLY",
+						"BudgetLimit": map[string]any{"Amount": ref("MonthlyBudgetUSD"), "Unit": "USD"},
+					},
+					"NotificationsWithSubscribers": []any{
+						map[string]any{
+							"Notification": map[string]any{"NotificationType": "ACTUAL", "ComparisonOperator": "GREATER_THAN", "Threshold": 80, "ThresholdType": "PERCENTAGE"},
+							"Subscribers":  []any{map[string]any{"SubscriptionType": "EMAIL", "Address": ref("AlertEmail")}},
+						},
+						map[string]any{
+							"Notification": map[string]any{"NotificationType": "FORECASTED", "ComparisonOperator": "GREATER_THAN", "Threshold": 100, "ThresholdType": "PERCENTAGE"},
+							"Subscribers":  []any{map[string]any{"SubscriptionType": "EMAIL", "Address": ref("AlertEmail")}},
+						},
+					},
+				},
+			},
 		},
 	}
 	y, err := yaml.Marshal(tpl)
@@ -190,4 +151,45 @@ func writeLiveTemplate(root, out string, cfg config, gens []generated) error {
 		return err
 	}
 	return writeFile(filepath.Join(out, "config/live/sandbox-account.yaml"), append([]byte("# "+header+"\n"), y...))
+}
+
+// livePolicy is one managed policy in the google-federated-role chart's
+// values shape: policies.<key>.{description, statements}, each statement
+// in the iam module's shape.
+type livePolicy struct {
+	Description string          `json:"description"`
+	Statements  []liveStatement `json:"statements"`
+}
+
+type liveStatement struct {
+	Sid       string   `json:"sid"`
+	Effect    string   `json:"effect"`
+	Actions   []string `json:"actions"`
+	Resources []string `json:"resources"`
+}
+
+// writeLivePolicies writes config/live/role-policies.yaml: the live-test
+// role's managed policies as the catalog chart instance's policies value
+// (keys part-1, part-2, ...; the chart names each policy
+// ack-extensions-live-tests-<key>).
+func writeLivePolicies(out string, policies []iamgen.Policy) error {
+	vals := map[string]livePolicy{}
+	for i, p := range policies {
+		lp := livePolicy{Description: fmt.Sprintf("ack-extensions live tests, part %d", i+1)}
+		for _, st := range p.Statement {
+			lp.Statements = append(lp.Statements, liveStatement{Sid: st.Sid, Effect: st.Effect, Actions: st.Action, Resources: []string{st.Resource}})
+		}
+		vals[fmt.Sprintf("part-%d", i+1)] = lp
+	}
+	y, err := yaml.Marshal(map[string]any{"policies": vals})
+	if err != nil {
+		return err
+	}
+	head := "# " + header + "\n" +
+		"# The live-test role's managed policies (ack-extensions-live-tests), as the\n" +
+		"# policies value of the catalog's google-federated-role chart: its instance\n" +
+		"# tests/ack-extensions-live-tests.values.yaml takes these statements.\n" +
+		"# When liveKinds or liveTestActions change, copy them there and apply the\n" +
+		"# instance (docs/live-runs.md).\n"
+	return writeFile(filepath.Join(out, "config/live/role-policies.yaml"), append([]byte(head), y...))
 }

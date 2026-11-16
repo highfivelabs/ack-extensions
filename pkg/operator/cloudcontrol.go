@@ -175,6 +175,29 @@ func (r *ContextReconciler) ManagerArgs(cc *ccv1alpha1.CloudControlContext, kind
 	return args
 }
 
+// ManagerMemory is the manager's memory request and limit for the number
+// of kinds it serves (0: every kind in the registry, a context that names
+// none). Each kind costs about 0.36 MiB at rest: its controller, its field
+// export controller, their informers, queues and metrics, about 29
+// goroutines (measured 2026-11-15 on kind, docs/cloudcontrol.md section 11:
+// 51 MB resident for 2 kinds, 533 MB for all 1,345). The fixed 256Mi limit
+// this replaces killed the manager of a context naming no kinds (OOMKilled
+// within 17 seconds, then backing off), which left every Cloud Control
+// object at its first reconcile (RECCC). The request is about what it uses
+// at rest (384 KiB a kind, at least 64Mi); the limit leaves room for objects
+// and requests in flight (512 KiB a kind over 128Mi, at least 256Mi).
+func ManagerMemory(kinds int) (request, limit resource.Quantity) {
+	if kinds == 0 {
+		kinds = len(registry.Types)
+	}
+	const ki, mi = 1 << 10, 1 << 20
+	req := max(int64(64*mi), int64(32*mi)+int64(kinds)*384*ki)
+	lim := max(int64(256*mi), int64(128*mi)+int64(kinds)*512*ki)
+	// Whole MiB, so the Deployment reads as a person would write it.
+	roundUp := func(b int64) int64 { return (b + mi - 1) / mi * mi }
+	return *resource.NewQuantity(roundUp(req), resource.BinarySI), *resource.NewQuantity(roundUp(lim), resource.BinarySI)
+}
+
 // PlanContext is what should exist for a context: the RoleBinding in its
 // namespace, the ServiceAccount and the manager in the operator's.
 func (r *ContextReconciler) PlanContext(cc *ccv1alpha1.CloudControlContext, kinds []string) []client.Object {
@@ -187,6 +210,7 @@ func (r *ContextReconciler) PlanContext(cc *ccv1alpha1.CloudControlContext, kind
 		// this namespace.
 		{Name: "ACK_SYSTEM_NAMESPACE", Value: env},
 	}
+	memRequest, memLimit := ManagerMemory(len(kinds))
 	return []client.Object{
 		&rbacv1.RoleBinding{
 			ObjectMeta: metav1.ObjectMeta{Name: CloudControlManager, Namespace: env, Labels: lbl, OwnerReferences: ccOwner(cc)},
@@ -228,8 +252,8 @@ func (r *ContextReconciler) PlanContext(cc *ccv1alpha1.CloudControlContext, kind
 							LivenessProbe:  &corev1.Probe{ProbeHandler: corev1.ProbeHandler{HTTPGet: &corev1.HTTPGetAction{Path: "/healthz", Port: intstr.FromInt(8081)}}},
 							ReadinessProbe: &corev1.Probe{ProbeHandler: corev1.ProbeHandler{HTTPGet: &corev1.HTTPGetAction{Path: "/readyz", Port: intstr.FromInt(8081)}}},
 							Resources: corev1.ResourceRequirements{
-								Requests: corev1.ResourceList{corev1.ResourceCPU: resource.MustParse("10m"), corev1.ResourceMemory: resource.MustParse("64Mi")},
-								Limits:   corev1.ResourceList{corev1.ResourceMemory: resource.MustParse("256Mi")},
+								Requests: corev1.ResourceList{corev1.ResourceCPU: resource.MustParse("10m"), corev1.ResourceMemory: memRequest},
+								Limits:   corev1.ResourceList{corev1.ResourceMemory: memLimit},
 							},
 						}},
 					},

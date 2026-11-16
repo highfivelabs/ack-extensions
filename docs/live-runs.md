@@ -79,62 +79,122 @@ writes it to a file, and exports `AWS_WEB_IDENTITY_TOKEN_FILE` and
 background loop writes a fresh token every 30 minutes (tokens last an
 hour); the role's sessions last an hour at most.
 
-## The sandbox account's template
+## The live-test role: a catalog chart instance
 
-`cloudcontrol/config/live/sandbox-account.yaml`, generated from
-`cloudcontrol/types.yaml` by `task cloudcontrol:generate` (so its
-permissions follow the served types; `task check` fails if it is stale).
-On the builder's request (O26c, 2026-11-15) an agent deploys it, in the
-AWS test account only, with that account's admin role. It holds:
+Setup like this role goes through Bundt's own machinery, catalog charts on
+ACK, never hand-written CloudFormation or CLI commands (the builder's rule,
+bundt `asks/estate-answers.md`, 2026-11-13). The role
+`ack-extensions-live-tests` is an instance of the
+catalog's
+[`google-federated-role`](https://github.com/highfivelabs/catalog/tree/main/charts/aws/google-federated-role)
+chart: `charts/aws/google-federated-role/tests/ack-extensions-live-tests.values.yaml`
+there. It renders the same role, trust (IAM's built-in
+`accounts.google.com` principal, conditions on `sub` and `oaud`, no IAM
+OIDC provider), session limit, tag and managed policy statements as the
+CloudFormation template that made it (`7d67acc`), compared statement for
+statement on 2026-11-15 (the chart's README, "The ack-extensions live-test
+role"). It differs in two ways: its managed policy is named
+`ack-extensions-live-tests-part-1` (CloudFormation generated one), and the
+budget alarm is not in it (no ACK controller or ack-extensions kind serves
+AWS Budgets yet: a gap here, so the alarm stays in the stack).
 
-- no IAM OIDC provider. An IAM OIDC provider for `https://accounts.google.com`
-  takes over every Google ID token in the account and refuses any whose
-  audience is not on its client ID list: the first deploy in `hfl-test`
-  (2026-11-15) broke the account's other Google-federated role
-  (`hfl-test-admin`, audience `sts.amazonaws.com`) until the stack was
-  deleted. The role trusts IAM's built-in `accounts.google.com` principal
-  instead;
-- `LiveTestRole` (`ack-extensions-live-tests`): `sts:AssumeRoleWithWebIdentity`
-  from `accounts.google.com`, only when `accounts.google.com:sub` is the
-  service account's unique ID (a parameter) and `accounts.google.com:oaud`
-  (the token's `aud`) is the audience `ack-extensions-live-tests`, at most
-  an hour; managed
-  policies with the Cloud Control actions and handler permissions of the
-  kinds sampled on live runs (`liveKinds` in `types.yaml`), their list
-  handlers' and `cloudformation:ListResources` for the sweeper, and the
-  tests' own fixtures (`liveTestActions`), split to IAM's 6,144-character
-  limit and kept within IAM's default of 10 managed policies per role
-  (the generator fails beyond it, and `TestLiveRoleWithinManagedPolicyLimit`
-  checks the committed template). Every other kind is proven on the fakes
-  only (plan question 21): a live run of a test whose kind is not in
-  `liveKinds` is refused by IAM. Adding a kind to `liveKinds` needs the
-  stack redeployed;
-- for the ACK-kind suite (statement `LiveRunACKKinds`,
-  `hack/cloudcontrol-gen/liveack.go`): every ACK-generated kind's calls
-  as `task ack:iam` reads them (`pkg/ackiam`), the Organizations kinds
-  left out (they need the organization's management account, which the
-  sandbox account is not); every SDK operation the tests call themselves
-  (each `&<service>.<Operation>Input` in `tests/e2e`, the Organizations
-  tests left out); and `tests/e2e/live-actions.yaml` (ACK's own kms and
-  s3 controllers that the extension tests run, fixtures' extra actions,
-  the sweeper's ACK pass). A test that adds a fixture call needs the
-  template regenerated and the stack redeployed;
-- `BudgetAlarm`: a monthly cost budget (default USD 50) with e-mail alerts
-  at 80% of actual and 100% of forecast spend.
+The instance carries a placeholder unique ID (the catalog is public); the
+real one is set where it is deployed (`--set-string
+google_service_account_unique_id=...`, from `gcloud iam service-accounts
+describe "$OFFLOAD_SA" --format='value(uniqueId)'`).
 
-To deploy, in the sandbox account (profile `hfl-test`, the account's
-keyless admin role; never the management or Identity Center account):
+**The builder's answer (2026-11-15, item AWSROLE-ADOPT):** "as recommended
+(Deploy the chart instance through ACK with the role adopted in place (same
+name, no gap in live runs), check one task test-live run, then delete the
+CloudFormation stack and drop the template's role and policies from the
+generator's output. Keep the budget alarm as the one CloudFormation piece
+until ack-extensions serves AWS Budgets.)"
+
+**Status, 2026-11-15: deployed, the role adopted in place.** On an offload
+Spot VM, a kind cluster ran ACK's iam-controller v1.11.3 (the catalog's
+pin) with the test account's admin credentials (region us-east-2, the only
+one the organization's SCP allows; ACK's own resource tags off). The chart
+instance was rendered with the offload service account's real unique ID,
+`deletion_policy: ABANDON` (so deleting an object never deletes the role or
+policy) and the stack's two tags (`hfl.dev/owner`, `hfl.dev/purpose`) beside
+the chart's `purpose`; the `Role` carried
+`services.k8s.aws/adoption-policy: adopt-or-create`. What it showed:
+
+- before applying, the render's trust policy and managed policy document
+  equalled the live role's, statement for statement;
+- ACK adopted the role (`services.k8s.aws/adopted: "true"`, both objects
+  `ACK.ResourceSynced`); its one change was the attached policy: it made
+  `ack-extensions-live-tests-part-1` (the same document) and attached it in
+  place of the stack's `ack-extensions-live-tests-LiveTestPolicy1-...`. The
+  role kept its `RoleId` and creation date: it was never deleted or
+  recreated;
+- the kind cluster and the VM were deleted after; nothing in a cluster
+  manages the role now. To change it (a new `liveKinds` entry), apply the
+  instance again the same way (`adopt-or-create` adopts it again);
+- `task test-live` assumed the adopted role on the next run (ledger,
+  2026-11-15).
+
+Then the stack let go of the role and its policy without deleting them: an
+update set `DeletionPolicy: Retain` on both, and the next update, from the
+regenerated template, removed them (`DELETE_SKIPPED`, 2026-11-16). The
+stack-made policy `ack-extensions-live-tests-LiveTestPolicy1-...` is still
+in the account, detached (no attachments) and in no stack: nothing uses it,
+and deleting it is left to the builder. The stack keeps the budget alarm
+only.
+
+## The live-test role's policies and the sandbox account's template
+
+`task cloudcontrol:generate` writes both from `cloudcontrol/types.yaml`
+(`task check` fails if either is stale):
+
+- `cloudcontrol/config/live/role-policies.yaml`: the role's managed
+  policies, as the chart instance's `policies` value (keys `part-1`, ...).
+  They hold the Cloud Control actions and handler permissions of the kinds
+  sampled on live runs (`liveKinds` in `types.yaml`), their list handlers'
+  and `cloudformation:ListResources` for the sweeper, and the tests' own
+  fixtures (`liveTestActions`), split to IAM's 6,144-character limit and
+  kept within IAM's default of 10 managed policies per role (the generator
+  fails beyond it, and `TestLiveRoleWithinManagedPolicyLimit` checks the
+  committed file). Every other kind is proven on the fakes only (plan
+  question 21): a live run of a test whose kind is not in `liveKinds` is
+  refused by IAM. Adding a kind to `liveKinds` needs these statements
+  copied into the catalog instance and the instance applied again. The
+  trust (IAM's built-in `accounts.google.com` principal, conditions on
+  `accounts.google.com:sub`, the service account's unique ID, and
+  `accounts.google.com:oaud`, the audience `ack-extensions-live-tests`, at
+  most an hour) is the chart's. No IAM OIDC provider: one for
+  `https://accounts.google.com` takes over every Google ID token in the
+  account and refuses any whose audience is not on its client ID list; the
+  first deploy in `hfl-test` (2026-11-15) broke the account's other
+  Google-federated role (`hfl-test-admin`, audience `sts.amazonaws.com`)
+  until the stack was deleted.
+  For the ACK-kind suite the policies also hold statement
+  `LiveRunACKKinds` (`hack/cloudcontrol-gen/liveack.go`): every
+  ACK-generated kind's calls as `task ack:iam` reads them (`pkg/ackiam`),
+  the Organizations kinds left out (they need the organization's
+  management account, which the sandbox account is not); every SDK
+  operation the tests call themselves (each `&<service>.<Operation>Input`
+  in `tests/e2e`, the Organizations tests left out); and
+  `tests/e2e/live-actions.yaml` (ACK's own kms and s3 controllers that the
+  extension tests run, fixtures' extra actions, the sweeper's ACK pass). A
+  test that adds a fixture call needs the file regenerated, its statements
+  copied into the catalog instance, and the instance applied again.
+- `cloudcontrol/config/live/sandbox-account.yaml`: the stack
+  `ack-extensions-live-tests` (us-east-2), holding only `BudgetAlarm`, a
+  monthly cost budget (default USD 50) with e-mail alerts at 80% of actual
+  and 100% of forecast spend. It stays CloudFormation until an ACK
+  controller or an ack-extensions kind serves AWS Budgets. To change it, in
+  the sandbox account only (profile `hfl-test`, the account's keyless admin
+  role; never the management or Identity Center account):
 
 ```sh
-gcloud iam service-accounts describe <offload VM service account> --format='value(uniqueId)'
 AWS_PROFILE=hfl-test aws cloudformation deploy --stack-name ack-extensions-live-tests --region us-east-2 \
   --template-file cloudcontrol/config/live/sandbox-account.yaml \
-  --capabilities CAPABILITY_NAMED_IAM \
-  --parameter-overrides GoogleServiceAccountUniqueId=<unique ID> AlertEmail=<address>
+  --parameter-overrides AlertEmail=<address>
 ```
 
-then set `AWS_SANDBOX_ACCOUNT_ID` to the account ID in the `.env` of
-whoever starts live runs (never in the repository).
+Set `AWS_SANDBOX_ACCOUNT_ID` to the account ID in the `.env` of whoever
+starts live runs (never in the repository).
 
 **Found on the first deploy (2026-11-10, run `ackx-11101802-5696`):** the
 trust works. The VM's ID token for `$OFFLOAD_SA`
@@ -235,6 +295,10 @@ policy letting Route 53 write to it, which the test does not make yet. Each is a
 | 2026-11-15 | `ackx-11151722-eda8` | `7c50294` | `$AWS_SANDBOX_ACCOUNT_ID` | TestSAMLProvider | PASS | FAIL | **IAM `SAMLProvider` on real Cloud Control:** the create with a write-only private key from a Secret, the ARN in status, the metadata read back through IAM, an update sent as one replace of `/SamlMetadataDocument`, the create-only refusals, and the delete all passed. Real IAM parses the metadata's certificate and the private key (the fixture now makes a real pair; moto took placeholders). One check failed on a fake-only detail: the fake's request tokens end in `-create`, real ones are UUIDs, so the count of the create's status polls was 0; the test now counts the polls before the first update on a live run. Sweeps clean |
 | 2026-11-15 | `ackx-11151728-fbe4` | `3cfe5f4` | `$AWS_SANDBOX_ACCOUNT_ID` | TestSAMLProvider | PASS | FAIL | The manager lost its leader lease 7 s after start, as in `ackx-11151713-11b9` ("Failed to update lease optimistically ... client rate limiter Wait returned an error: context deadline exceeded", then "leader election lost"), and exited; nothing reached IAM. Two of three live runs of the Cloud Control manager so far, none of the fake runs: the lease renewal waits behind the start of 1,345 kinds' informers in the one client rate limiter. Recorded in plan section 8 |
 | 2026-11-15 | `ackx-11151735-cca8` | `3cfe5f4` | `$AWS_SANDBOX_ACCOUNT_ID` | TestSAMLProvider | PASS | PASS | **IAM `SAMLProvider` (Cloud Control) passes on real AWS**, us-east-2: create with the write-only private key, status, one-replace update, create-only refusals, delete; the create's status polled once (real Cloud Control) where the fake answers IN_PROGRESS twice. Sweeps clean, nothing left (`left.txt` empty) |
+| 2026-11-16 | `ackx-11160005-069c` | `93aafbe` | `$AWS_SANDBOX_ACCOUNT_ID` | TestSAMLProvider | PASS | not run | First run on the role adopted by ACK (AWSROLE-ADOPT): **trust passed** (`AssumeRoleWithWebIdentity` into the adopted role). The sweep before was refused `cloudformation:ListResources` in us-west-2 by the organization's SCP (main still defaults to us-west-2; PR #111 moves live runs to us-east-2). Nothing created |
+| 2026-11-16 | `ackx-11160010-bf3d` | `93aafbe` | `$AWS_SANDBOX_ACCOUNT_ID` | TestSAMLProvider (`LIVE_REGION=us-east-2`) | PASS | not run | The adopted role's policy let the sweep list `AWS::IAM::SAMLProvider` in us-east-2; main's sweeper then failed on `AWS::SSO::PermissionSet` ("Missing Or Invalid ResourceModel", no `InstanceArn`; fixed in PR #111). Nothing created |
+| 2026-11-16 | `ackx-11160028-462f` | `4c56e3e` (PR #111) | `$AWS_SANDBOX_ACCOUNT_ID` | TestSAMLProvider | PASS | FAIL | Sweeps clean. The manager lost its leader lease 7 s after start (client rate limiter), as in `ackx-11151713-11b9`; nothing reached IAM. Rerun once |
+| 2026-11-16 | `ackx-11160035-feaf` | `4c56e3e` (PR #111) | `$AWS_SANDBOX_ACCOUNT_ID` | TestSAMLProvider | PASS | PASS | **The catalog chart instance's role passes a live run** (adopted by ACK in place, policy `ack-extensions-live-tests-part-1`), us-east-2. Sweeps clean, nothing left. The CloudFormation stack then let go of the role and policy (budget alarm only) |
 
 ## Kinds
 
@@ -246,42 +310,42 @@ each run; the ledger above has the runs.
 | Cloud Control | iam | SAMLProvider | TestSAMLProvider | PASS, `ackx-11151735-cca8` (2026-11-15); the manager lost its lease in two earlier runs (plan section 8 item 17) |
 | Cloud Control | sso | PermissionSet | TestIdentityCenter | pending: no Identity Center instance in the sandbox account (the organization's is in its management account) |
 | Cloud Control | sso | Assignment | TestIdentityCenter | pending: as PermissionSet |
-| ACK | applicationautoscaling | ScheduledAction | TestApplicationScheduledAction | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestApplicationScheduledAction` |
-| ACK | autoscaling | ScalingPolicy | TestScalingPolicy | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestScalingPolicy` |
-| ACK | autoscaling | ScheduledAction | TestScheduledAction | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestScheduledAction` |
-| ACK | ec2 | CustomerGateway | TestCustomerGateway | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestCustomerGateway` |
-| ACK | ec2 | DefaultSecurityGroup | TestDefaultSecurityGroup | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestDefaultSecurityGroup` |
-| ACK | ec2 | NetworkInterfacePermission | (none: moto has no API) | pending: no test yet (moto has none of the API, plan 6.33); a live test needs a second account to grant to, and the stack redeployed |
-| ACK | ec2 | ResourceTag | TestResourceTag | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestResourceTag` |
-| ACK | ec2 | Volume | TestVolume | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestVolume` |
-| ACK | ec2 | VolumeAttachment | TestVolumeAttachment | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestVolumeAttachment` |
-| ACK | ec2 | VPNConnection | TestVPNConnection | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestVPNConnection` |
-| ACK | ec2 | VPNGateway | TestVpnGateway | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestVpnGateway` |
-| ACK | ec2 | VPNGatewayRoutePropagation | (none: moto has neither call) | pending: no e2e test yet (moto has neither call, plan 6.34); a live test needs one written against a VPC route table, and the stack redeployed |
-| ACK | ecr | ReplicationConfiguration | TestReplicationConfiguration | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestReplicationConfiguration` |
-| ACK | eventbridge | APIDestination | TestApiDestination | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestApiDestination` |
-| ACK | eventbridge | Connection | TestConnection | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestConnection` |
-| ACK | iam | AccessKey | TestIAMAccessKey | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestIAMAccessKey` |
-| ACK | iam | AccountAlias | TestAccountAlias | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestAccountAlias` |
-| ACK | iam | AccountPasswordPolicy | TestAccountPasswordPolicy | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestAccountPasswordPolicy` |
-| ACK | iam | LoginProfile | TestLoginProfile | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestLoginProfile` |
-| ACK | iam | RolePolicyAttachment | TestRolePolicyAttachment | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestRolePolicyAttachment` |
-| ACK | iam | SSHPublicKey | TestSSHPublicKey | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestSSHPublicKey` |
-| ACK | iam | UserGroupMembership | TestUserGroupMembership | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestUserGroupMembership` |
-| ACK | iam | VirtualMFADevice | TestIAMVirtualMFADevice | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestIAMVirtualMFADevice` |
-| ACK | kms | ReplicaKey | TestReplicaKey | pending: needs a second region, which the organization's service control policy denies (us-east-2 only); and the stack redeployed |
-| ACK | kms | Key extension (ACK's Key) | TestKeyExtension | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestKeyExtension` |
-| ACK | lambda | Permission | TestPermission | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestPermission` |
+| ACK | applicationautoscaling | ScheduledAction | TestApplicationScheduledAction | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestApplicationScheduledAction` |
+| ACK | autoscaling | ScalingPolicy | TestScalingPolicy | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestScalingPolicy` |
+| ACK | autoscaling | ScheduledAction | TestScheduledAction | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestScheduledAction` |
+| ACK | ec2 | CustomerGateway | TestCustomerGateway | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestCustomerGateway` |
+| ACK | ec2 | DefaultSecurityGroup | TestDefaultSecurityGroup | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestDefaultSecurityGroup` |
+| ACK | ec2 | NetworkInterfacePermission | (none: moto has no API) | pending: no test yet (moto has none of the API, plan 6.33); a live test needs a second account to grant to, and the catalog instance updated and applied again |
+| ACK | ec2 | ResourceTag | TestResourceTag | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestResourceTag` |
+| ACK | ec2 | Volume | TestVolume | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestVolume` |
+| ACK | ec2 | VolumeAttachment | TestVolumeAttachment | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestVolumeAttachment` |
+| ACK | ec2 | VPNConnection | TestVPNConnection | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestVPNConnection` |
+| ACK | ec2 | VPNGateway | TestVpnGateway | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestVpnGateway` |
+| ACK | ec2 | VPNGatewayRoutePropagation | (none: moto has neither call) | pending: no e2e test yet (moto has neither call, plan 6.34); a live test needs one written against a VPC route table, and the catalog instance updated and applied again |
+| ACK | ecr | ReplicationConfiguration | TestReplicationConfiguration | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestReplicationConfiguration` |
+| ACK | eventbridge | APIDestination | TestApiDestination | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestApiDestination` |
+| ACK | eventbridge | Connection | TestConnection | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestConnection` |
+| ACK | iam | AccessKey | TestIAMAccessKey | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestIAMAccessKey` |
+| ACK | iam | AccountAlias | TestAccountAlias | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestAccountAlias` |
+| ACK | iam | AccountPasswordPolicy | TestAccountPasswordPolicy | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestAccountPasswordPolicy` |
+| ACK | iam | LoginProfile | TestLoginProfile | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestLoginProfile` |
+| ACK | iam | RolePolicyAttachment | TestRolePolicyAttachment | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestRolePolicyAttachment` |
+| ACK | iam | SSHPublicKey | TestSSHPublicKey | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestSSHPublicKey` |
+| ACK | iam | UserGroupMembership | TestUserGroupMembership | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestUserGroupMembership` |
+| ACK | iam | VirtualMFADevice | TestIAMVirtualMFADevice | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestIAMVirtualMFADevice` |
+| ACK | kms | ReplicaKey | TestReplicaKey | pending: needs a second region, which the organization's service control policy denies (us-east-2 only); and the catalog instance updated and applied again |
+| ACK | kms | Key extension (ACK's Key) | TestKeyExtension | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestKeyExtension` |
+| ACK | lambda | Permission | TestPermission | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestPermission` |
 | ACK | organizations | AccountPlacement | TestOrganizationsAccountPlacement | pending: organization-level identity (plan 7.5); the sandbox account is a member, not the management account |
 | ACK | organizations | DelegatedAdministrator | TestOrganizationsDelegatedAdministrator | pending: organization-level identity (plan 7.5); the sandbox account is a member, not the management account |
 | ACK | organizations | Organization | TestOrganizationsOrganization | pending: organization-level identity (plan 7.5); the sandbox account is a member, not the management account |
 | ACK | organizations | Policy | TestOrganizationsPolicy | pending: organization-level identity (plan 7.5); the sandbox account is a member, not the management account |
 | ACK | organizations | PolicyAttachment | TestOrganizationsPolicyAttachment | pending: organization-level identity (plan 7.5); the sandbox account is a member, not the management account |
-| ACK | rds | DBProxyTarget | TestDBProxyTarget | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestDBProxyTarget` |
-| ACK | rds | DBRoleAssociation | TestDBRoleAssociation | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestDBRoleAssociation` |
-| ACK | rds | OptionGroup | TestOptionGroup | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestOptionGroup` |
-| ACK | s3 | Bucket extension (ACK's Bucket) | TestBucketExtension | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestBucketExtension` |
-| ACK | s3control | PublicAccessBlock | TestPublicAccessBlock | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestPublicAccessBlock` |
-| ACK | scheduler | Schedule | TestSchedule | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestSchedule` |
-| ACK | scheduler | ScheduleGroup | TestScheduleGroup | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestScheduleGroup` |
-| ACK | wafv2 | WebACLAssociation | TestWebACLAssociation | pending: the deployed role lacks this kind's permissions; redeploy the stack from the template of HFL-623 (statement `LiveRunACKKinds`), then `task test-live SUITE=ack TESTS=TestWebACLAssociation` |
+| ACK | rds | DBProxyTarget | TestDBProxyTarget | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestDBProxyTarget` |
+| ACK | rds | DBRoleAssociation | TestDBRoleAssociation | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestDBRoleAssociation` |
+| ACK | rds | OptionGroup | TestOptionGroup | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestOptionGroup` |
+| ACK | s3 | Bucket extension (ACK's Bucket) | TestBucketExtension | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestBucketExtension` |
+| ACK | s3control | PublicAccessBlock | TestPublicAccessBlock | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestPublicAccessBlock` |
+| ACK | scheduler | Schedule | TestSchedule | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestSchedule` |
+| ACK | scheduler | ScheduleGroup | TestScheduleGroup | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestScheduleGroup` |
+| ACK | wafv2 | WebACLAssociation | TestWebACLAssociation | pending: the role lacks this kind's permissions; update the catalog instance (statement `LiveRunACKKinds`) and apply it again, then `task test-live SUITE=ack TESTS=TestWebACLAssociation` |

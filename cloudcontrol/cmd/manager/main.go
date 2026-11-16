@@ -28,6 +28,7 @@ import (
 	flag "github.com/spf13/pflag"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/client-go/discovery"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
 	"k8s.io/utils/ptr"
@@ -77,6 +78,19 @@ func main() {
 	types, err := selectTypes(*kinds)
 	if err != nil {
 		fail(err, "invalid --cloudcontrol-kinds")
+	}
+	disco, err := discovery.NewDiscoveryClientForConfig(ctrlrt.GetConfigOrDie())
+	if err != nil {
+		fail(err, "unable to create the discovery client")
+	}
+	types, missing, err := servedTypes(disco, types, len(*kinds) > 0)
+	if err != nil {
+		fail(err, "--cloudcontrol-kinds names kinds the API server does not serve")
+	}
+	if len(missing) > 0 {
+		// servedTypes says why; a CRD installed later is served once the
+		// manager restarts.
+		setupLog.Info("not serving the kinds with no CRD installed", "count", len(missing), "served", len(types))
 	}
 	factories := resource.FactoriesFor(types)
 	gvks := make([]schema.GroupVersionKind, 0, len(factories))

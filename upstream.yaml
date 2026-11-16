@@ -91,11 +91,15 @@ pins:
     repo: aws-controllers-k8s/s3-controller
     version: v1.15.0
     commit: 874152a6dbff23e60fcbaf8eda1a074121207ee0
-    use: not a module; ACK's Bucket is left to it, extended by our s3 manager; its Bucket CRD copied for the tests; the SDK client at its version
+    use: not a module; ACK's Bucket is left to it, extended by our s3 manager; its Bucket CRD copied for the tests; its generator.yaml, hook templates and hand-written Bucket code copied for our fixed copy (s3.aws.hfl.dev Bucket); the SDK client at its version
   - name: aws-sdk-go-v2 models
     repo: aws/aws-sdk-go-v2
     version: v1.34.0
     use: the Smithy models the generator reads (--aws-sdk-go-version)
+  - name: aws-sdk-go-v2 models (s3)
+    repo: aws/aws-sdk-go-v2
+    version: v1.41.5
+    use: the Smithy models the generator reads for s3 alone, s3-controller v1.15.0's, so our copy of its Bucket is generated the same
 
 pull_requests:
   - ref: aws-controllers-k8s/iam-controller#184
@@ -140,6 +144,36 @@ patches:
 copied:
   - here: [hack/ack-crds/s3.services.k8s.aws_buckets.yaml]
     from: {pin: s3-controller, paths: [config/crd/bases/s3.services.k8s.aws_buckets.yaml]}
+  - here: [services/s3/generator.yaml]
+    from: {pin: s3-controller, paths: [generator.yaml]}
+  - here:
+      - services/s3/templates/hooks/bucket/new_resource_manager_client_options.go.tpl
+      - services/s3/templates/hooks/bucket/sdk_create_post_build_request.go.tpl
+      - services/s3/templates/hooks/bucket/sdk_create_post_set_output.go.tpl
+      - services/s3/templates/hooks/bucket/sdk_read_many_post_set_output.go.tpl
+    from:
+      pin: s3-controller
+      paths:
+        - templates/hooks/bucket/new_resource_manager_client_options.go.tpl
+        - templates/hooks/bucket/sdk_create_post_build_request.go.tpl
+        - templates/hooks/bucket/sdk_create_post_set_output.go.tpl
+        - templates/hooks/bucket/sdk_read_many_post_set_output.go.tpl
+  - here:
+      - services/s3/pkg/resource/bucket/hook.go
+      - services/s3/pkg/resource/bucket/acl_custom.go
+      - services/s3/pkg/resource/bucket/sdk_file_end.go
+      - services/s3/pkg/resource/bucket/hook_test.go
+      - services/s3/pkg/resource/bucket/acl_custom_test.go
+      - services/s3/pkg/resource/bucket/notification_eventbridge_test.go
+    from:
+      pin: s3-controller
+      paths:
+        - pkg/resource/bucket/hook.go
+        - pkg/resource/bucket/acl_custom.go
+        - pkg/resource/bucket/sdk_file_end.go
+        - pkg/resource/bucket/hook_test.go
+        - pkg/resource/bucket/acl_custom_test.go
+        - pkg/resource/bucket/notification_eventbridge_test.go
   - here: [services/iam/apis/v1alpha1/role_policy_attachment.go]
     from: {pr: aws-controllers-k8s/iam-controller#184, paths: [apis/v1alpha1/role_policy_attachment.go]}
   - here:

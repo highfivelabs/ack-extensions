@@ -939,6 +939,60 @@ the trust policy's conditions. Everything on our side of that is proven
   of many objects; whether the handler permission lists suffice; how long
   request tokens live; whether a type the schema says is provisionable is
   served by Cloud Control in every region.
+- **Not Ready on the fake in the catalog's runs** (item RECCC,
+  2026-11-15). The catalog's fake-AWS layer (catalog PR #211) saw
+  `secretsmanager` `ResourcePolicy` stay un-Ready on both AWS Emulator and
+  moto, with ACK's "Unable to determine if desired resource state matches
+  latest observed state"; the same open case as `EIPAssociation` and
+  others. The builder (2026-11-15, verbatim): "RECCC: as recommended
+  (Yes. Open an ack-extensions ticket to capture the Cloud Control
+  manager's logs in the fake run and fix the "Unable to determine if
+  desired resource state matches latest observed state" state.)" Ticket
+  HFL-635.
+
+  **Cause: the manager ran out of memory.** The catalog's run now keeps
+  the manager's log and pod state (`<chart>/cloudcontrol-manager.log`,
+  catalog `hack/mock-apply-aws.sh`). In `off-catalog-1115213007-10866`
+  (ack-extensions `6c39295`, secrets-manager) the context named no kinds,
+  so the manager served all 1,345, and the operator's fixed 256Mi limit
+  killed it within 17 seconds of each start (`OOMKilled`, five restarts
+  in ten minutes on AWS Emulator, six on moto). Between kills it made at
+  most one pass: the `ResourcePolicy` sent its `CreateResource`, recorded
+  the request `IN_PROGRESS` and was never asked about again, so ACK's
+  runtime left "Unable to determine..." (`ACK.ResourceSynced` Unknown,
+  the requeue's error as the reason). On moto the manager never got that
+  far. `EIPAssociation` and the kinds without a status in the 2026-11-13
+  run are the same case.
+
+  Measured on kind (`off-ack-extensions-1115224540-9680`, a heap
+  profile): 51 MB resident for 2 kinds; 533 MB and 39,060 goroutines for
+  all 1,345, about 0.36 MiB a kind (each kind's controller and field
+  export controller, their informers, queues and metrics).
+
+  **Fixed** three ways:
+  - the operator sizes the manager to the kinds it serves
+    (`ManagerMemory`): request 384 KiB a kind over 32Mi (at least 64Mi),
+    limit 512 KiB a kind over 128Mi (at least 256Mi); 536Mi and 801Mi
+    for a context naming no kinds (`TestManagerMemory`);
+  - the manager serves only the kinds whose CRD the API server serves
+    (discovery at start): in a cluster that installs a few Cloud Control
+    CRDs, a context naming no kinds runs a small manager, and kinds named
+    in the context must all be installed or the manager stops naming
+    them. A CRD installed later is served after the manager restarts
+    (`TestServedTypes`; `TestOnlySomeCRDsInstalled` runs the manager with
+    two CRDs and checks both kinds reach `ACK.ResourceSynced=True` and
+    still reconcile after controller-runtime's two-minute cache sync
+    timeout);
+  - the catalog's context names the kinds its render has (catalog
+    `hack/mock-apply-aws.sh`), which is what a context should do: the
+    manager then serves and holds memory for those alone.
+
+  Not fixed here: Cloud Control on moto. moto has no Cloud Control API;
+  our fake Cloud Control over moto (`cloudcontrol/test/fake`) runs in the
+  test process, not in a cluster, so a catalog run on moto cannot make a
+  Cloud Control object Ready. And the emulator's Cloud Control is a store
+  that reaches no service (`docs/aws-emulator.md`), so Ready there proves
+  the wiring, not the resource.
 
 ## 12. Decisions taken, and the plan
 

@@ -54,6 +54,15 @@ time, a certificate validated by email) is not filled this way. Those are
 listed under "Not filled here" below, and `docs/plan.md` open question 23
 asks how the builder wants them filled.
 
+**Answered, 2026-11-15** (item ACKQ1-1; `docs/plan.md` section 3, "Fixed
+copies of ACK's kinds"): the annotation stays the first choice where it
+can fill the gap. Where it cannot, and ACK's kind is broken or misses
+attributes, we ship the identical kind with the fix in our group, as an
+intentional overlap with ACK's, never a copy without a known missing or
+broken bit. The `Instance` and ACM validation-method fields wait for
+upstream; the first fixed copy is s3-controller's `Bucket` (its read
+panics on a bucket without default encryption).
+
 ## How it is built
 
 - `pkg/extend`: a registry. A service's hand-written code registers an
@@ -82,7 +91,7 @@ asks how the builder wants them filled.
 | kms `Key` | `kms.aws.hfl.dev/rotation-period-in-days` (90 to 2560) | the automatic rotation period, while ACK's `spec.enableKeyRotation` is true (ACK turns rotation on and off; this sets its period) | `GetKeyRotationStatus`, `EnableKeyRotation` with `RotationPeriodInDays` | `rotation_period_in_days` | on moto with ACK's own kms-controller (`TestKeyExtension`), except the period itself: moto takes it and never returns it (`docs/plan.md` section 4.4), so the request's shape is shown by the unit tests (`services/kms/pkg/extend/key`) |
 | kms `Key` | `kms.aws.hfl.dev/enabled` (`true`/`false`) | the key enabled or disabled; without it the key's state is left as it is | `DescribeKey`, `EnableKey`, `DisableKey` | `is_enabled` | on moto with ACK's kms-controller: disable, enable, a key disabled outside Kubernetes enabled again |
 | kms `Key` | none: ACK's own `kms.services.k8s.aws/pending-window-in-days` (7 to 30, default 7) | the deletion window | ACK's `ScheduleKeyDeletion` | `deletion_window_in_days` | on moto with ACK's kms-controller: a 30-day window reaches `ScheduleKeyDeletion` |
-| s3 `Bucket` | `s3.aws.hfl.dev/force-destroy` (`true`/`false`) | empties the bucket when the Bucket is deleted, so ACK's `DeleteBucket` succeeds | `ListObjectVersions`, `DeleteObjects` (with `BypassGovernanceRetention`), `ListMultipartUploads`, `AbortMultipartUpload` | `force_destroy` | on moto (`TestBucketExtension`), the test playing ACK's side of the delete (s3-controller is not a Go module here); paging and batches by unit test |
+| s3 `Bucket` | `s3.aws.hfl.dev/force-destroy` (`true`/`false`) | empties the bucket when the Bucket is deleted, so ACK's `DeleteBucket` succeeds | `ListObjectVersions`, `DeleteObjects` (with `BypassGovernanceRetention`), `ListMultipartUploads`, `AbortMultipartUpload` | `force_destroy` | on moto (`TestBucketExtension`), the test playing ACK's side of the delete (s3-controller is not a Go module here); paging and batches by unit test; on our fixed copy of ACK's `Bucket` (`s3.aws.hfl.dev`, `docs/plan.md` section 6.38) by `TestBucket`, with our runtime's own delete |
 
 ### The `Bucket`'s delete, step by step
 

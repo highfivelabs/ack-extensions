@@ -1531,7 +1531,7 @@ AWS::S3::AccessGrant,s3,AccessGrant,application,FULLY_MUTABLE,,AccessGrant (Clou
 AWS::S3::AccessGrantsInstance,s3,AccessGrantsInstance,application,FULLY_MUTABLE,,AccessGrantsInstance (Cloud Control),ok,0,0,0,0,0,true
 AWS::S3::AccessGrantsLocation,s3,AccessGrantsLocation,application,FULLY_MUTABLE,,AccessGrantsLocation (Cloud Control),ok,0,0,0,0,1,true
 AWS::S3::AccessPoint,s3,AccessPoint,application,FULLY_MUTABLE,AccessPoint,,ok,0,0,0,0,0,true
-AWS::S3::Bucket,s3,Bucket,application,FULLY_MUTABLE,Bucket,,ok,0,0,3,11,1,true
+AWS::S3::Bucket,s3,Bucket,application,FULLY_MUTABLE,Bucket,Bucket,ok,0,0,3,11,1,true
 AWS::S3::BucketPolicy,s3,BucketPolicy,application,FULLY_MUTABLE,,,ok,1,0,0,0,0,true
 AWS::S3::MultiRegionAccessPoint,s3,MultiRegionAccessPoint,application,IMMUTABLE,,MultiRegionAccessPoint (Cloud Control),ok,0,0,0,0,0,true
 AWS::S3::MultiRegionAccessPointPolicy,s3,MultiRegionAccessPointPolicy,application,FULLY_MUTABLE,,MultiRegionAccessPointPolicy (Cloud Control),ok,0,0,0,0,0,true
