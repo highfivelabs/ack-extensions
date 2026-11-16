@@ -20,6 +20,16 @@ design and the reasons are in `docs/plan.md`.
 
 ### Added
 
+- **`s3.aws.hfl.dev` `Bucket`**: ACK s3-controller `v1.15.0`'s `Bucket`,
+  the same kind in our group, fixed: ACK's read panics (a nil pointer) on
+  a bucket whose `GetBucketEncryption` answers
+  `ServerSideEncryptionConfigurationNotFoundError` (S3-compatible stores,
+  moto); ours reads it as having no default encryption. An intentional
+  overlap with ACK's `Bucket` (`docs/plan.md` section 6.38 and section 8,
+  item 15), retired when ACK releases the fix; never point both at one
+  bucket. `s3.aws.hfl.dev/force-destroy` works on it as on ACK's. The s3
+  manager now needs the S3 actions of a bucket's configuration
+  (`task ack:iam`).
 - **`ec2.aws.hfl.dev` `DefaultSecurityGroup`** (open question 16;
   Terraform's `aws_default_security_group`): takes over a VPC's default
   security group, found by `vpcID` or `vpcRef` (ACK's `VPC`). Its rules
@@ -71,6 +81,14 @@ design and the reasons are in `docs/plan.md`.
 
 ### Fixed
 
+- **The Cloud Control manager of a context naming no kinds no longer runs
+  out of memory** (RECCC, `docs/cloudcontrol.md` section 11). It served
+  all 1,345 kinds in a fixed 256Mi and was OOMKilled within seconds of
+  each start, so Cloud Control objects stayed at their first reconcile
+  ("Unable to determine if desired resource state matches latest observed
+  state"). The operator now sizes its memory to the kinds served (801Mi
+  limit for all of them), and the manager serves only the kinds whose CRD
+  is installed.
 - **`iam.aws.hfl.dev` `AccountAlias`: a new object for the account's
   current alias takes it over.** When `CreateAccountAlias` answers
   `EntityAlreadyExists` (an error IAM's API reference lists for it) and

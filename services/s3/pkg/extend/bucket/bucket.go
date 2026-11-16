@@ -21,6 +21,10 @@
 // own. An object under compliance-mode Object Lock or a legal hold cannot
 // be deleted by anyone: the error is recorded as an Event and retried.
 //
+// The same annotation acts on our fixed copy of ACK's Bucket
+// (s3.aws.hfl.dev, docs/plan.md section 6.38), whose controller is
+// ACK's runtime too, with its own finalizer: one controller per kind.
+//
 // ACK's Bucket is read as unstructured: s3-controller is not a Go module
 // of this repository (a new upstream dependency is the builder's call;
 // see docs/plan.md open question 16 for ec2-controller), and only
@@ -51,6 +55,7 @@ import (
 )
 
 // +kubebuilder:rbac:groups=s3.services.k8s.aws,resources=buckets,verbs=get;list;watch;patch;update
+// +kubebuilder:rbac:groups=s3.aws.hfl.dev,resources=buckets,verbs=get;list;watch;patch;update
 // +kubebuilder:rbac:groups="",resources=events,verbs=create;patch
 
 const (
@@ -61,6 +66,8 @@ const (
 	// ACKFinalizer is ACK's own on its Bucket, removed once ACK's
 	// DeleteBucket has succeeded (ACK's runtime: finalizers.<group>/<Kind>).
 	ACKFinalizer = "finalizers.s3.services.k8s.aws/Bucket"
+	// HFLFinalizer is ACK's runtime's on our copy of the Bucket.
+	HFLFinalizer = "finalizers.s3.aws.hfl.dev/Bucket"
 
 	// Name is the controller's name, and the Events' source.
 	Name = "ack-extensions-s3-bucket"
@@ -77,8 +84,26 @@ const (
 	retryWhileACKDelete = 5 * time.Second
 )
 
-// GVK is ACK's Bucket.
-var GVK = schema.GroupVersionKind{Group: "s3.services.k8s.aws", Version: "v1alpha1", Kind: "Bucket"}
+// GVK is ACK's Bucket; HFLGVK our fixed copy of it.
+var (
+	GVK    = schema.GroupVersionKind{Group: "s3.services.k8s.aws", Version: "v1alpha1", Kind: "Bucket"}
+	HFLGVK = schema.GroupVersionKind{Group: "s3.aws.hfl.dev", Version: "v1alpha1", Kind: "Bucket"}
+)
+
+// Kind is one Bucket kind the extension acts on: its GVK, the finalizer
+// its controller (ACK's runtime) removes once DeleteBucket has succeeded,
+// and the name of the extension's controller for it.
+type Kind struct {
+	GVK          schema.GroupVersionKind
+	ACKFinalizer string
+	Name         string
+}
+
+// Kinds are ACK's Bucket and ours.
+var Kinds = []Kind{
+	{GVK: GVK, ACKFinalizer: ACKFinalizer, Name: Name},
+	{GVK: HFLGVK, ACKFinalizer: HFLFinalizer, Name: Name + "-hfl"},
+}
 
 func init() { hflextend.Register("s3-bucket", Setup) }
 
@@ -183,8 +208,10 @@ func Empty(ctx context.Context, api API, bucket string) (Emptied, error) {
 	return n, nil
 }
 
-// Reconciler acts on ACK's Buckets.
+// Reconciler acts on one kind of Bucket (ACK's, unless Kind says ours).
 type Reconciler struct {
+	// Kind is the Bucket kind; zero means ACK's (Kinds[0]).
+	Kind     Kind
 	Env      hflextend.Env
 	Client   client.Client
 	Recorder record.EventRecorder
@@ -192,14 +219,24 @@ type Reconciler struct {
 	NewAPI func(ctx context.Context, region string) (API, error)
 }
 
-// Setup adds the controller to the manager.
+// Setup adds a controller per Bucket kind to the manager.
 func Setup(env hflextend.Env) error {
+	for _, k := range Kinds {
+		if err := setup(env, k); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func setup(env hflextend.Env, k Kind) error {
 	r := &Reconciler{
+		Kind:     k,
 		Env:      env,
 		Client:   env.Manager.GetClient(),
-		Recorder: env.Manager.GetEventRecorderFor(Name),
+		Recorder: env.Manager.GetEventRecorderFor(k.Name),
 		NewAPI: func(ctx context.Context, region string) (API, error) {
-			cfg, err := env.AWSConfig(ctx, region, GVK)
+			cfg, err := env.AWSConfig(ctx, region, k.GVK)
 			if err != nil {
 				return nil, err
 			}
@@ -208,8 +245,8 @@ func Setup(env hflextend.Env) error {
 		},
 	}
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(GVK)
-	return ctrl.NewControllerManagedBy(env.Manager).Named(Name).For(u).Complete(r)
+	u.SetGroupVersionKind(k.GVK)
+	return ctrl.NewControllerManagedBy(env.Manager).Named(k.Name).For(u).Complete(r)
 }
 
 // Wanted reports whether the Bucket asks to be emptied on delete.
@@ -249,10 +286,18 @@ func (r *Reconciler) setFinalizer(ctx context.Context, u *unstructured.Unstructu
 	return r.Client.Patch(ctx, u, client.MergeFromWithOptions(base, client.MergeFromWithOptimisticLock{}))
 }
 
+func (r *Reconciler) kind() Kind {
+	if r.Kind.GVK.Empty() {
+		return Kinds[0]
+	}
+	return r.Kind
+}
+
 // Reconcile holds or releases the finalizer, and empties a deleted bucket.
 func (r *Reconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+	k := r.kind()
 	u := &unstructured.Unstructured{}
-	u.SetGroupVersionKind(GVK)
+	u.SetGroupVersionKind(k.GVK)
 	if err := r.Client.Get(ctx, req.NamespacedName, u); err != nil {
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
@@ -294,7 +339,7 @@ func (r *Reconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Resu
 	if why := r.Env.OtherAccount(md); why != "" {
 		return release(corev1.EventTypeWarning, ReasonNotActed, why+"; the bucket is not emptied")
 	}
-	if !controllerutil.ContainsFinalizer(u, ACKFinalizer) {
+	if !controllerutil.ContainsFinalizer(u, k.ACKFinalizer) {
 		// ACK's DeleteBucket has succeeded.
 		return release("", "", "")
 	}

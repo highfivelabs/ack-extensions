@@ -29,8 +29,9 @@ factory's daily watch. Change both together; `task upstream:yaml-check`
 | organizations-controller | `v1.7.0` | `5824700fd7` | Go module: the API types of ACK's `Account` and `OrganizationalUnit`, which `AccountPlacement`, `DelegatedAdministrator` and `PolicyAttachment` reference (and its CRDs, for the tests); ACK's `Account` and `OrganizationalUnit` are left to it (the generator ignores them); the Organizations SDK client is at its version (`service/organizations` `v1.37.4`) |
 | EventBridge Scheduler | none | | no ACK controller (`community` issue #2784); the Scheduler SDK client is `service/scheduler` `v1.12.13`, its version in aws-sdk-go-v2 `v1.34.0`, the release of the models below |
 | s3control-controller | `v1.9.0` | `2ee9ccbfaaaa36ad2105143502a902e03906bfd8` | not a module here: ACK's `AccessPoint` is left to it (the generator ignores every S3 Control resource but our `PublicAccessBlock`); the S3 Control SDK client is at its version (`service/s3control` `v1.68.4`) |
-| s3-controller | `v1.15.0` | `874152a6dbff23e60fcbaf8eda1a074121207ee0` | not a module here (a new upstream dependency is the builder's call): ACK's `Bucket` is left to it, extended by our s3 manager (`docs/extensions.md`), which reads it as unstructured; its `Bucket` CRD is copied into `hack/ack-crds` for the tests; the S3 SDK client is at its version (`service/s3` `v1.97.3`). `v1.15.0` is the catalog's pin and the last release on runtime `v0.67.0` |
+| s3-controller | `v1.15.0` | `874152a6dbff23e60fcbaf8eda1a074121207ee0` | not a module here (a new upstream dependency is the builder's call): ACK's `Bucket` is left to it, extended by our s3 manager (`docs/extensions.md`), which reads it as unstructured; its `Bucket` CRD is copied into `hack/ack-crds` for the tests; its `generator.yaml`, hook templates and hand-written `Bucket` code are copied into `services/s3` for our fixed copy, `s3.aws.hfl.dev` `Bucket` (`docs/plan.md` section 6.38); the S3 SDK client is at its version (`service/s3` `v1.97.3`). `v1.15.0` is the catalog's pin and the last release on runtime `v0.67.0` |
 | aws-sdk-go-v2 models | `v1.34.0` | tag | the Smithy model the generator reads (`--aws-sdk-go-version`), the version rds-controller `v1.14.2` was generated from |
+| aws-sdk-go-v2 models (s3) | `v1.41.5` | tag | the Smithy model the generator reads for s3 alone (`hack/generate.sh`, `SDK_VERSION_FOR`): the version s3-controller `v1.15.0` was generated from (its `ack-generate-metadata.yaml`), so our copy of its `Bucket` is generated the same |
 
 The runtime, code generator and controllers move together: ACK releases
 them in step, and a pin move takes all of them to one ACK release.
@@ -82,6 +83,10 @@ and what changed.
 | `services/eventbridge/pkg/resource/api_destination/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; an API destination's rate limit instead of `SuspendedState` |
 | `services/iam/pkg/resource/login_profile/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; a login profile's `passwordResetRequired` instead of `SuspendedState` |
 | `services/scheduler/pkg/resource/schedule/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; a schedule's server defaults instead of `SuspendedState` |
+| `services/s3/generator.yaml` (below its header) | s3-controller `v1.15.0` `generator.yaml` | `874152a6…` (`v1.15.0`) | none; the header says what the file is |
+| `services/s3/templates/hooks/bucket/{new_resource_manager_client_options,sdk_create_post_build_request,sdk_create_post_set_output,sdk_read_many_post_set_output}.go.tpl` | s3-controller `v1.15.0` `templates/hooks/bucket/` | `874152a6…` | `sdk_create_post_set_output.go.tpl`: the requeue returned inside an `if` (it always is), so the generated `return` after the hook is not unreachable code, which `go vet` refuses |
+| `services/s3/pkg/resource/bucket/{hook,acl_custom,sdk_file_end}.go` | s3-controller `v1.15.0` `pkg/resource/bucket/` | `874152a6…` | import path; `hook.go`: `customFindBucket` (by way of `addPutFieldsToSpec`) no longer dereferences `GetBucketEncryption`'s nil output when S3 answers `ServerSideEncryptionConfigurationNotFoundError` (`docs/plan.md` section 8, item 15; community#2990); `sdk_file_end.go` had no licence header and has one |
+| `services/s3/pkg/resource/bucket/{hook_test,acl_custom_test,notification_eventbridge_test}.go` | s3-controller `v1.15.0` `pkg/resource/bucket/` | `874152a6…` | import path |
 | `hack/ack-crds/s3.services.k8s.aws_buckets.yaml` | s3-controller `v1.15.0` `config/crd/bases/s3.services.k8s.aws_buckets.yaml` | `874152a6…` (`v1.15.0`) | none: ACK's `Bucket` CRD, installed by the end-to-end tests' API server (`pkg/test/harness`) |
 | `services/s3control/pkg/resource/public_access_block/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; the four settings of an account's public access block, and only S3's default (false) taken from the latest state |
 | `services/autoscaling/pkg/resource/scheduled_action/custom_delta.go` | applicationautoscaling-controller `v1.9.0` `pkg/resource/scalable_target/custom_delta.go` | `009baef3…` | package; `ScheduledAction`'s server-defaulted fields (start time, time zone) |
@@ -174,7 +179,9 @@ Written here: `services/rds/apis/v1alpha1/db_proxy_target.go`,
 `services/s3control/templates/hooks/public_access_block/*.go.tpl`,
 `services/s3control/pkg/resource/public_access_block/{hooks,custom_delta_test}.go`,
 `services/s3control/pkg/endpoint/`,
-`services/s3/` (all of it), `services/kms/pkg/extend/`,
+`services/s3/` (but the copies above, from s3-controller; with
+`services/s3/pkg/resource/bucket/encryption_not_found_test.go`),
+`services/kms/pkg/extend/`,
 `services/*/cmd/controller/handwritten.go`, `pkg/`, `cmd/operator`,
 `tests/`, `hack/`, `config/operator`, `config/fake-aws`.
 

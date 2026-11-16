@@ -28,6 +28,15 @@ cd "${ROOT}"
 export GOTOOLCHAIN=local
 
 SDK_VERSION="v1.34.0"         # UPSTREAM.md, "aws-sdk-go-v2 models"
+# A service whose kind is a copy of an ACK controller's (docs/plan.md
+# section 3, "Fixed copies of ACK's kinds") reads the models that
+# controller was generated from, so the copy is identical (UPSTREAM.md).
+SDK_VERSION_FOR() {
+  case "$1" in
+    s3) echo "v1.41.5" ;;     # s3-controller v1.15.0's ack-generate-metadata.yaml
+    *) echo "${SDK_VERSION}" ;;
+  esac
+}
 GROUP_SUFFIX="aws.hfl.dev"
 SERVICES=(applicationautoscaling autoscaling ec2 ecr eventbridge iam kms lambda organizations rds s3 s3control scheduler wafv2)
 GEN="${ROOT}/bin/ack-generate"
@@ -49,7 +58,7 @@ for svc in "${SERVICES[@]}"; do
   mkdir -p "${out}"
   common=(
     "${svc}" -o "${out}"
-    --aws-sdk-go-version "${SDK_VERSION}"
+    --aws-sdk-go-version "$(SDK_VERSION_FOR "${svc}")"
     --api-group-suffix "${GROUP_SUFFIX}"
     --cache-dir "${ROOT}/.cache/ack-generate"
     --generator-config-path "${src}/generator.yaml"

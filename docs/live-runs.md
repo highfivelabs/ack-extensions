@@ -54,7 +54,40 @@ writes it to a file, and exports `AWS_WEB_IDENTITY_TOKEN_FILE` and
 background loop writes a fresh token every 30 minutes (tokens last an
 hour); the role's sessions last an hour at most.
 
-## The sandbox account's template
+## The live-test role: a catalog chart instance
+
+Setup like this role goes through Bundt's own machinery, catalog charts on
+ACK, never hand-written CloudFormation or CLI commands (the builder's rule,
+bundt `asks/estate-answers.md`, 2026-11-13). The role
+`ack-extensions-live-tests` is now expressed as an instance of the
+catalog's
+[`google-federated-role`](https://github.com/highfivelabs/catalog/tree/main/charts/aws/google-federated-role)
+chart: `charts/aws/google-federated-role/tests/ack-extensions-live-tests.values.yaml`
+there. It renders the same role, trust (IAM's built-in
+`accounts.google.com` principal, conditions on `sub` and `oaud`, no IAM
+OIDC provider), session limit, tag and managed policy statements as the
+template below at `7d67acc`, compared statement for statement on
+2026-11-15 (the chart's README, "The ack-extensions live-test role"). It
+differs in two ways: its managed policy is named
+`ack-extensions-live-tests-part-1` (CloudFormation generated one), and the
+budget alarm is not in it (no ACK controller or ack-extensions kind serves
+AWS Budgets yet: a gap here).
+
+The instance carries a placeholder unique ID (the catalog is public); the
+real one is set where it is deployed, as the template takes it as a
+parameter. Its statements are generated from the template below: when
+`liveKinds` or `liveTestActions` change, regenerate the template
+(`task cloudcontrol:generate`), then the instance's statements from it.
+
+**Status, 2026-11-15:** not deployed. The role the CloudFormation stack
+made in the test account works today and stays until the chart instance
+is proven there (adopting the stack's role or replacing it is the
+builder's call). Until then the template and the stack below are the
+current deployment; once the instance is proven, the stack is deleted and
+the template's role and policies go (the generator keeps producing the
+statements the instance takes).
+
+## The sandbox account's template (current deployment, until the chart is proven)
 
 `cloudcontrol/config/live/sandbox-account.yaml`, generated from
 `cloudcontrol/types.yaml` by `task cloudcontrol:generate` (so its
@@ -83,12 +116,14 @@ AWS test account only, with that account's admin role. It holds:
   checks the committed template). Every other kind is proven on the fakes
   only (plan question 21): a live run of a test whose kind is not in
   `liveKinds` is refused by IAM. Adding a kind to `liveKinds` needs the
-  stack redeployed;
+  stack redeployed (and the catalog instance's statements regenerated);
 - `BudgetAlarm`: a monthly cost budget (default USD 50) with e-mail alerts
   at 80% of actual and 100% of forecast spend.
 
-To deploy, in the sandbox account (profile `hfl-test`, the account's
-keyless admin role; never the management or Identity Center account):
+How the existing stack was deployed, kept only to redeploy it until the
+catalog instance replaces it (not for new setup), in the sandbox account
+(profile `hfl-test`, the account's keyless admin role; never the
+management or Identity Center account):
 
 ```sh
 gcloud iam service-accounts describe <offload VM service account> --format='value(uniqueId)'
