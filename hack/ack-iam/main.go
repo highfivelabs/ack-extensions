@@ -12,7 +12,11 @@
 // extras), split into as few managed policies as IAM's size limit allows,
 // and trust.json, the role's trust policy for EKS Pod Identity: only the
 // context's managers' ServiceAccounts, in the operator's namespace, of
-// that cluster. --list prints every kind's actions instead.
+// that cluster; and, for each service whose ACK controller the context
+// runs (docs/plan.md, section 7.7), ACK's own recommendation:
+// managed-policies.txt (AWS managed policies to attach) and
+// ack-<service>-inline-policy.json. --list prints every kind's actions
+// instead.
 package main
 
 import (
@@ -73,11 +77,13 @@ func run(all []ackiam.Kind, ctxFile, account, clusterARN, systemNS, out string) 
 		return fmt.Errorf("%s: not an ACKContext with a namespace", ctxFile)
 	}
 	var chosen []ackiam.Kind
-	var sas, served []string
+	var sas, served, managed []string
+	var recs []ackiam.Recommendation
 	for _, ctl := range ac.Spec.Controllers {
 		if operator.OrganizationScoped[ctl.Service] {
 			return fmt.Errorf("%s: refused per environment; its role is the organization's (docs/plan.md, section 7.5)", ctl.Service)
 		}
+		// Ours: the kinds of <service>.aws.hfl.dev the context enables.
 		var have []string
 		for _, k := range all {
 			if k.Service == ctl.Service && (len(ctl.Kinds) == 0 || slices.Contains(ctl.Kinds, k.Kind)) {
@@ -86,7 +92,36 @@ func run(all []ackiam.Kind, ctxFile, account, clusterARN, systemNS, out string) 
 				served = append(served, k.Ref())
 			}
 		}
-		if len(have) == 0 {
+		if len(have) > 0 {
+			sas = append(sas, corev1alpha1.ManagerName(ctl.Service, ac.Namespace))
+		}
+		// ACK's own controller (docs/plan.md, section 7.7): ACK's
+		// recommendation, when the context enables any of ACK's kinds.
+		rec, ok, err := ackiam.Recommended(".", ctl.Service)
+		if err != nil {
+			return err
+		}
+		ackOn := false
+		if ok {
+			res, err := ackiam.ACKResources(".", ctl.Service)
+			if err != nil {
+				return err
+			}
+			ackOn = len(ctl.Kinds) == 0
+			for _, k := range ctl.Kinds {
+				if ackiam.IsACKKind(res, k) {
+					ackOn = true
+					have = append(have, k)
+				}
+			}
+		}
+		if ackOn {
+			recs = append(recs, rec)
+			managed = append(managed, rec.ManagedPolicyARNs...)
+			sas = append(sas, corev1alpha1.ACKControllerName(ctl.Service, ac.Namespace))
+			served = append(served, "ACK's "+ctl.Service+"-controller")
+		}
+		if len(have) == 0 && !ackOn {
 			return fmt.Errorf("no kinds of service %q", ctl.Service)
 		}
 		for _, k := range ctl.Kinds {
@@ -94,9 +129,9 @@ func run(all []ackiam.Kind, ctxFile, account, clusterARN, systemNS, out string) 
 				return fmt.Errorf("no such %s kind: %s", ctl.Service, k)
 			}
 		}
-		sas = append(sas, corev1alpha1.ManagerName(ctl.Service, ac.Namespace))
 	}
 	slices.Sort(sas)
+	managed = slices.Compact(slices.Sorted(slices.Values(managed)))
 	docs, err := iamgen.Split(ackiam.Policy(chosen), iamgen.MaxManagedPolicySize)
 	if err != nil {
 		return err
@@ -110,6 +145,21 @@ func run(all []ackiam.Kind, ctxFile, account, clusterARN, systemNS, out string) 
 			return err
 		}
 	}
+	// ACK's recommendation, as ACK ships it: the AWS managed policies to
+	// attach, and each inline policy document to put on the role.
+	if len(managed) > 0 {
+		if err := os.WriteFile(filepath.Join(out, "managed-policies.txt"), []byte(strings.Join(managed, "\n")+"\n"), 0o644); err != nil {
+			return err
+		}
+	}
+	for _, rec := range recs {
+		if rec.InlinePolicy == nil {
+			continue
+		}
+		if err := os.WriteFile(filepath.Join(out, "ack-"+rec.Service+"-inline-policy.json"), rec.InlinePolicy, 0o644); err != nil {
+			return err
+		}
+	}
 	trust := iamgen.PodIdentityTrust(iamgen.Trust{AccountID: account, ClusterARN: clusterARN, SystemNamespace: systemNS}, "EKSPodIdentityACKManagers", sas...)
 	tb, _ := json.MarshalIndent(trust, "", "  ")
 	if err := os.WriteFile(filepath.Join(out, "trust.json"), append(tb, '\n'), 0o644); err != nil {
@@ -119,7 +169,7 @@ func run(all []ackiam.Kind, ctxFile, account, clusterARN, systemNS, out string) 
 	for _, k := range chosen {
 		sens = append(sens, k.Sensitive()...)
 	}
-	fmt.Printf("%s: %d kinds (%s); managers %s; %d permission policies and trust.json in %s; sensitive: %s\n",
-		ac.Namespace, len(served), strings.Join(served, ", "), strings.Join(sas, ", "), len(docs), out, strings.Join(slices.Compact(slices.Sorted(slices.Values(sens))), ", "))
+	fmt.Printf("%s: %d kinds and controllers (%s); managers %s; %d permission policies, %d AWS managed policies (%s) and trust.json in %s; sensitive: %s\n",
+		ac.Namespace, len(served), strings.Join(served, ", "), strings.Join(sas, ", "), len(docs), len(managed), strings.Join(managed, ", "), out, strings.Join(slices.Compact(slices.Sorted(slices.Values(sens))), ", "))
 	return nil
 }
