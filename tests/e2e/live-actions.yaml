@@ -1,8 +1,8 @@
 # What a live run of the ACK-kind tests (task test-live SUITE=ack,
 # docs/live-runs.md) needs beyond what hack/cloudcontrol-gen reads from the
 # code (each ACK-generated kind's calls, pkg/ackiam, and each SDK operation
-# the tests call): it goes into the sandbox account's template,
-# cloudcontrol/config/live/sandbox-account.yaml.
+# the tests call): it goes into the live-test role's policies,
+# cloudcontrol/config/live/role-policies.yaml (the catalog instance).
 actions:
   # ACK's kms-controller, run beside ours by TestKeyExtension (its Key).
   - kms:CreateKey
@@ -39,6 +39,9 @@ actions:
   - iam:PassRole
   - ec2:DescribeAvailabilityZones
   - ec2:DescribeImages
+  # CreateAutoScalingGroup with a launch template reads its versions as
+  # the caller (live run ackx-11160302-80c8: AccessDenied).
+  - ec2:DescribeLaunchTemplateVersions
   - ssm:GetParameter
   - ssm:GetParameters
   # The sweeper's ACK pass (hack/live/sweep): what carries the run tag, and

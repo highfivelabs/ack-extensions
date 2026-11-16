@@ -229,6 +229,11 @@ func TestVPNConnection(t *testing.T) {
 			t.Fatal(err)
 		}
 		tgwID := aws.ToString(tgw.TransitGateway.TransitGatewayId)
+		t.Cleanup(func() {
+			if _, err := cloud.DeleteTransitGateway(ctx, &ec2.DeleteTransitGatewayInput{TransitGatewayId: aws.String(tgwID)}); err != nil {
+				t.Logf("cleanup: transit gateway %s: %v", tgwID, err)
+			}
+		})
 		ackTransitGateway(t, ctx, env.Client, "core", tgwID)
 		viaTGW := &ec2v1.VPNConnection{
 			ObjectMeta: metav1.ObjectMeta{Name: "office-core", Namespace: "default"},

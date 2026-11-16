@@ -217,6 +217,7 @@ func TestVpnGateway(t *testing.T) {
 		}
 		vpcs = append(vpcs, aws.ToString(v.Vpc.VpcId))
 	}
+	t.Cleanup(func() { deleteVPCs(t, ctx, cloud, vpcs...) })
 
 	waitSynced := func(t *testing.T, obj *ec2v1.VPNGateway) *ec2v1.VPNGateway {
 		t.Helper()
@@ -603,6 +604,11 @@ func TestVolumeAttachment(t *testing.T) {
 		t.Fatal(err)
 	}
 	instance := aws.ToString(run.Instances[0].InstanceId)
+	t.Cleanup(func() {
+		if _, err := cloud.TerminateInstances(ctx, &ec2.TerminateInstancesInput{InstanceIds: []string{instance}}); err != nil {
+			t.Logf("cleanup: instance %s: %v", instance, err)
+		}
+	})
 	ackInstance(t, ctx, env.Client, "app", instance, harness.Region+"a")
 
 	waitSynced := func(t *testing.T, key client.ObjectKey, obj client.Object, conds func() []*ackv1alpha1.Condition) {
@@ -790,4 +796,24 @@ func TestVolumeAttachment(t *testing.T) {
 			return nil
 		})
 	})
+}
+
+// deleteVPCs deletes VPCs a test made with the SDK (fixtures no object
+// owns): on a live run nothing else deletes them, and the account allows
+// five VPCs per region (live run ackx-11160252-142c: VpcLimitExceeded).
+// A VPC whose gateway is still detaching is tried again for a minute.
+func deleteVPCs(t *testing.T, ctx context.Context, cloud *ec2.Client, ids ...string) {
+	t.Helper()
+	for _, id := range ids {
+		var err error
+		for i := 0; i < 12; i++ {
+			if _, err = cloud.DeleteVpc(ctx, &ec2.DeleteVpcInput{VpcId: aws.String(id)}); err == nil {
+				break
+			}
+			time.Sleep(5 * time.Second)
+		}
+		if err != nil {
+			t.Logf("cleanup: VPC %s: %v", id, err)
+		}
+	}
 }

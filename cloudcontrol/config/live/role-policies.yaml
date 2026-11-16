@@ -39,6 +39,7 @@ policies:
       sid: ServiceAppsync
     - actions:
       - autoscaling:CreateAutoScalingGroup
+      - autoscaling:DeleteAutoScalingGroup
       - autoscaling:DeletePolicy
       - autoscaling:DeleteScheduledAction
       - autoscaling:DescribePolicies
@@ -94,6 +95,7 @@ policies:
       - ec2:CreateVpnConnectionRoute
       - ec2:CreateVpnGateway
       - ec2:DeleteCustomerGateway
+      - ec2:DeleteLaunchTemplate
       - ec2:DeleteNetworkInterfacePermission
       - ec2:DeleteSubnet
       - ec2:DeleteTags
@@ -108,6 +110,7 @@ policies:
       - ec2:DescribeAvailabilityZones
       - ec2:DescribeCustomerGateways
       - ec2:DescribeImages
+      - ec2:DescribeLaunchTemplateVersions
       - ec2:DescribeNetworkInterfacePermissions
       - ec2:DescribeRouteTables
       - ec2:DescribeSecurityGroups
@@ -133,6 +136,7 @@ policies:
       - ec2:RevokeSecurityGroupIngress
       - ec2:RunInstances
       - ec2:SearchTransitGatewayRoutes
+      - ec2:TerminateInstances
       effect: Allow
       resources:
       - '*'

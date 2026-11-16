@@ -6,6 +6,7 @@ package e2e
 import (
 	"context"
 	"fmt"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -74,9 +75,17 @@ func TestAccountAlias(t *testing.T) {
 		})
 	}
 
+	// An account alias is unique across all of AWS: acme-prod and
+	// someone-else may belong to other accounts, so a live run takes
+	// aliases of its own run ID (live run ackx-11160256-57fe: acme-prod
+	// was refused EntityAlreadyExists).
+	want, other := "acme-prod", "someone-else"
+	if id := os.Getenv("LIVE_RUN_ID"); harness.IsLive() && id != "" {
+		want, other = "hfl-"+id, "hfl-"+id+"-other"
+	}
 	acme := &iamv1.AccountAlias{
 		ObjectMeta: metav1.ObjectMeta{Name: "acme-prod", Namespace: "default"},
-		Spec:       iamv1.AccountAliasSpec{AccountAlias: aws.String("acme-prod")},
+		Spec:       iamv1.AccountAliasSpec{AccountAlias: aws.String(want)},
 	}
 
 	t.Run("the alias is set and settles", func(t *testing.T) {
@@ -84,7 +93,7 @@ func TestAccountAlias(t *testing.T) {
 			t.Fatal(err)
 		}
 		waitSynced(t, acme)
-		cloudAlias(t, "acme-prod")
+		cloudAlias(t, want)
 		updates := func() int {
 			n := 0
 			for _, line := range strings.Split(env.Logs(), "\n") {
@@ -102,10 +111,10 @@ func TestAccountAlias(t *testing.T) {
 	})
 
 	t.Run("an alias set outside Kubernetes is put back", func(t *testing.T) {
-		if _, err := cloud.CreateAccountAlias(ctx, &iam.CreateAccountAliasInput{AccountAlias: aws.String("someone-else")}); err != nil {
+		if _, err := cloud.CreateAccountAlias(ctx, &iam.CreateAccountAliasInput{AccountAlias: aws.String(other)}); err != nil {
 			t.Fatal(err)
 		}
-		cloudAlias(t, "acme-prod")
+		cloudAlias(t, want)
 	})
 
 	t.Run("the CRD refuses what IAM would", func(t *testing.T) {
@@ -159,13 +168,13 @@ func TestAccountAlias(t *testing.T) {
 			t.Fatal(err)
 		}
 		gone(t, keep)
-		cloudAlias(t, "acme-prod")
+		cloudAlias(t, want)
 	})
 
 	t.Run("delete deletes the alias", func(t *testing.T) {
 		again := &iamv1.AccountAlias{
 			ObjectMeta: metav1.ObjectMeta{Name: "acme-prod-2", Namespace: "default"},
-			Spec:       iamv1.AccountAliasSpec{AccountAlias: aws.String("acme-prod")},
+			Spec:       iamv1.AccountAliasSpec{AccountAlias: aws.String(want)},
 		}
 		if err := env.Client.Create(ctx, again); err != nil {
 			t.Fatal(err)

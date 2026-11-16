@@ -44,6 +44,7 @@ func TestResourceTag(t *testing.T) {
 		t.Fatal(err)
 	}
 	vpcID := aws.ToString(vpc.Vpc.VpcId)
+	t.Cleanup(func() { deleteVPCs(t, ctx, cloud, vpcID) })
 
 	cloudTags := func() map[string]string {
 		t.Helper()

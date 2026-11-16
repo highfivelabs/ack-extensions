@@ -26,7 +26,9 @@ import (
 )
 
 // groupTags is a schedule group's tags in the cloud, as sorted k=v pairs,
-// without the services.k8s.aws/ tags ACK's runtime adds to every resource.
+// without the services.k8s.aws/ tags ACK's runtime adds to every resource
+// and, on a live run, the run's tag (hfl.dev/live-run, ACK's
+// --resource-tags; docs/live-runs.md).
 func groupTags(ctx context.Context, c *scheduler.Client, arn string) (string, error) {
 	out, err := c.ListTagsForResource(ctx, &scheduler.ListTagsForResourceInput{ResourceArn: aws.String(arn)})
 	if err != nil {
@@ -34,7 +36,7 @@ func groupTags(ctx context.Context, c *scheduler.Client, arn string) (string, er
 	}
 	var kv []string
 	for _, t := range out.Tags {
-		if strings.HasPrefix(aws.ToString(t.Key), "services.k8s.aws/") {
+		if k := aws.ToString(t.Key); strings.HasPrefix(k, "services.k8s.aws/") || k == "hfl.dev/live-run" {
 			continue
 		}
 		kv = append(kv, aws.ToString(t.Key)+"="+aws.ToString(t.Value))

@@ -54,6 +54,15 @@ func asgFixture(t *testing.T, ctx context.Context, env *harness.Env, cloud *auto
 	}); err != nil {
 		t.Fatal(err)
 	}
+	// Made outside ACK, so deleted here (on a live run nothing else would).
+	t.Cleanup(func() {
+		if _, err := cloud.DeleteAutoScalingGroup(ctx, &autoscaling.DeleteAutoScalingGroupInput{AutoScalingGroupName: aws.String("web"), ForceDelete: aws.Bool(true)}); err != nil {
+			t.Logf("cleanup: group web: %v", err)
+		}
+		if _, err := ec2.NewFromConfig(env.AWS).DeleteLaunchTemplate(ctx, &ec2.DeleteLaunchTemplateInput{LaunchTemplateName: aws.String("web")}); err != nil {
+			t.Logf("cleanup: launch template web: %v", err)
+		}
+	})
 	if _, err := cloud.CreateAutoScalingGroup(ctx, &autoscaling.CreateAutoScalingGroupInput{
 		AutoScalingGroupName: aws.String("web"),
 		LaunchTemplate:       &astypes.LaunchTemplateSpecification{LaunchTemplateName: aws.String("web"), Version: aws.String("$Latest")},

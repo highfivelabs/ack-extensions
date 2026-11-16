@@ -104,7 +104,7 @@ func TestSSHPublicKey(t *testing.T) {
 			t.Fatalf("status id %q fingerprint %q", id, aws.ToString(got.Status.Fingerprint))
 		}
 		k, err := cloudKey(id)
-		if err != nil || k.Status != iamtypes.StatusTypeActive || aws.ToString(k.SSHPublicKeyBody) != sshKeyA {
+		if err != nil || k.Status != iamtypes.StatusTypeActive || sshKeyOnly(aws.ToString(k.SSHPublicKeyBody)) != sshKeyOnly(sshKeyA) {
 			t.Fatalf("cloud key %+v: %v", k, err)
 		}
 		updates := func() int {
@@ -188,4 +188,15 @@ func TestSSHPublicKey(t *testing.T) {
 			t.Fatalf("key still there, or another error: %v", err)
 		}
 	})
+}
+
+// sshKeyOnly is an OpenSSH public key's type and key, without its comment:
+// real IAM returns the body it stores without the comment the key was
+// uploaded with (live run ackx-11160256-57fe); moto returns it whole.
+func sshKeyOnly(body string) string {
+	f := strings.Fields(body)
+	if len(f) < 2 {
+		return body
+	}
+	return f[0] + " " + f[1]
 }
