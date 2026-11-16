@@ -595,7 +595,7 @@ func (r *ACKContextReconciler) Reconcile(ctx context.Context, req reconcile.Requ
 			continue
 		}
 		if by := ClaimedBy(deps.Items, svc, env); by != "" {
-			refuse(svc, ReasonNamespaceClaimed, fmt.Sprintf("namespace %s is already watched by ACK's %s controller %s, installed outside this context; a second controller would reconcile the same objects as another identity. Narrow that controller's --watch-namespace (ACK's chart: watchNamespace) or leave %s out of this context", env, svc, by, svc))
+			refuse(svc, ReasonNamespaceClaimed, fmt.Sprintf("namespace %s is already watched by ACK's %s controller %s, installed outside this context; a second controller would reconcile the same objects as another identity. Narrow that controller's --watch-namespace (ACK's chart: installScope namespace and watchNamespace) or leave %s out of this context", env, svc, by, svc))
 			continue
 		}
 		for _, rt := range routes {

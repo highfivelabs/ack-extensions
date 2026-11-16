@@ -3244,8 +3244,10 @@ watches the environment. Before, it took our manager beside that
 controller; now ACK's controller alone already reconciles ACK's kinds
 there, and a second would reconcile them as a second identity. The
 migration from a cluster-wide ACK install is: generate the environment's
-role with ACK's policy (below), narrow the classic controller's
-`watchNamespace` off the environment, and the context's entry comes back
+role with ACK's policy (below), narrow the classic controller off the
+environment (ACK's chart: `installScope: namespace` with
+`watchNamespace`; the chart ignores `watchNamespace` alone), and the
+context's entry comes back
 from `NamespaceClaimed` with both controllers. The objects need nothing:
 ACK's controllers keep no state outside the objects, so the new
 controller takes them up on its first sync, as the environment's role.
