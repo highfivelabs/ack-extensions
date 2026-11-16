@@ -51,7 +51,7 @@ func TestBucketExtension(t *testing.T) {
 	}
 	plainBucket, markerBucket := bucketName("plain-bucket"), bucketName("marker-bucket")
 	forceBucket, keptBucket := bucketName("force-bucket"), bucketName("kept-bucket")
-	changedBucket := bucketName("changed-bucket")
+	changedBucket, lockedBucket := bucketName("changed-bucket"), bucketName("locked-bucket")
 	// kept-bucket is left in the cloud by design (its versions kept): it is
 	// emptied and deleted after the test.
 	t.Cleanup(func() {
@@ -67,8 +67,27 @@ func TestBucketExtension(t *testing.T) {
 			t.Logf("cleanup: bucket %s: %v", keptBucket, err)
 		}
 	})
+	// locked-bucket holds an object under governance retention: if its
+	// subtest stops before the extension empties it, delete it here.
+	t.Cleanup(func() {
+		out, err := api.ListObjectVersions(ctx, &s3.ListObjectVersionsInput{Bucket: aws.String(lockedBucket)})
+		if err != nil {
+			return
+		}
+		for _, v := range out.Versions {
+			_, _ = api.DeleteObject(ctx, &s3.DeleteObjectInput{Bucket: aws.String(lockedBucket), Key: v.Key, VersionId: v.VersionId, BypassGovernanceRetention: aws.Bool(true)})
+		}
+		for _, m := range out.DeleteMarkers {
+			_, _ = api.DeleteObject(ctx, &s3.DeleteObjectInput{Bucket: aws.String(lockedBucket), Key: m.Key, VersionId: m.VersionId})
+		}
+		if _, err := api.DeleteBucket(ctx, &s3.DeleteBucketInput{Bucket: aws.String(lockedBucket)}); err != nil {
+			t.Logf("cleanup: bucket %s: %v", lockedBucket, err)
+		}
+	})
 
-	newBucket := func(t *testing.T, name string, annotations map[string]string, made bool) *unstructured.Unstructured {
+	// newBucket makes ACK's Bucket and, when made, the bucket itself (with
+	// Object Lock enabled when locked) and the status ACK would write.
+	newBucket := func(t *testing.T, name string, annotations map[string]string, made bool, locked ...bool) *unstructured.Unstructured {
 		t.Helper()
 		u := &unstructured.Unstructured{}
 		u.SetGroupVersionKind(bucket.GVK)
@@ -81,9 +100,14 @@ func TestBucketExtension(t *testing.T) {
 			t.Fatal(err)
 		}
 		if made {
+			var lock *bool
+			if len(locked) > 0 && locked[0] {
+				lock = aws.Bool(true)
+			}
 			if _, err := api.CreateBucket(ctx, &s3.CreateBucketInput{
-				Bucket:                    aws.String(name),
-				CreateBucketConfiguration: &s3types.CreateBucketConfiguration{LocationConstraint: s3types.BucketLocationConstraint(harness.Region)},
+				Bucket:                     aws.String(name),
+				CreateBucketConfiguration:  &s3types.CreateBucketConfiguration{LocationConstraint: s3types.BucketLocationConstraint(harness.Region)},
+				ObjectLockEnabledForBucket: lock,
 			}); err != nil {
 				t.Fatal(err)
 			}
@@ -205,6 +229,30 @@ func TestBucketExtension(t *testing.T) {
 		gone(t, forceBucket)
 		msg := waitEvent(t, env, "default", forceBucket, bucket.ReasonEmptied)
 		if want := "deleted 5 object version(s) and delete marker(s) and aborted 1 multipart upload(s)"; !strings.Contains(msg, want) {
+			t.Fatalf("event %q, want %q", msg, want)
+		}
+	})
+
+	t.Run("force-destroy bypasses governance retention on an Object Lock bucket", func(t *testing.T) {
+		u := newBucket(t, lockedBucket, map[string]string{bucket.AnnotationForceDestroy: "true"}, true, true)
+		waitFinalizer(t, lockedBucket, true)
+		if _, err := api.PutObject(ctx, &s3.PutObjectInput{
+			Bucket: aws.String(lockedBucket), Key: aws.String("ledger/2026.csv"),
+			ObjectLockMode:            s3types.ObjectLockModeGovernance,
+			ObjectLockRetainUntilDate: aws.Time(time.Now().Add(24 * time.Hour)),
+		}); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := api.PutObject(ctx, &s3.PutObjectInput{Bucket: aws.String(lockedBucket), Key: aws.String("ledger/2025.csv")}); err != nil {
+			t.Fatal(err)
+		}
+		if err := env.Client.Delete(ctx, u); err != nil {
+			t.Fatal(err)
+		}
+		actAsACK(t, lockedBucket)
+		gone(t, lockedBucket)
+		msg := waitEvent(t, env, "default", lockedBucket, bucket.ReasonEmptied)
+		if want := "deleted 2 object version(s)"; !strings.Contains(msg, want) {
 			t.Fatalf("event %q, want %q", msg, want)
 		}
 	})

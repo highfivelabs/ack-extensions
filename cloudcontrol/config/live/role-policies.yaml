@@ -104,6 +104,7 @@ policies:
       - ec2:DeleteCustomerGateway
       - ec2:DeleteInternetGateway
       - ec2:DeleteLaunchTemplate
+      - ec2:DeleteNetworkAcl
       - ec2:DeleteNetworkAclEntry
       - ec2:DeleteNetworkInterfacePermission
       - ec2:DeleteRoute
@@ -412,6 +413,7 @@ policies:
       - s3:PutLifecycleConfiguration
       - s3:PutMetricsConfiguration
       - s3:PutObject
+      - s3:PutObjectRetention
       - s3:PutReplicationConfiguration
       effect: Allow
       resources:

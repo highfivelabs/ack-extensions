@@ -21,6 +21,7 @@ type fakeS3 struct {
 	versions []string // "key@version"
 	uploads  []string
 	locked   map[string]bool // versions DeleteObjects refuses
+	lock     bool            // Object Lock enabled on the bucket
 	page     int
 	gone     bool
 	batches  []int
@@ -56,9 +57,24 @@ func (f *fakeS3) ListObjectVersions(_ context.Context, in *svcsdk.ListObjectVers
 	return out, nil
 }
 
+func (f *fakeS3) GetObjectLockConfiguration(context.Context, *svcsdk.GetObjectLockConfigurationInput, ...func(*svcsdk.Options)) (*svcsdk.GetObjectLockConfigurationOutput, error) {
+	if f.gone {
+		return nil, errNoSuchBucket
+	}
+	if !f.lock {
+		return nil, &smithy.GenericAPIError{Code: "ObjectLockConfigurationNotFoundError"}
+	}
+	return &svcsdk.GetObjectLockConfigurationOutput{ObjectLockConfiguration: &svcsdktypes.ObjectLockConfiguration{ObjectLockEnabled: svcsdktypes.ObjectLockEnabledEnabled}}, nil
+}
+
 func (f *fakeS3) DeleteObjects(_ context.Context, in *svcsdk.DeleteObjectsInput, _ ...func(*svcsdk.Options)) (*svcsdk.DeleteObjectsOutput, error) {
 	f.batches = append(f.batches, len(in.Delete.Objects))
 	f.bypass = append(f.bypass, aws.ToBool(in.BypassGovernanceRetention))
+	// As real S3 (live run ackx-11160411-5872): the header is refused on a
+	// bucket without Object Lock.
+	if in.BypassGovernanceRetention != nil && !f.lock {
+		return nil, &smithy.GenericAPIError{Code: "InvalidArgument", Message: "x-amz-bypass-governance-retention is only applicable to Object Lock enabled buckets."}
+	}
 	out := &svcsdk.DeleteObjectsOutput{}
 	for _, o := range in.Delete.Objects {
 		id := aws.ToString(o.Key) + "@" + aws.ToString(o.VersionId)
@@ -83,8 +99,8 @@ func (f *fakeS3) AbortMultipartUpload(context.Context, *svcsdk.AbortMultipartUpl
 
 func TestEmpty(t *testing.T) {
 	ctx := context.Background()
-	t.Run("every page, in batches of at most 1,000, bypassing governance retention", func(t *testing.T) {
-		f := &fakeS3{page: 1500, uploads: []string{"a", "b"}}
+	t.Run("every page, in batches of at most 1,000, bypassing governance retention under Object Lock", func(t *testing.T) {
+		f := &fakeS3{page: 1500, uploads: []string{"a", "b"}, lock: true}
 		for i := 0; i < 2600; i++ {
 			id := fmt.Sprint("v", i)
 			if i%10 == 0 {
@@ -108,6 +124,21 @@ func TestEmpty(t *testing.T) {
 			}
 		}
 	})
+	t.Run("without Object Lock the deletes do not ask to bypass governance retention", func(t *testing.T) {
+		f := &fakeS3{page: 10, versions: []string{"data/report.csv@1", "data/report.csv@2", "logs/a@marker3"}, uploads: []string{"big/upload"}}
+		n, err := Empty(ctx, f, "b")
+		if err != nil {
+			t.Fatal(err)
+		}
+		if n.Versions != 3 || n.Uploads != 1 {
+			t.Fatalf("emptied %+v", n)
+		}
+		for _, b := range f.bypass {
+			if b {
+				t.Fatal("a DeleteObjects call with BypassGovernanceRetention on a bucket without Object Lock")
+			}
+		}
+	})
 	t.Run("a bucket already gone is empty", func(t *testing.T) {
 		n, err := Empty(ctx, &fakeS3{gone: true, page: 10}, "b")
 		if err != nil || n != (Emptied{}) {
@@ -115,7 +146,7 @@ func TestEmpty(t *testing.T) {
 		}
 	})
 	t.Run("a locked version is an error after the rest are deleted", func(t *testing.T) {
-		f := &fakeS3{page: 10, versions: []string{"a@1", "b@2", "c@3"}, locked: map[string]bool{"b@2": true}}
+		f := &fakeS3{page: 10, versions: []string{"a@1", "b@2", "c@3"}, locked: map[string]bool{"b@2": true}, lock: true}
 		n, err := Empty(ctx, f, "b")
 		if err == nil || !strings.Contains(err.Error(), "b (version 2)") {
 			t.Fatalf("error %v", err)

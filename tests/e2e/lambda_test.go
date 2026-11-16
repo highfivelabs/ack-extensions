@@ -188,11 +188,18 @@ func TestPermission(t *testing.T) {
 	})
 
 	t.Run("an account may invoke an alias", func(t *testing.T) {
+		// Real Lambda refuses an account principal that is not a real
+		// account ("The provided principal was invalid", live run
+		// ackx-11160411-5872): a live run grants the sandbox account itself.
+		partner := "210987654321"
+		if harness.IsLive() {
+			partner = env.Account
+		}
 		alias := &lambdav1.Permission{
 			ObjectMeta: metav1.ObjectMeta{Name: "partner", Namespace: "default"},
 			Spec: lambdav1.PermissionSpec{
 				FunctionName: aws.String("app"), Qualifier: aws.String("live"), StatementID: aws.String("partner"),
-				Action: aws.String("lambda:InvokeFunction"), Principal: aws.String("210987654321"),
+				Action: aws.String("lambda:InvokeFunction"), Principal: aws.String(partner),
 			},
 		}
 		if err := env.Client.Create(ctx, alias); err != nil {
@@ -200,7 +207,7 @@ func TestPermission(t *testing.T) {
 		}
 		got := waitSynced(t, alias)
 		// The spec keeps the account ID as written (AWS stores its root ARN).
-		if aws.ToString(got.Spec.Principal) != "210987654321" {
+		if aws.ToString(got.Spec.Principal) != partner {
 			t.Fatalf("spec.principal rewritten to %q", aws.ToString(got.Spec.Principal))
 		}
 		m, err := cloudStatements(ctx, cloud, "app", "live")
