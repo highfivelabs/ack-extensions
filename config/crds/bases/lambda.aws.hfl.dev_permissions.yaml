@@ -163,6 +163,28 @@ spec:
                 x-kubernetes-validations:
                 - message: Value is immutable once set
                   rule: self == oldSelf
+              targetGroupRef:
+                description: |-
+                  An ACK elbv2.services.k8s.aws TargetGroup whose ARN
+                  (status.ackResourceMetadata.arn) is the source: an Application Load
+                  Balancer's lambda target group, with principal
+                  elasticloadbalancing.amazonaws.com. Read once the TargetGroup is
+                  synced. Give this or sourceARN, not both. Immutable.
+                properties:
+                  from:
+                    description: |-
+                      AWSResourceReference provides all the values necessary to reference another
+                      k8s resource for finding the identifier(Id/ARN/Name)
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: Value is immutable once set
+                  rule: self == oldSelf
             required:
             - action
             - principal
@@ -172,6 +194,10 @@ spec:
             - message: exactly one of functionName and functionRef must be set
               rule: '[has(self.functionName), has(self.functionRef)].filter(x, x).size()
                 == 1'
+            - message: sourceARN and targetGroupRef cannot both be set
+              rule: '!(has(self.sourceARN) && has(self.targetGroupRef))'
+            - message: targetGroupRef cannot be added or removed once set
+              rule: has(self.targetGroupRef) == has(oldSelf.targetGroupRef)
           status:
             description: PermissionStatus defines the observed state of Permission.
             properties:

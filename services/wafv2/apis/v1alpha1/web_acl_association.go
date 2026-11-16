@@ -42,8 +42,8 @@ type WebACLAssociationSpec struct {
 	//
 	// Regex Pattern: `\S`
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable once set"
-	// +kubebuilder:validation:Required
-	ResourceARN *string `json:"resourceARN"`
+	ResourceARN *string                                  `json:"resourceARN,omitempty"`
+	ResourceRef *ackv1alpha1.AWSResourceReferenceWrapper `json:"resourceRef,omitempty"`
 	// The Amazon Resource Name (ARN) of the web ACL that you want to associate
 	// with the resource.
 	//

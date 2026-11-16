@@ -67,6 +67,10 @@ pins:
     version: v1.8.1
     commit: d910e96f94d5b860cffc5dde648e87bafe94689c
     use: Go module (API types WebACLAssociation references)
+  - name: elbv2-controller
+    repo: aws-controllers-k8s/elbv2-controller
+    version: v1.9.0
+    use: Go module (API types WebACLAssociation's resourceRef and Permission's targetGroupRef reference)
   - name: lambda-controller
     repo: aws-controllers-k8s/lambda-controller
     version: v1.19.0

@@ -458,6 +458,9 @@ func writeRegistry(out string, cfg config, gens []generated) error {
 				if len(r.RefuseWhenSet) > 0 {
 					refuse = fmt.Sprintf(", RefuseWhenSet: %#v", r.RefuseWhenSet)
 				}
+				if r.TrimPrefix != "" {
+					refuse += fmt.Sprintf(", TrimPrefix: %q", r.TrimPrefix)
+				}
 				secrets += fmt.Sprintf("{Property: %q, Field: %q, RefField: %q, Group: %q, Version: %q, Kind: %q, Resource: %q, Path: %q%s}",
 					r.Property, r.Field, r.RefField, r.Group, r.Version, r.Kind, r.Resource, r.Path, refuse)
 			}

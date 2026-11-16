@@ -411,6 +411,11 @@ func (in *WebACLAssociationSpec) DeepCopyInto(out *WebACLAssociationSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ResourceRef != nil {
+		in, out := &in.ResourceRef, &out.ResourceRef
+		*out = new(corev1alpha1.AWSResourceReferenceWrapper)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.WebACLARN != nil {
 		in, out := &in.WebACLARN, &out.WebACLARN
 		*out = new(string)

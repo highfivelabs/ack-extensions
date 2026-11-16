@@ -6,6 +6,8 @@ github.com/antlr4-go/antlr/v4 v4.13.0 h1:lxCg3LAv+EUK6t1i0y1V6/SLeUi0eKEKdhQAlS8
 github.com/antlr4-go/antlr/v4 v4.13.0/go.mod h1:pfChB/xh/Unjila75QW7+VU4TSnWnnk9UTnmpPaOR2g=
 github.com/aws-controllers-k8s/ec2-controller v1.23.1 h1:nW0lEHs/Id2gbTqpX0eONlGYMPLVrLF4YUkRL9NhLHY=
 github.com/aws-controllers-k8s/ec2-controller v1.23.1/go.mod h1:IZKk6fGUJwvKLWlIgp5iECzqr2Qb2mlZ/xzaYnA/9FY=
+github.com/aws-controllers-k8s/elbv2-controller v1.9.0 h1:32F6tnS+7+RMIdVLc0NpQNvtjwGoa7ky9E9hSP3ulUY=
+github.com/aws-controllers-k8s/elbv2-controller v1.9.0/go.mod h1:8nDqPu8wvQn7g7F8+u+Zb2FycI4ASq5UcP29SXfrzro=
 github.com/aws-controllers-k8s/iam-controller v1.11.3 h1:aF/EeyqCQ8QsOTOoZ5hc5sCM9dKnwFsvWZtsLqzmhCc=
 github.com/aws-controllers-k8s/iam-controller v1.11.3/go.mod h1:M0F9DuA2GfD7hsqSqXtMM2nhJD/sShhNvrp+9VvKFZk=
 github.com/aws-controllers-k8s/kms-controller v1.7.0 h1:67IWraDnvzMtHle51jpB8qOEHPKB8c1j5W/iCYdoSKs=

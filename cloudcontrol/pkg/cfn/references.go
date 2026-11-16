@@ -44,6 +44,11 @@ type Reference struct {
 	// rule-beside-owner conflict, plan questions 3 and 7, answered
 	// 2026-11-15).
 	RefuseWhenSet []string `json:"refuseWhenSet,omitempty"`
+	// TrimPrefix is removed from the value read at Path before it fills
+	// the property, when the referenced kind keeps the ID in a longer
+	// form than the property takes (ACK's route53 HostedZone keeps
+	// status.id as /hostedzone/Z123; AWS::Route53::DNSSEC takes Z123).
+	TrimPrefix string `json:"trimPrefix,omitempty"`
 }
 
 // GVK is the referenced kind.

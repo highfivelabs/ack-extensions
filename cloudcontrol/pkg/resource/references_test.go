@@ -250,3 +250,47 @@ func TestResolveReferencesRefuseWhenSet(t *testing.T) {
 		t.Errorf("empty ingressRules: err %v, conflict %v, spec %v; want resolved", err, got.(*resource).conflict, got.(*resource).spec())
 	}
 }
+
+// A reference with trimPrefix fills the property with the value less that
+// prefix: ACK's route53 HostedZone keeps status.id as /hostedzone/Z123,
+// AWS::Route53::DNSSEC and KeySigningKey take Z123 (cloudcontrol/types.yaml).
+// A value that is only the prefix is a missing value.
+func TestResolveReferencesTrimPrefix(t *testing.T) {
+	for _, typeName := range []string{"AWS::Route53::DNSSEC", "AWS::Route53::KeySigningKey"} {
+		ty := registry.ByTypeName(typeName)
+		var zoneRef *registry.Reference
+		for i := range ty.References {
+			if ty.References[i].RefField == "hostedZoneRef" {
+				zoneRef = &ty.References[i]
+			}
+		}
+		if zoneRef == nil || zoneRef.TrimPrefix != "/hostedzone/" || zoneRef.Kind != "HostedZone" {
+			t.Fatalf("%s: hostedZoneRef %+v, want HostedZone with trimPrefix /hostedzone/", typeName, zoneRef)
+		}
+	}
+	ty := registry.ByTypeName("AWS::Route53::DNSSEC")
+	zone := func(name, id string) *unstructured.Unstructured {
+		u := ackObject("HostedZone", "team-a", name, "id", id, synced)
+		u.SetAPIVersion("route53.services.k8s.aws/v1alpha1")
+		return u
+	}
+	b := fake.NewClientBuilder().WithScheme(runtime.NewScheme()).
+		WithObjects(zone("main", "/hostedzone/Z0123ABC"), zone("bare", "/hostedzone/")).Build()
+	m := &manager{t: ty, s: ty.Schema(), cfg: ackcfg.Config{}, log: logr.Discard()}
+	obj := func(name string) *resource {
+		u := &unstructured.Unstructured{Object: map[string]any{"spec": map[string]any{"hostedZoneRef": ref(name)}}}
+		u.SetNamespace("team-a")
+		u.SetName("dnssec")
+		return &resource{t: ty, u: u}
+	}
+	got, has, err := m.ResolveReferences(context.Background(), b, obj("main"))
+	if err != nil || !has {
+		t.Fatalf("ResolveReferences: has %v, err %v", has, err)
+	}
+	if id := got.(*resource).spec()["hostedZoneId"]; id != "Z0123ABC" {
+		t.Errorf("hostedZoneId %v, want Z0123ABC", id)
+	}
+	if _, _, err := m.ResolveReferences(context.Background(), b, obj("bare")); err == nil || !strings.Contains(err.Error(), "status.id") {
+		t.Errorf("a zone whose id is only the prefix: err %v, want the missing target field", err)
+	}
+}
