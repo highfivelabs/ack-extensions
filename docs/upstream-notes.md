@@ -31,6 +31,7 @@ acm-controller `v1.12.0`, route53-controller `v1.9.0`.
 | 12 | Route 53 `RecordSet`: overwrite on create | community issue | no | not yet |
 | 13 | moto: `RemoveRoleFromDBCluster` and `RemoveRoleFromDBInstance` | getmoto/moto pull request | no: `DBRoleAssociation`'s delete is proven on a stand-in | not yet |
 | 14 | S3 `Bucket`: `customFindBucket` panics without default encryption | community issue, or reopen community#2990 (text in `docs/plan.md` section 8 item 15) | yes, `s3.aws.hfl.dev` `Bucket`, a fixed copy (intentional overlap) | not yet: the builder files it (UPBUG, 2026-11-15); `TODO(builder): link once filed` |
+| 15 | AWS Emulator: the 14 operations behind the ACK-kind failures | aws/aws-emulator pull requests, one per service | no: moto stays the test of record for those tests | not yet |
 
 EC2 `Instance.securityGroupRefs` needs no note: ec2-controller PR #406
 merged it (closing community#3132) and `v1.25.0` ships it.
@@ -370,3 +371,175 @@ this is the draft.
 Before filing, check moto's latest release and `master` for the two
 operations (they were absent from the release `hack/moto.sh` pins when
 question 6 was written, `docs/plan.md` section 4.4).
+
+## 15. AWS Emulator: the 14 operations behind the ACK-kind failures
+
+The builder's answer to item ACKF18 (2026-11-15: "as recommended (Defer
+until the other foundation items are built; then Macie and Inspector
+first on the fake AWS.)"; the item also recommended that agents propose
+upstream the 14 operations the AWS Emulator lacks, as drafts the builder
+files, with moto the test of record until they land). The gaps are those
+of [`aws-emulator.md`](aws-emulator.md), "The 14 failures" (release
+1.0.338, read 2026-11-12). A person files each one, from their own
+account; nothing here has been sent.
+
+**Where:** pull requests to `aws/aws-emulator` (CC0), one per service so
+each is small to review; the code lives in the service's crate
+(`services/service-com-amazonaws-<service>-*/src/`). Where the
+repository already has a file for the gap in
+`issues/things-that-do-not-work/`, the pull request names it and removes
+it (its convention for a fixed gap); otherwise it adds the implementation
+and a test, with no issue file. Read its `CONTRIBUTING` and `main` first:
+a later release may already have the operation (recheck with
+`AWS_EMULATOR_VERSION=<new> hack/aws-emulator.sh` and the expected-failure
+list).
+
+| # | Service | Operation | Our test | Its issue file (1.0.338) |
+| --- | --- | --- | --- | --- |
+| 1 | Auto Scaling | `DeletePolicy` (a scaffold) | `TestScalingPolicy` | `20261111T072954Z-autoscaling-deletepolicy-stub` |
+| 2 | Auto Scaling | `DescribeScheduledActions` (501) | `TestScheduledAction` | none |
+| 3 | EC2 | `DescribeTags` (501) | `TestResourceTag` | `20261022T235108Z-ec2-describetags-stub` |
+| 4 | EC2 | `CreateVpnConnection` (a stub), with `DescribeVpnConnections`' options and tunnels | `TestVPNConnection` | `20261023T102725Z-ec2-createvpnconnection-stub` |
+| 5 | EC2 | `CreateTags` on a network ACL (`InvalidNetworkAclID.NotFound`) | `TestDefaultNetworkACL` | not looked for |
+| 6 | EventBridge | `CreateConnection`'s managed Secrets Manager secret | `TestConnection` | none (a related one: `20261029T235600Z-events-connection-lifecycle-never-authorizes-connectionstate-stays-creating`) |
+| 7 | IAM | `DeleteAccountPasswordPolicy` (the policy still reads back) | `TestAccountPasswordPolicy` | `20261111T010549Z-iam-getaccountpasswordpolicy-answers-200-with-a-policy-after` |
+| 8 | IAM | `UpdateSSHPublicKey` (a scaffold) | `TestSSHPublicKey` | `20261112T141524Z-iam-updatesshpublickey-stub` |
+| 9 | IAM | `DeleteVirtualMFADevice` (a scaffold) | `TestIAMVirtualMFADevice` | `20261105T054223Z-iam-deletevirtualmfadevice-stub` |
+| 10 | KMS | `PutKeyPolicy`/`GetKeyPolicy` on a replica key in its own Region | `TestReplicaKey` | none; isolate before filing |
+| 11 | Organizations | `ListAWSServiceAccessForOrganization` (a scaffold) | `TestOrganizationsOrganization` | none |
+| 12 | Organizations | `EnablePolicyType`/`DisablePolicyType` refuse valid input | `TestOrganizationsOrganization` | none |
+| 13 | Organizations | `CreatePolicy` (with `UpdatePolicy`, `AttachPolicy`, `DetachPolicy`) | `TestOrganizationsPolicy`, `TestOrganizationsPolicyAttachment` | none |
+| 14 | Organizations | `CreateAccount` (with `DescribeCreateAccountStatus`) | `TestOrganizationsDelegatedAdministrator`, `TestOrganizationsAccountPlacement` | none |
+
+### Auto Scaling: `DeletePolicy` and `DescribeScheduledActions`
+
+**Title:** autoscaling: implement DeletePolicy and DescribeScheduledActions
+
+**Body:**
+
+> `DeletePolicy` is scaffolded, so a policy made with `PutScalingPolicy`
+> is never removed and `DescribePolicies` keeps returning it.
+> `DescribeScheduledActions` answers 501, so a scheduled action made with
+> `PutScheduledUpdateGroupAction` cannot be read back. This implements
+> both, as the Auto Scaling API reference describes them:
+>
+> - `DeletePolicy(AutoScalingGroupName, PolicyName)`: removes the policy
+>   (by name or ARN); `ValidationError` for an unknown group; deleting an
+>   unknown policy succeeds, as AWS does.
+> - `DescribeScheduledActions(AutoScalingGroupName, ScheduledActionNames,
+>   StartTime, EndTime, MaxRecords, NextToken)`: the group's actions,
+>   filtered by name and time, paginated.
+>
+> Removes `issues/things-that-do-not-work/20261111T072954Z-autoscaling-deletepolicy-stub`
+> (and `20261111T093414Z-autoscaling-cloudwatch-ec2-deletepolicy-answers-http-501-notimplemented`,
+> for Auto Scaling's part). Tests: put, describe and delete a policy;
+> put, describe (with each filter) and delete a scheduled action.
+
+### EC2: `DescribeTags`, `CreateVpnConnection`, tags on network ACLs
+
+**Title:** ec2: implement DescribeTags and CreateVpnConnection; tag network ACLs
+
+**Body:**
+
+> Three gaps a Kubernetes controller test suite met on 1.0.338:
+>
+> - `DescribeTags` answers 501. It should list the tags of every
+>   taggable resource, with the `resource-id`, `resource-type`, `key` and
+>   `value` filters and pagination.
+> - `CreateVpnConnection` is a stub. It should make a connection between
+>   a customer gateway and a virtual private gateway or transit gateway,
+>   with its `Options` (static routes only, tunnel options, the inside
+>   CIDRs and pre-shared keys given or generated), two tunnels in
+>   `VgwTelemetry`, the customer gateway configuration, and state
+>   `pending` then `available`; `DescribeVpnConnections` returns all of
+>   it, and `DeleteVpnConnection` passes through `deleting`.
+> - `CreateTags` on the default network ACL that `DescribeNetworkAcls`
+>   just returned answers `InvalidNetworkAclID.NotFound`; network ACLs are
+>   taggable, so the tag should be stored and returned on the ACL.
+>
+> Removes `20261022T235108Z-ec2-describetags-stub` and
+> `20261023T102725Z-ec2-createvpnconnection-stub`. Tests for each.
+
+### EventBridge: the connection's managed secret
+
+**Title:** events: CreateConnection stores its credentials in a managed Secrets Manager secret
+
+**Body:**
+
+> `CreateConnection` returns a `SecretArn`, but no secret exists there:
+> `GetSecretValue` on it answers `ResourceNotFoundException`. AWS stores
+> the connection's authorization parameters in a secret it manages
+> (named `events!connection/<name>/<id>`), updates it on
+> `UpdateConnection` and deletes it with the connection. This makes the
+> secret through the Secrets Manager state, so a client can read it, and
+> removes it on `DeleteConnection`. Related, not the same:
+> `20261029T235600Z-events-connection-lifecycle-never-authorizes-connectionstate-stays-creating`.
+
+### IAM: the password policy's delete, `UpdateSSHPublicKey`, `DeleteVirtualMFADevice`
+
+**Title:** iam: implement DeleteAccountPasswordPolicy, UpdateSSHPublicKey and DeleteVirtualMFADevice
+
+**Body:**
+
+> - After `DeleteAccountPasswordPolicy`, `GetAccountPasswordPolicy` still
+>   answers 200 with the policy. It should answer `NoSuchEntity`.
+> - `UpdateSSHPublicKey(UserName, SSHPublicKeyId, Status)` is
+>   scaffolded; it should set the key's status (`Active`/`Inactive`),
+>   which `GetSSHPublicKey` and `ListSSHPublicKeys` then report.
+> - `DeleteVirtualMFADevice(SerialNumber)` is scaffolded; it should remove
+>   the device, `DeleteConflict` while it is still enabled for a user.
+>
+> Removes `20261111T010549Z-iam-getaccountpasswordpolicy-answers-200-with-a-policy-after`,
+> `20261112T141524Z-iam-updatesshpublickey-stub` and
+> `20261105T054223Z-iam-deletevirtualmfadevice-stub`. Tests for each.
+
+### KMS: a replica key's policy (isolate first)
+
+Not ready to file. `ReplicateKey` works on 1.0.338, but the replica's key
+policy, put in its own Region, never reads back as the one put
+(`tests/e2e/kms_test.go:165`). Before filing: reproduce with two calls
+(`PutKeyPolicy` then `GetKeyPolicy`, both against the replica's Region)
+outside our harness. If it reproduces:
+
+**Title:** kms: PutKeyPolicy on a replica key is not returned by GetKeyPolicy
+
+**Body:**
+
+> After `ReplicateKey` into another Region, `PutKeyPolicy` on the replica
+> (in that Region) succeeds, but `GetKeyPolicy` there returns the policy
+> the replica was made with. A replica's key policy is its own (AWS:
+> "each replica key has its own key policy"), so the put should be
+> returned.
+
+### Organizations: four operations
+
+**Title:** organizations: implement CreatePolicy, CreateAccount and ListAWSServiceAccessForOrganization; accept valid policy types
+
+**Body:**
+
+> Organizations is the largest gap a Kubernetes controller test suite met
+> on 1.0.338 (five of its tests):
+>
+> - `CreatePolicy` gives no policy (the response has no `PolicyId`; 501
+>   on 1.0.322). It should store the policy (name, description, type,
+>   content, tags) and support `DescribePolicy`, `UpdatePolicy`,
+>   `DeletePolicy`, `ListPolicies`, `AttachPolicy`, `DetachPolicy` and
+>   `ListPoliciesForTarget`, with `PolicyTypeNotEnabledException` when
+>   the policy's type is not enabled on the root.
+> - `CreateAccount` is scaffolded. It should return a
+>   `CreateAccountStatus` that `DescribeCreateAccountStatus` moves to
+>   `SUCCEEDED` with the new account's ID, the account then in
+>   `ListAccounts` under the root.
+> - `ListAWSServiceAccessForOrganization` is scaffolded; it should list
+>   the principals `EnableAWSServiceAccess` enabled.
+> - `EnablePolicyType` and `DisablePolicyType` refuse valid input ("1
+>   validation error") for `RootId` and `PolicyType` values that AWS
+>   accepts (`r-` roots, `SERVICE_CONTROL_POLICY`, `TAG_POLICY`).
+>
+> Tests for each. Related: the account starts in an organization
+> (`20261104T063936Z-account-organizations-describeorganization-reports-an-organization-on-a-freshly`),
+> which is a separate question and not changed here.
+
+Until these land in a release `hack/aws-emulator.sh` pins, moto stays the
+test of record for these tests (`task check`); the emulator run is read
+for the tests it passes.
