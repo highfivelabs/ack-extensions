@@ -114,7 +114,7 @@ through its own Provider, `hfl.aws-cloudcontrol`. `CloudControlContext` is
 | `createOnlyProperties` | CEL on the field: `self == oldSelf`; on its parent: `has(self.f) == has(oldSelf.f)` | the API server refuses the edit; paths inside arrays have no rule (a transition rule there needs a keyed list) and are refused by the reconciler instead |
 | `writeOnlyProperties` a type opts in (`secrets` in `types.yaml`: write-only strings only) | a Secret reference (`{name, namespace, key}`, ACK's `SecretKeyReference`) | resolved by ACK's runtime, which refuses a Secret in another namespace unless `--enable-cross-namespace` (the operator never sets it, and the manager's rights end at its namespace anyway); a digest in `status.cloudControl.writeOnlyDigest` notices a changed Secret, since Cloud Control never returns the value |
 | every other `writeOnlyProperties` | a plain field, never compared (the digest notices a change) | opt-in per field, decision 4: many are not secrets (an IPAM pool's netmask, a GuardDuty member's email, a SAML provider's key ID to remove). The generator refuses an opted-in pointer that is not a write-only string reachable through objects, and the report lists the remaining candidates |
-| a property the overlay gives a reference (`references` in `types.yaml`: a top-level, writable string) | a reference field beside it, ACK's `AWSResourceReferenceWrapper` (`vpcRef: {from: {name, namespace}}` beside `vpcId`); CEL asks for one of the two when the property is required and refuses both; a create-only property's reference is create-only too | resolved by the reconciler, as ACK's generated `references.go` does: the named object (ACK's kind or ours, read as unstructured, so no Go module of ACK's is needed) must be synced and not terminal, and its `path` (`status.vpcID`) is copied into the property; the object keeps only the reference, Cloud Control never sees it, and the manager's ClusterRole gets `get` on the kind. Another namespace needs `--enable-cross-namespace` (never set by the operator). Section 12, item 4 |
+| a property the overlay gives a reference (`references` in `types.yaml`: a top-level, writable string) | a reference field beside it, ACK's `AWSResourceReferenceWrapper` (`vpcRef: {from: {name, namespace}}` beside `vpcId`); CEL asks for one of the two when the property is required and refuses both; a create-only property's reference is create-only too | resolved by the reconciler, as ACK's generated `references.go` does: the named object (ACK's kind or ours, read as unstructured, so no Go module of ACK's is needed) must be synced and not terminal, and its `path` (`status.vpcID`) is copied into the property; a reference whose object lists one of its `refuseWhenSet` fields is refused with `ACK.Terminal` instead (section 12, item 4); the object keeps only the reference, Cloud Control never sees it, and the manager's ClusterRole gets `get` on the kind. Another namespace needs `--enable-cross-namespace` (never set by the operator). Section 12, item 4 |
 | `primaryIdentifier` | `status.cloudControl.identifier` (values joined with `\|`), and the read-only parts in status | adoption takes it from ACK's `adoption-fields` annotation |
 | `required` | `required`, minus read-only | |
 | `tagging.tagProperty` | the tag list; ACK's default tags (`services.k8s.aws/*`) added on create in key order, filtered out of spec; compared as a multiset whatever its `insertionOrder` (a reordering alone is no change) | the drift rule |
@@ -1078,8 +1078,28 @@ limits":
    `DescribeSecurityGroupRules`, the description update and revoke by
    rule ID). ACK's `SecurityGroup` syncs its `ingressRules` and
    `egressRules` as the whole set: a rule kind on a group whose ACK object
-   lists rules is revoked at that group's next sync. This is documented,
-   not refused.
+   lists rules is revoked at that group's next sync. **Refused**
+   (2026-11-15, plan questions 3 and 7, item ACKQ7-1): a reference may list
+   `refuseWhenSet` in `types.yaml`, fields of the referenced object that
+   own, as a whole set, what this kind adds one entry to
+   (`SecurityGroupIngress`'s `groupRef`: `spec.ingressRules`;
+   `SecurityGroupEgress`'s: `spec.egressRules`). When one is not empty the
+   reference is not resolved and the object goes `ACK.Terminal`, before
+   anything is sent to Cloud Control, with a message naming the object and
+   the field ("SecurityGroup team-a/web lists spec.ingressRules, which it
+   syncs as a whole: this SecurityGroupIngress would be undone at that
+   object's next sync. Add the entry to that list instead, or empty the
+   list to keep this SecurityGroupIngress"). It holds whether or not the
+   group has synced. Only the direction the group lists is refused: an
+   egress rule on a group listing only `ingressRules` is made. A plain
+   `groupId` is not checked: the manager reads only the objects a
+   reference names (`get`), and the owner of a group may be in another
+   namespace, cluster or tool. A terminal object is not resynced (ACK's
+   runtime), so once the group's list is emptied the rule is made at its
+   next reconcile, which a change to its spec starts (its `description`,
+   or delete and recreate it). Its delete sends nothing, since it made
+   nothing. `TestSecurityGroupRuleBesideOwner` proves it on moto;
+   `TestResolveReferencesRefuseWhenSet` the resolver and `ReadOne`.
    Renames and dropped fields are not built.
 5. Selective CRD installation (only the kinds some context enables), once
    the kind count makes installing them all costly.

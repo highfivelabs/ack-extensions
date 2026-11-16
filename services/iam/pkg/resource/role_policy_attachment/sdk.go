@@ -62,7 +62,7 @@ func (rm *resourceManager) sdkFind(ctx context.Context, r *resource) (latest *re
 	ko := r.ko.DeepCopy()
 	rm.setStatusDefaults(ko)
 	ko.Status.Attached = aws.Bool(true)
-	return &resource{ko}, nil
+	return &resource{ko: ko}, nil
 }
 
 func (rm *resourceManager) requiredFieldsMissingFromReadOneInput(r *resource) bool {
@@ -120,7 +120,7 @@ func (rm *resourceManager) sdkDelete(ctx context.Context, r *resource) (deleted 
 	ko := r.ko.DeepCopy()
 	rm.setStatusDefaults(ko)
 	ko.Status.Attached = aws.Bool(false)
-	return &resource{ko}, nil
+	return &resource{ko: ko}, nil
 }
 
 func (rm *resourceManager) setStatusDefaults(ko *svcapitypes.RolePolicyAttachment) {
@@ -210,7 +210,7 @@ func (rm *resourceManager) updateConditions(r *resource, onSuccess bool, err err
 			syncCondition.Message = nil
 		}
 	}
-	return &resource{ko}, true
+	return &resource{ko: ko}, true
 }
 
 func (rm *resourceManager) terminalAWSError(err error) bool {

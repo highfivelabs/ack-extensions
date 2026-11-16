@@ -15,7 +15,7 @@
 //
 // Modified by High Five Labs for ack-extensions: copied from
 // aws-controllers-k8s/iam-controller pull request #184 (head 78eb350e),
-// pkg/resource/role_policy_attachment/references.go. Changes: import path and API group; the referenced Role and Policy are ACK's own kinds (iam.services.k8s.aws) from ACK's iam-controller module, not this module's; RBAC markers to read them.
+// pkg/resource/role_policy_attachment/references.go. Changes: import path and API group; the referenced Role and Policy are ACK's own kinds (iam.services.k8s.aws) from ACK's iam-controller module, not this module's; RBAC markers to read them; a roleRef to a Role that lists policies is refused (docs/plan.md section 9, question 3).
 
 package role_policy_attachment
 
@@ -46,7 +46,7 @@ func (rm *resourceManager) ClearResolvedReferences(res acktypes.AWSResource) ack
 	if ko.Spec.PolicyRef != nil {
 		ko.Spec.PolicyARN = nil
 	}
-	return &resource{ko}
+	return &resource{ko: ko}
 }
 
 func (rm *resourceManager) ResolveReferences(
@@ -57,19 +57,22 @@ func (rm *resourceManager) ResolveReferences(
 	ko := rm.concreteResource(res).ko
 	resourceHasReferences := false
 	if err := validateReferenceFields(ko); err != nil {
-		return &resource{ko}, resourceHasReferences, err
+		return &resource{ko: ko}, resourceHasReferences, err
 	}
-	if fieldHasReferences, err := rm.resolveReferenceForRole(ctx, apiReader, ko); err != nil {
-		return &resource{ko}, (resourceHasReferences || fieldHasReferences), err
-	} else {
-		resourceHasReferences = resourceHasReferences || fieldHasReferences
+	fieldHasReferences, conflict, err := rm.resolveReferenceForRole(ctx, apiReader, ko)
+	if err != nil {
+		return &resource{ko: ko}, (resourceHasReferences || fieldHasReferences), err
+	}
+	resourceHasReferences = resourceHasReferences || fieldHasReferences
+	if conflict != nil {
+		return &resource{ko: ko, conflict: conflict}, resourceHasReferences, nil
 	}
 	if fieldHasReferences, err := rm.resolveReferenceForPolicy(ctx, apiReader, ko); err != nil {
-		return &resource{ko}, (resourceHasReferences || fieldHasReferences), err
+		return &resource{ko: ko}, (resourceHasReferences || fieldHasReferences), err
 	} else {
 		resourceHasReferences = resourceHasReferences || fieldHasReferences
 	}
-	return &resource{ko}, resourceHasReferences, nil
+	return &resource{ko: ko}, resourceHasReferences, nil
 }
 
 func validateReferenceFields(ko *svcapitypes.RolePolicyAttachment) error {
@@ -82,18 +85,23 @@ func validateReferenceFields(ko *svcapitypes.RolePolicyAttachment) error {
 	return nil
 }
 
+// resolveReferenceForRole fills roleName from roleRef's Role; or, when
+// that Role lists policies, returns a terminal conflict: ACK's Role syncs
+// spec.policies as the whole set and detaches every other managed policy
+// at its next sync, so an attachment beside it would be undone (the tug of
+// war of section 6.1; question 3, answered 2026-11-15).
 func (rm *resourceManager) resolveReferenceForRole(
 	ctx context.Context,
 	apiReader client.Reader,
 	ko *svcapitypes.RolePolicyAttachment,
-) (hasReferences bool, err error) {
+) (hasReferences bool, conflict error, err error) {
 	if ko.Spec.RoleRef == nil || ko.Spec.RoleRef.From == nil {
-		return false, nil
+		return false, nil, nil
 	}
 	hasReferences = true
 	arr := ko.Spec.RoleRef.From
 	if arr.Name == nil || *arr.Name == "" {
-		return hasReferences, fmt.Errorf("provided resource reference is nil or empty: RoleRef")
+		return hasReferences, nil, fmt.Errorf("provided resource reference is nil or empty: RoleRef")
 	}
 	namespace := ko.GetNamespace()
 	if arr.Namespace != nil && *arr.Namespace != "" {
@@ -101,10 +109,17 @@ func (rm *resourceManager) resolveReferenceForRole(
 	}
 	obj := &ackiamapitypes.Role{}
 	if err := getReferencedRole(ctx, apiReader, obj, *arr.Name, namespace); err != nil {
-		return hasReferences, err
+		if len(obj.Spec.Policies) == 0 {
+			return hasReferences, nil, err
+		}
+	}
+	if len(obj.Spec.Policies) > 0 {
+		// Filled all the same, so a delete still finds what it detaches.
+		ko.Spec.RoleName = obj.Spec.Name
+		return hasReferences, ackerr.NewTerminalError(fmt.Errorf("Role %s/%s lists spec.policies, which it syncs as a whole: this RolePolicyAttachment would be undone at that object's next sync. Add the entry to that list instead, or empty the list to keep this RolePolicyAttachment", namespace, *arr.Name)), nil
 	}
 	ko.Spec.RoleName = obj.Spec.Name
-	return hasReferences, nil
+	return hasReferences, nil, nil
 }
 
 func (rm *resourceManager) resolveReferenceForPolicy(

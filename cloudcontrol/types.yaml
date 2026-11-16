@@ -489,14 +489,16 @@ types:
     # 7, answered 2026-11-13). The group and the peer group are ACK's
     # SecurityGroup, the prefix list ACK's ManagedPrefixList. ACK's
     # SecurityGroup syncs its egressRules as the whole set: a rule here on
-    # a group whose object lists rules is revoked at that group's next sync
-    # (docs/plan.md section 9, question 7; docs/cloudcontrol.md section
-    # 12, item 4).
+    # a group whose object lists egressRules would be revoked at that
+    # group's next sync, so groupRef to such a group is refused
+    # (refuseWhenSet; docs/plan.md section 9, question 7, answered
+    # 2026-11-15; docs/cloudcontrol.md section 12, item 4).
     references:
       - property: /properties/GroupId
         group: ec2.services.k8s.aws
         kind: SecurityGroup
         path: status.id
+        refuseWhenSet: [spec.egressRules]
       - property: /properties/DestinationSecurityGroupId
         group: ec2.services.k8s.aws
         kind: SecurityGroup
@@ -508,13 +510,14 @@ types:
   - typeName: AWS::EC2::SecurityGroupIngress
     # One inbound rule on a security group: Terraform's
     # aws_vpc_security_group_ingress_rule (plan question 7, answered
-    # 2026-11-13). References as for SecurityGroupEgress; the same caveat
-    # about ACK's SecurityGroup and its ingressRules.
+    # 2026-11-13). References as for SecurityGroupEgress; groupRef to an
+    # ACK SecurityGroup that lists ingressRules is refused likewise.
     references:
       - property: /properties/GroupId
         group: ec2.services.k8s.aws
         kind: SecurityGroup
         path: status.id
+        refuseWhenSet: [spec.ingressRules]
       - property: /properties/SourceSecurityGroupId
         group: ec2.services.k8s.aws
         kind: SecurityGroup

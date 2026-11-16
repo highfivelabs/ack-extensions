@@ -31,6 +31,11 @@ import (
 type resource struct {
 	t *registry.Type
 	u *unstructured.Unstructured
+	// conflict is set by ResolveReferences when a referenced object owns,
+	// as a whole set, what this object adds an entry to (a reference's
+	// refuseWhenSet); ReadOne then refuses the object with ACK.Terminal.
+	// Never stored: found again on each reconcile.
+	conflict error
 }
 
 var _ acktypes.AWSResource = &resource{}
@@ -240,7 +245,7 @@ func (r *resource) SetStatus(o acktypes.AWSResource) {
 
 // DeepCopy copies the resource.
 func (r *resource) DeepCopy() acktypes.AWSResource {
-	return &resource{t: r.t, u: r.u.DeepCopy()}
+	return &resource{t: r.t, u: r.u.DeepCopy(), conflict: r.conflict}
 }
 
 // PopulateResourceFromAnnotation reads ACK's adoption-fields annotation:

@@ -97,7 +97,8 @@ spec:
                   whose status.id fills groupId: its Kubernetes name, and namespace
                   when another (cross-namespace references need the manager''s --enable-cross-namespace).
                   The value is read once that object is synced. Give this or groupId,
-                  not both.'
+                  not both. Refused (ACK.Terminal) when that SecurityGroup lists spec.ingressRules:
+                  it owns that list as a whole and its next sync would undo this object.'
                 properties:
                   from:
                     description: The referenced object.
