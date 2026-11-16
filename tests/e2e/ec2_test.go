@@ -817,3 +817,16 @@ func deleteVPCs(t *testing.T, ctx context.Context, cloud *ec2.Client, ids ...str
 		}
 	}
 }
+
+// cleanupLog deletes, after the test, a fixture or a retained resource the
+// test leaves in the cloud: on a live run nothing else would (the
+// sweeper finds only what carries the run's tag). A failure is logged,
+// not fatal: the thing may be gone already.
+func cleanupLog(t *testing.T, what string, del func() error) {
+	t.Helper()
+	t.Cleanup(func() {
+		if err := del(); err != nil {
+			t.Logf("cleanup: %s: %v", what, err)
+		}
+	})
+}

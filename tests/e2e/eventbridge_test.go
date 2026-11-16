@@ -184,6 +184,10 @@ func TestConnection(t *testing.T) {
 		if _, err := cloud.DescribeConnection(ctx, &eventbridge.DescribeConnectionInput{Name: aws.String("kept")}); err != nil {
 			t.Fatalf("retained connection: %v", err)
 		}
+		cleanupLog(t, "connection kept", func() error {
+			_, err := cloud.DeleteConnection(ctx, &eventbridge.DeleteConnectionInput{Name: aws.String("kept")})
+			return err
+		})
 	})
 
 	t.Run("delete deletes the connection", func(t *testing.T) {
@@ -217,6 +221,11 @@ func TestApiDestination(t *testing.T) {
 	env := harness.Start(t, "eventbridge", scheme)
 	cloud := eventbridge.NewFromConfig(env.AWS)
 	ctx := context.Background()
+	// The connection behind the destinations is never deleted by the test.
+	cleanupLog(t, "connection partner", func() error {
+		_, err := cloud.DeleteConnection(ctx, &eventbridge.DeleteConnectionInput{Name: aws.String("partner")})
+		return err
+	})
 
 	if err := env.Client.Create(ctx, &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{Name: "partner-key", Namespace: "default"},
@@ -347,6 +356,10 @@ func TestApiDestination(t *testing.T) {
 		if _, err := cloud.DescribeApiDestination(ctx, &eventbridge.DescribeApiDestinationInput{Name: aws.String("audit")}); err != nil {
 			t.Fatalf("retained destination: %v", err)
 		}
+		cleanupLog(t, "API destination audit", func() error {
+			_, err := cloud.DeleteApiDestination(ctx, &eventbridge.DeleteApiDestinationInput{Name: aws.String("audit")})
+			return err
+		})
 	})
 
 	t.Run("delete deletes the destination", func(t *testing.T) {

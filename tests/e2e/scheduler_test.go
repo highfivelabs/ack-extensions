@@ -172,6 +172,10 @@ func TestScheduleGroup(t *testing.T) {
 		if _, err := cloud.GetScheduleGroup(ctx, &scheduler.GetScheduleGroupInput{Name: aws.String("reports")}); err != nil {
 			t.Fatalf("retained group: %v", err)
 		}
+		cleanupLog(t, "schedule group reports", func() error {
+			_, err := cloud.DeleteScheduleGroup(ctx, &scheduler.DeleteScheduleGroupInput{Name: aws.String("reports")})
+			return err
+		})
 	})
 
 	t.Run("delete deletes the group", func(t *testing.T) {
@@ -217,6 +221,11 @@ func TestSchedule(t *testing.T) {
 		t.Fatal(err)
 	}
 	role := aws.ToString(made.Role.Arn)
+	cleanupLog(t, "role scheduler-sqs and group exports", func() error {
+		_, gerr := cloud.DeleteScheduleGroup(ctx, &scheduler.DeleteScheduleGroupInput{Name: aws.String("exports")})
+		_, rerr := iam.NewFromConfig(env.AWS).DeleteRole(ctx, &iam.DeleteRoleInput{RoleName: aws.String("scheduler-sqs")})
+		return errors.Join(gerr, rerr)
+	})
 
 	waitSynced := func(t *testing.T, key client.ObjectKey, obj client.Object, conds func() []*ackv1alpha1.Condition) {
 		t.Helper()
@@ -352,6 +361,10 @@ func TestSchedule(t *testing.T) {
 		if _, err := cloudSchedule("default", "hourly-ping"); err != nil {
 			t.Fatalf("retained schedule: %v", err)
 		}
+		cleanupLog(t, "schedule hourly-ping", func() error {
+			_, err := cloud.DeleteSchedule(ctx, &scheduler.DeleteScheduleInput{Name: aws.String("hourly-ping"), GroupName: aws.String("default")})
+			return err
+		})
 	})
 
 	t.Run("delete deletes the schedule", func(t *testing.T) {
