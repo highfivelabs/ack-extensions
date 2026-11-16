@@ -90,10 +90,14 @@ func lambdaFixture(t *testing.T, ctx context.Context, env *harness.Env, cloud *l
 		_, err := cloud.DeleteFunction(ctx, &lambda.DeleteFunctionInput{FunctionName: aws.String("app")})
 		return err
 	})
-	v, err := cloud.PublishVersion(ctx, &lambda.PublishVersionInput{FunctionName: aws.String("app")})
-	if err != nil {
-		t.Fatal(err)
-	}
+	// A new function is Pending for some seconds on AWS; PublishVersion is
+	// refused until it is Active (live run ackx-11160402-b394).
+	var v *lambda.PublishVersionOutput
+	harness.Eventually(t, 60*time.Second, "version of app published", func() error {
+		var err error
+		v, err = cloud.PublishVersion(ctx, &lambda.PublishVersionInput{FunctionName: aws.String("app")})
+		return err
+	})
 	if _, err := cloud.CreateAlias(ctx, &lambda.CreateAliasInput{FunctionName: aws.String("app"), Name: aws.String("live"), FunctionVersion: v.Version}); err != nil {
 		t.Fatal(err)
 	}
