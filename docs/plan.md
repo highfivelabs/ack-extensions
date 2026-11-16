@@ -4304,3 +4304,33 @@ Before it can run on a real cluster:
     or misses attributes, we ship the identical kind with the fix in our
     group. Applied first to s3-controller's `Bucket` (the read panic,
     section 8 item 15).
+
+24. **An ARN from another object's status inside a policy document**
+    (2026-11-16, from the catalog's eks chart, catalog PR #237). The
+    module's `attach_encryption_policy` writes an IAM policy whose
+    `Resource` is the chart's own KMS key's ARN. ACK's `Key` has that ARN
+    only in its status (the key ID is random), and a policy document is a
+    string ACK's `Policy` (and `Role`'s inline policies) take as written:
+    ACK's references fill one field with one value, never a value inside
+    a document. Ways to fill it:
+    - **The chart, with no kind:** name the key by its alias instead of
+      its ARN, as IAM allows: `Resource` `arn:aws:kms:<region>:<account>:key/*`
+      with the condition `ForAnyValue:StringEquals` on `kms:ResourceAliases`
+      = `alias/<the chart's alias>` (the chart already makes the alias and
+      knows the account and region). The policy grants exactly the key the
+      alias names, now and after a re-render, and needs nothing here.
+    - **A fixed copy of ACK's `Policy`** (section 3) with
+      `policyDocumentRefs`: named placeholders in the document, each filled
+      from a referenced object's field before the create and on every
+      read. A hand-written resolver (ACK's generator cannot do it), and a
+      second `Policy` kind every chart would choose between.
+    - **A small kind of ours**, `iam.aws.hfl.dev` `PolicyDocument`, that
+      renders a document with values from other objects into its status,
+      which ACK's `Policy` cannot read either (no reference to a status
+      string): it does not help without the copy above.
+
+    Recommended: the chart's alias condition (first), which needs no new
+    kind and keeps one `Policy` kind; build the fixed copy only if a chart
+    needs an ARN that no alias or tag condition can stand for. Not built
+    until the builder answers.
+

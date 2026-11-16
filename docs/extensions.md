@@ -137,3 +137,31 @@ each is not an annotation here (each has its upstream note in
 | acm `Certificate` | `validationMethod` `EMAIL` | create-time: ACK's create hook sets `DNS` (open question 23) |
 | route53 `RecordSet` | overwrite on create (`allowOverwrite`) | ACK's create sends `CREATE`; an extension cannot turn it into `UPSERT` without racing ACK's create. ACK's `adopt-or-create` annotation is the way once route53-controller #121 lands |
 | ours: ec2 `VolumeAttachment`, `Volume` | `instanceRef` | ours; waits on open question 16 |
+
+### The catalog's eks chart (catalog PR #237): the field gaps, 2026-11-16
+
+What the chart refused as "fields ACK's kinds lack", read against
+eks-controller `v1.26.0`, kms-controller `v1.7.0` and
+cloudwatchlogs-controller `v1.10.0`, and where each is filled. Two are
+filled already; the rest need a fixed copy (`docs/plan.md` section 3) of a
+kind whose controller is not built here yet, and wait for a chart to need
+them first (the order below).
+
+| ACK kind | Gap (Terraform variable) | Where it is filled |
+| --- | --- | --- |
+| kms `Key` | the deletion window (`kms_key_deletion_window_in_days`) | **filled**: ACK's own annotation `kms.services.k8s.aws/pending-window-in-days` (7 to 30); the chart can carry it now |
+| kms `Key` | the rotation period (`kms_key_rotation_period_in_days`) | **filled**: our annotation `kms.aws.hfl.dev/rotation-period-in-days` (above); the chart can carry it now |
+| eks `Cluster` | `service_ipv6_cidr` | **nothing to fill**: EKS assigns an IPv6 cluster's service range (`CreateCluster` takes no such field); ACK's `status` reads it (`kubernetesNetworkConfig.serviceIPv6CIDR`), so the chart can give it as an output, not take it as an input |
+| eks `Nodegroup` | `node_repair_config` | an annotation here would do (`UpdateNodegroupConfig` takes it after ACK's create; ACK ignores the field on its reads, so nothing fights it), but eks is not a service here yet, and every eks-controller release needs aws-sdk-go-v2 `v1.45.1` or later (`docs/plan.md` section 3) |
+| eks `Nodegroup` | `warm_pool_config` | the same, on a newer model still (ACK ignores it since its `v1.91.0` model bump) |
+| eks `Addon` | `namespace_config` | create-time (`CreateAddon` only): a fixed copy of ACK's `Addon` |
+| eks `Cluster` | `force_update_version` | an update-time flag of ACK's own `UpdateClusterVersion` call: a fixed copy of ACK's `Cluster` |
+| cloudwatchlogs `LogGroup` | `log_group_class` | create-time (`CreateLogGroup` only): a fixed copy of ACK's `LogGroup` |
+
+The eks rows wait on the SDK question: an eks service here built from
+eks-controller (an annotation beside it, or a fixed copy) needs the core
+aws-sdk-go-v2 moved past `v1.41.5`, which
+`docs/plan.md` section 3 keeps at ACK's controllers' version. That move is
+a pin change for the whole repository, done with an ACK release move, not
+for one field.
+
