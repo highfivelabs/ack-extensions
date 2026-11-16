@@ -122,6 +122,11 @@ pull_requests:
     read_on: "2026-11-08"
     role: copied
     for: OptionGroup
+  - ref: aws-controllers-k8s/ec2-controller#364
+    head: ad464975082935f6aedee21de2f0acd112e49994
+    read_on: "2026-11-16"
+    role: copied
+    for: LaunchTemplate (references under spec.data)
   - ref: aws-controllers-k8s/ecr-controller#121
     head: f6c7d57e0b169547ed2300cbba0c65b11691b0eb
     read_on: "2026-11-09"
@@ -161,6 +166,22 @@ copied:
       paths:
         - pkg/resource/open_id_connect_provider/hooks.go
         - pkg/resource/open_id_connect_provider/tags.go
+  - here: [services/ec2/generator.yaml]
+    from: {pin: ec2-controller, paths: [generator.yaml]}
+  - here:
+      - services/ec2/templates/hooks/launch_template/sdk_create_post_build_request.go.tpl
+      - services/ec2/templates/hooks/launch_template/sdk_file_end.go.tpl
+      - services/ec2/templates/hooks/launch_template/sdk_read_many_post_set_output.go.tpl
+      - services/ec2/templates/hooks/launch_template/sdk_update_pre_build_request.go.tpl
+    from:
+      pin: ec2-controller
+      paths:
+        - templates/hooks/launch_template/sdk_create_post_build_request.go.tpl
+        - templates/hooks/launch_template/sdk_file_end.go.tpl
+        - templates/hooks/launch_template/sdk_read_many_post_set_output.go.tpl
+        - templates/hooks/launch_template/sdk_update_pre_build_request.go.tpl
+  - here: [services/ec2/pkg/resource/launch_template/hooks.go]
+    from: {pin: ec2-controller, paths: [pkg/resource/launch_template/hooks.go]}
   - here: [hack/ack-crds/s3.services.k8s.aws_buckets.yaml]
     from: {pin: s3-controller, paths: [config/crd/bases/s3.services.k8s.aws_buckets.yaml]}
   - here: [services/s3/generator.yaml]

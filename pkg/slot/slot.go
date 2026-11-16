@@ -137,6 +137,7 @@ var TaggedKinds = map[string]bool{
 	"Volume.ec2.aws.hfl.dev":                true,
 	"VPNConnection.ec2.aws.hfl.dev":         true,
 	"VPNGateway.ec2.aws.hfl.dev":            true,
+	"LaunchTemplate.ec2.aws.hfl.dev":        true,
 	"ReplicaKey.kms.aws.hfl.dev":            true,
 	"Policy.organizations.aws.hfl.dev":      true,
 	"OptionGroup.rds.aws.hfl.dev":           true,

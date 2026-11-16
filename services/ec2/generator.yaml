@@ -9,6 +9,19 @@
 # readiness on the resource's state. Every other resource the generator
 # finds in the EC2 model is ignored: ACK has it, or it is not built here.
 operations:
+  # LaunchTemplate, a fixed copy of ACK's (below).
+  CreateLaunchTemplate:
+    operation_type:
+      - Create
+    output_wrapper_field_path: LaunchTemplate
+    resource_name: LaunchTemplate
+  CreateLaunchTemplateVersion:
+    operation_type:
+      - Update
+    output_wrapper_field_path: LaunchTemplateVersion
+    resource_name: LaunchTemplate
+  DescribeLaunchTemplates:
+    custom_check_required_fields_missing_method: checkForMissingRequiredFields
   CreateCustomerGateway:
     output_wrapper_field_path: CustomerGateway
   CreateVpnGateway:
@@ -30,6 +43,92 @@ operations:
     operation_type: List
     resource_name: VpnGatewayRoutePropagation
 resources:
+  # LaunchTemplate: a fixed copy of ACK's (docs/plan.md section 3, "Fixed
+  # copies of ACK's kinds"; section 6.43): ec2-controller v1.23.1's entry,
+  # with the references of its pull request #364 added (the catalog's eks
+  # chart refused custom launch templates for want of securityGroupRefs,
+  # catalog PR #237).
+  LaunchTemplate:
+    hooks:
+      sdk_create_post_build_request:
+        template_path: hooks/launch_template/sdk_create_post_build_request.go.tpl
+      sdk_update_pre_build_request:
+        template_path: hooks/launch_template/sdk_update_pre_build_request.go.tpl
+      sdk_read_many_post_set_output:
+        template_path: hooks/launch_template/sdk_read_many_post_set_output.go.tpl
+      sdk_file_end:
+        template_path: hooks/launch_template/sdk_file_end.go.tpl
+    exceptions:
+      errors:
+        404:
+          code: InvalidLaunchTemplateName.NotFoundException
+    renames:
+      operations:
+        CreateLaunchTemplate:
+          input_fields:
+            LaunchTemplateName: Name
+            LaunchTemplateData: Data
+          output_fields:
+            LaunchTemplateId: ID
+            # Note: maybe we can rename this to just version?
+            # thoughts...
+            DefaultVersionNumber: DefaultVersion
+            LatestVersionNumber: LatestVersion
+        CreateLaunchTemplateVersion:
+          input_fields:
+            LaunchTemplateId: ID
+            LaunchTemplateData: Data
+          output_fields:
+            LaunchTemplateData: Data
+            LaunchTemplateId: ID
+            VersionNumber: LatestVersion
+        DeleteLaunchTemplate:
+          input_fields:
+            LaunchTemplateId: ID
+        DescribeLaunchTemplates:
+          input_fields:
+            LaunchTemplateIds: ID
+          output_fields:
+            LatestVersionNumber: LatestVersion
+            DefaultVersionNumber: DefaultVersion
+    fields:
+      ID:
+        is_primary_key: true
+        print:
+          name: ID
+      Tags:
+        from:
+          operation: CreateTags
+          path: Tags
+      DefaultVersion:
+        from:
+          operation: ModifyLaunchTemplate
+          path: LaunchTemplate.DefaultVersionNumber
+      Data.ElasticInferenceAccelerators.Type:
+        go_tag: json:"type,omitempty"
+      Data.ElasticGPUSpecifications.Type:
+        go_tag: json:"type,omitempty"
+      # ec2-controller pull request #364 (closed unmerged, head ad464975),
+      # copied: references under Data, and Data not written back by the
+      # update (its response carries no *Ref fields; hooks.go's
+      # preserveDataReferenceFields keeps them on the read).
+      Data:
+        set:
+          - method: Update
+            ignore: true
+      Data.SecurityGroupIds:
+        references:
+          resource: SecurityGroup
+          path: Status.ID
+      Data.NetworkInterfaces.SubnetId:
+        references:
+          resource: Subnet
+          path: Status.SubnetID
+      Data.BlockDeviceMappings.Ebs.KmsKeyId:
+        references:
+          service_name: kms
+          resource: Key
+          path: Status.ACKResourceMetadata.ARN
   CustomerGateway:
     fields:
       Tags:
@@ -303,9 +402,16 @@ ignore:
     # ours uses them.
     - Instance
     - RouteTable
+    - SecurityGroup
+    - Subnet
     - TransitGateway
     - Vpc
   field_paths:
+    # LaunchTemplate (ACK's ignores, copied from ec2-controller v1.23.1).
+    - CreateLaunchTemplateInput.DryRun
+    - CreateLaunchTemplateInput.ClientToken
+    - CreateLaunchTemplateInput.TagSpecifications
+    - CreateLaunchTemplateVersionOutput.LaunchTemplateVersion.DefaultVersion
     # Deprecated: IpAddress replaces it (EC2 API reference).
     - CreateCustomerGatewayInput.PublicIp
     - CreateCustomerGatewayInput.DryRun
@@ -355,7 +461,6 @@ ignore:
     - IpamResourceDiscovery
     - IpamScope
     - KeyPair
-    - LaunchTemplate
     - LaunchTemplateVersion
     - LocalGatewayRoute
     - LocalGatewayRouteTable

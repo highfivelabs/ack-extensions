@@ -18,7 +18,7 @@ How much of AWS the official ACK controllers cover, and how much more this repos
 
 `quicksight` alone is 51,640 of the 85,831 attributes, so the attribute bar mostly describes it; the resource bar counts a resource as covered if ACK has a kind for it, however few of its fields.
 
-Of 85,831 attributes in 1878 resources across 305 services, ACK covers 6,044 (7.0%) and ours adds 19,907 more (23.2%), 22 of them copied from open upstream pull requests. By resource, ACK has a released kind for 267 of 1,878 (14.2%) and ours adds 1368 more (72.8%).
+Of 85,831 attributes in 1878 resources across 305 services, ACK covers 6,044 (7.0%) and ours adds 19,913 more (23.2%), 22 of them copied from open upstream pull requests. By resource, ACK has a released kind for 267 of 1,878 (14.2%) and ours adds 1368 more (72.8%).
 
 The purple bar is **Terraform** for comparison: the share of the same attributes that a writable attribute of the Terraform `aws` provider matches, about 64.4% (at least 48.8%, the dark tick, by the strict rule). It is an estimate from the High Five Labs catalog repository, pinned like every other input, with the error of its matching; see [Terraform](docs/coverage/README.md#terraform).
 
@@ -28,7 +28,7 @@ Not every service matters equally. Each service has a **category**: *platform-fo
 
 | Category | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) | Terraform attributes (estimate) |
 | --- | ---: | ---: | ---: | ---: |
-| platform-foundation | 16 | 22.8% / 53.1% | 28.0% / 37.3% | ~51.5% (≥43.5%) |
+| platform-foundation | 16 | 22.8% / 53.1% | 28.0% / 37.6% | ~51.5% (≥43.5%) |
 | security-adjacent | 18 | 12.5% / 67.9% | 37.6% / 50.9% | ~74.1% (≥72.0%) |
 | application | 33 | 40.3% / 44.1% | 47.9% / 29.3% | ~50.8% (≥46.4%) |
 | other | 238 | 7.3% / 83.0% | 3.0% / 21.6% | ~65.4% (≥48.5%) |
@@ -39,13 +39,13 @@ The ranked work queue for the foundation and security categories, resource by re
 
 | Tier | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) | Terraform attributes (estimate) |
 | --- | ---: | ---: | ---: | ---: |
-| 1 | 16 | 22.8% / 53.1% | 28.0% / 37.3% | ~51.5% (≥43.5%) |
+| 1 | 16 | 22.8% / 53.1% | 28.0% / 37.6% | ~51.5% (≥43.5%) |
 | 2 | 51 | 32.0% / 51.2% | 44.8% / 35.9% | ~57.9% (≥54.2%) |
 | 3 | 238 | 7.3% / 83.0% | 3.0% / 21.6% | ~65.4% (≥48.5%) |
 
 | Tier | Category | Service | Coverage | Official | Ours beyond | Uncovered | Terraform (estimate) |
 | ---: | --- | --- | --- | ---: | ---: | ---: | ---: |
-| 1 | platform-foundation | `ec2` | ![ec2](docs/coverage/bars/ec2.svg) | 22.7% | 43.7% | 33.6% | ~48.8% (≥36.1%) |
+| 1 | platform-foundation | `ec2` | ![ec2](docs/coverage/bars/ec2.svg) | 22.7% | 44.1% | 33.2% | ~48.8% (≥36.1%) |
 | 1 | platform-foundation | `eks` | ![eks](docs/coverage/bars/eks.svg) | 82.5% | 0.6% | 16.9% | ~57.5% (≥57.5%) |
 | 1 | platform-foundation | `route53` | ![route53](docs/coverage/bars/route53.svg) | 47.9% | 18.8% | 33.3% | ~24.0% (≥24.0%) |
 | 1 | platform-foundation | `route53resolver` | ![route53resolver](docs/coverage/bars/route53resolver.svg) | 35.1% | 44.2% | 20.8% | ~63.6% (≥63.6%) |
@@ -386,6 +386,7 @@ Services are sorted by tier, then by attributes covered, and every tier 1 servic
 | `rds.aws.hfl.dev/v1alpha1` `DBRoleAssociation` | Associates an IAM role with an Aurora cluster or an RDS instance for one feature (`s3Import`, `s3Export`, `Lambda`, `S3_INTEGRATION`), and removes it on delete. ACK's `DBCluster` and `DBInstance` only report associated roles. It becomes synced once RDS reports the association `ACTIVE`. | New: no ACK code or pull request covers it |
 | `s3.aws.hfl.dev/v1alpha1` `Bucket` | ACK's own S3 `Bucket`, the same spec, status and behaviour, fixed: ACK s3-controller `v1.15.0`'s read panics (a nil pointer) on a bucket whose `GetBucketEncryption` answers `ServerSideEncryptionConfigurationNotFoundError`, which S3-compatible stores and fakes (moto) give and AWS rarely does; ours reads such a bucket as having no default encryption. An intentional overlap with ACK's `Bucket`, retired when ACK releases the fix (`docs/plan.md` section 6.38): use it where the panic hits, and never point it and ACK's `Bucket` at one bucket. `s3.aws.hfl.dev/force-destroy` works on it as on ACK's. | Generated from s3-controller `v1.15.0`'s own `generator.yaml`, hook templates and hand-written code, with the one fix (and a hook template rearranged for `go vet`); a copy of an ACK kind under the builder's rule for broken kinds (`docs/plan.md` section 3, "Fixed copies of ACK's kinds") |
 | `iam.aws.hfl.dev/v1alpha1` `OpenIDConnectProvider` | ACK's own IAM `OpenIDConnectProvider`, the same spec, status and behaviour, with one field ACK's lacks: `urlRef`, the provider's URL read from ACK's eks `Cluster` (its `status.identity.oidc.issuer`), so an EKS cluster's IRSA provider is made in the same render as the cluster (the catalog's eks chart, `enable_irsa`). An intentional overlap with ACK's kind, retired when ACK ships the reference (`docs/plan.md` section 6.42): use it where the URL is a cluster's issuer, and never point it and ACK's kind at one provider. | Generated from iam-controller `v1.11.3`'s own `generator.yaml` entry, hook template and hand-written code, with the reference added; a copy of an ACK kind under the builder's rule for kinds missing attributes (`docs/plan.md` section 3, "Fixed copies of ACK's kinds") |
+| `ec2.aws.hfl.dev/v1alpha1` `LaunchTemplate` | ACK's own EC2 `LaunchTemplate`, the same spec, status and behaviour, with the references ACK's lacks under `spec.data`: `securityGroupRefs` (ACK's `SecurityGroup`), `networkInterfaces[].subnetRef` (ACK's `Subnet`) and `blockDeviceMappings[].ebs.kmsKeyRef` (ACK's KMS `Key`), from ec2-controller's pull request #364 (closed unmerged), so a node group's custom launch template names its security group in the same render (the catalog's eks chart). An intentional overlap with ACK's kind, retired when ACK ships the references (`docs/plan.md` section 6.43); never point it and ACK's kind at one template. | Generated from ec2-controller `v1.23.1`'s own `generator.yaml` entry, hook templates and hand-written code, with PR #364's changes; a copy of an ACK kind under the builder's rule for kinds missing attributes (`docs/plan.md` section 3, "Fixed copies of ACK's kinds") |
 | `s3control.aws.hfl.dev/v1alpha1` `PublicAccessBlock` | The account's S3 Block Public Access settings (block and ignore public ACLs, block public bucket policies, restrict public buckets), Terraform's `aws_s3_account_public_access_block`: put with `PutPublicAccessBlock` for the manager's own account, put back if changed outside Kubernetes, and deleted on delete; a new object takes over the account's existing settings. ACK's s3control-controller has `AccessPoint` only, and ACK's `Bucket` a bucket's own block. | Generated (`PutPublicAccessBlock` as the create and the update, `GetPublicAccessBlock`, `DeletePublicAccessBlock`), with short hooks; no ACK pull request adds it |
 | `scheduler.aws.hfl.dev/v1alpha1` `Schedule` | An EventBridge Scheduler schedule: an expression that invokes a target as a role, in a group by name or by reference to our `ScheduleGroup`. ACK has no Scheduler controller. | Generated |
 | `scheduler.aws.hfl.dev/v1alpha1` `ScheduleGroup` | An EventBridge Scheduler schedule group, with its tags. ACK has no Scheduler controller; the manager runs beside ACK's EventBridge controller. | Generated, with eventbridge-controller's tag hooks |

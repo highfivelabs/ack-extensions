@@ -23,6 +23,12 @@ type Instance = ackec2.Instance
 // RouteTable is named by VPNGatewayRoutePropagation.spec.routeTableRef.
 type RouteTable = ackec2.RouteTable
 
+// SecurityGroup is named by LaunchTemplate.spec.data.securityGroupRefs.
+type SecurityGroup = ackec2.SecurityGroup
+
+// Subnet is named by LaunchTemplate.spec.data.networkInterfaces[].subnetRef.
+type Subnet = ackec2.Subnet
+
 // TransitGateway is named by VPNConnection.spec.transitGatewayRef.
 type TransitGateway = ackec2.TransitGateway
 

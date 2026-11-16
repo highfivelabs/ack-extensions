@@ -4,7 +4,7 @@ Status, 2026-11-15: the repository has thirty-six kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
-- `ec2.aws.hfl.dev` `CustomerGateway`, `DefaultSecurityGroup`, `VPNGateway`, `VPNConnection`,
+- `ec2.aws.hfl.dev` `CustomerGateway`, `DefaultSecurityGroup`, `LaunchTemplate` (ACK's, fixed: section 6.43), `VPNGateway`, `VPNConnection`,
   `VPNGatewayRoutePropagation`, `NetworkInterfacePermission`, `ResourceTag`,
   `Volume` and `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
@@ -2755,6 +2755,57 @@ a client ID change is not shown. **Not proven:** real AWS (a live run, which nee
 the live-test role's `iam:*OpenIDConnectProvider*` actions; the role
 policy is generated from the kind's calls).
 
+### 6.43 `ec2.aws.hfl.dev` `LaunchTemplate` (ACK's, with references under `spec.data`)
+
+ACK's ec2-controller `LaunchTemplate` with the references it lacks under
+`spec.data`: `securityGroupRefs` (ACK's `SecurityGroup`, `status.id`),
+`networkInterfaces[].subnetRef` (ACK's `Subnet`, `status.subnetID`) and
+`blockDeviceMappings[].ebs.kmsKeyRef` (ACK's KMS `Key`, its ARN). The
+catalog's eks chart refused a node group's custom launch template (the
+module's default) because the template could not name the node security
+group the chart makes (catalog PR #237). Built under the builder's rule
+for kinds missing attributes (section 3, "Fixed copies of ACK's kinds",
+item ACKQ1-1). Upstream rechecked 2026-11-16 (read-only): ec2-controller
+pull request #364 added exactly these three references and was closed
+unmerged on 2026-08-12; `v1.25.0` has none; the not-found and adoption
+issues (community #3169, #3172, #2932; PR #347, open) are not addressed
+here.
+
+**Generated** from ec2-controller `v1.23.1`'s own `generator.yaml` entry
+(its operations and the `CreateLaunchTemplateInput` ignores with it),
+hook templates and `hooks.go`, with PR #364's changes copied: the
+`references` under `Data`, `Data` not written back from
+`CreateLaunchTemplateVersion`'s response, and `preserveDataReferenceFields`,
+which keeps the `*Ref` fields on the data the read rebuilds (without it the
+first read would replace each reference in the stored spec with the
+resolved ID). The rest of `services/ec2` is generated from the aws-sdk-go-v2
+`v1.34.0` models; ec2-controller was from `v1.41.2`. Two differences
+follow, both recorded in `UPSTREAM.md`: `status.operator` is not set (the
+older `LaunchTemplate` shape has no `Operator`), and
+`CreateLaunchTemplateVersionOutput.LaunchTemplateVersion.DefaultVersion` is
+ignored, as ACK does. `networkInterfaces[].groups` stays without a
+reference (PR #364: a list reference inside a list element does not
+generate); use `securityGroupRefs`.
+
+- **An intentional overlap** with ACK's `LaunchTemplate`: use ours where
+  `spec.data` names objects the chart makes, and never point it and ACK's
+  at one template. Retired (section 3, "Retiring a kind") when ACK ships
+  the references.
+- **Everything else is ACK's:** a change to `spec.data` makes a new
+  version, `defaultVersion` set with `ModifyLaunchTemplate`, tags synced.
+
+**Proven on moto** (`TestLaunchTemplate`): nothing is made while the
+`SecurityGroup` is not synced; then the template's latest version carries
+the group's ID, the stored spec keeps `securityGroupRefs` and not the ID;
+no growth in versions and no lost reference across resyncs; the delete
+removes the template. A moto difference (section 4.4): moto copies
+`CreateLaunchTemplate`'s `TagSpecifications` (the template's own tags,
+ACK's default tags among them) into the first version's data, which EC2
+does not, so ACK's read makes one second version on moto; ACK's own
+`LaunchTemplate` does the same there. **Not proven:** `subnetRef` and `kmsKeyRef` (generated as
+`securityGroupRefs` is, not exercised), a change to `spec.data` with
+references (a second version), and real AWS (a live run).
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)
@@ -4359,3 +4410,33 @@ Before it can run on a real cluster:
     or misses attributes, we ship the identical kind with the fix in our
     group. Applied first to s3-controller's `Bucket` (the read panic,
     section 8 item 15).
+
+24. **An ARN from another object's status inside a policy document**
+    (2026-11-16, from the catalog's eks chart, catalog PR #237). The
+    module's `attach_encryption_policy` writes an IAM policy whose
+    `Resource` is the chart's own KMS key's ARN. ACK's `Key` has that ARN
+    only in its status (the key ID is random), and a policy document is a
+    string ACK's `Policy` (and `Role`'s inline policies) take as written:
+    ACK's references fill one field with one value, never a value inside
+    a document. Ways to fill it:
+    - **The chart, with no kind:** name the key by its alias instead of
+      its ARN, as IAM allows: `Resource` `arn:aws:kms:<region>:<account>:key/*`
+      with the condition `ForAnyValue:StringEquals` on `kms:ResourceAliases`
+      = `alias/<the chart's alias>` (the chart already makes the alias and
+      knows the account and region). The policy grants exactly the key the
+      alias names, now and after a re-render, and needs nothing here.
+    - **A fixed copy of ACK's `Policy`** (section 3) with
+      `policyDocumentRefs`: named placeholders in the document, each filled
+      from a referenced object's field before the create and on every
+      read. A hand-written resolver (ACK's generator cannot do it), and a
+      second `Policy` kind every chart would choose between.
+    - **A small kind of ours**, `iam.aws.hfl.dev` `PolicyDocument`, that
+      renders a document with values from other objects into its status,
+      which ACK's `Policy` cannot read either (no reference to a status
+      string): it does not help without the copy above.
+
+    Recommended: the chart's alias condition (first), which needs no new
+    kind and keeps one `Policy` kind; build the fixed copy only if a chart
+    needs an ARN that no alias or tag condition can stand for. Not built
+    until the builder answers.
+
