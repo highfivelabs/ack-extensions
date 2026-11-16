@@ -2834,6 +2834,38 @@ does not, so ACK's read makes one second version on moto; ACK's own
 `securityGroupRefs` is, not exercised), a change to `spec.data` with
 references (a second version), and real AWS (a live run).
 
+### 6.44 `autoscaling.aws.hfl.dev` `AutoScalingGroup` (ACK's, with `launchTemplateRef`, `context`, and per-tag `propagateAtLaunch`)
+
+ACK's autoscaling-controller `v1.5.0` `AutoScalingGroup` with the three
+gaps filled: `launchTemplateRef` on all three
+`LaunchTemplateSpecification` positions (`spec.launchTemplate`,
+`spec.mixedInstancesPolicy.launchTemplate.launchTemplateSpecification`,
+`spec.mixedInstancesPolicy.launchTemplate.overrides[].launchTemplateSpecification`)
+targeting `ec2.aws.hfl.dev` `LaunchTemplate` (`spec.name`), `spec.context`,
+and per-tag `spec.tags[].propagateAtLaunch`. Built under the builder's rule
+for kinds missing attributes (section 3, "Fixed copies of ACK's kinds",
+item ACKQ1-1): without `launchTemplateRef`, a chart applying an
+`AutoScalingGroup` beside a `LaunchTemplate` (and its instance profile)
+cannot order creation until the template is synced. Upstream rechecked
+2026-11-16 (read-only): autoscaling-controller `v1.5.0` documents the
+`launchTemplateRef` TODO in `generator.yaml` and has `Context` and
+`PropagateAtLaunch` ignored; only `v1.5.1` release PR #34 is open.
+
+**Generated** from autoscaling-controller `v1.5.0`'s `generator.yaml`
+entry, hook templates, `hooks.go`, and `pkg/tags/tags.go` (using the
+`v1.41.5` SDK models `v1.5.0` was built from), with
+`preserveLaunchTemplateReferenceFields` in `sdk_read_many_post_set_output`
+and `normalizeAutoScalingGroupForCompare` in `delta_pre_compare` so
+`launchTemplateRef` is preserved across reads and `overrides` / omitted
+`propagateAtLaunch` do not churn. Proven by unit tests and
+`TestAutoScalingGroup` against moto (ordering before `LaunchTemplate` syncs,
+resolve, `context`, per-tag `propagateAtLaunch`, update, delete).
+
+- **An intentional overlap** with ACK's `AutoScalingGroup`: use ours where
+  `launchTemplateRef`, `spec.context`, or `propagateAtLaunch` is needed,
+  and never point it and ACK's at one group. Retired (section 3,
+  "Retiring a kind") when ACK ships these fields.
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)

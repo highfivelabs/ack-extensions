@@ -138,7 +138,7 @@ AWS::Athena::PreparedStatement,athena,PreparedStatement,other,FULLY_MUTABLE,Prep
 AWS::Athena::WorkGroup,athena,WorkGroup,other,FULLY_MUTABLE,WorkGroup,,ok,0,0,1,8,3,true
 AWS::AuditManager::Assessment,auditmanager,Assessment,security-adjacent,FULLY_MUTABLE,,Assessment (Cloud Control),ok,0,0,4,9,1,true
 AWS::AuditManager::AssessmentFramework,auditmanager,AssessmentFramework,security-adjacent,FULLY_MUTABLE,,AssessmentFramework (Cloud Control),ok,0,0,0,0,0,true
-AWS::AutoScaling::AutoScalingGroup,autoscaling,AutoScalingGroup,application,FULLY_MUTABLE,AutoScalingGroup,,ok,2,0,1,2,2,true
+AWS::AutoScaling::AutoScalingGroup,autoscaling,AutoScalingGroup,application,FULLY_MUTABLE,AutoScalingGroup,AutoScalingGroup,ok,2,0,1,2,2,true
 AWS::AutoScaling::LaunchConfiguration,autoscaling,LaunchConfiguration,application,IMMUTABLE,,,ok,0,0,4,5,1,true
 AWS::AutoScaling::LifecycleHook,autoscaling,LifecycleHook,application,FULLY_MUTABLE,,LifecycleHook (Cloud Control),ok,0,0,0,0,1,true
 AWS::AutoScaling::ScalingPolicy,autoscaling,ScalingPolicy,application,FULLY_MUTABLE,,ScalingPolicy,ok,0,0,0,0,0,true

@@ -186,6 +186,20 @@ copied:
         - templates/hooks/launch_template/sdk_update_pre_build_request.go.tpl
   - here: [services/ec2/pkg/resource/launch_template/hooks.go]
     from: {pin: ec2-controller, paths: [pkg/resource/launch_template/hooks.go]}
+  - here:
+      - services/autoscaling/templates/hooks/auto_scaling_group/delta_pre_compare.go.tpl
+      - services/autoscaling/templates/hooks/auto_scaling_group/sdk_create_post_set_output.go.tpl
+      - services/autoscaling/templates/hooks/auto_scaling_group/sdk_update_pre_build_request.go.tpl
+    from:
+      pin: autoscaling-controller
+      paths:
+        - templates/hooks/auto_scaling_group/delta_pre_compare.go.tpl
+        - templates/hooks/auto_scaling_group/sdk_create_post_set_output.go.tpl
+        - templates/hooks/auto_scaling_group/sdk_update_pre_build_request.go.tpl
+  - here: [services/autoscaling/pkg/resource/auto_scaling_group/hooks.go]
+    from: {pin: autoscaling-controller, paths: [pkg/resource/auto_scaling_group/hooks.go]}
+  - here: [services/autoscaling/pkg/tags/tags.go]
+    from: {pin: autoscaling-controller, paths: [pkg/tags/tags.go]}
   - here: [hack/ack-crds/s3.services.k8s.aws_buckets.yaml]
     from: {pin: s3-controller, paths: [config/crd/bases/s3.services.k8s.aws_buckets.yaml]}
   - here: [services/s3/generator.yaml]
@@ -259,6 +273,8 @@ copied:
     from: *skeleton
   - here: [services/autoscaling/generator.yaml]
     from: {pin: applicationautoscaling-controller, paths: [generator.yaml]}
+  - here: [services/autoscaling/generator.yaml]
+    from: {pin: autoscaling-controller, paths: [generator.yaml]}
   - here: [services/applicationautoscaling/generator.yaml]
     from: {pin: applicationautoscaling-controller, paths: [generator.yaml]}
   - here: [services/applicationautoscaling/pkg/resource/scheduled_action/custom_delta.go]

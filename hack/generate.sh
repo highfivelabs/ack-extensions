@@ -33,7 +33,8 @@ SDK_VERSION="v1.34.0"         # UPSTREAM.md, "aws-sdk-go-v2 models"
 # controller was generated from, so the copy is identical (UPSTREAM.md).
 SDK_VERSION_FOR() {
   case "$1" in
-    s3) echo "v1.41.5" ;;     # s3-controller v1.15.0's ack-generate-metadata.yaml
+    autoscaling) echo "v1.41.5" ;; # autoscaling-controller v1.5.0's aws-sdk-go-v2 version
+    s3) echo "v1.41.5" ;;          # s3-controller v1.15.0's ack-generate-metadata.yaml
     *) echo "${SDK_VERSION}" ;;
   esac
 }
@@ -73,6 +74,20 @@ for svc in "${SERVICES[@]}"; do
   { grep -rl "github.com/aws-controllers-k8s/${svc}-controller/" "${out}" || true; } | while IFS= read -r f; do
     perl -pi -e "s#github.com/aws-controllers-k8s/${svc}-controller/#github.com/highfivelabs/ack-extensions/services/${svc}/#g" "${f}"
   done
+  # AutoScalingGroup's launchTemplateRef targets ack-extensions's ec2.aws.hfl.dev
+  # LaunchTemplate, while Instance and CapacityReservation stay on ACK's
+  # ec2-controller (ec2.services.k8s.aws). Also preserve per-tag PropagateAtLaunch
+  # across EnsureTags/FilterSystemTags.
+  if [[ "${svc}" == "autoscaling" ]]; then
+    ref_file="${out}/pkg/resource/auto_scaling_group/references.go"
+    if [[ -f "${ref_file}" ]]; then
+      perl -0777 -pi -e 's#ec2apitypes "github.com/aws-controllers-k8s/ec2-controller/apis/v1alpha1"#ec2apitypes "github.com/aws-controllers-k8s/ec2-controller/apis/v1alpha1"\n\thflec2apitypes "github.com/highfivelabs/ack-extensions/services/ec2/apis/v1alpha1"#g; s#ec2apitypes\.LaunchTemplate#hflec2apitypes.LaunchTemplate#g' "${ref_file}"
+    fi
+    mgr_file="${out}/pkg/resource/auto_scaling_group/manager.go"
+    if [[ -f "${mgr_file}" ]]; then
+      perl -pi -e 's#r\.ko\.Spec\.Tags = fromACKTags\([^)]+\)#$&\n\tpreserveTagPropagateAtLaunch(existingTags, r.ko.Spec.Tags)#g; s#a\.ko\.Spec\.Tags = fromACKTags\([^)]+\)#$&\n\tpreserveTagPropagateAtLaunch(existingDesiredTags, a.ko.Spec.Tags)#g' "${mgr_file}"
+    fi
+  fi
 
   # 3. Drop what was generated before, keep what was written by hand.
   if [[ -d "${src}" ]]; then

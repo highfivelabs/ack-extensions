@@ -43,10 +43,12 @@ policies:
       - autoscaling:DeleteAutoScalingGroup
       - autoscaling:DeletePolicy
       - autoscaling:DeleteScheduledAction
+      - autoscaling:DescribeAutoScalingGroups
       - autoscaling:DescribePolicies
       - autoscaling:DescribeScheduledActions
       - autoscaling:PutScalingPolicy
       - autoscaling:PutScheduledUpdateGroupAction
+      - autoscaling:UpdateAutoScalingGroup
       effect: Allow
       resources:
       - '*'
