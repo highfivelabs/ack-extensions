@@ -32,6 +32,7 @@ acm-controller `v1.12.0`, route53-controller `v1.9.0`.
 | 13 | moto: `RemoveRoleFromDBCluster` and `RemoveRoleFromDBInstance` | getmoto/moto pull request | no: `DBRoleAssociation`'s delete is proven on a stand-in | not yet |
 | 14 | S3 `Bucket`: `customFindBucket` panics without default encryption | community issue, or reopen community#2990 (text in `docs/plan.md` section 8 item 15) | yes, `s3.aws.hfl.dev` `Bucket`, a fixed copy (intentional overlap) | not yet: the builder files it (UPBUG, 2026-11-15); `TODO(builder): link once filed` |
 | 15 | AWS Emulator: the 14 operations behind the ACK-kind failures | aws/aws-emulator pull requests, one per service | no: moto stays the test of record for those tests | not yet |
+| 16 | IAM `OpenIDConnectProvider`: `urlRef` to an EKS `Cluster`'s issuer | community issue | yes, `iam.aws.hfl.dev` `OpenIDConnectProvider`, a fixed copy (intentional overlap) | not yet |
 
 EC2 `Instance.securityGroupRefs` needs no note: ec2-controller PR #406
 merged it (closing community#3132) and `v1.25.0` ships it.
@@ -543,3 +544,28 @@ outside our harness. If it reproduces:
 Until these land in a release `hack/aws-emulator.sh` pins, moto stays the
 test of record for these tests (`task check`); the emulator run is read
 for the tests it passes.
+
+---
+
+## 16. IAM `OpenIDConnectProvider`: `urlRef` to an EKS `Cluster`'s issuer
+
+**Title:** iam-controller: a reference from `OpenIDConnectProvider.spec.url` to eks-controller's `Cluster` issuer
+
+**Labels:** `kind/enhancement`, `service/iam`
+
+**Body:**
+
+> **Is your feature request related to a problem?**
+> An EKS cluster's IAM OIDC provider (for IRSA) takes the cluster's
+> issuer URL, which exists only in the `Cluster`'s
+> `status.identity.oidc.issuer` once EKS has made the cluster. Without a
+> reference, the provider cannot be declared beside the cluster in one
+> set of manifests; it has to wait for the cluster and be written by hand
+> or by a second tool. Terraform's EKS module does this in one plan
+> (`aws_iam_openid_connect_provider.url =
+> aws_eks_cluster.identity[0].oidc[0].issuer`).
+>
+> **Describe the solution you'd like**
+> `references` on `OpenIDConnectProvider`'s `URL` in iam-controller's
+> `generator.yaml`: `service_name: eks`, `resource: Cluster`,
+> `path: Status.Identity.OIDC.Issuer`, giving `spec.urlRef`.

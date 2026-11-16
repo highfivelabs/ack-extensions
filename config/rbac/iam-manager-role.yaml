@@ -40,12 +40,20 @@ rules:
   - patch
   - watch
 - apiGroups:
+  - eks.services.k8s.aws
+  resources:
+  - clusters
+  verbs:
+  - get
+  - list
+- apiGroups:
   - iam.aws.hfl.dev
   resources:
   - accesskeys
   - accountaliases
   - accountpasswordpolicies
   - loginprofiles
+  - openidconnectproviders
   - rolepolicyattachments
   - sshpublickeys
   - usergroupmemberships
@@ -65,6 +73,7 @@ rules:
   - accountaliases/status
   - accountpasswordpolicies/status
   - loginprofiles/status
+  - openidconnectproviders/status
   - rolepolicyattachments/status
   - sshpublickeys/status
   - usergroupmemberships/status

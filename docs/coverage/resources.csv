@@ -916,6 +916,7 @@ iam,GroupPolicy,3,,0,,0,3,false,
 iam,InstanceProfile,3,InstanceProfile,2,,0,1,false,official_unmapped=3
 iam,ManagedPolicy,7,Policy,4,,0,3,false,official_unmapped=2
 iam,OIDCProvider,5,OpenIDConnectProvider,5,,0,0,false,
+iam,OpenIDConnectProvider,0,,0,OpenIDConnectProvider,0,0,false,outside-denominator;ours_crd_attributes=5
 iam,Policy,5,,0,,0,5,false,
 iam,Role,11,Role,10,RolePolicyAttachment,0,1,true,ours RolePolicyAttachment covers a property of this resource;ours RolePolicyAttachment copied from iam-controller#184
 iam,RolePolicy,3,,0,,0,3,false,

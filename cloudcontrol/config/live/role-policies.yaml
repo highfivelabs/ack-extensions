@@ -201,12 +201,14 @@ policies:
     description: ack-extensions live tests, part 2
     statements:
     - actions:
+      - iam:AddClientIDToOpenIDConnectProvider
       - iam:AddUserToGroup
       - iam:AttachRolePolicy
       - iam:CreateAccessKey
       - iam:CreateAccountAlias
       - iam:CreateGroup
       - iam:CreateLoginProfile
+      - iam:CreateOpenIDConnectProvider
       - iam:CreatePolicy
       - iam:CreateRole
       - iam:CreateSAMLProvider
@@ -219,6 +221,7 @@ policies:
       - iam:DeleteAccountPasswordPolicy
       - iam:DeleteGroup
       - iam:DeleteLoginProfile
+      - iam:DeleteOpenIDConnectProvider
       - iam:DeletePolicy
       - iam:DeletePolicyVersion
       - iam:DeleteRole
@@ -232,6 +235,7 @@ policies:
       - iam:GetAccountPasswordPolicy
       - iam:GetGroup
       - iam:GetLoginProfile
+      - iam:GetOpenIDConnectProvider
       - iam:GetSAMLProvider
       - iam:GetSSHPublicKey
       - iam:ListAccessKeys
@@ -242,6 +246,8 @@ policies:
       - iam:ListGroups
       - iam:ListGroupsForUser
       - iam:ListMFADevices
+      - iam:ListOpenIDConnectProviderTags
+      - iam:ListOpenIDConnectProviders
       - iam:ListPolicies
       - iam:ListPolicyVersions
       - iam:ListRolePolicies
@@ -255,11 +261,15 @@ policies:
       - iam:ListVirtualMFADevices
       - iam:PassRole
       - iam:PutRolePolicy
+      - iam:RemoveClientIDFromOpenIDConnectProvider
       - iam:RemoveUserFromGroup
+      - iam:TagOpenIDConnectProvider
       - iam:TagSAMLProvider
+      - iam:UntagOpenIDConnectProvider
       - iam:UntagSAMLProvider
       - iam:UpdateAccountPasswordPolicy
       - iam:UpdateLoginProfile
+      - iam:UpdateOpenIDConnectProviderThumbprint
       - iam:UpdateSAMLProvider
       - iam:UpdateSSHPublicKey
       - iam:UploadSSHPublicKey
@@ -436,6 +446,9 @@ policies:
       resources:
       - '*'
       sid: ServiceS3express
+  part-3:
+    description: ack-extensions live tests, part 3
+    statements:
     - actions:
       - scheduler:CreateSchedule
       - scheduler:CreateScheduleGroup
@@ -451,9 +464,6 @@ policies:
       resources:
       - '*'
       sid: ServiceScheduler
-  part-3:
-    description: ack-extensions live tests, part 3
-    statements:
     - actions:
       - secretsmanager:CreateSecret
       - secretsmanager:DeleteSecret
