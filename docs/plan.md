@@ -4,7 +4,7 @@ Status, 2026-11-15: the repository has thirty-six kinds:
 
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
-- `ec2.aws.hfl.dev` `CustomerGateway`, `DefaultSecurityGroup`, `VPNGateway`, `VPNConnection`,
+- `ec2.aws.hfl.dev` `CustomerGateway`, `DefaultSecurityGroup`, `LaunchTemplate` (ACK's, fixed: section 6.43), `VPNGateway`, `VPNConnection`,
   `VPNGatewayRoutePropagation`, `NetworkInterfacePermission`, `ResourceTag`,
   `Volume` and `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
@@ -2699,6 +2699,53 @@ update across resyncs; the setting changed outside Kubernetes put back;
 the delete leaving the VPC. **Not proven:** the Network Address Usage
 metrics setting (not exercised; moto's support for it is not checked),
 and AWS's own default VPC (moto's has no `aws:` tags).
+
+### 6.43 `ec2.aws.hfl.dev` `LaunchTemplate` (ACK's, with references under `spec.data`)
+
+ACK's ec2-controller `LaunchTemplate` with the references it lacks under
+`spec.data`: `securityGroupRefs` (ACK's `SecurityGroup`, `status.id`),
+`networkInterfaces[].subnetRef` (ACK's `Subnet`, `status.subnetID`) and
+`blockDeviceMappings[].ebs.kmsKeyRef` (ACK's KMS `Key`, its ARN). The
+catalog's eks chart refused a node group's custom launch template (the
+module's default) because the template could not name the node security
+group the chart makes (catalog PR #237). Built under the builder's rule
+for kinds missing attributes (section 3, "Fixed copies of ACK's kinds",
+item ACKQ1-1). Upstream rechecked 2026-11-16 (read-only): ec2-controller
+pull request #364 added exactly these three references and was closed
+unmerged on 2026-08-12; `v1.25.0` has none; the not-found and adoption
+issues (community #3169, #3172, #2932; PR #347, open) are not addressed
+here.
+
+**Generated** from ec2-controller `v1.23.1`'s own `generator.yaml` entry
+(its operations and the `CreateLaunchTemplateInput` ignores with it),
+hook templates and `hooks.go`, with PR #364's changes copied: the
+`references` under `Data`, `Data` not written back from
+`CreateLaunchTemplateVersion`'s response, and `preserveDataReferenceFields`,
+which keeps the `*Ref` fields on the data the read rebuilds (without it the
+first read would replace each reference in the stored spec with the
+resolved ID). The rest of `services/ec2` is generated from the aws-sdk-go-v2
+`v1.34.0` models; ec2-controller was from `v1.41.2`. Two differences
+follow, both recorded in `UPSTREAM.md`: `status.operator` is not set (the
+older `LaunchTemplate` shape has no `Operator`), and
+`CreateLaunchTemplateVersionOutput.LaunchTemplateVersion.DefaultVersion` is
+ignored, as ACK does. `networkInterfaces[].groups` stays without a
+reference (PR #364: a list reference inside a list element does not
+generate); use `securityGroupRefs`.
+
+- **An intentional overlap** with ACK's `LaunchTemplate`: use ours where
+  `spec.data` names objects the chart makes, and never point it and ACK's
+  at one template. Retired (section 3, "Retiring a kind") when ACK ships
+  the references.
+- **Everything else is ACK's:** a change to `spec.data` makes a new
+  version, `defaultVersion` set with `ModifyLaunchTemplate`, tags synced.
+
+**Proven on moto** (`TestLaunchTemplate`): nothing is made while the
+`SecurityGroup` is not synced; then the template's one version carries the
+group's ID, the stored spec keeps `securityGroupRefs` and not the ID; no new
+version and no lost reference across resyncs; the delete removes the
+template. **Not proven:** `subnetRef` and `kmsKeyRef` (generated as
+`securityGroupRefs` is, not exercised), a change to `spec.data` with
+references (a second version), and real AWS (a live run).
 
 ## 7. The operator: ACK's identity, beside ACK's controller
 

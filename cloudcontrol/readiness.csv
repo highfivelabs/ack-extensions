@@ -601,7 +601,7 @@ AWS::EC2::IPAMScope,ec2,IPAMScope,platform-foundation,FULLY_MUTABLE,,IPAMScope (
 AWS::EC2::IpPoolRouteTableAssociation,ec2,IpPoolRouteTableAssociation,platform-foundation,IMMUTABLE,,IpPoolRouteTableAssociation (Cloud Control),ok,0,0,0,0,0,true
 AWS::EC2::IPv4Pool,ec2,IPv4Pool,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::EC2::KeyPair,ec2,KeyPair,platform-foundation,IMMUTABLE,,,ok,0,0,1,1,0,true
-AWS::EC2::LaunchTemplate,ec2,LaunchTemplate,platform-foundation,FULLY_MUTABLE,LaunchTemplate,,ok,0,0,1,3,0,true
+AWS::EC2::LaunchTemplate,ec2,LaunchTemplate,platform-foundation,FULLY_MUTABLE,LaunchTemplate,LaunchTemplate,ok,0,0,1,3,0,true
 AWS::EC2::LocalGatewayRoute,ec2,LocalGatewayRoute,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::EC2::LocalGatewayRouteTable,ec2,LocalGatewayRouteTable,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::EC2::LocalGatewayRouteTableVirtualInterfaceGroupAssociation,ec2,LocalGatewayRouteTableVirtualInterfaceGroupAssociation,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true

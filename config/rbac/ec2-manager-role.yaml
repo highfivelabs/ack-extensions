@@ -37,6 +37,7 @@ rules:
   - defaultroutetables
   - defaultsecuritygroups
   - defaultvpcs
+  - launchtemplates
   - networkinterfacepermissions
   - resourcetags
   - volumeattachments
@@ -60,6 +61,7 @@ rules:
   - defaultroutetables/status
   - defaultsecuritygroups/status
   - defaultvpcs/status
+  - launchtemplates/status
   - networkinterfacepermissions/status
   - resourcetags/status
   - volumeattachments/status
@@ -78,6 +80,7 @@ rules:
   - internetgateways
   - natgateways
   - routetables
+  - securitygroups
   - subnets
   - transitgateways
   - vpcendpoints
@@ -87,6 +90,14 @@ rules:
   - get
   - list
   - watch
+- apiGroups:
+  - kms.services.k8s.aws
+  resources:
+  - keys
+  - keys/status
+  verbs:
+  - get
+  - list
 - apiGroups:
   - services.k8s.aws
   resources:
