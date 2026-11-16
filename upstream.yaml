@@ -156,13 +156,11 @@ copied:
   - here:
       - services/iam/pkg/resource/open_id_connect_provider/hooks.go
       - services/iam/pkg/resource/open_id_connect_provider/tags.go
-      - services/iam/pkg/resource/open_id_connect_provider/hooks_tags_test.go
     from:
       pin: iam-controller
       paths:
         - pkg/resource/open_id_connect_provider/hooks.go
         - pkg/resource/open_id_connect_provider/tags.go
-        - pkg/resource/open_id_connect_provider/hooks_tags_test.go
   - here: [hack/ack-crds/s3.services.k8s.aws_buckets.yaml]
     from: {pin: s3-controller, paths: [config/crd/bases/s3.services.k8s.aws_buckets.yaml]}
   - here: [services/s3/generator.yaml]

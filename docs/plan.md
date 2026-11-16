@@ -2716,8 +2716,9 @@ ACKQ1-1). Upstream rechecked 2026-11-16 (read-only): iam-controller
 across to eks-controller's kinds from iam's.
 
 **Generated** from iam-controller `v1.11.3`'s own `generator.yaml` entry,
-hook template and hand-written code (`hooks.go`, `tags.go` and their test,
-copied with the import path changed; `UPSTREAM.md`), with `references` on
+hook template and hand-written code (`hooks.go` and `tags.go`, copied with
+the import path changed; its tag-sync unit test is not, as it sets the SDK
+client's HTTP client by hand, which `task noaws` refuses; `UPSTREAM.md`), with `references` on
 `URL` added. It is generated from the aws-sdk-go-v2 `v1.34.0` models like
 the rest of `services/iam` (iam-controller was generated from `v1.32.6`);
 IAM's OpenID Connect provider calls are the same in both.
@@ -2746,8 +2747,7 @@ IAM's OpenID Connect provider calls are the same in both.
 the `Cluster` has no issuer and is not synced; then the provider is made
 for the cluster's issuer with its client ID and tag, the stored spec
 keeping only the reference; a client ID added in place; the delete
-removes it. ACK's unit tests of the tag sync run here unchanged
-(`hooks_tags_test.go`). **Not proven:** real AWS (a live run, which needs
+removes it. **Not proven:** real AWS (a live run, which needs
 the live-test role's `iam:*OpenIDConnectProvider*` actions; the role
 policy is generated from the kind's calls).
 

@@ -54,7 +54,9 @@ func TestOpenIDConnectProvider(t *testing.T) {
 	ctx := context.Background()
 
 	id := strings.ToUpper(strings.ReplaceAll(fmt.Sprintf("%x", time.Now().UnixNano()), "-", ""))
-	issuer := "https://oidc.eks.us-west-2.amazonaws.com/id/" + id
+	// An issuer of EKS's form (https://oidc.eks.<region>.amazonaws.com/id/<id>)
+	// on a host of its own: tests name no real AWS endpoint (task noaws).
+	issuer := "https://oidc.ack-extensions.example/id/" + id
 	t.Cleanup(func() {
 		if arn, err := oidcProviderByURL(ctx, cloud, issuer); err == nil && arn != "" {
 			_, _ = cloud.DeleteOpenIDConnectProvider(ctx, &iam.DeleteOpenIDConnectProviderInput{OpenIDConnectProviderArn: aws.String(arn)})
@@ -79,7 +81,9 @@ func TestOpenIDConnectProvider(t *testing.T) {
 		Spec: iamv1.OpenIDConnectProviderSpec{
 			URLRef:    &ackv1alpha1.AWSResourceReferenceWrapper{From: &ackv1alpha1.AWSResourceReference{Name: aws.String("main")}},
 			ClientIDs: []*string{aws.String("sts.amazonaws.com")},
-			Tags:      []*iamv1.Tag{{Key: aws.String("team"), Value: aws.String("platform")}},
+			// Given, so IAM need not fetch the issuer's certificate.
+			Thumbprints: []*string{aws.String("9e99a48a9960b14926bb7f3b02e22da2b0ab7280")},
+			Tags:        []*iamv1.Tag{{Key: aws.String("team"), Value: aws.String("platform")}},
 		},
 	}
 
