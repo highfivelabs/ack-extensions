@@ -21,6 +21,7 @@ import (
 	goruntime "runtime"
 	"runtime/debug"
 
+	kmsapitypes "github.com/aws-controllers-k8s/kms-controller/apis/v1alpha1"
 	ackv1alpha1 "github.com/aws-controllers-k8s/runtime/apis/core/v1alpha1"
 	ackcfg "github.com/aws-controllers-k8s/runtime/pkg/config"
 	ackrt "github.com/aws-controllers-k8s/runtime/pkg/runtime"
@@ -44,6 +45,7 @@ import (
 	svcresource "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource"
 
 	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/customer_gateway"
+	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/launch_template"
 	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/network_interface_permission"
 	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/volume"
 	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/vpn_connection"
@@ -80,6 +82,7 @@ func init() {
 
 	_ = svctypes.AddToScheme(scheme)
 	_ = ackv1alpha1.AddToScheme(scheme)
+	_ = kmsapitypes.AddToScheme(scheme)
 }
 
 func main() {
