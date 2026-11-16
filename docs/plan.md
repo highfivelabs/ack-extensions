@@ -2533,7 +2533,9 @@ across resyncs; an entry added outside Kubernetes deleted and a subnet
 moved off moved back; an entry replaced in place and one added; the
 CRD's refusal of both VPC fields; the delete leaving the entries.
 **Not proven:** IPv6 entries (AWS adds rule 101 for IPv6 to a VPC with an
-IPv6 block), `NetworkAclEntryLimitExceeded`, ICMP entries.
+IPv6 block), `NetworkAclEntryLimitExceeded`, ICMP entries. On AWS
+Emulator 1.0.338 it fails (an expected failure): the emulator's
+`CreateTags` does not know network ACLs (`docs/aws-emulator.md`).
 
 ### 6.39 `ec2.aws.hfl.dev` `DefaultRouteTable`
 
