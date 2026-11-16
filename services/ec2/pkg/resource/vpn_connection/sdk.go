@@ -124,22 +124,27 @@ func (rm *resourceManager) sdkFind(
 		} else {
 			ko.Status.GatewayAssociationState = nil
 		}
+		if elem.PreSharedKeyArn != nil {
+			ko.Status.PreSharedKeyARN = elem.PreSharedKeyArn
+		} else {
+			ko.Status.PreSharedKeyARN = nil
+		}
 		if elem.Routes != nil {
-			f6 := []*svcapitypes.VPNStaticRoute{}
-			for _, f6iter := range elem.Routes {
-				f6elem := &svcapitypes.VPNStaticRoute{}
-				if f6iter.DestinationCidrBlock != nil {
-					f6elem.DestinationCIDRBlock = f6iter.DestinationCidrBlock
+			f7 := []*svcapitypes.VPNStaticRoute{}
+			for _, f7iter := range elem.Routes {
+				f7elem := &svcapitypes.VPNStaticRoute{}
+				if f7iter.DestinationCidrBlock != nil {
+					f7elem.DestinationCIDRBlock = f7iter.DestinationCidrBlock
 				}
-				if f6iter.Source != "" {
-					f6elem.Source = aws.String(string(f6iter.Source))
+				if f7iter.Source != "" {
+					f7elem.Source = aws.String(string(f7iter.Source))
 				}
-				if f6iter.State != "" {
-					f6elem.State = aws.String(string(f6iter.State))
+				if f7iter.State != "" {
+					f7elem.State = aws.String(string(f7iter.State))
 				}
-				f6 = append(f6, f6elem)
+				f7 = append(f7, f7elem)
 			}
-			ko.Status.Routes = f6
+			ko.Status.Routes = f7
 		} else {
 			ko.Status.Routes = nil
 		}
@@ -149,18 +154,18 @@ func (rm *resourceManager) sdkFind(
 			ko.Status.State = nil
 		}
 		if elem.Tags != nil {
-			f8 := []*svcapitypes.Tag{}
-			for _, f8iter := range elem.Tags {
-				f8elem := &svcapitypes.Tag{}
-				if f8iter.Key != nil {
-					f8elem.Key = f8iter.Key
+			f9 := []*svcapitypes.Tag{}
+			for _, f9iter := range elem.Tags {
+				f9elem := &svcapitypes.Tag{}
+				if f9iter.Key != nil {
+					f9elem.Key = f9iter.Key
 				}
-				if f8iter.Value != nil {
-					f8elem.Value = f8iter.Value
+				if f9iter.Value != nil {
+					f9elem.Value = f9iter.Value
 				}
-				f8 = append(f8, f8elem)
+				f9 = append(f9, f9elem)
 			}
-			ko.Spec.Tags = f8
+			ko.Spec.Tags = f9
 		} else {
 			ko.Spec.Tags = nil
 		}
@@ -175,33 +180,38 @@ func (rm *resourceManager) sdkFind(
 			ko.Spec.Type = nil
 		}
 		if elem.VgwTelemetry != nil {
-			f11 := []*svcapitypes.VGWTelemetry{}
-			for _, f11iter := range elem.VgwTelemetry {
-				f11elem := &svcapitypes.VGWTelemetry{}
-				if f11iter.AcceptedRouteCount != nil {
-					acceptedRouteCountCopy := int64(*f11iter.AcceptedRouteCount)
-					f11elem.AcceptedRouteCount = &acceptedRouteCountCopy
+			f12 := []*svcapitypes.VGWTelemetry{}
+			for _, f12iter := range elem.VgwTelemetry {
+				f12elem := &svcapitypes.VGWTelemetry{}
+				if f12iter.AcceptedRouteCount != nil {
+					acceptedRouteCountCopy := int64(*f12iter.AcceptedRouteCount)
+					f12elem.AcceptedRouteCount = &acceptedRouteCountCopy
 				}
-				if f11iter.CertificateArn != nil {
-					f11elem.CertificateARN = f11iter.CertificateArn
+				if f12iter.CertificateArn != nil {
+					f12elem.CertificateARN = f12iter.CertificateArn
 				}
-				if f11iter.LastStatusChange != nil {
-					f11elem.LastStatusChange = &metav1.Time{*f11iter.LastStatusChange}
+				if f12iter.LastStatusChange != nil {
+					f12elem.LastStatusChange = &metav1.Time{*f12iter.LastStatusChange}
 				}
-				if f11iter.OutsideIpAddress != nil {
-					f11elem.OutsideIPAddress = f11iter.OutsideIpAddress
+				if f12iter.OutsideIpAddress != nil {
+					f12elem.OutsideIPAddress = f12iter.OutsideIpAddress
 				}
-				if f11iter.Status != "" {
-					f11elem.Status = aws.String(string(f11iter.Status))
+				if f12iter.Status != "" {
+					f12elem.Status = aws.String(string(f12iter.Status))
 				}
-				if f11iter.StatusMessage != nil {
-					f11elem.StatusMessage = f11iter.StatusMessage
+				if f12iter.StatusMessage != nil {
+					f12elem.StatusMessage = f12iter.StatusMessage
 				}
-				f11 = append(f11, f11elem)
+				f12 = append(f12, f12elem)
 			}
-			ko.Status.VGWTelemetry = f11
+			ko.Status.VGWTelemetry = f12
 		} else {
 			ko.Status.VGWTelemetry = nil
+		}
+		if elem.VpnConcentratorId != nil {
+			ko.Spec.VPNConcentratorID = elem.VpnConcentratorId
+		} else {
+			ko.Spec.VPNConcentratorID = nil
 		}
 		if elem.VpnConnectionId != nil {
 			ko.Status.VPNConnectionID = elem.VpnConnectionId
@@ -314,22 +324,27 @@ func (rm *resourceManager) sdkCreate(
 	} else {
 		ko.Status.GatewayAssociationState = nil
 	}
+	if resp.VpnConnection.PreSharedKeyArn != nil {
+		ko.Status.PreSharedKeyARN = resp.VpnConnection.PreSharedKeyArn
+	} else {
+		ko.Status.PreSharedKeyARN = nil
+	}
 	if resp.VpnConnection.Routes != nil {
-		f6 := []*svcapitypes.VPNStaticRoute{}
-		for _, f6iter := range resp.VpnConnection.Routes {
-			f6elem := &svcapitypes.VPNStaticRoute{}
-			if f6iter.DestinationCidrBlock != nil {
-				f6elem.DestinationCIDRBlock = f6iter.DestinationCidrBlock
+		f7 := []*svcapitypes.VPNStaticRoute{}
+		for _, f7iter := range resp.VpnConnection.Routes {
+			f7elem := &svcapitypes.VPNStaticRoute{}
+			if f7iter.DestinationCidrBlock != nil {
+				f7elem.DestinationCIDRBlock = f7iter.DestinationCidrBlock
 			}
-			if f6iter.Source != "" {
-				f6elem.Source = aws.String(string(f6iter.Source))
+			if f7iter.Source != "" {
+				f7elem.Source = aws.String(string(f7iter.Source))
 			}
-			if f6iter.State != "" {
-				f6elem.State = aws.String(string(f6iter.State))
+			if f7iter.State != "" {
+				f7elem.State = aws.String(string(f7iter.State))
 			}
-			f6 = append(f6, f6elem)
+			f7 = append(f7, f7elem)
 		}
-		ko.Status.Routes = f6
+		ko.Status.Routes = f7
 	} else {
 		ko.Status.Routes = nil
 	}
@@ -339,18 +354,18 @@ func (rm *resourceManager) sdkCreate(
 		ko.Status.State = nil
 	}
 	if resp.VpnConnection.Tags != nil {
-		f8 := []*svcapitypes.Tag{}
-		for _, f8iter := range resp.VpnConnection.Tags {
-			f8elem := &svcapitypes.Tag{}
-			if f8iter.Key != nil {
-				f8elem.Key = f8iter.Key
+		f9 := []*svcapitypes.Tag{}
+		for _, f9iter := range resp.VpnConnection.Tags {
+			f9elem := &svcapitypes.Tag{}
+			if f9iter.Key != nil {
+				f9elem.Key = f9iter.Key
 			}
-			if f8iter.Value != nil {
-				f8elem.Value = f8iter.Value
+			if f9iter.Value != nil {
+				f9elem.Value = f9iter.Value
 			}
-			f8 = append(f8, f8elem)
+			f9 = append(f9, f9elem)
 		}
-		ko.Spec.Tags = f8
+		ko.Spec.Tags = f9
 	} else {
 		ko.Spec.Tags = nil
 	}
@@ -365,33 +380,38 @@ func (rm *resourceManager) sdkCreate(
 		ko.Spec.Type = nil
 	}
 	if resp.VpnConnection.VgwTelemetry != nil {
-		f11 := []*svcapitypes.VGWTelemetry{}
-		for _, f11iter := range resp.VpnConnection.VgwTelemetry {
-			f11elem := &svcapitypes.VGWTelemetry{}
-			if f11iter.AcceptedRouteCount != nil {
-				acceptedRouteCountCopy := int64(*f11iter.AcceptedRouteCount)
-				f11elem.AcceptedRouteCount = &acceptedRouteCountCopy
+		f12 := []*svcapitypes.VGWTelemetry{}
+		for _, f12iter := range resp.VpnConnection.VgwTelemetry {
+			f12elem := &svcapitypes.VGWTelemetry{}
+			if f12iter.AcceptedRouteCount != nil {
+				acceptedRouteCountCopy := int64(*f12iter.AcceptedRouteCount)
+				f12elem.AcceptedRouteCount = &acceptedRouteCountCopy
 			}
-			if f11iter.CertificateArn != nil {
-				f11elem.CertificateARN = f11iter.CertificateArn
+			if f12iter.CertificateArn != nil {
+				f12elem.CertificateARN = f12iter.CertificateArn
 			}
-			if f11iter.LastStatusChange != nil {
-				f11elem.LastStatusChange = &metav1.Time{*f11iter.LastStatusChange}
+			if f12iter.LastStatusChange != nil {
+				f12elem.LastStatusChange = &metav1.Time{*f12iter.LastStatusChange}
 			}
-			if f11iter.OutsideIpAddress != nil {
-				f11elem.OutsideIPAddress = f11iter.OutsideIpAddress
+			if f12iter.OutsideIpAddress != nil {
+				f12elem.OutsideIPAddress = f12iter.OutsideIpAddress
 			}
-			if f11iter.Status != "" {
-				f11elem.Status = aws.String(string(f11iter.Status))
+			if f12iter.Status != "" {
+				f12elem.Status = aws.String(string(f12iter.Status))
 			}
-			if f11iter.StatusMessage != nil {
-				f11elem.StatusMessage = f11iter.StatusMessage
+			if f12iter.StatusMessage != nil {
+				f12elem.StatusMessage = f12iter.StatusMessage
 			}
-			f11 = append(f11, f11elem)
+			f12 = append(f12, f12elem)
 		}
-		ko.Status.VGWTelemetry = f11
+		ko.Status.VGWTelemetry = f12
 	} else {
 		ko.Status.VGWTelemetry = nil
+	}
+	if resp.VpnConnection.VpnConcentratorId != nil {
+		ko.Spec.VPNConcentratorID = resp.VpnConnection.VpnConcentratorId
+	} else {
+		ko.Spec.VPNConcentratorID = nil
 	}
 	if resp.VpnConnection.VpnConnectionId != nil {
 		ko.Status.VPNConnectionID = resp.VpnConnection.VpnConnectionId
@@ -473,200 +493,218 @@ func (rm *resourceManager) newCreateRequestPayload(
 		if r.ko.Spec.Options.TransportTransitGatewayAttachmentID != nil {
 			f1.TransportTransitGatewayAttachmentId = r.ko.Spec.Options.TransportTransitGatewayAttachmentID
 		}
+		if r.ko.Spec.Options.TunnelBandwidth != nil {
+			f1.TunnelBandwidth = svcsdktypes.VpnTunnelBandwidth(*r.ko.Spec.Options.TunnelBandwidth)
+		}
 		if r.ko.Spec.Options.TunnelInsideIPVersion != nil {
 			f1.TunnelInsideIpVersion = svcsdktypes.TunnelInsideIpVersion(*r.ko.Spec.Options.TunnelInsideIPVersion)
 		}
 		if r.ko.Spec.Options.TunnelOptions != nil {
-			f1f9 := []svcsdktypes.VpnTunnelOptionsSpecification{}
-			for _, f1f9iter := range r.ko.Spec.Options.TunnelOptions {
-				f1f9elem := &svcsdktypes.VpnTunnelOptionsSpecification{}
-				if f1f9iter.DPDTimeoutAction != nil {
-					f1f9elem.DPDTimeoutAction = f1f9iter.DPDTimeoutAction
+			f1f10 := []svcsdktypes.VpnTunnelOptionsSpecification{}
+			for _, f1f10iter := range r.ko.Spec.Options.TunnelOptions {
+				f1f10elem := &svcsdktypes.VpnTunnelOptionsSpecification{}
+				if f1f10iter.DPDTimeoutAction != nil {
+					f1f10elem.DPDTimeoutAction = f1f10iter.DPDTimeoutAction
 				}
-				if f1f9iter.DPDTimeoutSeconds != nil {
-					dpdTimeoutSecondsCopy0 := *f1f9iter.DPDTimeoutSeconds
+				if f1f10iter.DPDTimeoutSeconds != nil {
+					dpdTimeoutSecondsCopy0 := *f1f10iter.DPDTimeoutSeconds
 					if dpdTimeoutSecondsCopy0 > math.MaxInt32 || dpdTimeoutSecondsCopy0 < math.MinInt32 {
 						return nil, fmt.Errorf("error: field DPDTimeoutSeconds is of type int32")
 					}
 					dpdTimeoutSecondsCopy := int32(dpdTimeoutSecondsCopy0)
-					f1f9elem.DPDTimeoutSeconds = &dpdTimeoutSecondsCopy
+					f1f10elem.DPDTimeoutSeconds = &dpdTimeoutSecondsCopy
 				}
-				if f1f9iter.EnableTunnelLifecycleControl != nil {
-					f1f9elem.EnableTunnelLifecycleControl = f1f9iter.EnableTunnelLifecycleControl
+				if f1f10iter.EnableTunnelLifecycleControl != nil {
+					f1f10elem.EnableTunnelLifecycleControl = f1f10iter.EnableTunnelLifecycleControl
 				}
-				if f1f9iter.IKEVersions != nil {
-					f1f9elemf3 := []svcsdktypes.IKEVersionsRequestListValue{}
-					for _, f1f9elemf3iter := range f1f9iter.IKEVersions {
-						f1f9elemf3elem := &svcsdktypes.IKEVersionsRequestListValue{}
-						if f1f9elemf3iter.Value != nil {
-							f1f9elemf3elem.Value = f1f9elemf3iter.Value
+				if f1f10iter.IKEVersions != nil {
+					f1f10elemf3 := []svcsdktypes.IKEVersionsRequestListValue{}
+					for _, f1f10elemf3iter := range f1f10iter.IKEVersions {
+						f1f10elemf3elem := &svcsdktypes.IKEVersionsRequestListValue{}
+						if f1f10elemf3iter.Value != nil {
+							f1f10elemf3elem.Value = f1f10elemf3iter.Value
 						}
-						f1f9elemf3 = append(f1f9elemf3, *f1f9elemf3elem)
+						f1f10elemf3 = append(f1f10elemf3, *f1f10elemf3elem)
 					}
-					f1f9elem.IKEVersions = f1f9elemf3
+					f1f10elem.IKEVersions = f1f10elemf3
 				}
-				if f1f9iter.LogOptions != nil {
-					f1f9elemf4 := &svcsdktypes.VpnTunnelLogOptionsSpecification{}
-					if f1f9iter.LogOptions.CloudWatchLogOptions != nil {
-						f1f9elemf4f0 := &svcsdktypes.CloudWatchLogOptionsSpecification{}
-						if f1f9iter.LogOptions.CloudWatchLogOptions.LogEnabled != nil {
-							f1f9elemf4f0.LogEnabled = f1f9iter.LogOptions.CloudWatchLogOptions.LogEnabled
+				if f1f10iter.LogOptions != nil {
+					f1f10elemf4 := &svcsdktypes.VpnTunnelLogOptionsSpecification{}
+					if f1f10iter.LogOptions.CloudWatchLogOptions != nil {
+						f1f10elemf4f0 := &svcsdktypes.CloudWatchLogOptionsSpecification{}
+						if f1f10iter.LogOptions.CloudWatchLogOptions.BGPLogEnabled != nil {
+							f1f10elemf4f0.BgpLogEnabled = f1f10iter.LogOptions.CloudWatchLogOptions.BGPLogEnabled
 						}
-						if f1f9iter.LogOptions.CloudWatchLogOptions.LogGroupARN != nil {
-							f1f9elemf4f0.LogGroupArn = f1f9iter.LogOptions.CloudWatchLogOptions.LogGroupARN
+						if f1f10iter.LogOptions.CloudWatchLogOptions.BGPLogGroupARN != nil {
+							f1f10elemf4f0.BgpLogGroupArn = f1f10iter.LogOptions.CloudWatchLogOptions.BGPLogGroupARN
 						}
-						if f1f9iter.LogOptions.CloudWatchLogOptions.LogOutputFormat != nil {
-							f1f9elemf4f0.LogOutputFormat = f1f9iter.LogOptions.CloudWatchLogOptions.LogOutputFormat
+						if f1f10iter.LogOptions.CloudWatchLogOptions.BGPLogOutputFormat != nil {
+							f1f10elemf4f0.BgpLogOutputFormat = f1f10iter.LogOptions.CloudWatchLogOptions.BGPLogOutputFormat
 						}
-						f1f9elemf4.CloudWatchLogOptions = f1f9elemf4f0
+						if f1f10iter.LogOptions.CloudWatchLogOptions.LogEnabled != nil {
+							f1f10elemf4f0.LogEnabled = f1f10iter.LogOptions.CloudWatchLogOptions.LogEnabled
+						}
+						if f1f10iter.LogOptions.CloudWatchLogOptions.LogGroupARN != nil {
+							f1f10elemf4f0.LogGroupArn = f1f10iter.LogOptions.CloudWatchLogOptions.LogGroupARN
+						}
+						if f1f10iter.LogOptions.CloudWatchLogOptions.LogOutputFormat != nil {
+							f1f10elemf4f0.LogOutputFormat = f1f10iter.LogOptions.CloudWatchLogOptions.LogOutputFormat
+						}
+						f1f10elemf4.CloudWatchLogOptions = f1f10elemf4f0
 					}
-					f1f9elem.LogOptions = f1f9elemf4
+					f1f10elem.LogOptions = f1f10elemf4
 				}
-				if f1f9iter.Phase1DHGroupNumbers != nil {
-					f1f9elemf5 := []svcsdktypes.Phase1DHGroupNumbersRequestListValue{}
-					for _, f1f9elemf5iter := range f1f9iter.Phase1DHGroupNumbers {
-						f1f9elemf5elem := &svcsdktypes.Phase1DHGroupNumbersRequestListValue{}
-						if f1f9elemf5iter.Value != nil {
-							valueCopy0 := *f1f9elemf5iter.Value
+				if f1f10iter.Phase1DHGroupNumbers != nil {
+					f1f10elemf5 := []svcsdktypes.Phase1DHGroupNumbersRequestListValue{}
+					for _, f1f10elemf5iter := range f1f10iter.Phase1DHGroupNumbers {
+						f1f10elemf5elem := &svcsdktypes.Phase1DHGroupNumbersRequestListValue{}
+						if f1f10elemf5iter.Value != nil {
+							valueCopy0 := *f1f10elemf5iter.Value
 							if valueCopy0 > math.MaxInt32 || valueCopy0 < math.MinInt32 {
 								return nil, fmt.Errorf("error: field Value is of type int32")
 							}
 							valueCopy := int32(valueCopy0)
-							f1f9elemf5elem.Value = &valueCopy
+							f1f10elemf5elem.Value = &valueCopy
 						}
-						f1f9elemf5 = append(f1f9elemf5, *f1f9elemf5elem)
+						f1f10elemf5 = append(f1f10elemf5, *f1f10elemf5elem)
 					}
-					f1f9elem.Phase1DHGroupNumbers = f1f9elemf5
+					f1f10elem.Phase1DHGroupNumbers = f1f10elemf5
 				}
-				if f1f9iter.Phase1EncryptionAlgorithms != nil {
-					f1f9elemf6 := []svcsdktypes.Phase1EncryptionAlgorithmsRequestListValue{}
-					for _, f1f9elemf6iter := range f1f9iter.Phase1EncryptionAlgorithms {
-						f1f9elemf6elem := &svcsdktypes.Phase1EncryptionAlgorithmsRequestListValue{}
-						if f1f9elemf6iter.Value != nil {
-							f1f9elemf6elem.Value = f1f9elemf6iter.Value
+				if f1f10iter.Phase1EncryptionAlgorithms != nil {
+					f1f10elemf6 := []svcsdktypes.Phase1EncryptionAlgorithmsRequestListValue{}
+					for _, f1f10elemf6iter := range f1f10iter.Phase1EncryptionAlgorithms {
+						f1f10elemf6elem := &svcsdktypes.Phase1EncryptionAlgorithmsRequestListValue{}
+						if f1f10elemf6iter.Value != nil {
+							f1f10elemf6elem.Value = f1f10elemf6iter.Value
 						}
-						f1f9elemf6 = append(f1f9elemf6, *f1f9elemf6elem)
+						f1f10elemf6 = append(f1f10elemf6, *f1f10elemf6elem)
 					}
-					f1f9elem.Phase1EncryptionAlgorithms = f1f9elemf6
+					f1f10elem.Phase1EncryptionAlgorithms = f1f10elemf6
 				}
-				if f1f9iter.Phase1IntegrityAlgorithms != nil {
-					f1f9elemf7 := []svcsdktypes.Phase1IntegrityAlgorithmsRequestListValue{}
-					for _, f1f9elemf7iter := range f1f9iter.Phase1IntegrityAlgorithms {
-						f1f9elemf7elem := &svcsdktypes.Phase1IntegrityAlgorithmsRequestListValue{}
-						if f1f9elemf7iter.Value != nil {
-							f1f9elemf7elem.Value = f1f9elemf7iter.Value
+				if f1f10iter.Phase1IntegrityAlgorithms != nil {
+					f1f10elemf7 := []svcsdktypes.Phase1IntegrityAlgorithmsRequestListValue{}
+					for _, f1f10elemf7iter := range f1f10iter.Phase1IntegrityAlgorithms {
+						f1f10elemf7elem := &svcsdktypes.Phase1IntegrityAlgorithmsRequestListValue{}
+						if f1f10elemf7iter.Value != nil {
+							f1f10elemf7elem.Value = f1f10elemf7iter.Value
 						}
-						f1f9elemf7 = append(f1f9elemf7, *f1f9elemf7elem)
+						f1f10elemf7 = append(f1f10elemf7, *f1f10elemf7elem)
 					}
-					f1f9elem.Phase1IntegrityAlgorithms = f1f9elemf7
+					f1f10elem.Phase1IntegrityAlgorithms = f1f10elemf7
 				}
-				if f1f9iter.Phase1LifetimeSeconds != nil {
-					phase1LifetimeSecondsCopy0 := *f1f9iter.Phase1LifetimeSeconds
+				if f1f10iter.Phase1LifetimeSeconds != nil {
+					phase1LifetimeSecondsCopy0 := *f1f10iter.Phase1LifetimeSeconds
 					if phase1LifetimeSecondsCopy0 > math.MaxInt32 || phase1LifetimeSecondsCopy0 < math.MinInt32 {
 						return nil, fmt.Errorf("error: field Phase1LifetimeSeconds is of type int32")
 					}
 					phase1LifetimeSecondsCopy := int32(phase1LifetimeSecondsCopy0)
-					f1f9elem.Phase1LifetimeSeconds = &phase1LifetimeSecondsCopy
+					f1f10elem.Phase1LifetimeSeconds = &phase1LifetimeSecondsCopy
 				}
-				if f1f9iter.Phase2DHGroupNumbers != nil {
-					f1f9elemf9 := []svcsdktypes.Phase2DHGroupNumbersRequestListValue{}
-					for _, f1f9elemf9iter := range f1f9iter.Phase2DHGroupNumbers {
-						f1f9elemf9elem := &svcsdktypes.Phase2DHGroupNumbersRequestListValue{}
-						if f1f9elemf9iter.Value != nil {
-							valueCopy0 := *f1f9elemf9iter.Value
+				if f1f10iter.Phase2DHGroupNumbers != nil {
+					f1f10elemf9 := []svcsdktypes.Phase2DHGroupNumbersRequestListValue{}
+					for _, f1f10elemf9iter := range f1f10iter.Phase2DHGroupNumbers {
+						f1f10elemf9elem := &svcsdktypes.Phase2DHGroupNumbersRequestListValue{}
+						if f1f10elemf9iter.Value != nil {
+							valueCopy0 := *f1f10elemf9iter.Value
 							if valueCopy0 > math.MaxInt32 || valueCopy0 < math.MinInt32 {
 								return nil, fmt.Errorf("error: field Value is of type int32")
 							}
 							valueCopy := int32(valueCopy0)
-							f1f9elemf9elem.Value = &valueCopy
+							f1f10elemf9elem.Value = &valueCopy
 						}
-						f1f9elemf9 = append(f1f9elemf9, *f1f9elemf9elem)
+						f1f10elemf9 = append(f1f10elemf9, *f1f10elemf9elem)
 					}
-					f1f9elem.Phase2DHGroupNumbers = f1f9elemf9
+					f1f10elem.Phase2DHGroupNumbers = f1f10elemf9
 				}
-				if f1f9iter.Phase2EncryptionAlgorithms != nil {
-					f1f9elemf10 := []svcsdktypes.Phase2EncryptionAlgorithmsRequestListValue{}
-					for _, f1f9elemf10iter := range f1f9iter.Phase2EncryptionAlgorithms {
-						f1f9elemf10elem := &svcsdktypes.Phase2EncryptionAlgorithmsRequestListValue{}
-						if f1f9elemf10iter.Value != nil {
-							f1f9elemf10elem.Value = f1f9elemf10iter.Value
+				if f1f10iter.Phase2EncryptionAlgorithms != nil {
+					f1f10elemf10 := []svcsdktypes.Phase2EncryptionAlgorithmsRequestListValue{}
+					for _, f1f10elemf10iter := range f1f10iter.Phase2EncryptionAlgorithms {
+						f1f10elemf10elem := &svcsdktypes.Phase2EncryptionAlgorithmsRequestListValue{}
+						if f1f10elemf10iter.Value != nil {
+							f1f10elemf10elem.Value = f1f10elemf10iter.Value
 						}
-						f1f9elemf10 = append(f1f9elemf10, *f1f9elemf10elem)
+						f1f10elemf10 = append(f1f10elemf10, *f1f10elemf10elem)
 					}
-					f1f9elem.Phase2EncryptionAlgorithms = f1f9elemf10
+					f1f10elem.Phase2EncryptionAlgorithms = f1f10elemf10
 				}
-				if f1f9iter.Phase2IntegrityAlgorithms != nil {
-					f1f9elemf11 := []svcsdktypes.Phase2IntegrityAlgorithmsRequestListValue{}
-					for _, f1f9elemf11iter := range f1f9iter.Phase2IntegrityAlgorithms {
-						f1f9elemf11elem := &svcsdktypes.Phase2IntegrityAlgorithmsRequestListValue{}
-						if f1f9elemf11iter.Value != nil {
-							f1f9elemf11elem.Value = f1f9elemf11iter.Value
+				if f1f10iter.Phase2IntegrityAlgorithms != nil {
+					f1f10elemf11 := []svcsdktypes.Phase2IntegrityAlgorithmsRequestListValue{}
+					for _, f1f10elemf11iter := range f1f10iter.Phase2IntegrityAlgorithms {
+						f1f10elemf11elem := &svcsdktypes.Phase2IntegrityAlgorithmsRequestListValue{}
+						if f1f10elemf11iter.Value != nil {
+							f1f10elemf11elem.Value = f1f10elemf11iter.Value
 						}
-						f1f9elemf11 = append(f1f9elemf11, *f1f9elemf11elem)
+						f1f10elemf11 = append(f1f10elemf11, *f1f10elemf11elem)
 					}
-					f1f9elem.Phase2IntegrityAlgorithms = f1f9elemf11
+					f1f10elem.Phase2IntegrityAlgorithms = f1f10elemf11
 				}
-				if f1f9iter.Phase2LifetimeSeconds != nil {
-					phase2LifetimeSecondsCopy0 := *f1f9iter.Phase2LifetimeSeconds
+				if f1f10iter.Phase2LifetimeSeconds != nil {
+					phase2LifetimeSecondsCopy0 := *f1f10iter.Phase2LifetimeSeconds
 					if phase2LifetimeSecondsCopy0 > math.MaxInt32 || phase2LifetimeSecondsCopy0 < math.MinInt32 {
 						return nil, fmt.Errorf("error: field Phase2LifetimeSeconds is of type int32")
 					}
 					phase2LifetimeSecondsCopy := int32(phase2LifetimeSecondsCopy0)
-					f1f9elem.Phase2LifetimeSeconds = &phase2LifetimeSecondsCopy
+					f1f10elem.Phase2LifetimeSeconds = &phase2LifetimeSecondsCopy
 				}
-				if f1f9iter.PreSharedKey != nil {
-					tmpSecret, err := rm.rr.SecretValueFromReference(ctx, f1f9iter.PreSharedKey)
+				if f1f10iter.PreSharedKey != nil {
+					tmpSecret, err := rm.rr.SecretValueFromReference(ctx, f1f10iter.PreSharedKey)
 					if err != nil {
 						return nil, ackrequeue.Needed(err)
 					}
 					if tmpSecret != "" {
-						f1f9elem.PreSharedKey = aws.String(tmpSecret)
+						f1f10elem.PreSharedKey = aws.String(tmpSecret)
 					}
 				}
-				if f1f9iter.RekeyFuzzPercentage != nil {
-					rekeyFuzzPercentageCopy0 := *f1f9iter.RekeyFuzzPercentage
+				if f1f10iter.RekeyFuzzPercentage != nil {
+					rekeyFuzzPercentageCopy0 := *f1f10iter.RekeyFuzzPercentage
 					if rekeyFuzzPercentageCopy0 > math.MaxInt32 || rekeyFuzzPercentageCopy0 < math.MinInt32 {
 						return nil, fmt.Errorf("error: field RekeyFuzzPercentage is of type int32")
 					}
 					rekeyFuzzPercentageCopy := int32(rekeyFuzzPercentageCopy0)
-					f1f9elem.RekeyFuzzPercentage = &rekeyFuzzPercentageCopy
+					f1f10elem.RekeyFuzzPercentage = &rekeyFuzzPercentageCopy
 				}
-				if f1f9iter.RekeyMarginTimeSeconds != nil {
-					rekeyMarginTimeSecondsCopy0 := *f1f9iter.RekeyMarginTimeSeconds
+				if f1f10iter.RekeyMarginTimeSeconds != nil {
+					rekeyMarginTimeSecondsCopy0 := *f1f10iter.RekeyMarginTimeSeconds
 					if rekeyMarginTimeSecondsCopy0 > math.MaxInt32 || rekeyMarginTimeSecondsCopy0 < math.MinInt32 {
 						return nil, fmt.Errorf("error: field RekeyMarginTimeSeconds is of type int32")
 					}
 					rekeyMarginTimeSecondsCopy := int32(rekeyMarginTimeSecondsCopy0)
-					f1f9elem.RekeyMarginTimeSeconds = &rekeyMarginTimeSecondsCopy
+					f1f10elem.RekeyMarginTimeSeconds = &rekeyMarginTimeSecondsCopy
 				}
-				if f1f9iter.ReplayWindowSize != nil {
-					replayWindowSizeCopy0 := *f1f9iter.ReplayWindowSize
+				if f1f10iter.ReplayWindowSize != nil {
+					replayWindowSizeCopy0 := *f1f10iter.ReplayWindowSize
 					if replayWindowSizeCopy0 > math.MaxInt32 || replayWindowSizeCopy0 < math.MinInt32 {
 						return nil, fmt.Errorf("error: field ReplayWindowSize is of type int32")
 					}
 					replayWindowSizeCopy := int32(replayWindowSizeCopy0)
-					f1f9elem.ReplayWindowSize = &replayWindowSizeCopy
+					f1f10elem.ReplayWindowSize = &replayWindowSizeCopy
 				}
-				if f1f9iter.StartupAction != nil {
-					f1f9elem.StartupAction = f1f9iter.StartupAction
+				if f1f10iter.StartupAction != nil {
+					f1f10elem.StartupAction = f1f10iter.StartupAction
 				}
-				if f1f9iter.TunnelInsideCIDR != nil {
-					f1f9elem.TunnelInsideCidr = f1f9iter.TunnelInsideCIDR
+				if f1f10iter.TunnelInsideCIDR != nil {
+					f1f10elem.TunnelInsideCidr = f1f10iter.TunnelInsideCIDR
 				}
-				if f1f9iter.TunnelInsideIPv6CIDR != nil {
-					f1f9elem.TunnelInsideIpv6Cidr = f1f9iter.TunnelInsideIPv6CIDR
+				if f1f10iter.TunnelInsideIPv6CIDR != nil {
+					f1f10elem.TunnelInsideIpv6Cidr = f1f10iter.TunnelInsideIPv6CIDR
 				}
-				f1f9 = append(f1f9, *f1f9elem)
+				f1f10 = append(f1f10, *f1f10elem)
 			}
-			f1.TunnelOptions = f1f9
+			f1.TunnelOptions = f1f10
 		}
 		res.Options = f1
+	}
+	if r.ko.Spec.PreSharedKeyStorage != nil {
+		res.PreSharedKeyStorage = r.ko.Spec.PreSharedKeyStorage
 	}
 	if r.ko.Spec.TransitGatewayID != nil {
 		res.TransitGatewayId = r.ko.Spec.TransitGatewayID
 	}
 	if r.ko.Spec.Type != nil {
 		res.Type = r.ko.Spec.Type
+	}
+	if r.ko.Spec.VPNConcentratorID != nil {
+		res.VpnConcentratorId = r.ko.Spec.VPNConcentratorID
 	}
 	if r.ko.Spec.VPNGatewayID != nil {
 		res.VpnGatewayId = r.ko.Spec.VPNGatewayID

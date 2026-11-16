@@ -600,20 +600,6 @@ type LaunchTemplateSpecification struct {
 	Version           *string                                  `json:"version,omitempty"`
 }
 
-// Describes a lifecycle hook. A lifecycle hook lets you create solutions that
-// are aware of events in the Auto Scaling instance lifecycle, and then perform
-// a custom action on instances when the corresponding lifecycle event occurs.
-type LifecycleHook struct {
-	AutoScalingGroupName  *string `json:"autoScalingGroupName,omitempty"`
-	DefaultResult         *string `json:"defaultResult,omitempty"`
-	HeartbeatTimeout      *int64  `json:"heartbeatTimeout,omitempty"`
-	LifecycleHookName     *string `json:"lifecycleHookName,omitempty"`
-	LifecycleTransition   *string `json:"lifecycleTransition,omitempty"`
-	NotificationMetadata  *string `json:"notificationMetadata,omitempty"`
-	NotificationTargetARN *string `json:"notificationTargetARN,omitempty"`
-	RoleARN               *string `json:"roleARN,omitempty"`
-}
-
 // Describes information used to specify a lifecycle hook for an Auto Scaling
 // group.
 //
@@ -629,6 +615,21 @@ type LifecycleHookSpecification struct {
 	RoleARN               *string `json:"roleARN,omitempty"`
 	// Reference field for RoleARN
 	RoleRef *ackv1alpha1.AWSResourceReferenceWrapper `json:"roleRef,omitempty"`
+}
+
+// Describes a lifecycle hook. A lifecycle hook lets you create solutions that
+// are aware of events in the Auto Scaling instance lifecycle, and then perform
+// a custom action on instances when the corresponding lifecycle event occurs.
+type LifecycleHook_SDK struct {
+	AutoScalingGroupName  *string `json:"autoScalingGroupName,omitempty"`
+	DefaultResult         *string `json:"defaultResult,omitempty"`
+	GlobalTimeout         *int64  `json:"globalTimeout,omitempty"`
+	HeartbeatTimeout      *int64  `json:"heartbeatTimeout,omitempty"`
+	LifecycleHookName     *string `json:"lifecycleHookName,omitempty"`
+	LifecycleTransition   *string `json:"lifecycleTransition,omitempty"`
+	NotificationMetadata  *string `json:"notificationMetadata,omitempty"`
+	NotificationTargetARN *string `json:"notificationTargetARN,omitempty"`
+	RoleARN               *string `json:"roleARN,omitempty"`
 }
 
 // Describes the state of a Classic Load Balancer.

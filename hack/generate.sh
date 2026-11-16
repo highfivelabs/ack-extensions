@@ -34,6 +34,7 @@ SDK_VERSION="v1.34.0"         # UPSTREAM.md, "aws-sdk-go-v2 models"
 SDK_VERSION_FOR() {
   case "$1" in
     autoscaling) echo "v1.41.5" ;; # autoscaling-controller v1.5.0's aws-sdk-go-v2 version
+    ec2) echo "v1.41.5" ;;         # includes VolumeInitializationRate on LaunchTemplate EBS block devices
     s3) echo "v1.41.5" ;;          # s3-controller v1.15.0's ack-generate-metadata.yaml
     *) echo "${SDK_VERSION}" ;;
   esac

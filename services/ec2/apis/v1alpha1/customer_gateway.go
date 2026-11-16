@@ -49,10 +49,10 @@ type CustomerGatewaySpec struct {
 	// Length Constraints: Up to 255 characters.
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable once set"
 	DeviceName *string `json:"deviceName,omitempty"`
-	// IPv4 address for the customer gateway device's outside interface. The address
+	// The IP address for the customer gateway device's outside interface. The address
 	// must be static. If OutsideIpAddressType in your VPN connection options is
 	// set to PrivateIpv4, you can use an RFC6598 or RFC1918 private IPv4 address.
-	// If OutsideIpAddressType is set to PublicIpv4, you can use a public IPv4 address.
+	// If OutsideIpAddressType is set to Ipv6, you can use an IPv6 address.
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable once set"
 	IPAddress *string `json:"ipAddress,omitempty"`
 	// The tags. The value parameter is required, but if you don't want the tag

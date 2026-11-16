@@ -199,9 +199,9 @@ func (rm *resourceManager) sdkFind(
 				}
 				f14 = append(f14, f14elem)
 			}
-			ko.Status.EnabledMetrics = f14
+			ko.Spec.EnabledMetrics = f14
 		} else {
-			ko.Status.EnabledMetrics = nil
+			ko.Spec.EnabledMetrics = nil
 		}
 		if elem.HealthCheckGracePeriod != nil {
 			healthCheckGracePeriodCopy := int64(*elem.HealthCheckGracePeriod)
@@ -600,9 +600,9 @@ func (rm *resourceManager) sdkFind(
 				}
 				f32 = append(f32, f32elem)
 			}
-			ko.Status.SuspendedProcesses = f32
+			ko.Spec.SuspendedProcesses = f32
 		} else {
-			ko.Status.SuspendedProcesses = nil
+			ko.Spec.SuspendedProcesses = nil
 		}
 		if elem.Tags != nil {
 			f33 := []*svcapitypes.Tag{}
@@ -772,6 +772,17 @@ func (rm *resourceManager) sdkCreate(
 	if ko.Spec.Tags != nil {
 		ackcondition.SetSynced(&resource{ko}, corev1.ConditionFalse, nil, nil)
 	}
+	if len(ko.Spec.EnabledMetrics) > 0 {
+		if err := syncEnabledMetrics(ctx, ko.Spec.EnabledMetrics, nil, aws.ToString(ko.Spec.Name), rm.sdkapi, rm.metrics); err != nil {
+			return nil, err
+		}
+	}
+	if len(ko.Spec.SuspendedProcesses) > 0 {
+		if err := syncSuspendedProcesses(ctx, ko.Spec.SuspendedProcesses, nil, aws.ToString(ko.Spec.Name), rm.sdkapi, rm.metrics); err != nil {
+			return nil, err
+		}
+	}
+
 	return &resource{ko}, nil
 }
 
@@ -1408,9 +1419,22 @@ func (rm *resourceManager) sdkUpdate(
 			return nil, err
 		}
 	}
-	if !delta.DifferentExcept("Spec.Tags") {
+	if delta.DifferentAt("Spec.EnabledMetrics") {
+		name := string(*latest.ko.Spec.Name)
+		if err := syncEnabledMetrics(ctx, desired.ko.Spec.EnabledMetrics, latest.ko.Spec.EnabledMetrics, name, rm.sdkapi, rm.metrics); err != nil {
+			return nil, err
+		}
+	}
+	if delta.DifferentAt("Spec.SuspendedProcesses") {
+		name := string(*latest.ko.Spec.Name)
+		if err := syncSuspendedProcesses(ctx, desired.ko.Spec.SuspendedProcesses, latest.ko.Spec.SuspendedProcesses, name, rm.sdkapi, rm.metrics); err != nil {
+			return nil, err
+		}
+	}
+	if !delta.DifferentExcept("Spec.Tags", "Spec.EnabledMetrics", "Spec.SuspendedProcesses") {
 		return rm.concreteResource(updatedDesired), nil
 	}
+
 	input, err := rm.newUpdateRequestPayload(ctx, desired, delta)
 	if err != nil {
 		return nil, err

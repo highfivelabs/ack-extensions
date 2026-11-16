@@ -33,8 +33,10 @@ rules:
   - autoscaling.aws.hfl.dev
   resources:
   - autoscalinggroups
+  - lifecyclehooks
   - scalingpolicies
   - scheduledactions
+  - trafficsourceattachments
   verbs:
   - create
   - delete
@@ -47,8 +49,10 @@ rules:
   - autoscaling.aws.hfl.dev
   resources:
   - autoscalinggroups/status
+  - lifecyclehooks/status
   - scalingpolicies/status
   - scheduledactions/status
+  - trafficsourceattachments/status
   verbs:
   - get
   - patch

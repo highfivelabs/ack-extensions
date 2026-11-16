@@ -2862,9 +2862,29 @@ and `normalizeAutoScalingGroupForCompare` in `delta_pre_compare` so
 resolve, `context`, per-tag `propagateAtLaunch`, update, delete).
 
 - **An intentional overlap** with ACK's `AutoScalingGroup`: use ours where
-  `launchTemplateRef`, `spec.context`, or `propagateAtLaunch` is needed,
-  and never point it and ACK's at one group. Retired (section 3,
-  "Retiring a kind") when ACK ships these fields.
+  `launchTemplateRef`, `spec.context`, `propagateAtLaunch`, `enabledMetrics`,
+  or `suspendedProcesses` is needed, and never point it and ACK's at one
+  group. Retired (section 3, "Retiring a kind") when ACK ships these fields.
+
+Batch 2 additions (2026-11-16):
+- `AutoScalingGroup`: `spec.enabledMetrics` (`EnableMetricsCollection` /
+  `DisableMetricsCollection`) and `spec.suspendedProcesses` (`SuspendProcesses` /
+  `ResumeProcesses`) moved from read-only status to managed spec fields with
+  order/default normalization in `delta_pre_compare`.
+- `LifecycleHook` (`autoscaling.aws.hfl.dev/v1alpha1`): generated from
+  `PutLifecycleHook` / `DescribeLifecycleHooks` / `DeleteLifecycleHook` with
+  `autoScalingGroupRef` and `roleRef`, plus server-default normalization
+  (`DefaultResult=ABANDON`, `HeartbeatTimeout=3600`). Proven on moto in
+  `TestAutoScalingGroup`.
+- `TrafficSourceAttachment` (`autoscaling.aws.hfl.dev/v1alpha1`): hand-written
+  kind wrapping `AttachTrafficSources` / `DescribeTrafficSources` /
+  `DetachTrafficSources` with `autoScalingGroupRef` (moto does not implement
+  `*TrafficSources`; proven by unit tests in
+  `services/autoscaling/pkg/resource/traffic_source_attachment/sdk_test.go`).
+- `LaunchTemplate`: `services/ec2` generated from `v1.41.5` models so
+  `blockDeviceMappings[].ebs.volumeInitializationRate` is exposed alongside
+  `networkPerformanceOptions`, `connectionTrackingSpecification`,
+  `enaSrdSpecification`, and `defaultVersion`.
 
 ## 7. The operator: ACK's identity, beside ACK's controller
 

@@ -167,6 +167,13 @@ func newResourceDelta(
 			delta.Add("Spec.DesiredCapacityType", a.ko.Spec.DesiredCapacityType, b.ko.Spec.DesiredCapacityType)
 		}
 	}
+	if len(a.ko.Spec.EnabledMetrics) != len(b.ko.Spec.EnabledMetrics) {
+		delta.Add("Spec.EnabledMetrics", a.ko.Spec.EnabledMetrics, b.ko.Spec.EnabledMetrics)
+	} else if len(a.ko.Spec.EnabledMetrics) > 0 {
+		if !equality.Semantic.Equalities.DeepEqual(a.ko.Spec.EnabledMetrics, b.ko.Spec.EnabledMetrics) {
+			delta.Add("Spec.EnabledMetrics", a.ko.Spec.EnabledMetrics, b.ko.Spec.EnabledMetrics)
+		}
+	}
 	if ackcompare.HasNilDifference(a.ko.Spec.HealthCheckGracePeriod, b.ko.Spec.HealthCheckGracePeriod) {
 		delta.Add("Spec.HealthCheckGracePeriod", a.ko.Spec.HealthCheckGracePeriod, b.ko.Spec.HealthCheckGracePeriod)
 	} else if a.ko.Spec.HealthCheckGracePeriod != nil && b.ko.Spec.HealthCheckGracePeriod != nil {
@@ -399,6 +406,13 @@ func newResourceDelta(
 	} else if a.ko.Spec.SkipZonalShiftValidation != nil && b.ko.Spec.SkipZonalShiftValidation != nil {
 		if *a.ko.Spec.SkipZonalShiftValidation != *b.ko.Spec.SkipZonalShiftValidation {
 			delta.Add("Spec.SkipZonalShiftValidation", a.ko.Spec.SkipZonalShiftValidation, b.ko.Spec.SkipZonalShiftValidation)
+		}
+	}
+	if len(a.ko.Spec.SuspendedProcesses) != len(b.ko.Spec.SuspendedProcesses) {
+		delta.Add("Spec.SuspendedProcesses", a.ko.Spec.SuspendedProcesses, b.ko.Spec.SuspendedProcesses)
+	} else if len(a.ko.Spec.SuspendedProcesses) > 0 {
+		if !equality.Semantic.Equalities.DeepEqual(a.ko.Spec.SuspendedProcesses, b.ko.Spec.SuspendedProcesses) {
+			delta.Add("Spec.SuspendedProcesses", a.ko.Spec.SuspendedProcesses, b.ko.Spec.SuspendedProcesses)
 		}
 	}
 	desiredACKTags, _ := convertToOrderedACKTags(a.ko.Spec.Tags)

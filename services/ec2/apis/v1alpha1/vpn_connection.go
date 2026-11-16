@@ -30,8 +30,12 @@ type VPNConnectionSpec struct {
 	CustomerGatewayID  *string                                  `json:"customerGatewayID,omitempty"`
 	CustomerGatewayRef *ackv1alpha1.AWSResourceReferenceWrapper `json:"customerGatewayRef,omitempty"`
 	// The options for the VPN connection.
-	Options      *VPNConnectionOptionsSpecification `json:"options,omitempty"`
-	StaticRoutes []*string                          `json:"staticRoutes,omitempty"`
+	Options *VPNConnectionOptionsSpecification `json:"options,omitempty"`
+	// Specifies the storage mode for the pre-shared key (PSK). Valid values are
+	// Standard" (stored in the Site-to-Site VPN service) or SecretsManager (stored
+	// in Amazon Web Services Secrets Manager).
+	PreSharedKeyStorage *string   `json:"preSharedKeyStorage,omitempty"`
+	StaticRoutes        []*string `json:"staticRoutes,omitempty"`
 	// The tags. The value parameter is required, but if you don't want the tag
 	// to have a value, specify the parameter with no value, and we set the value
 	// to an empty string.
@@ -45,6 +49,8 @@ type VPNConnectionSpec struct {
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable once set"
 	// +kubebuilder:validation:Required
 	Type *string `json:"type_"`
+	// The ID of the VPN concentrator to associate with the VPN connection.
+	VPNConcentratorID *string `json:"vpnConcentratorID,omitempty"`
 	// The ID of the virtual private gateway. If you specify a virtual private gateway,
 	// you cannot specify a transit gateway.
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable once set"
@@ -79,6 +85,10 @@ type VPNConnectionStatus struct {
 	// The current state of the gateway association.
 	// +kubebuilder:validation:Optional
 	GatewayAssociationState *string `json:"gatewayAssociationState,omitempty"`
+	// The Amazon Resource Name (ARN) of the Secrets Manager secret storing the
+	// pre-shared key(s) for the VPN connection.
+	// +kubebuilder:validation:Optional
+	PreSharedKeyARN *string `json:"preSharedKeyARN,omitempty"`
 	// The static routes associated with the VPN connection.
 	// +kubebuilder:validation:Optional
 	Routes []*VPNStaticRoute `json:"routes,omitempty"`

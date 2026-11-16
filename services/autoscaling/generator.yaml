@@ -50,6 +50,19 @@ operations:
     operation_type:
       - Delete
     resource_name: ScheduledAction
+  PutLifecycleHook:
+    operation_type:
+      - Create
+      - Update
+    resource_name: LifecycleHook
+  DescribeLifecycleHooks:
+    operation_type:
+      - ReadMany
+    resource_name: LifecycleHook
+  DeleteLifecycleHook:
+    operation_type:
+      - Delete
+    resource_name: LifecycleHook
 resources:
   AutoScalingGroup:
     fields:
@@ -90,12 +103,10 @@ resources:
           operation: DescribeAutoScalingGroups
           path: AutoScalingGroups.CreatedTime
       EnabledMetrics:
-        is_read_only: true
         from:
           operation: DescribeAutoScalingGroups
           path: AutoScalingGroups.EnabledMetrics
       SuspendedProcesses:
-        is_read_only: true
         from:
           operation: DescribeAutoScalingGroups
           path: AutoScalingGroups.SuspendedProcesses
@@ -233,6 +244,30 @@ resources:
         is_immutable: true
       ScheduledActionARN:
         is_arn: true
+    tags:
+      ignore: true
+  LifecycleHook:
+    hooks:
+      sdk_read_many_post_build_request:
+        template_path: hooks/lifecycle_hook/sdk_read_many_post_build_request.go.tpl
+      # Server defaults (DefaultResult=ABANDON, HeartbeatTimeout=3600) are no drift.
+      delta_pre_compare:
+        code: customSetDefaults(a, b)
+    fields:
+      LifecycleHookName:
+        is_primary_key: true
+        is_immutable: true
+      AutoScalingGroupName:
+        is_required: true
+        is_immutable: true
+        references:
+          resource: AutoScalingGroup
+          path: Spec.Name
+      RoleARN:
+        references:
+          service_name: iam
+          resource: Role
+          path: Status.ACKResourceMetadata.ARN
     tags:
       ignore: true
 ignore:

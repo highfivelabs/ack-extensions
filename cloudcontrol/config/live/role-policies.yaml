@@ -39,15 +39,25 @@ policies:
       - '*'
       sid: ServiceAppsync
     - actions:
+      - autoscaling:AttachTrafficSources
       - autoscaling:CreateAutoScalingGroup
       - autoscaling:DeleteAutoScalingGroup
+      - autoscaling:DeleteLifecycleHook
       - autoscaling:DeletePolicy
       - autoscaling:DeleteScheduledAction
       - autoscaling:DescribeAutoScalingGroups
+      - autoscaling:DescribeLifecycleHooks
       - autoscaling:DescribePolicies
       - autoscaling:DescribeScheduledActions
+      - autoscaling:DescribeTrafficSources
+      - autoscaling:DetachTrafficSources
+      - autoscaling:DisableMetricsCollection
+      - autoscaling:EnableMetricsCollection
+      - autoscaling:PutLifecycleHook
       - autoscaling:PutScalingPolicy
       - autoscaling:PutScheduledUpdateGroupAction
+      - autoscaling:ResumeProcesses
+      - autoscaling:SuspendProcesses
       - autoscaling:UpdateAutoScalingGroup
       effect: Allow
       resources:

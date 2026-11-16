@@ -111,6 +111,13 @@ func newResourceDelta(
 				delta.Add("Spec.Options.TransportTransitGatewayAttachmentID", a.ko.Spec.Options.TransportTransitGatewayAttachmentID, b.ko.Spec.Options.TransportTransitGatewayAttachmentID)
 			}
 		}
+		if ackcompare.HasNilDifference(a.ko.Spec.Options.TunnelBandwidth, b.ko.Spec.Options.TunnelBandwidth) {
+			delta.Add("Spec.Options.TunnelBandwidth", a.ko.Spec.Options.TunnelBandwidth, b.ko.Spec.Options.TunnelBandwidth)
+		} else if a.ko.Spec.Options.TunnelBandwidth != nil && b.ko.Spec.Options.TunnelBandwidth != nil {
+			if *a.ko.Spec.Options.TunnelBandwidth != *b.ko.Spec.Options.TunnelBandwidth {
+				delta.Add("Spec.Options.TunnelBandwidth", a.ko.Spec.Options.TunnelBandwidth, b.ko.Spec.Options.TunnelBandwidth)
+			}
+		}
 		if ackcompare.HasNilDifference(a.ko.Spec.Options.TunnelInsideIPVersion, b.ko.Spec.Options.TunnelInsideIPVersion) {
 			delta.Add("Spec.Options.TunnelInsideIPVersion", a.ko.Spec.Options.TunnelInsideIPVersion, b.ko.Spec.Options.TunnelInsideIPVersion)
 		} else if a.ko.Spec.Options.TunnelInsideIPVersion != nil && b.ko.Spec.Options.TunnelInsideIPVersion != nil {
@@ -124,6 +131,13 @@ func newResourceDelta(
 			if !equality.Semantic.Equalities.DeepEqual(a.ko.Spec.Options.TunnelOptions, b.ko.Spec.Options.TunnelOptions) {
 				delta.Add("Spec.Options.TunnelOptions", a.ko.Spec.Options.TunnelOptions, b.ko.Spec.Options.TunnelOptions)
 			}
+		}
+	}
+	if ackcompare.HasNilDifference(a.ko.Spec.PreSharedKeyStorage, b.ko.Spec.PreSharedKeyStorage) {
+		delta.Add("Spec.PreSharedKeyStorage", a.ko.Spec.PreSharedKeyStorage, b.ko.Spec.PreSharedKeyStorage)
+	} else if a.ko.Spec.PreSharedKeyStorage != nil && b.ko.Spec.PreSharedKeyStorage != nil {
+		if *a.ko.Spec.PreSharedKeyStorage != *b.ko.Spec.PreSharedKeyStorage {
+			delta.Add("Spec.PreSharedKeyStorage", a.ko.Spec.PreSharedKeyStorage, b.ko.Spec.PreSharedKeyStorage)
 		}
 	}
 	if len(a.ko.Spec.StaticRoutes) != len(b.ko.Spec.StaticRoutes) {
@@ -153,6 +167,13 @@ func newResourceDelta(
 	} else if a.ko.Spec.Type != nil && b.ko.Spec.Type != nil {
 		if *a.ko.Spec.Type != *b.ko.Spec.Type {
 			delta.Add("Spec.Type", a.ko.Spec.Type, b.ko.Spec.Type)
+		}
+	}
+	if ackcompare.HasNilDifference(a.ko.Spec.VPNConcentratorID, b.ko.Spec.VPNConcentratorID) {
+		delta.Add("Spec.VPNConcentratorID", a.ko.Spec.VPNConcentratorID, b.ko.Spec.VPNConcentratorID)
+	} else if a.ko.Spec.VPNConcentratorID != nil && b.ko.Spec.VPNConcentratorID != nil {
+		if *a.ko.Spec.VPNConcentratorID != *b.ko.Spec.VPNConcentratorID {
+			delta.Add("Spec.VPNConcentratorID", a.ko.Spec.VPNConcentratorID, b.ko.Spec.VPNConcentratorID)
 		}
 	}
 	if ackcompare.HasNilDifference(a.ko.Spec.VPNGatewayID, b.ko.Spec.VPNGatewayID) {

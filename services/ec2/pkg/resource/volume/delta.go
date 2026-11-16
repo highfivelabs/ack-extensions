@@ -50,6 +50,13 @@ func newResourceDelta(
 			delta.Add("Spec.AvailabilityZone", a.ko.Spec.AvailabilityZone, b.ko.Spec.AvailabilityZone)
 		}
 	}
+	if ackcompare.HasNilDifference(a.ko.Spec.AvailabilityZoneID, b.ko.Spec.AvailabilityZoneID) {
+		delta.Add("Spec.AvailabilityZoneID", a.ko.Spec.AvailabilityZoneID, b.ko.Spec.AvailabilityZoneID)
+	} else if a.ko.Spec.AvailabilityZoneID != nil && b.ko.Spec.AvailabilityZoneID != nil {
+		if *a.ko.Spec.AvailabilityZoneID != *b.ko.Spec.AvailabilityZoneID {
+			delta.Add("Spec.AvailabilityZoneID", a.ko.Spec.AvailabilityZoneID, b.ko.Spec.AvailabilityZoneID)
+		}
+	}
 	if !equality.Semantic.Equalities.DeepEqual(a.ko.Spec.AvailabilityZoneRef, b.ko.Spec.AvailabilityZoneRef) {
 		delta.Add("Spec.AvailabilityZoneRef", a.ko.Spec.AvailabilityZoneRef, b.ko.Spec.AvailabilityZoneRef)
 	}
@@ -112,6 +119,13 @@ func newResourceDelta(
 	} else if a.ko.Spec.Throughput != nil && b.ko.Spec.Throughput != nil {
 		if *a.ko.Spec.Throughput != *b.ko.Spec.Throughput {
 			delta.Add("Spec.Throughput", a.ko.Spec.Throughput, b.ko.Spec.Throughput)
+		}
+	}
+	if ackcompare.HasNilDifference(a.ko.Spec.VolumeInitializationRate, b.ko.Spec.VolumeInitializationRate) {
+		delta.Add("Spec.VolumeInitializationRate", a.ko.Spec.VolumeInitializationRate, b.ko.Spec.VolumeInitializationRate)
+	} else if a.ko.Spec.VolumeInitializationRate != nil && b.ko.Spec.VolumeInitializationRate != nil {
+		if *a.ko.Spec.VolumeInitializationRate != *b.ko.Spec.VolumeInitializationRate {
+			delta.Add("Spec.VolumeInitializationRate", a.ko.Spec.VolumeInitializationRate, b.ko.Spec.VolumeInitializationRate)
 		}
 	}
 	if ackcompare.HasNilDifference(a.ko.Spec.VolumeType, b.ko.Spec.VolumeType) {
