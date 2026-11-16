@@ -59,22 +59,25 @@ func TestOptionGroup(t *testing.T) {
 	env, cloud := rdsEnv(t)
 	ctx := context.Background()
 
-	// Two options that need no settings, port, security group or version
-	// on real RDS (DescribeOptionGroupOptions, oracle-se2 19): MySQL's
-	// MEMCACHED needs a port and a security group, so real RDS refused
-	// the whole ModifyOptionGroup and kept no options (live run
-	// ackx-11160415-8b7c). An option group without a DB instance costs
-	// nothing and needs no licence.
+	// Two options that need no required setting, port, security group or
+	// version on real RDS (DescribeOptionGroupOptions, oracle-se2 19), and
+	// that AWS Emulator also publishes for the engine: MySQL's MEMCACHED
+	// needs a port and a security group, so real RDS refused the whole
+	// ModifyOptionGroup and kept no options (live run ackx-11160415-8b7c);
+	// TIMEZONE_FILE_AUTOUPGRADE passed on real RDS (ackx-11160729-366f)
+	// but the emulator publishes only NATIVE_NETWORK_ENCRYPTION, OEM and
+	// STATSPACK for oracle-se2. An option group without a DB instance
+	// costs nothing and needs no licence.
 	og := &rdsv1.OptionGroup{
 		ObjectMeta: metav1.ObjectMeta{Name: "app-oracle", Namespace: "default"},
 		Spec: rdsv1.OptionGroupSpec{
 			Name:               aws.String("app-oracle"),
-			Description:        aws.String("statspack and time zone file upgrades for the app database"),
+			Description:        aws.String("statspack and network encryption for the app database"),
 			EngineName:         aws.String("oracle-se2"),
 			MajorEngineVersion: aws.String("19"),
 			Options: []*rdsv1.OptionConfiguration{
 				{OptionName: aws.String("STATSPACK")},
-				{OptionName: aws.String("TIMEZONE_FILE_AUTOUPGRADE")},
+				{OptionName: aws.String("NATIVE_NETWORK_ENCRYPTION")},
 			},
 			Tags: []*rdsv1.Tag{{Key: aws.String("team"), Value: aws.String("payments")}},
 		},
@@ -108,7 +111,7 @@ func TestOptionGroup(t *testing.T) {
 		if err := env.Client.Create(ctx, og); err != nil {
 			t.Fatal(err)
 		}
-		waitOptions(t, []string{"STATSPACK", "TIMEZONE_FILE_AUTOUPGRADE"})
+		waitOptions(t, []string{"NATIVE_NETWORK_ENCRYPTION", "STATSPACK"})
 		out, err := cloud.DescribeOptionGroups(ctx, &rds.DescribeOptionGroupsInput{OptionGroupName: aws.String("app-oracle")})
 		if err != nil {
 			t.Fatal(err)
