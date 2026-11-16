@@ -12,6 +12,9 @@
 //	go run -tags live ./hack/live/sweep            delete leftovers of runs older than 2h
 //	go run -tags live ./hack/live/sweep --run ID   delete everything of run ID
 //	go run -tags live ./hack/live/sweep --list     list every live-run resource
+//
+// --suite cloudcontrol or ack sweeps only that suite's kinds (the default,
+// all, sweeps both); hack/live/run.sh passes its own suite.
 package main
 
 import (
@@ -26,6 +29,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudcontrol"
 	cctypes "github.com/aws/aws-sdk-go-v2/service/cloudcontrol/types"
+	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
 
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/pkg/registry"
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/test/live"
@@ -35,8 +39,13 @@ func main() {
 	run := flag.String("run", "", "delete everything of this run")
 	list := flag.Bool("list", false, "list only")
 	older := flag.Duration("older", 2*time.Hour, "without --run: delete runs started longer ago than this")
+	suite := flag.String("suite", "all", "all, cloudcontrol (the Cloud Control kinds) or ack (the ACK-generated kinds)")
 	flag.Parse()
-	if err := sweep(context.Background(), *run, *list, *older); err != nil {
+	if *suite != "all" && *suite != "cloudcontrol" && *suite != "ack" {
+		fmt.Fprintln(os.Stderr, "sweep: --suite is all, cloudcontrol or ack")
+		os.Exit(2)
+	}
+	if err := sweep(context.Background(), *run, *list, *older, *suite); err != nil {
 		fmt.Fprintln(os.Stderr, "sweep:", err)
 		os.Exit(1)
 	}
@@ -59,7 +68,7 @@ func started(id string, now time.Time) (time.Time, bool) {
 	return t, true
 }
 
-func sweep(ctx context.Context, run string, list bool, older time.Duration) error {
+func sweep(ctx context.Context, run string, list bool, older time.Duration, suite string) error {
 	r, err := live.Account(ctx, ".")
 	if err != nil {
 		return err
@@ -68,6 +77,9 @@ func sweep(ctx context.Context, run string, list bool, older time.Duration) erro
 	now := time.Now().UTC()
 	found, deleted, failed := 0, 0, 0
 	for _, ty := range registry.Types {
+		if suite == "ack" {
+			break
+		}
 		// The live-test role holds only the live kinds' permissions (plan
 		// question 21), and no live run makes any other kind.
 		if !ty.Live {
@@ -83,46 +95,81 @@ func sweep(ctx context.Context, run string, list bool, older time.Duration) erro
 			continue
 		}
 		field := strings.TrimPrefix(tp, "/properties/")
-		p := cloudcontrol.NewListResourcesPaginator(cc, &cloudcontrol.ListResourcesInput{TypeName: aws.String(ty.TypeName)})
-		for p.HasMorePages() {
-			page, err := p.NextPage(ctx)
-			if err != nil {
-				fmt.Printf("sweep: %s: list: %v\n", ty.TypeName, err)
-				failed++
-				break
-			}
-			for _, d := range page.ResourceDescriptions {
-				var props map[string]any
-				_ = json.Unmarshal([]byte(aws.ToString(d.Properties)), &props)
-				id := runOf(props[field])
-				if id == "" {
-					continue
-				}
-				found++
-				due := run != "" && id == run
-				if run == "" {
-					if t, ok := started(id, now); ok && now.Sub(t) > older {
-						due = true
-					}
-				}
-				fmt.Printf("sweep: %s %s (run %s)%s\n", ty.TypeName, aws.ToString(d.Identifier), id, map[bool]string{true: ": deleting", false: ""}[due && !list])
-				if !due || list {
-					continue
-				}
-				if err := del(ctx, cc, ty.TypeName, aws.ToString(d.Identifier)); err != nil {
-					fmt.Printf("sweep: %s %s: %v\n", ty.TypeName, aws.ToString(d.Identifier), err)
+		models, err := listModels(ctx, r.Config, ty.TypeName)
+		if err != nil {
+			fmt.Printf("sweep: %s: %v\n", ty.TypeName, err)
+			failed++
+			continue
+		}
+		for _, model := range models {
+			p := cloudcontrol.NewListResourcesPaginator(cc, &cloudcontrol.ListResourcesInput{TypeName: aws.String(ty.TypeName), ResourceModel: model})
+			for p.HasMorePages() {
+				page, err := p.NextPage(ctx)
+				if err != nil {
+					fmt.Printf("sweep: %s: list: %v\n", ty.TypeName, err)
 					failed++
-					continue
+					break
 				}
-				deleted++
+				for _, d := range page.ResourceDescriptions {
+					var props map[string]any
+					_ = json.Unmarshal([]byte(aws.ToString(d.Properties)), &props)
+					id := runOf(props[field])
+					if id == "" {
+						continue
+					}
+					found++
+					due := run != "" && id == run
+					if run == "" {
+						if t, ok := started(id, now); ok && now.Sub(t) > older {
+							due = true
+						}
+					}
+					fmt.Printf("sweep: %s %s (run %s)%s\n", ty.TypeName, aws.ToString(d.Identifier), id, map[bool]string{true: ": deleting", false: ""}[due && !list])
+					if !due || list {
+						continue
+					}
+					if err := del(ctx, cc, ty.TypeName, aws.ToString(d.Identifier)); err != nil {
+						fmt.Printf("sweep: %s %s: %v\n", ty.TypeName, aws.ToString(d.Identifier), err)
+						failed++
+						continue
+					}
+					deleted++
+				}
 			}
 		}
+	}
+	if suite != "cloudcontrol" {
+		f, d, x := ackSweep(ctx, r.Config, run, list, older)
+		found, deleted, failed = found+f, deleted+d, failed+x
 	}
 	fmt.Printf("sweep: %d live-test resource(s) found, %d deleted, %d failure(s)\n", found, deleted, failed)
 	if failed > 0 {
 		return fmt.Errorf("%d failure(s)", failed)
 	}
 	return nil
+}
+
+// listModels are the resource models a type's list handler is called
+// with: none for most, one per parent for a type whose list needs one
+// (a permission set's Identity Center instance: "Required property:
+// [InstanceArn]", run ackx-11151707-7cc5).
+func listModels(ctx context.Context, cfg aws.Config, typeName string) ([]*string, error) {
+	if typeName != "AWS::SSO::PermissionSet" {
+		return []*string{nil}, nil
+	}
+	out, err := ssoadmin.NewFromConfig(cfg).ListInstances(ctx, &ssoadmin.ListInstancesInput{})
+	if err != nil {
+		return nil, err
+	}
+	if len(out.Instances) == 0 {
+		fmt.Printf("sweep: %s: no Identity Center instance in the account; nothing to list\n", typeName)
+	}
+	var models []*string
+	for _, in := range out.Instances {
+		b, _ := json.Marshal(map[string]string{"InstanceArn": aws.ToString(in.InstanceArn)})
+		models = append(models, aws.String(string(b)))
+	}
+	return models, nil
 }
 
 // runOf is the run tag's value in a tag list, or "".

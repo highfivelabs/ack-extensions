@@ -97,10 +97,7 @@ func Account(ctx context.Context, _ string) (*Run, error) {
 			return nil, fmt.Errorf("live: %s is not set; source hack/live/credentials.sh on an offload VM run with --sa", k)
 		}
 	}
-	region := os.Getenv("LIVE_REGION")
-	if region == "" {
-		region = "us-west-2"
-	}
+	region := Region()
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(region))
 	if err != nil {
 		return nil, fmt.Errorf("live: %w", err)
@@ -113,6 +110,20 @@ func Account(ctx context.Context, _ string) (*Run, error) {
 		return nil, fmt.Errorf("live: the credentials are account %s's, not %s's", got, acct)
 	}
 	return &Run{Account: acct, Region: region, Config: cfg}, nil
+}
+
+// DefaultRegion is where live runs go: the only region the sandbox
+// account's organization allows (a service control policy denies every
+// other region's regional services; found on run ackx-11151659-72c3,
+// 2026-11-15). LIVE_REGION overrides it.
+const DefaultRegion = "us-east-2"
+
+// Region is LIVE_REGION, or DefaultRegion.
+func Region() string {
+	if r := os.Getenv("LIVE_REGION"); r != "" {
+		return r
+	}
+	return DefaultRegion
 }
 
 // ResourceTags is the manager's --resource-tags on a live run: ACK's

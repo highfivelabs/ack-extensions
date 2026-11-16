@@ -4,10 +4,18 @@
 package e2e
 
 import (
+	"crypto/rand"
+	"crypto/rsa"
+	"crypto/x509"
+	"crypto/x509/pkix"
+	"encoding/base64"
 	"encoding/json"
+	"encoding/pem"
 	"fmt"
+	"math/big"
 	"sort"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -23,11 +31,36 @@ import (
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/test/fake"
 )
 
+// samlCert is a self-signed certificate and its RSA key, made once per
+// test binary: real IAM parses the metadata's signing certificate and the
+// private key (a live run, docs/live-runs.md); moto takes any text.
+var samlCert = sync.OnceValues(func() (string, string) {
+	key, err := rsa.GenerateKey(rand.Reader, 2048)
+	if err != nil {
+		panic(err)
+	}
+	tpl := &x509.Certificate{
+		SerialNumber: big.NewInt(1), Subject: pkix.Name{CommonName: "idp.example.com"},
+		NotBefore: time.Now().Add(-time.Hour), NotAfter: time.Now().AddDate(1, 0, 0),
+		KeyUsage: x509.KeyUsageDigitalSignature,
+	}
+	der, err := x509.CreateCertificate(rand.Reader, tpl, tpl, &key.PublicKey, key)
+	if err != nil {
+		panic(err)
+	}
+	pk, err := x509.MarshalPKCS8PrivateKey(key)
+	if err != nil {
+		panic(err)
+	}
+	return base64.StdEncoding.EncodeToString(der), string(pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: pk}))
+})
+
 // metadata is a SAML metadata document of at least 1000 characters (the
-// schema's minLength); version tells two apart.
+// schema's minLength) with a real signing certificate and a single sign-on
+// service, as IAM requires; version tells two apart.
 func metadata(version int) string {
-	pad := strings.Repeat("A", 1000)
-	return fmt.Sprintf(`<?xml version="1.0"?><EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" entityID="https://idp.example.com/v%d"><IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"><KeyDescriptor use="signing"><KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"><X509Data><X509Certificate>%s</X509Certificate></X509Data></KeyInfo></KeyDescriptor></IDPSSODescriptor></EntityDescriptor>`, version, pad)
+	cert, _ := samlCert()
+	return fmt.Sprintf(`<?xml version="1.0"?><EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" entityID="https://idp.example.com/v%d"><IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"><KeyDescriptor use="signing"><KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#"><X509Data><X509Certificate>%s</X509Certificate></X509Data></KeyInfo></KeyDescriptor><SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp.example.com/sso"/></IDPSSODescriptor></EntityDescriptor>`, version, cert)
 }
 
 func ops(t *testing.T, body string) []map[string]any {
@@ -56,7 +89,7 @@ func patchPaths(t *testing.T, calls []fake.Call) []string {
 func TestSAMLProvider(t *testing.T) {
 	e := start(t)
 	const typ = "AWS::IAM::SAMLProvider"
-	const key = "-----BEGIN PRIVATE KEY-----\nFAKEFAKEFAKE\n-----END PRIVATE KEY-----"
+	_, key := samlCert()
 	if err := e.c.Create(e.ctx, secret("saml-key", map[string]string{"private.pem": key})); err != nil {
 		t.Fatal(err)
 	}
@@ -104,14 +137,22 @@ func TestSAMLProvider(t *testing.T) {
 		t.Errorf("spec.addPrivateKey lost: %v", got.Object["spec"])
 	}
 	// The create was asynchronous: followed to the end.
+	// The fake's request tokens end in the operation; real Cloud Control's
+	// are UUIDs (run ackx-11151722-eda8), so on a live run the polls of the
+	// create are those before the first update.
 	var polls int
-	for _, c := range e.calls("GetResourceRequestStatus", "") {
-		if strings.HasSuffix(c.Identifier, "-create") {
+	for _, c := range e.cc.Calls() {
+		if e.live && c.Action == "UpdateResource" {
+			break
+		}
+		if c.Action == "GetResourceRequestStatus" && (e.live || strings.HasSuffix(c.Identifier, "-create")) {
 			polls++
 		}
 	}
-	if polls < 3 {
-		t.Errorf("GetResourceRequestStatus for the create: %d calls, want at least 3 (two IN_PROGRESS, then SUCCESS)", polls)
+	// The fake answers IN_PROGRESS twice; real Cloud Control may be done
+	// at the first poll.
+	if want := map[bool]int{false: 3, true: 1}[e.live]; polls < want {
+		t.Errorf("GetResourceRequestStatus for the create: %d calls, want at least %d", polls, want)
 	}
 
 	// Update the metadata: one replace, of that property only.

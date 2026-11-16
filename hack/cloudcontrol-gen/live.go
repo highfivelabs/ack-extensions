@@ -42,6 +42,10 @@ func liveKinds(cfg config) (map[string]bool, error) {
 	return live, nil
 }
 
+// liveSplitChars is the size the live-test policies are split to, short of
+// IAM's 6,144 for the chart's longer rendering (writeLiveTemplate).
+const liveSplitChars = 5900
+
 // The live-test role's managed policies and the sandbox account's
 // CloudFormation template (docs/live-runs.md); nothing here deploys either.
 //
@@ -56,8 +60,9 @@ func liveKinds(cfg config) (map[string]bool, error) {
 //   - the handler permissions and Cloud Control actions of the kinds
 //     sampled on live runs (liveKinds in types.yaml, as task
 //     cloudcontrol:iam writes for an environment), their list handlers'
-//     and cloudformation:ListResources for the sweeper, and the tests' own
-//     fixtures (liveTestActions), one statement per service
+//     and cloudformation:ListResources for the sweeper, the tests' own
+//     fixtures (liveTestActions), and the ACK-kind suite's calls
+//     (statement LiveRunACKKinds, liveACKActions), one statement per service
 //     (iamgen.Compact), split into managed policies of at most 6,144
 //     characters, ten at most (IAM's default per role); every other kind
 //     is proven on the fakes only (plan question 21);
@@ -69,7 +74,7 @@ func liveKinds(cfg config) (map[string]bool, error) {
 // only the monthly cost budget with e-mail alerts at 80% of actual and
 // 100% of forecast spend, until an ACK controller or an ack-extensions
 // kind serves AWS Budgets.
-func writeLiveTemplate(out string, cfg config, gens []generated) error {
+func writeLiveTemplate(root, out string, cfg config, gens []generated) error {
 	var results []iamgen.Result
 	extra := map[string]bool{"cloudformation:ListResources": true}
 	for _, g := range gens {
@@ -95,10 +100,21 @@ func writeLiveTemplate(out string, cfg config, gens []generated) error {
 	// and the first deployed role had no sweeper or fixture permissions.
 	merged := iamgen.Merge(results)
 	merged.Statement = append(merged.Statement, iamgen.Statement{Sid: "LiveRunSweeperAndFixtures", Effect: "Allow", Action: acts, Resource: "*"})
+	// The ACK-kind tests' (task test-live SUITE=ack): the kinds' calls and
+	// the tests' fixtures (liveACKActions).
+	ack, err := liveACKActions(root)
+	if err != nil {
+		return err
+	}
+	merged.Statement = append(merged.Statement, iamgen.Statement{Sid: "LiveRunACKKinds", Effect: "Allow", Action: ack, Resource: "*"})
 	// Compacted (one statement per service, the same actions): every type's
 	// handler statements kept apart would pass IAM's ten managed policies
 	// per role at about 70 types (docs/throughput.md).
-	policies, err := iamgen.Split(iamgen.Compact(merged), 6144)
+	// Split short of IAM's 6,144 characters: the catalog chart renders each
+	// statement's Resource as a list (["*"], not "*") and so writes a longer
+	// document than iamgen measures; part-1 came to 6,162 in the chart when
+	// split at 6,144 here (2026-11-16).
+	policies, err := iamgen.Split(iamgen.Compact(merged), liveSplitChars)
 	if err != nil {
 		return err
 	}

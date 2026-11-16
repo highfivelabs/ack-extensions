@@ -72,6 +72,9 @@ func TestRolePolicyAttachment(t *testing.T) {
 		t.Fatal(err)
 	}
 	policyARN := aws.ToString(pol.Policy.Arn)
+	// Deleted last (cleanups run in reverse): the roles are detached first.
+	cleanupLog(t, "policy app-s3-read", func() error { return deleteIAMPolicy(ctx, cloud, policyARN) })
+	cleanupLog(t, "role "+role, func() error { return deleteIAMRole(ctx, cloud, role) })
 
 	rpa := &iamv1.RolePolicyAttachment{
 		ObjectMeta: metav1.ObjectMeta{Name: "app-s3-read", Namespace: "default"},
@@ -107,6 +110,7 @@ func TestRolePolicyAttachment(t *testing.T) {
 		if _, err := cloud.CreateRole(ctx, &iam.CreateRoleInput{RoleName: aws.String("ack-made"), AssumeRolePolicyDocument: aws.String(trust)}); err != nil {
 			t.Fatal(err)
 		}
+		cleanupLog(t, "role ack-made", func() error { return deleteIAMRole(ctx, cloud, "ack-made") })
 		ackRole := &ackiam.Role{
 			ObjectMeta: metav1.ObjectMeta{Name: "ack-made", Namespace: "default"},
 			Spec:       ackiam.RoleSpec{Name: aws.String("ack-made"), AssumeRolePolicyDocument: aws.String(trust)},
@@ -293,4 +297,80 @@ func TestRolePolicyAttachment(t *testing.T) {
 			t.Fatalf("deletion-policy retain detached the policy")
 		}
 	})
+}
+
+// IAM fixtures made with the SDK are deleted after the test: on a live run
+// nothing else would (live run ackx-11160256-57fe left users, groups,
+// roles, a policy and 105 MFA devices). What hangs on them is taken off
+// first, as IAM requires.
+
+func deleteIAMUser(ctx context.Context, c *iam.Client, name string) error {
+	u := aws.String(name)
+	if keys, err := c.ListAccessKeys(ctx, &iam.ListAccessKeysInput{UserName: u}); err == nil {
+		for _, k := range keys.AccessKeyMetadata {
+			_, _ = c.DeleteAccessKey(ctx, &iam.DeleteAccessKeyInput{UserName: u, AccessKeyId: k.AccessKeyId})
+		}
+	}
+	_, _ = c.DeleteLoginProfile(ctx, &iam.DeleteLoginProfileInput{UserName: u})
+	if keys, err := c.ListSSHPublicKeys(ctx, &iam.ListSSHPublicKeysInput{UserName: u}); err == nil {
+		for _, k := range keys.SSHPublicKeys {
+			_, _ = c.DeleteSSHPublicKey(ctx, &iam.DeleteSSHPublicKeyInput{UserName: u, SSHPublicKeyId: k.SSHPublicKeyId})
+		}
+	}
+	if mfa, err := c.ListMFADevices(ctx, &iam.ListMFADevicesInput{UserName: u}); err == nil {
+		for _, d := range mfa.MFADevices {
+			_, _ = c.DeactivateMFADevice(ctx, &iam.DeactivateMFADeviceInput{UserName: u, SerialNumber: d.SerialNumber})
+		}
+	}
+	if gs, err := c.ListGroupsForUser(ctx, &iam.ListGroupsForUserInput{UserName: u}); err == nil {
+		for _, g := range gs.Groups {
+			_, _ = c.RemoveUserFromGroup(ctx, &iam.RemoveUserFromGroupInput{UserName: u, GroupName: g.GroupName})
+		}
+	}
+	if ps, err := c.ListAttachedUserPolicies(ctx, &iam.ListAttachedUserPoliciesInput{UserName: u}); err == nil {
+		for _, p := range ps.AttachedPolicies {
+			_, _ = c.DetachUserPolicy(ctx, &iam.DetachUserPolicyInput{UserName: u, PolicyArn: p.PolicyArn})
+		}
+	}
+	_, err := c.DeleteUser(ctx, &iam.DeleteUserInput{UserName: u})
+	return err
+}
+
+func deleteIAMGroup(ctx context.Context, c *iam.Client, name string) error {
+	g := aws.String(name)
+	if out, err := c.GetGroup(ctx, &iam.GetGroupInput{GroupName: g}); err == nil {
+		for _, u := range out.Users {
+			_, _ = c.RemoveUserFromGroup(ctx, &iam.RemoveUserFromGroupInput{UserName: u.UserName, GroupName: g})
+		}
+	}
+	if ps, err := c.ListAttachedGroupPolicies(ctx, &iam.ListAttachedGroupPoliciesInput{GroupName: g}); err == nil {
+		for _, p := range ps.AttachedPolicies {
+			_, _ = c.DetachGroupPolicy(ctx, &iam.DetachGroupPolicyInput{GroupName: g, PolicyArn: p.PolicyArn})
+		}
+	}
+	_, err := c.DeleteGroup(ctx, &iam.DeleteGroupInput{GroupName: g})
+	return err
+}
+
+func deleteIAMRole(ctx context.Context, c *iam.Client, name string) error {
+	r := aws.String(name)
+	if ps, err := c.ListAttachedRolePolicies(ctx, &iam.ListAttachedRolePoliciesInput{RoleName: r}); err == nil {
+		for _, p := range ps.AttachedPolicies {
+			_, _ = c.DetachRolePolicy(ctx, &iam.DetachRolePolicyInput{RoleName: r, PolicyArn: p.PolicyArn})
+		}
+	}
+	_, err := c.DeleteRole(ctx, &iam.DeleteRoleInput{RoleName: r})
+	return err
+}
+
+func deleteIAMPolicy(ctx context.Context, c *iam.Client, arn string) error {
+	if vs, err := c.ListPolicyVersions(ctx, &iam.ListPolicyVersionsInput{PolicyArn: aws.String(arn)}); err == nil {
+		for _, v := range vs.Versions {
+			if !v.IsDefaultVersion {
+				_, _ = c.DeletePolicyVersion(ctx, &iam.DeletePolicyVersionInput{PolicyArn: aws.String(arn), VersionId: v.VersionId})
+			}
+		}
+	}
+	_, err := c.DeletePolicy(ctx, &iam.DeletePolicyInput{PolicyArn: aws.String(arn)})
+	return err
 }

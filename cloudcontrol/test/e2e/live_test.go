@@ -7,6 +7,7 @@ package e2e
 
 import (
 	"context"
+	"os"
 	"testing"
 
 	"github.com/highfivelabs/ack-extensions/cloudcontrol/test/live"
@@ -16,6 +17,9 @@ import (
 // task test-live), the recorder in front of real Cloud Control takes the
 // fake's place, and the tests check the services in the real account.
 func init() {
+	if os.Getenv("CLOUDCONTROL_E2E_TARGET") == "real" {
+		region = live.Region()
+	}
 	startReal = func(t *testing.T) liveRun {
 		t.Helper()
 		run, err := live.Check(context.Background(), repoRoot(t))

@@ -2,14 +2,15 @@
 # Copyright 2026 High Five Labs
 # SPDX-License-Identifier: Apache-2.0
 #
-# Run the Cloud Control end-to-end tests twice from the same checkout:
+# Run the Cloud Control end-to-end tests (or, with --suite ack, the
+# ACK-kind tests in tests/e2e) twice from the same checkout:
 # against the fake (moto), then against the real sandbox account, and write
 # a summary for docs/live-runs.md. `task test-live` calls this; task check
 # never does (hack/noaws checks that no task it runs reaches hack/live or
 # -tags live).
 #
 #   ACK_EXT_LIVE=create-real-aws-resources \
-#     hack/live/run.sh --account ID --role-arn ARN [TEST...]
+#     hack/live/run.sh --account ID --role-arn ARN [--suite cloudcontrol|ack] [TEST...]
 #
 # Refuses unless ACK_EXT_LIVE is exactly that, the account is the
 # sandbox account AWS_SANDBOX_ACCOUNT_ID (from the environment, passed to
@@ -30,11 +31,12 @@ cd "${ROOT}"
 # shellcheck source=hack/live/credentials.sh
 source hack/live/credentials.sh
 
-account="" role="" tests=()
+account="" role="" suite=cloudcontrol tests=()
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --account) account="$2"; shift 2 ;;
     --role-arn) role="$2"; shift 2 ;;
+    --suite) suite="$2"; shift 2 ;;
     -*) echo "live: unknown flag $1" >&2; exit 2 ;;
     *) tests+=("$1"); shift ;;
   esac
@@ -48,6 +50,11 @@ fi
   || { echo "live: account '${account}' is not AWS_SANDBOX_ACCOUNT_ID" >&2; exit 2; }
 [[ "${role}" == "arn:aws:iam::${account}:role/"* ]] || { echo "live: --role-arn must be a role in ${account}" >&2; exit 2; }
 : "${KUBEBUILDER_ASSETS:?run through task test-live, which installs envtest}"
+case "${suite}" in
+  cloudcontrol) pkg=./cloudcontrol/test/e2e/ ;;
+  ack) pkg=./tests/e2e/ ;;
+  *) echo "live: --suite is cloudcontrol or ack, not '${suite}'" >&2; exit 2 ;;
+esac
 pattern="."
 [[ ${#tests[@]} -gt 0 ]] && pattern="^($(IFS='|'; echo "${tests[*]}"))$"
 
@@ -61,13 +68,13 @@ started="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 # The fake run first, with nothing real in its environment.
 echo "== live ${run_id}: fake"
 fake=PASS
-env -u ACK_EXT_LIVE CLOUDCONTROL_E2E_TARGET=fake \
-  go test -count=1 -v -timeout 30m -run "${pattern}" ./cloudcontrol/test/e2e/ >"${out}/fake.log" 2>&1 || fake=FAIL
+env -u ACK_EXT_LIVE CLOUDCONTROL_E2E_TARGET=fake ACK_TEST_BACKEND=moto \
+  go test -count=1 -v -timeout 45m -run "${pattern}" "${pkg}" >"${out}/fake.log" 2>&1 || fake=FAIL
 grep -E '^\s*--- (PASS|FAIL|SKIP)|^(ok|FAIL)\s' "${out}/fake.log" || true
 
 live_creds_start "${role}" "$(mktemp -d)"
 export LIVE_ACCOUNT_ID="${account}" LIVE_RUN_ID="${run_id}"
-SWEEP=(go run -tags live ./hack/live/sweep)
+SWEEP=(go run -tags live ./hack/live/sweep --suite "${suite}")
 finish() {
   local code=$?
   set +o errexit
@@ -88,12 +95,12 @@ echo "== live ${run_id}: sweeping leftovers older than 2h"
 echo "== live ${run_id}: real account ${account}"
 live=PASS
 t0=$(date +%s)
-CLOUDCONTROL_E2E_TARGET=real \
-  go test -tags live -count=1 -v -timeout 90m -run "${pattern}" ./cloudcontrol/test/e2e/ 2>&1 | tee "${out}/live.log" \
+CLOUDCONTROL_E2E_TARGET=real ACK_TEST_BACKEND=live \
+  go test -tags live -count=1 -v -timeout 150m -run "${pattern}" "${pkg}" 2>&1 | tee "${out}/live.log" \
   | grep -E --line-buffered '^\s*--- (PASS|FAIL|SKIP)|^(ok|FAIL)\s|_test.go:[0-9]+:|^=== RUN' || live=FAIL
 grep -q '^ok' "${out}/live.log" || live=FAIL
 {
-  echo "Run \`${run_id}\`, account \`${account}\`, commit \`${commit}\` (${dirty} changed files), started ${started}, tests \`${pattern}\`."
+  echo "Run \`${run_id}\` (suite ${suite}), account \`${account}\`, commit \`${commit}\` (${dirty} changed files), started ${started}, tests \`${pattern}\`."
   echo
   echo "| Fake | Live | Live time |"
   echo "| --- | --- | --- |"

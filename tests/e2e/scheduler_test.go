@@ -26,7 +26,9 @@ import (
 )
 
 // groupTags is a schedule group's tags in the cloud, as sorted k=v pairs,
-// without the services.k8s.aws/ tags ACK's runtime adds to every resource.
+// without the services.k8s.aws/ tags ACK's runtime adds to every resource
+// and, on a live run, the run's tag (hfl.dev/live-run, ACK's
+// --resource-tags; docs/live-runs.md).
 func groupTags(ctx context.Context, c *scheduler.Client, arn string) (string, error) {
 	out, err := c.ListTagsForResource(ctx, &scheduler.ListTagsForResourceInput{ResourceArn: aws.String(arn)})
 	if err != nil {
@@ -34,7 +36,7 @@ func groupTags(ctx context.Context, c *scheduler.Client, arn string) (string, er
 	}
 	var kv []string
 	for _, t := range out.Tags {
-		if strings.HasPrefix(aws.ToString(t.Key), "services.k8s.aws/") {
+		if k := aws.ToString(t.Key); strings.HasPrefix(k, "services.k8s.aws/") || k == "hfl.dev/live-run" {
 			continue
 		}
 		kv = append(kv, aws.ToString(t.Key)+"="+aws.ToString(t.Value))
@@ -170,6 +172,10 @@ func TestScheduleGroup(t *testing.T) {
 		if _, err := cloud.GetScheduleGroup(ctx, &scheduler.GetScheduleGroupInput{Name: aws.String("reports")}); err != nil {
 			t.Fatalf("retained group: %v", err)
 		}
+		cleanupLog(t, "schedule group reports", func() error {
+			_, err := cloud.DeleteScheduleGroup(ctx, &scheduler.DeleteScheduleGroupInput{Name: aws.String("reports")})
+			return err
+		})
 	})
 
 	t.Run("delete deletes the group", func(t *testing.T) {
@@ -205,7 +211,7 @@ func TestSchedule(t *testing.T) {
 	// The role is made here, trusting Scheduler, as AWS (and the AWS
 	// Emulator) requires of a schedule's execution role; moto checks
 	// neither the role nor the target.
-	queue := "arn:aws:sqs:us-west-2:" + env.Account + ":jobs"
+	queue := "arn:aws:sqs:" + harness.Region + ":" + env.Account + ":jobs"
 	made, err := iam.NewFromConfig(env.AWS).CreateRole(ctx, &iam.CreateRoleInput{
 		RoleName: aws.String("scheduler-sqs"),
 		AssumeRolePolicyDocument: aws.String(`{"Version":"2012-10-17","Statement":[{"Effect":"Allow",` +
@@ -215,6 +221,11 @@ func TestSchedule(t *testing.T) {
 		t.Fatal(err)
 	}
 	role := aws.ToString(made.Role.Arn)
+	cleanupLog(t, "role scheduler-sqs and group exports", func() error {
+		_, gerr := cloud.DeleteScheduleGroup(ctx, &scheduler.DeleteScheduleGroupInput{Name: aws.String("exports")})
+		_, rerr := iam.NewFromConfig(env.AWS).DeleteRole(ctx, &iam.DeleteRoleInput{RoleName: aws.String("scheduler-sqs")})
+		return errors.Join(gerr, rerr)
+	})
 
 	waitSynced := func(t *testing.T, key client.ObjectKey, obj client.Object, conds func() []*ackv1alpha1.Condition) {
 		t.Helper()
@@ -350,6 +361,10 @@ func TestSchedule(t *testing.T) {
 		if _, err := cloudSchedule("default", "hourly-ping"); err != nil {
 			t.Fatalf("retained schedule: %v", err)
 		}
+		cleanupLog(t, "schedule hourly-ping", func() error {
+			_, err := cloud.DeleteSchedule(ctx, &scheduler.DeleteScheduleInput{Name: aws.String("hourly-ping"), GroupName: aws.String("default")})
+			return err
+		})
 	})
 
 	t.Run("delete deletes the schedule", func(t *testing.T) {

@@ -50,8 +50,9 @@ import (
 	"github.com/highfivelabs/ack-extensions/pkg/test/awsemulator"
 )
 
-// Region is the AWS region every test uses.
-const Region = "us-west-2"
+// Region is the AWS region every test uses: us-west-2 on the fakes, the
+// live run's region on a live run (tests/e2e/live_test.go sets it).
+var Region = "us-west-2"
 
 // Env is a running test environment.
 type Env struct {
@@ -64,6 +65,21 @@ type Env struct {
 	Account string
 	logs    *syncBuffer
 }
+
+// Live starts a live run's forwarder (docs/live-runs.md): a loopback URL
+// in moto's place that signs every request again with the run's
+// federated credentials and sends it to the sandbox account. It is set
+// only by tests/e2e/live_test.go, built with -tags live (task test-live
+// SUITE=ack), never by task check; ACK_TEST_BACKEND=live without it fails.
+// It returns the URL, the account and the managers' extra flags (the
+// run's tag on everything they make).
+var Live func(t *testing.T) (url, account string, args []string)
+
+// LiveSlowdown is how much longer Eventually waits on a live run.
+const LiveSlowdown = 5
+
+// IsLive reports whether this is a live run (ACK_TEST_BACKEND=live).
+func IsLive() bool { return os.Getenv("ACK_TEST_BACKEND") == "live" }
 
 // MotoAccount is the account moto answers as.
 const MotoAccount = "123456789012"
@@ -138,7 +154,13 @@ func StartControllers(t *testing.T, service string, scheme *runtime.Scheme, ctrl
 	root := RepoRoot(t)
 
 	motoURL, account := os.Getenv("MOTO_URL"), MotoAccount
-	if awsemulator.Selected(t) {
+	var liveArgs []string
+	if IsLive() {
+		if Live == nil {
+			t.Fatal("ACK_TEST_BACKEND=live, but the tests were built without -tags live (task test-live SUITE=ack)")
+		}
+		motoURL, account, liveArgs = Live(t)
+	} else if awsemulator.Selected(t) {
 		account = awsemulator.Account
 		// ACK_TEST_BACKEND=aws-emulator: AWS Emulator in moto's place, behind
 		// its loopback proxy (docs/aws-emulator.md).
@@ -187,6 +209,7 @@ func StartControllers(t *testing.T, service string, scheme *runtime.Scheme, ctrl
 			main = "./services/" + service + "/cmd/controller"
 		}
 		bin := buildController(t, root, main)
+		ctl.Args = append(append([]string(nil), liveArgs...), ctl.Args...)
 		all = append(all, &Logs{b: runController(t, bin, kubeconfig, endpoint, ctl)})
 	}
 
@@ -345,9 +368,15 @@ func runController(t *testing.T, bin, kubeconfig string, endpoint fakeaws.Endpoi
 	return sb
 }
 
-// Eventually polls f until it returns nil or the timeout passes.
+// Eventually polls f until it returns nil or the timeout passes. On a live
+// run the timeout is LiveSlowdown times longer: real AWS takes minutes
+// where moto answers at once (a VPN gateway's detach, live run
+// ackx-11160326-b656).
 func Eventually(t *testing.T, timeout time.Duration, what string, f func() error) {
 	t.Helper()
+	if IsLive() {
+		timeout *= LiveSlowdown
+	}
 	deadline := time.Now().Add(timeout)
 	var last error
 	for time.Now().Before(deadline) {
