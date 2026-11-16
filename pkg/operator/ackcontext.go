@@ -325,7 +325,9 @@ func ackOwner(ac *corev1alpha1.ACKContext) []metav1.OwnerReference {
 func environmentBinding(service string) string { return Name + "-" + service + "-environment" }
 
 // ackEnvironmentBinding is environmentBinding for ACK's own controller.
-func ackEnvironmentBinding(service string) string { return "ack-" + service + "-controller-environment" }
+func ackEnvironmentBinding(service string) string {
+	return "ack-" + service + "-controller-environment"
+}
 
 // ManagerArgsFor is a manager's command line for a context: ACK's runtime
 // flags, scoped to the environment's namespace; --reconcile-resources only
