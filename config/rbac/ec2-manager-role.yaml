@@ -33,7 +33,10 @@ rules:
   - ec2.aws.hfl.dev
   resources:
   - customergateways
+  - defaultnetworkacls
+  - defaultroutetables
   - defaultsecuritygroups
+  - defaultvpcs
   - networkinterfacepermissions
   - resourcetags
   - volumeattachments
@@ -53,7 +56,10 @@ rules:
   - ec2.aws.hfl.dev
   resources:
   - customergateways/status
+  - defaultnetworkacls/status
+  - defaultroutetables/status
   - defaultsecuritygroups/status
+  - defaultvpcs/status
   - networkinterfacepermissions/status
   - resourcetags/status
   - volumeattachments/status
@@ -69,8 +75,13 @@ rules:
   - ec2.services.k8s.aws
   resources:
   - instances
+  - internetgateways
+  - natgateways
   - routetables
+  - subnets
   - transitgateways
+  - vpcendpoints
+  - vpcpeeringconnections
   - vpcs
   verbs:
   - get

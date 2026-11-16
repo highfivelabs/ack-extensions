@@ -5,6 +5,19 @@ design and the reasons are in `docs/plan.md`.
 
 ## Unreleased
 
+### Changed
+
+- **A rule beside an owner that syncs the whole set is refused**
+  (open questions 3 and 7, answered 2026-11-15): a
+  `SecurityGroupIngress`/`SecurityGroupEgress` whose `groupRef` names an
+  ACK `SecurityGroup` listing `ingressRules`/`egressRules` (the same
+  direction), and a `RolePolicyAttachment` whose `roleRef` names an ACK
+  `Role` listing `policies`, now go `ACK.Terminal` with a message naming
+  the owner and its field, and nothing is sent to AWS. Before, they were
+  made and then undone at the owner's next sync. A plain `groupId` or
+  `roleName` is not checked. The Cloud Control rule is `refuseWhenSet` on
+  a reference in `cloudcontrol/types.yaml`.
+
 ### Added
 
 - **`s3.aws.hfl.dev` `Bucket`**: ACK s3-controller `v1.15.0`'s `Bucket`,
@@ -17,6 +30,13 @@ design and the reasons are in `docs/plan.md`.
   bucket. `s3.aws.hfl.dev/force-destroy` works on it as on ACK's. The s3
   manager now needs the S3 actions of a bucket's configuration
   (`task ack:iam`).
+- **`ec2.aws.hfl.dev` `DefaultNetworkACL`, `DefaultRouteTable` and
+  `DefaultVPC`** (ACKQ16-1; Terraform's `aws_default_network_acl`,
+  `aws_default_route_table`, `aws_default_vpc`): take over a VPC's default
+  network ACL and main route table (by `vpcID` or `vpcRef`) and the
+  region's default VPC (no reference). Entries, subnet associations,
+  routes, propagating VPN gateways, DNS settings and tags become the
+  spec's, exclusively; nothing is created or deleted.
 - **`ec2.aws.hfl.dev` `DefaultSecurityGroup`** (open question 16;
   Terraform's `aws_default_security_group`): takes over a VPC's default
   security group, found by `vpcID` or `vpcRef` (ACK's `VPC`). Its rules

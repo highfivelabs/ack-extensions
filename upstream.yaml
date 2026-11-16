@@ -291,6 +291,31 @@ copied:
   - here: [services/ec2/pkg/resource/default_security_group/rules.go]
     from: {pin: ec2-controller, paths: [pkg/resource/security_group/hooks.go, pkg/resource/security_group/sdk.go]}
   - here:
+      - services/ec2/pkg/resource/default_network_acl/descriptor.go
+      - services/ec2/pkg/resource/default_network_acl/identifiers.go
+      - services/ec2/pkg/resource/default_network_acl/manager.go
+      - services/ec2/pkg/resource/default_network_acl/manager_factory.go
+      - services/ec2/pkg/resource/default_network_acl/resource.go
+    from: *skeleton
+  - here:
+      - services/ec2/pkg/resource/default_route_table/descriptor.go
+      - services/ec2/pkg/resource/default_route_table/identifiers.go
+      - services/ec2/pkg/resource/default_route_table/manager.go
+      - services/ec2/pkg/resource/default_route_table/manager_factory.go
+      - services/ec2/pkg/resource/default_route_table/resource.go
+    from: *skeleton
+  - here:
+      - services/ec2/pkg/resource/default_vpc/descriptor.go
+      - services/ec2/pkg/resource/default_vpc/identifiers.go
+      - services/ec2/pkg/resource/default_vpc/manager.go
+      - services/ec2/pkg/resource/default_vpc/manager_factory.go
+      - services/ec2/pkg/resource/default_vpc/resource.go
+    from: *skeleton
+  - here: [services/ec2/pkg/resource/default_network_acl/entries.go]
+    from: {pin: ec2-controller, paths: [pkg/resource/network_acl/hooks.go, pkg/resource/network_acl/sdk.go]}
+  - here: [services/ec2/pkg/resource/default_route_table/routes.go]
+    from: {pin: ec2-controller, paths: [pkg/resource/route_table/sdk.go, pkg/resource/route_table/hooks.go]}
+  - here:
       - services/iam/pkg/resource/user_group_membership/descriptor.go
       - services/iam/pkg/resource/user_group_membership/identifiers.go
       - services/iam/pkg/resource/user_group_membership/manager.go

@@ -15,7 +15,7 @@
 //
 // Modified by High Five Labs for ack-extensions: copied from
 // aws-controllers-k8s/iam-controller pull request #184 (head 78eb350e),
-// pkg/resource/role_policy_attachment/manager.go. Changes: import path and API group (iam.aws.hfl.dev).
+// pkg/resource/role_policy_attachment/manager.go. Changes: import path and API group (iam.aws.hfl.dev); ReadOne refuses a conflicting roleRef (references.go).
 
 package role_policy_attachment
 
@@ -63,6 +63,13 @@ func (rm *resourceManager) ReadOne(ctx context.Context, res acktypes.AWSResource
 	r := rm.concreteResource(res)
 	if r.ko == nil {
 		panic("resource manager's ReadOne() method received resource with nil CR object")
+	}
+	// A roleRef refused (references.go): terminal before AWS is asked. Not
+	// while the object is being deleted: the attachment it made is still
+	// detached.
+	if r.conflict != nil && !r.IsBeingDeleted() {
+		out := &resource{ko: r.ko.DeepCopy()}
+		return rm.onError(out, r.conflict)
 	}
 	observed, err := rm.sdkFind(ctx, r)
 	if err != nil {

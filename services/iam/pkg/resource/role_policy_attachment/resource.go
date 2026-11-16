@@ -15,7 +15,7 @@
 //
 // Modified by High Five Labs for ack-extensions: copied from
 // aws-controllers-k8s/iam-controller pull request #184 (head 78eb350e),
-// pkg/resource/role_policy_attachment/resource.go. Changes: import path and API group (iam.aws.hfl.dev).
+// pkg/resource/role_policy_attachment/resource.go. Changes: import path and API group (iam.aws.hfl.dev); the conflict field (a roleRef to an ACK Role that lists policies, refused).
 
 package role_policy_attachment
 
@@ -37,6 +37,11 @@ var (
 
 type resource struct {
 	ko *svcapitypes.RolePolicyAttachment
+	// conflict is set by ResolveReferences when roleRef names an ACK Role
+	// whose spec lists policies (it syncs them as the whole set, so it
+	// would detach this one); ReadOne then refuses the object with
+	// ACK.Terminal. Never stored: found again on each reconcile.
+	conflict error
 }
 
 func (r *resource) Identifiers() acktypes.AWSResourceIdentifiers {
@@ -95,5 +100,5 @@ func (r *resource) PopulateResourceFromAnnotation(fields map[string]string) erro
 
 func (r *resource) DeepCopy() acktypes.AWSResource {
 	koCopy := r.ko.DeepCopy()
-	return &resource{koCopy}
+	return &resource{ko: koCopy, conflict: r.conflict}
 }
