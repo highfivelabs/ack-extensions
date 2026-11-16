@@ -1047,8 +1047,23 @@ The spec names:
 - the function (`functionName`, or `functionRef` to ACK's `Function`);
 - optionally a version or alias (`qualifier`);
 - the statement's `statementID`, `action` and `principal`;
-- optionally `sourceARN`, `sourceAccount`, `eventSourceToken`,
-  `principalOrgID` and `functionURLAuthType`.
+- optionally `sourceARN` (or `targetGroupRef`, below), `sourceAccount`,
+  `eventSourceToken`, `principalOrgID` and `functionURLAuthType`.
+
+**`targetGroupRef`** (2026-11-16; the catalog's alb chart refused its
+Lambda permissions for want of it, catalog PR #234): ACK's elbv2
+`TargetGroup` (elbv2-controller `v1.9.0`, a Go module here for its API
+types, `UPSTREAM.md`), whose `status.ackResourceMetadata.arn` fills
+`sourceARN` once the target group is synced, the way ACK's generated
+references resolve. Give it or `sourceARN`, never both (the CRD refuses
+both, and so does the resolver); it cannot be added, removed or changed
+once set. The manager's ClusterRole reads `targetgroups`. **Proven on
+moto** (`TestPermission`, "targetGroupRef fills the source ARN"): nothing
+is added while the target group is not synced; then the statement's
+`AWS:SourceArn` is the target group's ARN, the stored spec keeps only the
+reference, and the delete removes the statement. The `TargetGroup` is a
+stand-in object with its status set by the test (elbv2-controller does
+not run there), as for `functionRef`.
 
 Lambda cannot change a statement, so every field is immutable.
 
@@ -1515,8 +1530,21 @@ a resource since given another web ACL. About 97% of the kind's Go
 - **Errors:** a resource or web ACL not there yet is retried; a bad
   parameter or operation (a `CLOUDFRONT` web ACL, a resource WAFv2 cannot
   protect) is terminal.
-- **No `resourceRef`.** The resources live in other ACK controllers
-  (elbv2, apigateway, cognito); `resourceARN` takes the ARN.
+- **`resourceRef`** (2026-11-16; the catalog's alb chart refused its WAF
+  association for want of it, catalog PR #234): ACK's elbv2
+  `LoadBalancer`, its `status.ackResourceMetadata.arn`, generated from
+  `references` with `service_name: elbv2` in `generator.yaml` (as s3's
+  `Replication.Role` names iam's `Role`; elbv2-controller `v1.9.0` is a
+  Go module here, `UPSTREAM.md`). Give it or `resourceARN`. The other
+  resources WAFv2 protects (an API Gateway stage, an AppSync API, a
+  Cognito user pool, an App Runner service) live in other controllers
+  and still take `resourceARN`. **Proven on moto** (`TestWebACLAssociation`,
+  "a load balancer named by resourceRef"): nothing is associated while
+  the load balancer is not synced; then the web ACL is associated with
+  its ARN, the stored spec keeps only the reference, and the delete
+  disassociates. **Not guarded:** ACK's generator gives `resourceRef` no
+  immutability rule (the CRD has one for `resourceARN`); point a new
+  object at another load balancer rather than editing `resourceRef`.
 
 **Not proven:** another web ACL put on the resource outside Kubernetes
 being replaced (moto keeps both), the delete leaving such a resource

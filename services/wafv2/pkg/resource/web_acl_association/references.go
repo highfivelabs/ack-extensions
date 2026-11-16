@@ -23,6 +23,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
+	elbv2apitypes "github.com/aws-controllers-k8s/elbv2-controller/apis/v1alpha1"
 	ackv1alpha1 "github.com/aws-controllers-k8s/runtime/apis/core/v1alpha1"
 	ackerr "github.com/aws-controllers-k8s/runtime/pkg/errors"
 	ackrt "github.com/aws-controllers-k8s/runtime/pkg/runtime"
@@ -31,12 +32,19 @@ import (
 	svcapitypes "github.com/highfivelabs/ack-extensions/services/wafv2/apis/v1alpha1"
 )
 
+// +kubebuilder:rbac:groups=elbv2.services.k8s.aws,resources=loadbalancers,verbs=get;list
+// +kubebuilder:rbac:groups=elbv2.services.k8s.aws,resources=loadbalancers/status,verbs=get;list
+
 // ClearResolvedReferences removes any reference values that were made
 // concrete in the spec. It returns a copy of the input AWSResource which
 // contains the original *Ref values, but none of their respective concrete
 // values.
 func (rm *resourceManager) ClearResolvedReferences(res acktypes.AWSResource) acktypes.AWSResource {
 	ko := rm.concreteResource(res).ko.DeepCopy()
+
+	if ko.Spec.ResourceRef != nil {
+		ko.Spec.ResourceARN = nil
+	}
 
 	if ko.Spec.WebACLRef != nil {
 		ko.Spec.WebACLARN = nil
@@ -61,6 +69,12 @@ func (rm *resourceManager) ResolveReferences(
 
 	resourceHasReferences := false
 	err := validateReferenceFields(ko)
+	if fieldHasReferences, err := rm.resolveReferenceForResourceARN(ctx, apiReader, ko); err != nil {
+		return &resource{ko}, (resourceHasReferences || fieldHasReferences), err
+	} else {
+		resourceHasReferences = resourceHasReferences || fieldHasReferences
+	}
+
 	if fieldHasReferences, err := rm.resolveReferenceForWebACLARN(ctx, apiReader, ko); err != nil {
 		return &resource{ko}, (resourceHasReferences || fieldHasReferences), err
 	} else {
@@ -74,11 +88,106 @@ func (rm *resourceManager) ResolveReferences(
 // identifier field.
 func validateReferenceFields(ko *svcapitypes.WebACLAssociation) error {
 
+	if ko.Spec.ResourceRef != nil && ko.Spec.ResourceARN != nil {
+		return ackerr.ResourceReferenceAndIDNotSupportedFor("ResourceARN", "ResourceRef")
+	}
+	if ko.Spec.ResourceRef == nil && ko.Spec.ResourceARN == nil {
+		return ackerr.ResourceReferenceOrIDRequiredFor("ResourceARN", "ResourceRef")
+	}
+
 	if ko.Spec.WebACLRef != nil && ko.Spec.WebACLARN != nil {
 		return ackerr.ResourceReferenceAndIDNotSupportedFor("WebACLARN", "WebACLRef")
 	}
 	if ko.Spec.WebACLRef == nil && ko.Spec.WebACLARN == nil {
 		return ackerr.ResourceReferenceOrIDRequiredFor("WebACLARN", "WebACLRef")
+	}
+	return nil
+}
+
+// resolveReferenceForResourceARN reads the resource referenced
+// from ResourceRef field and sets the ResourceARN
+// from referenced resource. Returns a boolean indicating whether a reference
+// contains references, or an error
+func (rm *resourceManager) resolveReferenceForResourceARN(
+	ctx context.Context,
+	apiReader client.Reader,
+	ko *svcapitypes.WebACLAssociation,
+) (hasReferences bool, err error) {
+	if ko.Spec.ResourceRef != nil && ko.Spec.ResourceRef.From != nil {
+		hasReferences = true
+		arr := ko.Spec.ResourceRef.From
+		if arr.Name == nil || *arr.Name == "" {
+			return hasReferences, fmt.Errorf("provided resource reference is nil or empty: ResourceRef")
+		}
+		namespace, _, err := ackrt.ValidateCrossNamespaceReference(
+			rm.cfg.EnableCrossNamespace,
+			ko.ObjectMeta.GetNamespace(),
+			arr.Namespace,
+			*arr.Name,
+		)
+		if err != nil {
+			return hasReferences, err
+		}
+		obj := &elbv2apitypes.LoadBalancer{}
+		if err := getReferencedResourceState_LoadBalancer(ctx, apiReader, obj, *arr.Name, namespace); err != nil {
+			return hasReferences, err
+		}
+		ko.Spec.ResourceARN = (*string)(obj.Status.ACKResourceMetadata.ARN)
+	}
+
+	return hasReferences, nil
+}
+
+// getReferencedResourceState_LoadBalancer looks up whether a referenced resource
+// exists and is in a ACK.ResourceSynced=True state. If the referenced resource does exist and is
+// in a Synced state, returns nil, otherwise returns `ackerr.ResourceReferenceTerminalFor` or
+// `ResourceReferenceNotSyncedFor` depending on if the resource is in a Terminal state.
+func getReferencedResourceState_LoadBalancer(
+	ctx context.Context,
+	apiReader client.Reader,
+	obj *elbv2apitypes.LoadBalancer,
+	name string, // the Kubernetes name of the referenced resource
+	namespace string, // the Kubernetes namespace of the referenced resource
+) error {
+	namespacedName := types.NamespacedName{
+		Namespace: namespace,
+		Name:      name,
+	}
+	err := apiReader.Get(ctx, namespacedName, obj)
+	if err != nil {
+		return err
+	}
+	var refResourceTerminal bool
+	for _, cond := range obj.Status.Conditions {
+		if cond.Type == ackv1alpha1.ConditionTypeTerminal &&
+			cond.Status == corev1.ConditionTrue {
+			return ackerr.ResourceReferenceTerminalFor(
+				"LoadBalancer",
+				namespace, name)
+		}
+	}
+	if refResourceTerminal {
+		return ackerr.ResourceReferenceTerminalFor(
+			"LoadBalancer",
+			namespace, name)
+	}
+	var refResourceSynced bool
+	for _, cond := range obj.Status.Conditions {
+		if cond.Type == ackv1alpha1.ConditionTypeResourceSynced &&
+			cond.Status == corev1.ConditionTrue {
+			refResourceSynced = true
+		}
+	}
+	if !refResourceSynced {
+		return ackerr.ResourceReferenceNotSyncedFor(
+			"LoadBalancer",
+			namespace, name)
+	}
+	if obj.Status.ACKResourceMetadata == nil || obj.Status.ACKResourceMetadata.ARN == nil {
+		return ackerr.ResourceReferenceMissingTargetFieldFor(
+			"LoadBalancer",
+			namespace, name,
+			"Status.ACKResourceMetadata.ARN")
 	}
 	return nil
 }

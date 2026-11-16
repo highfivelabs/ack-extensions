@@ -17,6 +17,8 @@ import (
 // field is immutable.
 //
 // +kubebuilder:validation:XValidation:rule="[has(self.functionName), has(self.functionRef)].filter(x, x).size() == 1",message="exactly one of functionName and functionRef must be set"
+// +kubebuilder:validation:XValidation:rule="!(has(self.sourceARN) && has(self.targetGroupRef))",message="sourceARN and targetGroupRef cannot both be set"
+// +kubebuilder:validation:XValidation:rule="has(self.targetGroupRef) == has(oldSelf.targetGroupRef)",message="targetGroupRef cannot be added or removed once set"
 type PermissionSpec struct {
 	// The function's name, ARN or partial ARN. Immutable.
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable once set"
@@ -52,6 +54,13 @@ type PermissionSpec struct {
 	// function (the bucket, target group, rule or topic). Immutable.
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable once set"
 	SourceARN *string `json:"sourceARN,omitempty"`
+	// An ACK elbv2.services.k8s.aws TargetGroup whose ARN
+	// (status.ackResourceMetadata.arn) is the source: an Application Load
+	// Balancer's lambda target group, with principal
+	// elasticloadbalancing.amazonaws.com. Read once the TargetGroup is
+	// synced. Give this or sourceARN, not both. Immutable.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable once set"
+	TargetGroupRef *ackv1alpha1.AWSResourceReferenceWrapper `json:"targetGroupRef,omitempty"`
 	// For a service principal: the account that owns the resource.
 	// Immutable.
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable once set"

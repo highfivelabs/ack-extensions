@@ -54,6 +54,26 @@ spec:
                 - message: 'hostedZoneId is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
+              hostedZoneRef:
+                description: 'A reference to a HostedZone (route53.services.k8s.aws)
+                  whose status.id fills hostedZoneId: its Kubernetes name, and namespace
+                  when another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or hostedZoneId,
+                  not both. The value is taken without its leading /hostedzone/.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'hostedZoneRef is create-only, as hostedZoneId is: it cannot
+                    change after the resource is made'
+                  rule: self == oldSelf
               keyManagementServiceArn:
                 description: The Amazon resource name (ARN) for a customer managed
                   key (CMK) in AWS Key Management Service (KMS). The KeyManagementServiceArn
@@ -66,6 +86,26 @@ spec:
                 - message: 'keyManagementServiceArn is create-only (CloudFormation
                     createOnlyProperties): it cannot change after the resource is
                     made'
+                  rule: self == oldSelf
+              keyManagementServiceRef:
+                description: 'A reference to a Key (kms.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills keyManagementServiceArn: its Kubernetes name, and namespace
+                  when another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or keyManagementServiceArn,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'keyManagementServiceRef is create-only, as keyManagementServiceArn
+                    is: it cannot change after the resource is made'
                   rule: self == oldSelf
               name:
                 description: An alphanumeric string used to identify a key signing
@@ -84,8 +124,6 @@ spec:
                 - INACTIVE
                 type: string
             required:
-            - hostedZoneId
-            - keyManagementServiceArn
             - name
             - status
             type: object
@@ -99,6 +137,22 @@ spec:
             - message: 'name is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.name) == has(oldSelf.name)
+            - message: one of hostedZoneId or hostedZoneRef is required
+              rule: has(self.hostedZoneId) || has(self.hostedZoneRef)
+            - message: hostedZoneId and hostedZoneRef cannot both be given
+              rule: '!(has(self.hostedZoneId) && has(self.hostedZoneRef))'
+            - message: 'hostedZoneRef is create-only, as hostedZoneId is: it cannot
+                be added or removed after the resource is made'
+              rule: has(self.hostedZoneRef) == has(oldSelf.hostedZoneRef)
+            - message: one of keyManagementServiceArn or keyManagementServiceRef is
+                required
+              rule: has(self.keyManagementServiceArn) || has(self.keyManagementServiceRef)
+            - message: keyManagementServiceArn and keyManagementServiceRef cannot
+                both be given
+              rule: '!(has(self.keyManagementServiceArn) && has(self.keyManagementServiceRef))'
+            - message: 'keyManagementServiceRef is create-only, as keyManagementServiceArn
+                is: it cannot be added or removed after the resource is made'
+              rule: has(self.keyManagementServiceRef) == has(oldSelf.keyManagementServiceRef)
           status:
             properties:
               ackResourceMetadata:

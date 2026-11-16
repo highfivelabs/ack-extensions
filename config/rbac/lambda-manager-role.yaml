@@ -30,6 +30,13 @@ rules:
   - list
   - watch
 - apiGroups:
+  - elbv2.services.k8s.aws
+  resources:
+  - targetgroups
+  verbs:
+  - get
+  - list
+- apiGroups:
   - lambda.aws.hfl.dev
   resources:
   - permissions

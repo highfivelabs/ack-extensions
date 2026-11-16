@@ -121,6 +121,11 @@ func (in *PermissionSpec) DeepCopyInto(out *PermissionSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.TargetGroupRef != nil {
+		in, out := &in.TargetGroupRef, &out.TargetGroupRef
+		*out = new(corev1alpha1.AWSResourceReferenceWrapper)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.SourceAccount != nil {
 		in, out := &in.SourceAccount, &out.SourceAccount
 		*out = new(string)
