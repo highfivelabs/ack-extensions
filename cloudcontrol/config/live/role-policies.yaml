@@ -78,13 +78,19 @@ policies:
       sid: ServiceConfig
     - actions:
       - ec2:AssociateVerifiedAccessInstanceWebAcl
+      - ec2:AttachInternetGateway
       - ec2:AttachVolume
       - ec2:AttachVpnGateway
       - ec2:AuthorizeSecurityGroupEgress
       - ec2:AuthorizeSecurityGroupIngress
       - ec2:CreateCustomerGateway
+      - ec2:CreateDefaultVpc
+      - ec2:CreateInternetGateway
       - ec2:CreateLaunchTemplate
+      - ec2:CreateNetworkAcl
+      - ec2:CreateNetworkAclEntry
       - ec2:CreateNetworkInterfacePermission
+      - ec2:CreateRoute
       - ec2:CreateSubnet
       - ec2:CreateTags
       - ec2:CreateTransitGateway
@@ -96,8 +102,11 @@ policies:
       - ec2:CreateVpnConnectionRoute
       - ec2:CreateVpnGateway
       - ec2:DeleteCustomerGateway
+      - ec2:DeleteInternetGateway
       - ec2:DeleteLaunchTemplate
+      - ec2:DeleteNetworkAclEntry
       - ec2:DeleteNetworkInterfacePermission
+      - ec2:DeleteRoute
       - ec2:DeleteSubnet
       - ec2:DeleteTags
       - ec2:DeleteTransitGateway
@@ -111,18 +120,23 @@ policies:
       - ec2:DescribeAvailabilityZones
       - ec2:DescribeCustomerGateways
       - ec2:DescribeImages
+      - ec2:DescribeInternetGateways
       - ec2:DescribeLaunchTemplateVersions
+      - ec2:DescribeNetworkAcls
       - ec2:DescribeNetworkInterfacePermissions
       - ec2:DescribeRouteTables
       - ec2:DescribeSecurityGroups
+      - ec2:DescribeSubnets
       - ec2:DescribeTags
       - ec2:DescribeTransitGatewayPeeringAttachments
       - ec2:DescribeTransitGatewayVpcAttachments
       - ec2:DescribeTransitGateways
       - ec2:DescribeVolumes
+      - ec2:DescribeVpcAttribute
       - ec2:DescribeVpcs
       - ec2:DescribeVpnConnections
       - ec2:DescribeVpnGateways
+      - ec2:DetachInternetGateway
       - ec2:DetachVolume
       - ec2:DetachVpnGateway
       - ec2:DisableVgwRoutePropagation
@@ -131,8 +145,11 @@ policies:
       - ec2:GetTransitGatewayRouteTableAssociations
       - ec2:GetTransitGatewayRouteTablePropagations
       - ec2:ModifyVolume
+      - ec2:ModifyVpcAttribute
       - ec2:ModifyVpnConnectionOptions
       - ec2:ModifyVpnTunnelOptions
+      - ec2:ReplaceNetworkAclAssociation
+      - ec2:ReplaceNetworkAclEntry
       - ec2:RevokeSecurityGroupEgress
       - ec2:RevokeSecurityGroupIngress
       - ec2:RunInstances
@@ -179,6 +196,9 @@ policies:
       resources:
       - '*'
       sid: ServiceEvents
+  part-2:
+    description: ack-extensions live tests, part 2
+    statements:
     - actions:
       - iam:AddUserToGroup
       - iam:AttachRolePolicy
@@ -246,9 +266,6 @@ policies:
       resources:
       - '*'
       sid: ServiceIam
-  part-2:
-    description: ack-extensions live tests, part 2
-    statements:
     - actions:
       - kms:CreateKey
       - kms:DescribeKey
@@ -432,6 +449,9 @@ policies:
       resources:
       - '*'
       sid: ServiceScheduler
+  part-3:
+    description: ack-extensions live tests, part 3
+    statements:
     - actions:
       - secretsmanager:CreateSecret
       - secretsmanager:DeleteSecret
@@ -495,9 +515,6 @@ policies:
       resources:
       - '*'
       sid: ServiceTag
-  part-3:
-    description: ack-extensions live tests, part 3
-    statements:
     - actions:
       - wafv2:AssociateWebACL
       - wafv2:CreateWebACL

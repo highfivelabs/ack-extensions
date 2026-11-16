@@ -156,6 +156,13 @@ adopted by its ARN, not its name: each existing one also carries
 than iamgen measures). The temporary admin credentials went to the
 offload bucket for the run and were deleted after it.
 
+**Not yet in the instance (2026-11-16):** the calls of the default EC2
+kinds merged after the last apply (ACKQ16-1: `DefaultVPC`,
+`DefaultNetworkACL`, `DefaultRouteTable`; `ec2:CreateDefaultVpc`,
+`ec2:ReplaceNetworkAclEntry` and others) are in `role-policies.yaml` but
+not in the catalog instance. Copy them there and apply it again before
+those kinds' first live run.
+
 ## The live-test role's policies and the sandbox account's template
 
 `task cloudcontrol:generate` writes both from `cloudcontrol/types.yaml`
