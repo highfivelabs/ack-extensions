@@ -1,12 +1,15 @@
 # Copyright 2026 High Five Labs
 # SPDX-License-Identifier: Apache-2.0
 # Everything to install beside ACK: our CRDs, the managers' ClusterRoles,
+# ACK's own controllers' ClusterRoles (run per ACKContext; ACK's CRDs come
+# from ACK's charts, docs/plan.md 7.7),
 # the admission policies, ACKContext and the operator; and the Cloud Control kinds'
 # CRDs, CloudControlContext and the Cloud Control manager's ClusterRole
 # (bound per namespace). `kubectl kustomize config/default | ko resolve -f -`.
 resources:
   - ../crds
   - ../rbac
+  - ../ack-controllers
   - ../admission
   - ../context
   - ../operator

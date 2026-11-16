@@ -350,3 +350,101 @@ copied:
       - services/rds/pkg/resource/db_role_association/manager_factory.go
       - services/rds/pkg/resource/db_role_association/resource.go
     from: *skeleton
+  - here:
+      - config/ack-controllers/applicationautoscaling-controller-role.yaml
+      - pkg/ackiam/recommended/applicationautoscaling/recommended-policy-arn
+    from:
+      pin: applicationautoscaling-controller
+      paths:
+        - config/rbac/cluster-role-controller.yaml
+        - config/iam/recommended-policy-arn
+  - here:
+      - config/ack-controllers/autoscaling-controller-role.yaml
+      - pkg/ackiam/recommended/autoscaling/recommended-policy-arn
+    from:
+      pin: autoscaling-controller
+      paths:
+        - config/rbac/cluster-role-controller.yaml
+        - config/iam/recommended-policy-arn
+  - here:
+      - config/ack-controllers/ec2-controller-role.yaml
+      - pkg/ackiam/recommended/ec2/recommended-policy-arn
+    from:
+      pin: ec2-controller
+      paths:
+        - config/rbac/cluster-role-controller.yaml
+        - config/iam/recommended-policy-arn
+  - here:
+      - config/ack-controllers/ecr-controller-role.yaml
+      - pkg/ackiam/recommended/ecr/recommended-policy-arn
+    from:
+      pin: ecr-controller
+      paths:
+        - config/rbac/cluster-role-controller.yaml
+        - config/iam/recommended-policy-arn
+  - here:
+      - config/ack-controllers/eventbridge-controller-role.yaml
+      - pkg/ackiam/recommended/eventbridge/recommended-policy-arn
+    from:
+      pin: eventbridge-controller
+      paths:
+        - config/rbac/cluster-role-controller.yaml
+        - config/iam/recommended-policy-arn
+  - here:
+      - config/ack-controllers/iam-controller-role.yaml
+      - pkg/ackiam/recommended/iam/recommended-inline-policy
+    from:
+      pin: iam-controller
+      paths:
+        - config/rbac/cluster-role-controller.yaml
+        - config/iam/recommended-inline-policy
+  - here:
+      - config/ack-controllers/kms-controller-role.yaml
+      - pkg/ackiam/recommended/kms/recommended-inline-policy
+    from:
+      pin: kms-controller
+      paths:
+        - config/rbac/cluster-role-controller.yaml
+        - config/iam/recommended-inline-policy
+  - here:
+      - config/ack-controllers/lambda-controller-role.yaml
+      - pkg/ackiam/recommended/lambda/recommended-inline-policy
+    from:
+      pin: lambda-controller
+      paths:
+        - config/rbac/cluster-role-controller.yaml
+        - config/iam/recommended-inline-policy
+  - here:
+      - config/ack-controllers/rds-controller-role.yaml
+      - pkg/ackiam/recommended/rds/recommended-policy-arn
+    from:
+      pin: rds-controller
+      paths:
+        - config/rbac/cluster-role-controller.yaml
+        - config/iam/recommended-policy-arn
+  - here:
+      - config/ack-controllers/s3-controller-role.yaml
+      - pkg/ackiam/recommended/s3/recommended-inline-policy
+      - pkg/ackiam/recommended/s3/recommended-policy-arn
+    from:
+      pin: s3-controller
+      paths:
+        - config/rbac/cluster-role-controller.yaml
+        - config/iam/recommended-inline-policy
+        - config/iam/recommended-policy-arn
+  - here:
+      - config/ack-controllers/s3control-controller-role.yaml
+      - pkg/ackiam/recommended/s3control/recommended-policy-arn
+    from:
+      pin: s3control-controller
+      paths:
+        - config/rbac/cluster-role-controller.yaml
+        - config/iam/recommended-policy-arn
+  - here:
+      - config/ack-controllers/wafv2-controller-role.yaml
+      - pkg/ackiam/recommended/wafv2/recommended-policy-arn
+    from:
+      pin: wafv2-controller
+      paths:
+        - config/rbac/cluster-role-controller.yaml
+        - config/iam/recommended-policy-arn

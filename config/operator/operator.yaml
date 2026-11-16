@@ -7,6 +7,8 @@
 # with the annotation aws.hfl.dev/identity.
 # An ACKContext in a namespace runs one manager per controller it lists,
 # for that namespace (docs/plan.md, section 7.6).
+# ACK_IMAGE_<SERVICE>: ACK's own controller of a service, which an
+# ACKContext also runs for its namespace (section 7.7).
 # MANAGER_IMAGE_CLOUDCONTROL turns Cloud Control on: a manager in each
 # namespace with a CloudControlContext (docs/cloudcontrol.md).
 apiVersion: apps/v1
@@ -67,6 +69,35 @@ spec:
               value: ko://github.com/highfivelabs/ack-extensions/services/scheduler/cmd/controller
             - name: MANAGER_IMAGE_WAFV2
               value: ko://github.com/highfivelabs/ack-extensions/services/wafv2/cmd/controller
+            # ACK's own controllers, one per service per environment that
+            # enables it (docs/plan.md, section 7.7), at the versions
+            # UPSTREAM.md pins; written by hack/ack-controllers.sh.
+            # BEGIN ACK_IMAGE
+            - name: ACK_IMAGE_APPLICATIONAUTOSCALING
+              value: public.ecr.aws/aws-controllers-k8s/applicationautoscaling-controller:1.9.0@sha256:a28929777b8f4b4a100635fd36ef7408cc0510194911adf22b5cf3528b32f066
+            - name: ACK_IMAGE_AUTOSCALING
+              value: public.ecr.aws/aws-controllers-k8s/autoscaling-controller:1.5.0@sha256:aaf1c9511a4d1f865b511d032b276d5b8bd3038ade5b549aced8ac1d85cbbbb0
+            - name: ACK_IMAGE_EC2
+              value: public.ecr.aws/aws-controllers-k8s/ec2-controller:1.23.1@sha256:ca17558a29301a40dad4246d3a8ff88068459a714c43e7298489385ce3e2c91c
+            - name: ACK_IMAGE_ECR
+              value: public.ecr.aws/aws-controllers-k8s/ecr-controller:1.11.1@sha256:2a3eaf75bd91ddc323e749c7770caa9f9b7167d09ab4ce2aa16e470d17d55895
+            - name: ACK_IMAGE_EVENTBRIDGE
+              value: public.ecr.aws/aws-controllers-k8s/eventbridge-controller:1.9.2@sha256:868e6fd5e54bc915f0e68f511198aeb290789b110ab9b791a570fbc6a704cc80
+            - name: ACK_IMAGE_IAM
+              value: public.ecr.aws/aws-controllers-k8s/iam-controller:1.11.3@sha256:57a9fc7190b370a8543e64153f0081b5e9ae0ca72f3bc8edb136c95808ae5537
+            - name: ACK_IMAGE_KMS
+              value: public.ecr.aws/aws-controllers-k8s/kms-controller:1.7.0@sha256:756ec82cb46ee619aa59ef0fb1e1c1894322ac416215e05945d2d96a2ffbcd2c
+            - name: ACK_IMAGE_LAMBDA
+              value: public.ecr.aws/aws-controllers-k8s/lambda-controller:1.19.0@sha256:f8dc057d6a84f4af15e46bcd1d430152b0a865453cfa8b0e7e04d1debe193404
+            - name: ACK_IMAGE_RDS
+              value: public.ecr.aws/aws-controllers-k8s/rds-controller:1.14.2@sha256:d28c83ea3b7cb941d82b97a5a7ff87501dc9185773e84f2c3327eb4d61aea789
+            - name: ACK_IMAGE_S3
+              value: public.ecr.aws/aws-controllers-k8s/s3-controller:1.15.0@sha256:53a9689c01e36a96f1806e5d046003495e393a4524604d4278aad48f72e22055
+            - name: ACK_IMAGE_S3CONTROL
+              value: public.ecr.aws/aws-controllers-k8s/s3control-controller:1.9.0@sha256:43b7912704b20fb01bbf404985ad453b5bd8c04c36bd4782c3c94a740539c52d
+            - name: ACK_IMAGE_WAFV2
+              value: public.ecr.aws/aws-controllers-k8s/wafv2-controller:1.8.1@sha256:aa5223bf1ec67edcca6a5c4d98f39f33623831ad31b437eea01bc600104423e4
+            # END ACK_IMAGE
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true

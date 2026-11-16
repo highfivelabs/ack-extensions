@@ -1,0 +1,114 @@
+# Copied from aws-controllers-k8s/rds-controller v1.14.2 (ca4f0d529241be52349f6b38478be0cb4b9acb53)
+# config/rbac/cluster-role-controller.yaml. Modified by High Five Labs for
+# ack-extensions: renamed ack-rds-controller -> ack-extensions-ack-rds-controller
+# (hack/ack-controllers.sh). SPDX-License-Identifier: Apache-2.0
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ack-extensions-ack-rds-controller
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  - secrets
+  verbs:
+  - get
+  - list
+  - patch
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ec2.services.k8s.aws
+  resources:
+  - securitygroups
+  - securitygroups/status
+  - subnets
+  - subnets/status
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - iam.services.k8s.aws
+  resources:
+  - roles
+  - roles/status
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - kms.services.k8s.aws
+  resources:
+  - keys
+  - keys/status
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - rds.services.k8s.aws
+  resources:
+  - dbclusterendpoints
+  - dbclusterparametergroups
+  - dbclusters
+  - dbclustersnapshots
+  - dbinstances
+  - dbparametergroups
+  - dbproxies
+  - dbsnapshots
+  - dbsubnetgroups
+  - globalclusters
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - rds.services.k8s.aws
+  resources:
+  - dbclusterendpoints/status
+  - dbclusterparametergroups/status
+  - dbclusters/status
+  - dbclustersnapshots/status
+  - dbinstances/status
+  - dbparametergroups/status
+  - dbproxies/status
+  - dbsnapshots/status
+  - dbsubnetgroups/status
+  - globalclusters/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - services.k8s.aws
+  resources:
+  - fieldexports
+  - iamroleselectors
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - services.k8s.aws
+  resources:
+  - fieldexports/status
+  - iamroleselectors/status
+  verbs:
+  - get
+  - patch
+  - update
