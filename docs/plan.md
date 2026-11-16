@@ -2745,9 +2745,13 @@ IAM's OpenID Connect provider calls are the same in both.
 
 **Proven on moto** (`TestOpenIDConnectProvider`): nothing is made while
 the `Cluster` has no issuer and is not synced; then the provider is made
-for the cluster's issuer with its client ID and tag, the stored spec
-keeping only the reference; a client ID added in place; the delete
-removes it. **Not proven:** real AWS (a live run, which needs
+for the cluster's issuer with its client ID, the stored spec keeping
+only the reference; the thumbprint list changed in place; the delete
+removes it. Two moto differences (section 4.4): moto's
+`CreateOpenIDConnectProvider` answer has no `Tags`, so ACK's create (ours
+the same) writes the spec's tags away on moto, where real IAM returns
+them; and moto answers `AddClientIDToOpenIDConnectProvider` with a 500, so
+a client ID change is not shown. **Not proven:** real AWS (a live run, which needs
 the live-test role's `iam:*OpenIDConnectProvider*` actions; the role
 policy is generated from the kind's calls).
 

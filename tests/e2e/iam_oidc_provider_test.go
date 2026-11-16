@@ -6,7 +6,6 @@ package e2e
 import (
 	"context"
 	"fmt"
-	"sort"
 	"strings"
 	"testing"
 	"time"
@@ -143,27 +142,21 @@ func TestOpenIDConnectProvider(t *testing.T) {
 		if strings.Join(out.ClientIDList, ",") != "sts.amazonaws.com" {
 			t.Errorf("client IDs %v", out.ClientIDList)
 		}
-		tagged := false
-		for _, tg := range out.Tags {
-			if aws.ToString(tg.Key) == "team" && aws.ToString(tg.Value) == "platform" {
-				tagged = true
-			}
-		}
-		if !tagged {
-			t.Errorf("tags %v lack team=platform", out.Tags)
-		}
 	})
 
-	t.Run("client IDs change in place", func(t *testing.T) {
-		harness.Eventually(t, 30*time.Second, "update client IDs", func() error {
+	// moto 5.2.5 answers AddClientIDToOpenIDConnectProvider with a 500, so
+	// the in-place update shown is the thumbprint list's.
+	t.Run("thumbprints change in place", func(t *testing.T) {
+		const second = "1c58a3a8518e8759bf075b76b750d4f2df264fcd"
+		harness.Eventually(t, 30*time.Second, "update thumbprints", func() error {
 			cur := &iamv1.OpenIDConnectProvider{}
 			if err := env.Client.Get(ctx, client.ObjectKeyFromObject(provider), cur); err != nil {
 				return err
 			}
-			cur.Spec.ClientIDs = []*string{aws.String("sts.amazonaws.com"), aws.String("example-app")}
+			cur.Spec.Thumbprints = []*string{aws.String(second)}
 			return env.Client.Update(ctx, cur)
 		})
-		harness.Eventually(t, 60*time.Second, "client IDs in IAM", func() error {
+		harness.Eventually(t, 60*time.Second, "thumbprints in IAM", func() error {
 			arn, err := oidcProviderByURL(ctx, cloud, issuer)
 			if err != nil || arn == "" {
 				return fmt.Errorf("no provider: %v", err)
@@ -172,10 +165,8 @@ func TestOpenIDConnectProvider(t *testing.T) {
 			if err != nil {
 				return err
 			}
-			ids := append([]string(nil), out.ClientIDList...)
-			sort.Strings(ids)
-			if strings.Join(ids, ",") != "example-app,sts.amazonaws.com" {
-				return fmt.Errorf("client IDs %v", ids)
+			if strings.Join(out.ThumbprintList, ",") != second {
+				return fmt.Errorf("thumbprints %v", out.ThumbprintList)
 			}
 			return nil
 		})
