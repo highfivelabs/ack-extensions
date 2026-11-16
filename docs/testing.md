@@ -38,11 +38,14 @@ harness ("no fake backend"). Nothing in a test path can reach AWS
   only with a reason and its teardown checked. One ledger row per kind per
   run in `docs/live-runs.md`; a kind is "untested on real AWS" until it has
   one.
-- **Today (2026-11-15):** the stack is deployed in the AWS test account
-  `hfl-test` and its trust works (`docs/live-runs.md`). The ACK-kind
-  suite (`task test-live SUITE=ack`, HFL-623) needs the stack redeployed
-  from the regenerated template first: the deployed role holds only the
-  Cloud Control live kinds' permissions.
+- **Today (2026-11-16):** the live-test role in the AWS test account
+  `hfl-test` is the catalog's `google-federated-role` instance, applied
+  through ACK (`docs/live-runs.md`). It holds the ACK-kind suite's
+  permissions (`task test-live SUITE=ack`, HFL-623). When a test adds a
+  call, regenerate `cloudcontrol/config/live/role-policies.yaml`, update
+  the catalog instance and apply it again. A test deletes every fixture
+  it makes with the SDK and everything it retains (on a live run nothing
+  else would; the sweeper finds only what carries the run's tag).
 
 ## Rechecking the fake against real AWS
 

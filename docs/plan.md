@@ -3246,9 +3246,10 @@ Before it can run on a real cluster:
     beside ACK's s3 controller instead was asked for and is not built:
     open question 22.
 17. Live runs (HFL-623, 2026-11-15; `docs/live-runs.md`): the ACK-kind
-    suite (`task test-live SUITE=ack`) is built and waits for the sandbox
-    stack to be redeployed from the regenerated template (the deployed
-    role has the Cloud Control live kinds' permissions only). Found so
+    suite (`task test-live SUITE=ack`) is built and, since 2026-11-16,
+    runs on the catalog instance's role (update the catalog instance and
+    apply it again when the role needs a new call); 24 ACK kinds have passed
+    live (`docs/live-runs.md`, "Kinds"). Found so
     far: the organization's service control policy allows regional
     services in us-east-2 only, so live runs go there and the tests that
     need a second region (`ReplicaKey`) cannot run live; the sandbox

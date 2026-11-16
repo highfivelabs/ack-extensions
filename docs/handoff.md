@@ -22,8 +22,11 @@ not repeat them.
   AWS run: everything is proven against moto only (`docs/plan.md` §8 item 3
   lists what to check against real AWS, one run per kind). Since 2026-11-15
   (HFL-623) `task test-live SUITE=ack` runs `tests/e2e` on the sandbox
-  account; it waits for the stack to be redeployed, and
-  `docs/live-runs.md` ("Kinds") has each kind's state.
+  account. Since 2026-11-16, 24 ACK kinds have passed there; `docs/live-runs.md`
+  ("Kinds") has each kind's state, and the ones still failing or
+  pending (VPNConnection after VpnGateway, Permission, the S3 Bucket
+  extension, OptionGroup, WebACLAssociation, the RDS proxy and role
+  tests, the second-region kinds).
 - **Next to build, in rank order:** the rest of rank 11 (ECR
   `RegistryPolicy`, `RegistryScanningConfiguration`), rank 17 (S3 `Object`,
   the account's public access block), rank 19 (Secrets Manager resource
