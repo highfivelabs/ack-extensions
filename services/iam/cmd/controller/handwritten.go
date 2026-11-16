@@ -9,6 +9,8 @@ package main
 import (
 	ackiamapitypes "github.com/aws-controllers-k8s/iam-controller/apis/v1alpha1"
 
+	"github.com/highfivelabs/ack-extensions/services/iam/pkg/ekscluster"
+
 	// RolePolicyAttachment has no Create/Delete pair in IAM's model, so it
 	// is not generated; registering its package adds its manager factory.
 	_ "github.com/highfivelabs/ack-extensions/services/iam/pkg/resource/role_policy_attachment"
@@ -32,4 +34,8 @@ func init() {
 	// groupRefs its User and Group (iam.services.k8s.aws), read through the
 	// manager's client.
 	_ = ackiamapitypes.AddToScheme(scheme)
+	// OpenIDConnectProvider's urlRef names ACK's eks Cluster
+	// (eks.services.k8s.aws), read as the fields it needs
+	// (pkg/ekscluster).
+	_ = ekscluster.AddToScheme(scheme)
 }

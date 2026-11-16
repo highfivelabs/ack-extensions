@@ -80,7 +80,12 @@ pins:
     repo: aws-controllers-k8s/iam-controller
     version: v1.11.3
     commit: 91ed7f353255e54e2c6372b3ce757bd2e7fae4ad
-    use: Go module (API types of Role and Policy)
+    use: Go module (API types of Role and Policy); its OpenIDConnectProvider generator entry, hook template and hand-written code copied for our fixed copy (iam.aws.hfl.dev OpenIDConnectProvider)
+  - name: eks-controller
+    repo: aws-controllers-k8s/eks-controller
+    version: v1.26.0
+    commit: 2549d1be1a9f1841aaf3a4303a0d5696ea941473
+    use: not a module (needs a newer aws-sdk-go-v2); its Cluster CRD copied for the tests; OpenIDConnectProvider's urlRef reads a Cluster through a mirror of the fields it needs
   - name: organizations-controller
     repo: aws-controllers-k8s/organizations-controller
     version: v1.7.0
@@ -151,6 +156,20 @@ patches:
 # "What is copied": here (our paths) and from (the source's paths at a
 # pin's release, or at a pull request's head; a directory ends in /).
 copied:
+  - here: [hack/ack-crds/eks.services.k8s.aws_clusters.yaml]
+    from: {pin: eks-controller, paths: [config/crd/bases/eks.services.k8s.aws_clusters.yaml]}
+  - here: [services/iam/generator.yaml]
+    from: {pin: iam-controller, paths: [generator.yaml]}
+  - here: [services/iam/templates/hooks/open_id_connect_provider/sdk_read_one_post_set_output.go.tpl]
+    from: {pin: iam-controller, paths: [templates/hooks/open_id_connect_provider/sdk_read_one_post_set_output.go.tpl]}
+  - here:
+      - services/iam/pkg/resource/open_id_connect_provider/hooks.go
+      - services/iam/pkg/resource/open_id_connect_provider/tags.go
+    from:
+      pin: iam-controller
+      paths:
+        - pkg/resource/open_id_connect_provider/hooks.go
+        - pkg/resource/open_id_connect_provider/tags.go
   - here: [services/ec2/generator.yaml]
     from: {pin: ec2-controller, paths: [generator.yaml]}
   - here:

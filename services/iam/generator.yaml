@@ -27,7 +27,57 @@
 # Kubernetes Secret owned by the object (hooks.go). Every field is
 # immutable; enabling the device for a user takes two codes from the seed
 # and is not this kind's (docs/plan.md, the VirtualMFADevice section).
+#
+# OpenIDConnectProvider is a fixed copy of ACK's (docs/plan.md section 3,
+# "Fixed copies of ACK's kinds"; section 6.42): iam-controller v1.11.3's
+# generator.yaml entry and hooks, copied below and in
+# templates/hooks/open_id_connect_provider and
+# pkg/resource/open_id_connect_provider, with one addition, urlRef: the
+# URL read from an EKS cluster's issuer (ACK's eks Cluster,
+# status.identity.oidc.issuer), which ACK's kind lacks (the catalog's eks
+# chart refused enable_irsa for want of it, catalog PR #237). The Cluster it
+# reads is a type of this package that mirrors the fields read
+# (apis/v1alpha1/eks_cluster.go), not eks-controller's module: every
+# eks-controller release needs aws-sdk-go-v2 v1.45.1 or later, past the
+# version this repository keeps (UPSTREAM.md).
 resources:
+  OpenIDConnectProvider:
+    # Copied from iam-controller v1.11.3's generator.yaml; ours: the
+    # references on URL.
+    print:
+      add_age_column: true
+      add_synced_column: true
+    hooks:
+      delta_pre_compare:
+        code: customPreCompare(delta, a, b)
+      sdk_read_one_post_set_output:
+        template_path: hooks/open_id_connect_provider/sdk_read_one_post_set_output.go.tpl
+    exceptions:
+      terminal_codes:
+        - InvalidInput
+        - EntityAlreadyExists
+    renames:
+      operations:
+        CreateOpenIDConnectProvider:
+          input_fields:
+            ClientIDList: ClientIDs
+            ThumbprintList: Thumbprints
+        GetOpenIDConnectProvider:
+          output_fields:
+            ClientIDList: ClientIDs
+            ThumbprintList: Thumbprints
+    fields:
+      URL:
+        is_immutable: true
+        compare:
+          is_ignored: true
+        references:
+          resource: Cluster
+          path: Status.Identity.OIDC.Issuer
+      Thumbprints:
+        late_initialize: {}
+    update_operation:
+      custom_method_name: customUpdateOpenIDConnectProvider
   AccessKey:
     exceptions:
       errors:
@@ -160,7 +210,6 @@ ignore:
     - AccountAlias
     - Group
     - InstanceProfile
-    - OpenIDConnectProvider
     - Policy
     - PolicyVersion
     - Role

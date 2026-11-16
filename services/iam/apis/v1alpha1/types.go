@@ -73,6 +73,42 @@ type AccessKey_SDK struct {
 	UserName    *string      `json:"userName,omitempty"`
 }
 
+// Contains information about an attached permissions boundary.
+//
+// An attached permissions boundary is a managed policy that has been attached
+// to a user or role to set the permissions boundary.
+//
+// For more information about permissions boundaries, see Permissions boundaries
+// for IAM identities (https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html)
+// in the IAM User Guide.
+type AttachedPermissionsBoundary struct {
+	// The Amazon Resource Name (ARN). ARNs are unique identifiers for Amazon Web
+	// Services resources.
+	//
+	// For more information about ARNs, go to Amazon Resource Names (ARNs) (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html)
+	// in the Amazon Web Services General Reference.
+	PermissionsBoundaryARN *string `json:"permissionsBoundaryARN,omitempty"`
+}
+
+// Contains information about an attached policy.
+//
+// An attached policy is a managed policy that has been attached to a user,
+// group, or role. This data type is used as a response element in the ListAttachedGroupPolicies,
+// ListAttachedRolePolicies, ListAttachedUserPolicies, and GetAccountAuthorizationDetails
+// operations.
+//
+// For more information about managed policies, refer to Managed policies and
+// inline policies (https://docs.aws.amazon.com/IAM/latest/UserGuide/policies-managed-vs-inline.html)
+// in the IAM User Guide.
+type AttachedPolicy struct {
+	// The Amazon Resource Name (ARN). ARNs are unique identifiers for Amazon Web
+	// Services resources.
+	//
+	// For more information about ARNs, go to Amazon Resource Names (ARNs) (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html)
+	// in the Amazon Web Services General Reference.
+	PolicyARN *string `json:"policyARN,omitempty"`
+}
+
 // An object that contains details about when the IAM entities (users or roles)
 // were last used in an attempt to access the specified Amazon Web Services
 // service.
@@ -87,6 +123,12 @@ type EntityDetails struct {
 //
 // This data type is an element of the EntityDetails object.
 type EntityInfo struct {
+	// The Amazon Resource Name (ARN). ARNs are unique identifiers for Amazon Web
+	// Services resources.
+	//
+	// For more information about ARNs, go to Amazon Resource Names (ARNs) (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html)
+	// in the Amazon Web Services General Reference.
+	ARN  *string `json:"arn,omitempty"`
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
 }
@@ -101,6 +143,12 @@ type EntityInfo struct {
 //
 //   - ListGroups
 type Group struct {
+	// The Amazon Resource Name (ARN). ARNs are unique identifiers for Amazon Web
+	// Services resources.
+	//
+	// For more information about ARNs, go to Amazon Resource Names (ARNs) (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html)
+	// in the Amazon Web Services General Reference.
+	ARN        *string      `json:"arn,omitempty"`
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
 	Path       *string      `json:"path,omitempty"`
 }
@@ -110,6 +158,12 @@ type Group struct {
 // This data type is used as a response element in the GetAccountAuthorizationDetails
 // operation.
 type GroupDetail struct {
+	// The Amazon Resource Name (ARN). ARNs are unique identifiers for Amazon Web
+	// Services resources.
+	//
+	// For more information about ARNs, go to Amazon Resource Names (ARNs) (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html)
+	// in the Amazon Web Services General Reference.
+	ARN        *string      `json:"arn,omitempty"`
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
 	Path       *string      `json:"path,omitempty"`
 }
@@ -126,8 +180,15 @@ type GroupDetail struct {
 //
 //   - ListInstanceProfilesForRole
 type InstanceProfile struct {
+	// The Amazon Resource Name (ARN). ARNs are unique identifiers for Amazon Web
+	// Services resources.
+	//
+	// For more information about ARNs, go to Amazon Resource Names (ARNs) (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html)
+	// in the Amazon Web Services General Reference.
+	ARN        *string      `json:"arn,omitempty"`
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
 	Path       *string      `json:"path,omitempty"`
+	Tags       []*Tag       `json:"tags,omitempty"`
 }
 
 // Contains the user name and password create date for a user.
@@ -160,9 +221,25 @@ type MFADevice struct {
 // policies (https://docs.aws.amazon.com/IAM/latest/UserGuide/policies-managed-vs-inline.html)
 // in the IAM User Guide.
 type ManagedPolicyDetail struct {
+	// The Amazon Resource Name (ARN). ARNs are unique identifiers for Amazon Web
+	// Services resources.
+	//
+	// For more information about ARNs, go to Amazon Resource Names (ARNs) (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html)
+	// in the Amazon Web Services General Reference.
+	ARN          *string      `json:"arn,omitempty"`
 	CreateDate   *metav1.Time `json:"createDate,omitempty"`
 	IsAttachable *bool        `json:"isAttachable,omitempty"`
 	UpdateDate   *metav1.Time `json:"updateDate,omitempty"`
+}
+
+// Contains the Amazon Resource Name (ARN) for an IAM OpenID Connect provider.
+type OpenIDConnectProviderListEntry struct {
+	// The Amazon Resource Name (ARN). ARNs are unique identifiers for Amazon Web
+	// Services resources.
+	//
+	// For more information about ARNs, go to Amazon Resource Names (ARNs) (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html)
+	// in the Amazon Web Services General Reference.
+	ARN *string `json:"arn,omitempty"`
 }
 
 // Contains information about the effect that Organizations has on a policy
@@ -200,9 +277,30 @@ type PermissionsBoundaryDecisionDetail struct {
 // inline policies (https://docs.aws.amazon.com/IAM/latest/UserGuide/policies-managed-vs-inline.html)
 // in the IAM User Guide.
 type Policy struct {
+	// The Amazon Resource Name (ARN). ARNs are unique identifiers for Amazon Web
+	// Services resources.
+	//
+	// For more information about ARNs, go to Amazon Resource Names (ARNs) (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html)
+	// in the Amazon Web Services General Reference.
+	ARN          *string      `json:"arn,omitempty"`
 	CreateDate   *metav1.Time `json:"createDate,omitempty"`
 	IsAttachable *bool        `json:"isAttachable,omitempty"`
+	Tags         []*Tag       `json:"tags,omitempty"`
 	UpdateDate   *metav1.Time `json:"updateDate,omitempty"`
+}
+
+// Contains details about the permissions policies that are attached to the
+// specified identity (user, group, or role).
+//
+// This data type is an element of the ListPoliciesGrantingServiceAccessEntry
+// object.
+type PolicyGrantingServiceAccess struct {
+	// The Amazon Resource Name (ARN). ARNs are unique identifiers for Amazon Web
+	// Services resources.
+	//
+	// For more information about ARNs, go to Amazon Resource Names (ARNs) (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html)
+	// in the Amazon Web Services General Reference.
+	PolicyARN *string `json:"policyARN,omitempty"`
 }
 
 // Contains information about a user that a managed policy is attached to.
@@ -234,8 +332,15 @@ type PolicyVersion struct {
 // Contains information about an IAM role. This structure is returned as a response
 // element in several API operations that interact with roles.
 type Role struct {
+	// The Amazon Resource Name (ARN). ARNs are unique identifiers for Amazon Web
+	// Services resources.
+	//
+	// For more information about ARNs, go to Amazon Resource Names (ARNs) (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html)
+	// in the Amazon Web Services General Reference.
+	ARN        *string      `json:"arn,omitempty"`
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
 	Path       *string      `json:"path,omitempty"`
+	Tags       []*Tag       `json:"tags,omitempty"`
 }
 
 // Contains information about an IAM role, including all of the role's policies.
@@ -243,8 +348,15 @@ type Role struct {
 // This data type is used as a response element in the GetAccountAuthorizationDetails
 // operation.
 type RoleDetail struct {
+	// The Amazon Resource Name (ARN). ARNs are unique identifiers for Amazon Web
+	// Services resources.
+	//
+	// For more information about ARNs, go to Amazon Resource Names (ARNs) (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html)
+	// in the Amazon Web Services General Reference.
+	ARN        *string      `json:"arn,omitempty"`
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
 	Path       *string      `json:"path,omitempty"`
+	Tags       []*Tag       `json:"tags,omitempty"`
 }
 
 // Contains information about the last time that an IAM role was used. This
@@ -263,6 +375,12 @@ type RoleLastUsed struct {
 
 // Contains the list of SAML providers for this account.
 type SAMLProviderListEntry struct {
+	// The Amazon Resource Name (ARN). ARNs are unique identifiers for Amazon Web
+	// Services resources.
+	//
+	// For more information about ARNs, go to Amazon Resource Names (ARNs) (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html)
+	// in the Amazon Web Services General Reference.
+	ARN        *string      `json:"arn,omitempty"`
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
 	ValidUntil *metav1.Time `json:"validUntil,omitempty"`
 }
@@ -276,12 +394,26 @@ type SSHPublicKeyMetadata struct {
 	UserName   *string      `json:"userName,omitempty"`
 }
 
+// Contains information about a server certificate.
+//
+// This data type is used as a response element in the GetServerCertificate
+// operation.
+type ServerCertificate struct {
+	Tags []*Tag `json:"tags,omitempty"`
+}
+
 // Contains information about a server certificate without its certificate body,
 // certificate chain, and private key.
 //
 // This data type is used as a response element in the UploadServerCertificate
 // and ListServerCertificates operations.
 type ServerCertificateMetadata struct {
+	// The Amazon Resource Name (ARN). ARNs are unique identifiers for Amazon Web
+	// Services resources.
+	//
+	// For more information about ARNs, go to Amazon Resource Names (ARNs) (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html)
+	// in the Amazon Web Services General Reference.
+	ARN        *string      `json:"arn,omitempty"`
 	Expiration *metav1.Time `json:"expiration,omitempty"`
 	Path       *string      `json:"path,omitempty"`
 	UploadDate *metav1.Time `json:"uploadDate,omitempty"`
@@ -293,6 +425,12 @@ type ServerCertificateMetadata struct {
 // operation.
 type ServiceLastAccessed struct {
 	LastAuthenticated *metav1.Time `json:"lastAuthenticated,omitempty"`
+	// The Amazon Resource Name (ARN). ARNs are unique identifiers for Amazon Web
+	// Services resources.
+	//
+	// For more information about ARNs, go to Amazon Resource Names (ARNs) (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html)
+	// in the Amazon Web Services General Reference.
+	LastAuthenticatedEntity *string `json:"lastAuthenticatedEntity,omitempty"`
 }
 
 // Contains the details of a service-specific credential.
@@ -319,13 +457,28 @@ type SigningCertificate struct {
 	UserName   *string      `json:"userName,omitempty"`
 }
 
+// A structure that represents user-provided metadata that can be associated
+// with an IAM resource. For more information about tagging, see Tagging IAM
+// resources (https://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html)
+// in the IAM User Guide.
+type Tag struct {
+	Key   *string `json:"key,omitempty"`
+	Value *string `json:"value,omitempty"`
+}
+
 // Contains details about the most recent attempt to access an action within
 // the service.
 //
 // This data type is used as a response element in the GetServiceLastAccessedDetails
 // operation.
 type TrackedActionLastAccessed struct {
-	LastAccessedTime *metav1.Time `json:"lastAccessedTime,omitempty"`
+	// The Amazon Resource Name (ARN). ARNs are unique identifiers for Amazon Web
+	// Services resources.
+	//
+	// For more information about ARNs, go to Amazon Resource Names (ARNs) (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html)
+	// in the Amazon Web Services General Reference.
+	LastAccessedEntity *string      `json:"lastAccessedEntity,omitempty"`
+	LastAccessedTime   *metav1.Time `json:"lastAccessedTime,omitempty"`
 }
 
 // Contains information about an IAM user, including all the user's policies
@@ -334,8 +487,15 @@ type TrackedActionLastAccessed struct {
 // This data type is used as a response element in the GetAccountAuthorizationDetails
 // operation.
 type UserDetail struct {
+	// The Amazon Resource Name (ARN). ARNs are unique identifiers for Amazon Web
+	// Services resources.
+	//
+	// For more information about ARNs, go to Amazon Resource Names (ARNs) (https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html)
+	// in the Amazon Web Services General Reference.
+	ARN        *string      `json:"arn,omitempty"`
 	CreateDate *metav1.Time `json:"createDate,omitempty"`
 	Path       *string      `json:"path,omitempty"`
+	Tags       []*Tag       `json:"tags,omitempty"`
 	UserName   *string      `json:"userName,omitempty"`
 }
 

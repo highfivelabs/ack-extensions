@@ -9,7 +9,8 @@ Status, 2026-11-15: the repository has thirty-six kinds:
   `Volume` and `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
-- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy`, `AccessKey` and `VirtualMFADevice`;
+- `iam.aws.hfl.dev` `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy`, `AccessKey`, `VirtualMFADevice` and
+  `OpenIDConnectProvider` (ACK's, fixed: section 6.42);
 - `kms.aws.hfl.dev` `ReplicaKey`;
 - `lambda.aws.hfl.dev` `Permission`;
 - `organizations.aws.hfl.dev` `AccountPlacement`, `DelegatedAdministrator`,
@@ -2727,6 +2728,60 @@ update across resyncs; the setting changed outside Kubernetes put back;
 the delete leaving the VPC. **Not proven:** the Network Address Usage
 metrics setting (not exercised; moto's support for it is not checked),
 and AWS's own default VPC (moto's has no `aws:` tags).
+
+### 6.42 `iam.aws.hfl.dev` `OpenIDConnectProvider` (ACK's, with `urlRef`)
+
+ACK's iam-controller `OpenIDConnectProvider` with the one attribute it
+lacks: `urlRef`, the URL read from ACK's eks `Cluster`
+(`status.identity.oidc.issuer`). An EKS cluster's IRSA provider takes the
+cluster's issuer, which exists only in the `Cluster`'s status once EKS has
+made it; without a reference a chart cannot render the provider with the
+cluster, and the catalog's eks chart refused `enable_irsa` (the module's
+default) for that (catalog PR #237). Built under the builder's rule for
+kinds missing attributes (section 3, "Fixed copies of ACK's kinds", item
+ACKQ1-1). Upstream rechecked 2026-11-16 (read-only): iam-controller
+`v1.11.3`'s `OpenIDConnectProvider` has `url` only; ACK has no reference
+across to eks-controller's kinds from iam's.
+
+**Generated** from iam-controller `v1.11.3`'s own `generator.yaml` entry,
+hook template and hand-written code (`hooks.go` and `tags.go`, copied with
+the import path changed; its tag-sync unit test is not, as it sets the SDK
+client's HTTP client by hand, which `task noaws` refuses; `UPSTREAM.md`), with `references` on
+`URL` added. It is generated from the aws-sdk-go-v2 `v1.34.0` models like
+the rest of `services/iam` (iam-controller was generated from `v1.32.6`);
+IAM's OpenID Connect provider calls are the same in both.
+
+- **`urlRef`:** ACK's eks `Cluster`; the URL is its issuer
+  (`https://oidc.eks.<region>.amazonaws.com/id/<id>`) once the cluster is
+  synced, resolved by ACK's generated references code. Give it or `url`.
+  eks-controller is **not a Go module here**: every release needs
+  aws-sdk-go-v2 `v1.45.1` or later, past the `v1.41.5` this repository
+  keeps (section 3). The generated code reads `svcapitypes.Cluster`, an
+  alias of `services/iam/pkg/ekscluster.Cluster`, a mirror of the fields
+  it needs (conditions, `status.identity.oidc.issuer`), registered in the
+  manager's scheme under `eks.services.k8s.aws/v1alpha1` `Cluster`; the
+  manager's ClusterRole reads `clusters`. eks-controller `v1.26.0`'s
+  `Cluster` CRD is in `hack/ack-crds` for the tests.
+- **Everything else is ACK's:** client IDs added and removed in place,
+  thumbprints updated (optional: IAM fetches them for a public issuer),
+  tags synced, the URL immutable and compared without `https://`.
+- **An intentional overlap** with ACK's `OpenIDConnectProvider`: use ours
+  where the URL is a cluster's issuer, and never point it and ACK's at one
+  provider (IAM keeps one per URL in an account). Retired (section 3,
+  "Retiring a kind") when ACK ships a reference; the note upstream is
+  `docs/upstream-notes.md`'s.
+
+**Proven on moto** (`TestOpenIDConnectProvider`): nothing is made while
+the `Cluster` has no issuer and is not synced; then the provider is made
+for the cluster's issuer with its client ID, the stored spec keeping
+only the reference; the thumbprint list changed in place; the delete
+removes it. Two moto differences (section 4.4): moto's
+`CreateOpenIDConnectProvider` answer has no `Tags`, so ACK's create (ours
+the same) writes the spec's tags away on moto, where real IAM returns
+them; and moto answers `AddClientIDToOpenIDConnectProvider` with a 500, so
+a client ID change is not shown. **Not proven:** real AWS (a live run, which needs
+the live-test role's `iam:*OpenIDConnectProvider*` actions; the role
+policy is generated from the kind's calls).
 
 ### 6.43 `ec2.aws.hfl.dev` `LaunchTemplate` (ACK's, with references under `spec.data`)
 
