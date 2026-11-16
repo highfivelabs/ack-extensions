@@ -38,11 +38,17 @@ func TestIAMVirtualMFADevice(t *testing.T) {
 	// More devices than one page of the list (100), made first, so the
 	// objects' devices are on a later page.
 	for i := 0; i < 105; i++ {
-		if _, err := cloud.CreateVirtualMFADevice(ctx, &iam.CreateVirtualMFADeviceInput{
+		made, err := cloud.CreateVirtualMFADevice(ctx, &iam.CreateVirtualMFADeviceInput{
 			VirtualMFADeviceName: aws.String(fmt.Sprintf("filler-%03d", i)),
-		}); err != nil {
+		})
+		if err != nil {
 			t.Fatal(err)
 		}
+		serial := made.VirtualMFADevice.SerialNumber
+		cleanupLog(t, "MFA device "+aws.ToString(serial), func() error {
+			_, err := cloud.DeleteVirtualMFADevice(ctx, &iam.DeleteVirtualMFADeviceInput{SerialNumber: serial})
+			return err
+		})
 	}
 
 	devices := func(t *testing.T) map[string]bool {

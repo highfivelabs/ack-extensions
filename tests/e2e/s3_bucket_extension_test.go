@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -39,6 +40,33 @@ func TestBucketExtension(t *testing.T) {
 	env, _ := harness.StartControllers(t, "s3", nil, harness.Controller{Args: []string{"--aws-endpoint-use-path-style=true"}})
 	ctx := context.Background()
 	api := s3.NewFromConfig(env.AWS, func(o *s3.Options) { o.UsePathStyle = true })
+	// Bucket names are unique across all of AWS: on a live run they take
+	// the run's ID (live run ackx-11160402-b394: plain-bucket, marker-bucket
+	// and force-bucket belong to other accounts).
+	bucketName := func(n string) string {
+		if id := os.Getenv("LIVE_RUN_ID"); harness.IsLive() && id != "" {
+			return n + "-" + id
+		}
+		return n
+	}
+	plainBucket, markerBucket := bucketName("plain-bucket"), bucketName("marker-bucket")
+	forceBucket, keptBucket := bucketName("force-bucket"), bucketName("kept-bucket")
+	changedBucket := bucketName("changed-bucket")
+	// kept-bucket is left in the cloud by design (its versions kept): it is
+	// emptied and deleted after the test.
+	t.Cleanup(func() {
+		if out, err := api.ListObjectVersions(ctx, &s3.ListObjectVersionsInput{Bucket: aws.String(keptBucket)}); err == nil {
+			for _, v := range out.Versions {
+				_, _ = api.DeleteObject(ctx, &s3.DeleteObjectInput{Bucket: aws.String(keptBucket), Key: v.Key, VersionId: v.VersionId})
+			}
+			for _, m := range out.DeleteMarkers {
+				_, _ = api.DeleteObject(ctx, &s3.DeleteObjectInput{Bucket: aws.String(keptBucket), Key: m.Key, VersionId: m.VersionId})
+			}
+		}
+		if _, err := api.DeleteBucket(ctx, &s3.DeleteBucketInput{Bucket: aws.String(keptBucket)}); err != nil {
+			t.Logf("cleanup: bucket %s: %v", keptBucket, err)
+		}
+	})
 
 	newBucket := func(t *testing.T, name string, annotations map[string]string, made bool) *unstructured.Unstructured {
 		t.Helper()
@@ -153,58 +181,58 @@ func TestBucketExtension(t *testing.T) {
 	}
 
 	t.Run("a Bucket without the annotation gets no finalizer", func(t *testing.T) {
-		newBucket(t, "plain-bucket", nil, true)
+		newBucket(t, plainBucket, nil, true)
 		// The annotated Bucket made next is handled after this one.
-		newBucket(t, "marker-bucket", map[string]string{bucket.AnnotationForceDestroy: "true"}, false)
-		waitFinalizer(t, "marker-bucket", true)
-		waitFinalizer(t, "plain-bucket", false)
+		newBucket(t, markerBucket, map[string]string{bucket.AnnotationForceDestroy: "true"}, false)
+		waitFinalizer(t, markerBucket, true)
+		waitFinalizer(t, plainBucket, false)
 	})
 
 	t.Run("force-destroy empties the bucket so ACK's DeleteBucket succeeds", func(t *testing.T) {
-		u := newBucket(t, "force-bucket", map[string]string{bucket.AnnotationForceDestroy: "true"}, true)
-		waitFinalizer(t, "force-bucket", true)
-		fill(t, "force-bucket")
-		if n := versions(t, "force-bucket"); n != 5 {
+		u := newBucket(t, forceBucket, map[string]string{bucket.AnnotationForceDestroy: "true"}, true)
+		waitFinalizer(t, forceBucket, true)
+		fill(t, forceBucket)
+		if n := versions(t, forceBucket); n != 5 {
 			t.Fatalf("%d versions and delete markers before, want 5", n)
 		}
-		if _, err := api.DeleteBucket(ctx, &s3.DeleteBucketInput{Bucket: aws.String("force-bucket")}); err == nil {
+		if _, err := api.DeleteBucket(ctx, &s3.DeleteBucketInput{Bucket: aws.String(forceBucket)}); err == nil {
 			t.Fatal("DeleteBucket of a full bucket succeeded; the test proves nothing")
 		}
 		if err := env.Client.Delete(ctx, u); err != nil {
 			t.Fatal(err)
 		}
-		actAsACK(t, "force-bucket")
-		gone(t, "force-bucket")
-		msg := waitEvent(t, env, "default", "force-bucket", bucket.ReasonEmptied)
+		actAsACK(t, forceBucket)
+		gone(t, forceBucket)
+		msg := waitEvent(t, env, "default", forceBucket, bucket.ReasonEmptied)
 		if want := "deleted 5 object version(s) and delete marker(s) and aborted 1 multipart upload(s)"; !strings.Contains(msg, want) {
 			t.Fatalf("event %q, want %q", msg, want)
 		}
 	})
 
 	t.Run("the retain deletion policy keeps the objects", func(t *testing.T) {
-		u := newBucket(t, "kept-bucket", map[string]string{
+		u := newBucket(t, keptBucket, map[string]string{
 			bucket.AnnotationForceDestroy:      "true",
 			"services.k8s.aws/deletion-policy": "retain",
 		}, true)
-		waitFinalizer(t, "kept-bucket", true)
-		fill(t, "kept-bucket")
+		waitFinalizer(t, keptBucket, true)
+		fill(t, keptBucket)
 		if err := env.Client.Delete(ctx, u); err != nil {
 			t.Fatal(err)
 		}
-		waitFinalizer(t, "kept-bucket", false)
-		waitEvent(t, env, "default", "kept-bucket", bucket.ReasonNotEmptied)
-		if n := versions(t, "kept-bucket"); n != 5 {
+		waitFinalizer(t, keptBucket, false)
+		waitEvent(t, env, "default", keptBucket, bucket.ReasonNotEmptied)
+		if n := versions(t, keptBucket); n != 5 {
 			t.Fatalf("%d versions and delete markers after, want 5", n)
 		}
-		removeACKFinalizer(t, env, "kept-bucket")
-		gone(t, "kept-bucket")
+		removeACKFinalizer(t, env, keptBucket)
+		gone(t, keptBucket)
 	})
 
 	t.Run("removing the annotation releases the finalizer", func(t *testing.T) {
-		newBucket(t, "changed-bucket", map[string]string{bucket.AnnotationForceDestroy: "true"}, true)
-		waitFinalizer(t, "changed-bucket", true)
+		newBucket(t, changedBucket, map[string]string{bucket.AnnotationForceDestroy: "true"}, true)
+		waitFinalizer(t, changedBucket, true)
 		harness.Eventually(t, 30*time.Second, "annotation off", func() error {
-			u, err := get("changed-bucket")
+			u, err := get(changedBucket)
 			if err != nil {
 				return err
 			}
@@ -213,16 +241,16 @@ func TestBucketExtension(t *testing.T) {
 			u.SetAnnotations(a)
 			return env.Client.Update(ctx, u)
 		})
-		waitFinalizer(t, "changed-bucket", false)
+		waitFinalizer(t, changedBucket, false)
 	})
 
 	t.Run("a Bucket ACK never made is released at once", func(t *testing.T) {
-		if err := env.Client.Delete(ctx, mustGet(t, get, "marker-bucket")); err != nil {
+		if err := env.Client.Delete(ctx, mustGet(t, get, markerBucket)); err != nil {
 			t.Fatal(err)
 		}
-		waitFinalizer(t, "marker-bucket", false)
-		removeACKFinalizer(t, env, "marker-bucket")
-		gone(t, "marker-bucket")
+		waitFinalizer(t, markerBucket, false)
+		removeACKFinalizer(t, env, markerBucket)
+		gone(t, markerBucket)
 	})
 }
 

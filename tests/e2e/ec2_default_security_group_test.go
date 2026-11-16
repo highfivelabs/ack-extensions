@@ -53,6 +53,7 @@ func TestDefaultSecurityGroup(t *testing.T) {
 		t.Fatal(err)
 	}
 	vpcID := aws.ToString(v.Vpc.VpcId)
+	t.Cleanup(func() { deleteVPCs(t, ctx, cloud, vpcID) })
 	ackVPC(t, ctx, env.Client, "main", "10.50.0.0/16", vpcID)
 	groups, err := cloud.DescribeSecurityGroups(ctx, &ec2.DescribeSecurityGroupsInput{Filters: []ec2types.Filter{
 		{Name: aws.String("vpc-id"), Values: []string{vpcID}}, {Name: aws.String("group-name"), Values: []string{"default"}},

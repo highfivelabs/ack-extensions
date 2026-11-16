@@ -166,7 +166,7 @@ tasks:
       # controllers do; every other analyzer runs.
       - go vet -composites=false ./...
       # The live-only code (docs/live-runs.md) compiled, never run.
-      - go vet -tags live ./cloudcontrol/test/live/... ./hack/live/... ./cloudcontrol/test/e2e/
+      - go vet -tags live ./cloudcontrol/test/live/... ./hack/live/... ./cloudcontrol/test/e2e/ ./tests/e2e/
       - hack/check-spdx.sh
 
   # Some packages' tests, as test runs them: what CI runs for a pull request
@@ -286,7 +286,7 @@ tasks:
   # to AWS_SANDBOX_ACCOUNT_ID (.env.example). Run on an offload VM with --sa (federated
   # credentials, hack/live/credentials.sh).
   test-live:
-    desc: 'The Cloud Control e2e tests against the fake, then the real sandbox account: ACK_EXT_LIVE=create-real-aws-resources task test-live ACCOUNT=<id> ROLE_ARN=<arn> [TESTS="TestDetector"] (docs/live-runs.md).'
+    desc: 'The Cloud Control e2e tests (SUITE=cloudcontrol, the default) or the ACK-kind tests (SUITE=ack) against the fake, then the real sandbox account: ACK_EXT_LIVE=create-real-aws-resources task test-live ACCOUNT=<id> ROLE_ARN=<arn> [SUITE=ack] [TESTS="TestDetector"] (docs/live-runs.md).'
     requires:
       vars: [ACCOUNT, ROLE_ARN]
     cmds:
@@ -294,17 +294,17 @@ tasks:
       - hack/moto.sh
       - |
         export KUBEBUILDER_ASSETS="$("{{.BIN}}/setup-envtest" use {{.ENVTEST_K8S_VERSION}} --bin-dir "{{.BIN}}/envtest" -p path)"
-        hack/live/run.sh --account "{{.ACCOUNT}}" --role-arn "{{.ROLE_ARN}}" {{.TESTS}}
+        hack/live/run.sh --account "{{.ACCOUNT}}" --role-arn "{{.ROLE_ARN}}" --suite "{{.SUITE | default "cloudcontrol"}}" {{.TESTS}}
 
   live-sweep:
-    desc: 'Delete live-test leftovers of runs older than 2h, or everything of RUN=<id> (docs/live-runs.md).'
+    desc: 'Delete live-test leftovers of runs older than 2h, or everything of RUN=<id>; SUITE=cloudcontrol or ack for one suite''s kinds (docs/live-runs.md).'
     cmds:
-      - go run -tags live ./hack/live/sweep{{if .RUN}} --run "{{.RUN}}"{{end}}
+      - go run -tags live ./hack/live/sweep --suite "{{.SUITE | default "all"}}"{{if .RUN}} --run "{{.RUN}}"{{end}}
 
   live-list:
-    desc: 'List every live-test resource in the sandbox account (docs/live-runs.md).'
+    desc: 'List every live-test resource in the sandbox account; SUITE=cloudcontrol or ack for one suite''s kinds (docs/live-runs.md).'
     cmds:
-      - go run -tags live ./hack/live/sweep --list
+      - go run -tags live ./hack/live/sweep --suite "{{.SUITE | default "all"}}" --list
 
   # The merge gate while GitHub Actions is off (docs/testing.md, "The
   # merge gate"): ci.yml's pull-request jobs on an offload Spot VM, then

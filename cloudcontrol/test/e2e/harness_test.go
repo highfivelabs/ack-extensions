@@ -52,7 +52,9 @@ import (
 	"github.com/highfivelabs/ack-extensions/pkg/test/awsemulator"
 )
 
-const region = "us-west-2"
+// region is where the tests run: us-west-2 on the fakes; a live run's
+// region on a live run (live_test.go).
+var region = "us-west-2"
 
 // motoAccount is the account moto answers as.
 const motoAccount = "123456789012"

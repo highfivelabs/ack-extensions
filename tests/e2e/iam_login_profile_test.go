@@ -39,6 +39,7 @@ func TestLoginProfile(t *testing.T) {
 		if _, err := cloud.CreateUser(ctx, &iam.CreateUserInput{UserName: aws.String(u)}); err != nil {
 			t.Fatal(err)
 		}
+		cleanupLog(t, "user "+u, func() error { return deleteIAMUser(ctx, cloud, u) })
 	}
 	if err := env.Client.Create(ctx, &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{Name: "console", Namespace: "default"},

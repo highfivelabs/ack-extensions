@@ -40,6 +40,7 @@ func TestIAMAccessKey(t *testing.T) {
 		if _, err := cloud.CreateUser(ctx, &iam.CreateUserInput{UserName: aws.String(u)}); err != nil {
 			t.Fatal(err)
 		}
+		cleanupLog(t, "user "+u, func() error { return deleteIAMUser(ctx, cloud, u) })
 	}
 	// ACK's User, as ACK's iam-controller would leave it once synced (that
 	// controller does not run here).
