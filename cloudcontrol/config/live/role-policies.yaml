@@ -246,6 +246,9 @@ policies:
       resources:
       - '*'
       sid: ServiceIam
+  part-2:
+    description: ack-extensions live tests, part 2
+    statements:
     - actions:
       - kms:CreateKey
       - kms:DescribeKey
@@ -269,9 +272,6 @@ policies:
       resources:
       - '*'
       sid: ServiceKms
-  part-2:
-    description: ack-extensions live tests, part 2
-    statements:
     - actions:
       - lambda:AddPermission
       - lambda:CreateAlias
@@ -495,6 +495,9 @@ policies:
       resources:
       - '*'
       sid: ServiceTag
+  part-3:
+    description: ack-extensions live tests, part 3
+    statements:
     - actions:
       - wafv2:AssociateWebACL
       - wafv2:CreateWebACL

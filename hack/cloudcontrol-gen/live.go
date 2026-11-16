@@ -42,6 +42,10 @@ func liveKinds(cfg config) (map[string]bool, error) {
 	return live, nil
 }
 
+// liveSplitChars is the size the live-test policies are split to, short of
+// IAM's 6,144 for the chart's longer rendering (writeLiveTemplate).
+const liveSplitChars = 5900
+
 // The live-test role's managed policies and the sandbox account's
 // CloudFormation template (docs/live-runs.md); nothing here deploys either.
 //
@@ -106,7 +110,11 @@ func writeLiveTemplate(root, out string, cfg config, gens []generated) error {
 	// Compacted (one statement per service, the same actions): every type's
 	// handler statements kept apart would pass IAM's ten managed policies
 	// per role at about 70 types (docs/throughput.md).
-	policies, err := iamgen.Split(iamgen.Compact(merged), 6144)
+	// Split short of IAM's 6,144 characters: the catalog chart renders each
+	// statement's Resource as a list (["*"], not "*") and so writes a longer
+	// document than iamgen measures; part-1 came to 6,162 in the chart when
+	// split at 6,144 here (2026-11-16).
+	policies, err := iamgen.Split(iamgen.Compact(merged), liveSplitChars)
 	if err != nil {
 		return err
 	}
