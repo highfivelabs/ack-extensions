@@ -12,7 +12,7 @@ require (
 	github.com/aws-controllers-k8s/rds-controller v1.14.2
 	github.com/aws-controllers-k8s/runtime v0.67.0
 	github.com/aws-controllers-k8s/wafv2-controller v1.8.1
-	github.com/aws/aws-sdk-go-v2 v1.41.5
+	github.com/aws/aws-sdk-go-v2 v1.48.0
 	github.com/aws/aws-sdk-go-v2/config v1.28.6
 	github.com/aws/aws-sdk-go-v2/credentials v1.17.47
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.34.10
@@ -29,8 +29,10 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.52.6
 	github.com/aws/aws-sdk-go-v2/service/iam v1.38.8
 	github.com/aws/aws-sdk-go-v2/service/identitystore v1.36.5
+	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.62.5
 	github.com/aws/aws-sdk-go-v2/service/kms v1.37.14
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.88.5
+	github.com/aws/aws-sdk-go-v2/service/macie2 v1.60.5
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.37.4
 	github.com/aws/aws-sdk-go-v2/service/rds v1.93.8
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.48.3
@@ -43,7 +45,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.37.6
 	github.com/aws/aws-sdk-go-v2/service/sts v1.33.2
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.55.11
-	github.com/aws/smithy-go v1.28.8
+	github.com/aws/smithy-go v1.28.9
 	github.com/evanphx/json-patch/v5 v5.9.11
 	github.com/go-logr/logr v1.4.3
 	github.com/pkg/errors v0.9.1
@@ -64,8 +66,8 @@ require (
 	github.com/antlr4-go/antlr/v4 v4.13.0 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.7.8 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.21 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.4.21 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.7.21 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.5.12 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.8.12 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.1 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.4.22 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.13.24 // indirect

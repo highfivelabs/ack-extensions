@@ -301,17 +301,14 @@ types:
   - typeName: AWS::InspectorV2::Connector
     unproven: "no moto backend yet (moto 5.2.5 has inspector2); on the schema fake only"
   - typeName: AWS::InspectorV2::Filter
-    unproven: "no moto backend yet (moto 5.2.5 has inspector2); on the schema fake only"
   - typeName: AWS::Macie::AllowList
     unproven: "no moto backend yet (moto 5.2.5 has macie2); on the schema fake only"
   - typeName: AWS::Macie::CustomDataIdentifier
     unproven: "no moto backend yet (moto 5.2.5 has macie2); on the schema fake only"
   - typeName: AWS::Macie::FindingsFilter
-    unproven: "no moto backend yet (moto 5.2.5 has macie2); on the schema fake only"
   - typeName: AWS::Macie::Member
     unproven: "no moto backend yet (moto 5.2.5 has macie2); on the schema fake only"
   - typeName: AWS::Macie::Session
-    unproven: "no moto backend yet (moto 5.2.5 has macie2); on the schema fake only"
   - typeName: AWS::NetworkFirewall::ContainerAssociation
     unproven: "no moto backend yet (moto 5.2.5 has networkfirewall); on the schema fake only"
   - typeName: AWS::NetworkFirewall::LoggingConfiguration
@@ -377,13 +374,11 @@ types:
   - typeName: AWS::EKS::CertificateAuthority
     unproven: "no moto backend yet (moto 5.2.5 has eks); on the schema fake only"
   - typeName: AWS::IAM::ServerCertificate
-    unproven: "no moto backend yet (moto 5.2.5 has iam); on the schema fake only"
     # The private key is a secret; the certificate body and chain are public.
     secrets: [/properties/PrivateKey]
   - typeName: AWS::IdentityStore::Group
   - typeName: AWS::IdentityStore::GroupMembership
   - typeName: AWS::IdentityStore::User
-    unproven: "no moto backend yet (moto 5.2.5 has identitystore); on the schema fake only"
   - typeName: AWS::RAM::PermissionAssociation
     unproven: "no moto backend yet (moto 5.2.5 has ram); on the schema fake only"
   - typeName: AWS::RAM::PrincipalAssociation
@@ -393,7 +388,6 @@ types:
   - typeName: AWS::RAM::SourceAssociation
     unproven: "no moto backend yet (moto 5.2.5 has ram); on the schema fake only"
   - typeName: AWS::Route53::DelegationSet
-    unproven: "no moto backend yet (moto 5.2.5 has route53); on the schema fake only"
   - typeName: AWS::Route53::TrafficPolicy
     unproven: "no moto backend yet (moto 5.2.5 has route53); on the schema fake only"
   - typeName: AWS::Route53::TrafficPolicyInstance

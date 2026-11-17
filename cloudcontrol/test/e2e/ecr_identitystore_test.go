@@ -216,3 +216,67 @@ func TestIdentityStore(t *testing.T) {
 		t.Errorf("group %s still in moto after delete", gid)
 	}
 }
+
+// F12, Identity Store: a user in the Identity Center directory, made, updated
+// (displayName, title), refused a create-only change (userName), and deleted.
+func TestIdentityStoreUser(t *testing.T) {
+	e := start(t)
+	insts, err := ssoadmin.NewFromConfig(e.moto).ListInstances(e.ctx, &ssoadmin.ListInstancesInput{})
+	if err != nil || len(insts.Instances) == 0 {
+		t.Fatalf("moto has no Identity Center instance: %v", err)
+	}
+	store := aws.ToString(insts.Instances[0].IdentityStoreId)
+	is := identitystore.NewFromConfig(e.moto)
+
+	u := objOf("AWS::IdentityStore::User", "bob", map[string]any{
+		"identityStoreId": store,
+		"userName":        "bob",
+		"displayName":     "Bob Example",
+		"title":           "Engineer",
+		"name":            map[string]any{"givenName": "Bob", "familyName": "Example"},
+	})
+	if err := e.c.Create(e.ctx, u); err != nil {
+		t.Fatal(err)
+	}
+	got := e.waitSynced(t, u)
+	uid, _, _ := unstructured.NestedString(got.Object, "status", "userId")
+	if uid == "" {
+		t.Fatalf("no status.userId: %v", got.Object["status"])
+	}
+	du, err := is.DescribeUser(e.ctx, &identitystore.DescribeUserInput{IdentityStoreId: &store, UserId: &uid})
+	if err != nil || aws.ToString(du.UserName) != "bob" || aws.ToString(du.DisplayName) != "Bob Example" {
+		t.Fatalf("moto's user: %v %+v", err, du)
+	}
+
+	if err := e.update(t, u, func(o *unstructured.Unstructured) {
+		_ = unstructured.SetNestedField(o.Object, "Robert Example", "spec", "displayName")
+		_ = unstructured.SetNestedField(o.Object, "Staff Engineer", "spec", "title")
+	}); err != nil {
+		t.Fatal(err)
+	}
+	eventually(t, 60*time.Second, "updated user in moto", func() error {
+		du, err := is.DescribeUser(e.ctx, &identitystore.DescribeUserInput{IdentityStoreId: &store, UserId: &uid})
+		if err != nil {
+			return err
+		}
+		if aws.ToString(du.DisplayName) != "Robert Example" || aws.ToString(du.Title) != "Staff Engineer" {
+			return fmt.Errorf("got displayName=%q title=%q", aws.ToString(du.DisplayName), aws.ToString(du.Title))
+		}
+		return nil
+	})
+
+	err = e.update(t, u, func(o *unstructured.Unstructured) {
+		_ = unstructured.SetNestedField(o.Object, "robert", "spec", "userName")
+	})
+	if err == nil || !strings.Contains(err.Error(), "create-only") {
+		t.Errorf("a new userName was not refused as create-only: %v", err)
+	}
+
+	if err := e.c.Delete(e.ctx, u); err != nil {
+		t.Fatal(err)
+	}
+	e.waitGone(t, u)
+	if _, err := is.DescribeUser(e.ctx, &identitystore.DescribeUserInput{IdentityStoreId: &store, UserId: &uid}); err == nil {
+		t.Errorf("user %s still in moto after delete", uid)
+	}
+}
