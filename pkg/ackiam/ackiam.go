@@ -44,6 +44,8 @@ var RuntimeActions = []string{"sts:GetCallerIdentity"}
 // prefixes are the services whose IAM namespace is not their name.
 var prefixes = map[string]string{
 	"applicationautoscaling": "application-autoscaling",
+	"cloudwatchlogs":         "logs",
+	"efs":                    "elasticfilesystem",
 	"eventbridge":            "events",
 	"s3control":              "s3",
 }

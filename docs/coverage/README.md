@@ -10,8 +10,8 @@ This directory measures how much of AWS is covered by Kubernetes kinds: by the c
 | --- | ---: | ---: |
 | In the CloudFormation schemas (the denominator) | 1,878 | 85,831 |
 | Covered by an official ACK kind | 267 | 6,044 (7.0%) |
-| Covered by ours, beyond official | 1,368 | 19,915 (23.2%) |
-| Covered by neither | 243 | 59,872 (69.8%) |
+| Covered by ours, beyond official | 1,368 | 19,935 (23.2%) |
+| Covered by neither | 243 | 59,852 (69.7%) |
 | Matched by the Terraform `aws` provider (estimate, [below](#terraform)) | | about 55,279 (64.4%), at least 41,864 (48.8%) |
 
 ## Files
@@ -55,15 +55,15 @@ Services do not matter equally: `quicksight` alone has more attributes than all 
 
 | Category | Services | Resources | ACK | Ours beyond | Attributes | ACK | Ours beyond | Terraform (estimate) |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 16 | 241 | 22.8% | 53.1% | 2,418 | 28.0% | 37.6% | ~51.5% (≥43.5%) |
+| platform-foundation | 16 | 241 | 22.8% | 53.1% | 2,418 | 28.0% | 38.0% | ~51.5% (≥43.5%) |
 | security-adjacent | 18 | 112 | 12.5% | 67.9% | 2,082 | 37.6% | 50.9% | ~74.1% (≥72.0%) |
-| application | 33 | 263 | 40.3% | 44.1% | 4,788 | 47.9% | 29.4% | ~50.8% (≥46.4%) |
+| application | 33 | 263 | 40.3% | 44.1% | 4,788 | 47.9% | 29.6% | ~50.8% (≥46.4%) |
 | other | 238 | 1,262 | 7.3% | 83.0% | 76,543 | 3.0% | 21.6% | ~65.4% (≥48.5%) |
 
 | Tier | Services | Resources | ACK | Ours beyond | Attributes | ACK | Ours beyond | Terraform (estimate) |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | 16 | 241 | 22.8% | 53.1% | 2,418 | 28.0% | 37.6% | ~51.5% (≥43.5%) |
-| 2 | 51 | 375 | 32.0% | 51.2% | 6,870 | 44.8% | 35.9% | ~57.9% (≥54.2%) |
+| 1 | 16 | 241 | 22.8% | 53.1% | 2,418 | 28.0% | 38.0% | ~51.5% (≥43.5%) |
+| 2 | 51 | 375 | 32.0% | 51.2% | 6,870 | 44.8% | 36.0% | ~57.9% (≥54.2%) |
 | 3 | 238 | 1,262 | 7.3% | 83.0% | 76,543 | 3.0% | 21.6% | ~65.4% (≥48.5%) |
 
 **The foundation gap report.** [foundation.md](foundation.md) ranks every resource of the platform-foundation and security-adjacent categories as a work queue for the kind agents: ACK coverage, ours, what is missing (whole resources first, then the attributes that matter), whether upstream has it or is building it (ACK controller releases, `generator.yaml` ignore lists, open pull requests and `community` issues, all read-only), how many of the 40 tracked terraform-aws-modules need it, whether moto 5.2.5 implements the API (we can only prove kinds against moto), a size estimate and the proposed kinds. Its numbers are regenerated; its research is `hack/coverage/foundation.yaml`.
@@ -88,18 +88,18 @@ Services do not matter equally: `quicksight` alone has more attributes than all 
 
 | Tier | Rule | Official | Ours |
 | --- | --- | ---: | ---: |
-| `exact` | the same path, names compared lower-cased without punctuation, `[]` and `{}` kept (`DBInstanceClass` and `dbInstanceClass`; ACK's `{quantity, items[]}` wrappers count as the list) | 5,185 | 19,945 |
+| `exact` | the same path, names compared lower-cased without punctuation, `[]` and `{}` kept (`DBInstanceClass` and `dbInstanceClass`; ACK's `{quantity, items[]}` wrappers count as the list) | 5,185 | 20,051 |
 | `alias` | a path-prefix rename written by hand in `mappings.yaml` (`ingressRules[]` is `SecurityGroupIngress[]`) | 145 | 25 |
-| `tags-map` | CloudFormation's `Tags[].Key` and `Tags[].Value` against ACK's `tags{}` map | 74 | 0 |
+| `tags-map` | CloudFormation's `Tags[].Key` and `Tags[].Value` against ACK's `tags{}` map | 74 | 2 |
 | `free-form` | the CRD takes a free-form value (`x-kubernetes-preserve-unknown-fields`) above the CloudFormation path, so it covers everything under it | 0 | 0 |
 | `structured` | CloudFormation takes a free-form object where the CRD has a map or declared structure under the same name (WAFv2 `Method` and `{}`, DynamoDB `KeySchema`) | 109 | 0 |
-| `primary-name` | ACK's `name` field against the one writable primary-identifier property (`ClusterName`) | 35 | 2 |
-| `name-suffix` | same parent, the last name of one ends with the other (`description` and `GroupDescription`, `policy` and `KeyPolicy`), unique both ways | 52 | 4 |
-| `name-variant` | same path after canonicalizing each name: plurals, `identifier` and `id`, `Ids` and `s`, `enableFoo` and `fooEnabled`, `*Tags`, `tagKey` and `key`; unique both ways | 28 | 0 |
+| `primary-name` | ACK's `name` field against the one writable primary-identifier property (`ClusterName`) | 35 | 3 |
+| `name-suffix` | same parent, the last name of one ends with the other (`description` and `GroupDescription`, `policy` and `KeyPolicy`), unique both ways | 52 | 6 |
+| `name-variant` | same path after canonicalizing each name: plurals, `identifier` and `id`, `Ids` and `s`, `enableFoo` and `fooEnabled`, `*Tags`, `tagKey` and `key`; unique both ways | 28 | 2 |
 | `tail-4` | the last four names agree (a wrapper above them was renamed or dropped) and the list depth is the same, unique both ways | 30 | 10 |
-| `tail-3` | the same, last three names | 77 | 57 |
-| `tail-2` | the same, last two names | 192 | 83 |
-| `leaf-name` | the same last name, type class and list depth, unique both ways among what is left | 117 | 55 |
+| `tail-3` | the same, last three names | 77 | 62 |
+| `tail-2` | the same, last two names | 192 | 84 |
+| `leaf-name` | the same last name, type class and list depth, unique both ways among what is left | 117 | 62 |
 
 The tiers run in this order in the code: exact and alias, tags-map, free-form, structured, primary-name, name-suffix, name-variant, tail-4, tail-3, tail-2, leaf-name. The first two are by design exact; the rest are heuristics, and `leaf-name` is the loosest.
 
@@ -211,7 +211,7 @@ This repository's own pins (`UPSTREAM.md`) cover only a few of these controllers
 
 ## Known error and caveats
 
-- **Unmapped.** Of the 7,547 spec paths in the 267 official CRDs mapped to a CloudFormation resource, 1,524 matched no CloudFormation property (**unmapped = 1,524**). Some are ACK-only fields (`clientRequestToken`, cross-resource helpers, fields ACK takes from the SDK that CloudFormation lacks); the rest are renames the matcher missed. Ours: 175 of 20,356 spec paths unmapped. Both are listed per resource as `official_unmapped` and `ours_unmapped` in `resources.csv` and per attribute by `-explain`.
+- **Unmapped.** Of the 7,547 spec paths in the 267 official CRDs mapped to a CloudFormation resource, 1,524 matched no CloudFormation property (**unmapped = 1,524**). Some are ACK-only fields (`clientRequestToken`, cross-resource helpers, fields ACK takes from the SDK that CloudFormation lacks); the rest are renames the matcher missed. Ours: 210 of 20,517 spec paths unmapped. Both are listed per resource as `official_unmapped` and `ours_unmapped` in `resources.csv` and per attribute by `-explain`.
 - **Upper bound on the understatement.** Where ACK covers a property under a name the matcher cannot pair, official coverage is under-counted. A resource's misses cannot exceed the smaller of its unmatched CloudFormation attributes and its unmapped spec paths; summed over every official kind that is **499 attributes (0.6% of the denominator, 8.3% of what is counted as official)**. The real figure is far lower, because most unmapped paths have no CloudFormation counterpart: the spot checks below found about 2% of covered attributes missed.
 - **No false credit from the denominator's shape.** An attribute is a leaf, so a resource with a very deep schema weighs more than a flat one. The largest services by attributes are `quicksight` (51,640, 60.2% of the total), `lex` (2,018, 2.4% of the total), `ec2` (1,495, 1.7% of the total), `sagemaker` (1,469, 1.7% of the total), `medialive` (1,115, 1.3% of the total). Percentages by *resource* are in `services.csv` too (`resources_official / resources_total`). A resource with ACK coverage of one field of a hundred still counts as one official resource.
 - **CloudFormation is not the API.** The denominator is CloudFormation's view of each service. Operations CloudFormation does not model (jobs, executions, one-shot actions, data-plane calls) are not in it, and neither is anything an ACK kind covers that CloudFormation lacks; that is why some kinds are outside it (below). A service ACK covers that CloudFormation has no resource for is not penalised, but it is not credited either.
@@ -226,7 +226,7 @@ This repository's own pins (`UPSTREAM.md`) cover only a few of these controllers
 Kinds with no CloudFormation resource get a row in `resources.csv` with `notes=outside-denominator` and zero attributes, and are in none of the percentages.
 
 - **Official (22):** `apigateway/APIIntegrationResponse`, `apigateway/APIMethodResponse`, `apigateway/Integration`, `bedrock/InferenceProfile`, `cloudwatchlogs/DeliveryDestinationPolicy`, `dynamodb/Backup`, `emrcontainers/JobRun`, `kms/Grant`, `lambdamicrovms/Microvm`, `lambdamicrovms/MicrovmImage`, `opensearchservice/VPCEndpoint`, `opensearchservice/VPCEndpointAccess`, `prometheusservice/AlertManagerDefinition`, `prometheusservice/LoggingConfiguration`, `rds/DBClusterSnapshot`, `sagemaker/HyperParameterTuningJob`, `sagemaker/LabelingJob`, `sagemaker/PipelineExecution`, `sagemaker/TrainingJob`, `sagemaker/TransformJob`, `sns/PlatformApplication`, `sns/PlatformEndpoint`.
-- **Ours (12):** `ec2/DefaultNetworkACL`, `ec2/DefaultRouteTable`, `ec2/DefaultSecurityGroup`, `ec2/DefaultVPC`, `ec2/ResourceTag`, `iam/AccountAlias`, `iam/AccountPasswordPolicy`, `iam/OpenIDConnectProvider`, `iam/SSHPublicKey`, `organizations/DelegatedAdministrator`, `organizations/PolicyAttachment`, `s3control/PublicAccessBlock`.
+- **Ours (13):** `autoscaling/TrafficSourceAttachment`, `ec2/DefaultNetworkACL`, `ec2/DefaultRouteTable`, `ec2/DefaultSecurityGroup`, `ec2/DefaultVPC`, `ec2/ResourceTag`, `iam/AccountAlias`, `iam/AccountPasswordPolicy`, `iam/OpenIDConnectProvider`, `iam/SSHPublicKey`, `organizations/DelegatedAdministrator`, `organizations/PolicyAttachment`, `s3control/PublicAccessBlock`.
 
 **Services missing from the CloudFormation schemas.** `lambdamicrovms`. The plan was to fall back to the Create* input shapes in botocore or aws-sdk-go-v2's `api-models` for such a service; that fallback is not built, because only 1 service (a few kinds, all brand new) needs it. Its kinds are listed above as outside the denominator rather than being measured against a model, so they are neither credited nor penalised.
 

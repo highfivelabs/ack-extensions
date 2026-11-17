@@ -134,12 +134,16 @@ type TagsFunc func(gk schema.GroupKind, observed acktypes.AWSResource) (map[stri
 // spec.tags from AWS. TestTaggedKinds keeps it equal to the generated code.
 var TaggedKinds = map[string]bool{
 	"AutoScalingGroup.autoscaling.aws.hfl.dev": true,
+	"CacheCluster.elasticache.aws.hfl.dev":     true,
 	"CustomerGateway.ec2.aws.hfl.dev":          true,
+	"FileSystem.efs.aws.hfl.dev":               true,
+	"LogGroup.cloudwatchlogs.aws.hfl.dev":      true,
 	"Volume.ec2.aws.hfl.dev":                   true,
 	"VPNConnection.ec2.aws.hfl.dev":            true,
 	"VPNGateway.ec2.aws.hfl.dev":               true,
 	"LaunchTemplate.ec2.aws.hfl.dev":           true,
 	"ReplicaKey.kms.aws.hfl.dev":               true,
+	"ReplicationGroup.elasticache.aws.hfl.dev": true,
 	"Policy.organizations.aws.hfl.dev":         true,
 	"OptionGroup.rds.aws.hfl.dev":              true,
 	"ScheduleGroup.scheduler.aws.hfl.dev":      true,

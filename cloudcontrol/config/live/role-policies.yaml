@@ -196,6 +196,54 @@ policies:
       - '*'
       sid: ServiceEcs
     - actions:
+      - elasticache:CreateCacheCluster
+      - elasticache:CreateReplicationGroup
+      - elasticache:DecreaseReplicaCount
+      - elasticache:DeleteCacheCluster
+      - elasticache:DeleteReplicationGroup
+      - elasticache:DescribeCacheClusters
+      - elasticache:DescribeEvents
+      - elasticache:DescribeReplicationGroups
+      - elasticache:IncreaseReplicaCount
+      - elasticache:ListAllowedNodeTypeModifications
+      - elasticache:ModifyCacheCluster
+      - elasticache:ModifyReplicationGroup
+      - elasticache:ModifyReplicationGroupShardConfiguration
+      effect: Allow
+      resources:
+      - '*'
+      sid: ServiceElasticache
+  part-2:
+    description: ack-extensions live tests, part 2
+    statements:
+    - actions:
+      - elasticfilesystem:CreateFileSystem
+      - elasticfilesystem:CreateMountTarget
+      - elasticfilesystem:CreateReplicationConfiguration
+      - elasticfilesystem:DeleteFileSystem
+      - elasticfilesystem:DeleteFileSystemPolicy
+      - elasticfilesystem:DeleteMountTarget
+      - elasticfilesystem:DeleteReplicationConfiguration
+      - elasticfilesystem:DescribeBackupPolicy
+      - elasticfilesystem:DescribeFileSystemPolicy
+      - elasticfilesystem:DescribeFileSystems
+      - elasticfilesystem:DescribeLifecycleConfiguration
+      - elasticfilesystem:DescribeMountTargetSecurityGroups
+      - elasticfilesystem:DescribeMountTargets
+      - elasticfilesystem:DescribeReplicationConfigurations
+      - elasticfilesystem:ModifyMountTargetSecurityGroups
+      - elasticfilesystem:PutBackupPolicy
+      - elasticfilesystem:PutFileSystemPolicy
+      - elasticfilesystem:PutLifecycleConfiguration
+      - elasticfilesystem:TagResource
+      - elasticfilesystem:UntagResource
+      - elasticfilesystem:UpdateFileSystem
+      - elasticfilesystem:UpdateFileSystemProtection
+      effect: Allow
+      resources:
+      - '*'
+      sid: ServiceElasticfilesystem
+    - actions:
       - elasticloadbalancing:SetWebAcl
       effect: Allow
       resources:
@@ -214,9 +262,6 @@ policies:
       resources:
       - '*'
       sid: ServiceEvents
-  part-2:
-    description: ack-extensions live tests, part 2
-    statements:
     - actions:
       - iam:AddClientIDToOpenIDConnectProvider
       - iam:AddUserToGroup
@@ -332,7 +377,15 @@ policies:
     - actions:
       - logs:CreateLogGroup
       - logs:DeleteLogGroup
+      - logs:DeleteRetentionPolicy
+      - logs:DeleteSubscriptionFilter
       - logs:DescribeLogGroups
+      - logs:DescribeSubscriptionFilters
+      - logs:ListTagsForResource
+      - logs:PutRetentionPolicy
+      - logs:PutSubscriptionFilter
+      - logs:TagResource
+      - logs:UntagResource
       effect: Allow
       resources:
       - '*'
@@ -375,6 +428,9 @@ policies:
       resources:
       - '*'
       sid: ServiceRoute53resolver
+  part-3:
+    description: ack-extensions live tests, part 3
+    statements:
     - actions:
       - s3:AbortMultipartUpload
       - s3:BypassGovernanceRetention
@@ -463,9 +519,6 @@ policies:
       resources:
       - '*'
       sid: ServiceS3express
-  part-3:
-    description: ack-extensions live tests, part 3
-    statements:
     - actions:
       - scheduler:CreateSchedule
       - scheduler:CreateScheduleGroup

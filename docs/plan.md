@@ -2896,6 +2896,61 @@ Batch 2 additions (2026-11-16):
   `networkPerformanceOptions`, `connectionTrackingSpecification`,
   `enaSrdSpecification`, and `defaultVersion`.
 
+### 6.45 `cloudwatchlogs.aws.hfl.dev` `LogGroup` (ACK's, with `logGroupClass`)
+
+Upstream rechecked 2026-11-16 (read-only): `cloudwatchlogs-controller`
+`v1.11.0` ignores `CreateLogGroupInput.LogGroupClass`; open PRs (#95, #61) do
+not add `logGroupClass`.
+
+- Generated from `v1.41.5` models with `LogGroupClass` un-ignored and marked
+  immutable (`is_immutable: true`), alongside `kms.services.k8s.aws` `Key`
+  reference, `retentionDays`, `subscriptionFilters`, and `tags`.
+- Proven on moto in `TestCloudWatchLogsLogGroup` (create with
+  `logGroupClass`, update retention/tags, retain deletion policy, delete).
+
+### 6.46 `efs.aws.hfl.dev` `FileSystem` and `MountTarget` (ACK's, with missing fields)
+
+Upstream rechecked 2026-11-16 (read-only): `efs-controller` `v1.9.0` ignores
+`CreationToken` (unconditionally generating an idempotency token), comments
+out `BypassPolicyLockoutSafetyCheck` in `syncPolicy`, and lacks
+`ipAddressType` / `ipv6Address` on `MountTarget`. Open PRs (#91, #88, #83)
+do not expose these fields. (`FileSystemPolicy` waits on open question
+`EFSPOL`.)
+
+- `FileSystem` (`efs.aws.hfl.dev/v1alpha1`): generated from `v1.41.5` models
+  with immutable `spec.creationToken` (falling back to `getIdempotencyToken()`
+  when nil/empty) and `spec.bypassPolicyLockoutSafetyCheck` wired into
+  `PutFileSystemPolicy`. `setReplicationConfiguration` ignores `NotImplemented`
+  / 501 when `spec.replicationConfiguration` is nil (moto 5.2.5 lacks
+  `DescribeReplicationConfigurations`).
+- `MountTarget` (`efs.aws.hfl.dev/v1alpha1`): generated with immutable
+  `spec.ipAddressType` (`compare: is_ignored: true`, not returned by
+  `DescribeMountTargets`) and immutable `spec.ipv6Address`.
+- Proven in unit tests (`TestSyncPolicyBypassLockoutSafetyCheck`) and on moto
+  in `TestEFSFileSystemAndMountTarget`.
+
+### 6.47 `elasticache.aws.hfl.dev` `ReplicationGroup` and `CacheCluster` (ACK's, with missing fields, Secret change detection, and final snapshots)
+
+Upstream rechecked 2026-11-16 (read-only): `elasticache-controller` `v1.13.0`
+ignores `GlobalReplicationGroupId`, `NumCacheClusters`, `ClusterMode`, and
+`TransitEncryptionMode`, does not wire `AuthTokenUpdateStrategy` or detect
+Kubernetes `Secret` value changes for `AuthToken`, and does not expose
+`FinalSnapshotIdentifier` on delete. (`GlobalReplicationGroup` waits on
+upstream PR #237; open PRs #244, #209 do not cover these.)
+
+- `ReplicationGroup` (`elasticache.aws.hfl.dev/v1alpha1`): generated from
+  `v1.41.5` models with `globalReplicationGroupID`, `numCacheClusters`,
+  `clusterMode`, `transitEncryptionMode`, `authTokenUpdateStrategy`, and
+  `finalSnapshotIdentifier` on delete; `syncAuthTokenForCompare` and
+  `AnnotationLastAuthTokenSHA256` detect Secret data changes even when the
+  `SecretKeyReference` is unchanged; `provideEvents` treats `NotImplemented`
+  / 501 from `DescribeEvents` on moto 5.2.5 as empty events.
+- `CacheCluster` (`elasticache.aws.hfl.dev/v1alpha1`): generated with
+  `finalSnapshotIdentifier` wired into `DeleteCacheCluster`.
+- Proven in unit tests (`TestSyncAuthTokenForCompare`,
+  `TestApplyAuthTokenUpdatePayload`, `TestDeleteFinalSnapshotIdentifier`) and
+  on moto in `TestElastiCacheReplicationGroupAndCacheCluster`.
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)

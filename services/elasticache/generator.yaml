@@ -1,0 +1,588 @@
+resources:
+  CacheCluster:
+    fields:
+      CacheSubnetGroupName:
+        references:
+          resource: CacheSubnetGroup
+          path: Spec.CacheSubnetGroupName
+      CacheParameterGroupName:
+        references:
+          resource: CacheParameterGroup
+          path: Spec.CacheParameterGroupName
+        is_immutable: true
+      ReplicationGroupID:
+        references:
+          resource: ReplicationGroup
+          path: Spec.ReplicationGroupID
+        is_immutable: true
+      SnapshotName:
+        references:
+          resource: Snapshot
+          path: Spec.SnapshotName
+        is_immutable: true
+      NotificationTopicARN:
+        references:
+          service_name: sns
+          resource: Topic
+          path: Status.ACKResourceMetadata.ARN
+      SecurityGroupIDs:
+        references:
+          resource: SecurityGroup
+          service_name: ec2
+          path: Status.ID
+      AuthToken:
+        is_secret: true
+      Engine:
+        set:
+          - method: Create
+            ignore: from
+      PreferredAvailabilityZone:
+        late_initialize: {}
+      PreferredAvailabilityZones:
+        compare:
+          is_ignored: true
+      FinalSnapshotIdentifier:
+        from:
+          operation: DeleteCacheCluster
+          path: FinalSnapshotIdentifier
+        compare:
+          is_ignored: true
+    print:
+      add_age_column: true
+      add_synced_column: true
+      order_by: index
+      additional_columns:
+      - name: VERSION
+        json_path: .spec.engineVersion
+        type: string
+        index: 10
+      - name: STATUS
+        json_path: .status.cacheClusterStatus
+        type: string
+        index: 20
+      - name: ENDPOINT
+        json_path: .status.configurationEndpoint.address
+        type: string
+        index: 30
+        priority: 1
+    exceptions:
+      errors:
+        404:
+          code: CacheClusterNotFound
+      terminal_codes:
+        - ReplicationGroupNotFoundFault
+        - InvalidReplicationGroupStateFault
+        - CacheClusterAlreadyExistsFault
+        - InsufficientCacheClusterCapacityFault
+        - CacheSecurityGroupNotFoundFault
+        - CacheSubnetGroupNotFoundFault
+        - ClusterQuotaForCustomerExceededFault
+        - NodeQuotaForClusterExceededFault
+        - NodeQuotaForCustomerExceededFault
+        - CacheParameterGroupNotFoundFault
+        - InvalidVPCNetworkStateFault
+        - TagQuotaPerResource
+        - InvalidParameterValue
+        - InvalidParameterCombination
+    hooks:
+      sdk_create_post_set_output:
+        template_path: hooks/cache_cluster/sdk_create_post_set_output.go.tpl
+      sdk_delete_pre_build_request:
+        template_path: hooks/cache_cluster/sdk_delete_pre_build_request.go.tpl
+      sdk_read_many_post_build_request:
+        template_path: hooks/cache_cluster/sdk_read_many_post_build_request.go.tpl
+      sdk_read_many_post_set_output:
+        template_path: hooks/cache_cluster/sdk_read_many_post_set_output.go.tpl
+      sdk_update_pre_build_request:
+        template_path: hooks/cache_cluster/sdk_update_pre_build_request.go.tpl
+      sdk_update_post_build_request:
+        template_path: hooks/cache_cluster/sdk_update_post_build_request.go.tpl
+      sdk_update_post_set_output:
+        template_path: hooks/cache_cluster/sdk_update_post_set_output.go.tpl
+      delta_post_compare:
+        code: "modifyDelta(delta, a, b)"
+  CacheSubnetGroup:
+    exceptions:
+      errors:
+        404:
+          code: CacheSubnetGroupNotFoundFault
+      terminal_codes:
+        - CacheSubnetGroupQuotaExceeded
+        - CacheSubnetQuotaExceededFault
+        - SubnetInUse
+        - InvalidSubnet
+        - InvalidParameter
+        - InvalidParameterValue
+        - InvalidParameterCombination
+    fields:
+      SubnetIDs:
+        references:
+          service_name: ec2
+          resource: Subnet
+          path: Status.SubnetID
+      Events:
+        is_read_only: true
+        from:
+          operation: DescribeEvents
+          path: Events
+    hooks:
+      sdk_read_many_post_set_output:
+        template_path: hooks/cache_subnet_group/sdk_read_many_post_set_output.go.tpl
+  ReplicationGroup:
+    exceptions:
+      terminal_codes:
+        - InvalidParameter
+        - InvalidParameterValue
+        - InvalidParameterCombination
+        - InsufficientCacheClusterCapacity
+        - ClusterQuotaForCustomerExceeded
+        - NodeQuotaForClusterExceeded
+        - NodeQuotaForCustomerExceeded
+        - InvalidVPCNetworkStateFault
+        - TagQuotaPerResourceExceeded
+        - NodeGroupsPerReplicationGroupQuotaExceeded
+        - InvalidCacheSecurityGroupState
+        - InvalidKMSKeyFault
+    fields:
+      AllowedScaleUpModifications:
+        is_read_only: true
+        from:
+          operation: ListAllowedNodeTypeModifications
+          path: ScaleUpModifications
+      AllowedScaleDownModifications:
+        is_read_only: true
+        from:
+          operation: ListAllowedNodeTypeModifications
+          path: ScaleDownModifications
+      AutoMinorVersionUpgrade:
+        is_read_only: true # keeps the status field that existed before the spec field was added
+        from:
+          operation: CreateReplicationGroup
+          path: ReplicationGroup.AutoMinorVersionUpgrade
+      AutomaticFailoverEnabled:
+        compare:
+          is_ignored: true
+      CacheParameterGroupName:
+        # the service assigns a default parameter group when one is not requested, which
+        # would otherwise be reported as a difference on every reconcile, keeping the custom
+        # modify implementation engaged and preventing the generated update from running
+        late_initialize:
+            skip_incomplete_check: {}
+        references:
+          resource: CacheParameterGroup
+          path: Spec.CacheParameterGroupName
+      CacheSubnetGroupName:
+        references:
+          resource: CacheSubnetGroup
+          path: Spec.CacheSubnetGroupName
+      SecurityGroupIDs:
+        references:
+          resource: SecurityGroup
+          service_name: ec2
+          path: Status.ID
+      KMSKeyID:
+        is_immutable: true
+        references:
+          resource: Key
+          service_name: kms
+          path: Status.ACKResourceMetadata.ARN
+      NotificationTopicARN:
+        references:
+          service_name: sns
+          resource: Topic
+          path: Status.ACKResourceMetadata.ARN
+      UserGroupIDs:
+        references:
+          resource: UserGroup
+          path: Spec.UserGroupID
+      SnapshotName:
+        is_immutable: true
+        references:
+          resource: Snapshot
+          path: Spec.SnapshotName
+      Events:
+        is_read_only: true
+        from:
+          operation: DescribeEvents
+          path: Events
+      AuthToken:
+        is_secret: true
+      AuthTokenUpdateStrategy:
+        from:
+          operation: ModifyReplicationGroup
+          path: AuthTokenUpdateStrategy
+        compare:
+          is_ignored: true
+      FinalSnapshotIdentifier:
+        from:
+          operation: DeleteReplicationGroup
+          path: FinalSnapshotIdentifier
+        compare:
+          is_ignored: true
+      GlobalReplicationGroupID:
+        is_immutable: true
+        compare:
+          is_ignored: true
+      NumCacheClusters:
+        is_immutable: true
+        compare:
+          is_ignored: true
+      LogDeliveryConfigurations:
+        is_read_only: true # creates an additional status field of the same name
+        from:
+          operation: CreateReplicationGroup
+          path: ReplicationGroup.LogDeliveryConfigurations
+        compare: # removes the spec field from automatic delta comparison
+          is_ignored: true
+      MultiAZEnabled:
+        compare:
+          is_ignored: true
+      PrimaryClusterId: # note: "PrimaryClusterID" will not function properly
+        compare:
+          is_ignored: true
+      NetworkType:
+        is_immutable: true
+    hooks:
+      sdk_read_many_post_set_output:
+        template_path: hooks/replication_group/sdk_read_many_post_set_output.go.tpl
+      sdk_delete_pre_build_request:
+        template_path: hooks/replication_group/sdk_delete_pre_build_request.go.tpl
+      sdk_delete_post_request:
+        template_path: hooks/replication_group/sdk_delete_post_request.go.tpl
+      sdk_update_pre_build_request:
+        template_path: hooks/replication_group/sdk_update_pre_build_request.go.tpl
+      sdk_update_post_build_request:
+        template_path: hooks/replication_group/sdk_update_post_build_request.go.tpl
+      sdk_update_post_set_output:
+        template_path: hooks/replication_group/sdk_update_post_set_output.go.tpl
+      delta_post_compare:
+        code: "modifyDelta(delta, a, b)"
+      sdk_file_end:
+        template_path: hooks/replication_group/sdk_file_end.go.tpl
+      sdk_file_end_set_output_post_populate:
+        code: "rm.customSetOutput(ctx, *obj, ko) // custom set output from obj"
+    renames:
+      operations:
+        CreateReplicationGroup:
+          input_fields:
+            ReplicationGroupDescription: Description
+        ModifyReplicationGroup:
+          input_fields:
+            ReplicationGroupDescription: Description
+  Snapshot:
+    update_conditions_custom_method_name: CustomUpdateConditions
+    exceptions:
+      terminal_codes:
+        - InvalidParameter
+        - InvalidParameterValue
+        - InvalidParameterCombination
+        - SnapshotAlreadyExistsFault
+        - SnapshotQuotaExceededFault
+        - SnapshotFeatureNotSupportedFault
+    fields:
+      KMSKeyID:
+        is_immutable: true
+        references:
+          resource: Key
+          service_name: kms
+          path: Status.ACKResourceMetadata.ARN
+      ReplicationGroupID:
+        references:
+          resource: ReplicationGroup
+          path: Spec.ReplicationGroupID
+      CacheClusterID:
+        references:
+          resource: CacheCluster
+          path: Spec.CacheClusterID
+      SourceSnapshotName:
+        from:
+          operation: CopySnapshot
+          path: SourceSnapshotName
+        references:
+          resource: Snapshot
+          path: Spec.SnapshotName
+    update_operation:
+      custom_method_name: customUpdateSnapshot
+  CacheParameterGroup:
+    exceptions:
+      terminal_codes:
+        - CacheParameterGroupAlreadyExists
+        - CacheParameterGroupQuotaExceeded
+        - InvalidGlobalReplicationGroupState
+        - InvalidParameterCombination
+        - InvalidParameterValue
+    fields:
+      # ModifyCacheParameterGroup accepts no description, so the field is
+      # create-only; comparing it would drive a no-op update reconcile loop.
+      # Not is_immutable: a CEL rule would also reject the runtime's own
+      # spec write-back when adopting a description-divergent group.
+      Description:
+        compare:
+          is_ignored: true
+      ParameterNameValues:
+        from:
+          operation: ModifyCacheParameterGroup
+          path: ParameterNameValues
+      Parameters:
+        is_read_only: true
+        from:
+          operation: DescribeCacheParameters
+          path: Parameters
+      Events:
+        is_read_only: true
+        from:
+          operation: DescribeEvents
+          path: Events
+    update_operation:
+      custom_method_name: customUpdateCacheParameterGroup
+  User:
+    exceptions:
+      errors:
+        404:
+          code: UserNotFound
+      terminal_codes:
+        - UserAlreadyExists
+        - UserQuotaExceeded
+        - DuplicateUserName
+        - InvalidParameterValue
+        - InvalidParameterCombination
+        - InvalidUserState
+    fields:
+      LastRequestedAccessString:
+        is_read_only: true
+        from:
+          operation: CreateUser
+          path: AccessString
+      ExpandedAccessString:
+        is_read_only: true
+        from:
+          operation: CreateUser
+          path: AccessString
+      Passwords:
+        is_secret: true
+        compare:
+          is_ignored: true
+      AuthenticationMode.Passwords:
+        is_secret: true
+        compare:
+          is_ignored: true
+      AuthenticationMode.Type:
+        go_tag: json:"type,omitempty"
+    hooks:
+      sdk_read_many_post_set_output:
+        template_path: hooks/user/sdk_read_many_post_set_output.go.tpl
+      sdk_create_post_set_output:
+        template_path: hooks/user/sdk_create_post_set_output.go.tpl
+      sdk_update_post_build_request:
+        template_path: hooks/user/sdk_update_post_build_request.go.tpl
+      sdk_update_post_set_output:
+        template_path: hooks/user/sdk_update_post_set_output.go.tpl
+      delta_post_compare:
+        code: "filterDelta(delta, a, b)"
+  UserGroup:
+    exceptions:
+      terminal_codes:
+        - DuplicateUserNameFault
+        - UserGroupAlreadyExistsFault
+        - InvalidParameterCombination
+        - InvalidParameterValueException
+        - DefaultUserRequired
+        - UserGroupQuotaExceededFault
+        - TagQuotaPerResourceExceeded
+    fields:
+      UserIDs:
+        references:
+          resource: User
+          path: Spec.UserID
+    hooks:
+      sdk_update_post_build_request:
+        template_path: hooks/user_group/sdk_update_post_build_request.go.tpl
+      sdk_update_pre_build_request:
+        template_path: hooks/user_group/sdk_update_pre_build_request.go.tpl
+    synced:
+      when:
+        - path: Status.Status
+          in:
+            - active
+  ServerlessCache:
+    update_operation:
+      custom_method_name: customUpdateServerlessCache
+    fields:
+      SecurityGroupIDs:
+        references:
+          resource: SecurityGroup
+          service_name: ec2
+          path: Status.ID
+      SubnetIDs:
+        references:
+          service_name: ec2
+          resource: Subnet
+          path: Status.SubnetID
+      KMSKeyID:
+        is_immutable: true
+        references:
+          resource: Key
+          service_name: kms
+          path: Status.ACKResourceMetadata.ARN
+      UserGroupID:
+        references:
+          resource: UserGroup
+          path: Spec.UserGroupID
+    synced:
+      when:
+      - path: Status.Status
+        in:
+        - available
+        - create_failed
+    exceptions:
+      terminal_codes:
+        - ServerlessCacheAlreadyExistsFault
+        - ServerlessCacheQuotaForCustomerExceededFault
+        - InvalidParameterValue
+        - InvalidParameterCombination
+        - InvalidVPCNetworkStateFault
+        - TagQuotaPerResourceExceeded
+        - InvalidKMSKeyFault
+    hooks:
+      sdk_read_many_post_set_output:
+        template_path: hooks/serverless_cache/sdk_read_many_post_set_output.go.tpl
+    print:
+      add_age_column: true
+      add_synced_column: true
+      order_by: index
+      additional_columns:
+      - name: STATUS
+        json_path: .status.status
+        type: string
+        index: 10
+      - name: ENDPOINT
+        json_path: .status.endpoint.address
+        type: string
+        index: 20
+  ServerlessCacheSnapshot:
+    update_operation:
+      custom_method_name: customUpdateServerlessCacheSnapshot
+    fields:
+      ServerlessCacheName:
+        is_immutable: true
+        references:
+          resource: ServerlessCache
+          path: Spec.ServerlessCacheName
+      ServerlessCacheSnapshotName:
+        is_immutable: true
+      kmsKeyId:
+        is_immutable: true
+        references:
+          service_name: kms
+          resource: Key
+          path: Status.ACKResourceMetadata.ARN
+    exceptions:
+      errors:
+        404:
+          code: ServerlessCacheSnapshotNotFoundFault
+      terminal_codes:
+        - ServerlessCacheSnapshotAlreadyExistsFault
+        - InvalidParameterValueException
+    hooks:
+      sdk_create_post_set_output:
+        template_path: hooks/serverless_cache_snapshot/sdk_create_post_set_output.go.tpl
+      sdk_read_many_post_set_output:
+        template_path: hooks/serverless_cache_snapshot/sdk_read_many_post_set_output.go.tpl
+    print:
+      add_age_column: true
+      add_synced_column: true
+      order_by: index
+      additional_columns:
+      - name: STATUS
+        json_path: .status.status
+        type: string
+        index: 10
+    synced:
+      when:
+      - path: Status.Status
+        in:
+        - available
+        - create_failed
+operations:
+  DescribeServerlessCaches:
+    operation_type:
+    - List
+    resource_name:
+      ServerlessCache
+  DescribeCacheSubnetGroups:
+    set_output_custom_method_name: CustomDescribeCacheSubnetGroupsSetOutput
+  DescribeReplicationGroups:
+    set_output_custom_method_name: CustomDescribeReplicationGroupsSetOutput
+  CreateReplicationGroup:
+    set_output_custom_method_name: CustomCreateReplicationGroupSetOutput
+  ModifyReplicationGroup:
+    custom_implementation: CustomModifyReplicationGroup
+    set_output_custom_method_name: CustomModifyReplicationGroupSetOutput
+    override_values:
+      ApplyImmediately: aws.Bool(true)
+  CreateSnapshot:
+    custom_implementation: CustomCreateSnapshot
+    set_output_custom_method_name: CustomCreateSnapshotSetOutput
+  DescribeSnapshots:
+    set_output_custom_method_name: CustomDescribeSnapshotSetOutput
+  CreateCacheParameterGroup:
+    set_output_custom_method_name: CustomCreateCacheParameterGroupSetOutput
+  DescribeCacheParameterGroups:
+    set_output_custom_method_name: CustomDescribeCacheParameterGroupsSetOutput
+  CreateUser:
+    set_output_custom_method_name: CustomCreateUserSetOutput
+  ModifyUser:
+    custom_implementation: CustomModifyUser
+    set_output_custom_method_name: CustomModifyUserSetOutput
+  ModifyUserGroup:
+    set_output_custom_method_name: CustomModifyUserGroupSetOutput
+  DescribeUserGroups:
+    set_output_custom_method_name: CustomDescribeUserGroupsSetOutput
+  CreateCacheCluster:
+    set_output_custom_method_name: customCreateCacheClusterSetOutput
+  ModifyCacheCluster:
+    set_output_custom_method_name: customModifyCacheClusterSetOutput
+    override_values:
+      ApplyImmediately: aws.Bool(true)
+ignore:
+  resource_names:
+    - CacheParameterGroup
+    - CacheSecurityGroup
+    - CacheSubnetGroup
+    - GlobalReplicationGroup
+    - ServerlessCache
+    - ServerlessCacheSnapshot
+    - Snapshot
+    - User
+    - UserGroup
+  field_paths:
+    - DescribeSnapshotsInput.CacheClusterId
+    - DescribeSnapshotsInput.ReplicationGroupId
+    - DescribeSnapshotsInput.SnapshotSource
+    - DescribeUsersInput.Engine
+    - ModifyUserInput.AccessString
+    - ModifyUserInput.NoPasswordRequired
+    - ModifyUserInput.Passwords
+    - ModifyReplicationGroupInput.SecurityGroupIds
+    - ModifyReplicationGroupInput.EngineVersion
+    - CacheCluster.LogDeliveryConfigurations
+    - CacheCluster.PendingModifiedValues.ScaleConfig
+    - PendingModifiedValues.LogDeliveryConfigurations
+    - CreateCacheSubnetGroupOutput.CacheSubnetGroup.SupportedNetworkTypes
+    - CreateCacheSubnetGroupOutput.CacheSubnetGroup.Subnets.SupportedNetworkTypes
+    - ModifyCacheSubnetGroupOutput.CacheSubnetGroup.Subnets.SupportedNetworkTypes
+    - CreateUserGroupOutput.ServerlessCaches
+    - CreateReplicationGroupOutput.ReplicationGroup.PendingModifiedValues.TransitEncryptionEnabled
+    - ModifyReplicationGroupOutput.ReplicationGroup.PendingModifiedValues.TransitEncryptionEnabled
+    # Added by aws-sdk-go-v2 service/elasticache v1.63.0-v1.64.0; not yet supported.
+    - CreateServerlessCacheInput.ConnectionType
+    - ServerlessCache.ConnectionType
+    - ServerlessCache.Migration
+    # - CreateReplicationGroupOutput.ReplicationGroup.TransitEncryptionEnabled
+    # - ModifyReplicationGroupInput.TransitEncryptionEnabled
+    # - CreateReplicationGroupInput.TransitEncryptionEnabled
+    - Subnet.SupportedNetworkTypes
+    - CreateReplicationGroupInput.ServerlessCacheSnapshotName
+    - CreateServerlessCacheInput.NetworkType
+    - ServerlessCache.NetworkType
+    - Snapshot.Durability
