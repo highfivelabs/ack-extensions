@@ -65,3 +65,9 @@ expected:
   - test: TestDefaultNetworkACL
     missing: EC2 CreateTags on a network ACL (InvalidNetworkAclID.NotFound for the default ACL DescribeNetworkAcls returned)
     doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions
+  - test: TestEFSFileSystemAndMountTarget
+    missing: EFS FileSystem lifecycle/policy and DescribeMountTargetSecurityGroups
+    doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions
+  - test: TestElastiCacheReplicationGroupAndCacheCluster
+    missing: ElastiCache CreateReplicationGroup stays creating and DeleteReplicationGroup is missing
+    doc: docs/aws-emulator.md#the-14-failures-candidate-upstream-contributions

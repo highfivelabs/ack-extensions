@@ -1,0 +1,355 @@
+sdk_names:
+  model_name: cloudwatch-logs
+  client_interface: CloudWatchLogsAPI
+  client_struct: CloudWatchLogs
+ignore:
+  resource_names:
+    - Delivery
+    - DeliveryDestination
+    - DeliveryDestinationPolicy
+    - DeliverySource
+    - ExportTask
+    - ImportTask
+    - ResourcePolicy
+    - ScheduledQuery
+    #- LogGroup
+    - LogStream
+    - LogAnomalyDetector
+    - SubscriptionFilter
+  field_paths:
+    - PutSubscriptionFilterInput.LogGroupName
+    - PutResourcePolicyInput.ExpectedRevisionId
+    # PolicyScope is not an identifier: it is inferred from whether PolicyName
+    # (ACCOUNT) or ResourceARN (RESOURCE) is set. Ignoring it on the ReadMany
+    # input drops it from PopulateResourceFromAnnotation (so it can't be given
+    # as a meaningless adoption field) and from newListRequestPayload (the
+    # sdk_read_many_post_build_request hook sets the scope from ResourceARN).
+    # Status.PolicyScope, sourced from the DescribeResourcePolicies output, is
+    # unaffected.
+    - DescribeResourcePoliciesInput.PolicyScope
+    - PutSubscriptionFilterInput.ApplyOnTransformedLogs
+    - CreateLogGroupInput.DeletionProtectionEnabled
+    - PutSubscriptionFilterInput.EmitSystemFields
+    - PutSubscriptionFilterInput.FieldSelectionCriteria
+operations:
+  # CloudWatch Logs exposes both DescribeLogGroups and ListLogGroups as
+  # candidate ReadMany (List) operations for LogGroup. The generator's
+  # heuristic picks ListLogGroups, but that API has no name-prefix filter and
+  # returns a slim LogGroupSummary, which breaks exact-name lookups and drops
+  # status fields. Pin the ReadMany operation to DescribeLogGroups explicitly.
+  DescribeLogGroups:
+    resource_name: LogGroup
+    operation_type: List
+  PutResourcePolicy:
+    resource_name: ResourcePolicy
+    # PutResourcePolicy is an idempotent upsert, so it serves as both the
+    # Create and Update operation. Mapping it to Update lets the generator emit
+    # a standard sdkUpdate; the ExpectedRevisionId injection needed for
+    # resource-scoped policies is handled by the sdk_update_post_build_request
+    # hook rather than a full custom update method.
+    operation_type:
+      - Create
+      - Update
+    output_wrapper_field_path: ResourcePolicy
+  DescribeResourcePolicies:
+    resource_name: ResourcePolicy
+    operation_type:
+      - List
+    # DescribeResourcePolicies takes no required input fields. The
+    # mutually_exclusive_identifiers config on ResourcePolicy drives the
+    # generated requiredFieldsMissingFromReadManyInput so it treats the read
+    # input as incomplete (and sdkFind returns NotFound) unless at least one of
+    # PolicyName or ResourceARN is set, instead of matching an arbitrary policy.
+  CreateDelivery:
+    output_wrapper_field_path: Delivery
+  GetDelivery:
+    output_wrapper_field_path: Delivery
+  UpdateDeliveryConfiguration:
+    resource_name: Delivery
+    operation_type:
+      - Update
+  PutDeliverySource:
+    resource_name: DeliverySource
+    # PutDeliverySource is an idempotent upsert: it creates a new delivery
+    # source or overwrites all parameters of an existing one. Map it as both
+    # Create and Update so the generator emits sdkCreate and sdkUpdate from
+    # the same API call.
+    operation_type:
+      - Create
+      - Update
+    output_wrapper_field_path: DeliverySource
+  PutDeliveryDestination:
+    resource_name: DeliveryDestination
+    # PutDeliveryDestination is an idempotent upsert: it creates a new delivery
+    # destination or overwrites all parameters of an existing one. Map it as
+    # both Create and Update so the generator emits sdkCreate and sdkUpdate
+    # from the same API call.
+    operation_type:
+      - Create
+      - Update
+    output_wrapper_field_path: DeliveryDestination
+  PutDeliveryDestinationPolicy:
+    resource_name: DeliveryDestinationPolicy
+    # PutDeliveryDestinationPolicy is an idempotent upsert that creates or
+    # fully replaces the policy attached to a delivery destination. Map it as
+    # both Create and Update so the generator emits sdkCreate and sdkUpdate
+    # from the same API call. The single-member Policy output structure is
+    # unwrapped automatically by the generator.
+    operation_type:
+      - Create
+      - Update
+resources:
+  Delivery:
+    exceptions:
+      errors:
+        404:
+          code: ResourceNotFoundException
+      terminal_codes:
+        - ValidationException
+    fields:
+      Id:
+        is_primary_key: true
+        is_immutable: true
+      DeliverySourceName:
+        is_immutable: true
+        references:
+          resource: DeliverySource
+          path: Spec.Name
+      DeliveryDestinationArn:
+        is_immutable: true
+        references:
+          resource: DeliveryDestination
+          path: Status.ACKResourceMetadata.ARN
+      Tags:
+        set:
+          - method: Create
+            ignore: from
+          - method: Update
+            ignore: all
+          - method: ReadOne
+            ignore: from
+    hooks:
+      sdk_read_one_post_set_output:
+        template_path: hooks/delivery/sdk_read_one_post_set_output.go.tpl
+      sdk_update_pre_build_request:
+        template_path: hooks/delivery/sdk_update_pre_build_request.go.tpl
+  DeliverySource:
+    exceptions:
+      errors:
+        404:
+          code: ResourceNotFoundException
+      terminal_codes:
+        - ValidationException
+    fields:
+      Name:
+        is_primary_key: true
+        is_immutable: true
+      Tags:
+        set:
+          - method: Create
+            ignore: from
+          - method: Update
+            ignore: all
+    hooks:
+      # GetDeliverySource never returns a ResourceArns value in Spec; the
+      # generated read maps it only to Status.ResourceARNs, leaving
+      # Spec.ResourceARN nil. delta.go then reports a permanent
+      # Spec.ResourceARN diff and calls PutDeliverySource on every reconcile.
+      # This hook mirrors the first returned ARN back into Spec.ResourceARN.
+      sdk_read_one_post_set_output:
+        template_path: hooks/delivery_source/sdk_read_one_post_set_output.go.tpl
+      # Reconcile tag drift via the standalone Tag API before building the
+      # PutDeliverySource update payload: when Spec.Tags differs, call
+      # rm.syncTags, and when tags are the ONLY diff, return early so the Put
+      # (which rejects tags on update) is never issued.
+      sdk_update_pre_build_request:
+        template_path: hooks/delivery_source/sdk_update_pre_build_request.go.tpl
+  DeliveryDestination:
+    exceptions:
+      errors:
+        404:
+          code: ResourceNotFoundException
+      terminal_codes:
+        - ValidationException
+    fields:
+      Name:
+        is_primary_key: true
+        is_immutable: true
+      Tags:
+        set:
+          - method: Create
+            ignore: from
+          - method: Update
+            ignore: all
+          - method: ReadOne
+            ignore: from
+    hooks:
+      # GetDeliveryDestination may not reliably populate the Tags field in the
+      # DeliveryDestination wrapper. Read the live tags from the standalone
+      # ListTagsForResource API so Spec.Tags reflects the authoritative state.
+      sdk_read_one_post_set_output:
+        template_path: hooks/delivery_destination/sdk_read_one_post_set_output.go.tpl
+      # Reconcile tag drift via the standalone Tag API before building the
+      # PutDeliveryDestination update payload: when Spec.Tags differs, call
+      # rm.syncTags, and when tags are the ONLY diff, return early so the Put
+      # (which rejects tags on update) is never issued.
+      sdk_update_pre_build_request:
+        template_path: hooks/delivery_destination/sdk_update_pre_build_request.go.tpl
+  DeliveryDestinationPolicy:
+    exceptions:
+      errors:
+        404:
+          code: ResourceNotFoundException
+      terminal_codes:
+        - ValidationException
+    fields:
+      # The policy is keyed by the name of the parent DeliveryDestination (one
+      # policy per destination). Kept as DeliveryDestinationName rather than
+      # Name since it identifies the parent, not the policy itself.
+      DeliveryDestinationName:
+        is_primary_key: true
+        is_immutable: true
+        references:
+          resource: DeliveryDestination
+          path: Spec.Name
+      Policy:
+        is_iam_policy: true
+    renames:
+      operations:
+        PutDeliveryDestinationPolicy:
+          input_fields:
+            DeliveryDestinationPolicy: Policy
+          output_fields:
+            DeliveryDestinationPolicy: Policy
+        GetDeliveryDestinationPolicy:
+          output_fields:
+            DeliveryDestinationPolicy: Policy
+    hooks:
+      sdk_read_one_pre_set_output:
+        template_path: hooks/delivery_destination_policy/sdk_read_one_pre_set_output.go.tpl
+      sdk_create_pre_set_output:
+        template_path: hooks/delivery_destination_policy/sdk_put_pre_set_output.go.tpl
+      sdk_update_pre_set_output:
+        template_path: hooks/delivery_destination_policy/sdk_put_pre_set_output.go.tpl
+    tags:
+      ignore: true
+  LogGroup:
+    exceptions:
+      terminal_codes:
+        - InvalidParameterException
+    fields:
+      Name:
+        type: string
+        is_primary_key: true
+      LogGroupClass:
+        is_immutable: true
+      KMSKeyID:
+        references:
+          resource: Key
+          service_name: kms
+          path: Status.ACKResourceMetadata.ARN
+      SubscriptionFilters:
+        custom_field:
+          list_of: PutSubscriptionFilterInput
+      RetentionDays:
+        from:
+          operation: PutRetentionPolicy
+          path: RetentionInDays
+      CreationTime:
+        is_read_only: true
+        from:
+          operation: DescribeLogGroups
+          path: LogGroups.CreationTime
+      DataProtectionStatus:
+        is_read_only: true
+        from:
+          operation: DescribeLogGroups
+          path: LogGroups.DataProtectionStatus
+      MetricFilterCount:
+        is_read_only: true
+        from:
+          operation: DescribeLogGroups
+          path: LogGroups.MetricFilterCount
+      RetentionInDays:
+        is_read_only: true
+        from:
+          operation: DescribeLogGroups
+          path: LogGroups.RetentionInDays
+      StoredBytes:
+        is_read_only: true
+        from:
+          operation: DescribeLogGroups
+          path: LogGroups.StoredBytes
+    renames:
+      operations:
+        DescribeLogGroups:
+          input_fields:
+            LogGroupNamePrefix: Name
+        CreateLogGroup:
+          input_fields:
+            LogGroupName: Name
+        DeleteLogGroup:
+          input_fields:
+            LogGroupName: Name
+    hooks:
+      delta_pre_compare:
+        code: customPreCompare(delta, a, b)
+      sdk_create_post_set_output:
+        template_path: hooks/log_group/sdk_create_post_set_output.go.tpl
+      sdk_read_many_post_set_output:
+        template_path: hooks/log_group/sdk_read_many_post_set_output.go.tpl
+    update_operation:
+      custom_method_name: customUpdateLogGroup
+  ResourcePolicy:
+    # ResourcePolicy has no single mandatory identifier: account-scoped policies
+    # are keyed by PolicyName while resource-scoped policies are keyed by
+    # ResourceARN. PolicyName is designated the primary key so identifier code
+    # still generates, and mutually_exclusive_identifiers makes adoption populate
+    # whichever identifier the user supplies while requiring that exactly one of
+    # them is present, so an empty or misspelled annotation fails with a terminal
+    # error instead of adopting an arbitrary policy.
+    mutually_exclusive_identifiers:
+      - PolicyName
+      - ResourceArn
+    exceptions:
+      terminal_codes:
+        - InvalidParameterException
+    fields:
+      PolicyName:
+        is_primary_key: true
+        is_immutable: true
+      PolicyDocument:
+        is_iam_policy: true
+      ResourceArn:
+        is_immutable: true
+      LastUpdatedTime:
+        is_read_only: true
+      PolicyScope:
+        is_read_only: true
+      RevisionId:
+        is_read_only: true
+    list_operation:
+      match_fields:
+        - PolicyName
+    tags:
+      ignore: true
+    hooks:
+      # Resource-scoped policies (Spec.ResourceARN set, no PolicyName) are keyed
+      # by ARN and carry a revision ID. These hooks tailor the shared
+      # PutResourcePolicy/DescribeResourcePolicies/DeleteResourcePolicy calls for
+      # that case; all are guarded on Spec.ResourceARN so the account-scoped path
+      # is unchanged.
+      sdk_read_many_post_build_request:
+        template_path: hooks/resource_policy/sdk_read_many_post_build_request.go.tpl
+      sdk_update_post_build_request:
+        template_path: hooks/resource_policy/sdk_update_post_build_request.go.tpl
+      sdk_delete_post_build_request:
+        template_path: hooks/resource_policy/sdk_delete_post_build_request.go.tpl
+      # PutResourcePolicy returns the revision ID for resource-scoped policies
+      # only at the top level of the response, not in the nested ResourcePolicy
+      # shape the generated field mapping reads. These hooks copy the top-level
+      # value into Status.RevisionID so it survives create and update.
+      sdk_create_post_set_output:
+        template_path: hooks/resource_policy/sdk_create_post_set_output.go.tpl
+      sdk_update_post_set_output:
+        template_path: hooks/resource_policy/sdk_update_post_set_output.go.tpl

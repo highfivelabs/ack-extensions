@@ -140,7 +140,7 @@ AWS::AuditManager::Assessment,auditmanager,Assessment,security-adjacent,FULLY_MU
 AWS::AuditManager::AssessmentFramework,auditmanager,AssessmentFramework,security-adjacent,FULLY_MUTABLE,,AssessmentFramework (Cloud Control),ok,0,0,0,0,0,true
 AWS::AutoScaling::AutoScalingGroup,autoscaling,AutoScalingGroup,application,FULLY_MUTABLE,AutoScalingGroup,AutoScalingGroup,ok,2,0,1,2,2,true
 AWS::AutoScaling::LaunchConfiguration,autoscaling,LaunchConfiguration,application,IMMUTABLE,,,ok,0,0,4,5,1,true
-AWS::AutoScaling::LifecycleHook,autoscaling,LifecycleHook,application,FULLY_MUTABLE,,LifecycleHook (Cloud Control),ok,0,0,0,0,1,true
+AWS::AutoScaling::LifecycleHook,autoscaling,LifecycleHook,application,FULLY_MUTABLE,,LifecycleHook;LifecycleHook (Cloud Control),ok,0,0,0,0,1,true
 AWS::AutoScaling::ScalingPolicy,autoscaling,ScalingPolicy,application,FULLY_MUTABLE,,ScalingPolicy,ok,0,0,0,0,0,true
 AWS::AutoScaling::ScheduledAction,autoscaling,ScheduledAction,application,FULLY_MUTABLE,,ScheduledAction,ok,0,0,0,0,0,true
 AWS::AutoScaling::WarmPool,autoscaling,WarmPool,application,FULLY_MUTABLE,,WarmPool (Cloud Control),ok,0,0,0,0,0,true
@@ -711,8 +711,8 @@ AWS::ECS::Service,ecs,Service,application,FULLY_MUTABLE,Service,,ok,1,0,0,5,1,tr
 AWS::ECS::TaskDefinition,ecs,TaskDefinition,application,FULLY_MUTABLE,TaskDefinition,,ok,0,0,0,0,1,true
 AWS::ECS::TaskSet,ecs,TaskSet,application,FULLY_MUTABLE,,TaskSet (Cloud Control),ok,0,0,0,0,0,false
 AWS::EFS::AccessPoint,efs,AccessPoint,application,FULLY_MUTABLE,AccessPoint,,ok,0,4,0,0,0,true
-AWS::EFS::FileSystem,efs,FileSystem,application,FULLY_MUTABLE,FileSystem,,ok,0,0,0,3,3,true
-AWS::EFS::MountTarget,efs,MountTarget,application,FULLY_MUTABLE,MountTarget,,ok,0,0,1,1,0,true
+AWS::EFS::FileSystem,efs,FileSystem,application,FULLY_MUTABLE,FileSystem,FileSystem,ok,0,0,0,3,3,true
+AWS::EFS::MountTarget,efs,MountTarget,application,FULLY_MUTABLE,MountTarget,MountTarget,ok,0,0,1,1,0,true
 AWS::EKS::AccessEntry,eks,AccessEntry,platform-foundation,FULLY_MUTABLE,AccessEntry,,ok,0,0,0,0,0,true
 AWS::EKS::Addon,eks,Addon,platform-foundation,FULLY_MUTABLE,Addon,,ok,0,0,1,3,1,true
 AWS::EKS::Capability,eks,Capability,platform-foundation,FULLY_MUTABLE,Capability,,ok,0,0,0,0,1,true
@@ -722,10 +722,10 @@ AWS::EKS::FargateProfile,eks,FargateProfile,platform-foundation,FULLY_MUTABLE,Fa
 AWS::EKS::IdentityProviderConfig,eks,IdentityProviderConfig,platform-foundation,FULLY_MUTABLE,IdentityProviderConfig,,ok,0,0,0,0,0,true
 AWS::EKS::Nodegroup,eks,Nodegroup,platform-foundation,FULLY_MUTABLE,Nodegroup,,ok,0,0,0,1,2,true
 AWS::EKS::PodIdentityAssociation,eks,PodIdentityAssociation,platform-foundation,FULLY_MUTABLE,PodIdentityAssociation,,ok,0,0,0,0,1,true
-AWS::ElastiCache::CacheCluster,elasticache,CacheCluster,application,FULLY_MUTABLE,CacheCluster,,ok,0,0,2,4,1,true
+AWS::ElastiCache::CacheCluster,elasticache,CacheCluster,application,FULLY_MUTABLE,CacheCluster,CacheCluster,ok,0,0,2,4,1,true
 AWS::ElastiCache::GlobalReplicationGroup,elasticache,GlobalReplicationGroup,application,FULLY_MUTABLE,,,ok,0,0,4,7,0,true
 AWS::ElastiCache::ParameterGroup,elasticache,ParameterGroup,application,FULLY_MUTABLE,CacheParameterGroup,,ok,0,0,0,0,2,true
-AWS::ElastiCache::ReplicationGroup,elasticache,ReplicationGroup,application,FULLY_MUTABLE,ReplicationGroup,,ok,0,0,9,15,3,true
+AWS::ElastiCache::ReplicationGroup,elasticache,ReplicationGroup,application,FULLY_MUTABLE,ReplicationGroup,ReplicationGroup,ok,0,0,9,15,3,true
 AWS::ElastiCache::SecurityGroup,elasticache,SecurityGroup,application,NON_PROVISIONABLE,,,not provisionable,0,0,0,0,0,false
 AWS::ElastiCache::SecurityGroupIngress,elasticache,SecurityGroupIngress,application,NON_PROVISIONABLE,,,not provisionable,0,0,0,0,0,false
 AWS::ElastiCache::ServerlessCache,elasticache,ServerlessCache,application,FULLY_MUTABLE,ServerlessCache,,ok,0,0,1,2,1,true
@@ -1119,7 +1119,7 @@ AWS::Logs::DeliverySource,logs,DeliverySource,application,FULLY_MUTABLE,Delivery
 AWS::Logs::Destination,logs,Destination,application,FULLY_MUTABLE,,Destination (Cloud Control),ok,0,0,0,0,1,true
 AWS::Logs::Integration,logs,Integration,application,IMMUTABLE,,Integration (Cloud Control),ok,0,0,0,1,4,true
 AWS::Logs::LogAnomalyDetector,logs,LogAnomalyDetector,application,FULLY_MUTABLE,,LogAnomalyDetector (Cloud Control),ok,0,0,1,1,1,true
-AWS::Logs::LogGroup,logs,LogGroup,application,FULLY_MUTABLE,LogGroup,,ok,0,0,0,0,0,true
+AWS::Logs::LogGroup,logs,LogGroup,application,FULLY_MUTABLE,LogGroup,LogGroup,ok,0,0,0,0,0,true
 AWS::Logs::LogStream,logs,LogStream,application,IMMUTABLE,,LogStream (Cloud Control),ok,0,0,0,0,0,true
 AWS::Logs::MetricFilter,logs,MetricFilter,application,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
 AWS::Logs::QueryDefinition,logs,QueryDefinition,application,FULLY_MUTABLE,,QueryDefinition (Cloud Control),ok,0,0,0,0,0,true

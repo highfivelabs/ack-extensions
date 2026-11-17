@@ -143,11 +143,12 @@ athena,PreparedStatement,4,PreparedStatement,4,,0,0,false,
 athena,WorkGroup,74,WorkGroup,19,,0,55,false,official_unmapped=7
 auditmanager,Assessment,28,,0,Assessment (Cloud Control),28,0,false,ours Assessment (Cloud Control) unproven on fake: moto 5.2.5 has no auditmanager; on the schema fake only
 auditmanager,AssessmentFramework,7,,0,AssessmentFramework (Cloud Control),7,0,false,ours AssessmentFramework (Cloud Control) unproven on fake: moto 5.2.5 has no auditmanager; on the schema fake only
-autoscaling,AutoScalingGroup,105,AutoScalingGroup,89,AutoScalingGroup,2,14,false,official_unmapped=2;ours_unmapped=2
+autoscaling,AutoScalingGroup,105,AutoScalingGroup,89,AutoScalingGroup,3,13,false,official_unmapped=2;ours_unmapped=5
 autoscaling,LaunchConfiguration,30,,0,,0,30,false,
-autoscaling,LifecycleHook,8,,0,LifecycleHook (Cloud Control),8,0,false,ours LifecycleHook (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has autoscaling); on the schema fake only
+autoscaling,LifecycleHook,8,,0,LifecycleHook;LifecycleHook (Cloud Control),8,0,false,ours LifecycleHook (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has autoscaling); on the schema fake only
 autoscaling,ScalingPolicy,75,,0,ScalingPolicy,75,0,false,ours_unmapped=3
 autoscaling,ScheduledAction,8,,0,ScheduledAction,8,0,false,ours_unmapped=1
+autoscaling,TrafficSourceAttachment,0,,0,TrafficSourceAttachment,0,0,false,outside-denominator;ours_crd_attributes=4
 autoscaling,WarmPool,5,,0,WarmPool (Cloud Control),5,0,false,ours WarmPool (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has autoscaling); on the schema fake only
 autoscalingplans,ScalingPlan,35,,0,ScalingPlan (Cloud Control),35,0,false,ours ScalingPlan (Cloud Control) unproven on fake: moto 5.2.5 has no autoscalingplans; on the schema fake only
 awsexternalanthropic,Workspace,6,,0,Workspace (Cloud Control),6,0,false,ours Workspace (Cloud Control) unproven on fake: moto 5.2.5 has no awsexternalanthropic; on the schema fake only
@@ -612,7 +613,7 @@ ec2,IPAMScope,6,,0,IPAMScope (Cloud Control),6,0,false,ours IPAMScope (Cloud Con
 ec2,IpPoolRouteTableAssociation,2,,0,IpPoolRouteTableAssociation (Cloud Control),2,0,false,ours IpPoolRouteTableAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,IPv4Pool,2,,0,,0,2,false,
 ec2,KeyPair,6,,0,,0,6,false,
-ec2,LaunchTemplate,133,LaunchTemplate,116,LaunchTemplate,6,11,false,official_unmapped=11;ours_unmapped=13
+ec2,LaunchTemplate,133,LaunchTemplate,116,LaunchTemplate,9,8,false,official_unmapped=11;ours_unmapped=23
 ec2,LocalGatewayRoute,4,,0,,0,4,false,
 ec2,LocalGatewayRouteTable,4,,0,,0,4,false,
 ec2,LocalGatewayRouteTableVirtualInterfaceGroupAssociation,4,,0,,0,4,false,
@@ -682,7 +683,7 @@ ec2,VerifiedAccessEndpoint,37,,0,VerifiedAccessEndpoint (Cloud Control),37,0,fal
 ec2,VerifiedAccessGroup,8,,0,VerifiedAccessGroup (Cloud Control),8,0,false,ours VerifiedAccessGroup (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,VerifiedAccessInstance,21,,0,VerifiedAccessInstance (Cloud Control),21,0,false,ours VerifiedAccessInstance (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,VerifiedAccessTrustProvider,26,,0,VerifiedAccessTrustProvider (Cloud Control),26,0,false,ours VerifiedAccessTrustProvider (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
-ec2,Volume,16,,0,Volume,12,4,false,
+ec2,Volume,16,,0,Volume,14,2,false,
 ec2,VolumeAttachment,4,,0,VolumeAttachment,3,1,false,
 ec2,VPC,17,VPC,8,,0,9,false,official_unmapped=8
 ec2,VPCBlockPublicAccessExclusion,5,,0,VPCBlockPublicAccessExclusion (Cloud Control),5,0,false,ours VPCBlockPublicAccessExclusion (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
@@ -697,7 +698,7 @@ ec2,VPCEndpointServicePermissions,2,,0,,0,2,false,
 ec2,VPCGatewayAttachment,3,,0,,0,3,false,
 ec2,VPCPeeringConnection,8,VPCPeeringConnection,6,,0,2,false,official_unmapped=7
 ec2,VPNConcentrator,4,,0,VPNConcentrator (Cloud Control),4,0,false,ours VPNConcentrator (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
-ec2,VPNConnection,43,,0,VPNConnection,37,6,false,ours_unmapped=1
+ec2,VPNConnection,43,,0,VPNConnection,43,0,false,ours_unmapped=1
 ec2,VPNConnectionRoute,2,,0,,0,2,false,
 ec2,VPNGateway,4,,0,VPNGateway,4,0,false,ours_unmapped=2
 ec2,VPNGatewayRoutePropagation,2,,0,VPNGatewayRoutePropagation,1,1,false,ours_unmapped=1
@@ -723,8 +724,8 @@ ecs,Service,121,Service,70,,0,51,false,
 ecs,TaskDefinition,127,TaskDefinition,116,,0,11,false,
 ecs,TaskSet,23,,0,TaskSet (Cloud Control),23,0,false,ours TaskSet (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ecs); on the schema fake only
 efs,AccessPoint,11,AccessPoint,10,,0,1,false,
-efs,FileSystem,20,FileSystem,18,,0,2,false,official_unmapped=2
-efs,MountTarget,6,MountTarget,4,,0,2,false,
+efs,FileSystem,20,FileSystem,18,FileSystem,1,1,false,official_unmapped=2;ours_unmapped=3
+efs,MountTarget,6,MountTarget,4,MountTarget,2,0,false,
 eks,AccessEntry,10,AccessEntry,10,,0,0,false,
 eks,Addon,12,Addon,10,,0,2,false,official_unmapped=1
 eks,Capability,17,Capability,17,,0,0,false,
@@ -734,10 +735,10 @@ eks,FargateProfile,9,FargateProfile,9,,0,0,false,official_unmapped=1
 eks,IdentityProviderConfig,13,IdentityProviderConfig,12,,0,1,false,
 eks,Nodegroup,41,Nodegroup,25,,0,16,false,official_unmapped=1
 eks,PodIdentityAssociation,9,PodIdentityAssociation,9,,0,0,false,official_unmapped=1
-elasticache,CacheCluster,30,CacheCluster,29,,0,1,false,official_unmapped=7
+elasticache,CacheCluster,30,CacheCluster,29,CacheCluster,0,1,false,official_unmapped=7;ours_unmapped=8
 elasticache,GlobalReplicationGroup,17,,0,,0,17,false,
 elasticache,ParameterGroup,5,CacheParameterGroup,4,,0,1,false,official_unmapped=3
-elasticache,ReplicationGroup,49,ReplicationGroup,44,,0,5,false,official_unmapped=3
+elasticache,ReplicationGroup,49,ReplicationGroup,44,ReplicationGroup,4,1,false,official_unmapped=3;ours_unmapped=5
 elasticache,SecurityGroup,3,,0,,0,3,false,
 elasticache,SecurityGroupIngress,3,,0,,0,3,false,
 elasticache,ServerlessCache,21,ServerlessCache,18,,0,3,false,
@@ -1140,7 +1141,7 @@ logs,DeliverySource,6,DeliverySource,5,,0,1,false,
 logs,Destination,6,,0,Destination (Cloud Control),6,0,false,ours Destination (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
 logs,Integration,7,,0,Integration (Cloud Control),7,0,false,ours Integration (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
 logs,LogAnomalyDetector,7,,0,LogAnomalyDetector (Cloud Control),7,0,false,ours LogAnomalyDetector (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
-logs,LogGroup,11,LogGroup,4,,0,7,false,official_unmapped=6
+logs,LogGroup,11,LogGroup,4,LogGroup,1,6,false,official_unmapped=6;ours_unmapped=6
 logs,LogStream,2,,0,LogStream (Cloud Control),2,0,false,ours LogStream (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only
 logs,MetricFilter,13,,0,,0,13,false,
 logs,QueryDefinition,7,,0,QueryDefinition (Cloud Control),7,0,false,ours QueryDefinition (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has logs); on the schema fake only

@@ -101,6 +101,21 @@ pins:
     version: v1.15.0
     commit: 874152a6dbff23e60fcbaf8eda1a074121207ee0
     use: not a module; ACK's Bucket is left to it, extended by our s3 manager; its Bucket CRD copied for the tests; its generator.yaml, hook templates and hand-written Bucket code copied for our fixed copy (s3.aws.hfl.dev Bucket); the SDK client at its version
+  - name: cloudwatchlogs-controller
+    repo: aws-controllers-k8s/cloudwatchlogs-controller
+    version: v1.11.0
+    commit: 7f4e9382b1affeb5280724bd7c01a5022fe54f72
+    use: not a module; its LogGroup generator entry, hook templates and hand-written code copied for our fixed copy (cloudwatchlogs.aws.hfl.dev LogGroup with logGroupClass)
+  - name: efs-controller
+    repo: aws-controllers-k8s/efs-controller
+    version: v1.9.0
+    commit: 4bea998f5732ab6d21d225824e09588c7248cb67
+    use: not a module; its FileSystem and MountTarget generator entries, hook templates and hand-written code copied for our fixed copies (efs.aws.hfl.dev FileSystem and MountTarget)
+  - name: elasticache-controller
+    repo: aws-controllers-k8s/elasticache-controller
+    version: v1.13.0
+    commit: 2c1bbfbc231a32023bed41761760bae7ad088eba
+    use: not a module; its CacheCluster and ReplicationGroup generator entries, hook templates and hand-written code copied for our fixed copies (elasticache.aws.hfl.dev CacheCluster and ReplicationGroup)
   - name: aws-sdk-go-v2 models
     repo: aws/aws-sdk-go-v2
     version: v1.34.0

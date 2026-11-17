@@ -1,0 +1,277 @@
+ignore:
+  resource_names:
+      # FileSystem
+      # MountTarget
+      - AccessPoint
+      - ReplicationConfiguration
+  field_paths:
+  - DescribeFileSystemsInput.CreationToken
+  - PutBackupPolicyInput.FileSystemId
+  - PutLifecycleConfigurationInput.FileSystemId
+  - PutFileSystemPolicyInput.FileSystemId
+  - UpdateFileSystemProtectionInput.FileSystemId
+  # Well, FileSystem idempotency token is called CreationToken
+  # and AccessPoint idempotency token is called ClientToken.....
+  - CreateAccessPointInput.ClientToken
+  - AccessPointDescription.ClientToken
+  shape_names:
+  - SecondaryGids
+  - ClientToken
+controller_name: efs
+resources:
+  FileSystem:
+    synced:
+      when:
+        - path: Status.LifeCycleState
+          in: [ "available" ]
+    fields:
+      CreationToken:
+        is_immutable: true
+      BypassPolicyLockoutSafetyCheck:
+        from:
+          operation: PutFileSystemPolicy
+          path: BypassPolicyLockoutSafetyCheck
+        compare:
+          is_ignored: true
+      Backup:
+        compare:
+          is_ignored: true
+        set:
+        - ignore: all
+      KMSKeyID:
+        references:
+          resource: Key
+          path: Status.ACKResourceMetadata.ARN
+          service_name: kms
+      FileSystemProtection:
+        is_read_only: false
+        from:
+          operation: UpdateFileSystemProtection
+          path: .
+      BackupPolicy:
+        from:
+          operation: PutBackupPolicy
+          path: BackupPolicy
+      Policy:
+        is_iam_policy: true
+        from:
+          operation: PutFileSystemPolicy
+          path: Policy
+      LifecyclePolicies:
+        from:
+          operation: PutLifecycleConfiguration
+          path: LifecyclePolicies
+      ReplicationConfiguration:
+        from:
+          operation: CreateReplicationConfiguration
+          path: Destinations
+      ReplicationConfigurationStatus:
+        is_read_only: true
+        from:
+          operation: DescribeReplicationConfigurations
+          path: Replications.Destinations
+      ReplicationConfiguration.KMSKeyID:
+        references:
+          resource: Key
+          path: Status.ACKResourceMetadata.ARN
+          service_name: kms
+      ReplicationConfiguration.FileSystemID:
+        references:
+          resource: FileSystem
+          path: Status.FileSystemID
+      ReplicationConfiguration.RoleARN:
+        references:
+          resource: Role
+          path: Status.ACKResourceMetadata.ARN
+          service_name: iam
+    hooks:
+      delta_pre_compare:
+        code: customPreCompare(delta, a, b)
+      sdk_update_pre_set_output:
+        template_path: hooks/file_system/sdk_update_pre_set_output.go.tpl
+      sdk_create_post_build_request:
+        template_path: hooks/file_system/sdk_create_post_build_request.go.tpl
+      sdk_read_many_post_set_output:
+        template_path: hooks/file_system/sdk_read_many_post_set_output.go.tpl
+      sdk_update_pre_build_request:
+        template_path: hooks/file_system/sdk_update_pre_build_request.go.tpl
+      sdk_read_many_pre_build_request:
+        template_path: hooks/file_system/sdk_read_many_pre_build_request.go.tpl
+      sdk_delete_pre_build_request:
+        template_path: hooks/file_system/sdk_delete_pre_build_request.go.tpl
+    print:
+      add_age_column: true
+      add_synced_column: true
+      order_by: index
+      additional_columns:
+      - name: ID
+        json_path: .status.fileSystemID
+        type: string
+        index: 10
+      - name: ENCRYPTED
+        json_path: .spec.encrypted
+        type: boolean
+        index: 11
+      - name: PERFORMANCEMODE
+        json_path: .spec.performanceMode
+        type: string
+        index: 15
+        priority: 1
+      - name: THROUGHPUTMODE
+        json_path: .spec.throughputMode
+        type: string
+        index: 16
+        priority: 1
+      - name: PROVISIONEDTHROUGHPUT
+        json_path: .status.provisionedThroughputInMiBps
+        type: string
+        index: 17
+        priority: 1
+      - name: SIZE
+        json_path: .status.sizeInBytes.value
+        type: integer
+        index: 20
+      - name: MOUNTTARGETS
+        json_path: .status.numberOfMountTargets
+        type: integer
+        index: 25
+      - name: STATE
+        json_path: .status.lifeCycleState
+        type: string
+        index: 30
+  MountTarget:
+    synced:
+      when:
+        - path: Status.LifeCycleState
+          in: [ "available" ]
+    tags:
+      ignore: true
+    fields:
+      IpAddressType:
+        is_immutable: true
+        compare:
+          is_ignored: true
+      Ipv6Address:
+        is_immutable: true
+      FileSystemId:
+        references:
+          resource: FileSystem
+          path: Status.FileSystemID
+      SubnetId:
+        references:
+          resource: Subnet
+          path: Status.SubnetID
+          service_name: ec2
+      SecurityGroups:
+        references:
+          resource: SecurityGroup
+          path: Status.ID
+          service_name: ec2
+    update_operation:
+      custom_method_name: customUpdateMountTarget
+    hooks:
+      sdk_read_many_post_build_request:
+        template_path: hooks/mount_target/sdk_read_many_post_build_request.go.tpl
+      sdk_read_many_post_set_output:
+        template_path: hooks/mount_target/sdk_read_many_post_set_output.go.tpl
+    print:
+      add_age_column: true
+      add_synced_column: true
+      order_by: index
+      additional_columns:
+      - name: FILESYSTEMID
+        json_path: .spec.fileSystemID
+        type: string
+        index: 10
+      - name: MOUNTTARGETID
+        json_path: .status.mountTargetID
+        type: string
+        index: 30
+      - name: IPADDRESS
+        json_path: .spec.ipAddress
+        type: string
+        index: 20
+      - name: SUBNETID
+        json_path: .spec.subnetID
+        type: string
+        index: 30
+      - name: VPCID
+        json_path: .status.vpcID
+        type: string
+        index: 35
+        priority: 1
+      - name: AVAILABILITYZONEID
+        json_path: .status.availabilityZoneID
+        type: string
+        index: 36
+        priority: 1
+      - name: AVAILABILITYZONENAME
+        json_path: .status.availabilityZoneName
+        type: string
+        index: 37
+        priority: 1
+      - name: STATE
+        json_path: .status.lifeCycleState
+        type: string
+        index: 40
+  AccessPoint:
+    fields:
+      PosixUser:
+        is_immutable: true
+      RootDirectory:
+        is_immutable: true
+      PosixUser.SecondaryGids:
+        type: "[]*int64"
+        compare:
+          is_ignored: true
+      # This is a workaround for the fact that code-generator
+      # isn't smart enough to understand this.
+      # TODO(a-hilaly): Remove this once the issue is fixed
+      PosixUser.SecondaryGIDs:
+        compare:
+          is_ignored: true
+      FileSystemId:
+        references:
+          resource: FileSystem
+          path: Status.FileSystemID
+        is_immutable: true
+    update_operation:
+      custom_method_name: customUpdateAccessPoint
+    hooks:
+      delta_pre_compare:
+        code: customPreCompare(delta, a, b)
+      sdk_create_post_build_request:
+        template_path: hooks/access_point/sdk_create_post_build_request.go.tpl
+      sdk_read_many_post_build_request:
+        template_path: hooks/access_point/sdk_read_many_post_build_request.go.tpl
+      sdk_read_many_post_set_output:
+        template_path: hooks/access_point/sdk_read_many_post_set_output.go.tpl
+    print:
+      add_age_column: true
+      add_synced_column: true
+      order_by: index
+      additional_columns:
+      - name: ID
+        json_path: .status.accessPointID
+        type: string
+        index: 5
+      - name: FILESYSTEMID
+        json_path: .spec.fileSystemID
+        type: string
+        index: 10
+      - name: ROOTDIRECTORY
+        json_path: .spec.rootDirectory.path
+        type: string
+        index: 20
+      - name: POSIXUSERUID
+        json_path: .spec.posixUser.uid
+        type: integer
+        index: 25
+      - name: POSIXUSERGID
+        json_path: .spec.posixUser.gid
+        type: integer
+        index: 30
+      - name: STATE
+        json_path: .status.lifeCycleState
+        type: string
+        index: 40

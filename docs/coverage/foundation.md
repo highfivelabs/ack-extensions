@@ -12,9 +12,9 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 
 | Category | Services | Resources | ACK | Ours beyond | None | Attributes | ACK | Ours beyond | Uncovered |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 16 | 241 | 55 (22.8%) | 128 (53.1%) | 58 | 2,418 | 28.0% | 37.6% | 34.4% |
+| platform-foundation | 16 | 241 | 55 (22.8%) | 128 (53.1%) | 58 | 2,418 | 28.0% | 38.0% | 34.0% |
 | security-adjacent | 18 | 112 | 14 (12.5%) | 76 (67.9%) | 22 | 2,082 | 37.6% | 50.9% | 11.6% |
-| application | 33 | 263 | 106 (40.3%) | 116 (44.1%) | 41 | 4,788 | 47.9% | 29.4% | 22.7% |
+| application | 33 | 263 | 106 (40.3%) | 116 (44.1%) | 41 | 4,788 | 47.9% | 29.6% | 22.5% |
 | other | 238 | 1262 | 92 (7.3%) | 1048 (83.0%) | 122 | 76,543 | 3.0% | 21.6% | 75.4% |
 
 **platform-foundation, by service** (in the order the queue takes them):
@@ -24,7 +24,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | 1 | `organizations` | 5 | 2 | 2 | 1 | 42.9% / 38.1% / 19.0% | `organizations-controller` v1.8.0 |
 | 2 | `sso` | 6 | 0 | 5 | 1 | 0.0% / 92.7% / 7.3% | none |
 | 3 | `iam` | 16 | 7 | 4 | 5 | 41.2% / 25.9% / 32.9% | `iam-controller` v1.12.0 |
-| 4 | `ec2` | 126 | 20 | 80 | 26 | 22.7% / 44.1% / 33.2% | `ec2-controller` v1.24.0 |
+| 4 | `ec2` | 126 | 20 | 80 | 26 | 22.7% / 44.8% / 32.4% | `ec2-controller` v1.24.0 |
 | 5 | `controltower` | 3 | 0 | 3 | 0 | 0.0% / 100.0% / 0.0% | none |
 | 6 | `route53` | 11 | 3 | 7 | 1 | 47.9% / 18.8% / 33.3% | `route53-controller` v1.9.0 |
 | 7 | `route53resolver` | 12 | 5 | 6 | 1 | 35.1% / 44.2% / 20.8% | `route53resolver-controller` v1.12.0 |
@@ -71,7 +71,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 | [F02](#f02) | IAM Identity Center: permission sets and account assignments | platform-foundation | 4 | 0 / 25 / 3 | L (PermissionSet: six APIs behind one kind), M (Assignment: async), S (attribute config); plus one for the new `services/ssoadmin/` manager | Mostly good: `CreatePermissionSet`/`DescribePermissionSet`/`UpdatePermissionSet`, `AttachM... |
 | [F03](#f03) | IAM: SAML providers (and the access-key question) | platform-foundation | 6 | 9 / 19 / 8 | S (SAMLProvider), M (AccessKey if wanted) | Good: `CreateSAMLProvider`, `CreateAccessKey`, `CreateVirtualMFADevice` are implemented |
 | [F04](#f04) | EC2 networking: Transit Gateway route tables, associations, propagation, routes and peering | platform-foundation | 7 | 20 / 17 / 6 | M, M | Good: `CreateTransitGateway`, `CreateTransitGatewayVpcAttachment`, `CreateTransitGatewayRo... |
-| [F05](#f05) | EC2 networking: site-to-site VPN connections and route propagation | platform-foundation | 5 | 0 / 50 / 9 | L (VPNConnection), S (propagation) | Partial: `CreateVpnConnection`, `CreateVpnGateway`, `AttachVpnGateway`, `CreateCustomerGat... |
+| [F05](#f05) | EC2 networking: site-to-site VPN connections and route propagation | platform-foundation | 5 | 0 / 56 / 3 | L (VPNConnection), S (propagation) | Partial: `CreateVpnConnection`, `CreateVpnGateway`, `AttachVpnGateway`, `CreateCustomerGat... |
 | [F06](#f06) | EC2 networking: smaller VPC kinds (network interfaces, block public access, placement groups, CIDR reservations) | platform-foundation | 6 | 0 / 42 / 0 | M (NetworkInterface), S each for the rest | Partial: `CreateNetworkInterface` is implemented |
 | [F07](#f07) | Control Tower: landing zone, enabled controls, enabled baselines | platform-foundation | 3 | 0 / 18 / 0 | L each, and no emulator | None: moto 5 |
 | [F08](#f08) | Route 53: DNSSEC and key-signing keys, query logging, CIDR collections, second-VPC association | platform-foundation | 7 | 7 / 18 / 2 | S each | Partial: `CreateHostedZone`, `ChangeResourceRecordSets`, `CreateQueryLoggingConfig`, `Asso... |
@@ -150,7 +150,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F05 EC2 networking: site-to-site VPN connections and route propagation
 
-- **Resources:** `ec2/VPNConnection`, `ec2/VPNConnectionRoute`, `ec2/VPNGatewayRoutePropagation`, `ec2/VPNGateway`, `ec2/CustomerGateway`. Today ACK covers 0, ours 50, nothing covers 9 of 59 attributes.
+- **Resources:** `ec2/VPNConnection`, `ec2/VPNConnectionRoute`, `ec2/VPNGatewayRoutePropagation`, `ec2/VPNGateway`, `ec2/CustomerGateway`. Today ACK covers 0, ours 56, nothing covers 3 of 59 attributes.
 - **Why first:** Hybrid connectivity: a customer gateway and a VPN gateway (ours already) mean nothing without the connection that joins them. ACK has none of the three; community #1868 has asked since 2023.
 - **Proposed kinds:** `ec2.aws.hfl.dev/VPNConnection`, generated from `CreateVpnConnection`/`DescribeVpnConnections`/`DeleteVpnConnection`: `type`, `customerGatewayRef` and `vpnGatewayRef` (our kinds) or `transitGatewayRef` (ACK's), `staticRoutesOnly`, `tunnelOptions[]` (two tunnels: pre-shared key from a Secret, CIDRs, IKE and phase lifetimes), `staticRoutes[]` (a field, `CreateVpnConnectionRoute`), tags. 43 CloudFormation attributes: the largest EC2 networking kind. Route propagation to a route table is a field of `RouteTable` upstream (`EnableVgwRoutePropagation`) or a small sidecar kind of ours.
 - **Upstream:** ec2-controller ignores `VpnConnection`, `VpnConnectionRoute`, `VpnGateway`, `CustomerGateway` in generator.yaml. Community #1868 'VPN resources' (open since 2023-08-03, ten comments, no PR). Ours: `VPNGateway`, `CustomerGateway`.
@@ -391,7 +391,6 @@ One section per service in queue order; inside a service, resources that still n
 | `TransitGateway` | `TransitGateway` v1.24.0: 11/15 | - | 4 of 15 attrs: `AssociationDefaultRouteTableId`, `EncryptionSupport`, `PropagationDefaultRouteTableId`, `SecurityGroupReferencingSupport` | kind released; the rest is not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | S | the missing fields: upstream PR or our copy (plan section 9, question 1) | [F04](#f04) |
 | `TransitGatewayVpcAttachment` | `TransitGatewayVPCAttachment` v1.24.0: 9/11 | - | 2 of 11 attrs: `AddSubnetIds[]`, `RemoveSubnetIds[]` | kind released; the rest is not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | S | the missing fields: upstream PR or our copy (plan section 9, question 1) | [F04](#f04) |
 | `VPNGatewayRoutePropagation` | none | `VPNGatewayRoutePropagation`: +1 | 1 of 2 attrs: `RouteTableIds[]` | controller exists; resource not in it | 2 | no: `EnableVgwRoutePropagation` is not in moto | S | a field of `RouteTable` upstream (`propagatingVGWs`) or a sidecar kind; F05 | [F05](#f05) |
-| `VPNConnection` | none | `VPNConnection`: +37 | 6 of 43 attrs: `PreSharedKeyStorage`, `TunnelBandwidth`, `VpnConcentratorId`, `VpnTunnelOptionsSpecifications[].LogOptions.CloudwatchLogOptions.BgpLogEnabled`, `VpnTunnelOptionsSpecifications[].LogOptions.CloudwatchLogOptions.BgpLogGroupArn`, `VpnTunnelOptionsSpecifications[].LogOptions.CloudwatchLogOptions.BgpLogOutputFormat` | ignored in ACK's generator.yaml | 1 | partly: `CreateVpnConnection` yes, `CreateVpnConnectionRoute` no | L | `ec2.aws.hfl.dev/VPNConnection`, generated (`CreateVpnConnection` with tunnel options), static routes as a field, F05 | [F05](#f05) |
 | `EIP` | `ElasticIPAddress` v1.24.0: 5/9 | - | 4 of 9 attrs: `Domain`, `InstanceId`, `IpamPoolId`, `TransferAddress` | kind released; the rest is not in it | 2 | service-level only: moto `ec2`: 232 of 809 operations | S | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
 | `VPCEndpoint` | `VPCEndpoint` v1.24.0: 16/18 | - | 2 of 18 attrs: `ResourceConfigurationArn`, `DnsOptions.PrivateDnsOnlyForInboundResolverEndpoint` | kind released; the rest is not in it | 2 | service-level only: moto `ec2`: 232 of 809 operations | M | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
 | `DHCPOptions` | `DHCPOptions` v1.24.0: 2/8 | - | 6 of 8 attrs: `DomainName`, `Ipv6AddressPreferredLeaseTime`, `NetbiosNodeType`, `DomainNameServers[]`, `NetbiosNameServers[]`, `NtpServers[]` | kind released; the rest is not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | S | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
@@ -427,6 +426,7 @@ One section per service in queue order; inside a service, resources that still n
 | `VPNConnectionRoute` | none | - | 2 attrs, covered inline: to be a field of `VPNConnection.spec.staticRoutes[]` (F05) | ignored in ACK's generator.yaml | 1 | no: `CreateVpnConnectionRoute` is not in moto | - | a field of the `VPNConnection` kind | [F05](#f05) |
 | `VPNGateway` | none | `VPNGateway`: +4 | none | ignored in ACK's generator.yaml | 1 | service-level only: moto `ec2`: 232 of 809 operations | - | none (covered) | [F05](#f05) |
 | `TransitGatewayRouteTable` | none | `TransitGatewayRouteTable (Cloud Control)`: +3 | none | ignored in ACK's generator.yaml | 1 | yes: `CreateTransitGatewayRouteTable`, `AssociateTransitGatewayRouteTable`, `EnableTransitGatewayRouteTablePropagation`, `CreateTransitGatewayRoute` | - | `ec2.aws.hfl.dev/TransitGatewayRouteTable`, generated, with `associations[]`, `propagations[]` and `routes[]` as fields (the pattern of ACK's `RouteTable`), F04 | [F04](#f04) |
+| `VPNConnection` | none | `VPNConnection`: +43 | none | ignored in ACK's generator.yaml | 1 | partly: `CreateVpnConnection` yes, `CreateVpnConnectionRoute` no | - | `ec2.aws.hfl.dev/VPNConnection`, generated (`CreateVpnConnection` with tunnel options), static routes as a field, F05 | [F05](#f05) |
 | `EIPAssociation` | none | `EIPAssociation (Cloud Control)`: +5 | none | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | - | none (covered) |  |
 | `GatewayRouteTableAssociation` | none | `GatewayRouteTableAssociation (Cloud Control)`: +2 | none | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | - | none (covered) |  |
 | `NetworkInterfaceAttachment` | none | `NetworkInterfaceAttachment (Cloud Control)`: +7 | none | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | - | none (covered) |  |
@@ -644,7 +644,7 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `LaunchTemplate` | `LaunchTemplate` v1.24.0: 116/133 | `LaunchTemplate`: +6 | 11 of 133 attrs: `LaunchTemplateData.SecurityGroupIds[]`, `LaunchTemplateData.SecurityGroups[]`, `TagSpecifications[].ResourceType`, `LaunchTemplateData.NetworkInterfaces[].EnaQueueCount`, `LaunchTemplateData.TagSpecifications[].ResourceType`, `LaunchTemplateData.BlockDeviceMappings[].Ebs.EbsCardIndex` and 5 more | kind released; the rest is not in it | 2 | service-level only: moto `ec2`: 232 of 809 operations | L | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
+| `LaunchTemplate` | `LaunchTemplate` v1.24.0: 116/133 | `LaunchTemplate`: +9 | 8 of 133 attrs: `LaunchTemplateData.SecurityGroupIds[]`, `LaunchTemplateData.SecurityGroups[]`, `TagSpecifications[].ResourceType`, `LaunchTemplateData.TagSpecifications[].ResourceType`, `TagSpecifications[].Tags[].Key`, `TagSpecifications[].Tags[].Value` and 2 more | kind released; the rest is not in it | 2 | service-level only: moto `ec2`: 232 of 809 operations | L | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
 | `KeyPair` | none | - | whole resource (6 attrs) | ACK PR #396 (open, updated 2026-11-04): wait for it | 1 | service-level only: moto `ec2`: 232 of 809 operations | S | none: wait for ACK PR #396 |  |
 | `VolumeAttachment` | none | `VolumeAttachment`: +3 | 1 of 4 attrs: `EbsCardIndex` | controller exists; resource not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/VolumeAttachment`, generated |  |
 | `Instance` | `Instance` v1.24.0: 66/79 | - | 13 of 79 attrs: `AdditionalInfo`, `IamInstanceProfile`, `Monitoring`, `PlacementGroupName`, `PropagateTagsToVolumeOnCreation`, `SsmAssociations[].DocumentName` and 7 more | kind released; the rest is not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | L | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
@@ -660,7 +660,7 @@ One section per service in queue order; inside a service, resources that still n
 | `SqlHaStandbyDetectedInstance` | none | - | whole resource (2 attrs) | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/SqlHaStandbyDetectedInstance`, generated |  |
 | `CapacityReservation` | `CapacityReservation` v1.24.0: 13/17 | - | 4 of 17 attrs: `UnusedReservationBillingOwnerId`, `TagSpecifications[].ResourceType`, `TagSpecifications[].Tags[].Key`, `TagSpecifications[].Tags[].Value` | kind released; the rest is not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | M | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
 | `CapacityReservationFleet` | none | - | whole resource (17 attrs) | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | M | `ec2.aws.hfl.dev/CapacityReservationFleet`, generated |  |
-| `Volume` | none | `Volume`: +12 | 4 of 16 attrs: `AutoEnableIO`, `AvailabilityZoneId`, `SourceVolumeId`, `VolumeInitializationRate` | ignored in ACK's generator.yaml | 0 | service-level only: moto `ec2`: 232 of 809 operations | M | `ec2.aws.hfl.dev/Volume`, generated |  |
+| `Volume` | none | `Volume`: +14 | 2 of 16 attrs: `AutoEnableIO`, `SourceVolumeId` | ignored in ACK's generator.yaml | 0 | service-level only: moto `ec2`: 232 of 809 operations | M | `ec2.aws.hfl.dev/Volume`, generated |  |
 | `EC2Fleet` | none | - | whole resource (123 attrs) | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | L | `ec2.aws.hfl.dev/EC2Fleet`, generated |  |
 | `SpotFleet` | none | - | whole resource (148 attrs) | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | L | `ec2.aws.hfl.dev/SpotFleet`, generated |  |
 | `PlacementGroup` | none | `PlacementGroup (Cloud Control)`: +6 | none | ignored in ACK's generator.yaml | 1 | no: `CreatePlacementGroup` is not in moto | - | `ec2.aws.hfl.dev/PlacementGroup`, generated; F06 | [F06](#f06) |

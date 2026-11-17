@@ -7,6 +7,7 @@ resources:
   - bases/autoscaling.aws.hfl.dev_autoscalinggroups.yaml
   - bases/autoscaling.aws.hfl.dev_scalingpolicies.yaml
   - bases/autoscaling.aws.hfl.dev_scheduledactions.yaml
+  - bases/cloudwatchlogs.aws.hfl.dev_loggroups.yaml
   - bases/ec2.aws.hfl.dev_customergateways.yaml
   - bases/ec2.aws.hfl.dev_networkinterfacepermissions.yaml
   - bases/ec2.aws.hfl.dev_resourcetags.yaml
@@ -21,6 +22,10 @@ resources:
   - bases/ec2.aws.hfl.dev_vpngatewayroutepropagations.yaml
   - bases/ec2.aws.hfl.dev_launchtemplates.yaml
   - bases/ecr.aws.hfl.dev_replicationconfigurations.yaml
+  - bases/efs.aws.hfl.dev_filesystems.yaml
+  - bases/efs.aws.hfl.dev_mounttargets.yaml
+  - bases/elasticache.aws.hfl.dev_cacheclusters.yaml
+  - bases/elasticache.aws.hfl.dev_replicationgroups.yaml
   - bases/eventbridge.aws.hfl.dev_apidestinations.yaml
   - bases/eventbridge.aws.hfl.dev_connections.yaml
   - bases/iam.aws.hfl.dev_accesskeys.yaml

@@ -1,0 +1,14 @@
+    if pendingModifications := resp.CacheCluster.PendingModifiedValues; pendingModifications != nil {
+		if pendingModifications.NumCacheNodes != nil {
+			ko.Spec.NumCacheNodes = Int64OrNil(pendingModifications.NumCacheNodes)
+		}
+		if pendingModifications.CacheNodeType != nil {
+			ko.Spec.CacheNodeType = pendingModifications.CacheNodeType
+		}
+		if pendingModifications.TransitEncryptionEnabled != nil {
+			ko.Spec.TransitEncryptionEnabled = pendingModifications.TransitEncryptionEnabled
+		}
+	}
+
+	ackcondition.SetSynced(&resource{ko}, corev1.ConditionFalse, nil, nil)
+

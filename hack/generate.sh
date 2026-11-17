@@ -34,13 +34,16 @@ SDK_VERSION="v1.34.0"         # UPSTREAM.md, "aws-sdk-go-v2 models"
 SDK_VERSION_FOR() {
   case "$1" in
     autoscaling) echo "v1.41.5" ;; # autoscaling-controller v1.5.0's aws-sdk-go-v2 version
+    cloudwatchlogs) echo "v1.41.5" ;; # cloudwatchlogs-controller v1.11.0's aws-sdk-go-v2 version
     ec2) echo "v1.41.5" ;;         # includes VolumeInitializationRate on LaunchTemplate EBS block devices
+    efs) echo "v1.41.5" ;;         # efs-controller v1.9.0's aws-sdk-go-v2 version
+    elasticache) echo "v1.41.5" ;; # matches go.mod aws-sdk-go-v2
     s3) echo "v1.41.5" ;;          # s3-controller v1.15.0's ack-generate-metadata.yaml
     *) echo "${SDK_VERSION}" ;;
   esac
 }
 GROUP_SUFFIX="aws.hfl.dev"
-SERVICES=(applicationautoscaling autoscaling ec2 ecr eventbridge iam kms lambda organizations rds s3 s3control scheduler wafv2)
+SERVICES=(applicationautoscaling autoscaling cloudwatchlogs ec2 ecr efs elasticache eventbridge iam kms lambda organizations rds s3 s3control scheduler wafv2)
 GEN="${ROOT}/bin/ack-generate"
 CONTROLLER_GEN="${ROOT}/bin/controller-gen"
 GOIMPORTS="${ROOT}/bin/goimports"
@@ -88,6 +91,13 @@ for svc in "${SERVICES[@]}"; do
     if [[ -f "${mgr_file}" ]]; then
       perl -pi -e 's#r\.ko\.Spec\.Tags = fromACKTags\([^)]+\)#$&\n\tpreserveTagPropagateAtLaunch(existingTags, r.ko.Spec.Tags)#g; s#a\.ko\.Spec\.Tags = fromACKTags\([^)]+\)#$&\n\tpreserveTagPropagateAtLaunch(existingDesiredTags, a.ko.Spec.Tags)#g' "${mgr_file}"
     fi
+  fi
+  if [[ "${svc}" == "elasticache" ]]; then
+    for ref_file in "${out}/cmd/controller/main.go" "${out}/pkg/resource/cache_cluster/references.go" "${out}/pkg/resource/replication_group/references.go"; do
+      if [[ -f "${ref_file}" ]]; then
+        perl -pi -e 's#"github\.com/aws-controllers-k8s/sns-controller/apis/v1alpha1"#"github.com/highfivelabs/ack-extensions/services/elasticache/pkg/ackmirrors"#g; s#\bsvcapitypes\.(CacheParameterGroup|CacheSubnetGroup|Snapshot|UserGroup)\b#snsapitypes.$1#g' "${ref_file}"
+      fi
+    done
   fi
 
   # 3. Drop what was generated before, keep what was written by hand.
