@@ -9,7 +9,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/identitystore"
-	"github.com/aws/aws-sdk-go-v2/service/identitystore/document"
 	istypes "github.com/aws/aws-sdk-go-v2/service/identitystore/types"
 )
 
@@ -141,7 +140,9 @@ func (b *IdentityStoreGroupMembership) Delete(ctx context.Context, id string) er
 
 // IdentityStoreUser is the backend of a user in the Identity Center directory,
 // identified by its Arn ("arn:aws:identitystore:::<IdentityStoreId>/user/<UserId>")
-// so Read, Update and Delete have both IDs without keeping state.
+// so Read and Delete have both IDs without keeping state. moto 5.2.5 implements
+// Create, Describe and DeleteUser and has no UpdateUser: an update fails here,
+// so changing DisplayName or Title is unproven on the fake.
 type IdentityStoreUser struct{ IS *identitystore.Client }
 
 // NewIdentityStoreUser makes the backend.
@@ -231,35 +232,8 @@ func (b *IdentityStoreUser) Read(ctx context.Context, arn string) (map[string]an
 	return m, nil
 }
 
-func (b *IdentityStoreUser) Update(ctx context.Context, arn string, _, next map[string]any) error {
-	store, uid, err := userIDFromARN(arn)
-	if err != nil {
-		return err
-	}
-	var ops []istypes.AttributeOperation
-	for _, k := range []struct{ cfn, path string }{
-		{"DisplayName", "displayName"},
-		{"Title", "title"},
-	} {
-		if v := str(next, k.cfn); v != "" {
-			ops = append(ops, istypes.AttributeOperation{
-				AttributePath:  aws.String(k.path),
-				AttributeValue: document.NewLazyDocument(v),
-			})
-		}
-	}
-	if len(ops) == 0 {
-		return nil
-	}
-	_, err = b.IS.UpdateUser(ctx, &identitystore.UpdateUserInput{
-		IdentityStoreId: aws.String(store),
-		UserId:          aws.String(uid),
-		Operations:      ops,
-	})
-	if err != nil {
-		return InvalidRequest("%v", err)
-	}
-	return nil
+func (b *IdentityStoreUser) Update(context.Context, string, map[string]any, map[string]any) error {
+	return InvalidRequest("moto 5.2.5 has no UpdateUser")
 }
 
 func (b *IdentityStoreUser) Delete(ctx context.Context, arn string) error {

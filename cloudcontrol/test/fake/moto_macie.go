@@ -61,18 +61,8 @@ func (b *MacieSession) Read(ctx context.Context, id string) (map[string]any, err
 	return m, nil
 }
 
-func (b *MacieSession) Update(ctx context.Context, _ string, _, next map[string]any) error {
-	in := &macie2.UpdateMacieSessionInput{}
-	if f := str(next, "FindingPublishingFrequency"); f != "" {
-		in.FindingPublishingFrequency = macietypes.FindingPublishingFrequency(f)
-	}
-	if s := str(next, "Status"); s != "" {
-		in.Status = macietypes.MacieStatus(s)
-	}
-	if _, err := b.M.UpdateMacieSession(ctx, in); err != nil {
-		return InvalidRequest("%v", err)
-	}
-	return nil
+func (b *MacieSession) Update(context.Context, string, map[string]any, map[string]any) error {
+	return InvalidRequest("moto 5.2.5 has no UpdateMacieSession")
 }
 
 func (b *MacieSession) Delete(ctx context.Context, id string) error {
@@ -224,26 +214,8 @@ func (b *MacieFindingsFilter) Read(ctx context.Context, id string) (map[string]a
 	return m, nil
 }
 
-func (b *MacieFindingsFilter) Update(ctx context.Context, id string, _, next map[string]any) error {
-	in := &macie2.UpdateFindingsFilterInput{
-		Id:              aws.String(id),
-		Name:            aws.String(str(next, "Name")),
-		FindingCriteria: macieCriteria(next["FindingCriteria"]),
-		Action:          macietypes.FindingsFilterAction(str(next, "Action")),
-	}
-	if in.Action == "" {
-		in.Action = macietypes.FindingsFilterActionNoop
-	}
-	if d := str(next, "Description"); d != "" {
-		in.Description = aws.String(d)
-	}
-	if p, ok := next["Position"].(float64); ok {
-		in.Position = aws.Int32(int32(p))
-	}
-	if _, err := b.M.UpdateFindingsFilter(ctx, in); err != nil {
-		return InvalidRequest("%v", err)
-	}
-	return nil
+func (b *MacieFindingsFilter) Update(context.Context, string, map[string]any, map[string]any) error {
+	return InvalidRequest("moto 5.2.5 has no UpdateFindingsFilter")
 }
 
 func (b *MacieFindingsFilter) Delete(ctx context.Context, id string) error {

@@ -4,9 +4,7 @@
 package e2e
 
 import (
-	"fmt"
 	"testing"
-	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
@@ -15,7 +13,8 @@ import (
 )
 
 // F18, Macie: the account's Macie session and a findings filter, made,
-// updated, and deleted.
+// read back in moto, and deleted (moto 5.2.5 has no UpdateMacieSession or
+// UpdateFindingsFilter).
 func TestMacie(t *testing.T) {
 	e := start(t)
 	mc := macie2.NewFromConfig(e.moto)
@@ -31,21 +30,10 @@ func TestMacie(t *testing.T) {
 	if acct, _, _ := unstructured.NestedString(got.Object, "status", "awsAccountId"); acct != e.account {
 		t.Fatalf("status.awsAccountId %q, want %q", acct, e.account)
 	}
-	if err := e.update(t, sess, func(o *unstructured.Unstructured) {
-		_ = unstructured.SetNestedField(o.Object, "SIX_HOURS", "spec", "findingPublishingFrequency")
-	}); err != nil {
-		t.Fatal(err)
+	ms, err := mc.GetMacieSession(e.ctx, &macie2.GetMacieSessionInput{})
+	if err != nil || ms.FindingPublishingFrequency != "ONE_HOUR" {
+		t.Fatalf("moto's macie session: %v %+v", err, ms)
 	}
-	eventually(t, 60*time.Second, "updated macie session in moto", func() error {
-		out, err := mc.GetMacieSession(e.ctx, &macie2.GetMacieSessionInput{})
-		if err != nil {
-			return err
-		}
-		if out.FindingPublishingFrequency != "SIX_HOURS" {
-			return fmt.Errorf("got frequency %q", out.FindingPublishingFrequency)
-		}
-		return nil
-	})
 
 	flt := objOf("AWS::Macie::FindingsFilter", "suppress-low", map[string]any{
 		"name":        "suppress-low",
@@ -65,21 +53,10 @@ func TestMacie(t *testing.T) {
 	if fid == "" {
 		t.Fatalf("no status.id on findings filter: %v", gotF.Object["status"])
 	}
-	if err := e.update(t, flt, func(o *unstructured.Unstructured) {
-		_ = unstructured.SetNestedField(o.Object, "NOOP", "spec", "action")
-	}); err != nil {
-		t.Fatal(err)
+	gf, err := mc.GetFindingsFilter(e.ctx, &macie2.GetFindingsFilterInput{Id: aws.String(fid)})
+	if err != nil || aws.ToString(gf.Name) != "suppress-low" {
+		t.Fatalf("moto's findings filter: %v %+v", err, gf)
 	}
-	eventually(t, 60*time.Second, "updated findings filter in moto", func() error {
-		out, err := mc.GetFindingsFilter(e.ctx, &macie2.GetFindingsFilterInput{Id: aws.String(fid)})
-		if err != nil {
-			return err
-		}
-		if out.Action != "NOOP" {
-			return fmt.Errorf("got action %q", out.Action)
-		}
-		return nil
-	})
 
 	for _, u := range []*unstructured.Unstructured{flt, sess} {
 		if err := e.c.Delete(e.ctx, u); err != nil {
@@ -92,7 +69,8 @@ func TestMacie(t *testing.T) {
 	}
 }
 
-// F18, Inspector v2: a findings filter, made, updated, and deleted.
+// F18, Inspector v2: a findings filter, made, read back in moto, and
+// deleted (moto 5.2.5 has no UpdateFilter).
 func TestInspectorFilter(t *testing.T) {
 	e := start(t)
 	ic := inspector2.NewFromConfig(e.moto)
@@ -113,27 +91,16 @@ func TestInspectorFilter(t *testing.T) {
 	if arn == "" {
 		t.Fatalf("no status.arn on inspector filter: %v", got.Object["status"])
 	}
-	if err := e.update(t, flt, func(o *unstructured.Unstructured) {
-		_ = unstructured.SetNestedField(o.Object, "NONE", "spec", "filterAction")
-	}); err != nil {
-		t.Fatal(err)
+	out, err := ic.ListFilters(e.ctx, &inspector2.ListFiltersInput{Arns: []string{arn}})
+	if err != nil || len(out.Filters) != 1 || out.Filters[0].Action != "SUPPRESS" {
+		t.Fatalf("moto's inspector filter: %v %+v", err, out)
 	}
-	eventually(t, 60*time.Second, "updated inspector filter in moto", func() error {
-		out, err := ic.ListFilters(e.ctx, &inspector2.ListFiltersInput{Arns: []string{arn}})
-		if err != nil {
-			return err
-		}
-		if len(out.Filters) != 1 || out.Filters[0].Action != "NONE" {
-			return fmt.Errorf("got filters %+v", out.Filters)
-		}
-		return nil
-	})
 
 	if err := e.c.Delete(e.ctx, flt); err != nil {
 		t.Fatal(err)
 	}
 	e.waitGone(t, flt)
-	out, err := ic.ListFilters(e.ctx, &inspector2.ListFiltersInput{Arns: []string{arn}})
+	out, err = ic.ListFilters(e.ctx, &inspector2.ListFiltersInput{Arns: []string{arn}})
 	if err != nil {
 		t.Fatal(err)
 	}

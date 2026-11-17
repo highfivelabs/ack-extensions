@@ -148,20 +148,8 @@ func (b *InspectorFilter) Read(ctx context.Context, arn string) (map[string]any,
 	return m, nil
 }
 
-func (b *InspectorFilter) Update(ctx context.Context, arn string, _, next map[string]any) error {
-	in := &inspector2.UpdateFilterInput{
-		FilterArn:      aws.String(arn),
-		Name:           aws.String(str(next, "Name")),
-		Action:         insp2types.FilterAction(str(next, "FilterAction")),
-		FilterCriteria: inspCriteria(next["FilterCriteria"]),
-	}
-	if d := str(next, "Description"); d != "" {
-		in.Description = aws.String(d)
-	}
-	if _, err := b.I.UpdateFilter(ctx, in); err != nil {
-		return InvalidRequest("%v", err)
-	}
-	return nil
+func (b *InspectorFilter) Update(context.Context, string, map[string]any, map[string]any) error {
+	return InvalidRequest("moto 5.2.5 has no UpdateFilter")
 }
 
 func (b *InspectorFilter) Delete(ctx context.Context, arn string) error {

@@ -10,32 +10,25 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
-	iamtypes "github.com/aws/aws-sdk-go-v2/service/iam/types"
 )
 
 // ---- AWS::IAM::ServerCertificate on moto's IAM ----
 
 // ServerCertificate is the IAM server certificate backend, identified by
 // ServerCertificateName. moto 5.2.5 implements Upload/Get/Update/Delete
-// ServerCertificate and Tag/UntagServerCertificate. PrivateKey,
+// ServerCertificate, and has no TagServerCertificate/UntagServerCertificate,
+// so this backend keeps Tags itself (like SAMLProvider). PrivateKey,
 // CertificateBody and CertificateChain are write-only and create-only.
 type ServerCertificate struct {
-	IAM *iam.Client
-	mu  sync.Mutex
-	n   int
+	IAM  *iam.Client
+	mu   sync.Mutex
+	tags map[string]any
+	n    int
 }
 
 // NewServerCertificate makes the backend.
 func NewServerCertificate(cfg aws.Config) *ServerCertificate {
-	return &ServerCertificate{IAM: iam.NewFromConfig(cfg)}
-}
-
-func iamTags(v any) []iamtypes.Tag {
-	var out []iamtypes.Tag
-	for k, val := range tagsOf(v) {
-		out = append(out, iamtypes.Tag{Key: aws.String(k), Value: aws.String(val)})
-	}
-	return out
+	return &ServerCertificate{IAM: iam.NewFromConfig(cfg), tags: map[string]any{}}
 }
 
 func (b *ServerCertificate) Create(ctx context.Context, m map[string]any) (string, error) {
@@ -57,15 +50,17 @@ func (b *ServerCertificate) Create(ctx context.Context, m map[string]any) (strin
 	if p := str(m, "Path"); p != "" {
 		in.Path = aws.String(p)
 	}
-	if tags := iamTags(m["Tags"]); len(tags) > 0 {
-		in.Tags = tags
-	}
 	if _, err := b.IAM.UploadServerCertificate(ctx, in); err != nil {
 		if code(err) == "EntityAlreadyExists" {
 			return "", &HandlerError{"AlreadyExists", err.Error()}
 		}
 		return "", InvalidRequest("%v", err)
 	}
+	b.mu.Lock()
+	if t, ok := m["Tags"]; ok {
+		b.tags[name] = t
+	}
+	b.mu.Unlock()
 	return name, nil
 }
 
@@ -86,13 +81,11 @@ func (b *ServerCertificate) Read(ctx context.Context, name string) (map[string]a
 	if meta.Path != nil {
 		m["Path"] = aws.ToString(meta.Path)
 	}
-	if len(sc.Tags) > 0 {
-		tm := map[string]string{}
-		for _, t := range sc.Tags {
-			tm[aws.ToString(t.Key)] = aws.ToString(t.Value)
-		}
-		m["Tags"] = tagList(tm)
+	b.mu.Lock()
+	if t, ok := b.tags[name]; ok {
+		m["Tags"] = t
 	}
+	b.mu.Unlock()
 	return m, nil
 }
 
@@ -109,29 +102,13 @@ func (b *ServerCertificate) Update(ctx context.Context, name string, prev, next 
 			return InvalidRequest("%v", err)
 		}
 	}
-	oldTags, newTags := tagsOf(prev["Tags"]), tagsOf(next["Tags"])
-	var remove []string
-	for k := range oldTags {
-		if _, ok := newTags[k]; !ok {
-			remove = append(remove, k)
-		}
+	b.mu.Lock()
+	if t, ok := next["Tags"]; ok {
+		b.tags[name] = t
+	} else {
+		delete(b.tags, name)
 	}
-	if len(remove) > 0 {
-		if _, err := b.IAM.UntagServerCertificate(ctx, &iam.UntagServerCertificateInput{
-			ServerCertificateName: aws.String(name),
-			TagKeys:               remove,
-		}); err != nil {
-			return InvalidRequest("%v", err)
-		}
-	}
-	if tags := iamTags(next["Tags"]); len(tags) > 0 {
-		if _, err := b.IAM.TagServerCertificate(ctx, &iam.TagServerCertificateInput{
-			ServerCertificateName: aws.String(name),
-			Tags:                  tags,
-		}); err != nil {
-			return InvalidRequest("%v", err)
-		}
-	}
+	b.mu.Unlock()
 	return nil
 }
 
@@ -139,6 +116,11 @@ func (b *ServerCertificate) Delete(ctx context.Context, name string) error {
 	if _, err := b.Read(ctx, name); err != nil {
 		return err
 	}
-	_, err := b.IAM.DeleteServerCertificate(ctx, &iam.DeleteServerCertificateInput{ServerCertificateName: aws.String(name)})
-	return err
+	if _, err := b.IAM.DeleteServerCertificate(ctx, &iam.DeleteServerCertificateInput{ServerCertificateName: aws.String(name)}); err != nil {
+		return err
+	}
+	b.mu.Lock()
+	delete(b.tags, name)
+	b.mu.Unlock()
+	return nil
 }

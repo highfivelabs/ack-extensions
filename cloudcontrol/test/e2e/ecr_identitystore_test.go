@@ -217,8 +217,9 @@ func TestIdentityStore(t *testing.T) {
 	}
 }
 
-// F12, Identity Store: a user in the Identity Center directory, made, updated
-// (displayName, title), refused a create-only change (userName), and deleted.
+// F12, Identity Store: a user in the Identity Center directory, made,
+// refused a create-only change (userName), and deleted. moto 5.2.5 has no
+// UpdateUser, so a change to a user is not tested here.
 func TestIdentityStoreUser(t *testing.T) {
 	e := start(t)
 	insts, err := ssoadmin.NewFromConfig(e.moto).ListInstances(e.ctx, &ssoadmin.ListInstancesInput{})
@@ -247,23 +248,6 @@ func TestIdentityStoreUser(t *testing.T) {
 	if err != nil || aws.ToString(du.UserName) != "bob" || aws.ToString(du.DisplayName) != "Bob Example" {
 		t.Fatalf("moto's user: %v %+v", err, du)
 	}
-
-	if err := e.update(t, u, func(o *unstructured.Unstructured) {
-		_ = unstructured.SetNestedField(o.Object, "Robert Example", "spec", "displayName")
-		_ = unstructured.SetNestedField(o.Object, "Staff Engineer", "spec", "title")
-	}); err != nil {
-		t.Fatal(err)
-	}
-	eventually(t, 60*time.Second, "updated user in moto", func() error {
-		du, err := is.DescribeUser(e.ctx, &identitystore.DescribeUserInput{IdentityStoreId: &store, UserId: &uid})
-		if err != nil {
-			return err
-		}
-		if aws.ToString(du.DisplayName) != "Robert Example" || aws.ToString(du.Title) != "Staff Engineer" {
-			return fmt.Errorf("got displayName=%q title=%q", aws.ToString(du.DisplayName), aws.ToString(du.Title))
-		}
-		return nil
-	})
 
 	err = e.update(t, u, func(o *unstructured.Unstructured) {
 		_ = unstructured.SetNestedField(o.Object, "robert", "spec", "userName")
