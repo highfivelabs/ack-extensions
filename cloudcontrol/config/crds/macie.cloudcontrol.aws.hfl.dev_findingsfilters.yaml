@@ -5,6 +5,8 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     cloudcontrol.aws.hfl.dev/type-name: AWS::Macie::FindingsFilter
+    cloudcontrol.aws.hfl.dev/unproven-on-fake: moto 5.2.5 has no CreateFindingsFilter;
+      on the schema fake only
   name: findingsfilters.macie.cloudcontrol.aws.hfl.dev
 spec:
   group: macie.cloudcontrol.aws.hfl.dev

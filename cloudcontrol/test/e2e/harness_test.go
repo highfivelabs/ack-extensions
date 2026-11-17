@@ -334,8 +334,6 @@ func startFake(t *testing.T, root string) (*fake.Server, string, aws.Config) {
 			b = fake.NewDelegationSet(motoCfg)
 		case "AWS::Macie::Session":
 			b = fake.NewMacieSession(motoCfg, motoAccount)
-		case "AWS::Macie::FindingsFilter":
-			b = fake.NewMacieFindingsFilter(motoCfg)
 		case "AWS::InspectorV2::Filter":
 			b = fake.NewInspectorFilter(motoCfg)
 		default:

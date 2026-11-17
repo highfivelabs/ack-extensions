@@ -1156,7 +1156,7 @@ m2,Deployment,3,,0,Deployment (Cloud Control),3,0,false,ours Deployment (Cloud C
 m2,Environment,17,,0,Environment (Cloud Control),17,0,false,ours Environment (Cloud Control) unproven on fake: moto 5.2.5 has no m2; on the schema fake only
 macie,AllowList,7,,0,AllowList (Cloud Control),7,0,false,ours AllowList (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has macie2); on the schema fake only
 macie,CustomDataIdentifier,8,,0,CustomDataIdentifier (Cloud Control),8,0,false,ours CustomDataIdentifier (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has macie2); on the schema fake only
-macie,FindingsFilter,12,,0,FindingsFilter (Cloud Control),12,0,false,
+macie,FindingsFilter,12,,0,FindingsFilter (Cloud Control),12,0,false,ours FindingsFilter (Cloud Control) unproven on fake: moto 5.2.5 has no CreateFindingsFilter; on the schema fake only
 macie,Member,4,,0,Member (Cloud Control),4,0,false,ours Member (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has macie2); on the schema fake only
 macie,Session,2,,0,Session (Cloud Control),2,0,false,
 managedblockchain,Accessor,4,,0,Accessor (Cloud Control),4,0,false,ours Accessor (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has managedblockchain); on the schema fake only

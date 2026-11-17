@@ -306,6 +306,7 @@ types:
   - typeName: AWS::Macie::CustomDataIdentifier
     unproven: "no moto backend yet (moto 5.2.5 has macie2); on the schema fake only"
   - typeName: AWS::Macie::FindingsFilter
+    unproven: "moto 5.2.5 has no CreateFindingsFilter; on the schema fake only"
   - typeName: AWS::Macie::Member
     unproven: "no moto backend yet (moto 5.2.5 has macie2); on the schema fake only"
   - typeName: AWS::Macie::Session

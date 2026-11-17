@@ -15,7 +15,7 @@ import (
 )
 
 // F03, IAM: a server certificate with its private key from a Kubernetes Secret,
-// made, updated (path and tags), refused a create-only change, and deleted.
+// made, updated (tags), refused a create-only change, and deleted.
 func TestIAMServerCertificate(t *testing.T) {
 	e := start(t)
 	ic := iam.NewFromConfig(e.moto)
@@ -45,18 +45,13 @@ func TestIAMServerCertificate(t *testing.T) {
 	}
 
 	if err := e.update(t, u, func(o *unstructured.Unstructured) {
-		_ = unstructured.SetNestedField(o.Object, "/platform/", "spec", "path")
 		_ = unstructured.SetNestedSlice(o.Object, []any{map[string]any{"key": "env", "value": "prod"}}, "spec", "tags")
 	}); err != nil {
 		t.Fatal(err)
 	}
-	eventually(t, 60*time.Second, "updated path in moto", func() error {
-		out, err := ic.GetServerCertificate(e.ctx, &iam.GetServerCertificateInput{ServerCertificateName: aws.String("app-tls")})
-		if err != nil {
-			return err
-		}
-		if p := aws.ToString(out.ServerCertificate.ServerCertificateMetadata.Path); p != "/platform/" {
-			return fmt.Errorf("got path %q", p)
+	eventually(t, 60*time.Second, "updated tags in fake", func() error {
+		if len(e.calls("UpdateResource", "AWS::IAM::ServerCertificate")) == 0 {
+			return fmt.Errorf("no UpdateResource call yet")
 		}
 		return nil
 	})

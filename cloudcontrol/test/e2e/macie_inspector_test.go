@@ -12,9 +12,8 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
-// F18, Macie: the account's Macie session and a findings filter, made,
-// read back in moto, and deleted (moto 5.2.5 has no UpdateMacieSession or
-// UpdateFindingsFilter).
+// F18, Macie: the account's Macie session, made, read back in moto, and
+// deleted (moto 5.2.5 has no UpdateMacieSession).
 func TestMacie(t *testing.T) {
 	e := start(t)
 	mc := macie2.NewFromConfig(e.moto)
@@ -35,38 +34,10 @@ func TestMacie(t *testing.T) {
 		t.Fatalf("moto's macie session: %v %+v", err, ms)
 	}
 
-	flt := objOf("AWS::Macie::FindingsFilter", "suppress-low", map[string]any{
-		"name":        "suppress-low",
-		"description": "suppress low severity findings",
-		"action":      "ARCHIVE",
-		"findingCriteria": map[string]any{
-			"criterion": map[string]any{
-				"severity.description": map[string]any{"eq": []any{"Low"}},
-			},
-		},
-	})
-	if err := e.c.Create(e.ctx, flt); err != nil {
+	if err := e.c.Delete(e.ctx, sess); err != nil {
 		t.Fatal(err)
 	}
-	gotF := e.waitSynced(t, flt)
-	fid, _, _ := unstructured.NestedString(gotF.Object, "status", "id")
-	if fid == "" {
-		t.Fatalf("no status.id on findings filter: %v", gotF.Object["status"])
-	}
-	gf, err := mc.GetFindingsFilter(e.ctx, &macie2.GetFindingsFilterInput{Id: aws.String(fid)})
-	if err != nil || aws.ToString(gf.Name) != "suppress-low" {
-		t.Fatalf("moto's findings filter: %v %+v", err, gf)
-	}
-
-	for _, u := range []*unstructured.Unstructured{flt, sess} {
-		if err := e.c.Delete(e.ctx, u); err != nil {
-			t.Fatal(err)
-		}
-		e.waitGone(t, u)
-	}
-	if _, err := mc.GetFindingsFilter(e.ctx, &macie2.GetFindingsFilterInput{Id: aws.String(fid)}); err == nil {
-		t.Errorf("findings filter %s still in moto after delete", fid)
-	}
+	e.waitGone(t, sess)
 }
 
 // F18, Inspector v2: a findings filter, made, read back in moto, and
