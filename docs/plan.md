@@ -148,6 +148,16 @@ with the patch.
      controller versions.
   2. Run `task upstream generate`, then `task check`.
 
+  elbv2-controller is a direct Go module at `v1.9.0` (since 2026-11-16,
+  for `WebACLAssociation`'s `resourceRef` and `Permission`'s
+  `targetGroupRef`; `UPSTREAM.md`), kept by the builder's answer
+  (2026-11-17, item ACKELBV2: "ACKELBV2: as recommended (Yes: it was
+  already in the dependency graph indirectly (v1.7.0); importing it
+  directly gives the reference code real types and CRDs. The catalog pins
+  v1.10.0, which needs a newer ACK runtime; move to it with the next
+  runtime pin bump.)"). The next runtime pin move takes it to the
+  catalog's `v1.10.0`.
+
   Keep the AWS SDK modules at the versions ACK's controllers use, so
   shared dependencies are the ones ACK tests with. Adding the EC2 client
   for the tests at `@latest` moved `aws-sdk-go-v2` from `v1.41.5` to
@@ -4519,4 +4529,15 @@ Before it can run on a real cluster:
     kind and keeps one `Policy` kind; build the fixed copy only if a chart
     needs an ARN that no alias or tag condition can stand for. Not built
     until the builder answers.
+
+    **Answered** (2026-11-17, item ACKQ24-1, the builder: "ACKQ24-1: as
+    recommended (Grant by alias: Resource
+    arn:aws:kms:<region>:<account>:key/* with ForAnyValue:StringEquals
+    kms:ResourceAliases = alias/<chart alias>. No new kind, one Policy
+    kind for every chart; build the placeholder Policy copy only if a
+    chart needs an ARN no alias or tag condition can stand for.)"): the
+    first option. The eks chart grants its key by its alias in the
+    catalog; nothing is built here. The fixed copy of `Policy` with
+    placeholders waits for a chart that needs an ARN no alias or tag
+    condition can stand for.
 
