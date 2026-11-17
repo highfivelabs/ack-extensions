@@ -12,6 +12,10 @@ import (
 	ackiamapitypes "github.com/aws-controllers-k8s/iam-controller/apis/v1alpha1"
 
 	hfl_ec2 "github.com/highfivelabs/ack-extensions/services/ec2/apis/v1alpha1"
+
+	// TrafficSourceAttachment is made with AttachTrafficSources, read from
+	// DescribeTrafficSources, and deleted with DetachTrafficSources.
+	_ "github.com/highfivelabs/ack-extensions/services/autoscaling/pkg/resource/traffic_source_attachment"
 )
 
 func init() {

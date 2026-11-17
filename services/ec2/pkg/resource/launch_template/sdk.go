@@ -302,6 +302,14 @@ func (rm *resourceManager) newCreateRequestPayload(
 					if f0f0iter.EBS.DeleteOnTermination != nil {
 						f0f0elemf1.DeleteOnTermination = f0f0iter.EBS.DeleteOnTermination
 					}
+					if f0f0iter.EBS.EBSCardIndex != nil {
+						ebsCardIndexCopy0 := *f0f0iter.EBS.EBSCardIndex
+						if ebsCardIndexCopy0 > math.MaxInt32 || ebsCardIndexCopy0 < math.MinInt32 {
+							return nil, fmt.Errorf("error: field EbsCardIndex is of type int32")
+						}
+						ebsCardIndexCopy := int32(ebsCardIndexCopy0)
+						f0f0elemf1.EbsCardIndex = &ebsCardIndexCopy
+					}
 					if f0f0iter.EBS.Encrypted != nil {
 						f0f0elemf1.Encrypted = f0f0iter.EBS.Encrypted
 					}
@@ -326,6 +334,14 @@ func (rm *resourceManager) newCreateRequestPayload(
 						}
 						throughputCopy := int32(throughputCopy0)
 						f0f0elemf1.Throughput = &throughputCopy
+					}
+					if f0f0iter.EBS.VolumeInitializationRate != nil {
+						volumeInitializationRateCopy0 := *f0f0iter.EBS.VolumeInitializationRate
+						if volumeInitializationRateCopy0 > math.MaxInt32 || volumeInitializationRateCopy0 < math.MinInt32 {
+							return nil, fmt.Errorf("error: field VolumeInitializationRate is of type int32")
+						}
+						volumeInitializationRateCopy := int32(volumeInitializationRateCopy0)
+						f0f0elemf1.VolumeInitializationRate = &volumeInitializationRateCopy
 					}
 					if f0f0iter.EBS.VolumeSize != nil {
 						volumeSizeCopy0 := *f0f0iter.EBS.VolumeSize
@@ -379,6 +395,9 @@ func (rm *resourceManager) newCreateRequestPayload(
 				}
 				coreCountCopy := int32(coreCountCopy0)
 				f0f2.CoreCount = &coreCountCopy
+			}
+			if r.ko.Spec.Data.CPUOptions.NestedVirtualization != nil {
+				f0f2.NestedVirtualization = svcsdktypes.NestedVirtualizationSpecification(*r.ko.Spec.Data.CPUOptions.NestedVirtualization)
 			}
 			if r.ko.Spec.Data.CPUOptions.ThreadsPerCore != nil {
 				threadsPerCoreCopy0 := *r.ko.Spec.Data.CPUOptions.ThreadsPerCore
@@ -723,6 +742,9 @@ func (rm *resourceManager) newCreateRequestPayload(
 				onDemandMaxPricePercentageOverLowestPriceCopy := int32(onDemandMaxPricePercentageOverLowestPriceCopy0)
 				f0f15.OnDemandMaxPricePercentageOverLowestPrice = &onDemandMaxPricePercentageOverLowestPriceCopy
 			}
+			if r.ko.Spec.Data.InstanceRequirements.RequireEncryptionInTransit != nil {
+				f0f15.RequireEncryptionInTransit = r.ko.Spec.Data.InstanceRequirements.RequireEncryptionInTransit
+			}
 			if r.ko.Spec.Data.InstanceRequirements.RequireHibernateSupport != nil {
 				f0f15.RequireHibernateSupport = r.ko.Spec.Data.InstanceRequirements.RequireHibernateSupport
 			}
@@ -735,24 +757,24 @@ func (rm *resourceManager) newCreateRequestPayload(
 				f0f15.SpotMaxPricePercentageOverLowestPrice = &spotMaxPricePercentageOverLowestPriceCopy
 			}
 			if r.ko.Spec.Data.InstanceRequirements.TotalLocalStorageGB != nil {
-				f0f15f23 := &svcsdktypes.TotalLocalStorageGBRequest{}
+				f0f15f24 := &svcsdktypes.TotalLocalStorageGBRequest{}
 				if r.ko.Spec.Data.InstanceRequirements.TotalLocalStorageGB.Max != nil {
-					f0f15f23.Max = r.ko.Spec.Data.InstanceRequirements.TotalLocalStorageGB.Max
+					f0f15f24.Max = r.ko.Spec.Data.InstanceRequirements.TotalLocalStorageGB.Max
 				}
 				if r.ko.Spec.Data.InstanceRequirements.TotalLocalStorageGB.Min != nil {
-					f0f15f23.Min = r.ko.Spec.Data.InstanceRequirements.TotalLocalStorageGB.Min
+					f0f15f24.Min = r.ko.Spec.Data.InstanceRequirements.TotalLocalStorageGB.Min
 				}
-				f0f15.TotalLocalStorageGB = f0f15f23
+				f0f15.TotalLocalStorageGB = f0f15f24
 			}
 			if r.ko.Spec.Data.InstanceRequirements.VCPUCount != nil {
-				f0f15f24 := &svcsdktypes.VCpuCountRangeRequest{}
+				f0f15f25 := &svcsdktypes.VCpuCountRangeRequest{}
 				if r.ko.Spec.Data.InstanceRequirements.VCPUCount.Max != nil {
 					maxCopy0 := *r.ko.Spec.Data.InstanceRequirements.VCPUCount.Max
 					if maxCopy0 > math.MaxInt32 || maxCopy0 < math.MinInt32 {
 						return nil, fmt.Errorf("error: field Max is of type int32")
 					}
 					maxCopy := int32(maxCopy0)
-					f0f15f24.Max = &maxCopy
+					f0f15f25.Max = &maxCopy
 				}
 				if r.ko.Spec.Data.InstanceRequirements.VCPUCount.Min != nil {
 					minCopy0 := *r.ko.Spec.Data.InstanceRequirements.VCPUCount.Min
@@ -760,9 +782,9 @@ func (rm *resourceManager) newCreateRequestPayload(
 						return nil, fmt.Errorf("error: field Min is of type int32")
 					}
 					minCopy := int32(minCopy0)
-					f0f15f24.Min = &minCopy
+					f0f15f25.Min = &minCopy
 				}
-				f0f15.VCpuCount = f0f15f24
+				f0f15.VCpuCount = f0f15f25
 			}
 			f0.InstanceRequirements = f0f15
 		}
@@ -876,19 +898,27 @@ func (rm *resourceManager) newCreateRequestPayload(
 					deviceIndexCopy := int32(deviceIndexCopy0)
 					f0f23elem.DeviceIndex = &deviceIndexCopy
 				}
+				if f0f23iter.ENAQueueCount != nil {
+					enaQueueCountCopy0 := *f0f23iter.ENAQueueCount
+					if enaQueueCountCopy0 > math.MaxInt32 || enaQueueCountCopy0 < math.MinInt32 {
+						return nil, fmt.Errorf("error: field EnaQueueCount is of type int32")
+					}
+					enaQueueCountCopy := int32(enaQueueCountCopy0)
+					f0f23elem.EnaQueueCount = &enaQueueCountCopy
+				}
 				if f0f23iter.ENASrdSpecification != nil {
-					f0f23elemf6 := &svcsdktypes.EnaSrdSpecificationRequest{}
+					f0f23elemf7 := &svcsdktypes.EnaSrdSpecificationRequest{}
 					if f0f23iter.ENASrdSpecification.ENASrdEnabled != nil {
-						f0f23elemf6.EnaSrdEnabled = f0f23iter.ENASrdSpecification.ENASrdEnabled
+						f0f23elemf7.EnaSrdEnabled = f0f23iter.ENASrdSpecification.ENASrdEnabled
 					}
 					if f0f23iter.ENASrdSpecification.ENASrdUDPSpecification != nil {
-						f0f23elemf6f1 := &svcsdktypes.EnaSrdUdpSpecificationRequest{}
+						f0f23elemf7f1 := &svcsdktypes.EnaSrdUdpSpecificationRequest{}
 						if f0f23iter.ENASrdSpecification.ENASrdUDPSpecification.ENASrdUDPEnabled != nil {
-							f0f23elemf6f1.EnaSrdUdpEnabled = f0f23iter.ENASrdSpecification.ENASrdUDPSpecification.ENASrdUDPEnabled
+							f0f23elemf7f1.EnaSrdUdpEnabled = f0f23iter.ENASrdSpecification.ENASrdUDPSpecification.ENASrdUDPEnabled
 						}
-						f0f23elemf6.EnaSrdUdpSpecification = f0f23elemf6f1
+						f0f23elemf7.EnaSrdUdpSpecification = f0f23elemf7f1
 					}
-					f0f23elem.EnaSrdSpecification = f0f23elemf6
+					f0f23elem.EnaSrdSpecification = f0f23elemf7
 				}
 				if f0f23iter.Groups != nil {
 					f0f23elem.Groups = aws.ToStringSlice(f0f23iter.Groups)
@@ -905,15 +935,15 @@ func (rm *resourceManager) newCreateRequestPayload(
 					f0f23elem.Ipv4PrefixCount = &ipv4PrefixCountCopy
 				}
 				if f0f23iter.IPv4Prefixes != nil {
-					f0f23elemf10 := []svcsdktypes.Ipv4PrefixSpecificationRequest{}
-					for _, f0f23elemf10iter := range f0f23iter.IPv4Prefixes {
-						f0f23elemf10elem := &svcsdktypes.Ipv4PrefixSpecificationRequest{}
-						if f0f23elemf10iter.IPv4Prefix != nil {
-							f0f23elemf10elem.Ipv4Prefix = f0f23elemf10iter.IPv4Prefix
+					f0f23elemf11 := []svcsdktypes.Ipv4PrefixSpecificationRequest{}
+					for _, f0f23elemf11iter := range f0f23iter.IPv4Prefixes {
+						f0f23elemf11elem := &svcsdktypes.Ipv4PrefixSpecificationRequest{}
+						if f0f23elemf11iter.IPv4Prefix != nil {
+							f0f23elemf11elem.Ipv4Prefix = f0f23elemf11iter.IPv4Prefix
 						}
-						f0f23elemf10 = append(f0f23elemf10, *f0f23elemf10elem)
+						f0f23elemf11 = append(f0f23elemf11, *f0f23elemf11elem)
 					}
-					f0f23elem.Ipv4Prefixes = f0f23elemf10
+					f0f23elem.Ipv4Prefixes = f0f23elemf11
 				}
 				if f0f23iter.IPv6AddressCount != nil {
 					ipv6AddressCountCopy0 := *f0f23iter.IPv6AddressCount
@@ -924,15 +954,15 @@ func (rm *resourceManager) newCreateRequestPayload(
 					f0f23elem.Ipv6AddressCount = &ipv6AddressCountCopy
 				}
 				if f0f23iter.IPv6Addresses != nil {
-					f0f23elemf12 := []svcsdktypes.InstanceIpv6AddressRequest{}
-					for _, f0f23elemf12iter := range f0f23iter.IPv6Addresses {
-						f0f23elemf12elem := &svcsdktypes.InstanceIpv6AddressRequest{}
-						if f0f23elemf12iter.IPv6Address != nil {
-							f0f23elemf12elem.Ipv6Address = f0f23elemf12iter.IPv6Address
+					f0f23elemf13 := []svcsdktypes.InstanceIpv6AddressRequest{}
+					for _, f0f23elemf13iter := range f0f23iter.IPv6Addresses {
+						f0f23elemf13elem := &svcsdktypes.InstanceIpv6AddressRequest{}
+						if f0f23elemf13iter.IPv6Address != nil {
+							f0f23elemf13elem.Ipv6Address = f0f23elemf13iter.IPv6Address
 						}
-						f0f23elemf12 = append(f0f23elemf12, *f0f23elemf12elem)
+						f0f23elemf13 = append(f0f23elemf13, *f0f23elemf13elem)
 					}
-					f0f23elem.Ipv6Addresses = f0f23elemf12
+					f0f23elem.Ipv6Addresses = f0f23elemf13
 				}
 				if f0f23iter.IPv6PrefixCount != nil {
 					ipv6PrefixCountCopy0 := *f0f23iter.IPv6PrefixCount
@@ -943,15 +973,15 @@ func (rm *resourceManager) newCreateRequestPayload(
 					f0f23elem.Ipv6PrefixCount = &ipv6PrefixCountCopy
 				}
 				if f0f23iter.IPv6Prefixes != nil {
-					f0f23elemf14 := []svcsdktypes.Ipv6PrefixSpecificationRequest{}
-					for _, f0f23elemf14iter := range f0f23iter.IPv6Prefixes {
-						f0f23elemf14elem := &svcsdktypes.Ipv6PrefixSpecificationRequest{}
-						if f0f23elemf14iter.IPv6Prefix != nil {
-							f0f23elemf14elem.Ipv6Prefix = f0f23elemf14iter.IPv6Prefix
+					f0f23elemf15 := []svcsdktypes.Ipv6PrefixSpecificationRequest{}
+					for _, f0f23elemf15iter := range f0f23iter.IPv6Prefixes {
+						f0f23elemf15elem := &svcsdktypes.Ipv6PrefixSpecificationRequest{}
+						if f0f23elemf15iter.IPv6Prefix != nil {
+							f0f23elemf15elem.Ipv6Prefix = f0f23elemf15iter.IPv6Prefix
 						}
-						f0f23elemf14 = append(f0f23elemf14, *f0f23elemf14elem)
+						f0f23elemf15 = append(f0f23elemf15, *f0f23elemf15elem)
 					}
-					f0f23elem.Ipv6Prefixes = f0f23elemf14
+					f0f23elem.Ipv6Prefixes = f0f23elemf15
 				}
 				if f0f23iter.NetworkCardIndex != nil {
 					networkCardIndexCopy0 := *f0f23iter.NetworkCardIndex
@@ -971,18 +1001,18 @@ func (rm *resourceManager) newCreateRequestPayload(
 					f0f23elem.PrivateIpAddress = f0f23iter.PrivateIPAddress
 				}
 				if f0f23iter.PrivateIPAddresses != nil {
-					f0f23elemf19 := []svcsdktypes.PrivateIpAddressSpecification{}
-					for _, f0f23elemf19iter := range f0f23iter.PrivateIPAddresses {
-						f0f23elemf19elem := &svcsdktypes.PrivateIpAddressSpecification{}
-						if f0f23elemf19iter.Primary != nil {
-							f0f23elemf19elem.Primary = f0f23elemf19iter.Primary
+					f0f23elemf20 := []svcsdktypes.PrivateIpAddressSpecification{}
+					for _, f0f23elemf20iter := range f0f23iter.PrivateIPAddresses {
+						f0f23elemf20elem := &svcsdktypes.PrivateIpAddressSpecification{}
+						if f0f23elemf20iter.Primary != nil {
+							f0f23elemf20elem.Primary = f0f23elemf20iter.Primary
 						}
-						if f0f23elemf19iter.PrivateIPAddress != nil {
-							f0f23elemf19elem.PrivateIpAddress = f0f23elemf19iter.PrivateIPAddress
+						if f0f23elemf20iter.PrivateIPAddress != nil {
+							f0f23elemf20elem.PrivateIpAddress = f0f23elemf20iter.PrivateIPAddress
 						}
-						f0f23elemf19 = append(f0f23elemf19, *f0f23elemf19elem)
+						f0f23elemf20 = append(f0f23elemf20, *f0f23elemf20elem)
 					}
-					f0f23elem.PrivateIpAddresses = f0f23elemf19
+					f0f23elem.PrivateIpAddresses = f0f23elemf20
 				}
 				if f0f23iter.SecondaryPrivateIPAddressCount != nil {
 					secondaryPrivateIPAddressCountCopy0 := *f0f23iter.SecondaryPrivateIPAddressCount
@@ -1020,6 +1050,9 @@ func (rm *resourceManager) newCreateRequestPayload(
 			}
 			if r.ko.Spec.Data.Placement.AvailabilityZone != nil {
 				f0f26.AvailabilityZone = r.ko.Spec.Data.Placement.AvailabilityZone
+			}
+			if r.ko.Spec.Data.Placement.AvailabilityZoneID != nil {
+				f0f26.AvailabilityZoneId = r.ko.Spec.Data.Placement.AvailabilityZoneID
 			}
 			if r.ko.Spec.Data.Placement.GroupID != nil {
 				f0f26.GroupId = r.ko.Spec.Data.Placement.GroupID
@@ -1065,6 +1098,58 @@ func (rm *resourceManager) newCreateRequestPayload(
 		if r.ko.Spec.Data.RAMDiskID != nil {
 			f0.RamDiskId = r.ko.Spec.Data.RAMDiskID
 		}
+		if r.ko.Spec.Data.SecondaryInterfaces != nil {
+			f0f29 := []svcsdktypes.LaunchTemplateInstanceSecondaryInterfaceSpecificationRequest{}
+			for _, f0f29iter := range r.ko.Spec.Data.SecondaryInterfaces {
+				f0f29elem := &svcsdktypes.LaunchTemplateInstanceSecondaryInterfaceSpecificationRequest{}
+				if f0f29iter.DeleteOnTermination != nil {
+					f0f29elem.DeleteOnTermination = f0f29iter.DeleteOnTermination
+				}
+				if f0f29iter.DeviceIndex != nil {
+					deviceIndexCopy0 := *f0f29iter.DeviceIndex
+					if deviceIndexCopy0 > math.MaxInt32 || deviceIndexCopy0 < math.MinInt32 {
+						return nil, fmt.Errorf("error: field DeviceIndex is of type int32")
+					}
+					deviceIndexCopy := int32(deviceIndexCopy0)
+					f0f29elem.DeviceIndex = &deviceIndexCopy
+				}
+				if f0f29iter.InterfaceType != nil {
+					f0f29elem.InterfaceType = svcsdktypes.SecondaryInterfaceType(*f0f29iter.InterfaceType)
+				}
+				if f0f29iter.NetworkCardIndex != nil {
+					networkCardIndexCopy0 := *f0f29iter.NetworkCardIndex
+					if networkCardIndexCopy0 > math.MaxInt32 || networkCardIndexCopy0 < math.MinInt32 {
+						return nil, fmt.Errorf("error: field NetworkCardIndex is of type int32")
+					}
+					networkCardIndexCopy := int32(networkCardIndexCopy0)
+					f0f29elem.NetworkCardIndex = &networkCardIndexCopy
+				}
+				if f0f29iter.PrivateIPAddressCount != nil {
+					privateIPAddressCountCopy0 := *f0f29iter.PrivateIPAddressCount
+					if privateIPAddressCountCopy0 > math.MaxInt32 || privateIPAddressCountCopy0 < math.MinInt32 {
+						return nil, fmt.Errorf("error: field PrivateIpAddressCount is of type int32")
+					}
+					privateIPAddressCountCopy := int32(privateIPAddressCountCopy0)
+					f0f29elem.PrivateIpAddressCount = &privateIPAddressCountCopy
+				}
+				if f0f29iter.PrivateIPAddresses != nil {
+					f0f29elemf5 := []svcsdktypes.SecondaryInterfacePrivateIpAddressSpecificationRequest{}
+					for _, f0f29elemf5iter := range f0f29iter.PrivateIPAddresses {
+						f0f29elemf5elem := &svcsdktypes.SecondaryInterfacePrivateIpAddressSpecificationRequest{}
+						if f0f29elemf5iter.PrivateIPAddress != nil {
+							f0f29elemf5elem.PrivateIpAddress = f0f29elemf5iter.PrivateIPAddress
+						}
+						f0f29elemf5 = append(f0f29elemf5, *f0f29elemf5elem)
+					}
+					f0f29elem.PrivateIpAddresses = f0f29elemf5
+				}
+				if f0f29iter.SecondarySubnetID != nil {
+					f0f29elem.SecondarySubnetId = f0f29iter.SecondarySubnetID
+				}
+				f0f29 = append(f0f29, *f0f29elem)
+			}
+			f0.SecondaryInterfaces = f0f29
+		}
 		if r.ko.Spec.Data.SecurityGroupIDs != nil {
 			f0.SecurityGroupIds = aws.ToStringSlice(r.ko.Spec.Data.SecurityGroupIDs)
 		}
@@ -1072,29 +1157,29 @@ func (rm *resourceManager) newCreateRequestPayload(
 			f0.SecurityGroups = aws.ToStringSlice(r.ko.Spec.Data.SecurityGroups)
 		}
 		if r.ko.Spec.Data.TagSpecifications != nil {
-			f0f31 := []svcsdktypes.LaunchTemplateTagSpecificationRequest{}
-			for _, f0f31iter := range r.ko.Spec.Data.TagSpecifications {
-				f0f31elem := &svcsdktypes.LaunchTemplateTagSpecificationRequest{}
-				if f0f31iter.ResourceType != nil {
-					f0f31elem.ResourceType = svcsdktypes.ResourceType(*f0f31iter.ResourceType)
+			f0f32 := []svcsdktypes.LaunchTemplateTagSpecificationRequest{}
+			for _, f0f32iter := range r.ko.Spec.Data.TagSpecifications {
+				f0f32elem := &svcsdktypes.LaunchTemplateTagSpecificationRequest{}
+				if f0f32iter.ResourceType != nil {
+					f0f32elem.ResourceType = svcsdktypes.ResourceType(*f0f32iter.ResourceType)
 				}
-				if f0f31iter.Tags != nil {
-					f0f31elemf1 := []svcsdktypes.Tag{}
-					for _, f0f31elemf1iter := range f0f31iter.Tags {
-						f0f31elemf1elem := &svcsdktypes.Tag{}
-						if f0f31elemf1iter.Key != nil {
-							f0f31elemf1elem.Key = f0f31elemf1iter.Key
+				if f0f32iter.Tags != nil {
+					f0f32elemf1 := []svcsdktypes.Tag{}
+					for _, f0f32elemf1iter := range f0f32iter.Tags {
+						f0f32elemf1elem := &svcsdktypes.Tag{}
+						if f0f32elemf1iter.Key != nil {
+							f0f32elemf1elem.Key = f0f32elemf1iter.Key
 						}
-						if f0f31elemf1iter.Value != nil {
-							f0f31elemf1elem.Value = f0f31elemf1iter.Value
+						if f0f32elemf1iter.Value != nil {
+							f0f32elemf1elem.Value = f0f32elemf1iter.Value
 						}
-						f0f31elemf1 = append(f0f31elemf1, *f0f31elemf1elem)
+						f0f32elemf1 = append(f0f32elemf1, *f0f32elemf1elem)
 					}
-					f0f31elem.Tags = f0f31elemf1
+					f0f32elem.Tags = f0f32elemf1
 				}
-				f0f31 = append(f0f31, *f0f31elem)
+				f0f32 = append(f0f32, *f0f32elem)
 			}
-			f0.TagSpecifications = f0f31
+			f0.TagSpecifications = f0f32
 		}
 		if r.ko.Spec.Data.UserData != nil {
 			f0.UserData = r.ko.Spec.Data.UserData
@@ -1230,6 +1315,14 @@ func (rm *resourceManager) newUpdateRequestPayload(
 					if f2f0iter.EBS.DeleteOnTermination != nil {
 						f2f0elemf1.DeleteOnTermination = f2f0iter.EBS.DeleteOnTermination
 					}
+					if f2f0iter.EBS.EBSCardIndex != nil {
+						ebsCardIndexCopy0 := *f2f0iter.EBS.EBSCardIndex
+						if ebsCardIndexCopy0 > math.MaxInt32 || ebsCardIndexCopy0 < math.MinInt32 {
+							return nil, fmt.Errorf("error: field EbsCardIndex is of type int32")
+						}
+						ebsCardIndexCopy := int32(ebsCardIndexCopy0)
+						f2f0elemf1.EbsCardIndex = &ebsCardIndexCopy
+					}
 					if f2f0iter.EBS.Encrypted != nil {
 						f2f0elemf1.Encrypted = f2f0iter.EBS.Encrypted
 					}
@@ -1254,6 +1347,14 @@ func (rm *resourceManager) newUpdateRequestPayload(
 						}
 						throughputCopy := int32(throughputCopy0)
 						f2f0elemf1.Throughput = &throughputCopy
+					}
+					if f2f0iter.EBS.VolumeInitializationRate != nil {
+						volumeInitializationRateCopy0 := *f2f0iter.EBS.VolumeInitializationRate
+						if volumeInitializationRateCopy0 > math.MaxInt32 || volumeInitializationRateCopy0 < math.MinInt32 {
+							return nil, fmt.Errorf("error: field VolumeInitializationRate is of type int32")
+						}
+						volumeInitializationRateCopy := int32(volumeInitializationRateCopy0)
+						f2f0elemf1.VolumeInitializationRate = &volumeInitializationRateCopy
 					}
 					if f2f0iter.EBS.VolumeSize != nil {
 						volumeSizeCopy0 := *f2f0iter.EBS.VolumeSize
@@ -1307,6 +1408,9 @@ func (rm *resourceManager) newUpdateRequestPayload(
 				}
 				coreCountCopy := int32(coreCountCopy0)
 				f2f2.CoreCount = &coreCountCopy
+			}
+			if r.ko.Spec.Data.CPUOptions.NestedVirtualization != nil {
+				f2f2.NestedVirtualization = svcsdktypes.NestedVirtualizationSpecification(*r.ko.Spec.Data.CPUOptions.NestedVirtualization)
 			}
 			if r.ko.Spec.Data.CPUOptions.ThreadsPerCore != nil {
 				threadsPerCoreCopy0 := *r.ko.Spec.Data.CPUOptions.ThreadsPerCore
@@ -1651,6 +1755,9 @@ func (rm *resourceManager) newUpdateRequestPayload(
 				onDemandMaxPricePercentageOverLowestPriceCopy := int32(onDemandMaxPricePercentageOverLowestPriceCopy0)
 				f2f15.OnDemandMaxPricePercentageOverLowestPrice = &onDemandMaxPricePercentageOverLowestPriceCopy
 			}
+			if r.ko.Spec.Data.InstanceRequirements.RequireEncryptionInTransit != nil {
+				f2f15.RequireEncryptionInTransit = r.ko.Spec.Data.InstanceRequirements.RequireEncryptionInTransit
+			}
 			if r.ko.Spec.Data.InstanceRequirements.RequireHibernateSupport != nil {
 				f2f15.RequireHibernateSupport = r.ko.Spec.Data.InstanceRequirements.RequireHibernateSupport
 			}
@@ -1663,24 +1770,24 @@ func (rm *resourceManager) newUpdateRequestPayload(
 				f2f15.SpotMaxPricePercentageOverLowestPrice = &spotMaxPricePercentageOverLowestPriceCopy
 			}
 			if r.ko.Spec.Data.InstanceRequirements.TotalLocalStorageGB != nil {
-				f2f15f23 := &svcsdktypes.TotalLocalStorageGBRequest{}
+				f2f15f24 := &svcsdktypes.TotalLocalStorageGBRequest{}
 				if r.ko.Spec.Data.InstanceRequirements.TotalLocalStorageGB.Max != nil {
-					f2f15f23.Max = r.ko.Spec.Data.InstanceRequirements.TotalLocalStorageGB.Max
+					f2f15f24.Max = r.ko.Spec.Data.InstanceRequirements.TotalLocalStorageGB.Max
 				}
 				if r.ko.Spec.Data.InstanceRequirements.TotalLocalStorageGB.Min != nil {
-					f2f15f23.Min = r.ko.Spec.Data.InstanceRequirements.TotalLocalStorageGB.Min
+					f2f15f24.Min = r.ko.Spec.Data.InstanceRequirements.TotalLocalStorageGB.Min
 				}
-				f2f15.TotalLocalStorageGB = f2f15f23
+				f2f15.TotalLocalStorageGB = f2f15f24
 			}
 			if r.ko.Spec.Data.InstanceRequirements.VCPUCount != nil {
-				f2f15f24 := &svcsdktypes.VCpuCountRangeRequest{}
+				f2f15f25 := &svcsdktypes.VCpuCountRangeRequest{}
 				if r.ko.Spec.Data.InstanceRequirements.VCPUCount.Max != nil {
 					maxCopy0 := *r.ko.Spec.Data.InstanceRequirements.VCPUCount.Max
 					if maxCopy0 > math.MaxInt32 || maxCopy0 < math.MinInt32 {
 						return nil, fmt.Errorf("error: field Max is of type int32")
 					}
 					maxCopy := int32(maxCopy0)
-					f2f15f24.Max = &maxCopy
+					f2f15f25.Max = &maxCopy
 				}
 				if r.ko.Spec.Data.InstanceRequirements.VCPUCount.Min != nil {
 					minCopy0 := *r.ko.Spec.Data.InstanceRequirements.VCPUCount.Min
@@ -1688,9 +1795,9 @@ func (rm *resourceManager) newUpdateRequestPayload(
 						return nil, fmt.Errorf("error: field Min is of type int32")
 					}
 					minCopy := int32(minCopy0)
-					f2f15f24.Min = &minCopy
+					f2f15f25.Min = &minCopy
 				}
-				f2f15.VCpuCount = f2f15f24
+				f2f15.VCpuCount = f2f15f25
 			}
 			f2.InstanceRequirements = f2f15
 		}
@@ -1804,19 +1911,27 @@ func (rm *resourceManager) newUpdateRequestPayload(
 					deviceIndexCopy := int32(deviceIndexCopy0)
 					f2f23elem.DeviceIndex = &deviceIndexCopy
 				}
+				if f2f23iter.ENAQueueCount != nil {
+					enaQueueCountCopy0 := *f2f23iter.ENAQueueCount
+					if enaQueueCountCopy0 > math.MaxInt32 || enaQueueCountCopy0 < math.MinInt32 {
+						return nil, fmt.Errorf("error: field EnaQueueCount is of type int32")
+					}
+					enaQueueCountCopy := int32(enaQueueCountCopy0)
+					f2f23elem.EnaQueueCount = &enaQueueCountCopy
+				}
 				if f2f23iter.ENASrdSpecification != nil {
-					f2f23elemf6 := &svcsdktypes.EnaSrdSpecificationRequest{}
+					f2f23elemf7 := &svcsdktypes.EnaSrdSpecificationRequest{}
 					if f2f23iter.ENASrdSpecification.ENASrdEnabled != nil {
-						f2f23elemf6.EnaSrdEnabled = f2f23iter.ENASrdSpecification.ENASrdEnabled
+						f2f23elemf7.EnaSrdEnabled = f2f23iter.ENASrdSpecification.ENASrdEnabled
 					}
 					if f2f23iter.ENASrdSpecification.ENASrdUDPSpecification != nil {
-						f2f23elemf6f1 := &svcsdktypes.EnaSrdUdpSpecificationRequest{}
+						f2f23elemf7f1 := &svcsdktypes.EnaSrdUdpSpecificationRequest{}
 						if f2f23iter.ENASrdSpecification.ENASrdUDPSpecification.ENASrdUDPEnabled != nil {
-							f2f23elemf6f1.EnaSrdUdpEnabled = f2f23iter.ENASrdSpecification.ENASrdUDPSpecification.ENASrdUDPEnabled
+							f2f23elemf7f1.EnaSrdUdpEnabled = f2f23iter.ENASrdSpecification.ENASrdUDPSpecification.ENASrdUDPEnabled
 						}
-						f2f23elemf6.EnaSrdUdpSpecification = f2f23elemf6f1
+						f2f23elemf7.EnaSrdUdpSpecification = f2f23elemf7f1
 					}
-					f2f23elem.EnaSrdSpecification = f2f23elemf6
+					f2f23elem.EnaSrdSpecification = f2f23elemf7
 				}
 				if f2f23iter.Groups != nil {
 					f2f23elem.Groups = aws.ToStringSlice(f2f23iter.Groups)
@@ -1833,15 +1948,15 @@ func (rm *resourceManager) newUpdateRequestPayload(
 					f2f23elem.Ipv4PrefixCount = &ipv4PrefixCountCopy
 				}
 				if f2f23iter.IPv4Prefixes != nil {
-					f2f23elemf10 := []svcsdktypes.Ipv4PrefixSpecificationRequest{}
-					for _, f2f23elemf10iter := range f2f23iter.IPv4Prefixes {
-						f2f23elemf10elem := &svcsdktypes.Ipv4PrefixSpecificationRequest{}
-						if f2f23elemf10iter.IPv4Prefix != nil {
-							f2f23elemf10elem.Ipv4Prefix = f2f23elemf10iter.IPv4Prefix
+					f2f23elemf11 := []svcsdktypes.Ipv4PrefixSpecificationRequest{}
+					for _, f2f23elemf11iter := range f2f23iter.IPv4Prefixes {
+						f2f23elemf11elem := &svcsdktypes.Ipv4PrefixSpecificationRequest{}
+						if f2f23elemf11iter.IPv4Prefix != nil {
+							f2f23elemf11elem.Ipv4Prefix = f2f23elemf11iter.IPv4Prefix
 						}
-						f2f23elemf10 = append(f2f23elemf10, *f2f23elemf10elem)
+						f2f23elemf11 = append(f2f23elemf11, *f2f23elemf11elem)
 					}
-					f2f23elem.Ipv4Prefixes = f2f23elemf10
+					f2f23elem.Ipv4Prefixes = f2f23elemf11
 				}
 				if f2f23iter.IPv6AddressCount != nil {
 					ipv6AddressCountCopy0 := *f2f23iter.IPv6AddressCount
@@ -1852,15 +1967,15 @@ func (rm *resourceManager) newUpdateRequestPayload(
 					f2f23elem.Ipv6AddressCount = &ipv6AddressCountCopy
 				}
 				if f2f23iter.IPv6Addresses != nil {
-					f2f23elemf12 := []svcsdktypes.InstanceIpv6AddressRequest{}
-					for _, f2f23elemf12iter := range f2f23iter.IPv6Addresses {
-						f2f23elemf12elem := &svcsdktypes.InstanceIpv6AddressRequest{}
-						if f2f23elemf12iter.IPv6Address != nil {
-							f2f23elemf12elem.Ipv6Address = f2f23elemf12iter.IPv6Address
+					f2f23elemf13 := []svcsdktypes.InstanceIpv6AddressRequest{}
+					for _, f2f23elemf13iter := range f2f23iter.IPv6Addresses {
+						f2f23elemf13elem := &svcsdktypes.InstanceIpv6AddressRequest{}
+						if f2f23elemf13iter.IPv6Address != nil {
+							f2f23elemf13elem.Ipv6Address = f2f23elemf13iter.IPv6Address
 						}
-						f2f23elemf12 = append(f2f23elemf12, *f2f23elemf12elem)
+						f2f23elemf13 = append(f2f23elemf13, *f2f23elemf13elem)
 					}
-					f2f23elem.Ipv6Addresses = f2f23elemf12
+					f2f23elem.Ipv6Addresses = f2f23elemf13
 				}
 				if f2f23iter.IPv6PrefixCount != nil {
 					ipv6PrefixCountCopy0 := *f2f23iter.IPv6PrefixCount
@@ -1871,15 +1986,15 @@ func (rm *resourceManager) newUpdateRequestPayload(
 					f2f23elem.Ipv6PrefixCount = &ipv6PrefixCountCopy
 				}
 				if f2f23iter.IPv6Prefixes != nil {
-					f2f23elemf14 := []svcsdktypes.Ipv6PrefixSpecificationRequest{}
-					for _, f2f23elemf14iter := range f2f23iter.IPv6Prefixes {
-						f2f23elemf14elem := &svcsdktypes.Ipv6PrefixSpecificationRequest{}
-						if f2f23elemf14iter.IPv6Prefix != nil {
-							f2f23elemf14elem.Ipv6Prefix = f2f23elemf14iter.IPv6Prefix
+					f2f23elemf15 := []svcsdktypes.Ipv6PrefixSpecificationRequest{}
+					for _, f2f23elemf15iter := range f2f23iter.IPv6Prefixes {
+						f2f23elemf15elem := &svcsdktypes.Ipv6PrefixSpecificationRequest{}
+						if f2f23elemf15iter.IPv6Prefix != nil {
+							f2f23elemf15elem.Ipv6Prefix = f2f23elemf15iter.IPv6Prefix
 						}
-						f2f23elemf14 = append(f2f23elemf14, *f2f23elemf14elem)
+						f2f23elemf15 = append(f2f23elemf15, *f2f23elemf15elem)
 					}
-					f2f23elem.Ipv6Prefixes = f2f23elemf14
+					f2f23elem.Ipv6Prefixes = f2f23elemf15
 				}
 				if f2f23iter.NetworkCardIndex != nil {
 					networkCardIndexCopy0 := *f2f23iter.NetworkCardIndex
@@ -1899,18 +2014,18 @@ func (rm *resourceManager) newUpdateRequestPayload(
 					f2f23elem.PrivateIpAddress = f2f23iter.PrivateIPAddress
 				}
 				if f2f23iter.PrivateIPAddresses != nil {
-					f2f23elemf19 := []svcsdktypes.PrivateIpAddressSpecification{}
-					for _, f2f23elemf19iter := range f2f23iter.PrivateIPAddresses {
-						f2f23elemf19elem := &svcsdktypes.PrivateIpAddressSpecification{}
-						if f2f23elemf19iter.Primary != nil {
-							f2f23elemf19elem.Primary = f2f23elemf19iter.Primary
+					f2f23elemf20 := []svcsdktypes.PrivateIpAddressSpecification{}
+					for _, f2f23elemf20iter := range f2f23iter.PrivateIPAddresses {
+						f2f23elemf20elem := &svcsdktypes.PrivateIpAddressSpecification{}
+						if f2f23elemf20iter.Primary != nil {
+							f2f23elemf20elem.Primary = f2f23elemf20iter.Primary
 						}
-						if f2f23elemf19iter.PrivateIPAddress != nil {
-							f2f23elemf19elem.PrivateIpAddress = f2f23elemf19iter.PrivateIPAddress
+						if f2f23elemf20iter.PrivateIPAddress != nil {
+							f2f23elemf20elem.PrivateIpAddress = f2f23elemf20iter.PrivateIPAddress
 						}
-						f2f23elemf19 = append(f2f23elemf19, *f2f23elemf19elem)
+						f2f23elemf20 = append(f2f23elemf20, *f2f23elemf20elem)
 					}
-					f2f23elem.PrivateIpAddresses = f2f23elemf19
+					f2f23elem.PrivateIpAddresses = f2f23elemf20
 				}
 				if f2f23iter.SecondaryPrivateIPAddressCount != nil {
 					secondaryPrivateIPAddressCountCopy0 := *f2f23iter.SecondaryPrivateIPAddressCount
@@ -1948,6 +2063,9 @@ func (rm *resourceManager) newUpdateRequestPayload(
 			}
 			if r.ko.Spec.Data.Placement.AvailabilityZone != nil {
 				f2f26.AvailabilityZone = r.ko.Spec.Data.Placement.AvailabilityZone
+			}
+			if r.ko.Spec.Data.Placement.AvailabilityZoneID != nil {
+				f2f26.AvailabilityZoneId = r.ko.Spec.Data.Placement.AvailabilityZoneID
 			}
 			if r.ko.Spec.Data.Placement.GroupID != nil {
 				f2f26.GroupId = r.ko.Spec.Data.Placement.GroupID
@@ -1993,6 +2111,58 @@ func (rm *resourceManager) newUpdateRequestPayload(
 		if r.ko.Spec.Data.RAMDiskID != nil {
 			f2.RamDiskId = r.ko.Spec.Data.RAMDiskID
 		}
+		if r.ko.Spec.Data.SecondaryInterfaces != nil {
+			f2f29 := []svcsdktypes.LaunchTemplateInstanceSecondaryInterfaceSpecificationRequest{}
+			for _, f2f29iter := range r.ko.Spec.Data.SecondaryInterfaces {
+				f2f29elem := &svcsdktypes.LaunchTemplateInstanceSecondaryInterfaceSpecificationRequest{}
+				if f2f29iter.DeleteOnTermination != nil {
+					f2f29elem.DeleteOnTermination = f2f29iter.DeleteOnTermination
+				}
+				if f2f29iter.DeviceIndex != nil {
+					deviceIndexCopy0 := *f2f29iter.DeviceIndex
+					if deviceIndexCopy0 > math.MaxInt32 || deviceIndexCopy0 < math.MinInt32 {
+						return nil, fmt.Errorf("error: field DeviceIndex is of type int32")
+					}
+					deviceIndexCopy := int32(deviceIndexCopy0)
+					f2f29elem.DeviceIndex = &deviceIndexCopy
+				}
+				if f2f29iter.InterfaceType != nil {
+					f2f29elem.InterfaceType = svcsdktypes.SecondaryInterfaceType(*f2f29iter.InterfaceType)
+				}
+				if f2f29iter.NetworkCardIndex != nil {
+					networkCardIndexCopy0 := *f2f29iter.NetworkCardIndex
+					if networkCardIndexCopy0 > math.MaxInt32 || networkCardIndexCopy0 < math.MinInt32 {
+						return nil, fmt.Errorf("error: field NetworkCardIndex is of type int32")
+					}
+					networkCardIndexCopy := int32(networkCardIndexCopy0)
+					f2f29elem.NetworkCardIndex = &networkCardIndexCopy
+				}
+				if f2f29iter.PrivateIPAddressCount != nil {
+					privateIPAddressCountCopy0 := *f2f29iter.PrivateIPAddressCount
+					if privateIPAddressCountCopy0 > math.MaxInt32 || privateIPAddressCountCopy0 < math.MinInt32 {
+						return nil, fmt.Errorf("error: field PrivateIpAddressCount is of type int32")
+					}
+					privateIPAddressCountCopy := int32(privateIPAddressCountCopy0)
+					f2f29elem.PrivateIpAddressCount = &privateIPAddressCountCopy
+				}
+				if f2f29iter.PrivateIPAddresses != nil {
+					f2f29elemf5 := []svcsdktypes.SecondaryInterfacePrivateIpAddressSpecificationRequest{}
+					for _, f2f29elemf5iter := range f2f29iter.PrivateIPAddresses {
+						f2f29elemf5elem := &svcsdktypes.SecondaryInterfacePrivateIpAddressSpecificationRequest{}
+						if f2f29elemf5iter.PrivateIPAddress != nil {
+							f2f29elemf5elem.PrivateIpAddress = f2f29elemf5iter.PrivateIPAddress
+						}
+						f2f29elemf5 = append(f2f29elemf5, *f2f29elemf5elem)
+					}
+					f2f29elem.PrivateIpAddresses = f2f29elemf5
+				}
+				if f2f29iter.SecondarySubnetID != nil {
+					f2f29elem.SecondarySubnetId = f2f29iter.SecondarySubnetID
+				}
+				f2f29 = append(f2f29, *f2f29elem)
+			}
+			f2.SecondaryInterfaces = f2f29
+		}
 		if r.ko.Spec.Data.SecurityGroupIDs != nil {
 			f2.SecurityGroupIds = aws.ToStringSlice(r.ko.Spec.Data.SecurityGroupIDs)
 		}
@@ -2000,29 +2170,29 @@ func (rm *resourceManager) newUpdateRequestPayload(
 			f2.SecurityGroups = aws.ToStringSlice(r.ko.Spec.Data.SecurityGroups)
 		}
 		if r.ko.Spec.Data.TagSpecifications != nil {
-			f2f31 := []svcsdktypes.LaunchTemplateTagSpecificationRequest{}
-			for _, f2f31iter := range r.ko.Spec.Data.TagSpecifications {
-				f2f31elem := &svcsdktypes.LaunchTemplateTagSpecificationRequest{}
-				if f2f31iter.ResourceType != nil {
-					f2f31elem.ResourceType = svcsdktypes.ResourceType(*f2f31iter.ResourceType)
+			f2f32 := []svcsdktypes.LaunchTemplateTagSpecificationRequest{}
+			for _, f2f32iter := range r.ko.Spec.Data.TagSpecifications {
+				f2f32elem := &svcsdktypes.LaunchTemplateTagSpecificationRequest{}
+				if f2f32iter.ResourceType != nil {
+					f2f32elem.ResourceType = svcsdktypes.ResourceType(*f2f32iter.ResourceType)
 				}
-				if f2f31iter.Tags != nil {
-					f2f31elemf1 := []svcsdktypes.Tag{}
-					for _, f2f31elemf1iter := range f2f31iter.Tags {
-						f2f31elemf1elem := &svcsdktypes.Tag{}
-						if f2f31elemf1iter.Key != nil {
-							f2f31elemf1elem.Key = f2f31elemf1iter.Key
+				if f2f32iter.Tags != nil {
+					f2f32elemf1 := []svcsdktypes.Tag{}
+					for _, f2f32elemf1iter := range f2f32iter.Tags {
+						f2f32elemf1elem := &svcsdktypes.Tag{}
+						if f2f32elemf1iter.Key != nil {
+							f2f32elemf1elem.Key = f2f32elemf1iter.Key
 						}
-						if f2f31elemf1iter.Value != nil {
-							f2f31elemf1elem.Value = f2f31elemf1iter.Value
+						if f2f32elemf1iter.Value != nil {
+							f2f32elemf1elem.Value = f2f32elemf1iter.Value
 						}
-						f2f31elemf1 = append(f2f31elemf1, *f2f31elemf1elem)
+						f2f32elemf1 = append(f2f32elemf1, *f2f32elemf1elem)
 					}
-					f2f31elem.Tags = f2f31elemf1
+					f2f32elem.Tags = f2f32elemf1
 				}
-				f2f31 = append(f2f31, *f2f31elem)
+				f2f32 = append(f2f32, *f2f32elem)
 			}
-			f2.TagSpecifications = f2f31
+			f2.TagSpecifications = f2f32
 		}
 		if r.ko.Spec.Data.UserData != nil {
 			f2.UserData = r.ko.Spec.Data.UserData
@@ -2199,6 +2369,10 @@ func (rm *resourceManager) setRequestLaunchTemplateData(
 				if resf0iter.Ebs.DeleteOnTermination != nil {
 					resf0elemf1.DeleteOnTermination = resf0iter.Ebs.DeleteOnTermination
 				}
+				if resf0iter.Ebs.EbsCardIndex != nil {
+					ebsCardIndexCopy := int64(*resf0iter.Ebs.EbsCardIndex)
+					resf0elemf1.EBSCardIndex = &ebsCardIndexCopy
+				}
 				if resf0iter.Ebs.Encrypted != nil {
 					resf0elemf1.Encrypted = resf0iter.Ebs.Encrypted
 				}
@@ -2215,6 +2389,10 @@ func (rm *resourceManager) setRequestLaunchTemplateData(
 				if resf0iter.Ebs.Throughput != nil {
 					throughputCopy := int64(*resf0iter.Ebs.Throughput)
 					resf0elemf1.Throughput = &throughputCopy
+				}
+				if resf0iter.Ebs.VolumeInitializationRate != nil {
+					volumeInitializationRateCopy := int64(*resf0iter.Ebs.VolumeInitializationRate)
+					resf0elemf1.VolumeInitializationRate = &volumeInitializationRateCopy
 				}
 				if resf0iter.Ebs.VolumeSize != nil {
 					volumeSizeCopy := int64(*resf0iter.Ebs.VolumeSize)
@@ -2260,6 +2438,9 @@ func (rm *resourceManager) setRequestLaunchTemplateData(
 		if resp.CpuOptions.CoreCount != nil {
 			coreCountCopy := int64(*resp.CpuOptions.CoreCount)
 			resf2.CoreCount = &coreCountCopy
+		}
+		if resp.CpuOptions.NestedVirtualization != "" {
+			resf2.NestedVirtualization = aws.String(string(resp.CpuOptions.NestedVirtualization))
 		}
 		if resp.CpuOptions.ThreadsPerCore != nil {
 			threadsPerCoreCopy := int64(*resp.CpuOptions.ThreadsPerCore)
@@ -2544,6 +2725,9 @@ func (rm *resourceManager) setRequestLaunchTemplateData(
 			onDemandMaxPricePercentageOverLowestPriceCopy := int64(*resp.InstanceRequirements.OnDemandMaxPricePercentageOverLowestPrice)
 			resf15.OnDemandMaxPricePercentageOverLowestPrice = &onDemandMaxPricePercentageOverLowestPriceCopy
 		}
+		if resp.InstanceRequirements.RequireEncryptionInTransit != nil {
+			resf15.RequireEncryptionInTransit = resp.InstanceRequirements.RequireEncryptionInTransit
+		}
 		if resp.InstanceRequirements.RequireHibernateSupport != nil {
 			resf15.RequireHibernateSupport = resp.InstanceRequirements.RequireHibernateSupport
 		}
@@ -2552,26 +2736,26 @@ func (rm *resourceManager) setRequestLaunchTemplateData(
 			resf15.SpotMaxPricePercentageOverLowestPrice = &spotMaxPricePercentageOverLowestPriceCopy
 		}
 		if resp.InstanceRequirements.TotalLocalStorageGB != nil {
-			resf15f23 := &svcapitypes.TotalLocalStorageGBRequest{}
+			resf15f24 := &svcapitypes.TotalLocalStorageGBRequest{}
 			if resp.InstanceRequirements.TotalLocalStorageGB.Max != nil {
-				resf15f23.Max = resp.InstanceRequirements.TotalLocalStorageGB.Max
+				resf15f24.Max = resp.InstanceRequirements.TotalLocalStorageGB.Max
 			}
 			if resp.InstanceRequirements.TotalLocalStorageGB.Min != nil {
-				resf15f23.Min = resp.InstanceRequirements.TotalLocalStorageGB.Min
+				resf15f24.Min = resp.InstanceRequirements.TotalLocalStorageGB.Min
 			}
-			resf15.TotalLocalStorageGB = resf15f23
+			resf15.TotalLocalStorageGB = resf15f24
 		}
 		if resp.InstanceRequirements.VCpuCount != nil {
-			resf15f24 := &svcapitypes.VCPUCountRangeRequest{}
+			resf15f25 := &svcapitypes.VCPUCountRangeRequest{}
 			if resp.InstanceRequirements.VCpuCount.Max != nil {
 				maxCopy := int64(*resp.InstanceRequirements.VCpuCount.Max)
-				resf15f24.Max = &maxCopy
+				resf15f25.Max = &maxCopy
 			}
 			if resp.InstanceRequirements.VCpuCount.Min != nil {
 				minCopy := int64(*resp.InstanceRequirements.VCpuCount.Min)
-				resf15f24.Min = &minCopy
+				resf15f25.Min = &minCopy
 			}
-			resf15.VCPUCount = resf15f24
+			resf15.VCPUCount = resf15f25
 		}
 		res.InstanceRequirements = resf15
 	}
@@ -2665,19 +2849,23 @@ func (rm *resourceManager) setRequestLaunchTemplateData(
 				deviceIndexCopy := int64(*resf23iter.DeviceIndex)
 				resf23elem.DeviceIndex = &deviceIndexCopy
 			}
+			if resf23iter.EnaQueueCount != nil {
+				enaQueueCountCopy := int64(*resf23iter.EnaQueueCount)
+				resf23elem.ENAQueueCount = &enaQueueCountCopy
+			}
 			if resf23iter.EnaSrdSpecification != nil {
-				resf23elemf6 := &svcapitypes.ENASrdSpecificationRequest{}
+				resf23elemf7 := &svcapitypes.ENASrdSpecificationRequest{}
 				if resf23iter.EnaSrdSpecification.EnaSrdEnabled != nil {
-					resf23elemf6.ENASrdEnabled = resf23iter.EnaSrdSpecification.EnaSrdEnabled
+					resf23elemf7.ENASrdEnabled = resf23iter.EnaSrdSpecification.EnaSrdEnabled
 				}
 				if resf23iter.EnaSrdSpecification.EnaSrdUdpSpecification != nil {
-					resf23elemf6f1 := &svcapitypes.ENASrdUDPSpecificationRequest{}
+					resf23elemf7f1 := &svcapitypes.ENASrdUDPSpecificationRequest{}
 					if resf23iter.EnaSrdSpecification.EnaSrdUdpSpecification.EnaSrdUdpEnabled != nil {
-						resf23elemf6f1.ENASrdUDPEnabled = resf23iter.EnaSrdSpecification.EnaSrdUdpSpecification.EnaSrdUdpEnabled
+						resf23elemf7f1.ENASrdUDPEnabled = resf23iter.EnaSrdSpecification.EnaSrdUdpSpecification.EnaSrdUdpEnabled
 					}
-					resf23elemf6.ENASrdUDPSpecification = resf23elemf6f1
+					resf23elemf7.ENASrdUDPSpecification = resf23elemf7f1
 				}
-				resf23elem.ENASrdSpecification = resf23elemf6
+				resf23elem.ENASrdSpecification = resf23elemf7
 			}
 			if resf23iter.Groups != nil {
 				resf23elem.Groups = aws.StringSlice(resf23iter.Groups)
@@ -2690,45 +2878,45 @@ func (rm *resourceManager) setRequestLaunchTemplateData(
 				resf23elem.IPv4PrefixCount = &ipv4PrefixCountCopy
 			}
 			if resf23iter.Ipv4Prefixes != nil {
-				resf23elemf10 := []*svcapitypes.IPv4PrefixSpecificationRequest{}
-				for _, resf23elemf10iter := range resf23iter.Ipv4Prefixes {
-					resf23elemf10elem := &svcapitypes.IPv4PrefixSpecificationRequest{}
-					if resf23elemf10iter.Ipv4Prefix != nil {
-						resf23elemf10elem.IPv4Prefix = resf23elemf10iter.Ipv4Prefix
+				resf23elemf11 := []*svcapitypes.IPv4PrefixSpecificationRequest{}
+				for _, resf23elemf11iter := range resf23iter.Ipv4Prefixes {
+					resf23elemf11elem := &svcapitypes.IPv4PrefixSpecificationRequest{}
+					if resf23elemf11iter.Ipv4Prefix != nil {
+						resf23elemf11elem.IPv4Prefix = resf23elemf11iter.Ipv4Prefix
 					}
-					resf23elemf10 = append(resf23elemf10, resf23elemf10elem)
+					resf23elemf11 = append(resf23elemf11, resf23elemf11elem)
 				}
-				resf23elem.IPv4Prefixes = resf23elemf10
+				resf23elem.IPv4Prefixes = resf23elemf11
 			}
 			if resf23iter.Ipv6AddressCount != nil {
 				ipv6AddressCountCopy := int64(*resf23iter.Ipv6AddressCount)
 				resf23elem.IPv6AddressCount = &ipv6AddressCountCopy
 			}
 			if resf23iter.Ipv6Addresses != nil {
-				resf23elemf12 := []*svcapitypes.InstanceIPv6AddressRequest{}
-				for _, resf23elemf12iter := range resf23iter.Ipv6Addresses {
-					resf23elemf12elem := &svcapitypes.InstanceIPv6AddressRequest{}
-					if resf23elemf12iter.Ipv6Address != nil {
-						resf23elemf12elem.IPv6Address = resf23elemf12iter.Ipv6Address
+				resf23elemf13 := []*svcapitypes.InstanceIPv6AddressRequest{}
+				for _, resf23elemf13iter := range resf23iter.Ipv6Addresses {
+					resf23elemf13elem := &svcapitypes.InstanceIPv6AddressRequest{}
+					if resf23elemf13iter.Ipv6Address != nil {
+						resf23elemf13elem.IPv6Address = resf23elemf13iter.Ipv6Address
 					}
-					resf23elemf12 = append(resf23elemf12, resf23elemf12elem)
+					resf23elemf13 = append(resf23elemf13, resf23elemf13elem)
 				}
-				resf23elem.IPv6Addresses = resf23elemf12
+				resf23elem.IPv6Addresses = resf23elemf13
 			}
 			if resf23iter.Ipv6PrefixCount != nil {
 				ipv6PrefixCountCopy := int64(*resf23iter.Ipv6PrefixCount)
 				resf23elem.IPv6PrefixCount = &ipv6PrefixCountCopy
 			}
 			if resf23iter.Ipv6Prefixes != nil {
-				resf23elemf14 := []*svcapitypes.IPv6PrefixSpecificationRequest{}
-				for _, resf23elemf14iter := range resf23iter.Ipv6Prefixes {
-					resf23elemf14elem := &svcapitypes.IPv6PrefixSpecificationRequest{}
-					if resf23elemf14iter.Ipv6Prefix != nil {
-						resf23elemf14elem.IPv6Prefix = resf23elemf14iter.Ipv6Prefix
+				resf23elemf15 := []*svcapitypes.IPv6PrefixSpecificationRequest{}
+				for _, resf23elemf15iter := range resf23iter.Ipv6Prefixes {
+					resf23elemf15elem := &svcapitypes.IPv6PrefixSpecificationRequest{}
+					if resf23elemf15iter.Ipv6Prefix != nil {
+						resf23elemf15elem.IPv6Prefix = resf23elemf15iter.Ipv6Prefix
 					}
-					resf23elemf14 = append(resf23elemf14, resf23elemf14elem)
+					resf23elemf15 = append(resf23elemf15, resf23elemf15elem)
 				}
-				resf23elem.IPv6Prefixes = resf23elemf14
+				resf23elem.IPv6Prefixes = resf23elemf15
 			}
 			if resf23iter.NetworkCardIndex != nil {
 				networkCardIndexCopy := int64(*resf23iter.NetworkCardIndex)
@@ -2744,18 +2932,18 @@ func (rm *resourceManager) setRequestLaunchTemplateData(
 				resf23elem.PrivateIPAddress = resf23iter.PrivateIpAddress
 			}
 			if resf23iter.PrivateIpAddresses != nil {
-				resf23elemf19 := []*svcapitypes.PrivateIPAddressSpecification{}
-				for _, resf23elemf19iter := range resf23iter.PrivateIpAddresses {
-					resf23elemf19elem := &svcapitypes.PrivateIPAddressSpecification{}
-					if resf23elemf19iter.Primary != nil {
-						resf23elemf19elem.Primary = resf23elemf19iter.Primary
+				resf23elemf20 := []*svcapitypes.PrivateIPAddressSpecification{}
+				for _, resf23elemf20iter := range resf23iter.PrivateIpAddresses {
+					resf23elemf20elem := &svcapitypes.PrivateIPAddressSpecification{}
+					if resf23elemf20iter.Primary != nil {
+						resf23elemf20elem.Primary = resf23elemf20iter.Primary
 					}
-					if resf23elemf19iter.PrivateIpAddress != nil {
-						resf23elemf19elem.PrivateIPAddress = resf23elemf19iter.PrivateIpAddress
+					if resf23elemf20iter.PrivateIpAddress != nil {
+						resf23elemf20elem.PrivateIPAddress = resf23elemf20iter.PrivateIpAddress
 					}
-					resf23elemf19 = append(resf23elemf19, resf23elemf19elem)
+					resf23elemf20 = append(resf23elemf20, resf23elemf20elem)
 				}
-				resf23elem.PrivateIPAddresses = resf23elemf19
+				resf23elem.PrivateIPAddresses = resf23elemf20
 			}
 			if resf23iter.SecondaryPrivateIpAddressCount != nil {
 				secondaryPrivateIPAddressCountCopy := int64(*resf23iter.SecondaryPrivateIpAddressCount)
@@ -2789,6 +2977,9 @@ func (rm *resourceManager) setRequestLaunchTemplateData(
 		}
 		if resp.Placement.AvailabilityZone != nil {
 			resf26.AvailabilityZone = resp.Placement.AvailabilityZone
+		}
+		if resp.Placement.AvailabilityZoneId != nil {
+			resf26.AvailabilityZoneID = resp.Placement.AvailabilityZoneId
 		}
 		if resp.Placement.GroupId != nil {
 			resf26.GroupID = resp.Placement.GroupId
@@ -2830,6 +3021,46 @@ func (rm *resourceManager) setRequestLaunchTemplateData(
 	if resp.RamDiskId != nil {
 		res.RAMDiskID = resp.RamDiskId
 	}
+	if resp.SecondaryInterfaces != nil {
+		resf29 := []*svcapitypes.LaunchTemplateInstanceSecondaryInterfaceSpecificationRequest{}
+		for _, resf29iter := range resp.SecondaryInterfaces {
+			resf29elem := &svcapitypes.LaunchTemplateInstanceSecondaryInterfaceSpecificationRequest{}
+			if resf29iter.DeleteOnTermination != nil {
+				resf29elem.DeleteOnTermination = resf29iter.DeleteOnTermination
+			}
+			if resf29iter.DeviceIndex != nil {
+				deviceIndexCopy := int64(*resf29iter.DeviceIndex)
+				resf29elem.DeviceIndex = &deviceIndexCopy
+			}
+			if resf29iter.InterfaceType != "" {
+				resf29elem.InterfaceType = aws.String(string(resf29iter.InterfaceType))
+			}
+			if resf29iter.NetworkCardIndex != nil {
+				networkCardIndexCopy := int64(*resf29iter.NetworkCardIndex)
+				resf29elem.NetworkCardIndex = &networkCardIndexCopy
+			}
+			if resf29iter.PrivateIpAddressCount != nil {
+				privateIPAddressCountCopy := int64(*resf29iter.PrivateIpAddressCount)
+				resf29elem.PrivateIPAddressCount = &privateIPAddressCountCopy
+			}
+			if resf29iter.PrivateIpAddresses != nil {
+				resf29elemf5 := []*svcapitypes.SecondaryInterfacePrivateIPAddressSpecificationRequest{}
+				for _, resf29elemf5iter := range resf29iter.PrivateIpAddresses {
+					resf29elemf5elem := &svcapitypes.SecondaryInterfacePrivateIPAddressSpecificationRequest{}
+					if resf29elemf5iter.PrivateIpAddress != nil {
+						resf29elemf5elem.PrivateIPAddress = resf29elemf5iter.PrivateIpAddress
+					}
+					resf29elemf5 = append(resf29elemf5, resf29elemf5elem)
+				}
+				resf29elem.PrivateIPAddresses = resf29elemf5
+			}
+			if resf29iter.SecondarySubnetId != nil {
+				resf29elem.SecondarySubnetID = resf29iter.SecondarySubnetId
+			}
+			resf29 = append(resf29, resf29elem)
+		}
+		res.SecondaryInterfaces = resf29
+	}
 	if resp.SecurityGroupIds != nil {
 		res.SecurityGroupIDs = aws.StringSlice(resp.SecurityGroupIds)
 	}
@@ -2837,29 +3068,29 @@ func (rm *resourceManager) setRequestLaunchTemplateData(
 		res.SecurityGroups = aws.StringSlice(resp.SecurityGroups)
 	}
 	if resp.TagSpecifications != nil {
-		resf31 := []*svcapitypes.LaunchTemplateTagSpecificationRequest{}
-		for _, resf31iter := range resp.TagSpecifications {
-			resf31elem := &svcapitypes.LaunchTemplateTagSpecificationRequest{}
-			if resf31iter.ResourceType != "" {
-				resf31elem.ResourceType = aws.String(string(resf31iter.ResourceType))
+		resf32 := []*svcapitypes.LaunchTemplateTagSpecificationRequest{}
+		for _, resf32iter := range resp.TagSpecifications {
+			resf32elem := &svcapitypes.LaunchTemplateTagSpecificationRequest{}
+			if resf32iter.ResourceType != "" {
+				resf32elem.ResourceType = aws.String(string(resf32iter.ResourceType))
 			}
-			if resf31iter.Tags != nil {
-				resf31elemf1 := []*svcapitypes.Tag{}
-				for _, resf31elemf1iter := range resf31iter.Tags {
-					resf31elemf1elem := &svcapitypes.Tag{}
-					if resf31elemf1iter.Key != nil {
-						resf31elemf1elem.Key = resf31elemf1iter.Key
+			if resf32iter.Tags != nil {
+				resf32elemf1 := []*svcapitypes.Tag{}
+				for _, resf32elemf1iter := range resf32iter.Tags {
+					resf32elemf1elem := &svcapitypes.Tag{}
+					if resf32elemf1iter.Key != nil {
+						resf32elemf1elem.Key = resf32elemf1iter.Key
 					}
-					if resf31elemf1iter.Value != nil {
-						resf31elemf1elem.Value = resf31elemf1iter.Value
+					if resf32elemf1iter.Value != nil {
+						resf32elemf1elem.Value = resf32elemf1iter.Value
 					}
-					resf31elemf1 = append(resf31elemf1, resf31elemf1elem)
+					resf32elemf1 = append(resf32elemf1, resf32elemf1elem)
 				}
-				resf31elem.Tags = resf31elemf1
+				resf32elem.Tags = resf32elemf1
 			}
-			resf31 = append(resf31, resf31elem)
+			resf32 = append(resf32, resf32elem)
 		}
-		res.TagSpecifications = resf31
+		res.TagSpecifications = resf32
 	}
 	if resp.UserData != nil {
 		res.UserData = resp.UserData

@@ -97,6 +97,11 @@ func (rm *resourceManager) sdkFind(
 		} else {
 			ko.Spec.AvailabilityZone = nil
 		}
+		if elem.AvailabilityZoneId != nil {
+			ko.Spec.AvailabilityZoneID = elem.AvailabilityZoneId
+		} else {
+			ko.Spec.AvailabilityZoneID = nil
+		}
 		if elem.CreateTime != nil {
 			ko.Status.CreateTime = &metav1.Time{*elem.CreateTime}
 		} else {
@@ -129,14 +134,14 @@ func (rm *resourceManager) sdkFind(
 			ko.Spec.MultiAttachEnabled = nil
 		}
 		if elem.Operator != nil {
-			f7 := &svcapitypes.OperatorResponse{}
+			f8 := &svcapitypes.OperatorResponse{}
 			if elem.Operator.Managed != nil {
-				f7.Managed = elem.Operator.Managed
+				f8.Managed = elem.Operator.Managed
 			}
 			if elem.Operator.Principal != nil {
-				f7.Principal = elem.Operator.Principal
+				f8.Principal = elem.Operator.Principal
 			}
-			ko.Status.Operator = f7
+			ko.Status.Operator = f8
 		} else {
 			ko.Status.Operator = nil
 		}
@@ -156,6 +161,11 @@ func (rm *resourceManager) sdkFind(
 		} else {
 			ko.Spec.SnapshotID = nil
 		}
+		if elem.SourceVolumeId != nil {
+			ko.Status.SourceVolumeID = elem.SourceVolumeId
+		} else {
+			ko.Status.SourceVolumeID = nil
+		}
 		if elem.SseType != "" {
 			ko.Status.SSEType = aws.String(string(elem.SseType))
 		} else {
@@ -167,18 +177,18 @@ func (rm *resourceManager) sdkFind(
 			ko.Status.State = nil
 		}
 		if elem.Tags != nil {
-			f13 := []*svcapitypes.Tag{}
-			for _, f13iter := range elem.Tags {
-				f13elem := &svcapitypes.Tag{}
-				if f13iter.Key != nil {
-					f13elem.Key = f13iter.Key
+			f15 := []*svcapitypes.Tag{}
+			for _, f15iter := range elem.Tags {
+				f15elem := &svcapitypes.Tag{}
+				if f15iter.Key != nil {
+					f15elem.Key = f15iter.Key
 				}
-				if f13iter.Value != nil {
-					f13elem.Value = f13iter.Value
+				if f15iter.Value != nil {
+					f15elem.Value = f15iter.Value
 				}
-				f13 = append(f13, f13elem)
+				f15 = append(f15, f15elem)
 			}
-			ko.Spec.Tags = f13
+			ko.Spec.Tags = f15
 		} else {
 			ko.Spec.Tags = nil
 		}
@@ -192,6 +202,12 @@ func (rm *resourceManager) sdkFind(
 			ko.Status.VolumeID = elem.VolumeId
 		} else {
 			ko.Status.VolumeID = nil
+		}
+		if elem.VolumeInitializationRate != nil {
+			volumeInitializationRateCopy := int64(*elem.VolumeInitializationRate)
+			ko.Spec.VolumeInitializationRate = &volumeInitializationRateCopy
+		} else {
+			ko.Spec.VolumeInitializationRate = nil
 		}
 		if elem.VolumeType != "" {
 			ko.Spec.VolumeType = aws.String(string(elem.VolumeType))
@@ -275,6 +291,11 @@ func (rm *resourceManager) sdkCreate(
 	} else {
 		ko.Spec.AvailabilityZone = nil
 	}
+	if resp.AvailabilityZoneId != nil {
+		ko.Spec.AvailabilityZoneID = resp.AvailabilityZoneId
+	} else {
+		ko.Spec.AvailabilityZoneID = nil
+	}
 	if resp.CreateTime != nil {
 		ko.Status.CreateTime = &metav1.Time{*resp.CreateTime}
 	} else {
@@ -307,14 +328,14 @@ func (rm *resourceManager) sdkCreate(
 		ko.Spec.MultiAttachEnabled = nil
 	}
 	if resp.Operator != nil {
-		f7 := &svcapitypes.OperatorResponse{}
+		f8 := &svcapitypes.OperatorResponse{}
 		if resp.Operator.Managed != nil {
-			f7.Managed = resp.Operator.Managed
+			f8.Managed = resp.Operator.Managed
 		}
 		if resp.Operator.Principal != nil {
-			f7.Principal = resp.Operator.Principal
+			f8.Principal = resp.Operator.Principal
 		}
-		ko.Status.Operator = f7
+		ko.Status.Operator = f8
 	} else {
 		ko.Status.Operator = nil
 	}
@@ -334,6 +355,11 @@ func (rm *resourceManager) sdkCreate(
 	} else {
 		ko.Spec.SnapshotID = nil
 	}
+	if resp.SourceVolumeId != nil {
+		ko.Status.SourceVolumeID = resp.SourceVolumeId
+	} else {
+		ko.Status.SourceVolumeID = nil
+	}
 	if resp.SseType != "" {
 		ko.Status.SSEType = aws.String(string(resp.SseType))
 	} else {
@@ -345,18 +371,18 @@ func (rm *resourceManager) sdkCreate(
 		ko.Status.State = nil
 	}
 	if resp.Tags != nil {
-		f13 := []*svcapitypes.Tag{}
-		for _, f13iter := range resp.Tags {
-			f13elem := &svcapitypes.Tag{}
-			if f13iter.Key != nil {
-				f13elem.Key = f13iter.Key
+		f15 := []*svcapitypes.Tag{}
+		for _, f15iter := range resp.Tags {
+			f15elem := &svcapitypes.Tag{}
+			if f15iter.Key != nil {
+				f15elem.Key = f15iter.Key
 			}
-			if f13iter.Value != nil {
-				f13elem.Value = f13iter.Value
+			if f15iter.Value != nil {
+				f15elem.Value = f15iter.Value
 			}
-			f13 = append(f13, f13elem)
+			f15 = append(f15, f15elem)
 		}
-		ko.Spec.Tags = f13
+		ko.Spec.Tags = f15
 	} else {
 		ko.Spec.Tags = nil
 	}
@@ -370,6 +396,12 @@ func (rm *resourceManager) sdkCreate(
 		ko.Status.VolumeID = resp.VolumeId
 	} else {
 		ko.Status.VolumeID = nil
+	}
+	if resp.VolumeInitializationRate != nil {
+		volumeInitializationRateCopy := int64(*resp.VolumeInitializationRate)
+		ko.Spec.VolumeInitializationRate = &volumeInitializationRateCopy
+	} else {
+		ko.Spec.VolumeInitializationRate = nil
 	}
 	if resp.VolumeType != "" {
 		ko.Spec.VolumeType = aws.String(string(resp.VolumeType))
@@ -404,6 +436,9 @@ func (rm *resourceManager) newCreateRequestPayload(
 
 	if r.ko.Spec.AvailabilityZone != nil {
 		res.AvailabilityZone = r.ko.Spec.AvailabilityZone
+	}
+	if r.ko.Spec.AvailabilityZoneID != nil {
+		res.AvailabilityZoneId = r.ko.Spec.AvailabilityZoneID
 	}
 	if r.ko.Spec.Encrypted != nil {
 		res.Encrypted = r.ko.Spec.Encrypted
@@ -443,6 +478,14 @@ func (rm *resourceManager) newCreateRequestPayload(
 		}
 		throughputCopy := int32(throughputCopy0)
 		res.Throughput = &throughputCopy
+	}
+	if r.ko.Spec.VolumeInitializationRate != nil {
+		volumeInitializationRateCopy0 := *r.ko.Spec.VolumeInitializationRate
+		if volumeInitializationRateCopy0 > math.MaxInt32 || volumeInitializationRateCopy0 < math.MinInt32 {
+			return nil, fmt.Errorf("error: field VolumeInitializationRate is of type int32")
+		}
+		volumeInitializationRateCopy := int32(volumeInitializationRateCopy0)
+		res.VolumeInitializationRate = &volumeInitializationRateCopy
 	}
 	if r.ko.Spec.VolumeType != nil {
 		res.VolumeType = svcsdktypes.VolumeType(*r.ko.Spec.VolumeType)

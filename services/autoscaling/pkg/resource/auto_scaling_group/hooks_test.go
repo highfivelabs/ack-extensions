@@ -5,10 +5,12 @@ package auto_scaling_group
 
 import (
 	"context"
+	"errors"
 	"testing"
 
 	ackv1alpha1 "github.com/aws-controllers-k8s/runtime/apis/core/v1alpha1"
 	"github.com/aws/aws-sdk-go-v2/aws"
+	svcsdk "github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -155,4 +157,110 @@ func TestContextInPayloads(t *testing.T) {
 	updateIn, err := rm.newUpdateRequestPayload(context.Background(), r, nil)
 	require.NoError(t, err)
 	assert.Equal(t, aws.String("ackx-context"), updateIn.Context)
+}
+
+type fakeMetricsAndProcessesClient struct {
+	enabledCalls  []*svcsdk.EnableMetricsCollectionInput
+	disabledCalls []*svcsdk.DisableMetricsCollectionInput
+	suspendCalls  []*svcsdk.SuspendProcessesInput
+	resumeCalls   []*svcsdk.ResumeProcessesInput
+	err           error
+}
+
+func (f *fakeMetricsAndProcessesClient) EnableMetricsCollection(_ context.Context, in *svcsdk.EnableMetricsCollectionInput, _ ...func(*svcsdk.Options)) (*svcsdk.EnableMetricsCollectionOutput, error) {
+	f.enabledCalls = append(f.enabledCalls, in)
+	return &svcsdk.EnableMetricsCollectionOutput{}, f.err
+}
+
+func (f *fakeMetricsAndProcessesClient) DisableMetricsCollection(_ context.Context, in *svcsdk.DisableMetricsCollectionInput, _ ...func(*svcsdk.Options)) (*svcsdk.DisableMetricsCollectionOutput, error) {
+	f.disabledCalls = append(f.disabledCalls, in)
+	return &svcsdk.DisableMetricsCollectionOutput{}, f.err
+}
+
+func (f *fakeMetricsAndProcessesClient) SuspendProcesses(_ context.Context, in *svcsdk.SuspendProcessesInput, _ ...func(*svcsdk.Options)) (*svcsdk.SuspendProcessesOutput, error) {
+	f.suspendCalls = append(f.suspendCalls, in)
+	return &svcsdk.SuspendProcessesOutput{}, f.err
+}
+
+func (f *fakeMetricsAndProcessesClient) ResumeProcesses(_ context.Context, in *svcsdk.ResumeProcessesInput, _ ...func(*svcsdk.Options)) (*svcsdk.ResumeProcessesOutput, error) {
+	f.resumeCalls = append(f.resumeCalls, in)
+	return &svcsdk.ResumeProcessesOutput{}, f.err
+}
+
+func TestSyncEnabledMetrics(t *testing.T) {
+	client := &fakeMetricsAndProcessesClient{}
+	desired := []*svcapitypes.EnabledMetric{
+		{Metric: aws.String("GroupMaxSize")},
+		{Metric: aws.String("GroupInServiceInstances"), Granularity: aws.String("1Minute")},
+	}
+	latest := []*svcapitypes.EnabledMetric{
+		{Metric: aws.String("GroupMinSize"), Granularity: aws.String("1Minute")},
+		{Metric: aws.String("GroupInServiceInstances"), Granularity: aws.String("1Minute")},
+	}
+
+	err := syncEnabledMetrics(context.Background(), desired, latest, "asg-1", client, nil)
+	require.NoError(t, err)
+	require.Len(t, client.disabledCalls, 1)
+	assert.Equal(t, []string{"GroupMinSize"}, client.disabledCalls[0].Metrics)
+	require.Len(t, client.enabledCalls, 1)
+	assert.Equal(t, "1Minute", aws.ToString(client.enabledCalls[0].Granularity))
+	assert.Equal(t, []string{"GroupMaxSize"}, client.enabledCalls[0].Metrics)
+
+	clientErr := &fakeMetricsAndProcessesClient{err: errors.New("boom")}
+	err = syncEnabledMetrics(context.Background(), desired, latest, "asg-1", clientErr, nil)
+	require.Error(t, err)
+}
+
+func TestSyncSuspendedProcesses(t *testing.T) {
+	client := &fakeMetricsAndProcessesClient{}
+	desired := []*svcapitypes.SuspendedProcess{
+		{ProcessName: aws.String("Terminate")},
+		{ProcessName: aws.String("HealthCheck")},
+	}
+	latest := []*svcapitypes.SuspendedProcess{
+		{ProcessName: aws.String("Launch"), SuspensionReason: aws.String("User suspended")},
+		{ProcessName: aws.String("Terminate"), SuspensionReason: aws.String("User suspended")},
+	}
+
+	err := syncSuspendedProcesses(context.Background(), desired, latest, "asg-1", client, nil)
+	require.NoError(t, err)
+	require.Len(t, client.resumeCalls, 1)
+	assert.Equal(t, []string{"Launch"}, client.resumeCalls[0].ScalingProcesses)
+	require.Len(t, client.suspendCalls, 1)
+	assert.Equal(t, []string{"HealthCheck"}, client.suspendCalls[0].ScalingProcesses)
+
+	clientErr := &fakeMetricsAndProcessesClient{err: errors.New("boom")}
+	err = syncSuspendedProcesses(context.Background(), desired, latest, "asg-1", clientErr, nil)
+	require.Error(t, err)
+}
+
+func TestNormalizeMetricsAndSuspendedProcesses(t *testing.T) {
+	a := &svcapitypes.AutoScalingGroup{
+		Spec: svcapitypes.AutoScalingGroupSpec{
+			EnabledMetrics: []*svcapitypes.EnabledMetric{
+				{Metric: aws.String("GroupMaxSize")},
+				{Metric: aws.String("GroupMinSize"), Granularity: aws.String("1Minute")},
+			},
+			SuspendedProcesses: []*svcapitypes.SuspendedProcess{
+				{ProcessName: aws.String("Terminate")},
+				{ProcessName: aws.String("Launch")},
+			},
+		},
+	}
+	b := &svcapitypes.AutoScalingGroup{
+		Spec: svcapitypes.AutoScalingGroupSpec{
+			EnabledMetrics: []*svcapitypes.EnabledMetric{
+				{Metric: aws.String("GroupMinSize"), Granularity: aws.String("1Minute")},
+				{Metric: aws.String("GroupMaxSize"), Granularity: aws.String("1Minute")},
+			},
+			SuspendedProcesses: []*svcapitypes.SuspendedProcess{
+				{ProcessName: aws.String("Launch"), SuspensionReason: aws.String("User suspended at 2026-11-16T00:00:00Z")},
+				{ProcessName: aws.String("Terminate"), SuspensionReason: aws.String("User suspended at 2026-11-16T00:00:00Z")},
+			},
+		},
+	}
+
+	delta := newResourceDelta(&resource{ko: a}, &resource{ko: b})
+	assert.False(t, delta.DifferentAt("Spec.EnabledMetrics"), "reordered/defaulted metrics should not diff")
+	assert.False(t, delta.DifferentAt("Spec.SuspendedProcesses"), "reordered/auto-reason processes should not diff")
 }

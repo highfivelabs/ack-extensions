@@ -179,6 +179,17 @@ spec:
 
                   Regex Pattern: `^[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDC00-\uDBFF\uDFFF\r\n\t]*$`
                 type: string
+              enabledMetrics:
+                description: The metrics enabled for the Auto Scaling group.
+                items:
+                  description: Describes an enabled Auto Scaling group metric.
+                  properties:
+                    granularity:
+                      type: string
+                    metric:
+                      type: string
+                  type: object
+                type: array
               healthCheckGracePeriod:
                 description: |-
                   The amount of time, in seconds, that Amazon EC2 Auto Scaling waits before
@@ -809,6 +820,22 @@ spec:
                   specify true. For more information, see Auto Scaling group zonal shift (https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-zonal-shift.html)
                   in the Amazon EC2 Auto Scaling User Guide.
                 type: boolean
+              suspendedProcesses:
+                description: The suspended processes associated with the Auto Scaling
+                  group.
+                items:
+                  description: |-
+                    Describes an auto scaling process that has been suspended.
+
+                    For more information, see Types of processes (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html#process-types)
+                    in the Amazon EC2 Auto Scaling User Guide.
+                  properties:
+                    processName:
+                      type: string
+                    suspensionReason:
+                      type: string
+                  type: object
+                type: array
               tags:
                 description: |-
                   One or more tags. You can tag your Auto Scaling group and propagate the tags
@@ -979,17 +1006,6 @@ spec:
                 description: The date and time the Auto Scaling group was created.
                 format: date-time
                 type: string
-              enabledMetrics:
-                description: The metrics enabled for the Auto Scaling group.
-                items:
-                  description: Describes an enabled Auto Scaling group metric.
-                  properties:
-                    granularity:
-                      type: string
-                    metric:
-                      type: string
-                  type: object
-                type: array
               predictedCapacity:
                 description: The predicted capacity of the group when it has a predictive
                   scaling policy.
@@ -1003,22 +1019,6 @@ spec:
 
                   Regex Pattern: `^[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDC00-\uDBFF\uDFFF\r\n\t]*$`
                 type: string
-              suspendedProcesses:
-                description: The suspended processes associated with the Auto Scaling
-                  group.
-                items:
-                  description: |-
-                    Describes an auto scaling process that has been suspended.
-
-                    For more information, see Types of processes (https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html#process-types)
-                    in the Amazon EC2 Auto Scaling User Guide.
-                  properties:
-                    processName:
-                      type: string
-                    suspensionReason:
-                      type: string
-                  type: object
-                type: array
               warmPoolConfiguration:
                 description: The warm pool for the group.
                 properties:

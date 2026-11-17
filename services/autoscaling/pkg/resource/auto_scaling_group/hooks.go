@@ -24,7 +24,13 @@
 package auto_scaling_group
 
 import (
+	"context"
+	"sort"
+
 	ackcompare "github.com/aws-controllers-k8s/runtime/pkg/compare"
+	ackmetrics "github.com/aws-controllers-k8s/runtime/pkg/metrics"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	svcsdk "github.com/aws/aws-sdk-go-v2/service/autoscaling"
 
 	svcapitypes "github.com/highfivelabs/ack-extensions/services/autoscaling/apis/v1alpha1"
 	"github.com/highfivelabs/ack-extensions/services/autoscaling/pkg/tags"
@@ -148,6 +154,217 @@ func normalizeAutoScalingGroupForCompare(
 			delta.Add("Spec.Tags", a.Spec.Tags, b.Spec.Tags)
 		}
 	}
+
+	normalizeEnabledMetrics(a.Spec.EnabledMetrics, b.Spec.EnabledMetrics)
+	normalizeSuspendedProcesses(a.Spec.SuspendedProcesses, b.Spec.SuspendedProcesses)
+}
+
+const defaultMetricGranularity = "1Minute"
+
+func normalizeEnabledMetrics(a, b []*svcapitypes.EnabledMetric) {
+	omittedGranularity := make(map[string]bool, len(a))
+	for _, m := range a {
+		if m != nil && m.Metric != nil && aws.ToString(m.Granularity) == "" {
+			omittedGranularity[*m.Metric] = true
+		}
+	}
+	for _, m := range b {
+		if m != nil && m.Metric != nil && omittedGranularity[*m.Metric] && aws.ToString(m.Granularity) == defaultMetricGranularity {
+			m.Granularity = nil
+		}
+	}
+	sortEnabledMetrics(a)
+	sortEnabledMetrics(b)
+}
+
+func sortEnabledMetrics(items []*svcapitypes.EnabledMetric) {
+	sort.Slice(items, func(i, j int) bool {
+		if items[i] == nil || items[j] == nil {
+			return items[i] == nil && items[j] != nil
+		}
+		mi, mj := aws.ToString(items[i].Metric), aws.ToString(items[j].Metric)
+		if mi != mj {
+			return mi < mj
+		}
+		return aws.ToString(items[i].Granularity) < aws.ToString(items[j].Granularity)
+	})
+}
+
+func normalizeSuspendedProcesses(a, b []*svcapitypes.SuspendedProcess) {
+	omittedReason := make(map[string]bool, len(a))
+	for _, p := range a {
+		if p != nil && p.ProcessName != nil && p.SuspensionReason == nil {
+			omittedReason[*p.ProcessName] = true
+		}
+	}
+	for _, p := range b {
+		if p != nil && p.ProcessName != nil && omittedReason[*p.ProcessName] {
+			p.SuspensionReason = nil
+		}
+	}
+	sortSuspendedProcesses(a)
+	sortSuspendedProcesses(b)
+}
+
+func sortSuspendedProcesses(items []*svcapitypes.SuspendedProcess) {
+	sort.Slice(items, func(i, j int) bool {
+		if items[i] == nil || items[j] == nil {
+			return items[i] == nil && items[j] != nil
+		}
+		return aws.ToString(items[i].ProcessName) < aws.ToString(items[j].ProcessName)
+	})
+}
+
+type metricsAndProcessesClient interface {
+	EnableMetricsCollection(context.Context, *svcsdk.EnableMetricsCollectionInput, ...func(*svcsdk.Options)) (*svcsdk.EnableMetricsCollectionOutput, error)
+	DisableMetricsCollection(context.Context, *svcsdk.DisableMetricsCollectionInput, ...func(*svcsdk.Options)) (*svcsdk.DisableMetricsCollectionOutput, error)
+	SuspendProcesses(context.Context, *svcsdk.SuspendProcessesInput, ...func(*svcsdk.Options)) (*svcsdk.SuspendProcessesOutput, error)
+	ResumeProcesses(context.Context, *svcsdk.ResumeProcessesInput, ...func(*svcsdk.Options)) (*svcsdk.ResumeProcessesOutput, error)
+}
+
+func syncEnabledMetrics(
+	ctx context.Context,
+	desired []*svcapitypes.EnabledMetric,
+	latest []*svcapitypes.EnabledMetric,
+	asgName string,
+	client metricsAndProcessesClient,
+	metrics *ackmetrics.Metrics,
+) error {
+	desiredMap := make(map[string]string, len(desired))
+	for _, m := range desired {
+		if m == nil || aws.ToString(m.Metric) == "" {
+			continue
+		}
+		gran := aws.ToString(m.Granularity)
+		if gran == "" {
+			gran = defaultMetricGranularity
+		}
+		desiredMap[*m.Metric] = gran
+	}
+
+	latestMap := make(map[string]string, len(latest))
+	for _, m := range latest {
+		if m == nil || aws.ToString(m.Metric) == "" {
+			continue
+		}
+		gran := aws.ToString(m.Granularity)
+		if gran == "" {
+			gran = defaultMetricGranularity
+		}
+		latestMap[*m.Metric] = gran
+	}
+
+	var toDisable []string
+	for metric := range latestMap {
+		if _, ok := desiredMap[metric]; !ok {
+			toDisable = append(toDisable, metric)
+		}
+	}
+	sort.Strings(toDisable)
+	if len(toDisable) > 0 {
+		_, err := client.DisableMetricsCollection(ctx, &svcsdk.DisableMetricsCollectionInput{
+			AutoScalingGroupName: &asgName,
+			Metrics:              toDisable,
+		})
+		if metrics != nil {
+			metrics.RecordAPICall("UPDATE", "DisableMetricsCollection", err)
+		}
+		if err != nil {
+			return err
+		}
+	}
+
+	byGranularity := make(map[string][]string)
+	for metric, gran := range desiredMap {
+		if prevGran, ok := latestMap[metric]; !ok || prevGran != gran {
+			byGranularity[gran] = append(byGranularity[gran], metric)
+		}
+	}
+	granularities := make([]string, 0, len(byGranularity))
+	for gran := range byGranularity {
+		granularities = append(granularities, gran)
+	}
+	sort.Strings(granularities)
+	for _, gran := range granularities {
+		list := byGranularity[gran]
+		sort.Strings(list)
+		g := gran
+		_, err := client.EnableMetricsCollection(ctx, &svcsdk.EnableMetricsCollectionInput{
+			AutoScalingGroupName: &asgName,
+			Granularity:          &g,
+			Metrics:              list,
+		})
+		if metrics != nil {
+			metrics.RecordAPICall("UPDATE", "EnableMetricsCollection", err)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func syncSuspendedProcesses(
+	ctx context.Context,
+	desired []*svcapitypes.SuspendedProcess,
+	latest []*svcapitypes.SuspendedProcess,
+	asgName string,
+	client metricsAndProcessesClient,
+	metrics *ackmetrics.Metrics,
+) error {
+	desiredSet := make(map[string]struct{}, len(desired))
+	for _, p := range desired {
+		if p != nil && aws.ToString(p.ProcessName) != "" {
+			desiredSet[*p.ProcessName] = struct{}{}
+		}
+	}
+	latestSet := make(map[string]struct{}, len(latest))
+	for _, p := range latest {
+		if p != nil && aws.ToString(p.ProcessName) != "" {
+			latestSet[*p.ProcessName] = struct{}{}
+		}
+	}
+
+	var toResume []string
+	for proc := range latestSet {
+		if _, ok := desiredSet[proc]; !ok {
+			toResume = append(toResume, proc)
+		}
+	}
+	sort.Strings(toResume)
+	if len(toResume) > 0 {
+		_, err := client.ResumeProcesses(ctx, &svcsdk.ResumeProcessesInput{
+			AutoScalingGroupName: &asgName,
+			ScalingProcesses:     toResume,
+		})
+		if metrics != nil {
+			metrics.RecordAPICall("UPDATE", "ResumeProcesses", err)
+		}
+		if err != nil {
+			return err
+		}
+	}
+
+	var toSuspend []string
+	for proc := range desiredSet {
+		if _, ok := latestSet[proc]; !ok {
+			toSuspend = append(toSuspend, proc)
+		}
+	}
+	sort.Strings(toSuspend)
+	if len(toSuspend) > 0 {
+		_, err := client.SuspendProcesses(ctx, &svcsdk.SuspendProcessesInput{
+			AutoScalingGroupName: &asgName,
+			ScalingProcesses:     toSuspend,
+		})
+		if metrics != nil {
+			metrics.RecordAPICall("UPDATE", "SuspendProcesses", err)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func equalStringPtr(a, b *string) bool {

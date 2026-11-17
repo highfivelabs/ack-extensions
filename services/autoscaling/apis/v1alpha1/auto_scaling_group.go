@@ -95,6 +95,8 @@ type AutoScalingGroupSpec struct {
 	//
 	// Regex Pattern: `^[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDC00-\uDBFF\uDFFF\r\n\t]*$`
 	DesiredCapacityType *string `json:"desiredCapacityType,omitempty"`
+	// The metrics enabled for the Auto Scaling group.
+	EnabledMetrics []*EnabledMetric `json:"enabledMetrics,omitempty"`
 	// The amount of time, in seconds, that Amazon EC2 Auto Scaling waits before
 	// checking the health status of an EC2 instance that has come into service
 	// and marking it unhealthy due to a failed health check. This is useful if
@@ -235,6 +237,8 @@ type AutoScalingGroupSpec struct {
 	// specify true. For more information, see Auto Scaling group zonal shift (https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-zonal-shift.html)
 	// in the Amazon EC2 Auto Scaling User Guide.
 	SkipZonalShiftValidation *bool `json:"skipZonalShiftValidation,omitempty"`
+	// The suspended processes associated with the Auto Scaling group.
+	SuspendedProcesses []*SuspendedProcess `json:"suspendedProcesses,omitempty"`
 	// One or more tags. You can tag your Auto Scaling group and propagate the tags
 	// to the Amazon EC2 instances it launches. Tags are not propagated to Amazon
 	// EBS volumes. To add tags to Amazon EBS volumes, specify the tags in a launch
@@ -293,9 +297,6 @@ type AutoScalingGroupStatus struct {
 	// The date and time the Auto Scaling group was created.
 	// +kubebuilder:validation:Optional
 	CreatedTime *metav1.Time `json:"createdTime,omitempty"`
-	// The metrics enabled for the Auto Scaling group.
-	// +kubebuilder:validation:Optional
-	EnabledMetrics []*EnabledMetric `json:"enabledMetrics,omitempty"`
 	// The predicted capacity of the group when it has a predictive scaling policy.
 	// +kubebuilder:validation:Optional
 	PredictedCapacity *int64 `json:"predictedCapacity,omitempty"`
@@ -306,9 +307,6 @@ type AutoScalingGroupStatus struct {
 	// Regex Pattern: `^[\u0020-\uD7FF\uE000-\uFFFD\uD800\uDC00-\uDBFF\uDFFF\r\n\t]*$`
 	// +kubebuilder:validation:Optional
 	Status *string `json:"status,omitempty"`
-	// The suspended processes associated with the Auto Scaling group.
-	// +kubebuilder:validation:Optional
-	SuspendedProcesses []*SuspendedProcess `json:"suspendedProcesses,omitempty"`
 	// The warm pool for the group.
 	// +kubebuilder:validation:Optional
 	WarmPoolConfiguration *WarmPoolConfiguration `json:"warmPoolConfiguration,omitempty"`

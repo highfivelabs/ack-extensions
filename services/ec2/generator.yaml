@@ -437,6 +437,7 @@ ignore:
     # Holds the tunnels' pre-shared keys in clear: never kept in the object.
     - CreateVpnConnectionOutput.VpnConnection.CustomerGatewayConfiguration
   resource_names:
+    - CapacityManagerDataExport
     - CapacityReservation
     - CapacityReservationBySplitting
     - CapacityReservationFleet
@@ -447,17 +448,23 @@ ignore:
     - CoipPool
     - DefaultSubnet
     - DefaultVpc
+    - DelegateMacVolumeOwnershipTask
     - EgressOnlyInternetGateway
     - Fleet
     - FpgaImage
     - Image
+    - ImageUsageReport
     - InstanceConnectEndpoint
     - InstanceEventWindow
     - InstanceExportTask
     - InternetGateway
+    - InterruptibleCapacityReservationAllocation
     - Ipam
     - IpamExternalResourceVerificationToken
+    - IpamPolicy
     - IpamPool
+    - IpamPrefixListResolver
+    - IpamPrefixListResolverTarget
     - IpamResourceDiscovery
     - IpamScope
     - KeyPair
@@ -466,6 +473,9 @@ ignore:
     - LocalGatewayRouteTable
     - LocalGatewayRouteTableVirtualInterfaceGroupAssociation
     - LocalGatewayRouteTableVpcAssociation
+    - LocalGatewayVirtualInterface
+    - LocalGatewayVirtualInterfaceGroup
+    - MacSystemIntegrityProtectionModificationTask
     - ManagedPrefixList
     - NatGateway
     - NetworkAcl
@@ -479,7 +489,12 @@ ignore:
     - ReservedInstancesListing
     - RestoreImageTask
     - Route
+    - RouteServer
+    - RouteServerEndpoint
+    - RouteServerPeer
     - RouteTable
+    - SecondaryNetwork
+    - SecondarySubnet
     - SecurityGroup
     - Snapshot
     - SpotDatafeedSubscription
@@ -493,6 +508,8 @@ ignore:
     - TransitGateway
     - TransitGatewayConnect
     - TransitGatewayConnectPeer
+    - TransitGatewayMeteringPolicy
+    - TransitGatewayMeteringPolicyEntry
     - TransitGatewayMulticastDomain
     - TransitGatewayPeeringAttachment
     - TransitGatewayPolicyTable
@@ -507,8 +524,10 @@ ignore:
     - VerifiedAccessTrustProvider
     - Vpc
     - VpcBlockPublicAccessExclusion
+    - VpcEncryptionControl
     - VpcEndpoint
     - VpcEndpointConnectionNotification
     - VpcEndpointServiceConfiguration
     - VpcPeeringConnection
+    - VpnConcentrator
     - VpnConnectionRoute

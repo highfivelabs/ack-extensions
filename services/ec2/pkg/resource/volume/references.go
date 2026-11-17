@@ -77,9 +77,6 @@ func validateReferenceFields(ko *svcapitypes.Volume) error {
 	if ko.Spec.AvailabilityZoneRef != nil && ko.Spec.AvailabilityZone != nil {
 		return ackerr.ResourceReferenceAndIDNotSupportedFor("AvailabilityZone", "AvailabilityZoneRef")
 	}
-	if ko.Spec.AvailabilityZoneRef == nil && ko.Spec.AvailabilityZone == nil {
-		return ackerr.ResourceReferenceOrIDRequiredFor("AvailabilityZone", "AvailabilityZoneRef")
-	}
 	return nil
 }
 

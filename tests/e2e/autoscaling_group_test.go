@@ -92,6 +92,14 @@ func TestAutoScalingGroup(t *testing.T) {
 				{Key: aws.String("env"), Value: aws.String("test"), PropagateAtLaunch: aws.Bool(true)},
 				{Key: aws.String("team"), Value: aws.String("platform")},
 			},
+			EnabledMetrics: []*asv1.EnabledMetric{
+				{Metric: aws.String("GroupMinSize")},
+				{Metric: aws.String("GroupMaxSize"), Granularity: aws.String("1Minute")},
+			},
+			SuspendedProcesses: []*asv1.SuspendedProcess{
+				{ProcessName: aws.String("Launch")},
+				{ProcessName: aws.String("Terminate")},
+			},
 		},
 	}
 
@@ -154,9 +162,24 @@ func TestAutoScalingGroup(t *testing.T) {
 		if got.Spec.LaunchTemplate.LaunchTemplateName != nil {
 			t.Errorf("stored spec holds resolved launchTemplateName %q; should keep reference only", aws.ToString(got.Spec.LaunchTemplate.LaunchTemplateName))
 		}
+
+		enabledSet := map[string]bool{}
+		for _, m := range grp.EnabledMetrics {
+			enabledSet[aws.ToString(m.Metric)] = true
+		}
+		if !enabledSet["GroupMinSize"] || !enabledSet["GroupMaxSize"] {
+			t.Fatalf("expected GroupMinSize and GroupMaxSize enabled, got %+v", grp.EnabledMetrics)
+		}
+		suspendedSet := map[string]bool{}
+		for _, p := range grp.SuspendedProcesses {
+			suspendedSet[aws.ToString(p.ProcessName)] = true
+		}
+		if !suspendedSet["Launch"] || !suspendedSet["Terminate"] {
+			t.Fatalf("expected Launch and Terminate suspended, got %+v", grp.SuspendedProcesses)
+		}
 	})
 
-	t.Run("update maxSize and tag propagateAtLaunch", func(t *testing.T) {
+	t.Run("update maxSize, tag propagateAtLaunch, and suspendedProcesses", func(t *testing.T) {
 		got := &asv1.AutoScalingGroup{}
 		if err := env.Client.Get(ctx, client.ObjectKeyFromObject(asg), got); err != nil {
 			t.Fatal(err)
@@ -167,6 +190,10 @@ func TestAutoScalingGroup(t *testing.T) {
 			if aws.ToString(tg.Key) == "team" {
 				tg.PropagateAtLaunch = aws.Bool(true)
 			}
+		}
+		got.Spec.SuspendedProcesses = []*asv1.SuspendedProcess{
+			{ProcessName: aws.String("Terminate")},
+			{ProcessName: aws.String("HealthCheck")},
 		}
 		if err := env.Client.Patch(ctx, got, patch); err != nil {
 			t.Fatal(err)
@@ -185,7 +212,63 @@ func TestAutoScalingGroup(t *testing.T) {
 					return fmt.Errorf("tag team PropagateAtLaunch still false (tags=%+v)", grp.Tags)
 				}
 			}
+			suspendedSet := map[string]bool{}
+			for _, p := range grp.SuspendedProcesses {
+				suspendedSet[aws.ToString(p.ProcessName)] = true
+			}
+			if suspendedSet["Launch"] || !suspendedSet["Terminate"] || !suspendedSet["HealthCheck"] {
+				return fmt.Errorf("suspended processes = %+v, want Terminate and HealthCheck only", grp.SuspendedProcesses)
+			}
 			return nil
+		})
+	})
+
+	t.Run("lifecycle hook attached via autoScalingGroupRef", func(t *testing.T) {
+		hookName := "ackx-launch-hook"
+		hook := &asv1.LifecycleHook{
+			ObjectMeta: metav1.ObjectMeta{Name: "launch-hook", Namespace: "default"},
+			Spec: asv1.LifecycleHookSpec{
+				LifecycleHookName: aws.String(hookName),
+				AutoScalingGroupRef: &ackv1alpha1.AWSResourceReferenceWrapper{
+					From: &ackv1alpha1.AWSResourceReference{Name: aws.String("web-asg")},
+				},
+				LifecycleTransition: aws.String("autoscaling:EC2_INSTANCE_LAUNCHING"),
+				HeartbeatTimeout:    aws.Int64(120),
+			},
+		}
+		if err := env.Client.Create(ctx, hook); err != nil {
+			t.Fatal(err)
+		}
+		harness.Eventually(t, 60*time.Second, "lifecycle hook synced", func() error {
+			got := &asv1.LifecycleHook{}
+			if err := env.Client.Get(ctx, client.ObjectKeyFromObject(hook), got); err != nil {
+				return err
+			}
+			if ok, why := synced(got.Status.Conditions); !ok {
+				return fmt.Errorf("not synced: %s", why)
+			}
+			out, err := cloud.DescribeLifecycleHooks(ctx, &autoscaling.DescribeLifecycleHooksInput{
+				AutoScalingGroupName: aws.String(asgName),
+				LifecycleHookNames:   []string{hookName},
+			})
+			if err != nil {
+				return err
+			}
+			if len(out.LifecycleHooks) != 1 || aws.ToInt32(out.LifecycleHooks[0].HeartbeatTimeout) != 120 {
+				return fmt.Errorf("unexpected hooks: %+v", out.LifecycleHooks)
+			}
+			return nil
+		})
+
+		if err := env.Client.Delete(ctx, hook); err != nil {
+			t.Fatal(err)
+		}
+		harness.Eventually(t, 60*time.Second, "lifecycle hook deleted", func() error {
+			err := env.Client.Get(ctx, client.ObjectKeyFromObject(hook), &asv1.LifecycleHook{})
+			if err == nil {
+				return fmt.Errorf("hook object still present")
+			}
+			return client.IgnoreNotFound(err)
 		})
 	})
 

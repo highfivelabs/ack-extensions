@@ -27,8 +27,17 @@ type VolumeSpec struct {
 
 	// The ID of the Availability Zone in which to create the volume. For example,
 	// us-east-1a.
+	//
+	// Either AvailabilityZone or AvailabilityZoneId must be specified, but not
+	// both.
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable once set"
-	AvailabilityZone    *string                                  `json:"availabilityZone,omitempty"`
+	AvailabilityZone *string `json:"availabilityZone,omitempty"`
+	// The ID of the Availability Zone in which to create the volume. For example,
+	// use1-az1.
+	//
+	// Either AvailabilityZone or AvailabilityZoneId must be specified, but not
+	// both.
+	AvailabilityZoneID  *string                                  `json:"availabilityZoneID,omitempty"`
 	AvailabilityZoneRef *ackv1alpha1.AWSResourceReferenceWrapper `json:"availabilityZoneRef,omitempty"`
 	// Indicates whether the volume should be encrypted. The effect of setting the
 	// encryption state to true depends on the volume origin (new or from a snapshot),
@@ -40,26 +49,21 @@ type VolumeSpec struct {
 	// EBS encryption. For more information, see Supported instance types (https://docs.aws.amazon.com/ebs/latest/userguide/ebs-encryption-requirements.html#ebs-encryption_supported_instances).
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable once set"
 	Encrypted *bool `json:"encrypted,omitempty"`
-	// The number of I/O operations per second (IOPS). For gp3, io1, and io2 volumes,
-	// this represents the number of IOPS that are provisioned for the volume. For
-	// gp2 volumes, this represents the baseline performance of the volume and the
-	// rate at which the volume accumulates I/O credits for bursting.
+	// The number of I/O operations per second (IOPS) to provision for the volume.
+	// Required for io1 and io2 volumes. Optional for gp3 volumes. Omit for all
+	// other volume types.
 	//
-	// The following are the supported values for each volume type:
+	// Valid ranges:
 	//
-	//    * gp3: 3,000 - 16,000 IOPS
+	//    * gp3: 3,000 (default)- 80,000 IOPS
 	//
 	//    * io1: 100 - 64,000 IOPS
 	//
 	//    * io2: 100 - 256,000 IOPS
 	//
-	// For io2 volumes, you can achieve up to 256,000 IOPS on instances built on
-	// the Nitro System (https://docs.aws.amazon.com/ec2/latest/instancetypes/ec2-nitro-instances.html).
-	// On other instances, you can achieve performance up to 32,000 IOPS.
-	//
-	// This parameter is required for io1 and io2 volumes. The default for gp3 volumes
-	// is 3,000 IOPS. This parameter is not supported for gp2, st1, sc1, or standard
-	// volumes.
+	// Instances built on the Nitro System (https://docs.aws.amazon.com/ec2/latest/instancetypes/ec2-nitro-instances.html)
+	// can support up to 256,000 IOPS. Other instances can support up to 32,000
+	// IOPS.
 	IOPS *int64 `json:"iops,omitempty"`
 	// The identifier of the KMS key to use for Amazon EBS encryption. If this parameter
 	// is not specified, your KMS key for Amazon EBS is used. If KmsKeyId is specified,
@@ -96,13 +100,15 @@ type VolumeSpec struct {
 	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable once set"
 	OutpostARN *string `json:"outpostARN,omitempty"`
 	// The size of the volume, in GiBs. You must specify either a snapshot ID or
-	// a volume size. If you specify a snapshot, the default is the snapshot size.
-	// You can specify a volume size that is equal to or larger than the snapshot
+	// a volume size. If you specify a snapshot, the default is the snapshot size,
+	// and you can specify a volume size that is equal to or larger than the snapshot
 	// size.
 	//
-	// The following are the supported volumes sizes for each volume type:
+	// Valid sizes:
 	//
-	//    * gp2 and gp3: 1 - 16,384 GiB
+	//    * gp2: 1 - 16,384 GiB
+	//
+	//    * gp3: 1 - 65,536 GiB
 	//
 	//    * io1: 4 - 16,384 GiB
 	//
@@ -120,12 +126,34 @@ type VolumeSpec struct {
 	// to have a value, specify the parameter with no value, and we set the value
 	// to an empty string.
 	Tags []*Tag `json:"tags,omitempty"`
-	// The throughput to provision for a volume, with a maximum of 1,000 MiB/s.
+	// The throughput to provision for the volume, in MiB/s. Supported for gp3 volumes
+	// only. Omit for all other volume types.
 	//
-	// This parameter is valid only for gp3 volumes.
-	//
-	// Valid Range: Minimum value of 125. Maximum value of 1000.
+	// Valid Range: 125 - 2000 MiB/s
 	Throughput *int64 `json:"throughput,omitempty"`
+	// Specifies the Amazon EBS Provisioned Rate for Volume Initialization (volume
+	// initialization rate), in MiB/s, at which to download the snapshot blocks
+	// from Amazon S3 to the volume. This is also known as volume initialization.
+	// Specifying a volume initialization rate ensures that the volume is initialized
+	// at a predictable and consistent rate after creation.
+	//
+	// This parameter is supported only for volumes created from snapshots. Omit
+	// this parameter if:
+	//
+	//    * You want to create the volume using fast snapshot restore. You must
+	//    specify a snapshot that is enabled for fast snapshot restore. In this
+	//    case, the volume is fully initialized at creation. If you specify a snapshot
+	//    that is enabled for fast snapshot restore and a volume initialization
+	//    rate, the volume will be initialized at the specified rate instead of
+	//    fast snapshot restore.
+	//
+	//    * You want to create a volume that is initialized at the default rate.
+	//
+	// For more information, see Initialize Amazon EBS volumes (https://docs.aws.amazon.com/ebs/latest/userguide/initalize-volume.html)
+	// in the Amazon EC2 User Guide.
+	//
+	// Valid range: 100 - 300 MiB/s
+	VolumeInitializationRate *int64 `json:"volumeInitializationRate,omitempty"`
 	// The volume type. This parameter can be one of the following values:
 	//
 	//    * General Purpose SSD: gp2 | gp3
@@ -173,6 +201,10 @@ type VolumeStatus struct {
 	// The service provider that manages the volume.
 	// +kubebuilder:validation:Optional
 	Operator *OperatorResponse `json:"operator,omitempty"`
+	// The ID of the source volume from which the volume copy was created. Only
+	// for volume copies.
+	// +kubebuilder:validation:Optional
+	SourceVolumeID *string `json:"sourceVolumeID,omitempty"`
 	//
 	// This parameter is not returned by CreateVolume.
 	//

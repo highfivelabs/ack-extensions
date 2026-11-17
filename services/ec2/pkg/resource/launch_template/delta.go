@@ -98,6 +98,13 @@ func newResourceDelta(
 					delta.Add("Spec.Data.CPUOptions.CoreCount", a.ko.Spec.Data.CPUOptions.CoreCount, b.ko.Spec.Data.CPUOptions.CoreCount)
 				}
 			}
+			if ackcompare.HasNilDifference(a.ko.Spec.Data.CPUOptions.NestedVirtualization, b.ko.Spec.Data.CPUOptions.NestedVirtualization) {
+				delta.Add("Spec.Data.CPUOptions.NestedVirtualization", a.ko.Spec.Data.CPUOptions.NestedVirtualization, b.ko.Spec.Data.CPUOptions.NestedVirtualization)
+			} else if a.ko.Spec.Data.CPUOptions.NestedVirtualization != nil && b.ko.Spec.Data.CPUOptions.NestedVirtualization != nil {
+				if *a.ko.Spec.Data.CPUOptions.NestedVirtualization != *b.ko.Spec.Data.CPUOptions.NestedVirtualization {
+					delta.Add("Spec.Data.CPUOptions.NestedVirtualization", a.ko.Spec.Data.CPUOptions.NestedVirtualization, b.ko.Spec.Data.CPUOptions.NestedVirtualization)
+				}
+			}
 			if ackcompare.HasNilDifference(a.ko.Spec.Data.CPUOptions.ThreadsPerCore, b.ko.Spec.Data.CPUOptions.ThreadsPerCore) {
 				delta.Add("Spec.Data.CPUOptions.ThreadsPerCore", a.ko.Spec.Data.CPUOptions.ThreadsPerCore, b.ko.Spec.Data.CPUOptions.ThreadsPerCore)
 			} else if a.ko.Spec.Data.CPUOptions.ThreadsPerCore != nil && b.ko.Spec.Data.CPUOptions.ThreadsPerCore != nil {
@@ -491,6 +498,13 @@ func newResourceDelta(
 					delta.Add("Spec.Data.InstanceRequirements.OnDemandMaxPricePercentageOverLowestPrice", a.ko.Spec.Data.InstanceRequirements.OnDemandMaxPricePercentageOverLowestPrice, b.ko.Spec.Data.InstanceRequirements.OnDemandMaxPricePercentageOverLowestPrice)
 				}
 			}
+			if ackcompare.HasNilDifference(a.ko.Spec.Data.InstanceRequirements.RequireEncryptionInTransit, b.ko.Spec.Data.InstanceRequirements.RequireEncryptionInTransit) {
+				delta.Add("Spec.Data.InstanceRequirements.RequireEncryptionInTransit", a.ko.Spec.Data.InstanceRequirements.RequireEncryptionInTransit, b.ko.Spec.Data.InstanceRequirements.RequireEncryptionInTransit)
+			} else if a.ko.Spec.Data.InstanceRequirements.RequireEncryptionInTransit != nil && b.ko.Spec.Data.InstanceRequirements.RequireEncryptionInTransit != nil {
+				if *a.ko.Spec.Data.InstanceRequirements.RequireEncryptionInTransit != *b.ko.Spec.Data.InstanceRequirements.RequireEncryptionInTransit {
+					delta.Add("Spec.Data.InstanceRequirements.RequireEncryptionInTransit", a.ko.Spec.Data.InstanceRequirements.RequireEncryptionInTransit, b.ko.Spec.Data.InstanceRequirements.RequireEncryptionInTransit)
+				}
+			}
 			if ackcompare.HasNilDifference(a.ko.Spec.Data.InstanceRequirements.RequireHibernateSupport, b.ko.Spec.Data.InstanceRequirements.RequireHibernateSupport) {
 				delta.Add("Spec.Data.InstanceRequirements.RequireHibernateSupport", a.ko.Spec.Data.InstanceRequirements.RequireHibernateSupport, b.ko.Spec.Data.InstanceRequirements.RequireHibernateSupport)
 			} else if a.ko.Spec.Data.InstanceRequirements.RequireHibernateSupport != nil && b.ko.Spec.Data.InstanceRequirements.RequireHibernateSupport != nil {
@@ -677,6 +691,13 @@ func newResourceDelta(
 					delta.Add("Spec.Data.Placement.AvailabilityZone", a.ko.Spec.Data.Placement.AvailabilityZone, b.ko.Spec.Data.Placement.AvailabilityZone)
 				}
 			}
+			if ackcompare.HasNilDifference(a.ko.Spec.Data.Placement.AvailabilityZoneID, b.ko.Spec.Data.Placement.AvailabilityZoneID) {
+				delta.Add("Spec.Data.Placement.AvailabilityZoneID", a.ko.Spec.Data.Placement.AvailabilityZoneID, b.ko.Spec.Data.Placement.AvailabilityZoneID)
+			} else if a.ko.Spec.Data.Placement.AvailabilityZoneID != nil && b.ko.Spec.Data.Placement.AvailabilityZoneID != nil {
+				if *a.ko.Spec.Data.Placement.AvailabilityZoneID != *b.ko.Spec.Data.Placement.AvailabilityZoneID {
+					delta.Add("Spec.Data.Placement.AvailabilityZoneID", a.ko.Spec.Data.Placement.AvailabilityZoneID, b.ko.Spec.Data.Placement.AvailabilityZoneID)
+				}
+			}
 			if ackcompare.HasNilDifference(a.ko.Spec.Data.Placement.GroupID, b.ko.Spec.Data.Placement.GroupID) {
 				delta.Add("Spec.Data.Placement.GroupID", a.ko.Spec.Data.Placement.GroupID, b.ko.Spec.Data.Placement.GroupID)
 			} else if a.ko.Spec.Data.Placement.GroupID != nil && b.ko.Spec.Data.Placement.GroupID != nil {
@@ -757,6 +778,13 @@ func newResourceDelta(
 		} else if a.ko.Spec.Data.RAMDiskID != nil && b.ko.Spec.Data.RAMDiskID != nil {
 			if *a.ko.Spec.Data.RAMDiskID != *b.ko.Spec.Data.RAMDiskID {
 				delta.Add("Spec.Data.RAMDiskID", a.ko.Spec.Data.RAMDiskID, b.ko.Spec.Data.RAMDiskID)
+			}
+		}
+		if len(a.ko.Spec.Data.SecondaryInterfaces) != len(b.ko.Spec.Data.SecondaryInterfaces) {
+			delta.Add("Spec.Data.SecondaryInterfaces", a.ko.Spec.Data.SecondaryInterfaces, b.ko.Spec.Data.SecondaryInterfaces)
+		} else if len(a.ko.Spec.Data.SecondaryInterfaces) > 0 {
+			if !equality.Semantic.Equalities.DeepEqual(a.ko.Spec.Data.SecondaryInterfaces, b.ko.Spec.Data.SecondaryInterfaces) {
+				delta.Add("Spec.Data.SecondaryInterfaces", a.ko.Spec.Data.SecondaryInterfaces, b.ko.Spec.Data.SecondaryInterfaces)
 			}
 		}
 		if len(a.ko.Spec.Data.SecurityGroupIDs) != len(b.ko.Spec.Data.SecurityGroupIDs) {

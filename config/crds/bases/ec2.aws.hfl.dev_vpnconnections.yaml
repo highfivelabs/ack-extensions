@@ -88,6 +88,8 @@ spec:
                     type: boolean
                   transportTransitGatewayAttachmentID:
                     type: string
+                  tunnelBandwidth:
+                    type: string
                   tunnelInsideIPVersion:
                     type: string
                   tunnelOptions:
@@ -117,6 +119,12 @@ spec:
                               description: Options for sending VPN tunnel logs to
                                 CloudWatch.
                               properties:
+                                bgpLogEnabled:
+                                  type: boolean
+                                bgpLogGroupARN:
+                                  type: string
+                                bgpLogOutputFormat:
+                                  type: string
                                 logEnabled:
                                   type: boolean
                                 logGroupARN:
@@ -227,6 +235,12 @@ spec:
                       type: object
                     type: array
                 type: object
+              preSharedKeyStorage:
+                description: |-
+                  Specifies the storage mode for the pre-shared key (PSK). Valid values are
+                  Standard" (stored in the Site-to-Site VPN service) or SecretsManager (stored
+                  in Amazon Web Services Secrets Manager).
+                type: string
               staticRoutes:
                 items:
                   type: string
@@ -276,6 +290,10 @@ spec:
                 x-kubernetes-validations:
                 - message: Value is immutable once set
                   rule: self == oldSelf
+              vpnConcentratorID:
+                description: The ID of the VPN concentrator to associate with the
+                  VPN connection.
+                type: string
               vpnGatewayID:
                 description: |-
                   The ID of the virtual private gateway. If you specify a virtual private gateway,
@@ -389,6 +407,11 @@ spec:
                 type: string
               gatewayAssociationState:
                 description: The current state of the gateway association.
+                type: string
+              preSharedKeyARN:
+                description: |-
+                  The Amazon Resource Name (ARN) of the Secrets Manager secret storing the
+                  pre-shared key(s) for the VPN connection.
                 type: string
               routes:
                 description: The static routes associated with the VPN connection.

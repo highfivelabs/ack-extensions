@@ -47,6 +47,7 @@ import (
 	svcresource "github.com/highfivelabs/ack-extensions/services/autoscaling/pkg/resource"
 
 	_ "github.com/highfivelabs/ack-extensions/services/autoscaling/pkg/resource/auto_scaling_group"
+	_ "github.com/highfivelabs/ack-extensions/services/autoscaling/pkg/resource/lifecycle_hook"
 	_ "github.com/highfivelabs/ack-extensions/services/autoscaling/pkg/resource/scaling_policy"
 	_ "github.com/highfivelabs/ack-extensions/services/autoscaling/pkg/resource/scheduled_action"
 

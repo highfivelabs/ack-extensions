@@ -61,6 +61,9 @@ spec:
                           properties:
                             deleteOnTermination:
                               type: boolean
+                            ebsCardIndex:
+                              format: int64
+                              type: integer
                             encrypted:
                               type: boolean
                             iops:
@@ -85,6 +88,9 @@ spec:
                             snapshotID:
                               type: string
                             throughput:
+                              format: int64
+                              type: integer
+                            volumeInitializationRate:
                               format: int64
                               type: integer
                             volumeSize:
@@ -130,6 +136,8 @@ spec:
                       coreCount:
                         format: int64
                         type: integer
+                      nestedVirtualization:
+                        type: string
                       threadsPerCore:
                         format: int64
                         type: integer
@@ -174,7 +182,7 @@ spec:
                   enclaveOptions:
                     description: |-
                       Indicates whether the instance is enabled for Amazon Web Services Nitro Enclaves.
-                      For more information, see What is Amazon Web Services Nitro Enclaves? (https://docs.aws.amazon.com/enclaves/latest/user/nitro-enclave.html)
+                      For more information, see What is Nitro Enclaves? (https://docs.aws.amazon.com/enclaves/latest/user/nitro-enclave.html)
                       in the Amazon Web Services Nitro Enclaves User Guide.
                     properties:
                       enabled:
@@ -419,6 +427,8 @@ spec:
                       onDemandMaxPricePercentageOverLowestPrice:
                         format: int64
                         type: integer
+                      requireEncryptionInTransit:
+                        type: boolean
                       requireHibernateSupport:
                         type: boolean
                       spotMaxPricePercentageOverLowestPrice:
@@ -466,8 +476,8 @@ spec:
                     type: object
                   metadataOptions:
                     description: |-
-                      The metadata options for the instance. For more information, see Instance
-                      metadata and user data (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html)
+                      The metadata options for the instance. For more information, see Use instance
+                      metadata to manage your EC2 instance (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html)
                       in the Amazon EC2 User Guide.
                     properties:
                       httpEndpoint:
@@ -520,6 +530,9 @@ spec:
                         deviceIndex:
                           format: int64
                           type: integer
+                        enaQueueCount:
+                          format: int64
+                          type: integer
                         enaSrdSpecification:
                           description: Launch instances with ENA Express settings
                             configured from your launch template.
@@ -568,7 +581,7 @@ spec:
                           type: integer
                         ipv6Prefixes:
                           items:
-                            description: Describes the IPv4 prefix option for a network
+                            description: Describes the IPv6 prefix option for a network
                               interface.
                             properties:
                               ipv6Prefix:
@@ -638,6 +651,8 @@ spec:
                         type: string
                       availabilityZone:
                         type: string
+                      availabilityZoneID:
+                        type: string
                       groupID:
                         type: string
                       groupName:
@@ -666,6 +681,38 @@ spec:
                     type: object
                   ramDiskID:
                     type: string
+                  secondaryInterfaces:
+                    items:
+                      description: Describes a secondary interface specification for
+                        a launch template request.
+                      properties:
+                        deleteOnTermination:
+                          type: boolean
+                        deviceIndex:
+                          format: int64
+                          type: integer
+                        interfaceType:
+                          type: string
+                        networkCardIndex:
+                          format: int64
+                          type: integer
+                        privateIPAddressCount:
+                          format: int64
+                          type: integer
+                        privateIPAddresses:
+                          items:
+                            description: |-
+                              Describes a private IPv4 address specification for a secondary interface
+                              request.
+                            properties:
+                              privateIPAddress:
+                                type: string
+                            type: object
+                          type: array
+                        secondarySubnetID:
+                          type: string
+                      type: object
+                    type: array
                   securityGroupIDs:
                     items:
                       type: string
