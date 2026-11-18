@@ -110,7 +110,7 @@ pins:
     repo: aws-controllers-k8s/efs-controller
     version: v1.9.0
     commit: 4bea998f5732ab6d21d225824e09588c7248cb67
-    use: not a module; its FileSystem and MountTarget generator entries, hook templates and hand-written code copied for our fixed copies (efs.aws.hfl.dev FileSystem and MountTarget)
+    use: not a module; its FileSystem and MountTarget generator entries, hook templates and hand-written code copied for our fixed copies (efs.aws.hfl.dev FileSystem and MountTarget; FileSystemPolicy is ours, from PutFileSystemPolicy)
   - name: elasticache-controller
     repo: aws-controllers-k8s/elasticache-controller
     version: v1.13.0

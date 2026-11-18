@@ -42,6 +42,7 @@ rules:
 - apiGroups:
   - efs.aws.hfl.dev
   resources:
+  - filesystempolicies
   - filesystems
   - mounttargets
   verbs:
@@ -55,6 +56,7 @@ rules:
 - apiGroups:
   - efs.aws.hfl.dev
   resources:
+  - filesystempolicies/status
   - filesystems/status
   - mounttargets/status
   verbs:

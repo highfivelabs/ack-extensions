@@ -1,3 +1,11 @@
+operations:
+  # FileSystemPolicy: PutFileSystemPolicy creates and updates, the way
+  # ec2's LaunchTemplate maps its version call (docs/plan.md section 6.48).
+  PutFileSystemPolicy:
+    operation_type:
+      - Create
+      - Update
+    resource_name: FileSystemPolicy
 ignore:
   resource_names:
       # FileSystem
@@ -8,7 +16,6 @@ ignore:
   - DescribeFileSystemsInput.CreationToken
   - PutBackupPolicyInput.FileSystemId
   - PutLifecycleConfigurationInput.FileSystemId
-  - PutFileSystemPolicyInput.FileSystemId
   - UpdateFileSystemProtectionInput.FileSystemId
   # Well, FileSystem idempotency token is called CreationToken
   # and AccessPoint idempotency token is called ClientToken.....
@@ -19,6 +26,46 @@ ignore:
   - ClientToken
 controller_name: efs
 resources:
+  FileSystemPolicy:
+    tags:
+      ignore: true
+    exceptions:
+      errors:
+        404:
+          code: FileSystemNotFound
+    fields:
+      FileSystemId:
+        is_primary_key: true
+        is_required: true
+        is_immutable: true
+        references:
+          resource: FileSystem
+          path: Status.FileSystemID
+      # The document may name the file system's own ARN as
+      # ${fileSystemARN}: filled in (hooks.go) before each write, and the
+      # template kept in the spec (the read keeps it while the document
+      # the file system holds is the template's rendering).
+      Policy:
+        is_required: true
+        is_iam_policy: true
+      BypassPolicyLockoutSafetyCheck:
+        compare:
+          is_ignored: true
+    hooks:
+      sdk_read_one_post_request:
+        template_path: hooks/file_system_policy/sdk_read_one_post_request.go.tpl
+      sdk_read_one_post_set_output:
+        template_path: hooks/file_system_policy/sdk_read_one_post_set_output.go.tpl
+      sdk_create_post_build_request:
+        template_path: hooks/file_system_policy/sdk_create_post_build_request.go.tpl
+      sdk_update_post_build_request:
+        template_path: hooks/file_system_policy/sdk_update_post_build_request.go.tpl
+      sdk_create_post_set_output:
+        template_path: hooks/file_system_policy/sdk_create_post_set_output.go.tpl
+      sdk_update_post_set_output:
+        template_path: hooks/file_system_policy/sdk_update_post_set_output.go.tpl
+      sdk_delete_post_request:
+        template_path: hooks/file_system_policy/sdk_delete_post_request.go.tpl
   FileSystem:
     synced:
       when:
