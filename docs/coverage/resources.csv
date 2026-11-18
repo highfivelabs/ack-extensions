@@ -725,6 +725,7 @@ ecs,TaskDefinition,127,TaskDefinition,116,,0,11,false,
 ecs,TaskSet,23,,0,TaskSet (Cloud Control),23,0,false,ours TaskSet (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ecs); on the schema fake only
 efs,AccessPoint,11,AccessPoint,10,,0,1,false,
 efs,FileSystem,20,FileSystem,18,FileSystem,1,1,false,official_unmapped=2;ours_unmapped=3
+efs,FileSystemPolicy,0,,0,FileSystemPolicy,0,0,false,outside-denominator;ours_crd_attributes=3
 efs,MountTarget,6,MountTarget,4,MountTarget,2,0,false,
 eks,AccessEntry,10,AccessEntry,10,,0,0,false,
 eks,Addon,12,Addon,10,,0,2,false,official_unmapped=1

@@ -23,6 +23,7 @@ resources:
   - bases/ec2.aws.hfl.dev_launchtemplates.yaml
   - bases/ecr.aws.hfl.dev_replicationconfigurations.yaml
   - bases/efs.aws.hfl.dev_filesystems.yaml
+  - bases/efs.aws.hfl.dev_filesystempolicies.yaml
   - bases/efs.aws.hfl.dev_mounttargets.yaml
   - bases/elasticache.aws.hfl.dev_cacheclusters.yaml
   - bases/elasticache.aws.hfl.dev_replicationgroups.yaml

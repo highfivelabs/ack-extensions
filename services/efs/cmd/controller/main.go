@@ -47,6 +47,7 @@ import (
 	svcresource "github.com/highfivelabs/ack-extensions/services/efs/pkg/resource"
 
 	_ "github.com/highfivelabs/ack-extensions/services/efs/pkg/resource/file_system"
+	_ "github.com/highfivelabs/ack-extensions/services/efs/pkg/resource/file_system_policy"
 	_ "github.com/highfivelabs/ack-extensions/services/efs/pkg/resource/mount_target"
 
 	"github.com/highfivelabs/ack-extensions/services/efs/pkg/version"

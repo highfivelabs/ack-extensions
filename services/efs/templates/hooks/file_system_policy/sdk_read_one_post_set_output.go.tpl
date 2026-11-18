@@ -1,0 +1,1 @@
+	keepPolicyTemplate(rm, r, ko)

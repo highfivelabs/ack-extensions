@@ -2951,6 +2951,43 @@ upstream PR #237; open PRs #244, #209 do not cover these.)
   `TestApplyAuthTokenUpdatePayload`, `TestDeleteFinalSnapshotIdentifier`) and
   on moto in `TestElastiCacheReplicationGroupAndCacheCluster`.
 
+### 6.48 `efs.aws.hfl.dev` `FileSystemPolicy`
+
+Upstream rechecked 2026-11-18 (read-only): `efs-controller` `v1.9.0` has
+the policy only as `FileSystem.spec.policy`, a string written before the
+file system exists; no kind, and no open pull request adds one.
+
+- Generated from `v1.41.5` models: `PutFileSystemPolicy` mapped as both
+  create and update (the `LaunchTemplate` pattern), `DescribeFileSystemPolicy`
+  and `DeleteFileSystemPolicy` as read and delete. `spec.fileSystemRef`
+  (or `fileSystemID`) names the file system, immutable; `spec.policy` is
+  required and compared as an IAM document;
+  `spec.bypassPolicyLockoutSafetyCheck` is passed on every put and not
+  compared. Tags are not a thing for this kind.
+- **The file system's own ARN:** the document may write `${fileSystemARN}`
+  (in `Resource`, or a condition value). `hooks.go` fills it before every
+  put with `arn:<partition>:elasticfilesystem:<region>:<account>:file-system/<id>`,
+  built from the controller's own account and Region and the resolved ID,
+  so no status read is needed. The spec keeps the template: a read keeps
+  it while the document EFS holds is the template's rendering (compared as
+  an IAM document), and shows EFS's document when it is not, so a change or
+  a drift is a delta and a template is never a drift by itself.
+- A file system with no policy answers `PolicyNotFound` (read: not made
+  yet; delete: already gone). `FileSystemNotFound` likewise.
+- **One writer:** use `FileSystem.spec.policy` or a `FileSystemPolicy`,
+  never both for one file system: they put the same document.
+- Proven on moto in `TestEFSFileSystemPolicy` (put with the ARN filled in,
+  the template kept and the object synced, a changed template put again)
+  and in unit tests (`hooks_test.go`: ARN, rendering, template keeping,
+  not-found handling, and `sdkDelete` against a stand-in server).
+- **Fake gaps, stated plainly:** moto 5.2.5 has no `DeleteFileSystemPolicy`
+  (it answers 500), so the delete is proven only by the stand-in unit test,
+  not end to end. The same gap means a `FileSystem` object with no policy
+  cannot sync on moto (the `FileSystem` kind sends that delete), so the e2e
+  test names the file system by `fileSystemID`; `fileSystemRef` is ACK's
+  generated resolution and is for the live run to show. Not yet run live.
+- Charts that can adopt it (catalog, allow_alpha): `efs`.
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)
@@ -4629,5 +4666,8 @@ Before it can run on a real cluster:
     its own ARN (a field or kind on `FileSystem`, in the manner of
     question 24's placeholder `Policy` copy: a named placeholder in the
     document filled from the file system's own `status.ackResourceMetadata.arn`).
-    Not built yet; it is the next EFS item after the batch-2 gaps
-    (section 6.46).
+    **Built** (2026-11-18, section 6.48): a kind, `efs.aws.hfl.dev`
+    `FileSystemPolicy`, with `fileSystemRef` and the placeholder
+    `${fileSystemARN}`. The catalog's efs chart can drop its refusal of
+    the two transport statements by rendering a `FileSystemPolicy`
+    (and no `FileSystem.spec.policy`) once it is released.
