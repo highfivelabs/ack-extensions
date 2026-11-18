@@ -326,6 +326,16 @@ func startFake(t *testing.T, root string) (*fake.Server, string, aws.Config) {
 			b = fake.NewSecurityGroupIngress(motoCfg)
 		case "AWS::EC2::SecurityGroupEgress":
 			b = fake.NewSecurityGroupEgress(motoCfg)
+		case "AWS::IdentityStore::User":
+			b = fake.NewIdentityStoreUser(motoCfg)
+		case "AWS::IAM::ServerCertificate":
+			b = fake.NewServerCertificate(motoCfg)
+		case "AWS::Route53::DelegationSet":
+			b = fake.NewDelegationSet(motoCfg)
+		case "AWS::Macie::Session":
+			b = fake.NewMacieSession(motoCfg, motoAccount)
+		case "AWS::InspectorV2::Filter":
+			b = fake.NewInspectorFilter(motoCfg)
 		default:
 			if ty.Unproven != "" {
 				// Marked in types.yaml: moto lacks the API, so the type

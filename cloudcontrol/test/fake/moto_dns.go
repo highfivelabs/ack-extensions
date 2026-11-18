@@ -5,7 +5,9 @@ package fake
 
 import (
 	"context"
+	"fmt"
 	"strings"
+	"sync"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
@@ -160,5 +162,73 @@ func (b *ResolverDNSSECConfig) Delete(ctx context.Context, id string) error {
 	_, err = b.R.UpdateResolverDnssecConfig(ctx, &route53resolver.UpdateResolverDnssecConfigInput{
 		ResourceId: c.ResourceId, Validation: r53rtypes.ValidationDisable,
 	})
+	return err
+}
+
+// ---- AWS::Route53::DelegationSet ----
+
+// DelegationSet is a reusable Route 53 delegation set, identified by its ARN.
+// Every property is read-only; moto 5.2.5 implements Create, Get and
+// DeleteReusableDelegationSet.
+type DelegationSet struct {
+	R53 *route53.Client
+	mu  sync.Mutex
+	n   int
+}
+
+// NewDelegationSet makes the backend.
+func NewDelegationSet(cfg aws.Config) *DelegationSet {
+	return &DelegationSet{R53: route53.NewFromConfig(cfg)}
+}
+
+const delegationSetARN = "arn:aws:route53:::delegationset/"
+
+func (b *DelegationSet) Create(ctx context.Context, _ map[string]any) (string, error) {
+	b.mu.Lock()
+	b.n++
+	ref := fmt.Sprintf("delegation-set-%d", b.n)
+	b.mu.Unlock()
+	out, err := b.R53.CreateReusableDelegationSet(ctx, &route53.CreateReusableDelegationSetInput{
+		CallerReference: aws.String(ref),
+	})
+	if err != nil {
+		return "", InvalidRequest("%v", err)
+	}
+	id := strings.TrimPrefix(aws.ToString(out.DelegationSet.Id), "/delegationset/")
+	return delegationSetARN + id, nil
+}
+
+func (b *DelegationSet) Read(ctx context.Context, arn string) (map[string]any, error) {
+	id := strings.TrimPrefix(arn, delegationSetARN)
+	out, err := b.R53.GetReusableDelegationSet(ctx, &route53.GetReusableDelegationSetInput{Id: aws.String(id)})
+	if err != nil {
+		if code(err) == "NoSuchDelegationSet" {
+			return nil, NotFound("%s", arn)
+		}
+		return nil, err
+	}
+	ds := out.DelegationSet
+	ns := make([]any, len(ds.NameServers))
+	for i, s := range ds.NameServers {
+		ns[i] = s
+	}
+	return map[string]any{
+		"Arn":             arn,
+		"Id":              id,
+		"CallerReference": aws.ToString(ds.CallerReference),
+		"NameServers":     ns,
+	}, nil
+}
+
+func (b *DelegationSet) Update(context.Context, string, map[string]any, map[string]any) error {
+	return &HandlerError{"NotUpdatable", "AWS::Route53::DelegationSet has no update handler"}
+}
+
+func (b *DelegationSet) Delete(ctx context.Context, arn string) error {
+	id := strings.TrimPrefix(arn, delegationSetARN)
+	_, err := b.R53.DeleteReusableDelegationSet(ctx, &route53.DeleteReusableDelegationSetInput{Id: aws.String(id)})
+	if code(err) == "NoSuchDelegationSet" {
+		return NotFound("%s", arn)
+	}
 	return err
 }

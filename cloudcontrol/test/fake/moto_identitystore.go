@@ -5,6 +5,7 @@ package fake
 
 import (
 	"context"
+	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/identitystore"
@@ -132,5 +133,114 @@ func (b *IdentityStoreGroupMembership) Delete(ctx context.Context, id string) er
 	}
 	mid, store, _ := idPair(id)
 	_, err := b.IS.DeleteGroupMembership(ctx, &identitystore.DeleteGroupMembershipInput{IdentityStoreId: aws.String(store), MembershipId: aws.String(mid)})
+	return err
+}
+
+// ---- AWS::IdentityStore::User on moto's Identity Store ----
+
+// IdentityStoreUser is the backend of a user in the Identity Center directory,
+// identified by its Arn ("arn:aws:identitystore:::<IdentityStoreId>/user/<UserId>")
+// so Read and Delete have both IDs without keeping state. moto 5.2.5 implements
+// Create, Describe and DeleteUser and has no UpdateUser: an update fails here,
+// so changing DisplayName or Title is unproven on the fake.
+type IdentityStoreUser struct{ IS *identitystore.Client }
+
+// NewIdentityStoreUser makes the backend.
+func NewIdentityStoreUser(cfg aws.Config) *IdentityStoreUser {
+	return &IdentityStoreUser{IS: identitystore.NewFromConfig(cfg)}
+}
+
+func userIDFromARN(arn string) (store, uid string, err error) {
+	rest := strings.TrimPrefix(arn, "arn:aws:identitystore:::")
+	parts := strings.Split(rest, "/user/")
+	if len(parts) != 2 || parts[0] == "" || parts[1] == "" {
+		return "", "", NotFound("user %s", arn)
+	}
+	return parts[0], parts[1], nil
+}
+
+func (b *IdentityStoreUser) Create(ctx context.Context, m map[string]any) (string, error) {
+	store := str(m, "IdentityStoreId")
+	in := &identitystore.CreateUserInput{IdentityStoreId: aws.String(store)}
+	if v := str(m, "UserName"); v != "" {
+		in.UserName = aws.String(v)
+	}
+	if v := str(m, "DisplayName"); v != "" {
+		in.DisplayName = aws.String(v)
+	}
+	if v := str(m, "Title"); v != "" {
+		in.Title = aws.String(v)
+	}
+	if nm, ok := m["Name"].(map[string]any); ok {
+		in.Name = &istypes.Name{
+			GivenName:  optStr(nm, "GivenName"),
+			FamilyName: optStr(nm, "FamilyName"),
+		}
+	}
+	out, err := b.IS.CreateUser(ctx, in)
+	if err != nil {
+		return "", InvalidRequest("%v", err)
+	}
+	return "arn:aws:identitystore:::" + store + "/user/" + aws.ToString(out.UserId), nil
+}
+
+func optStr(m map[string]any, k string) *string {
+	if s := str(m, k); s != "" {
+		return aws.String(s)
+	}
+	return nil
+}
+
+func (b *IdentityStoreUser) Read(ctx context.Context, arn string) (map[string]any, error) {
+	store, uid, err := userIDFromARN(arn)
+	if err != nil {
+		return nil, err
+	}
+	out, err := b.IS.DescribeUser(ctx, &identitystore.DescribeUserInput{IdentityStoreId: aws.String(store), UserId: aws.String(uid)})
+	if err != nil {
+		if code(err) == "ResourceNotFoundException" {
+			return nil, NotFound("user %s", arn)
+		}
+		return nil, err
+	}
+	m := map[string]any{
+		"Arn":             arn,
+		"IdentityStoreId": store,
+		"UserId":          uid,
+	}
+	if out.UserName != nil {
+		m["UserName"] = aws.ToString(out.UserName)
+	}
+	if out.DisplayName != nil {
+		m["DisplayName"] = aws.ToString(out.DisplayName)
+	}
+	if out.Title != nil {
+		m["Title"] = aws.ToString(out.Title)
+	}
+	if out.Name != nil {
+		nm := map[string]any{}
+		if out.Name.GivenName != nil {
+			nm["GivenName"] = aws.ToString(out.Name.GivenName)
+		}
+		if out.Name.FamilyName != nil {
+			nm["FamilyName"] = aws.ToString(out.Name.FamilyName)
+		}
+		if len(nm) > 0 {
+			m["Name"] = nm
+		}
+	}
+	return m, nil
+}
+
+func (b *IdentityStoreUser) Update(context.Context, string, map[string]any, map[string]any) error {
+	return InvalidRequest("moto 5.2.5 has no UpdateUser")
+}
+
+func (b *IdentityStoreUser) Delete(ctx context.Context, arn string) error {
+	if _, err := b.Read(ctx, arn); err != nil {
+		return err
+	}
+	store, uid, _ := userIDFromARN(arn)
+	_, err := b.IS.DeleteUser(ctx, &identitystore.DeleteUserInput{IdentityStoreId: aws.String(store), UserId: aws.String(uid)})
 	return err
 }

@@ -141,3 +141,32 @@ func TestDNS(t *testing.T) {
 		}
 	}
 }
+
+// F08, Route 53: a reusable delegation set, made, read back with its
+// name servers, and deleted.
+func TestRoute53DelegationSet(t *testing.T) {
+	e := start(t)
+	r53 := route53.NewFromConfig(e.moto)
+
+	d := objOf("AWS::Route53::DelegationSet", "dns-e2e-dset", map[string]any{})
+	if err := e.c.Create(e.ctx, d); err != nil {
+		t.Fatal(err)
+	}
+	got := e.waitSynced(t, d)
+	did, _, _ := unstructured.NestedString(got.Object, "status", "id")
+	ns, _, _ := unstructured.NestedStringSlice(got.Object, "status", "nameServers")
+	if did == "" || len(ns) == 0 {
+		t.Fatalf("status.id=%q nameServers=%v", did, ns)
+	}
+	if _, err := r53.GetReusableDelegationSet(e.ctx, &route53.GetReusableDelegationSetInput{Id: aws.String(did)}); err != nil {
+		t.Fatalf("moto's delegation set: %v", err)
+	}
+
+	if err := e.c.Delete(e.ctx, d); err != nil {
+		t.Fatal(err)
+	}
+	e.waitGone(t, d)
+	if _, err := r53.GetReusableDelegationSet(e.ctx, &route53.GetReusableDelegationSetInput{Id: aws.String(did)}); err == nil {
+		t.Errorf("delegation set %s still in moto after delete", did)
+	}
+}

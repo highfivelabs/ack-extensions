@@ -922,7 +922,7 @@ iam,Policy,5,,0,,0,5,false,
 iam,Role,11,Role,10,RolePolicyAttachment,0,1,true,ours RolePolicyAttachment covers a property of this resource;ours RolePolicyAttachment copied from iam-controller#184
 iam,RolePolicy,3,,0,,0,3,false,
 iam,SAMLProvider,9,,0,SAMLProvider (Cloud Control),9,0,false,
-iam,ServerCertificate,7,,0,ServerCertificate (Cloud Control),7,0,false,ours ServerCertificate (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has iam); on the schema fake only
+iam,ServerCertificate,7,,0,ServerCertificate (Cloud Control),7,0,false,
 iam,ServiceLinkedRole,3,ServiceLinkedRole,3,,0,0,false,
 iam,SSHPublicKey,0,,0,SSHPublicKey,0,0,false,outside-denominator;ours_crd_attributes=3
 iam,User,11,User,7,LoginProfile;UserGroupMembership,3,1,false,ours LoginProfile covers a property of this resource;ours UserGroupMembership covers a property of this resource
@@ -931,7 +931,7 @@ iam,UserToGroupAddition,2,,0,,0,2,false,
 iam,VirtualMFADevice,5,,0,VirtualMFADevice,2,3,false,ours_unmapped=1
 identitystore,Group,3,,0,Group (Cloud Control),3,0,false,
 identitystore,GroupMembership,3,,0,GroupMembership (Cloud Control),3,0,false,
-identitystore,User,39,,0,User (Cloud Control),39,0,false,ours User (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has identitystore); on the schema fake only
+identitystore,User,39,,0,User (Cloud Control),39,0,false,
 imagebuilder,Component,10,,0,Component (Cloud Control),10,0,false,ours Component (Cloud Control) unproven on fake: moto 5.2.5 has no imagebuilder; on the schema fake only
 imagebuilder,ContainerRecipe,29,,0,ContainerRecipe (Cloud Control),29,0,false,ours ContainerRecipe (Cloud Control) unproven on fake: moto 5.2.5 has no imagebuilder; on the schema fake only
 imagebuilder,DistributionConfiguration,31,,0,DistributionConfiguration (Cloud Control),31,0,false,ours DistributionConfiguration (Cloud Control) unproven on fake: moto 5.2.5 has no imagebuilder; on the schema fake only
@@ -948,7 +948,7 @@ inspectorv2,CisScanConfiguration,14,,0,CisScanConfiguration (Cloud Control),14,0
 inspectorv2,CodeSecurityIntegration,8,,0,CodeSecurityIntegration (Cloud Control),8,0,false,ours CodeSecurityIntegration (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has inspector2); on the schema fake only
 inspectorv2,CodeSecurityScanConfiguration,8,,0,CodeSecurityScanConfiguration (Cloud Control),8,0,false,ours CodeSecurityScanConfiguration (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has inspector2); on the schema fake only
 inspectorv2,Connector,14,,0,Connector (Cloud Control),14,0,false,ours Connector (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has inspector2); on the schema fake only
-inspectorv2,Filter,105,,0,Filter (Cloud Control),105,0,false,ours Filter (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has inspector2); on the schema fake only
+inspectorv2,Filter,105,,0,Filter (Cloud Control),105,0,false,
 interconnect,Connection,10,,0,Connection (Cloud Control),10,0,false,ours Connection (Cloud Control) unproven on fake: moto 5.2.5 has no interconnect; on the schema fake only
 internetmonitor,Monitor,22,,0,Monitor (Cloud Control),22,0,false,ours Monitor (Cloud Control) unproven on fake: moto 5.2.5 has no internetmonitor; on the schema fake only
 invoicing,InvoiceUnit,7,,0,InvoiceUnit (Cloud Control),7,0,false,ours InvoiceUnit (Cloud Control) unproven on fake: moto 5.2.5 has no invoicing; on the schema fake only
@@ -1156,9 +1156,9 @@ m2,Deployment,3,,0,Deployment (Cloud Control),3,0,false,ours Deployment (Cloud C
 m2,Environment,17,,0,Environment (Cloud Control),17,0,false,ours Environment (Cloud Control) unproven on fake: moto 5.2.5 has no m2; on the schema fake only
 macie,AllowList,7,,0,AllowList (Cloud Control),7,0,false,ours AllowList (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has macie2); on the schema fake only
 macie,CustomDataIdentifier,8,,0,CustomDataIdentifier (Cloud Control),8,0,false,ours CustomDataIdentifier (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has macie2); on the schema fake only
-macie,FindingsFilter,12,,0,FindingsFilter (Cloud Control),12,0,false,ours FindingsFilter (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has macie2); on the schema fake only
+macie,FindingsFilter,12,,0,FindingsFilter (Cloud Control),12,0,false,ours FindingsFilter (Cloud Control) unproven on fake: moto 5.2.5 has no CreateFindingsFilter; on the schema fake only
 macie,Member,4,,0,Member (Cloud Control),4,0,false,ours Member (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has macie2); on the schema fake only
-macie,Session,2,,0,Session (Cloud Control),2,0,false,ours Session (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has macie2); on the schema fake only
+macie,Session,2,,0,Session (Cloud Control),2,0,false,
 managedblockchain,Accessor,4,,0,Accessor (Cloud Control),4,0,false,ours Accessor (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has managedblockchain); on the schema fake only
 managedblockchain,Member,14,,0,,0,14,false,
 managedblockchain,Node,4,,0,,0,4,false,
@@ -1507,7 +1507,7 @@ rolesanywhere,CRL,6,,0,CRL (Cloud Control),6,0,false,ours CRL (Cloud Control) un
 rolesanywhere,Profile,12,,0,Profile (Cloud Control),12,0,false,ours Profile (Cloud Control) unproven on fake: moto 5.2.5 has no rolesanywhere; on the schema fake only
 rolesanywhere,TrustAnchor,11,,0,TrustAnchor (Cloud Control),11,0,false,ours TrustAnchor (Cloud Control) unproven on fake: moto 5.2.5 has no rolesanywhere; on the schema fake only
 route53,CidrCollection,3,,0,CidrCollection (Cloud Control),3,0,false,ours CidrCollection (Cloud Control) unproven on fake: moto 5.2.5 has no Create/List/Change/DeleteCidrCollection
-route53,DelegationSet,0,,0,DelegationSet (Cloud Control),0,0,false,ours DelegationSet (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has route53); on the schema fake only
+route53,DelegationSet,0,,0,DelegationSet (Cloud Control),0,0,false,
 route53,DNSSEC,1,,0,DNSSEC (Cloud Control),1,0,false,ours DNSSEC (Cloud Control) unproven on fake: moto 5.2.5 has no EnableHostedZoneDNSSEC or DisableHostedZoneDNSSEC
 route53,HealthCheck,20,HealthCheck,20,,0,0,false,official_unmapped=1
 route53,HostedZone,9,HostedZone,7,,0,2,false,official_unmapped=3
