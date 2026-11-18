@@ -2914,8 +2914,8 @@ Upstream rechecked 2026-11-16 (read-only): `efs-controller` `v1.9.0` ignores
 `CreationToken` (unconditionally generating an idempotency token), comments
 out `BypassPolicyLockoutSafetyCheck` in `syncPolicy`, and lacks
 `ipAddressType` / `ipv6Address` on `MountTarget`. Open PRs (#91, #88, #83)
-do not expose these fields. (`FileSystemPolicy` waits on open question
-`EFSPOL`.)
+do not expose these fields. (`FileSystemPolicy` waited on open question
+`EFSPOL`, answered 2026-11-17: see section 9, question 25.)
 
 - `FileSystem` (`efs.aws.hfl.dev/v1alpha1`): generated from `v1.41.5` models
   with immutable `spec.creationToken` (falling back to `getIdempotencyToken()`
@@ -3466,6 +3466,16 @@ organizations (refused, `OrganizationScoped`, section 7.5), not
 secretsmanager (pinned only for a test client), and no service it does
 not pin (sns, route53, acm and the rest; assumed ACKCTX-A2: another
 service is a pin added to `UPSTREAM.md` first, then one line here).
+
+**Answered** (2026-11-17, item ACKPINS, the builder: "ACKPINS: as
+recommended (Yes, pin them on demand: add a service's pin when a catalog
+chart needs ACK's controller for it in an environment, then regenerate
+(hack/ack-controllers.sh). Each pin is a new upstream dependency.)"):
+ACKCTX-A2 is confirmed. The twelve pinned services stay the only ones until
+a catalog chart needs ACK's controller for another service in an
+environment; then its pin is added to `UPSTREAM.md`, `hack/ack-controllers.sh`
+is run again, and one line goes here. Each pin is a new upstream
+dependency.
 
 **What the operator makes** for ACK's controller, beside what section 7.6
 makes for ours:
@@ -4596,3 +4606,28 @@ Before it can run on a real cluster:
     placeholders waits for a chart that needs an ARN no alias or tag
     condition can stand for.
 
+25. **A policy on `FileSystem` that can reference its own ARN** (item
+    EFSPOL, 2026-11-16, from the catalog's efs chart, catalog PR #243).
+    The module's two transport statements (`deny_nonsecure_transport`,
+    `deny_nonsecure_transport_via_mount_target`) name the file system's
+    own ARN, which exists only in its status, and ACK's `FileSystem`
+    takes its policy as a string written before the file system exists.
+    The chart refuses both statements today, and any statement without
+    `resources`, so the module's default `attach_policy` needs both
+    flags `false` (or `attach_policy: false`). Recommended: keep
+    refusing for now, since a policy adopted from Terraform must not
+    change on first apply, and ask this repository for a file system
+    policy that can reference its own ARN; revisit if teams hit the
+    refusal often.
+
+    **Answered** (2026-11-17, item EFSPOL, the builder: "EFSPOL: as
+    recommended (Keep refusing for now (a policy adopted from Terraform
+    must not change on first apply) and ask ack-extensions for a file
+    system policy that can reference its own ARN; revisit if teams hit
+    the refusal often.)"): the chart keeps refusing the two statements.
+    This repository is asked for a file system policy that can reference
+    its own ARN (a field or kind on `FileSystem`, in the manner of
+    question 24's placeholder `Policy` copy: a named placeholder in the
+    document filled from the file system's own `status.ackResourceMetadata.arn`).
+    Not built yet; it is the next EFS item after the batch-2 gaps
+    (section 6.46).
