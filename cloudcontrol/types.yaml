@@ -883,6 +883,22 @@ types:
     unproven: "no moto backend yet (moto 5.2.5 has s3vectors); on the schema fake only"
   - typeName: AWS::SSM::ResourcePolicy
     unproven: "no moto backend yet (moto 5.2.5 has ssm); on the schema fake only"
+  # Batch 16, by hand (2026-11-19): the last two foundation gap types that
+  # are provisionable, have an accepted CRD and are not in
+  # cloudcontrol/excluded.yaml (cloudcontrol/readiness.md, "Foundation
+  # gaps"). Each policy document is "object or string", so one
+  # preserve-unknown-fields node, and hack/cloudcontrol-batch skips them as
+  # not clean, as batch 14's three by hand. ACK's cloudtrail-controller
+  # v1.10.0 and organizations-controller v1.8.0 serve neither (no pull
+  # request or issue, rechecked read-only 2026-11-19). moto 5.2.5 has no
+  # PutResourcePolicy in cloudtrail or organizations, so both stay on the
+  # schema fake. The organization's resource policy is put from the
+  # management account, as Control Tower's types (F07) are: a
+  # CloudControlContext whose role is in that account.
+  - typeName: AWS::CloudTrail::ResourcePolicy
+    unproven: "moto 5.2.5 has no cloudtrail PutResourcePolicy; on the schema fake only"
+  - typeName: AWS::Organizations::ResourcePolicy
+    unproven: "moto 5.2.5 has no organizations PutResourcePolicy; on the schema fake only"
   # Batch 15 (docs/throughput.md), tier 3: every gap type of the services in
   # the category other (docs/coverage/priority.csv) that is provisionable,
   # clean and not in cloudcontrol/excluded.yaml, added with hack/cloudcontrol-

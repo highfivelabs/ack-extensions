@@ -323,7 +323,7 @@ AWS::CloudHSM::Cluster,cloudhsm,Cluster,other,FULLY_MUTABLE,,Cluster (Cloud Cont
 AWS::CloudTrail::Channel,cloudtrail,Channel,platform-foundation,FULLY_MUTABLE,,Channel (Cloud Control),ok,0,0,0,0,0,true
 AWS::CloudTrail::Dashboard,cloudtrail,Dashboard,platform-foundation,FULLY_MUTABLE,,Dashboard (Cloud Control),ok,0,0,0,0,0,true
 AWS::CloudTrail::EventDataStore,cloudtrail,EventDataStore,platform-foundation,FULLY_MUTABLE,EventDataStore,,ok,0,0,0,0,3,true
-AWS::CloudTrail::ResourcePolicy,cloudtrail,ResourcePolicy,platform-foundation,FULLY_MUTABLE,,,ok,1,0,0,0,0,false
+AWS::CloudTrail::ResourcePolicy,cloudtrail,ResourcePolicy,platform-foundation,FULLY_MUTABLE,,ResourcePolicy (Cloud Control),ok,1,0,0,0,0,false
 AWS::CloudTrail::Trail,cloudtrail,Trail,platform-foundation,FULLY_MUTABLE,Trail,,ok,0,0,0,0,2,true
 AWS::CloudWatch::AccessGrant,cloudwatch,AccessGrant,application,IMMUTABLE,,AccessGrant (Cloud Control),ok,0,0,0,1,0,true
 AWS::CloudWatch::AccessProfile,cloudwatch,AccessProfile,application,FULLY_MUTABLE,,AccessProfile (Cloud Control),ok,0,0,0,0,0,true
@@ -1310,7 +1310,7 @@ AWS::Organizations::Account,organizations,Account,platform-foundation,FULLY_MUTA
 AWS::Organizations::Organization,organizations,Organization,platform-foundation,FULLY_MUTABLE,,Organization,ok,0,0,0,0,1,true
 AWS::Organizations::OrganizationalUnit,organizations,OrganizationalUnit,platform-foundation,FULLY_MUTABLE,OrganizationalUnit,,ok,0,0,0,0,0,true
 AWS::Organizations::Policy,organizations,Policy,platform-foundation,FULLY_MUTABLE,,Policy,ok,1,0,0,0,0,true
-AWS::Organizations::ResourcePolicy,organizations,ResourcePolicy,platform-foundation,FULLY_MUTABLE,,,ok,1,0,0,0,0,true
+AWS::Organizations::ResourcePolicy,organizations,ResourcePolicy,platform-foundation,FULLY_MUTABLE,,ResourcePolicy (Cloud Control),ok,1,0,0,0,0,true
 AWS::OSIS::Pipeline,osis,Pipeline,other,FULLY_MUTABLE,,Pipeline (Cloud Control),ok,0,0,0,1,2,true
 AWS::OSIS::PipelineEndpoint,osis,PipelineEndpoint,other,IMMUTABLE,,PipelineEndpoint (Cloud Control),ok,0,0,0,0,1,true
 AWS::Outposts::Outpost,outposts,Outpost,other,FULLY_MUTABLE,,Outpost (Cloud Control),ok,0,0,0,0,0,true

@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlOrganizationsResourcePolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OrganizationsResourcePolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "organizations:DescribeResourcePolicy",
+        "organizations:ListTagsForResource",
+        "organizations:PutResourcePolicy",
+        "organizations:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OrganizationsResourcePolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "organizations:DescribeResourcePolicy",
+        "organizations:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OrganizationsResourcePolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "organizations:DescribeResourcePolicy",
+        "organizations:ListTagsForResource",
+        "organizations:PutResourcePolicy",
+        "organizations:TagResource",
+        "organizations:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OrganizationsResourcePolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "organizations:DeleteResourcePolicy",
+        "organizations:DescribeResourcePolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

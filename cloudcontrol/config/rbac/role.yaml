@@ -1405,6 +1405,7 @@ rules:
   resources:
   - channels
   - dashboards
+  - resourcepolicies
   verbs:
   - create
   - delete
@@ -1418,6 +1419,7 @@ rules:
   resources:
   - channels/status
   - dashboards/status
+  - resourcepolicies/status
   verbs:
   - get
   - patch
@@ -5182,6 +5184,26 @@ rules:
   resources:
   - collectionindexes/status
   - vpcendpoints/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - organizations.cloudcontrol.aws.hfl.dev
+  resources:
+  - resourcepolicies
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - organizations.cloudcontrol.aws.hfl.dev
+  resources:
+  - resourcepolicies/status
   verbs:
   - get
   - patch

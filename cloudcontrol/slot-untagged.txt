@@ -91,6 +91,7 @@ AWS::CloudFront::KeyGroup
 AWS::CloudFront::MonitoringSubscription
 AWS::CloudFront::PublicKey
 AWS::CloudFront::RealtimeLogConfig
+AWS::CloudTrail::ResourcePolicy
 AWS::CloudWatch::OTelEnrichment
 AWS::CloudWatch::ResourceMetricsConfiguration
 AWS::CodeBuild::SourceCredential

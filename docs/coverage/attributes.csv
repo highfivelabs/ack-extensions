@@ -6861,8 +6861,8 @@ cloudtrail,EventDataStore,RetentionPeriod,integer,false,official,spec.retentionP
 cloudtrail,EventDataStore,Tags[].Key,string,false,official,spec.tags[].key,
 cloudtrail,EventDataStore,Tags[].Value,string,false,official,spec.tags[].value,
 cloudtrail,EventDataStore,TerminationProtectionEnabled,boolean,false,official,spec.terminationProtectionEnabled,
-cloudtrail,ResourcePolicy,ResourceArn,string,true,none,,
-cloudtrail,ResourcePolicy,ResourcePolicy,object|string,true,none,,
+cloudtrail,ResourcePolicy,ResourceArn,string,true,ours,,spec.resourceArn
+cloudtrail,ResourcePolicy,ResourcePolicy,object|string,true,ours,,spec.resourcePolicy
 cloudtrail,Trail,AdvancedEventSelectors[].FieldSelectors[].EndsWith[],string,false,none,,
 cloudtrail,Trail,AdvancedEventSelectors[].FieldSelectors[].Equals[],string,false,none,,
 cloudtrail,Trail,AdvancedEventSelectors[].FieldSelectors[].Field,string,false,none,,
@@ -25868,9 +25868,9 @@ organizations,Policy,Tags[].Key,string,false,ours,,spec.tags[].key
 organizations,Policy,Tags[].Value,string,false,ours,,spec.tags[].value
 organizations,Policy,TargetIds[],string,false,none,,
 organizations,Policy,Type,string,true,ours,,spec.type_
-organizations,ResourcePolicy,Content,object|string,true,none,,
-organizations,ResourcePolicy,Tags[].Key,string,false,none,,
-organizations,ResourcePolicy,Tags[].Value,string,false,none,,
+organizations,ResourcePolicy,Content,object|string,true,ours,,spec.content
+organizations,ResourcePolicy,Tags[].Key,string,false,ours,,spec.tags[].key
+organizations,ResourcePolicy,Tags[].Value,string,false,ours,,spec.tags[].value
 osis,Pipeline,BufferOptions.PersistentBufferEnabled,boolean,false,ours,,spec.bufferOptions.persistentBufferEnabled
 osis,Pipeline,EncryptionAtRestOptions.KmsKeyArn,string,false,ours,,spec.encryptionAtRestOptions.kmsKeyArn
 osis,Pipeline,LogPublishingOptions.CloudWatchLogDestination.LogGroup,string,false,ours,,spec.logPublishingOptions.cloudWatchLogDestination.logGroup
