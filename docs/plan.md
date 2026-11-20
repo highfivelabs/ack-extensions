@@ -735,16 +735,16 @@ its master (5.2.5 is the pin).
 | 8 | EBS `Volume`, `VolumeAttachment` | ignored in ec2-controller's `generator.yaml`; `aws-controllers-k8s/ebs-controller` is an empty scaffold for the EBS direct API (no kinds, no release) | yes | built: `Volume`, `VolumeAttachment` |
 | 9 | CloudWatch Logs `MetricFilter`; CloudWatch `CompositeAlarm` | metric filters: cloudwatchlogs-controller PR #61, as a field on ACK's `LogGroup`. `CompositeAlarm`: ignored in cloudwatch-controller `v1.11.0`. | metric filters yes; `PutCompositeAlarm` no | skipped. Metric filters wait on open question 1. `CompositeAlarm`: moto has none of it. |
 | 10 | EventBridge Scheduler `Schedule` and `ScheduleGroup`; EventBridge `Connection` and `ApiDestination` | Scheduler: no controller (`community` issue #2784). `Connection` and `ApiDestination`: ignored in eventbridge-controller `v1.9.2`. | yes | `Connection` and `ApiDestination` built; Scheduler: `ScheduleGroup` and `Schedule` built, beside EventBridge's controller (open question 8, answered) |
-| 11 | ECR `ReplicationConfiguration`; `RegistryPolicy`, `RegistryScanningConfiguration` | `ReplicationConfiguration`: ecr-controller PR #121, open, conflicts with base, no review, last updated 2026-10-18. The others: none. | yes (one replication rule at most) | built: `ReplicationConfiguration` (PR #121's API; rechecked 2026-11-09: still open, conflicting, no review, head `f6c7d57e`). `RegistryPolicy` and `RegistryScanningConfiguration` next |
+| 11 | ECR `ReplicationConfiguration`; `RegistryPolicy`, `RegistryScanningConfiguration` | `ReplicationConfiguration`: ecr-controller PR #121, open, conflicts with base, no review, last updated 2026-10-18. The others: none. | yes (one replication rule at most) | built: `ReplicationConfiguration` (PR #121's API; rechecked 2026-11-09: still open, conflicting, no review, head `f6c7d57e`). `RegistryPolicy` and `RegistryScanningConfiguration`: **served** by Cloud Control (`ecr.cloudcontrol.aws.hfl.dev`, batch 10), proven on moto (#77, #78) |
 | 12 | WAFv2 `WebACLAssociation` | none (wafv2-controller `v1.8.1`; no pull request or issue, rechecked 2026-11-09) | yes | built |
 | 13 | ElastiCache `GlobalReplicationGroup` | elasticache-controller PR #237: mergeable, active 2026-11-06 | none | skipped: may be close to merging, and moto has none of it |
 | 14 | Route 53 DNSSEC and `KeySigningKey`, VPC association authorization | ignored in route53-controller's `generator.yaml` | none | skipped: moto has none of it |
 | 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | built: `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy`; `AccessKey` (6.30; open question 10, answered) |
 | 16 | EC2 `PlacementGroup` | ignored in ec2-controller's `generator.yaml` | none | skipped: moto has none of it |
-| 17 | S3 `Object`, the account's public access block | none. Rechecked 2026-11-12 for the public access block: s3-controller `v1.16.0` (2026-11-10) has a bucket's `publicAccessBlock` only (a field of `Bucket`, `PutPublicAccessBlock` of S3, from its PR #56), and its two open pull requests (#252 bucket encryption defaults, #226 generated e2e tests) do not touch the account's; ACK's s3control-controller `v1.10.0` (2026-11-10; `v1.9.0` is the release on our runtime) has `AccessPoint` only, no open pull request, and no `community` issue asks for the account's block | yes (section 4.4: S3 Control's account-ID host) | the account's public access block built: `s3control.aws.hfl.dev` `PublicAccessBlock` (section 6.36). S3 `Object` to build |
+| 17 | S3 `Object`, the account's public access block | none. Rechecked 2026-11-12 for the public access block: s3-controller `v1.16.0` (2026-11-10) has a bucket's `publicAccessBlock` only (a field of `Bucket`, `PutPublicAccessBlock` of S3, from its PR #56), and its two open pull requests (#252 bucket encryption defaults, #226 generated e2e tests) do not touch the account's; ACK's s3control-controller `v1.10.0` (2026-11-10; `v1.9.0` is the release on our runtime) has `AccessPoint` only, no open pull request, and no `community` issue asks for the account's block | yes (section 4.4: S3 Control's account-ID host) | the account's public access block built: `s3control.aws.hfl.dev` `PublicAccessBlock` (section 6.36). S3 `Object`: its shape is open question 27 |
 | 18 | EC2 `KeyPair` | ec2-controller PR #396: both reviews' changes made, main merged in 2026-11-04, mergeable | yes | skipped: close to merging; wait for the release |
-| 19 | Secrets Manager resource policy (`PutResourcePolicy`) | no issue or PR | yes | to build |
-| 20 | RDS event subscriptions | ignored in rds-controller's `generator.yaml` | create and delete yes, modify no | to build |
+| 19 | Secrets Manager resource policy (`PutResourcePolicy`) | no issue or PR | yes | **served** by Cloud Control: `secretsmanager.cloudcontrol.aws.hfl.dev` `ResourcePolicy` (batch 8, F17), proven on moto (`TestSecretResourcePolicy`) |
+| 20 | RDS event subscriptions | ignored in rds-controller's `generator.yaml` | create and delete yes, modify no | **served** by Cloud Control: `rds.cloudcontrol.aws.hfl.dev` `EventSubscription` (batch 12), on the schema fake only |
 | 21 | SSM `Association` | ssm-controller PR #85, conflicts with base | none | skipped: moto has none of it |
 | 22 | ACM import from a Kubernetes TLS Secret | acm-controller PR #104 | | skipped: a field on an existing kind (open question 1) |
 | 23 | `Role` additive policy mode | iam-controller PR #184, second commit | | skipped: changes ACK's own `Role` (open question 3) |
@@ -783,7 +783,7 @@ The 21 left, by module uses:
 | Terraform type | Modules | Why not yet |
 | --- | ---: | --- |
 | `aws_vpc_security_group_ingress_rule`, `aws_vpc_security_group_egress_rule` | 11 each | **built** 2026-11-15 (question 7): `ec2.cloudcontrol.aws.hfl.dev` `SecurityGroupIngress` and `SecurityGroupEgress`, proven on moto (`TestSecurityGroupRules`) |
-| `aws_s3_object` | 3 | rank 17, to build (no CloudFormation type) |
+| `aws_s3_object` | 3 | rank 17 (no CloudFormation type); its shape is open question 27 |
 | `aws_security_group_rule` | 2 | served by the same two kinds (its `type` picks one) since 2026-11-15 |
 | `aws_key_pair` | 1 | ec2-controller pull request #396 (upstream first) |
 | `aws_elasticache_global_replication_group` | 1 | elasticache-controller pull request #237; moto has none |
@@ -4671,3 +4671,75 @@ Before it can run on a real cluster:
     `${fileSystemARN}`. The catalog's efs chart can drop its refusal of
     the two transport statements by rendering a `FileSystemPolicy`
     (and no `FileSystem.spec.policy`) once it is released.
+
+26. **How CloudTrail's `Trail` starts logging and selects events** (F10,
+    2026-11-19). ACK's cloudtrail-controller (`v1.10.0`, 2026-11-10;
+    read-only that day: no open pull request or `community` issue) makes a
+    `Trail` but never calls `StartLogging`, and its CRD has no
+    `isLogging`, `eventSelectors`, `advancedEventSelectors` or
+    `insightSelectors` (18 of the trail's 31 CloudFormation attributes
+    uncovered, `docs/coverage/foundation.md`). A trail that does not log
+    is no audit trail, so F10 is the largest foundation gap left. Cloud
+    Control cannot serve it (`AWS::CloudTrail::Trail` is ACK's type, and
+    two controllers must not manage one trail). Two of this repository's
+    rules point different ways:
+    - `docs/coverage/foundation.md` F10 (2026-11-09) proposes a sidecar
+      kind of ours, `cloudtrail.aws.hfl.dev` `TrailLogging`, by
+      `trailRef` or `trailARN`: `isLogging` and the three selector lists,
+      typed and validated by its CRD, with its own status;
+    - question 1's answer and the standing rule after it (section 3,
+      "Fixed copies of ACK's kinds"; `docs/extensions.md`) make an
+      annotation on ACK's own object the first choice for what ACK's kind
+      lacks, and a fixed copy of the kind where an annotation cannot fill
+      it. `StartLogging`/`StopLogging`, `PutEventSelectors`,
+      `PutAdvancedEventSelectors` and `PutInsightSelectors` all act on a
+      trail ACK has made, so annotations can fill every one:
+      `cloudtrail.aws.hfl.dev/is-logging: "true"`, and the selectors as
+      JSON in CloudTrail's own shapes (`cloudtrail.aws.hfl.dev/event-selectors`,
+      `.../advanced-event-selectors`, `.../insight-selectors`), checked
+      by our manager (`InvalidAnnotation` Warning events), which
+      ACK's CRD cannot validate.
+
+    Either way it needs a cloudtrail manager here beside ACK's
+    cloudtrail-controller (a new service in `pkg/operator`, as S3's
+    extension has) and a `UPSTREAM.md` row for cloudtrail-controller
+    (`v1.10.0`, not a Go module: its `Trail` CRD copied into
+    `hack/ack-crds` for the tests, as s3-controller's `Bucket` is). ACK's
+    own cloudtrail-controller in an `ACKContext` is a pin under ACKPINS
+    (section 7.7), added only when a catalog chart needs it. moto 5.2.5
+    has `StartLogging`, `StopLogging`, `GetTrailStatus`,
+    `PutEventSelectors`, `GetEventSelectors` and `PutInsightSelectors`,
+    not `PutAdvancedEventSelectors`.
+
+    Recommended: **the annotations**, as the standing rule says: one
+    `Trail` kind for every chart, nothing to migrate when ACK ships the
+    fields (the chart moves the values into the spec), and the pattern
+    `pkg/extend` already has for KMS and S3. `is-logging` alone covers
+    what a trail needs to work; the selectors follow in the same change.
+    The sidecar is the fallback if typed selector fields matter more than
+    one kind. Not built until the builder answers.
+
+27. **The shape of an S3 `Object` kind** (plan section 5, rank 17;
+    `aws_s3_object` in three of the catalog's tracked modules, 2026-11-19).
+    S3 objects have no CloudFormation type, so Cloud Control cannot serve
+    them, and ACK's s3-controller (`v1.16.0`) has none; a kind here is
+    hand-written on ACK's runtime (`PutObject`'s body is a stream the
+    generator does not map). What is not settled is where the content
+    comes from: Terraform's `content`, `content_base64` and `source` (a
+    local file, which has no meaning in a cluster). Options: inline
+    `content` and `contentBase64` only; or those plus `contentFrom` (a key
+    of a ConfigMap or Secret, re-put when its value changes, as the
+    ElastiCache auth token's SHA-256 annotation detects a change, section
+    6.47). Either way an object is small (the API server's object limit,
+    about 1.5 MB, bounds inline content), drift is read with
+    `HeadObject` (ETag and metadata) and put back, and delete removes the
+    current version only (Terraform's default; `force_destroy`-like
+    removal of every version would be a further field).
+
+    Recommended: inline `content` and `contentBase64`, plus `contentFrom`
+    for a ConfigMap or Secret key, with `bucketRef` to ACK's `Bucket` (or
+    ours, section 6.38), `key`, `contentType`, `cacheControl`,
+    `contentDisposition`, `contentEncoding`, `metadata`,
+    `serverSideEncryption`, `kmsKeyRef` and `tags`, in
+    `s3.aws.hfl.dev` beside the fixed `Bucket`. Not built until the
+    builder answers.
