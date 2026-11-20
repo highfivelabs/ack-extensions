@@ -12,7 +12,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 
 | Category | Services | Resources | ACK | Ours beyond | None | Attributes | ACK | Ours beyond | Uncovered |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 16 | 241 | 55 (22.8%) | 128 (53.1%) | 58 | 2,418 | 28.0% | 38.0% | 34.0% |
+| platform-foundation | 16 | 241 | 55 (22.8%) | 130 (53.9%) | 56 | 2,418 | 28.0% | 38.3% | 33.8% |
 | security-adjacent | 18 | 112 | 14 (12.5%) | 76 (67.9%) | 22 | 2,082 | 37.6% | 50.9% | 11.6% |
 | application | 33 | 263 | 106 (40.3%) | 116 (44.1%) | 41 | 4,788 | 47.9% | 29.6% | 22.5% |
 | other | 238 | 1262 | 92 (7.3%) | 1048 (83.0%) | 122 | 76,543 | 3.0% | 21.6% | 75.4% |
@@ -21,7 +21,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 
 | # | Service | Resources | ACK | Ours beyond | None | Attributes ACK / ours / uncovered | ACK controller (latest release) |
 | ---: | --- | ---: | ---: | ---: | ---: | --- | --- |
-| 1 | `organizations` | 5 | 2 | 2 | 1 | 42.9% / 38.1% / 19.0% | `organizations-controller` v1.8.0 |
+| 1 | `organizations` | 5 | 2 | 3 | 0 | 42.9% / 52.4% / 4.8% | `organizations-controller` v1.8.0 |
 | 2 | `sso` | 6 | 0 | 5 | 1 | 0.0% / 92.7% / 7.3% | none |
 | 3 | `iam` | 16 | 7 | 4 | 5 | 41.2% / 25.9% / 32.9% | `iam-controller` v1.12.0 |
 | 4 | `ec2` | 126 | 20 | 80 | 26 | 22.7% / 44.8% / 32.4% | `ec2-controller` v1.24.0 |
@@ -30,7 +30,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | 7 | `route53resolver` | 12 | 5 | 6 | 1 | 35.1% / 44.2% / 20.8% | `route53resolver-controller` v1.12.0 |
 | 8 | `ram` | 6 | 2 | 4 | 0 | 54.2% / 37.5% / 8.3% | `ram-controller` v1.8.0 |
 | 9 | `kms` | 3 | 2 | 1 | 0 | 54.5% / 22.7% / 22.7% | `kms-controller` v1.8.0 |
-| 10 | `cloudtrail` | 5 | 2 | 2 | 1 | 37.3% / 22.7% / 40.0% | `cloudtrail-controller` v1.10.0 |
+| 10 | `cloudtrail` | 5 | 2 | 3 | 0 | 37.3% / 25.3% / 37.3% | `cloudtrail-controller` v1.10.0 |
 | 11 | `ecr` | 9 | 4 | 5 | 0 | 63.0% / 24.1% / 13.0% | `ecr-controller` v1.12.0 |
 | 12 | `eks` | 9 | 8 | 1 | 0 | 82.5% / 0.6% / 16.9% | `eks-controller` v1.27.0 |
 | 13 | `identitystore` | 3 | 0 | 3 | 0 | 0.0% / 100.0% / 0.0% | none |
@@ -67,7 +67,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 | # | Item | Category | Resources | Attributes ACK / ours / none | Size | moto |
 | --- | --- | --- | ---: | --- | --- | --- |
-| [F01](#f01) | AWS Organizations: SCPs and the other policy types, attachment, delegated administrators, organization features, account placement | platform-foundation | 4 | 5 / 8 / 4 | M (Policy), M (PolicyAttachment), S (DelegatedAdministrator), M (Organization), S (AccountPlacement); plus one for the new `services/organizations/` manager | Good: `CreateOrganization`, `CreateAccount`, `CreateOrganizationalUnit`, `CreatePolicy`/`U... |
+| [F01](#f01) | AWS Organizations: SCPs and the other policy types, attachment, delegated administrators, organization features, account placement | platform-foundation | 4 | 5 / 11 / 1 | M (Policy), M (PolicyAttachment), S (DelegatedAdministrator), M (Organization), S (AccountPlacement); plus one for the new `services/organizations/` manager | Good: `CreateOrganization`, `CreateAccount`, `CreateOrganizationalUnit`, `CreatePolicy`/`U... |
 | [F02](#f02) | IAM Identity Center: permission sets and account assignments | platform-foundation | 4 | 0 / 25 / 3 | L (PermissionSet: six APIs behind one kind), M (Assignment: async), S (attribute config); plus one for the new `services/ssoadmin/` manager | Mostly good: `CreatePermissionSet`/`DescribePermissionSet`/`UpdatePermissionSet`, `AttachM... |
 | [F03](#f03) | IAM: SAML providers (and the access-key question) | platform-foundation | 6 | 9 / 19 / 8 | S (SAMLProvider), M (AccessKey if wanted) | Good: `CreateSAMLProvider`, `CreateAccessKey`, `CreateVirtualMFADevice` are implemented |
 | [F04](#f04) | EC2 networking: Transit Gateway route tables, associations, propagation, routes and peering | platform-foundation | 7 | 20 / 17 / 6 | M, M | Good: `CreateTransitGateway`, `CreateTransitGatewayVpcAttachment`, `CreateTransitGatewayRo... |
@@ -76,7 +76,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 | [F07](#f07) | Control Tower: landing zone, enabled controls, enabled baselines | platform-foundation | 3 | 0 / 18 / 0 | L each, and no emulator | None: moto 5 |
 | [F08](#f08) | Route 53: DNSSEC and key-signing keys, query logging, CIDR collections, second-VPC association | platform-foundation | 7 | 7 / 18 / 2 | S each | Partial: `CreateHostedZone`, `ChangeResourceRecordSets`, `CreateQueryLoggingConfig`, `Asso... |
 | [F09](#f09) | Route 53 Resolver: DNS Firewall, resolver endpoint settings, resolver configuration | platform-foundation | 8 | 18 / 34 / 10 | M, L, S | No for the Firewall kinds (`CreateFirewallRuleGroup`, `CreateFirewallDomainList`, `CreateF... |
-| [F10](#f10) | CloudTrail: start logging and select events on a Trail (and organization trails) | platform-foundation | 5 | 28 / 17 / 30 | M | Good for the first three: `StartLogging`, `StopLogging`, `PutEventSelectors`, `GetEventSel... |
+| [F10](#f10) | CloudTrail: start logging and select events on a Trail (and organization trails) | platform-foundation | 5 | 28 / 19 / 28 | M | Good for the first three: `StartLogging`, `StopLogging`, `PutEventSelectors`, `GetEventSel... |
 | [F11](#f11) | ECR: registry policy, registry scanning, replication (ours), signing | platform-foundation | 6 | 3 / 13 / 6 | S, S | Good: `PutRegistryPolicy`, `PutRegistryScanningConfiguration`, `PutReplicationConfiguratio... |
 | [F12](#f12) | Identity Store: users, groups and group memberships of the Identity Center directory | platform-foundation | 3 | 0 / 45 / 0 | M (User), S, S | Good: `CreateUser`, `CreateGroup`, `CreateGroupMembership`, `DescribeUser`, `ListUsers`, `... |
 | [F13](#f13) | Network Manager (Cloud WAN) and Direct Connect (wait for ACK on the first) | platform-foundation | 6 | 0 / 4 / 48 | wait; M for the gateway | Network Manager: `CreateGlobalNetwork`, `CreateCoreNetwork`, `CreateSite` are implemented ... |
@@ -88,7 +88,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F01 AWS Organizations: SCPs and the other policy types, attachment, delegated administrators, organization features, account placement
 
-- **Resources:** `organizations/Policy`, `organizations/Organization`, `organizations/Account`, `organizations/ResourcePolicy`. Today ACK covers 5, ours 8, nothing covers 4 of 17 attributes.
+- **Resources:** `organizations/Policy`, `organizations/Organization`, `organizations/Account`, `organizations/ResourcePolicy`. Today ACK covers 5, ours 11, nothing covers 1 of 17 attributes.
 - **Why first:** The first priority: manage accounts, OUs and SCPs early and show it to platform teams. ACK ships `Account` and `OrganizationalUnit` but ignores `Policy` and `Organization`, so there is no way to declare an SCP, attach it, delegate an administrator or enable a policy type. Three of the five Organizations resources in CloudFormation are open here, and the API has more (delegated administrators, service access and policy-type enablement have no CloudFormation resource, so they are in none of the coverage numbers).
 - **Proposed kinds:** In `organizations.aws.hfl.dev`, beside ACK's `Account` and `OrganizationalUnit`:
   - (1) `Policy`: generated from `CreatePolicy`/`DescribePolicy`/`UpdatePolicy`/`DeletePolicy`; `name`, `description`, `type` (immutable: `SERVICE_CONTROL_POLICY`, `TAG_POLICY`, `BACKUP_POLICY`, `AISERVICES_OPT_OUT_POLICY` and the newer types), `content` (a JSON document, compared as canonical JSON), `tags`.
@@ -210,7 +210,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F10 CloudTrail: start logging and select events on a Trail (and organization trails)
 
-- **Resources:** `cloudtrail/Trail`, `cloudtrail/EventDataStore`, `cloudtrail/ResourcePolicy`, `cloudtrail/Channel`, `cloudtrail/Dashboard`. Today ACK covers 28, ours 17, nothing covers 30 of 75 attributes.
+- **Resources:** `cloudtrail/Trail`, `cloudtrail/EventDataStore`, `cloudtrail/ResourcePolicy`, `cloudtrail/Channel`, `cloudtrail/Dashboard`. Today ACK covers 28, ours 19, nothing covers 28 of 75 attributes.
 - **Why first:** Audit logging is the first thing a security team checks. ACK's `Trail` covers 13 of 31 attributes including `isOrganizationTrail`, `isMultiRegionTrail`, the bucket, KMS key and log file validation, but a Trail it creates is never told to `StartLogging` (no `isLogging` field, and the controller's hooks make no such call) and has no event, advanced event or insight selectors. An organization trail is only useful once it logs.
 - **Proposed kinds:** A sidecar kind `cloudtrail.aws.hfl.dev/TrailLogging` that references an ACK `Trail` by `trailRef` or `trailARN`: `isLogging`, `eventSelectors[]`, `advancedEventSelectors[]`, `insightSelectors[]`, calling `StartLogging`/`StopLogging`, `PutEventSelectors`, `PutAdvancedEventSelectors`, `PutInsightSelectors`. Hand-written on the `RolePolicyAttachment` skeleton. The alternative is to add the fields to ACK's `Trail` upstream (plan section 9, question 1: wait for the release unless a package cannot work without the field; a trail that does not log cannot work, so this meets the rule). `ResourcePolicy`, `Channel`, `Dashboard`: low priority.
 - **Upstream:** cloudtrail-controller v1.9.1; no open PRs or issues found. Its generator ignores `Channel` and `Dashboard`, and `EventDataStore` `KmsKeyId`, `BillingMode` and `StartIngestion`.
@@ -334,10 +334,10 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `ResourcePolicy` | none | - | whole resource (3 attrs) | controller exists; resource not in it | 0 | no: `PutResourcePolicy` is not in moto's organizations | S | `organizations.aws.hfl.dev/ResourcePolicy`, hand-written singleton; low priority | [F01](#f01) |
 | `Policy` | none | `Policy`: +6 | 1 of 7 attrs: `Name`, `Type`, `Content`, `Description`, `Tags[]`, `TargetIds[] (attach)` | ignored in ACK's generator.yaml | 0 | yes: `CreatePolicy`, `UpdatePolicy`, `DeletePolicy`, `AttachPolicy`, `DetachPolicy`, `EnablePolicyType` are implemented | M | `organizations.aws.hfl.dev/Policy` (generated) and `PolicyAttachment` (hand-written), F01 | [F01](#f01) |
 | `Account` | `Account` v1.8.0: 5/6 | `AccountPlacement`: +1 | none | released | 0 | yes: `MoveAccount` is implemented | - | `organizations.aws.hfl.dev/AccountPlacement` (sidecar by `accountRef`: `MoveAccount`, `ListParents`), F01 | [F01](#f01) |
 | `OrganizationalUnit` | `OrganizationalUnit` v1.8.0: 4/4 | - | none | released | 0 | service-level only: moto `organizations`: 41 of 63 operations, including `CreateOrganization`, `CreateAccount`... | - | none (covered) |  |
+| `ResourcePolicy` | none | `ResourcePolicy (Cloud Control)`: +3 | none | controller exists; resource not in it | 0 | no: `PutResourcePolicy` is not in moto's organizations | - | `organizations.aws.hfl.dev/ResourcePolicy`, hand-written singleton; low priority | [F01](#f01) |
 | `Organization` | none | `Organization`: +1 | none | ignored in ACK's generator.yaml | 0 | yes: `CreateOrganization`, `EnablePolicyType`, `EnableAWSServiceAccess` are implemented; `EnableAllFeatures` is not | - | `organizations.aws.hfl.dev/Organization`, hand-written singleton (feature set, enabled policy types, service access principals), F01 | [F01](#f01) |
 ### platform-foundation: `sso`
 
@@ -534,11 +534,11 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `ResourcePolicy` | none | - | whole resource (2 attrs) | controller exists; resource not in it | 0 | no: `PutResourcePolicy` is not in moto's cloudtrail | S | `cloudtrail.aws.hfl.dev/ResourcePolicy`, hand-written put/delete (no Create/Describe shape) | [F10](#f10) |
 | `EventDataStore` | `EventDataStore` v1.10.0: 15/25 | - | 10 of 25 attrs: `KmsKeyId`, `IngestionEnabled`, `FederationEnabled`, `InsightSelectors[]`, `MaxEventSize` and 5 more | ACK ignores `KmsKeyId`, `BillingMode` and `StartIngestion` on create | 0 | service-level only: moto `cloudtrail`: 16 of 60 operations: `CreateTrail`, `UpdateTrail`, `DeleteTrail`, `Star... | M | the missing fields: upstream PR or our copy (plan section 9, question 1) | [F10](#f10) |
 | `Trail` | `Trail` v1.10.0: 13/31 | - | 18 of 31 attrs: `IsLogging (StartLogging)`, `EventSelectors[]`, `AdvancedEventSelectors[]`, `InsightSelectors[]`, `AggregationConfigurations[]` and 13 more | kind released; the rest is not in it | 0 | service-level only: moto `cloudtrail`: 16 of 60 operations: `CreateTrail`, `UpdateTrail`, `DeleteTrail`, `Star... | M | `cloudtrail.aws.hfl.dev/TrailLogging` (sidecar kind by `trailRef`: `StartLogging`/`StopLogging`, `PutEventSelectors`, `PutAdvancedEventSelectors`, `PutInsightSelectors`), or the fields upstream (design question, plan section 9 question 1); F10 | [F10](#f10) |
 | `Channel` | none | `Channel (Cloud Control)`: +6 | none | ignored in ACK's generator.yaml | 0 | service-level only: moto `cloudtrail`: 16 of 60 operations: `CreateTrail`, `UpdateTrail`, `DeleteTrail`, `Star... | - | `cloudtrail.aws.hfl.dev/Channel`, generated; low priority (CloudTrail Lake integrations) | [F10](#f10) |
 | `Dashboard` | none | `Dashboard (Cloud Control)`: +11 | none | ignored in ACK's generator.yaml | 0 | service-level only: moto `cloudtrail`: 16 of 60 operations: `CreateTrail`, `UpdateTrail`, `DeleteTrail`, `Star... | - | `cloudtrail.aws.hfl.dev/Dashboard`, generated; low priority | [F10](#f10) |
+| `ResourcePolicy` | none | `ResourcePolicy (Cloud Control)`: +2 | none | controller exists; resource not in it | 0 | no: `PutResourcePolicy` is not in moto's cloudtrail | - | `cloudtrail.aws.hfl.dev/ResourcePolicy`, hand-written put/delete (no Create/Describe shape) | [F10](#f10) |
 ### platform-foundation: `ecr`
 
 - **ACK controller:** `ecr-controller` v1.11.1: `PullThroughCacheRule`, `Repository`, `RepositoryCreationTemplate`

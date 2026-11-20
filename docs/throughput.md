@@ -98,6 +98,7 @@ Filled in as batches land (types, coverage before and after).
 | 13, application tier | #76 | 89 | 315 (application 113 of 263) |
 | 14, the catalog's types | #92 | 8 | 323 |
 | 15, tier 3 (category other) | #97 | 1,043 | 1,366 (all resources 87.0% with ACK) |
+| 16, the last two foundation policies, by hand | #134 | 2 | 1,370 (foundation 130 of 241) |
 
 Then five kinds moved from the schema fake to proven on moto (#77, #78):
 ECR `RegistryPolicy` and `RegistryScanningConfiguration`, Identity Store
@@ -124,5 +125,8 @@ types, all on the schema fake; excluded with reasons are the five types
 open ACK pull requests add, `AWS::FraudDetector::List` (a kind named `List`), five types `TestEveryKindOnSchemaFake` failed (a nested primary identifier, or a status `oneOf` the fake fills as a string) and `AWS::QuickSight::Template`, whose CRD
 (9.3 MB) is past the API server's object size limit. What is left of the foundation and
 security gap is in `cloudcontrol/excluded.yaml` (each with its reason),
-not provisionable through Cloud Control, or has a lossy CRD
-(`AWS::CloudTrail::ResourcePolicy`, `AWS::Organizations::ResourcePolicy`).
+or is not provisionable through Cloud Control. The two with a lossy CRD
+(`AWS::CloudTrail::ResourcePolicy`, `AWS::Organizations::ResourcePolicy`,
+whose document is "object or string") were added by hand in batch 16
+(2026-11-19), on the schema fake: moto 5.2.5 has neither service's
+`PutResourcePolicy`.

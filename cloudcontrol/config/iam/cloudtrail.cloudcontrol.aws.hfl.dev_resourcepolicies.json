@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlCloudTrailResourcePolicy",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudTrailResourcePolicyCreate",
+      "Effect": "Allow",
+      "Action": [
+        "CloudTrail:GetResourcePolicy",
+        "CloudTrail:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudTrailResourcePolicyRead",
+      "Effect": "Allow",
+      "Action": [
+        "CloudTrail:GetResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudTrailResourcePolicyUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "CloudTrail:GetResourcePolicy",
+        "CloudTrail:PutResourcePolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudTrailResourcePolicyDelete",
+      "Effect": "Allow",
+      "Action": [
+        "CloudTrail:DeleteResourcePolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

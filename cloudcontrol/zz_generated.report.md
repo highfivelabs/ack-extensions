@@ -308,6 +308,8 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::S3Tables::TablePolicy` | `TablePolicy.s3tables.cloudcontrol.aws.hfl.dev` | 2 | 3 | 2 | 0 | 1 | 0 |
 | `AWS::S3Vectors::VectorBucketPolicy` | `VectorBucketPolicy.s3vectors.cloudcontrol.aws.hfl.dev` | 3 | 0 | 4 | 0 | 1 | 0 |
 | `AWS::SSM::ResourcePolicy` | `ResourcePolicy.ssm.cloudcontrol.aws.hfl.dev` | 2 | 2 | 2 | 0 | 1 | 0 |
+| `AWS::CloudTrail::ResourcePolicy` | `ResourcePolicy.cloudtrail.cloudcontrol.aws.hfl.dev` | 2 | 0 | 2 | 0 | 1 | 0 |
+| `AWS::Organizations::ResourcePolicy` | `ResourcePolicy.organizations.cloudcontrol.aws.hfl.dev` | 2 | 2 | 0 | 0 | 1 | 3 |
 | `AWS::AccountAccess::Application` | `Application.accountaccess.cloudcontrol.aws.hfl.dev` | 2 | 5 | 2 | 0 | 0 | 2 |
 | `AWS::AccountAccess::Entitlement` | `Entitlement.accountaccess.cloudcontrol.aws.hfl.dev` | 2 | 2 | 4 | 0 | 0 | 4 |
 | `AWS::AgentRegistry::Registry` | `Registry.agentregistry.cloudcontrol.aws.hfl.dev` | 10 | 6 | 4 | 0 | 0 | 11 |
@@ -4980,6 +4982,30 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - Nodes made `x-kubernetes-preserve-unknown-fields`: `/properties/Policy (several types object|string)`
 - Read-only properties nested in writable objects (dropped): none
 - IAM actions (8): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ssm:DeleteResourcePolicy`, `ssm:GetResourcePolicies`, `ssm:PutResourcePolicy`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::CloudTrail::ResourcePolicy`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: `/properties/ResourcePolicy (several types object|string)`
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (8): `CloudTrail:DeleteResourcePolicy`, `CloudTrail:GetResourcePolicy`, `CloudTrail:PutResourcePolicy`, `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::Organizations::ResourcePolicy`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: `/properties/Content (several types object|string)`
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (11): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `organizations:DeleteResourcePolicy`, `organizations:DescribeResourcePolicy`, `organizations:ListTagsForResource`, `organizations:PutResourcePolicy`, `organizations:TagResource`, `organizations:UntagResource`
 - Sensitive IAM actions: none
 - Left out (list handler only): none
 

@@ -330,7 +330,7 @@ cloudhsm,Cluster,8,,0,Cluster (Cloud Control),8,0,false,ours Cluster (Cloud Cont
 cloudtrail,Channel,6,,0,Channel (Cloud Control),6,0,false,ours Channel (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has cloudtrail); on the schema fake only
 cloudtrail,Dashboard,11,,0,Dashboard (Cloud Control),11,0,false,ours Dashboard (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has cloudtrail); on the schema fake only
 cloudtrail,EventDataStore,25,EventDataStore,15,,0,10,false,
-cloudtrail,ResourcePolicy,2,,0,,0,2,false,
+cloudtrail,ResourcePolicy,2,,0,ResourcePolicy (Cloud Control),2,0,false,ours ResourcePolicy (Cloud Control) unproven on fake: moto 5.2.5 has no cloudtrail PutResourcePolicy; on the schema fake only
 cloudtrail,Trail,31,Trail,13,,0,18,false,
 cloudwatch,AccessGrant,19,,0,AccessGrant (Cloud Control),19,0,false,ours AccessGrant (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has cloudwatch); on the schema fake only
 cloudwatch,AccessProfile,5,,0,AccessProfile (Cloud Control),5,0,false,ours AccessProfile (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has cloudwatch); on the schema fake only
@@ -1337,7 +1337,7 @@ organizations,Organization,1,,0,Organization,1,0,false,ours_unmapped=2
 organizations,OrganizationalUnit,4,OrganizationalUnit,4,,0,0,false,
 organizations,Policy,7,,0,Policy,6,1,false,
 organizations,PolicyAttachment,0,,0,PolicyAttachment,0,0,false,outside-denominator;ours_crd_attributes=2
-organizations,ResourcePolicy,3,,0,,0,3,false,
+organizations,ResourcePolicy,3,,0,ResourcePolicy (Cloud Control),3,0,false,ours ResourcePolicy (Cloud Control) unproven on fake: moto 5.2.5 has no organizations PutResourcePolicy; on the schema fake only
 osis,Pipeline,17,,0,Pipeline (Cloud Control),17,0,false,ours Pipeline (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has osis); on the schema fake only
 osis,PipelineEndpoint,3,,0,PipelineEndpoint (Cloud Control),3,0,false,ours PipelineEndpoint (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has osis); on the schema fake only
 outposts,Outpost,8,,0,Outpost (Cloud Control),8,0,false,ours Outpost (Cloud Control) unproven on fake: moto 5.2.5 has no outposts; on the schema fake only
