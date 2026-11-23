@@ -899,6 +899,24 @@ types:
     unproven: "moto 5.2.5 has no cloudtrail PutResourcePolicy; on the schema fake only"
   - typeName: AWS::Organizations::ResourcePolicy
     unproven: "moto 5.2.5 has no organizations PutResourcePolicy; on the schema fake only"
+  # Batch 17, by hand (2026-11-23): the application tier's provisionable gap
+  # types with an accepted CRD that are not in cloudcontrol/excluded.yaml
+  # (cloudcontrol/readiness.csv). hack/cloudcontrol-batch skips them as not
+  # clean: Replicator and Channel have create-only paths inside arrays that
+  # no CEL rule reaches (the API server does not refuse a change there;
+  # Cloud Control does), Application two preserve-unknown-fields nodes. ACK's
+  # kafka-controller v1.15.0 ignores Replicator and has no Channel, and
+  # opensearchservice-controller v1.10.0 ignores Application; none of their
+  # open pull requests (kafka #104, #130, #135, #136; opensearchservice #125)
+  # touches them (read-only, 2026-11-23). moto 5.2.5 has neither MSK
+  # replicators or channels (its kafka has clusters and policies only) nor
+  # OpenSearch applications, so all three stay on the schema fake.
+  - typeName: AWS::MSK::Replicator
+    unproven: "moto 5.2.5 has no kafka CreateReplicator; on the schema fake only"
+  - typeName: AWS::MSK::Channel
+    unproven: "moto 5.2.5 has no kafka channels; on the schema fake only"
+  - typeName: AWS::OpenSearchService::Application
+    unproven: "moto 5.2.5 has no opensearch CreateApplication; on the schema fake only"
   # Batch 15 (docs/throughput.md), tier 3: every gap type of the services in
   # the category other (docs/coverage/priority.csv) that is provisionable,
   # clean and not in cloudcontrol/excluded.yaml, added with hack/cloudcontrol-

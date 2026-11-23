@@ -1233,11 +1233,11 @@ mgn,Wave,4,,0,Wave (Cloud Control),4,0,false,ours Wave (Cloud Control) unproven 
 mpa,ApprovalTeam,8,,0,,0,8,false,
 mpa,IdentitySource,4,,0,IdentitySource (Cloud Control),4,0,false,ours IdentitySource (Cloud Control) unproven on fake: moto 5.2.5 has no mpa; on the schema fake only
 msk,BatchScramSecret,2,,0,BatchScramSecret (Cloud Control),2,0,false,ours BatchScramSecret (Cloud Control) unproven on fake: moto 5.2.5 has no msk; on the schema fake only
-msk,Channel,40,,0,,0,40,false,
+msk,Channel,40,,0,Channel (Cloud Control),40,0,false,ours Channel (Cloud Control) unproven on fake: moto 5.2.5 has no kafka channels; on the schema fake only
 msk,Cluster,46,Cluster,38,,0,8,false,official_unmapped=2
 msk,ClusterPolicy,2,,0,ClusterPolicy (Cloud Control),2,0,false,ours ClusterPolicy (Cloud Control) unproven on fake: moto 5.2.5 has no msk; on the schema fake only
 msk,Configuration,4,Configuration,3,,0,1,false,official_unmapped=1
-msk,Replicator,50,,0,,0,50,false,
+msk,Replicator,50,,0,Replicator (Cloud Control),50,0,false,ours Replicator (Cloud Control) unproven on fake: moto 5.2.5 has no kafka CreateReplicator; on the schema fake only
 msk,ServerlessCluster,5,ServerlessCluster,4,,0,1,false,official_unmapped=39
 msk,Topic,5,,0,Topic (Cloud Control),5,0,false,ours Topic (Cloud Control) unproven on fake: moto 5.2.5 has no msk; on the schema fake only
 msk,VpcConnection,6,VPCConnection,6,,0,0,false,
@@ -1327,7 +1327,7 @@ opensearchserverless,LifecyclePolicy,4,LifecyclePolicy,4,,0,0,false,
 opensearchserverless,SecurityConfig,13,,0,,0,13,false,
 opensearchserverless,SecurityPolicy,4,SecurityPolicy,4,,0,0,false,
 opensearchserverless,VpcEndpoint,4,,0,VpcEndpoint (Cloud Control),4,0,false,ours VpcEndpoint (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has opensearchserverless); on the schema fake only
-opensearchservice,Application,12,,0,,0,12,false,
+opensearchservice,Application,12,,0,Application (Cloud Control),12,0,false,ours Application (Cloud Control) unproven on fake: moto 5.2.5 has no opensearch CreateApplication; on the schema fake only
 opensearchservice,Domain,87,Domain,62,,0,25,false,official_unmapped=7
 opensearchservice,VPCEndpoint,0,VPCEndpoint,0,,0,0,false,outside-denominator;official_crd_attributes=3
 opensearchservice,VPCEndpointAccess,0,VPCEndpointAccess,0,,0,0,false,outside-denominator;official_crd_attributes=3

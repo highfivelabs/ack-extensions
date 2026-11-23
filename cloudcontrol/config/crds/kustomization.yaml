@@ -304,6 +304,9 @@ resources:
   - ssm.cloudcontrol.aws.hfl.dev_resourcepolicies.yaml
   - cloudtrail.cloudcontrol.aws.hfl.dev_resourcepolicies.yaml
   - organizations.cloudcontrol.aws.hfl.dev_resourcepolicies.yaml
+  - msk.cloudcontrol.aws.hfl.dev_replicators.yaml
+  - msk.cloudcontrol.aws.hfl.dev_channels.yaml
+  - opensearchservice.cloudcontrol.aws.hfl.dev_applications.yaml
   - accountaccess.cloudcontrol.aws.hfl.dev_applications.yaml
   - accountaccess.cloudcontrol.aws.hfl.dev_entitlements.yaml
   - agentregistry.cloudcontrol.aws.hfl.dev_registries.yaml

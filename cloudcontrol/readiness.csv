@@ -1210,11 +1210,11 @@ AWS::MGN::Wave,mgn,Wave,other,FULLY_MUTABLE,,Wave (Cloud Control),ok,0,0,0,0,0,t
 AWS::MPA::ApprovalTeam,mpa,ApprovalTeam,other,FULLY_MUTABLE,,,ok,0,1,0,0,0,true
 AWS::MPA::IdentitySource,mpa,IdentitySource,other,FULLY_MUTABLE,,IdentitySource (Cloud Control),ok,0,0,0,0,1,true
 AWS::MSK::BatchScramSecret,msk,BatchScramSecret,application,FULLY_MUTABLE,,BatchScramSecret (Cloud Control),ok,0,0,0,0,1,true
-AWS::MSK::Channel,msk,Channel,application,FULLY_MUTABLE,,,ok,0,6,1,1,4,true
+AWS::MSK::Channel,msk,Channel,application,FULLY_MUTABLE,,Channel (Cloud Control),ok,0,6,1,1,4,true
 AWS::MSK::Cluster,msk,Cluster,application,FULLY_MUTABLE,Cluster,,ok,0,0,0,1,4,true
 AWS::MSK::ClusterPolicy,msk,ClusterPolicy,application,FULLY_MUTABLE,,ClusterPolicy (Cloud Control),ok,0,0,0,0,0,true
 AWS::MSK::Configuration,msk,Configuration,application,FULLY_MUTABLE,Configuration,,ok,0,0,1,1,0,true
-AWS::MSK::Replicator,msk,Replicator,application,FULLY_MUTABLE,,,ok,0,8,0,0,2,true
+AWS::MSK::Replicator,msk,Replicator,application,FULLY_MUTABLE,,Replicator (Cloud Control),ok,0,8,0,0,2,true
 AWS::MSK::ServerlessCluster,msk,ServerlessCluster,application,IMMUTABLE,ServerlessCluster,,ok,0,0,0,0,0,true
 AWS::MSK::Topic,msk,Topic,application,FULLY_MUTABLE,,Topic (Cloud Control),ok,0,0,1,1,0,true
 AWS::MSK::VpcConnection,msk,VpcConnection,application,FULLY_MUTABLE,VPCConnection,,ok,0,0,0,0,4,true
@@ -1304,7 +1304,7 @@ AWS::OpenSearchServerless::LifecyclePolicy,opensearchserverless,LifecyclePolicy,
 AWS::OpenSearchServerless::SecurityConfig,opensearchserverless,SecurityConfig,other,FULLY_MUTABLE,,,ok,0,0,1,1,0,true
 AWS::OpenSearchServerless::SecurityPolicy,opensearchserverless,SecurityPolicy,other,FULLY_MUTABLE,SecurityPolicy,,ok,0,0,0,0,1,true
 AWS::OpenSearchServerless::VpcEndpoint,opensearchserverless,VpcEndpoint,other,FULLY_MUTABLE,,VpcEndpoint (Cloud Control),ok,0,0,0,0,0,true
-AWS::OpenSearchService::Application,opensearchservice,Application,application,FULLY_MUTABLE,,,ok,2,0,1,1,1,true
+AWS::OpenSearchService::Application,opensearchservice,Application,application,FULLY_MUTABLE,,Application (Cloud Control),ok,2,0,1,1,1,true
 AWS::OpenSearchService::Domain,opensearchservice,Domain,application,FULLY_MUTABLE,Domain,,ok,0,0,3,5,0,false
 AWS::Organizations::Account,organizations,Account,platform-foundation,FULLY_MUTABLE,Account,AccountPlacement,ok,0,0,1,1,0,true
 AWS::Organizations::Organization,organizations,Organization,platform-foundation,FULLY_MUTABLE,,Organization,ok,0,0,0,0,1,true

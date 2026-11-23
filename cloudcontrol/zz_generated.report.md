@@ -310,6 +310,9 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::SSM::ResourcePolicy` | `ResourcePolicy.ssm.cloudcontrol.aws.hfl.dev` | 2 | 2 | 2 | 0 | 1 | 0 |
 | `AWS::CloudTrail::ResourcePolicy` | `ResourcePolicy.cloudtrail.cloudcontrol.aws.hfl.dev` | 2 | 0 | 2 | 0 | 1 | 0 |
 | `AWS::Organizations::ResourcePolicy` | `ResourcePolicy.organizations.cloudcontrol.aws.hfl.dev` | 2 | 2 | 0 | 0 | 1 | 3 |
+| `AWS::MSK::Replicator` | `Replicator.msk.cloudcontrol.aws.hfl.dev` | 7 | 2 | 8 | 0 | 0 | 6 |
+| `AWS::MSK::Channel` | `Channel.msk.cloudcontrol.aws.hfl.dev` | 8 | 3 | 64 | 0 | 0 | 10 |
+| `AWS::OpenSearchService::Application` | `Application.opensearchservice.cloudcontrol.aws.hfl.dev` | 7 | 2 | 4 | 0 | 2 | 2 |
 | `AWS::AccountAccess::Application` | `Application.accountaccess.cloudcontrol.aws.hfl.dev` | 2 | 5 | 2 | 0 | 0 | 2 |
 | `AWS::AccountAccess::Entitlement` | `Entitlement.accountaccess.cloudcontrol.aws.hfl.dev` | 2 | 2 | 4 | 0 | 0 | 4 |
 | `AWS::AgentRegistry::Registry` | `Registry.agentregistry.cloudcontrol.aws.hfl.dev` | 10 | 6 | 4 | 0 | 0 | 11 |
@@ -5008,6 +5011,42 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - IAM actions (11): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `organizations:DeleteResourcePolicy`, `organizations:DescribeResourcePolicy`, `organizations:ListTagsForResource`, `organizations:PutResourcePolicy`, `organizations:TagResource`, `organizations:UntagResource`
 - Sensitive IAM actions: none
 - Left out (list handler only): none
+
+## `AWS::MSK::Replicator`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: `/properties/ReplicationInfoList/*/ConsumerGroupReplication/ConsumerGroupOffsetSyncMode (inside an array)`, `/properties/ReplicationInfoList/*/SourceKafkaClusterArn (inside an array)`, `/properties/ReplicationInfoList/*/SourceKafkaClusterId (inside an array)`, `/properties/ReplicationInfoList/*/TargetCompressionType (inside an array)`, `/properties/ReplicationInfoList/*/TargetKafkaClusterArn (inside an array)`, `/properties/ReplicationInfoList/*/TargetKafkaClusterId (inside an array)`, `/properties/ReplicationInfoList/*/TopicReplication/StartingPosition (inside an array)`, `/properties/ReplicationInfoList/*/TopicReplication/TopicNameConfiguration (inside an array)`
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (32): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:CreateNetworkInterface`, `ec2:DescribeSecurityGroups`, `ec2:DescribeSubnets`, `ec2:DescribeVpcs`, `firehose:TagDeliveryStream`, `iam:CreateServiceLinkedRole`, `iam:PassRole`, `kafka:CreateReplicator`, `kafka:CreateReplicatorReference`, `kafka:DeleteReplicator`, `kafka:DescribeClusterV2`, `kafka:DescribeReplicator`, `kafka:GetBootstrapBrokers`, `kafka:ListTagsForResource`, `kafka:TagResource`, `kafka:UntagResource`, `kafka:UpdateReplicationInfo`, `logs:CreateLogDelivery`, `logs:DeleteLogDelivery`, `logs:DescribeLogGroups`, `logs:DescribeResourcePolicies`, `logs:GetLogDelivery`, `logs:ListLogDeliveries`, `logs:PutResourcePolicy`, `logs:UpdateLogDelivery`, `s3:GetBucketPolicy`, `s3:PutBucketPolicy`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`, `iam:PassRole`
+- Left out (list handler only): `kafka:ListReplicators`
+
+## `AWS::MSK::Channel`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/ClusterArn`
+- Of those, write-only strings that could be opted in if they are secrets: `/properties/ClusterArn`
+- Create-only paths without a CEL rule: `/properties/IcebergDestinationConfiguration/DestinationTableList/*/DestinationDatabaseName (inside an array)`, `/properties/IcebergDestinationConfiguration/DestinationTableList/*/DestinationTableName (inside an array)`, `/properties/IcebergDestinationConfiguration/DestinationTableList/*/PartitionSpec (inside an array)`, `/properties/IcebergDestinationConfiguration/DestinationTableList/*/PartitionSpec/PartitionStrategy (inside an array)`, `/properties/IcebergDestinationConfiguration/DestinationTableList/*/PartitionSpec/SourceList (inside an array)`, `/properties/IcebergDestinationConfiguration/DestinationTableList/*/PartitionSpec/SourceList/*/SourceName (inside an array)`
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (49): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `dynamodb:DescribeTable`, `dynamodb:PutItem`, `dynamodb:TagResource`, `firehose:DescribeDeliveryStream`, `firehose:PutRecord`, `firehose:PutRecordBatch`, `firehose:TagDeliveryStream`, `glue:CreateTable`, `glue:GetDatabase`, `glue:GetTable`, `iam:AttachRolePolicy`, `iam:CreateServiceLinkedRole`, `iam:GetRole`, `iam:PassRole`, `iam:PutRolePolicy`, `kafka:CreateChannel`, `kafka:DeleteChannel`, `kafka:DescribeChannel`, `kafka:ListTagsForResource`, `kafka:TagResource`, `kafka:UntagResource`, `kafka:UpdateChannel`, `kms:DescribeKey`, `logs:CreateLogDelivery`, `logs:CreateLogGroup`, `logs:CreateLogStream`, `logs:DeleteLogDelivery`, `logs:DescribeLogGroups`, `logs:DescribeResourcePolicies`, `logs:GetLogDelivery`, `logs:ListLogDeliveries`, `logs:PutLogEvents`, `logs:PutResourcePolicy`, `logs:UpdateLogDelivery`, `s3:GetBucketLocation`, `s3:GetBucketPolicy`, `s3:GetObject`, `s3:ListBucket`, `s3:PutBucketPolicy`, `s3:PutObject`, `stepfunctions:DescribeStateMachine`, `stepfunctions:StartExecution`, `stepfunctions:StopExecution`, `stepfunctions:TagResource`
+- Sensitive IAM actions: `iam:AttachRolePolicy`, `iam:CreateServiceLinkedRole`, `iam:PassRole`, `iam:PutRolePolicy`
+- Left out (list handler only): `kafka:ListChannels`
+
+## `AWS::OpenSearchService::Application`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/KmsKeyArn`
+- Of those, write-only strings that could be opted in if they are secrets: `/properties/KmsKeyArn`
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: `/properties/DataSources/*/DataSourceArn (no type)`, `/properties/IamIdentityCenterOptions/IamIdentityCenterInstanceArn (no type)`
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (13): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `es:AddTags`, `es:CreateApplication`, `es:DeleteApplication`, `es:GetApplication`, `es:ListTags`, `es:RemoveTags`, `es:UpdateApplication`, `iam:CreateServiceLinkedRole`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`
+- Left out (list handler only): `es:ListApplications`
 
 ## `AWS::AccountAccess::Application`
 
