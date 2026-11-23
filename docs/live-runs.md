@@ -396,6 +396,7 @@ each run; the ledger above has the runs.
 | ACK | rds | DBRoleAssociation | TestDBRoleAssociation | pending: not run live yet; its fixtures (a DB instance and cluster) take many minutes and cost money, and the test does not delete them on a live run yet |
 | ACK | rds | OptionGroup | TestOptionGroup | PASS, `ackx-11161114-80b7` (2026-11-16), on `oracle-se2` 19's `STATSPACK` and `NATIVE_NETWORK_ENCRYPTION`, which need no setting, port or security group (MySQL's MEMCACHED needs a port and a security group, so real RDS refused the whole change in `ackx-11160415-8b7c`) |
 | ACK | s3 | Bucket extension (ACK's Bucket) | TestBucketExtension | PASS, `ackx-11160805-57c4` (2026-11-16); its force-destroy had asked real S3 to bypass governance retention on buckets without Object Lock, which S3 refuses (`ackx-11160411-5872`), fixed |
+| ACK | s3 | Object | TestS3Object | pending: not run live yet (built 2026-11-23); the live-test role needs the object tagging actions, so the catalog instance updated from `cloudcontrol/config/live/role-policies.yaml` and applied again first |
 | ACK | s3control | PublicAccessBlock | TestPublicAccessBlock | PASS, `ackx-11160402-b394` (2026-11-16) |
 | ACK | scheduler | Schedule | TestSchedule | PASS, `ackx-11160339-689d` (2026-11-16) |
 | ACK | scheduler | ScheduleGroup | TestScheduleGroup | PASS, `ackx-11160339-689d` (2026-11-16) |

@@ -364,6 +364,13 @@ copied:
       - services/ec2/pkg/resource/resource_tag/resource.go
     from: *skeleton
   - here:
+      - services/s3/pkg/resource/object/descriptor.go
+      - services/s3/pkg/resource/object/identifiers.go
+      - services/s3/pkg/resource/object/manager.go
+      - services/s3/pkg/resource/object/manager_factory.go
+      - services/s3/pkg/resource/object/resource.go
+    from: *skeleton
+  - here:
       - services/ec2/pkg/resource/default_security_group/descriptor.go
       - services/ec2/pkg/resource/default_security_group/identifiers.go
       - services/ec2/pkg/resource/default_security_group/manager.go

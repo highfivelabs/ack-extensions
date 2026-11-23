@@ -61,7 +61,8 @@ var prefixes = map[string]string{
 // ListObjectVersions as s3:ListBucketVersions, ListMultipartUploads as
 // s3:ListBucketMultipartUploads, and DeleteObjects as the delete of each
 // object it names, s3:DeleteObjectVersion when the version is named, as
-// the Bucket extension always names it.
+// the Bucket extension always names it. HeadObject, which our Object
+// reads an object with, is authorized as s3:GetObject.
 //
 // So are most of a bucket's configuration operations, which our copy of
 // ACK's Bucket calls (section 6.38; the Service Authorization Reference,
@@ -74,6 +75,7 @@ var actions = map[string]map[string]string{
 		"ListObjectVersions":   "ListBucketVersions",
 		"ListMultipartUploads": "ListBucketMultipartUploads",
 		"DeleteObjects":        "DeleteObjectVersion",
+		"HeadObject":           "GetObject",
 
 		"HeadBucket":  "ListBucket",
 		"ListBuckets": "ListAllMyBuckets",

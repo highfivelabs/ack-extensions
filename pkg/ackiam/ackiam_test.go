@@ -68,6 +68,7 @@ func TestScan(t *testing.T) {
 		// extensions of ACK's own kinds (pkg/extend)
 		"Key.kms":            {"kms:DescribeKey", "kms:GetKeyRotationStatus", "kms:EnableKeyRotation", "kms:EnableKey", "kms:DisableKey"},
 		"TransitGateway.ec2": {"ec2:DescribeTransitGateways", "ec2:ModifyTransitGateway"},
+		"Object.s3":          {"s3:GetObject", "s3:PutObject", "s3:DeleteObject", "s3:GetObjectTagging", "s3:PutObjectTagging", "s3:DeleteObjectTagging"},
 		"Trail.cloudtrail":   {"cloudtrail:GetTrailStatus", "cloudtrail:StartLogging", "cloudtrail:StopLogging", "cloudtrail:GetEventSelectors", "cloudtrail:PutEventSelectors", "cloudtrail:GetInsightSelectors", "cloudtrail:PutInsightSelectors"},
 		"Bucket.s3": {"s3:ListBucketVersions", "s3:DeleteObjectVersion", "s3:ListBucketMultipartUploads", "s3:AbortMultipartUpload", "s3:BypassGovernanceRetention",
 			// our copy of ACK's Bucket (one kind with the extension), under

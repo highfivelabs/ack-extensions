@@ -773,7 +773,7 @@ its master (5.2.5 is the pin).
 | 14 | Route 53 DNSSEC and `KeySigningKey`, VPC association authorization | ignored in route53-controller's `generator.yaml` | none | skipped: moto has none of it |
 | 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | built: `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy`; `AccessKey` (6.30; open question 10, answered) |
 | 16 | EC2 `PlacementGroup` | ignored in ec2-controller's `generator.yaml` | none | skipped: moto has none of it |
-| 17 | S3 `Object`, the account's public access block | none. Rechecked 2026-11-12 for the public access block: s3-controller `v1.16.0` (2026-11-10) has a bucket's `publicAccessBlock` only (a field of `Bucket`, `PutPublicAccessBlock` of S3, from its PR #56), and its two open pull requests (#252 bucket encryption defaults, #226 generated e2e tests) do not touch the account's; ACK's s3control-controller `v1.10.0` (2026-11-10; `v1.9.0` is the release on our runtime) has `AccessPoint` only, no open pull request, and no `community` issue asks for the account's block | yes (section 4.4: S3 Control's account-ID host) | the account's public access block built: `s3control.aws.hfl.dev` `PublicAccessBlock` (section 6.36). S3 `Object`: its shape is open question 27 |
+| 17 | S3 `Object`, the account's public access block | none. Rechecked 2026-11-12 for the public access block: s3-controller `v1.16.0` (2026-11-10) has a bucket's `publicAccessBlock` only (a field of `Bucket`, `PutPublicAccessBlock` of S3, from its PR #56), and its two open pull requests (#252 bucket encryption defaults, #226 generated e2e tests) do not touch the account's; ACK's s3control-controller `v1.10.0` (2026-11-10; `v1.9.0` is the release on our runtime) has `AccessPoint` only, no open pull request, and no `community` issue asks for the account's block | yes (section 4.4: S3 Control's account-ID host) | the account's public access block built: `s3control.aws.hfl.dev` `PublicAccessBlock` (section 6.36). S3 `Object`: built 2026-11-23 (open question 27, answered; section 6.49) |
 | 18 | EC2 `KeyPair` | ec2-controller PR #396: both reviews' changes made, main merged in 2026-11-04, mergeable | yes | skipped: close to merging; wait for the release |
 | 19 | Secrets Manager resource policy (`PutResourcePolicy`) | no issue or PR | yes | **served** by Cloud Control: `secretsmanager.cloudcontrol.aws.hfl.dev` `ResourcePolicy` (batch 8, F17), proven on moto (`TestSecretResourcePolicy`) |
 | 20 | RDS event subscriptions | ignored in rds-controller's `generator.yaml` | create and delete yes, modify no | **served** by Cloud Control: `rds.cloudcontrol.aws.hfl.dev` `EventSubscription` (batch 12), on the schema fake only |
@@ -815,7 +815,7 @@ The 21 left, by module uses:
 | Terraform type | Modules | Why not yet |
 | --- | ---: | --- |
 | `aws_vpc_security_group_ingress_rule`, `aws_vpc_security_group_egress_rule` | 11 each | **built** 2026-11-15 (question 7): `ec2.cloudcontrol.aws.hfl.dev` `SecurityGroupIngress` and `SecurityGroupEgress`, proven on moto (`TestSecurityGroupRules`) |
-| `aws_s3_object` | 3 | rank 17 (no CloudFormation type); its shape is open question 27 |
+| `aws_s3_object` | 3 | **built** 2026-11-23: `s3.aws.hfl.dev` `Object` (open question 27, answered; section 6.49) |
 | `aws_security_group_rule` | 2 | served by the same two kinds (its `type` picks one) since 2026-11-15 |
 | `aws_key_pair` | 1 | ec2-controller pull request #396 (upstream first) |
 | `aws_elasticache_global_replication_group` | 1 | elasticache-controller pull request #237; moto has none |
@@ -3066,6 +3066,66 @@ file system exists; no kind, and no open pull request adds one.
   generated resolution and is for the live run to show. Not yet run live.
 - Charts that can adopt it (catalog, allow_alpha): `efs`.
 
+### 6.49 `s3.aws.hfl.dev` `Object`
+
+One object in an S3 bucket: Terraform's `aws_s3_object`, in three of the
+catalog's tracked modules (section 5, rank 17). S3 objects have no
+CloudFormation type, so Cloud Control cannot serve them, and ACK's
+s3-controller (`v1.16.0`, and `main` read-only 2026-11-23) has no kind for
+them; its generator ignores `Object`. Built to open question 27's answer
+(2026-11-23).
+
+**Hand-written** on ACK's runtime (`PutObject`'s body is a stream the
+generator does not map), on the `RolePolicyAttachment` skeleton by way of
+`ResourceTag`'s, in our s3 manager beside the fixed `Bucket`
+(`services/s3/pkg/resource/object`). S3's own `Object` shape, which no
+`Bucket` field uses, is ignored in `generator.yaml` so the kind can take
+the name.
+
+- **Content:** exactly one of `content` (text), `contentBase64` (bytes)
+  and `contentFrom` (a key of a ConfigMap, from `data` or `binaryData`, or
+  of a Secret), checked by the CRD. `contentFrom` is resolved on every
+  reconcile, as a reference is, and never written into the stored spec.
+  The SHA-256 of what was put is kept in the annotation
+  `s3.aws.hfl.dev/last-content-sha256` (section 6.47's approach): a
+  ConfigMap or Secret whose value changed, with the `Object` unchanged,
+  differs from it and the object is put again on the next resync.
+- **Drift:** `HeadObject`'s ETag against `status.eTag` (the ETag of the
+  last put): an object put outside Kubernetes is put back. The content
+  itself is never read. The headers the spec gives (`contentType`,
+  `cacheControl`, `contentDisposition`, `contentEncoding`,
+  `contentLanguage`, `serverSideEncryption`, a KMS key given as an ARN,
+  `storageClass`) and the user `metadata` are compared with
+  `HeadObject`'s; a header the spec leaves out takes S3's default, which
+  is no drift. Any change but the tags is a new `PutObject` (S3 changes an
+  object's headers only by a put); the tags alone go through
+  `PutObjectTagging` or `DeleteObjectTagging`. ACK's default tags are not
+  added (an object takes ten tags at most).
+- **Bucket:** `bucketName`, or `bucketRef` to ACK's `Bucket`
+  (`s3.services.k8s.aws`), read as unstructured once synced (s3-controller
+  is not a module here); its `spec.name`. Our fixed `Bucket`
+  (`s3.aws.hfl.dev`) is reached by `bucketName`. The bucket and the key
+  are immutable. The recommendation's `kmsKeyRef` is not built: the key
+  is `kmsKeyID` (an ID, alias or ARN); a reference to ACK's KMS `Key`
+  from the s3 manager is a later addition.
+- **Delete:** `DeleteObject`, the current version only (in a bucket with
+  versioning S3 keeps a delete marker and the older versions, as
+  Terraform's default); `retain` keeps the object.
+
+**Proven on moto** (`TestS3Object`): inline content with headers,
+metadata and tags in ACK's `Bucket` by `bucketRef` (the reference not
+written back); nothing put again on a resync (the object's
+`LastModified` unchanged across two resyncs); a content change put, a tag
+change alone not (the ETag unchanged); an object put outside Kubernetes
+put back; `contentFrom` a ConfigMap put again when only the ConfigMap's
+value changes; binary content from a Secret; the CRD refusing two
+contents and a changed key; delete, and `retain`. Unit tests: the body,
+the tags header, the comparisons, and the resolution of `bucketRef` and
+`contentFrom` (`sdk_test.go`). **Not proven:** real S3 (live run
+pending): SSE-KMS (S3 then returns an ETag that is not the content's MD5,
+which the drift check does not need), a bucket with Object Lock, and an
+object over the API server's object size.
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)
@@ -3796,6 +3856,10 @@ Before it can run on a real cluster:
      call): a propagation enabled and disabled, read back from the route
      table, and EC2's answer to disabling one already stopped (section
      6.34).
+   - S3 `Object` (section 6.49): a put with SSE-KMS and a KMS key by ID
+     (S3 returns the ARN), `storageClass` read back (`HeadObject` names no
+     class for STANDARD), metadata keys' case, an object put outside
+     Kubernetes put back, and a delete in a versioned bucket.
    - the `Trail` extension (`docs/extensions.md`): logging started on a
      trail ACK made, delivery to the bucket (its policy), event selectors
      with S3 data resources read back with AWS's defaults (no put on every
@@ -4858,3 +4922,10 @@ Before it can run on a real cluster:
     `serverSideEncryption`, `kmsKeyRef` and `tags`, in
     `s3.aws.hfl.dev` beside the fixed `Bucket`. Not built until the
     builder answers.
+
+    **Answered** (2026-11-23, the builder, relayed by the coordinator):
+    inline `content` and `contentBase64`, plus `contentFrom`, a ConfigMap
+    or Secret key, put again when its value changes, by the hash
+    annotation of section 6.47; hand-written on ACK's runtime, as above.
+
+    **Built** (2026-11-23): `s3.aws.hfl.dev` `Object`, section 6.49.

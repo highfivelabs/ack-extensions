@@ -456,6 +456,7 @@ policies:
       - s3:DeleteBucketPolicy
       - s3:DeleteBucketWebsite
       - s3:DeleteObject
+      - s3:DeleteObjectTagging
       - s3:DeleteObjectVersion
       - s3:Get*Configuration
       - s3:GetAccelerateConfiguration
@@ -481,6 +482,7 @@ policies:
       - s3:GetLifecycleConfiguration
       - s3:GetMetricsConfiguration
       - s3:GetObject
+      - s3:GetObjectTagging
       - s3:GetReplicationConfiguration
       - s3:ListAllMyBuckets
       - s3:ListBucket
@@ -512,6 +514,7 @@ policies:
       - s3:PutMetricsConfiguration
       - s3:PutObject
       - s3:PutObjectRetention
+      - s3:PutObjectTagging
       - s3:PutReplicationConfiguration
       effect: Allow
       resources:
