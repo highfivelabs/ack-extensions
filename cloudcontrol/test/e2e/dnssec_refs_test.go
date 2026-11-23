@@ -17,7 +17,7 @@ import (
 
 // TestReferencesDNSSEC: DNSSEC signing and a key-signing key for a hosted
 // zone named by reference to ACK's route53 HostedZone (hostedZoneRef; the
-// catalog's route53 chart, catalog PR #234), the key's KMS key by
+// catalog's route53 chart, krm-packages PR #234), the key's KMS key by
 // reference to ACK's kms Key (keyManagementServiceRef), on the schema
 // fake: moto 5.2.5 has no DNSSEC calls. ACK's HostedZone keeps its ID as
 // /hostedzone/Z...; Cloud Control is sent the bare ID (the reference's

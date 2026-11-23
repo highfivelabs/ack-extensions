@@ -138,7 +138,7 @@ each is not an annotation here (each has its upstream note in
 | route53 `RecordSet` | overwrite on create (`allowOverwrite`) | ACK's create sends `CREATE`; an extension cannot turn it into `UPSERT` without racing ACK's create. ACK's `adopt-or-create` annotation is the way once route53-controller #121 lands |
 | ours: ec2 `VolumeAttachment`, `Volume` | `instanceRef` | ours; waits on open question 16 |
 
-### The catalog's eks chart (catalog PR #237): the field gaps, 2026-11-16
+### The catalog's eks chart (krm-packages PR #237): the field gaps, 2026-11-16
 
 What the chart refused as "fields ACK's kinds lack", read against
 eks-controller `v1.26.0`, kms-controller `v1.7.0` and

@@ -702,7 +702,7 @@ controller to show it can fail:
 ## 5. Candidates, ranked
 
 **The ranking (2026-11-09)** follows the usage-ranked gap list in
-`highfivelabs/catalog` `docs/aws.md`, section 5. That list counts which of
+`highfivelabs/krm-packages` `docs/aws.md`, section 5. That list counts which of
 the most-downloaded terraform-aws-modules (Terraform Registry downloads,
 2026-11-09) need something ACK lacks, and ranks the gaps by how many of the
 top 25 modules need them. Candidates from this plan's earlier tables that
@@ -749,9 +749,9 @@ its master (5.2.5 is the pin).
 | 22 | ACM import from a Kubernetes TLS Secret | acm-controller PR #104 | | skipped: a field on an existing kind (open question 1) |
 | 23 | `Role` additive policy mode | iam-controller PR #184, second commit | | skipped: changes ACK's own `Role` (open question 3) |
 
-**The catalog's ranking, 2026-11-12.** The catalog repository now lists
+**The catalog's ranking, 2026-11-12.** The krm-packages repository now lists
 every Terraform resource type its 40 tracked modules use
-(`docs/coverage/resource-types.csv` at catalog `fd0be28c`, its AWS rows
+(`docs/coverage/resource-types.csv` at krm-packages `fd0be28c`, its AWS rows
 all "unclassified" there, as AWS charts are not started). Each of the 321
 AWS types is classified in [`docs/catalog-aws-types.csv`](catalog-aws-types.csv):
 matched to a CloudFormation resource through the Terraform estimate
@@ -1062,7 +1062,7 @@ The spec names:
   `eventSourceToken`, `principalOrgID` and `functionURLAuthType`.
 
 **`targetGroupRef`** (2026-11-16; the catalog's alb chart refused its
-Lambda permissions for want of it, catalog PR #234): ACK's elbv2
+Lambda permissions for want of it, krm-packages PR #234): ACK's elbv2
 `TargetGroup` (elbv2-controller `v1.9.0`, a Go module here for its API
 types, `UPSTREAM.md`), whose `status.ackResourceMetadata.arn` fills
 `sourceARN` once the target group is synced, the way ACK's generated
@@ -1542,7 +1542,7 @@ a resource since given another web ACL. About 97% of the kind's Go
   parameter or operation (a `CLOUDFRONT` web ACL, a resource WAFv2 cannot
   protect) is terminal.
 - **`resourceRef`** (2026-11-16; the catalog's alb chart refused its WAF
-  association for want of it, catalog PR #234): ACK's elbv2
+  association for want of it, krm-packages PR #234): ACK's elbv2
   `LoadBalancer`, its `status.ackResourceMetadata.arn`, generated from
   `references` with `service_name: elbv2` in `generator.yaml` (as s3's
   `Replication.Role` names iam's `Role`; elbv2-controller `v1.9.0` is a
@@ -2747,7 +2747,7 @@ lacks: `urlRef`, the URL read from ACK's eks `Cluster`
 cluster's issuer, which exists only in the `Cluster`'s status once EKS has
 made it; without a reference a chart cannot render the provider with the
 cluster, and the catalog's eks chart refused `enable_irsa` (the module's
-default) for that (catalog PR #237). Built under the builder's rule for
+default) for that (krm-packages PR #237). Built under the builder's rule for
 kinds missing attributes (section 3, "Fixed copies of ACK's kinds", item
 ACKQ1-1). Upstream rechecked 2026-11-16 (read-only): iam-controller
 `v1.11.3`'s `OpenIDConnectProvider` has `url` only; ACK has no reference
@@ -2801,7 +2801,7 @@ ACK's ec2-controller `LaunchTemplate` with the references it lacks under
 `blockDeviceMappings[].ebs.kmsKeyRef` (ACK's KMS `Key`, its ARN). The
 catalog's eks chart refused a node group's custom launch template (the
 module's default) because the template could not name the node security
-group the chart makes (catalog PR #237). Built under the builder's rule
+group the chart makes (krm-packages PR #237). Built under the builder's rule
 for kinds missing attributes (section 3, "Fixed copies of ACK's kinds",
 item ACKQ1-1). Upstream rechecked 2026-11-16 (read-only): ec2-controller
 pull request #364 added exactly these three references and was closed
@@ -4604,7 +4604,7 @@ Before it can run on a real cluster:
     section 8 item 15).
 
 24. **An ARN from another object's status inside a policy document**
-    (2026-11-16, from the catalog's eks chart, catalog PR #237). The
+    (2026-11-16, from the catalog's eks chart, krm-packages PR #237). The
     module's `attach_encryption_policy` writes an IAM policy whose
     `Resource` is the chart's own KMS key's ARN. ACK's `Key` has that ARN
     only in its status (the key ID is random), and a policy document is a
@@ -4644,7 +4644,7 @@ Before it can run on a real cluster:
     condition can stand for.
 
 25. **A policy on `FileSystem` that can reference its own ARN** (item
-    EFSPOL, 2026-11-16, from the catalog's efs chart, catalog PR #243).
+    EFSPOL, 2026-11-16, from the catalog's efs chart, krm-packages PR #243).
     The module's two transport statements (`deny_nonsecure_transport`,
     `deny_nonsecure_transport_via_mount_target`) name the file system's
     own ARN, which exists only in its status, and ACK's `FileSystem`

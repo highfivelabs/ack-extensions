@@ -47,7 +47,7 @@ resources:
   # copies of ACK's kinds"; section 6.43): ec2-controller v1.23.1's entry,
   # with the references of its pull request #364 added (the catalog's eks
   # chart refused custom launch templates for want of securityGroupRefs,
-  # catalog PR #237).
+  # krm-packages PR #237).
   LaunchTemplate:
     hooks:
       sdk_create_post_build_request:

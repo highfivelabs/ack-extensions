@@ -22,9 +22,9 @@ import (
 // committed here as a pinned copy (docs/coverage/inputs/terraform/).
 const (
 	tfProvider   = "aws"
-	tfRepo       = "https://github.com/highfivelabs/catalog"
+	tfRepo       = "https://github.com/highfivelabs/krm-packages"
 	tfCatalogDir = "docs/terraform/ack-extensions"
-	tfMethodURL  = "https://github.com/highfivelabs/catalog/blob/%s/docs/terraform-leverage.md#method-and-error"
+	tfMethodURL  = "https://github.com/highfivelabs/krm-packages/blob/%s/docs/terraform-leverage.md#method-and-error"
 	colTerraform = "#7b42bc" // purple
 	colTick      = "#1f2328"
 )
@@ -42,7 +42,7 @@ type terraformSource struct {
 
 type tfFile struct {
 	Path   string `json:"path"`   // the committed copy, relative to the repository root
-	From   string `json:"from"`   // the path in the catalog repository at Commit
+	From   string `json:"from"`   // the path in the krm-packages repository at Commit
 	SHA256 string `json:"sha256"` // of the committed copy
 }
 
@@ -141,12 +141,12 @@ func parseTerraformCSV(b []byte, provider string) ([]tfRow, error) {
 }
 
 // pinTerraform copies the two files for this repository from a local
-// catalog checkout at commit into docs/coverage/inputs/terraform/ and
+// krm-packages checkout at commit into docs/coverage/inputs/terraform/ and
 // rewrites the terraform section of sources.yaml.
 func pinTerraform(c config, commit string) error {
 	dir := os.Getenv("CATALOG_DIR")
 	if dir == "" {
-		dir = filepath.Join(c.root, "..", "catalog")
+		dir = filepath.Join(c.root, "..", "krm-packages")
 	}
 	git := func(args ...string) ([]byte, error) {
 		cmd := exec.Command("git", append([]string{"-C", dir}, args...)...)
