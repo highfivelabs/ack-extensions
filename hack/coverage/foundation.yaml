@@ -267,7 +267,7 @@ resources:
   "ec2/TransitGatewayRouteTablePropagation": {inline: "to be a field of `TransitGatewayRouteTable.spec.propagations[]` (F04)", kinds: "a field of the `TransitGatewayRouteTable` kind"}
   "ec2/TransitGatewayRoute": {inline: "to be a field of `TransitGatewayRouteTable.spec.routes[]` (F04)", kinds: "a field of the `TransitGatewayRouteTable` kind"}
   "ec2/VPNConnection": {size: L, kinds: "`ec2.aws.hfl.dev/VPNConnection`, generated (`CreateVpnConnection` with tunnel options), static routes as a field, F05", moto: "partly: `CreateVpnConnection` yes, `CreateVpnConnectionRoute` no"}
-  "ec2/VPNConnectionRoute": {inline: "to be a field of `VPNConnection.spec.staticRoutes[]` (F05)", moto: "no: `CreateVpnConnectionRoute` is not in moto", kinds: "a field of the `VPNConnection` kind"}
+  "ec2/VPNConnectionRoute": {inline: "ours `VPNConnection.spec.staticRoutes[]` (built, plan 6.32; synced exclusively, so a kind per route would fight it)", moto: "no: `CreateVpnConnectionRoute` is not in moto", kinds: "none (a field of ours)"}
   "ec2/VPNGatewayRoutePropagation": {size: S, moto: "no: `EnableVgwRoutePropagation` is not in moto", kinds: "a field of `RouteTable` upstream (`propagatingVGWs`) or a sidecar kind; F05"}
   "ec2/VPNGateway": {note: "ours; ACK ignores it"}
   "ec2/CustomerGateway": {note: "ours; ACK ignores it"}
@@ -293,7 +293,7 @@ resources:
   "route53/DNSSEC": {size: S, moto: "no: `EnableHostedZoneDNSSEC` is not in moto", kinds: "`route53.aws.hfl.dev/DNSSEC`, hand-written (`EnableHostedZoneDNSSEC`/`DisableHostedZoneDNSSEC`), F08"}
   "route53/KeySigningKey": {size: S, moto: "no: `CreateKeySigningKey` is not in moto", kinds: "`route53.aws.hfl.dev/KeySigningKey`, generated (`CreateKeySigningKey`), F08"}
   "route53/QueryLoggingConfig": {size: S, kinds: "`route53.aws.hfl.dev/QueryLoggingConfig`, generated (`CreateQueryLoggingConfig`), F08", moto: "yes: `CreateQueryLoggingConfig` is implemented"}
-  "route53/HostedZone": {matters: ["VPCs[] (ACK `vpc`: one VPC only)", "HostedZoneFeatures.EnableAcceleratedRecovery", "QueryLoggingConfig"], kinds: "the fields upstream; a second VPC is `VPCAssociation` (F08)"}
+  "route53/HostedZone": {matters: ["HostedZoneFeatures.EnableAcceleratedRecovery", "QueryLoggingConfig"], upstream: "route53-controller v1.9.0 (2026-11-10) has `spec.vpcs`, every VPC of a private zone synced with `AssociateVPCWithHostedZone`/`DisassociateVPCFromHostedZone` (rechecked 2026-11-23)", kinds: "the fields upstream; a second VPC is ACK's `spec.vpcs`, so no `VPCAssociation` kind; query logging is the Cloud Control `QueryLoggingConfig`"}
   "route53/CidrCollection": {size: S, moto: "no: not in moto's route53", kinds: "`route53.aws.hfl.dev/CidrCollection`; low priority"}
   "route53/TrafficPolicy": {size: S, kinds: "`route53.aws.hfl.dev/TrafficPolicy`; low priority (traffic flow)"}
   "route53/TrafficPolicyInstance": {size: S, kinds: "`route53.aws.hfl.dev/TrafficPolicyInstance`; low priority"}
@@ -453,7 +453,7 @@ queue:
     moto: "Partial: `CreateHostedZone`, `ChangeResourceRecordSets`, `CreateQueryLoggingConfig`, `AssociateVPCWithHostedZone`, `CreateReusableDelegationSet` are implemented; `EnableHostedZoneDNSSEC`, `CreateKeySigningKey`, `CreateVPCAssociationAuthorization` and CIDR collections are not."
     modules: "`route53` (#13): DNSSEC, key-signing key, VPC association authorization."
     size: "S each"
-    approach: "Add to a new `services/route53/` manager; `QueryLoggingConfig` and `VPCAssociation` are provable on moto, the DNSSEC pair is not."
+    approach: "Add to a new `services/route53/` manager; `QueryLoggingConfig` and `VPCAssociation` are provable on moto, the DNSSEC pair is not. Rechecked 2026-11-23: route53-controller v1.9.0's `HostedZone.spec.vpcs` associates a private zone with every VPC listed, so `VPCAssociation` is upstream's and not built; the cross-account authorization waits (moto has none of it)."
     done: "`QueryLoggingConfig` and `VPCAssociation` proved on moto; DNSSEC kinds written with the gap documented."
 
   - id: F09

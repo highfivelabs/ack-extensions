@@ -823,7 +823,7 @@ where it stands here:
 | An Elastic IP associated with an instance (`AssociateAddress`; the `ec2-instance` chart's `create_eip`) | ours | **served** by `ec2.cloudcontrol.aws.hfl.dev` `EIPAssociation`, **proven on moto** since 2026-11-12 (`TestEIPAssociation`: a moto backend over `AssociateAddress`, `DescribeAddresses`, `DisassociateAddress`; both references resolved from ACK stand-ins; on AWS Emulator 1.0.338 it fails as every moto-proven Cloud Control kind does, its Cloud Control keeping the type in its own store, `docs/aws-emulator.md`), with `allocationRef` (ACK's `ElasticIPAddress`), `instanceRef` (ACK's `Instance`) and `networkInterfaceRef` (our `NetworkInterface`) since 2026-11-12. ACK's ec2-controller has no association kind (checked at `v1.23.1` and `v1.24.0`); its `ElasticIPAddress` has no instance field |
 | S3 directory buckets | ours | **served** by `s3express.cloudcontrol.aws.hfl.dev` `DirectoryBucket` (batch 14) |
 | `aws_s3_account_public_access_block` | ours | **built**: `s3control.aws.hfl.dev` `PublicAccessBlock`, a new `s3control` service here, generated from `PutPublicAccessBlock`, `GetPublicAccessBlock` and `DeletePublicAccessBlock` (an account singleton, as `AccountPasswordPolicy`; section 6.36). The charts' `upstream/aws-kinds.yaml` can map it |
-| KMS `ExternalKey`, `ReplicaExternalKey` (`ImportKeyMaterial`, the material from a Secret) | ours | to build, hand-written |
+| KMS `ExternalKey`, `ReplicaExternalKey` (`ImportKeyMaterial`, the material from a Secret) | ours | **waits for the fake** (rechecked 2026-11-23): moto 5.2.5 has neither `GetParametersForImport` nor `ImportKeyMaterial`, so nothing of it could be proven. ACK's `Key` already makes a key with `origin: EXTERNAL`; under question 1's answer the import would be an annotation on it (`docs/extensions.md`), not a kind of ours |
 | Redshift `ClusterSubnetGroup` | ACK | ACK's redshift-controller has it merged, unreleased (`cloudcontrol/excluded.yaml`) |
 | `FlowLog` reference to the resource it logs; `egressOnlyInternetGatewayRef` on `RouteTable.routes`; a subnet's IPv6 block from its VPC's | ACK (fields of its kinds) | **upstream only.** ec2-controller `v1.25.0` has `FlowLog.resourceID` with no reference, and no `egressOnlyInternetGatewayRef` in a route; no open pull request or issue adds either (read-only, 2026-11-12). Not drafted: this repository opens nothing upstream (CLAUDE.md, "Never"), and has no policy that would allow it |
 | `Key`: `pendingWindowInDays` on delete, `rotationPeriodInDays`, `enabled` | ACK (fields of `Key`) | **filled here** (question 1, answered; `docs/extensions.md`): `kms.aws.hfl.dev/rotation-period-in-days` and `kms.aws.hfl.dev/enabled` on ACK's own `Key`, acted on by our kms manager; the window is ACK's own annotation `kms.services.k8s.aws/pending-window-in-days`. Notes to upstream drafted (`docs/upstream-notes.md` 1 to 3) |
@@ -879,6 +879,51 @@ fill (`docs/extensions.md`, "Not filled here"; open question 23). This
 repository opens nothing upstream (CLAUDE.md), so each note is drafted in
 `docs/upstream-notes.md` for a person to file.
 
+
+**The foundation queue, rechecked 2026-11-23** (`docs/coverage/foundation.md`;
+upstream read-only with `git ls-remote` and shallow clones of each
+controller's `main`, as `gh` had no token that day; an open pull request
+is one with a `refs/pull/<n>/merge` ref). Every platform-foundation
+resource with no coverage is either built as a field of another kind,
+excluded with its reason (`cloudcontrol/excluded.yaml`), or waits:
+
+- **EC2 `TransitGateway`'s options** (F04; four of its 15 attributes):
+  **built**, as annotations on ACK's own `TransitGateway`
+  (`docs/extensions.md`): `securityGroupReferencingSupport`,
+  `encryptionSupport` and the association and propagation default route
+  tables, with `ModifyTransitGateway`. ec2-controller (`v1.25.1`, and
+  `main` at `de423fc`, 2026-11-20) ignores the first on create and
+  updates tags only. Proven on moto except encryption (section 4.4);
+  `docs/upstream-notes.md` note 17.
+- **EC2 `VPNConnectionRoute`** (F05): already ours, as
+  `VPNConnection.spec.staticRoutes` (`CreateVpnConnectionRoute`,
+  `DeleteVpnConnectionRoute`, synced exclusively, section 6.32). A kind
+  for one route would fight that field, so none is built; the coverage
+  research records it as inline (`hack/coverage/foundation.yaml`).
+- **Route 53 `VPCAssociation`** (F08, a private hosted zone in a second
+  VPC): **upstream has it.** route53-controller `v1.9.0` (2026-11-10)
+  has `HostedZone.spec.vpcs`, a list synced with
+  `AssociateVPCWithHostedZone` and `DisassociateVPCFromHostedZone`
+  (`syncVPCAssociations`), so no kind is built here. The cross-account
+  `VPCAssociationAuthorization` is still in its `ignore.resource_names`
+  and moto 5.2.5 has none of it: it waits (rank 14).
+- **KMS external key material**: waits for the fake (the table above).
+- **EC2 `KeyPair`**: ec2-controller pull request #396 is still open
+  (head `91d99b7a`), and `main` still ignores `KeyPair`: wait.
+- **Network Manager** (F13): networkmanager-controller pull requests #3,
+  #4 and #16 are still open and the controller has no release: wait.
+- **Secrets Manager rotation** (F17): secretsmanager-controller pull
+  request #69 is still open: wait.
+- **Route 53 Resolver endpoint protocols, preferred instance type and
+  IPv6 internet access** (F09): route53resolver-controller `v1.12.0` and
+  `main` still ignore them on create. `UpdateResolverEndpoint` takes
+  `Protocols` after the create, so an annotation could fill it, but
+  moto 5.2.5's `UpdateResolverEndpoint` changes the name only, and the
+  annotation needs a route53resolver manager here (a new service beside
+  ACK's controller): it waits for a chart that needs it.
+- **EKS `Nodegroup` and `Cluster`** (the largest uncovered shares after
+  CloudTrail's `Trail`): wait on the SDK move (`docs/extensions.md`, the
+  eks chart's table). **CloudTrail `Trail`**: open question 26.
 
 Built before this ranking:
 

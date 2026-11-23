@@ -44,7 +44,7 @@ types:
   AWS::NetworkManager::TransitGatewayRouteTableAttachment: "wait for ACK networkmanager-controller (foundation F13)"
   # Decided against a kind (docs/handoff.md).
   AWS::SSO::Instance: "an organization has one Identity Center instance, made by enabling it; its ARN is a field"
-  AWS::EC2::VPNConnectionRoute: "beside VPNConnection, ACK-generated (handoff, F05)"
+  AWS::EC2::VPNConnectionRoute: "ours already: VPNConnection.spec.staticRoutes, synced exclusively (plan 6.32)"
   # Physical circuits, dedicated hardware, Outposts, Wavelength and fleets
   # of instances: not what a chart creates for a platform foundation.
   AWS::DirectConnect::Connection: "a physical circuit (foundation F13)"
