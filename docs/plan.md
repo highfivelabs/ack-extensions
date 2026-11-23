@@ -940,7 +940,42 @@ excluded with its reason (`cloudcontrol/excluded.yaml`), or waits:
   ACK's controller): it waits for a chart that needs it.
 - **EKS `Nodegroup` and `Cluster`** (the largest uncovered shares after
   CloudTrail's `Trail`): wait on the SDK move (`docs/extensions.md`, the
-  eks chart's table). **CloudTrail `Trail`**: open question 26.
+  eks chart's table). **CloudTrail `Trail`**: open question 26, answered
+  the same day and built (the `Trail` extension).
+
+**Security-adjacent and application, rechecked 2026-11-23** (the same
+way). Every provisionable gap type with an accepted CRD and no exclusion
+is now a Cloud Control kind: batch 17 added the last three, MSK
+`Replicator` and `Channel` and OpenSearch Service `Application`
+(application; schema fake only). What is left with no kind is excluded
+with its reason, not provisionable (WAF and WAF Regional Classic, the
+EC2-Classic security groups of RDS, ElastiCache and Redshift, CloudFront
+`StreamingDistribution`, CloudWatch `AnomalyDetector`, ELB
+`ListenerCertificate`, SNS `TopicPolicy`, SQS `QueuePolicy`), or waits:
+
+- **Fields of ACK's kinds** (Secrets Manager `Secret`'s
+  `GenerateSecretString`, WAFv2's newer rule statements, Network
+  Firewall's newer `Firewall` fields, ACM's validation method, DynamoDB,
+  ECS, Lambda and the rest of the application tier's partial rows): most
+  are fields of a newer AWS model than ACK's controllers are generated
+  from, or create-time parameters (open question 23), and many of the
+  rest are the coverage matcher's shape differences, not gaps. Those an
+  annotation could set after ACK's create need a manager here for a
+  service there is none for, and the ones checked have no moto support:
+  Lambda's `RecursiveLoop` (`PutFunctionRecursionConfig`, the catalog's
+  `aws_lambda_function_recursion_config`), EFS replication
+  (`CreateReplicationConfiguration`), Route 53 Resolver endpoint
+  protocols. Each waits for a chart that needs it, and then for moto or a
+  live run.
+- **The catalog's Terraform types with no kind** (the table above):
+  `aws_dsql_cluster_policy` is ACK's (dsql-controller `v1.5.0`'s
+  `Cluster.spec.policy`); `aws_spot_instance_request` is served by ACK's
+  `Instance.spec.instanceMarketOptions` (a spot instance by
+  `RunInstances`, AWS's recommended way); the RAM resource share
+  accepter, OpenSearch outbound connections and package associations,
+  RDS activity streams and automated backup replication, and the Network
+  Firewall resource policy have no moto support (moto 5.2.5 has none of
+  their calls): they wait.
 
 Built before this ranking:
 
