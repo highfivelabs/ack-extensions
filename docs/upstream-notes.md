@@ -33,6 +33,7 @@ acm-controller `v1.12.0`, route53-controller `v1.9.0`.
 | 14 | S3 `Bucket`: `customFindBucket` panics without default encryption | community issue, or reopen community#2990 (text in `docs/plan.md` section 8 item 15) | yes, `s3.aws.hfl.dev` `Bucket`, a fixed copy (intentional overlap) | not yet: the builder files it (UPBUG, 2026-11-15); `TODO(builder): link once filed` |
 | 15 | AWS Emulator: the 14 operations behind the ACK-kind failures | aws/aws-emulator pull requests, one per service | no: moto stays the test of record for those tests | not yet |
 | 16 | IAM `OpenIDConnectProvider`: `urlRef` to an EKS `Cluster`'s issuer | community issue | yes, `iam.aws.hfl.dev` `OpenIDConnectProvider`, a fixed copy (intentional overlap) | not yet |
+| 17 | EC2 `TransitGateway`: the options its spec lacks, and option changes applied | community issue (then ec2-controller PR) | yes, four `ec2.aws.hfl.dev/` annotations (`docs/extensions.md`) | not yet |
 
 EC2 `Instance.securityGroupRefs` needs no note: ec2-controller PR #406
 merged it (closing community#3132) and `v1.25.0` ships it.
@@ -569,6 +570,48 @@ for the tests it passes.
 > `references` on `OpenIDConnectProvider`'s `URL` in iam-controller's
 > `generator.yaml`: `service_name: eks`, `resource: Cluster`,
 > `path: Status.Identity.OIDC.Issuer`, giving `spec.urlRef`.
+
+## 17. EC2 `TransitGateway`: the options its spec lacks, and option changes applied
+
+**Title:** ec2-controller: `TransitGateway` options `securityGroupReferencingSupport`, `encryptionSupport` and the default route table IDs, and option changes applied with `ModifyTransitGateway`
+
+**Labels:** `kind/enhancement`, `service/ec2`
+
+**Body:**
+
+> **Is your feature request related to a problem?**
+> `TransitGateway.spec.options` (`TransitGatewayRequestOptions`) has no
+> `securityGroupReferencingSupport` (`generator.yaml` ignores
+> `CreateTransitGatewayInput.Options.SecurityGroupReferencingSupport`),
+> no `encryptionSupport`, and no `associationDefaultRouteTableID` or
+> `propagationDefaultRouteTableID`, which `CreateTransitGateway` does not
+> take but `ModifyTransitGateway` does. A hub-and-spoke network that
+> references security groups across VPCs, or that associates new
+> attachments with a route table of its own instead of the one AWS makes
+> with the gateway, cannot be declared. Terraform has
+> `aws_ec2_transit_gateway.security_group_referencing_support`;
+> CloudFormation has `AWS::EC2::TransitGateway`
+> `SecurityGroupReferencingSupport`, `EncryptionSupport`,
+> `AssociationDefaultRouteTableId` and `PropagationDefaultRouteTableId`.
+> Separately, `customUpdateTransitGateway` syncs tags only, so a change
+> to any of the existing options (`dnsSupport`, `vpnECMPSupport`,
+> `autoAcceptSharedAttachments`, ...) is accepted and never applied.
+>
+> **Describe the solution you'd like**
+> The four fields in `spec.options` (the two route table IDs with
+> `references` to a transit gateway route table kind, when there is
+> one), read back from `DescribeTransitGateways`, and an update hook that
+> sends the options that differ in one `ModifyTransitGateway` call while
+> the gateway is `available`.
+>
+> **Describe alternatives you've considered**
+> We set them with a controller beside ec2-controller that reads
+> annotations on ACK's `TransitGateway` and calls `ModifyTransitGateway`
+> once the gateway exists. It works, but fields are what users expect.
+>
+> **Additional context**
+> ec2-controller `v1.25.1` and `main` (2026-11-20): `generator.yaml`'s
+> `TransitGateway` entry and `pkg/resource/transit_gateway/hooks.go`.
 
 ---
 

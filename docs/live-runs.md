@@ -366,6 +366,7 @@ each run; the ledger above has the runs.
 | ACK | ec2 | NetworkInterfacePermission | (none: moto has no API) | pending: no test yet (moto has none of the API, plan 6.33); a live test needs a second account to grant to, and the catalog instance updated and applied again |
 | ACK | ec2 | LaunchTemplate | TestLaunchTemplate | pending: the live-test role lacks `ec2:CreateLaunchTemplate` and the other launch template actions until the catalog instance is updated from `cloudcontrol/config/live/role-policies.yaml` and applied again (fixed copy of ACK's, plan 6.43) |
 | ACK | ec2 | ResourceTag | TestResourceTag | PASS, `ackx-11160326-b656` (2026-11-16) |
+| ACK | ec2 | TransitGateway extension (ACK's TransitGateway) | TestTransitGatewayExtension | pending: not run live yet (built 2026-11-23); the live-test role needs `ec2:ModifyTransitGateway` and the transit gateway route table actions, so the catalog instance updated from `cloudcontrol/config/live/role-policies.yaml` and applied again first; a real gateway takes minutes to become available |
 | ACK | ec2 | Volume | TestVolume | PASS, `ackx-11160326-b656` (2026-11-16) |
 | ACK | ec2 | VolumeAttachment | TestVolumeAttachment | PASS, `ackx-11160326-b656` (2026-11-16) |
 | ACK | ec2 | VPNConnection | TestVPNConnection | PASS, `ackx-11160847-4089` (2026-11-16), after TestVpnGateway; its three earlier runs failed (a real connection takes six to ten minutes to become available, and the create's answer carries no type), not because of the order |

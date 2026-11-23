@@ -698,6 +698,21 @@ controller to show it can fail:
   real S3; it now reads the bucket's Object Lock configuration first and
   bypasses only when Object Lock is enabled (the unit tests' fake refuses
   the header as S3 does).
+- **A transit gateway's options** (probed 2026-11-23, moto 5.2.5; the
+  `TransitGateway` extension, `docs/extensions.md`). moto's
+  `ModifyTransitGateway` keeps whatever options it is given and
+  `DescribeTransitGateways` returns them: `SecurityGroupReferencingSupport`
+  and the two default route table IDs are shown end to end
+  (`TestTransitGatewayExtension`). It reports no
+  `SecurityGroupReferencingSupport` until one is set (the extension reads
+  none as `disable`, AWS's default). Not modelled: `EncryptionSupport`
+  (moto keeps the request's string and answers an empty object, with no
+  `EncryptionState`, so encryption in transit is unit-tested only); that
+  a gateway is `pending`, then `modifying` after a change (moto answers
+  `available` at once; the waits are unit-tested); that a default route
+  table belongs to the gateway (moto takes any ID); and an unknown
+  gateway, which moto answers with a bare HTTP 500 (AWS:
+  `InvalidTransitGatewayID.NotFound`).
 
 ## 5. Candidates, ranked
 
@@ -863,6 +878,7 @@ a condition or a kind of ACK's that an annotation beside ACK cannot
 fill (`docs/extensions.md`, "Not filled here"; open question 23). This
 repository opens nothing upstream (CLAUDE.md), so each note is drafted in
 `docs/upstream-notes.md` for a person to file.
+
 
 Built before this ranking:
 
@@ -3718,6 +3734,12 @@ Before it can run on a real cluster:
      call): a propagation enabled and disabled, read back from the route
      table, and EC2's answer to disabling one already stopped (section
      6.34).
+   - the `TransitGateway` extension (`docs/extensions.md`): the options
+     set once the gateway is `available` (real EC2 takes minutes), the
+     `modifying` state after a change waited out, encryption in transit
+     through `enabling` to `enabled` (moto keeps no state for it), a
+     default route table of the gateway's own accepted, and EC2's answer
+     to one that is not (section 4.4).
 4. CRD labels marking a gap kind and naming the upstream kind it
    anticipates, as gaps-gcp does.
 5. Patches 0001 and 0002 offered upstream on 2026-11-10

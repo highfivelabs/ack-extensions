@@ -66,7 +66,8 @@ func TestScan(t *testing.T) {
 		// curated
 		"DBRoleAssociation.rds": {"rds:AddRoleToDBInstance", "iam:PassRole"},
 		// extensions of ACK's own kinds (pkg/extend)
-		"Key.kms": {"kms:DescribeKey", "kms:GetKeyRotationStatus", "kms:EnableKeyRotation", "kms:EnableKey", "kms:DisableKey"},
+		"Key.kms":            {"kms:DescribeKey", "kms:GetKeyRotationStatus", "kms:EnableKeyRotation", "kms:EnableKey", "kms:DisableKey"},
+		"TransitGateway.ec2": {"ec2:DescribeTransitGateways", "ec2:ModifyTransitGateway"},
 		"Bucket.s3": {"s3:ListBucketVersions", "s3:DeleteObjectVersion", "s3:ListBucketMultipartUploads", "s3:AbortMultipartUpload", "s3:BypassGovernanceRetention",
 			// our copy of ACK's Bucket (one kind with the extension), under
 			// S3's own action names

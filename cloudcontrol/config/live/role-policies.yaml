@@ -162,6 +162,7 @@ policies:
       - ec2:GetTransitGatewayRouteTableAssociations
       - ec2:GetTransitGatewayRouteTablePropagations
       - ec2:ModifyLaunchTemplate
+      - ec2:ModifyTransitGateway
       - ec2:ModifyVolume
       - ec2:ModifyVpcAttribute
       - ec2:ModifyVpnConnectionOptions
