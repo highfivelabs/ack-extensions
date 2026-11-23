@@ -241,7 +241,7 @@ resources:
   "cloudtrail/Trail":
     size: M
     matters: ["IsLogging (StartLogging)", "EventSelectors[]", "AdvancedEventSelectors[]", "InsightSelectors[]", "AggregationConfigurations[]"]
-    kinds: "`cloudtrail.aws.hfl.dev/TrailLogging` (sidecar kind by `trailRef`: `StartLogging`/`StopLogging`, `PutEventSelectors`, `PutAdvancedEventSelectors`, `PutInsightSelectors`), or the fields upstream (design question, plan section 9 question 1); F10"
+    kinds: "annotations on ACK's `Trail` acted on by our cloudtrail manager (`cloudtrail.aws.hfl.dev/is-logging`, `event-selectors`, `advanced-event-selectors`, `insight-selectors`; plan open question 26, answered and built 2026-11-23, `docs/extensions.md`); `TestTrailExtension` on moto; the coverage counts fields of kinds, so these attributes stay uncovered here; F10"
   "cloudtrail/EventDataStore": {matters: ["KmsKeyId", "IngestionEnabled", "FederationEnabled", "InsightSelectors[]", "MaxEventSize"], upstream: "ACK ignores `KmsKeyId`, `BillingMode` and `StartIngestion` on create"}
   "cloudtrail/Channel": {size: S, upstream: "ignored in ACK's generator.yaml", kinds: "`cloudtrail.aws.hfl.dev/Channel`, generated; low priority (CloudTrail Lake integrations)"}
   "cloudtrail/Dashboard": {size: S, upstream: "ignored in ACK's generator.yaml", kinds: "`cloudtrail.aws.hfl.dev/Dashboard`, generated; low priority"}
@@ -479,7 +479,7 @@ queue:
     moto: "Good for the first three: `StartLogging`, `StopLogging`, `PutEventSelectors`, `GetEventSelectors`, `PutInsightSelectors`, `GetTrailStatus` are implemented. `PutAdvancedEventSelectors` is not in moto's coverage list, and event data stores and channels are not implemented."
     modules: "None of the 40 tracked modules creates a Trail."
     size: "M"
-    approach: "New `services/cloudtrail/` manager (there is none yet). Read ACK's `Trail` hook (`pkg/resource/trail/hooks.go` at cloudtrail-controller v1.9.1) to see its tag and update handling before you write."
+    approach: "New `services/cloudtrail/` manager (there is none yet). Read ACK's `Trail` hook (`pkg/resource/trail/hooks.go` at cloudtrail-controller v1.9.1) to see its tag and update handling before you write. Built 2026-11-23 as annotations on ACK's `Trail` (plan open question 26's answer), not the sidecar: `services/cloudtrail`, `TestTrailExtension`. CloudTrail has no `PutAdvancedEventSelectors` operation: advanced selectors go through `PutEventSelectors`, which moto 5.2.5 takes."
     done: "An end-to-end test creates an ACK `Trail` and a `TrailLogging` that starts logging with one event selector, flips `isLogging` off and on, and deletes; the advanced-selector call is documented as unproved; `task coverage` moves `cloudtrail/Trail` above 70%."
 
   - id: F11

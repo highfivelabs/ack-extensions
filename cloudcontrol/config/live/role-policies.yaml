@@ -75,6 +75,20 @@ policies:
       - '*'
       sid: ServiceCloudformation
     - actions:
+      - cloudtrail:CreateTrail
+      - cloudtrail:DeleteTrail
+      - cloudtrail:GetEventSelectors
+      - cloudtrail:GetInsightSelectors
+      - cloudtrail:GetTrailStatus
+      - cloudtrail:PutEventSelectors
+      - cloudtrail:PutInsightSelectors
+      - cloudtrail:StartLogging
+      - cloudtrail:StopLogging
+      effect: Allow
+      resources:
+      - '*'
+      sid: ServiceCloudtrail
+    - actions:
       - cognito-idp:AssociateWebACL
       - cognito-idp:DisassociateWebACL
       - cognito-idp:GetWebACLForResource

@@ -418,6 +418,8 @@ group on ACK's object, acted on by our manager beside ACK's controller
 
 | ACK kind | Annotation | What it does |
 | --- | --- | --- |
+| `cloudtrail.services.k8s.aws` `Trail` | `cloudtrail.aws.hfl.dev/is-logging: "true"` | starts the trail's logging (`"false"` stops it); ACK's controller never starts it; Terraform's `enable_logging` |
+| `cloudtrail.services.k8s.aws` `Trail` | `cloudtrail.aws.hfl.dev/event-selectors`, `cloudtrail.aws.hfl.dev/advanced-event-selectors`, `cloudtrail.aws.hfl.dev/insight-selectors` (JSON, CloudTrail's own shapes) | the trail's event selectors (or advanced ones) and Insights; Terraform's `event_selector`, `advanced_event_selector`, `insight_selector` |
 | `ec2.services.k8s.aws` `TransitGateway` | `ec2.aws.hfl.dev/security-group-referencing-support: "enable"` | security group referencing across the gateway's VPC attachments (`"disable"` turns it off); Terraform's `security_group_referencing_support` |
 | `ec2.services.k8s.aws` `TransitGateway` | `ec2.aws.hfl.dev/encryption-support: "enable"` | encryption in transit between the gateway's VPC attachments; CloudFormation's `EncryptionSupport` |
 | `ec2.services.k8s.aws` `TransitGateway` | `ec2.aws.hfl.dev/association-default-route-table-id: "tgw-rtb-..."`, `ec2.aws.hfl.dev/propagation-default-route-table-id: "tgw-rtb-..."` | the route table new attachments are associated with and propagate to, in place of the one AWS makes with the gateway; CloudFormation's `AssociationDefaultRouteTableId`, `PropagationDefaultRouteTableId` |
@@ -427,7 +429,7 @@ group on ACK's object, acted on by our manager beside ACK's controller
 | `s3.services.k8s.aws` `Bucket` | `s3.aws.hfl.dev/force-destroy: "true"` | empties the bucket (every version, delete marker and multipart upload) when the `Bucket` is deleted, unless its deletion policy is `retain`; Terraform's `force_destroy`. The same annotation works on our fixed copy, `s3.aws.hfl.dev` `Bucket` |
 
 The `Bucket`'s runs in the S3 manager (`services/s3`, which also serves
-our fixed copy of ACK's `Bucket`) beside ACK's s3-controller. The `TransitGateway`'s runs in the EC2 manager (`services/ec2`) beside ACK's ec2-controller. What an annotation cannot fill (a parameter of
+our fixed copy of ACK's `Bucket`) beside ACK's s3-controller. The `Trail`'s runs in the CloudTrail manager (`services/cloudtrail`, no kind of its own) beside ACK's cloudtrail-controller. The `TransitGateway`'s runs in the EC2 manager (`services/ec2`) beside ACK's ec2-controller. What an annotation cannot fill (a parameter of
 ACK's own create call) is listed in `docs/extensions.md` and asked in
 `docs/plan.md` open question 23.
 

@@ -46,6 +46,8 @@ github.com/aws/aws-sdk-go-v2/service/autoscaling v1.64.3 h1:YBBu7ZhnMkHjBCFVa50N
 github.com/aws/aws-sdk-go-v2/service/autoscaling v1.64.3/go.mod h1:wRRzL5slhAzg/F8SwmTgIl3XXFB4V+X1t5qmuJf+O6k=
 github.com/aws/aws-sdk-go-v2/service/cloudcontrol v1.23.8 h1:qPNYKHiKuJXq7hknRbTBiwyOSX4UOFvSEnrNn0YblLg=
 github.com/aws/aws-sdk-go-v2/service/cloudcontrol v1.23.8/go.mod h1:NvDfw8nK40pfWTpXJI4FdVsEzI/UsTgDvIi/h37Z0lM=
+github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.47.2 h1:82Lhqk1lZ+IR/MfNH4IwTMJxHULorrATkAWfyWuRYa4=
+github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.47.2/go.mod h1:+xzB98lifMHyEpi8059lZS4bXkpLFXIHHxuSmRLpMjI=
 github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.65.0 h1:3yaFbUbuLfN8n1q01wZtQtHRzUDc/jm0VvniMY0IPE8=
 github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.65.0/go.mod h1:PobeppEnIjw4pcgjFryNDZCTH7AiqZw0yb5r98Gvf9c=
 github.com/aws/aws-sdk-go-v2/service/configservice v1.62.1 h1:0kqK/rGcsuDGDyLLBjLSH95zC3k8lIkW0nksCYEU72g=

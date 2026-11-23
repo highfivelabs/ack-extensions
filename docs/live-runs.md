@@ -358,6 +358,7 @@ each run; the ledger above has the runs.
 | ACK | applicationautoscaling | ScheduledAction | TestApplicationScheduledAction | PASS, `ackx-11160402-b394` (2026-11-16) |
 | ACK | autoscaling | ScalingPolicy | TestScalingPolicy | PASS, `ackx-11160326-bbdb` (2026-11-16) |
 | ACK | autoscaling | ScheduledAction | TestScheduledAction | PASS, `ackx-11160326-bbdb` (2026-11-16) |
+| ACK | cloudtrail | Trail extension (ACK's Trail) | TestTrailExtension | pending: not run live yet (built 2026-11-23); the live-test role needs the trail's `cloudtrail:` actions and `s3:PutBucketPolicy`, so the catalog instance updated from `cloudcontrol/config/live/role-policies.yaml` and applied again first |
 | ACK | ec2 | CustomerGateway | TestCustomerGateway | PASS, `ackx-11160326-b656` (2026-11-16) |
 | ACK | ec2 | DefaultSecurityGroup | TestDefaultSecurityGroup | PASS, `ackx-11160326-b656` (2026-11-16) |
 | ACK | ec2 | DefaultNetworkACL | TestDefaultNetworkACL | PASS, `ackx-11160847-4089` (2026-11-16) |

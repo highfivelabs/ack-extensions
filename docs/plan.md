@@ -713,6 +713,23 @@ controller to show it can fail:
   table belongs to the gateway (moto takes any ID); and an unknown
   gateway, which moto answers with a bare HTTP 500 (AWS:
   `InvalidTransitGatewayID.NotFound`).
+- **A trail's logging and selectors** (probed 2026-11-23, moto 5.2.5; the
+  `Trail` extension, `docs/extensions.md`). moto has `StartLogging`,
+  `StopLogging`, `GetTrailStatus`, `PutEventSelectors` and
+  `GetEventSelectors` (with `AdvancedEventSelectors`: there is no separate
+  `PutAdvancedEventSelectors` in CloudTrail's API), `PutInsightSelectors`
+  and `GetInsightSelectors`, and finds a trail by ARN, as AWS does. It
+  differs: a new trail has no event selector (AWS gives it the default:
+  all management events); putting event selectors after advanced ones
+  keeps the advanced ones (AWS replaces them, so the extension would put
+  again on every resync on moto); `PutInsightSelectors` appends to the
+  trail's selectors instead of replacing them, and a trail without
+  Insights answers an empty list (AWS: `InsightNotEnabledException`).
+  `TestTrailExtension` keeps to what moto shows as AWS does; the switch
+  back to event selectors and Insights turned off are unit-tested against
+  a fake that answers as AWS does. A trail's bucket needs no policy on
+  moto (AWS refuses `CreateTrail` without one; the test puts the
+  documented one).
 
 ## 5. Candidates, ranked
 
@@ -3779,6 +3796,12 @@ Before it can run on a real cluster:
      call): a propagation enabled and disabled, read back from the route
      table, and EC2's answer to disabling one already stopped (section
      6.34).
+   - the `Trail` extension (`docs/extensions.md`): logging started on a
+     trail ACK made, delivery to the bucket (its policy), event selectors
+     with S3 data resources read back with AWS's defaults (no put on every
+     resync), the switch between event and advanced selectors, Insights
+     turned on and off (`InsightNotEnabledException`), and the cost of a
+     data-event selector kept small.
    - the `TransitGateway` extension (`docs/extensions.md`): the options
      set once the gateway is `available` (real EC2 takes minutes), the
      `modifying` state after a change waited out, encryption in transit
@@ -4785,6 +4808,31 @@ Before it can run on a real cluster:
     what a trail needs to work; the selectors follow in the same change.
     The sidecar is the fallback if typed selector fields matter more than
     one kind. Not built until the builder answers.
+
+    **Answered** (2026-11-23, the builder, relayed by the coordinator):
+    annotations on ACK's `Trail`, as recommended:
+    `cloudtrail.aws.hfl.dev/is-logging`, and the event, advanced event and
+    insight selectors as JSON; our cloudtrail manager in `pkg/operator`
+    acts on them; an `UPSTREAM.md` row for cloudtrail-controller `v1.10.0`
+    with its `Trail` CRD copied into `hack/ack-crds` for the tests; what
+    moto lacks of the selectors unit-tested and recorded.
+
+    **Built** (2026-11-23, `docs/extensions.md`): `services/cloudtrail`, a
+    manager with no kind of its own beside ACK's cloudtrail-controller
+    (`MANAGER_IMAGE_CLOUDTRAIL`), and its `Trail` extension
+    (`services/cloudtrail/pkg/extend/trail`): `is-logging`
+    (`StartLogging`/`StopLogging`, read with `GetTrailStatus`),
+    `event-selectors` and `advanced-event-selectors` (both through
+    `PutEventSelectors`, the only call that puts either: CloudTrail has no
+    `PutAdvancedEventSelectors` operation; the two annotations together are
+    refused), `insight-selectors` (`PutInsightSelectors`; `[]` turns
+    Insights off). Proven on moto (`TestTrailExtension`); moto 5.2.5 does
+    keep advanced selectors put through `PutEventSelectors`, so they are
+    shown end to end too. What moto does differently (section 4.4) is
+    unit-tested: switching back from advanced to event selectors, and
+    turning Insights off. Upstream note 18 drafted. F10's 18 uncovered
+    attributes stay uncovered in `docs/coverage/` (the coverage counts
+    fields of kinds, not annotations, as for KMS's).
 
 27. **The shape of an S3 `Object` kind** (plan section 5, rank 17;
     `aws_s3_object` in three of the catalog's tracked modules, 2026-11-19).

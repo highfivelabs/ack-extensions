@@ -43,7 +43,7 @@ SDK_VERSION_FOR() {
   esac
 }
 GROUP_SUFFIX="aws.hfl.dev"
-SERVICES=(applicationautoscaling autoscaling cloudwatchlogs ec2 ecr efs elasticache eventbridge iam kms lambda organizations rds s3 s3control scheduler wafv2)
+SERVICES=(applicationautoscaling autoscaling cloudtrail cloudwatchlogs ec2 ecr efs elasticache eventbridge iam kms lambda organizations rds s3 s3control scheduler wafv2)
 GEN="${ROOT}/bin/ack-generate"
 CONTROLLER_GEN="${ROOT}/bin/controller-gen"
 GOIMPORTS="${ROOT}/bin/goimports"

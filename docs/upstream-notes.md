@@ -34,6 +34,8 @@ acm-controller `v1.12.0`, route53-controller `v1.9.0`.
 | 15 | AWS Emulator: the 14 operations behind the ACK-kind failures | aws/aws-emulator pull requests, one per service | no: moto stays the test of record for those tests | not yet |
 | 16 | IAM `OpenIDConnectProvider`: `urlRef` to an EKS `Cluster`'s issuer | community issue | yes, `iam.aws.hfl.dev` `OpenIDConnectProvider`, a fixed copy (intentional overlap) | not yet |
 | 17 | EC2 `TransitGateway`: the options its spec lacks, and option changes applied | community issue (then ec2-controller PR) | yes, four `ec2.aws.hfl.dev/` annotations (`docs/extensions.md`) | not yet |
+| 18 | CloudTrail `Trail`: `isLogging` and the selectors | community issue (then cloudtrail-controller PR) | yes, four `cloudtrail.aws.hfl.dev/` annotations (`docs/extensions.md`) | not yet |
+| 18 | CloudTrail `Trail`: `isLogging` and the selectors | community issue (then cloudtrail-controller PR) | yes, four `cloudtrail.aws.hfl.dev/` annotations (`docs/extensions.md`) | not yet |
 
 EC2 `Instance.securityGroupRefs` needs no note: ec2-controller PR #406
 merged it (closing community#3132) and `v1.25.0` ships it.
@@ -612,6 +614,43 @@ for the tests it passes.
 > **Additional context**
 > ec2-controller `v1.25.1` and `main` (2026-11-20): `generator.yaml`'s
 > `TransitGateway` entry and `pkg/resource/transit_gateway/hooks.go`.
+
+## 18. CloudTrail `Trail`: `isLogging` and the selectors
+
+**Title:** cloudtrail-controller: start a `Trail`'s logging, and `eventSelectors`, `advancedEventSelectors` and `insightSelectors` on `Trail`
+
+**Labels:** `kind/enhancement`, `service/cloudtrail`
+
+**Body:**
+
+> **Is your feature request related to a problem?**
+> A `Trail` made by the controller never logs: `CreateTrail` leaves a
+> trail stopped, and the controller never calls `StartLogging`. Its spec
+> also has no event, advanced event or insight selectors, so data events
+> (S3 objects, Lambda invocations) and Insights cannot be declared.
+> CloudFormation has `AWS::CloudTrail::Trail` `IsLogging`,
+> `EventSelectors`, `AdvancedEventSelectors` and `InsightSelectors`;
+> Terraform has `enable_logging` (default true), `event_selector`,
+> `advanced_event_selector` and `insight_selector`.
+>
+> **Describe the solution you'd like**
+> `spec.isLogging` (default true, as Terraform's), set with
+> `StartLogging`/`StopLogging` after the create and on update, read with
+> `GetTrailStatus`; `spec.eventSelectors` and `spec.advancedEventSelectors`
+> (one or the other), put with `PutEventSelectors` and read with
+> `GetEventSelectors`, compared with CloudTrail's defaults filled in;
+> `spec.insightSelectors`, put with `PutInsightSelectors` and read with
+> `GetInsightSelectors` (`InsightNotEnabledException` read as none).
+>
+> **Describe alternatives you've considered**
+> We set them with a controller beside cloudtrail-controller that reads
+> annotations on ACK's `Trail` and makes the calls once the trail exists.
+> It works, but fields are what users expect, and a trail that does not
+> log is no audit trail.
+>
+> **Additional context**
+> cloudtrail-controller `v1.10.0` (`generator.yaml`'s `Trail` entry,
+> `pkg/resource/trail/hooks.go`); no open pull request (2026-11-23).
 
 ---
 
