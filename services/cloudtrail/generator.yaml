@@ -1,0 +1,20 @@
+# Generator configuration for ack-extensions's CloudTrail manager
+# (cloudtrail.aws.hfl.dev).
+#
+# There is no kind of ours here. The manager runs beside ACK's
+# cloudtrail-controller to extend ACK's own Trail (docs/extensions.md;
+# docs/plan.md open question 26, answered 2026-11-23): a trail annotated
+# cloudtrail.aws.hfl.dev/is-logging is started or stopped, and its event,
+# advanced event and insight selectors are put from annotations, by a
+# controller written by hand (services/cloudtrail/pkg/extend/trail) and
+# registered in cmd/controller/handwritten.go. Every resource the generator
+# can find is ignored: ACK's cloudtrail-controller has Trail and
+# EventDataStore, and Channel, Dashboard and ResourcePolicy are Cloud Control
+# kinds here. It generates only the service's scaffolding (the API group,
+# the resource registry, the controller's main), as s3's and kms's do.
+ignore:
+  resource_names:
+    - Channel
+    - Dashboard
+    - EventDataStore
+    - Trail

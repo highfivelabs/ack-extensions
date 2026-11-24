@@ -25,10 +25,11 @@ itself lives in its own repository and is never changed from here.
   `task upstream` (or `task tools`), with `patches/` applied in order.
 - **Unreleased upstream code** (master, pull requests): `docs/plan.md`
   §1 (how ACK is built), §2 (how a gap kind is built here: generator config and hook templates under `services/<svc>/`), §3 (keeping in step with ACK), §5(a) (upstream code that exists but is not released).
-- **What to build next:** `docs/plan.md` §5 "Candidates, ranked". Upstream first: a gap
-  is built here only when upstream has neither released it nor has a
-  pull request close to merging; when it does, wait for the release
-  unless a field is critical.
+- **What to build next:** `docs/plan.md` §5 "Candidates, ranked". Never wait on
+  upstream (§3, 2026-11-24): the pins follow ACK's `main`, and a gap with
+  an open upstream pull request is built now, from that pull request's
+  code where it works. Our latest build is ACK `main` + our fixes + our
+  extensions; when ACK ships a kind or field we carry, ours retires (§3).
 - **What is left and known gaps:** `docs/plan.md` §8 "What is left".
 - **The fake cloud:** docs/plan.md §4 (moto in server mode).
 - **Identity:** the managers run as their own narrow service account by

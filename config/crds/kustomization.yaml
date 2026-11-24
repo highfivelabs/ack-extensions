@@ -49,6 +49,7 @@ resources:
   - bases/rds.aws.hfl.dev_dbroleassociations.yaml
   - bases/rds.aws.hfl.dev_optiongroups.yaml
   - bases/s3.aws.hfl.dev_buckets.yaml
+  - bases/s3.aws.hfl.dev_objects.yaml
   - bases/s3control.aws.hfl.dev_publicaccessblocks.yaml
   - bases/scheduler.aws.hfl.dev_schedulegroups.yaml
   - bases/scheduler.aws.hfl.dev_schedules.yaml

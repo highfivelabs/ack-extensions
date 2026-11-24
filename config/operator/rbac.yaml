@@ -39,7 +39,7 @@ rules:
   - apiGroups: ["rbac.authorization.k8s.io"]
     resources: ["clusterroles"]
     verbs: ["bind"]
-    resourceNames: ["ack-extensions-applicationautoscaling-manager", "ack-extensions-autoscaling-manager", "ack-extensions-ec2-manager", "ack-extensions-ecr-manager", "ack-extensions-eventbridge-manager", "ack-extensions-iam-manager", "ack-extensions-kms-manager", "ack-extensions-lambda-manager", "ack-extensions-organizations-manager", "ack-extensions-rds-manager", "ack-extensions-s3-manager", "ack-extensions-s3control-manager", "ack-extensions-scheduler-manager", "ack-extensions-wafv2-manager", "ack-extensions-cloudcontrol-manager"]
+    resourceNames: ["ack-extensions-applicationautoscaling-manager", "ack-extensions-autoscaling-manager", "ack-extensions-cloudtrail-manager", "ack-extensions-ec2-manager", "ack-extensions-ecr-manager", "ack-extensions-eventbridge-manager", "ack-extensions-iam-manager", "ack-extensions-kms-manager", "ack-extensions-lambda-manager", "ack-extensions-organizations-manager", "ack-extensions-rds-manager", "ack-extensions-s3-manager", "ack-extensions-s3control-manager", "ack-extensions-scheduler-manager", "ack-extensions-wafv2-manager", "ack-extensions-cloudcontrol-manager"]
   # ACK's own controllers' ClusterRoles (config/ack-controllers), bound per
   # environment by an ACKContext (docs/plan.md, section 7.7).
   - apiGroups: ["rbac.authorization.k8s.io"]

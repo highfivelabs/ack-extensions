@@ -8,6 +8,10 @@ package main
 // s3-controller to extend ACK's Bucket (docs/extensions.md).
 
 import (
+	// Object is put with PutObject, whose body is a stream the generator
+	// does not map; registering its package adds its manager factory.
+	_ "github.com/highfivelabs/ack-extensions/services/s3/pkg/resource/object"
+
 	// Empties a Bucket annotated s3.aws.hfl.dev/force-destroy on delete;
 	// its init registers it with pkg/extend. ACK's Bucket is read as
 	// unstructured, so nothing is added to the scheme.

@@ -15,7 +15,7 @@ aws_lambda_permission,4,ours,lambda Permission,via CloudFormation lambda::Permis
 aws_route53_record,4,ack,route53 RecordSet,via CloudFormation route53::RecordSet
 aws_db_subnet_group,3,ack,rds DBSubnetGroup,
 aws_ram_resource_association,3,ours-cc,ram ResourceAssociation (Cloud Control),via CloudFormation ram::ResourceAssociation
-aws_s3_object,3,neither,,plan section 5 rank 17; no CloudFormation type
+aws_s3_object,3,ours,s3 Object,plan section 5 rank 17 and section 6.49; no CloudFormation type
 aws_secretsmanager_secret_rotation,3,ack-field,"(secretsmanager Secret, pull request #69)",waits for ACK secretsmanager-controller #69 (excluded.yaml)
 aws_sqs_queue_policy,3,ack-field,sqs Queue.spec.policy,field of ACK Queue (question 1)
 aws_autoscaling_group,2,ack,autoscaling AutoScalingGroup,via CloudFormation autoscaling::AutoScalingGroup

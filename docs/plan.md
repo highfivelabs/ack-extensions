@@ -138,6 +138,51 @@ with the patch.
 
 ## 3. Keeping in step with ACK
 
+**Track ACK's `main`; never wait on an upstream pull request or release**
+(the builder, 2026-11-24, for all of the KRM extensions repositories).
+The builder, verbatim: "I think we shoudl not wait and make the
+extensions repo take these or build them and pull ahead. we can afford
+right now to have some churn in having folks transition and actually
+want to see what that experience looks like" and "let's reverse the
+earlier decision. I think if it's in PR we have no idea how long it'll
+take to land. for all krm extnsions repos let's take changes that land
+on main and of course those on official releases but our latest build
+should have the contents of their main + any fixes + what we extend".
+So:
+
+- **A gap with an upstream pull request is built now**, from the pull
+  request's code where it works, otherwise here: EC2 `KeyPair` (#396),
+  Secrets Manager rotation (#69), the Logs metric filter (#61), Network
+  Manager (F13: #3, #4, #16, through Cloud Control) and every other
+  "wait" in section 5, `docs/coverage/foundation.md` and
+  `cloudcontrol/excluded.yaml`.
+- **The pins follow `main`.** The code generator, the runtime and every
+  referenced controller move to the head of their `main` at least weekly
+  and before every release of ours, not to their latest release (the
+  procedure below still applies, with `main` commits in place of release
+  tags). A controller whose `main` will not build with the others stays
+  at its last good commit, recorded in `UPSTREAM.md` with the reason.
+- **Our latest build is ACK `main` + our fixes + our extensions.** What
+  ACK's `main` has and no release has yet ships in our build; our fixes
+  ship as `patches/` and fixed copies (below); our kinds ship as ours.
+  The builder, 2026-11-24, on what the build carries, verbatim: "our build
+  has the contents of their main - if there are merged but unreleased
+  contents in their repo that we coudl use to fill in gaps on attributes
+  or resources, we shoudl take them and publish them on our extensions
+  controller". So upstream stays installed beside us at its release, and
+  our extensions controller serves what upstream has merged on its main
+  branch but not released, wherever it fills a gap in resources or
+  attributes: as our own kinds in our API group (copied by the copy-
+  upstream rule), or as field kinds on upstream's kinds. When upstream
+  releases it, ours retires.
+- **Transition is expected.** When ACK ships a kind or field we carry,
+  ours retires as below. Users moving across is accepted churn, and the
+  experience is worth observing and writing down.
+- Unchanged: the copy-upstream rule, `patches/`, never editing
+  `third_party/`, the merge gate, and the live-run rules.
+- `docs/coverage/` still measures "official" at each controller's latest
+  release; measuring it at `main` is a follow-up.
+
 - `UPSTREAM.md` holds the pins (code generator, runtime, the referenced
   controllers, the SDK model tag) and a table of every copied file with
   its source commit and change. Each copied file says so in its header.
@@ -698,6 +743,38 @@ controller to show it can fail:
   real S3; it now reads the bucket's Object Lock configuration first and
   bypasses only when Object Lock is enabled (the unit tests' fake refuses
   the header as S3 does).
+- **A transit gateway's options** (probed 2026-11-23, moto 5.2.5; the
+  `TransitGateway` extension, `docs/extensions.md`). moto's
+  `ModifyTransitGateway` keeps whatever options it is given and
+  `DescribeTransitGateways` returns them: `SecurityGroupReferencingSupport`
+  and the two default route table IDs are shown end to end
+  (`TestTransitGatewayExtension`). It reports no
+  `SecurityGroupReferencingSupport` until one is set (the extension reads
+  none as `disable`, AWS's default). Not modelled: `EncryptionSupport`
+  (moto keeps the request's string and answers an empty object, with no
+  `EncryptionState`, so encryption in transit is unit-tested only); that
+  a gateway is `pending`, then `modifying` after a change (moto answers
+  `available` at once; the waits are unit-tested); that a default route
+  table belongs to the gateway (moto takes any ID); and an unknown
+  gateway, which moto answers with a bare HTTP 500 (AWS:
+  `InvalidTransitGatewayID.NotFound`).
+- **A trail's logging and selectors** (probed 2026-11-23, moto 5.2.5; the
+  `Trail` extension, `docs/extensions.md`). moto has `StartLogging`,
+  `StopLogging`, `GetTrailStatus`, `PutEventSelectors` and
+  `GetEventSelectors` (with `AdvancedEventSelectors`: there is no separate
+  `PutAdvancedEventSelectors` in CloudTrail's API), `PutInsightSelectors`
+  and `GetInsightSelectors`, and finds a trail by ARN, as AWS does. It
+  differs: a new trail has no event selector (AWS gives it the default:
+  all management events); putting event selectors after advanced ones
+  keeps the advanced ones (AWS replaces them, so the extension would put
+  again on every resync on moto); `PutInsightSelectors` appends to the
+  trail's selectors instead of replacing them, and a trail without
+  Insights answers an empty list (AWS: `InsightNotEnabledException`).
+  `TestTrailExtension` keeps to what moto shows as AWS does; the switch
+  back to event selectors and Insights turned off are unit-tested against
+  a fake that answers as AWS does. A trail's bucket needs no policy on
+  moto (AWS refuses `CreateTrail` without one; the test puts the
+  documented one).
 
 ## 5. Candidates, ranked
 
@@ -710,8 +787,13 @@ the catalog does not rank follow it, from rank 19.
 
 The rules are unchanged:
 
-- **Upstream first.** Build only what upstream has neither released nor
-  has in a pull request close to merging; otherwise wait for the release.
+- **Never wait on upstream** (section 3, "Track ACK's main", decided
+  2026-11-24; this replaced "upstream first: build only what upstream has
+  neither released nor has in a pull request close to merging").
+  A gap with an open upstream pull request is built now, from the pull
+  request's code where it works; "wait for the release" and "wait for
+  #NNN" are no longer reasons to skip one. The table's older "skipped:
+  close to merging" and "wait" rows are candidates again.
 - **Open questions.** Skip anything blocked on an open question
   (section 9), and say so here.
 - **The fake cloud.** Prove what moto can show, and list the rest as not
@@ -741,7 +823,7 @@ its master (5.2.5 is the pin).
 | 14 | Route 53 DNSSEC and `KeySigningKey`, VPC association authorization | ignored in route53-controller's `generator.yaml` | none | skipped: moto has none of it |
 | 15 | IAM `GroupMembership`, `AccessKey`, `LoginProfile`, `SSHPublicKey`, account alias, password policy | none (iam-controller `v1.11.3`; PR #147 for `LoginProfile` closed; rechecked 2026-11-09) | yes | built: `UserGroupMembership`, `LoginProfile`, `SSHPublicKey`, `AccountAlias`, `AccountPasswordPolicy`; `AccessKey` (6.30; open question 10, answered) |
 | 16 | EC2 `PlacementGroup` | ignored in ec2-controller's `generator.yaml` | none | skipped: moto has none of it |
-| 17 | S3 `Object`, the account's public access block | none. Rechecked 2026-11-12 for the public access block: s3-controller `v1.16.0` (2026-11-10) has a bucket's `publicAccessBlock` only (a field of `Bucket`, `PutPublicAccessBlock` of S3, from its PR #56), and its two open pull requests (#252 bucket encryption defaults, #226 generated e2e tests) do not touch the account's; ACK's s3control-controller `v1.10.0` (2026-11-10; `v1.9.0` is the release on our runtime) has `AccessPoint` only, no open pull request, and no `community` issue asks for the account's block | yes (section 4.4: S3 Control's account-ID host) | the account's public access block built: `s3control.aws.hfl.dev` `PublicAccessBlock` (section 6.36). S3 `Object`: its shape is open question 27 |
+| 17 | S3 `Object`, the account's public access block | none. Rechecked 2026-11-12 for the public access block: s3-controller `v1.16.0` (2026-11-10) has a bucket's `publicAccessBlock` only (a field of `Bucket`, `PutPublicAccessBlock` of S3, from its PR #56), and its two open pull requests (#252 bucket encryption defaults, #226 generated e2e tests) do not touch the account's; ACK's s3control-controller `v1.10.0` (2026-11-10; `v1.9.0` is the release on our runtime) has `AccessPoint` only, no open pull request, and no `community` issue asks for the account's block | yes (section 4.4: S3 Control's account-ID host) | the account's public access block built: `s3control.aws.hfl.dev` `PublicAccessBlock` (section 6.36). S3 `Object`: built 2026-11-23 (open question 27, answered; section 6.49) |
 | 18 | EC2 `KeyPair` | ec2-controller PR #396: both reviews' changes made, main merged in 2026-11-04, mergeable | yes | skipped: close to merging; wait for the release |
 | 19 | Secrets Manager resource policy (`PutResourcePolicy`) | no issue or PR | yes | **served** by Cloud Control: `secretsmanager.cloudcontrol.aws.hfl.dev` `ResourcePolicy` (batch 8, F17), proven on moto (`TestSecretResourcePolicy`) |
 | 20 | RDS event subscriptions | ignored in rds-controller's `generator.yaml` | create and delete yes, modify no | **served** by Cloud Control: `rds.cloudcontrol.aws.hfl.dev` `EventSubscription` (batch 12), on the schema fake only |
@@ -783,7 +865,7 @@ The 21 left, by module uses:
 | Terraform type | Modules | Why not yet |
 | --- | ---: | --- |
 | `aws_vpc_security_group_ingress_rule`, `aws_vpc_security_group_egress_rule` | 11 each | **built** 2026-11-15 (question 7): `ec2.cloudcontrol.aws.hfl.dev` `SecurityGroupIngress` and `SecurityGroupEgress`, proven on moto (`TestSecurityGroupRules`) |
-| `aws_s3_object` | 3 | rank 17 (no CloudFormation type); its shape is open question 27 |
+| `aws_s3_object` | 3 | **built** 2026-11-23: `s3.aws.hfl.dev` `Object` (open question 27, answered; section 6.49) |
 | `aws_security_group_rule` | 2 | served by the same two kinds (its `type` picks one) since 2026-11-15 |
 | `aws_key_pair` | 1 | ec2-controller pull request #396 (upstream first) |
 | `aws_elasticache_global_replication_group` | 1 | elasticache-controller pull request #237; moto has none |
@@ -808,7 +890,7 @@ where it stands here:
 | An Elastic IP associated with an instance (`AssociateAddress`; the `ec2-instance` chart's `create_eip`) | ours | **served** by `ec2.cloudcontrol.aws.hfl.dev` `EIPAssociation`, **proven on moto** since 2026-11-12 (`TestEIPAssociation`: a moto backend over `AssociateAddress`, `DescribeAddresses`, `DisassociateAddress`; both references resolved from ACK stand-ins; on AWS Emulator 1.0.338 it fails as every moto-proven Cloud Control kind does, its Cloud Control keeping the type in its own store, `docs/aws-emulator.md`), with `allocationRef` (ACK's `ElasticIPAddress`), `instanceRef` (ACK's `Instance`) and `networkInterfaceRef` (our `NetworkInterface`) since 2026-11-12. ACK's ec2-controller has no association kind (checked at `v1.23.1` and `v1.24.0`); its `ElasticIPAddress` has no instance field |
 | S3 directory buckets | ours | **served** by `s3express.cloudcontrol.aws.hfl.dev` `DirectoryBucket` (batch 14) |
 | `aws_s3_account_public_access_block` | ours | **built**: `s3control.aws.hfl.dev` `PublicAccessBlock`, a new `s3control` service here, generated from `PutPublicAccessBlock`, `GetPublicAccessBlock` and `DeletePublicAccessBlock` (an account singleton, as `AccountPasswordPolicy`; section 6.36). The charts' `upstream/aws-kinds.yaml` can map it |
-| KMS `ExternalKey`, `ReplicaExternalKey` (`ImportKeyMaterial`, the material from a Secret) | ours | to build, hand-written |
+| KMS `ExternalKey`, `ReplicaExternalKey` (`ImportKeyMaterial`, the material from a Secret) | ours | **waits for the fake** (rechecked 2026-11-23): moto 5.2.5 has neither `GetParametersForImport` nor `ImportKeyMaterial`, so nothing of it could be proven. ACK's `Key` already makes a key with `origin: EXTERNAL`; under question 1's answer the import would be an annotation on it (`docs/extensions.md`), not a kind of ours |
 | Redshift `ClusterSubnetGroup` | ACK | ACK's redshift-controller has it merged, unreleased (`cloudcontrol/excluded.yaml`) |
 | `FlowLog` reference to the resource it logs; `egressOnlyInternetGatewayRef` on `RouteTable.routes`; a subnet's IPv6 block from its VPC's | ACK (fields of its kinds) | **upstream only.** ec2-controller `v1.25.0` has `FlowLog.resourceID` with no reference, and no `egressOnlyInternetGatewayRef` in a route; no open pull request or issue adds either (read-only, 2026-11-12). Not drafted: this repository opens nothing upstream (CLAUDE.md, "Never"), and has no policy that would allow it |
 | `Key`: `pendingWindowInDays` on delete, `rotationPeriodInDays`, `enabled` | ACK (fields of `Key`) | **filled here** (question 1, answered; `docs/extensions.md`): `kms.aws.hfl.dev/rotation-period-in-days` and `kms.aws.hfl.dev/enabled` on ACK's own `Key`, acted on by our kms manager; the window is ACK's own annotation `kms.services.k8s.aws/pending-window-in-days`. Notes to upstream drafted (`docs/upstream-notes.md` 1 to 3) |
@@ -863,6 +945,87 @@ a condition or a kind of ACK's that an annotation beside ACK cannot
 fill (`docs/extensions.md`, "Not filled here"; open question 23). This
 repository opens nothing upstream (CLAUDE.md), so each note is drafted in
 `docs/upstream-notes.md` for a person to file.
+
+
+**The foundation queue, rechecked 2026-11-23** (`docs/coverage/foundation.md`;
+upstream read-only with `git ls-remote` and shallow clones of each
+controller's `main`, as `gh` had no token that day; an open pull request
+is one with a `refs/pull/<n>/merge` ref). Every platform-foundation
+resource with no coverage is either built as a field of another kind,
+excluded with its reason (`cloudcontrol/excluded.yaml`), or waits:
+
+- **EC2 `TransitGateway`'s options** (F04; four of its 15 attributes):
+  **built**, as annotations on ACK's own `TransitGateway`
+  (`docs/extensions.md`): `securityGroupReferencingSupport`,
+  `encryptionSupport` and the association and propagation default route
+  tables, with `ModifyTransitGateway`. ec2-controller (`v1.25.1`, and
+  `main` at `de423fc`, 2026-11-20) ignores the first on create and
+  updates tags only. Proven on moto except encryption (section 4.4);
+  `docs/upstream-notes.md` note 17.
+- **EC2 `VPNConnectionRoute`** (F05): already ours, as
+  `VPNConnection.spec.staticRoutes` (`CreateVpnConnectionRoute`,
+  `DeleteVpnConnectionRoute`, synced exclusively, section 6.32). A kind
+  for one route would fight that field, so none is built; the coverage
+  research records it as inline (`hack/coverage/foundation.yaml`).
+- **Route 53 `VPCAssociation`** (F08, a private hosted zone in a second
+  VPC): **upstream has it.** route53-controller `v1.9.0` (2026-11-10)
+  has `HostedZone.spec.vpcs`, a list synced with
+  `AssociateVPCWithHostedZone` and `DisassociateVPCFromHostedZone`
+  (`syncVPCAssociations`), so no kind is built here. The cross-account
+  `VPCAssociationAuthorization` is still in its `ignore.resource_names`
+  and moto 5.2.5 has none of it: it waits (rank 14).
+- **KMS external key material**: waits for the fake (the table above).
+- **EC2 `KeyPair`**: ec2-controller pull request #396 is still open
+  (head `91d99b7a`), and `main` still ignores `KeyPair`: wait.
+- **Network Manager** (F13): networkmanager-controller pull requests #3,
+  #4 and #16 are still open and the controller has no release: wait.
+- **Secrets Manager rotation** (F17): secretsmanager-controller pull
+  request #69 is still open: wait.
+- **Route 53 Resolver endpoint protocols, preferred instance type and
+  IPv6 internet access** (F09): route53resolver-controller `v1.12.0` and
+  `main` still ignore them on create. `UpdateResolverEndpoint` takes
+  `Protocols` after the create, so an annotation could fill it, but
+  moto 5.2.5's `UpdateResolverEndpoint` changes the name only, and the
+  annotation needs a route53resolver manager here (a new service beside
+  ACK's controller): it waits for a chart that needs it.
+- **EKS `Nodegroup` and `Cluster`** (the largest uncovered shares after
+  CloudTrail's `Trail`): wait on the SDK move (`docs/extensions.md`, the
+  eks chart's table). **CloudTrail `Trail`**: open question 26, answered
+  the same day and built (the `Trail` extension).
+
+**Security-adjacent and application, rechecked 2026-11-23** (the same
+way). Every provisionable gap type with an accepted CRD and no exclusion
+is now a Cloud Control kind: batch 17 added the last three, MSK
+`Replicator` and `Channel` and OpenSearch Service `Application`
+(application; schema fake only). What is left with no kind is excluded
+with its reason, not provisionable (WAF and WAF Regional Classic, the
+EC2-Classic security groups of RDS, ElastiCache and Redshift, CloudFront
+`StreamingDistribution`, CloudWatch `AnomalyDetector`, ELB
+`ListenerCertificate`, SNS `TopicPolicy`, SQS `QueuePolicy`), or waits:
+
+- **Fields of ACK's kinds** (Secrets Manager `Secret`'s
+  `GenerateSecretString`, WAFv2's newer rule statements, Network
+  Firewall's newer `Firewall` fields, ACM's validation method, DynamoDB,
+  ECS, Lambda and the rest of the application tier's partial rows): most
+  are fields of a newer AWS model than ACK's controllers are generated
+  from, or create-time parameters (open question 23), and many of the
+  rest are the coverage matcher's shape differences, not gaps. Those an
+  annotation could set after ACK's create need a manager here for a
+  service there is none for, and the ones checked have no moto support:
+  Lambda's `RecursiveLoop` (`PutFunctionRecursionConfig`, the catalog's
+  `aws_lambda_function_recursion_config`), EFS replication
+  (`CreateReplicationConfiguration`), Route 53 Resolver endpoint
+  protocols. Each waits for a chart that needs it, and then for moto or a
+  live run.
+- **The catalog's Terraform types with no kind** (the table above):
+  `aws_dsql_cluster_policy` is ACK's (dsql-controller `v1.5.0`'s
+  `Cluster.spec.policy`); `aws_spot_instance_request` is served by ACK's
+  `Instance.spec.instanceMarketOptions` (a spot instance by
+  `RunInstances`, AWS's recommended way); the RAM resource share
+  accepter, OpenSearch outbound connections and package associations,
+  RDS activity streams and automated backup replication, and the Network
+  Firewall resource policy have no moto support (moto 5.2.5 has none of
+  their calls): they wait.
 
 Built before this ranking:
 
@@ -2988,6 +3151,66 @@ file system exists; no kind, and no open pull request adds one.
   generated resolution and is for the live run to show. Not yet run live.
 - Charts that can adopt it (catalog, allow_alpha): `efs`.
 
+### 6.49 `s3.aws.hfl.dev` `Object`
+
+One object in an S3 bucket: Terraform's `aws_s3_object`, in three of the
+catalog's tracked modules (section 5, rank 17). S3 objects have no
+CloudFormation type, so Cloud Control cannot serve them, and ACK's
+s3-controller (`v1.16.0`, and `main` read-only 2026-11-23) has no kind for
+them; its generator ignores `Object`. Built to open question 27's answer
+(2026-11-23).
+
+**Hand-written** on ACK's runtime (`PutObject`'s body is a stream the
+generator does not map), on the `RolePolicyAttachment` skeleton by way of
+`ResourceTag`'s, in our s3 manager beside the fixed `Bucket`
+(`services/s3/pkg/resource/object`). S3's own `Object` shape, which no
+`Bucket` field uses, is ignored in `generator.yaml` so the kind can take
+the name.
+
+- **Content:** exactly one of `content` (text), `contentBase64` (bytes)
+  and `contentFrom` (a key of a ConfigMap, from `data` or `binaryData`, or
+  of a Secret), checked by the CRD. `contentFrom` is resolved on every
+  reconcile, as a reference is, and never written into the stored spec.
+  The SHA-256 of what was put is kept in the annotation
+  `s3.aws.hfl.dev/last-content-sha256` (section 6.47's approach): a
+  ConfigMap or Secret whose value changed, with the `Object` unchanged,
+  differs from it and the object is put again on the next resync.
+- **Drift:** `HeadObject`'s ETag against `status.eTag` (the ETag of the
+  last put): an object put outside Kubernetes is put back. The content
+  itself is never read. The headers the spec gives (`contentType`,
+  `cacheControl`, `contentDisposition`, `contentEncoding`,
+  `contentLanguage`, `serverSideEncryption`, a KMS key given as an ARN,
+  `storageClass`) and the user `metadata` are compared with
+  `HeadObject`'s; a header the spec leaves out takes S3's default, which
+  is no drift. Any change but the tags is a new `PutObject` (S3 changes an
+  object's headers only by a put); the tags alone go through
+  `PutObjectTagging` or `DeleteObjectTagging`. ACK's default tags are not
+  added (an object takes ten tags at most).
+- **Bucket:** `bucketName`, or `bucketRef` to ACK's `Bucket`
+  (`s3.services.k8s.aws`), read as unstructured once synced (s3-controller
+  is not a module here); its `spec.name`. Our fixed `Bucket`
+  (`s3.aws.hfl.dev`) is reached by `bucketName`. The bucket and the key
+  are immutable. The recommendation's `kmsKeyRef` is not built: the key
+  is `kmsKeyID` (an ID, alias or ARN); a reference to ACK's KMS `Key`
+  from the s3 manager is a later addition.
+- **Delete:** `DeleteObject`, the current version only (in a bucket with
+  versioning S3 keeps a delete marker and the older versions, as
+  Terraform's default); `retain` keeps the object.
+
+**Proven on moto** (`TestS3Object`): inline content with headers,
+metadata and tags in ACK's `Bucket` by `bucketRef` (the reference not
+written back); nothing put again on a resync (the object's
+`LastModified` unchanged across two resyncs); a content change put, a tag
+change alone not (the ETag unchanged); an object put outside Kubernetes
+put back; `contentFrom` a ConfigMap put again when only the ConfigMap's
+value changes; binary content from a Secret; the CRD refusing two
+contents and a changed key; delete, and `retain`. Unit tests: the body,
+the tags header, the comparisons, and the resolution of `bucketRef` and
+`contentFrom` (`sdk_test.go`). **Not proven:** real S3 (live run
+pending): SSE-KMS (S3 then returns an ETag that is not the content's MD5,
+which the drift check does not need), a bucket with Object Lock, and an
+object over the API server's object size.
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)
@@ -3718,6 +3941,22 @@ Before it can run on a real cluster:
      call): a propagation enabled and disabled, read back from the route
      table, and EC2's answer to disabling one already stopped (section
      6.34).
+   - S3 `Object` (section 6.49): a put with SSE-KMS and a KMS key by ID
+     (S3 returns the ARN), `storageClass` read back (`HeadObject` names no
+     class for STANDARD), metadata keys' case, an object put outside
+     Kubernetes put back, and a delete in a versioned bucket.
+   - the `Trail` extension (`docs/extensions.md`): logging started on a
+     trail ACK made, delivery to the bucket (its policy), event selectors
+     with S3 data resources read back with AWS's defaults (no put on every
+     resync), the switch between event and advanced selectors, Insights
+     turned on and off (`InsightNotEnabledException`), and the cost of a
+     data-event selector kept small.
+   - the `TransitGateway` extension (`docs/extensions.md`): the options
+     set once the gateway is `available` (real EC2 takes minutes), the
+     `modifying` state after a change waited out, encryption in transit
+     through `enabling` to `enabled` (moto keeps no state for it), a
+     default route table of the gateway's own accepted, and EC2's answer
+     to one that is not (section 4.4).
 4. CRD labels marking a gap kind and naming the upstream kind it
    anticipates, as gaps-gcp does.
 5. Patches 0001 and 0002 offered upstream on 2026-11-10
@@ -4719,6 +4958,31 @@ Before it can run on a real cluster:
     The sidecar is the fallback if typed selector fields matter more than
     one kind. Not built until the builder answers.
 
+    **Answered** (2026-11-23, the builder, relayed by the coordinator):
+    annotations on ACK's `Trail`, as recommended:
+    `cloudtrail.aws.hfl.dev/is-logging`, and the event, advanced event and
+    insight selectors as JSON; our cloudtrail manager in `pkg/operator`
+    acts on them; an `UPSTREAM.md` row for cloudtrail-controller `v1.10.0`
+    with its `Trail` CRD copied into `hack/ack-crds` for the tests; what
+    moto lacks of the selectors unit-tested and recorded.
+
+    **Built** (2026-11-23, `docs/extensions.md`): `services/cloudtrail`, a
+    manager with no kind of its own beside ACK's cloudtrail-controller
+    (`MANAGER_IMAGE_CLOUDTRAIL`), and its `Trail` extension
+    (`services/cloudtrail/pkg/extend/trail`): `is-logging`
+    (`StartLogging`/`StopLogging`, read with `GetTrailStatus`),
+    `event-selectors` and `advanced-event-selectors` (both through
+    `PutEventSelectors`, the only call that puts either: CloudTrail has no
+    `PutAdvancedEventSelectors` operation; the two annotations together are
+    refused), `insight-selectors` (`PutInsightSelectors`; `[]` turns
+    Insights off). Proven on moto (`TestTrailExtension`); moto 5.2.5 does
+    keep advanced selectors put through `PutEventSelectors`, so they are
+    shown end to end too. What moto does differently (section 4.4) is
+    unit-tested: switching back from advanced to event selectors, and
+    turning Insights off. Upstream note 18 drafted. F10's 18 uncovered
+    attributes stay uncovered in `docs/coverage/` (the coverage counts
+    fields of kinds, not annotations, as for KMS's).
+
 27. **The shape of an S3 `Object` kind** (plan section 5, rank 17;
     `aws_s3_object` in three of the catalog's tracked modules, 2026-11-19).
     S3 objects have no CloudFormation type, so Cloud Control cannot serve
@@ -4743,3 +5007,10 @@ Before it can run on a real cluster:
     `serverSideEncryption`, `kmsKeyRef` and `tags`, in
     `s3.aws.hfl.dev` beside the fixed `Bucket`. Not built until the
     builder answers.
+
+    **Answered** (2026-11-23, the builder, relayed by the coordinator):
+    inline `content` and `contentBase64`, plus `contentFrom`, a ConfigMap
+    or Secret key, put again when its value changes, by the hash
+    annotation of section 6.47; hand-written on ACK's runtime, as above.
+
+    **Built** (2026-11-23): `s3.aws.hfl.dev` `Object`, section 6.49.

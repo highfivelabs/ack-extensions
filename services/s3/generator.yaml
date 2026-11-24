@@ -2,7 +2,10 @@
 #
 # Bucket: a copy of ACK's own Bucket, fixed (docs/plan.md section 6.38, and
 # section 3, "Fixed copies of ACK's kinds"). Below the line is
-# s3-controller v1.15.0's generator.yaml (e6796332), unchanged; its hook
+# s3-controller v1.15.0's generator.yaml (e6796332), unchanged but for
+# `Object` in ignore.shape_names (our hand-written Object kind,
+# docs/plan.md open question 27; S3's Object shape is no field of Bucket);
+# its hook
 # templates are copied into templates/hooks/bucket and its hand-written
 # code into pkg/resource/bucket (UPSTREAM.md). The one fix is in
 # pkg/resource/bucket/hook.go: customFindBucket's read of
@@ -30,6 +33,9 @@ ignore:
     - SSES3
     - SimplePrefix
     - BlockedEncryptionTypes
+    # ack-extensions: the name of our hand-written Object kind
+    # (pkg/resource/object); no Bucket field uses S3's Object shape.
+    - Object
   field_paths:
     # We cannot support MFA, so if it is set we cannot unset
     - "VersioningConfiguration.MFADelete"

@@ -3,8 +3,8 @@
 
 package main
 
-// What main.go (generated) cannot know: the kinds written by hand, and the
-// ACK kinds our references name.
+// What main.go (generated) cannot know: the kinds written by hand, the ACK
+// kinds our references name, and the extensions of ACK's own kinds.
 
 import (
 	ackec2apitypes "github.com/aws-controllers-k8s/ec2-controller/apis/v1alpha1"
@@ -31,6 +31,10 @@ import (
 	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/default_network_acl"
 	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/default_route_table"
 	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/default_vpc"
+
+	// Extends ACK's own TransitGateway with the options its spec lacks
+	// (docs/extensions.md); its init registers it with pkg/extend.
+	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/extend/transit_gateway"
 )
 
 func init() {

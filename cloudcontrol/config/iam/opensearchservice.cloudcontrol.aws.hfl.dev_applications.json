@@ -1,0 +1,59 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlOpenSearchServiceApplication",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OpenSearchServiceApplicationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "es:AddTags",
+        "es:CreateApplication",
+        "es:GetApplication",
+        "es:ListTags",
+        "iam:CreateServiceLinkedRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OpenSearchServiceApplicationRead",
+      "Effect": "Allow",
+      "Action": [
+        "es:GetApplication",
+        "es:ListTags"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OpenSearchServiceApplicationUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "es:AddTags",
+        "es:GetApplication",
+        "es:ListTags",
+        "es:RemoveTags",
+        "es:UpdateApplication"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "OpenSearchServiceApplicationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "es:DeleteApplication",
+        "es:GetApplication"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

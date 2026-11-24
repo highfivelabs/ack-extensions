@@ -41,6 +41,7 @@ rules:
   - s3.aws.hfl.dev
   resources:
   - buckets
+  - objects
   verbs:
   - create
   - delete
@@ -53,6 +54,7 @@ rules:
   - s3.aws.hfl.dev
   resources:
   - buckets/status
+  - objects/status
   verbs:
   - get
   - patch

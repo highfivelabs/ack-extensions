@@ -45,6 +45,8 @@ spec:
               value: ko://github.com/highfivelabs/ack-extensions/cloudcontrol/cmd/manager
             - name: MANAGER_IMAGE_AUTOSCALING
               value: ko://github.com/highfivelabs/ack-extensions/services/autoscaling/cmd/controller
+            - name: MANAGER_IMAGE_CLOUDTRAIL
+              value: ko://github.com/highfivelabs/ack-extensions/services/cloudtrail/cmd/controller
             - name: MANAGER_IMAGE_EC2
               value: ko://github.com/highfivelabs/ack-extensions/services/ec2/cmd/controller
             - name: MANAGER_IMAGE_ECR

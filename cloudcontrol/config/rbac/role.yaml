@@ -4784,7 +4784,9 @@ rules:
   - msk.cloudcontrol.aws.hfl.dev
   resources:
   - batchscramsecrets
+  - channels
   - clusterpolicies
+  - replicators
   - topics
   verbs:
   - create
@@ -4798,7 +4800,9 @@ rules:
   - msk.cloudcontrol.aws.hfl.dev
   resources:
   - batchscramsecrets/status
+  - channels/status
   - clusterpolicies/status
+  - replicators/status
   - topics/status
   verbs:
   - get
@@ -5184,6 +5188,26 @@ rules:
   resources:
   - collectionindexes/status
   - vpcendpoints/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - opensearchservice.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - opensearchservice.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications/status
   verbs:
   - get
   - patch

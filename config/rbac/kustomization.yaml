@@ -5,6 +5,7 @@
 resources:
   - applicationautoscaling-manager-role.yaml
   - autoscaling-manager-role.yaml
+  - cloudtrail-manager-role.yaml
   - cloudwatchlogs-manager-role.yaml
   - ec2-manager-role.yaml
   - ecr-manager-role.yaml

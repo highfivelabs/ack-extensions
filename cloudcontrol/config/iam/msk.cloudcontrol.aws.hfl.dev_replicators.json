@@ -1,0 +1,90 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlMSKReplicator",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MSKReplicatorCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateNetworkInterface",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcs",
+        "firehose:TagDeliveryStream",
+        "iam:CreateServiceLinkedRole",
+        "iam:PassRole",
+        "kafka:CreateReplicator",
+        "kafka:CreateReplicatorReference",
+        "kafka:DescribeClusterV2",
+        "kafka:DescribeReplicator",
+        "kafka:GetBootstrapBrokers",
+        "kafka:ListTagsForResource",
+        "kafka:TagResource",
+        "logs:CreateLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MSKReplicatorRead",
+      "Effect": "Allow",
+      "Action": [
+        "kafka:DescribeReplicator",
+        "kafka:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MSKReplicatorUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "firehose:TagDeliveryStream",
+        "kafka:DescribeReplicator",
+        "kafka:ListTagsForResource",
+        "kafka:TagResource",
+        "kafka:UntagResource",
+        "kafka:UpdateReplicationInfo",
+        "logs:CreateLogDelivery",
+        "logs:DeleteLogDelivery",
+        "logs:DescribeLogGroups",
+        "logs:DescribeResourcePolicies",
+        "logs:GetLogDelivery",
+        "logs:ListLogDeliveries",
+        "logs:PutResourcePolicy",
+        "logs:UpdateLogDelivery",
+        "s3:GetBucketPolicy",
+        "s3:PutBucketPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "MSKReplicatorDelete",
+      "Effect": "Allow",
+      "Action": [
+        "kafka:DeleteReplicator",
+        "kafka:DescribeReplicator",
+        "kafka:ListTagsForResource",
+        "kafka:UntagResource",
+        "logs:DeleteLogDelivery",
+        "logs:ListLogDeliveries"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

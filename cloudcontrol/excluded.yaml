@@ -22,29 +22,15 @@ types:
   AWS::IAM::GroupPolicy: "ACK's Group has inlinePolicies (plan question 1)"
   AWS::S3::BucketPolicy: "ACK's s3-controller Bucket has policy"
   AWS::S3Tables::TableBucketPolicy: "ACK's s3tables-controller TableBucket has policy"
-  # Upstream has it close to merging (CLAUDE.md: upstream first).
-  AWS::EC2::KeyPair: "ACK ec2-controller pull request #396"
-  AWS::SecretsManager::RotationSchedule: "ACK secretsmanager-controller pull request #69"
-  AWS::Logs::MetricFilter: "ACK cloudwatchlogs-controller pull request #61, a field on LogGroup (plan section 5, rank 9)"
-  AWS::NetworkManager::GlobalNetwork: "wait for ACK networkmanager-controller pull requests #3, #4, #16 (foundation F13)"
-  AWS::NetworkManager::CoreNetwork: "wait for ACK networkmanager-controller pull requests #3, #4, #16 (foundation F13)"
-  AWS::NetworkManager::VpcAttachment: "wait for ACK networkmanager-controller pull requests #3, #4, #16 (foundation F13)"
-  AWS::NetworkManager::ConnectAttachment: "wait for ACK networkmanager-controller (foundation F13)"
-  AWS::NetworkManager::ConnectPeer: "wait for ACK networkmanager-controller (foundation F13)"
-  AWS::NetworkManager::CoreNetworkPrefixListAssociation: "wait for ACK networkmanager-controller (foundation F13)"
-  AWS::NetworkManager::CustomerGatewayAssociation: "wait for ACK networkmanager-controller (foundation F13)"
-  AWS::NetworkManager::Device: "wait for ACK networkmanager-controller (foundation F13)"
-  AWS::NetworkManager::DirectConnectGatewayAttachment: "wait for ACK networkmanager-controller (foundation F13)"
-  AWS::NetworkManager::Link: "wait for ACK networkmanager-controller (foundation F13)"
-  AWS::NetworkManager::LinkAssociation: "wait for ACK networkmanager-controller (foundation F13)"
-  AWS::NetworkManager::Site: "wait for ACK networkmanager-controller (foundation F13)"
-  AWS::NetworkManager::SiteToSiteVpnAttachment: "wait for ACK networkmanager-controller (foundation F13)"
-  AWS::NetworkManager::TransitGatewayPeering: "wait for ACK networkmanager-controller (foundation F13)"
-  AWS::NetworkManager::TransitGatewayRegistration: "wait for ACK networkmanager-controller (foundation F13)"
-  AWS::NetworkManager::TransitGatewayRouteTableAttachment: "wait for ACK networkmanager-controller (foundation F13)"
+  # Upstream has a pull request. Since 2026-11-24 we do not wait for it
+  # (docs/plan.md section 3): build these from the pull request's code, as
+  # ACK-generated kinds, not as Cloud Control kinds.
+  AWS::EC2::KeyPair: "build from ACK ec2-controller pull request #396 (plan section 3, 2026-11-24)"
+  AWS::SecretsManager::RotationSchedule: "build from ACK secretsmanager-controller pull request #69 (plan section 3, 2026-11-24)"
+  AWS::Logs::MetricFilter: "build from ACK cloudwatchlogs-controller pull request #61, a field on LogGroup (plan section 3, 2026-11-24)"
   # Decided against a kind (docs/handoff.md).
   AWS::SSO::Instance: "an organization has one Identity Center instance, made by enabling it; its ARN is a field"
-  AWS::EC2::VPNConnectionRoute: "beside VPNConnection, ACK-generated (handoff, F05)"
+  AWS::EC2::VPNConnectionRoute: "ours already: VPNConnection.spec.staticRoutes, synced exclusively (plan 6.32)"
   # Physical circuits, dedicated hardware, Outposts, Wavelength and fleets
   # of instances: not what a chart creates for a platform foundation.
   AWS::DirectConnect::Connection: "a physical circuit (foundation F13)"

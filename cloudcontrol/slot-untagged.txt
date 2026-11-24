@@ -308,6 +308,7 @@ AWS::M2::Application
 AWS::M2::Deployment
 AWS::M2::Environment
 AWS::MSK::BatchScramSecret
+AWS::MSK::Channel
 AWS::MSK::ClusterPolicy
 AWS::MSK::Topic
 AWS::Macie::Session

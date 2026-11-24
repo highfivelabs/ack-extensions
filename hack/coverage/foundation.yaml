@@ -241,7 +241,7 @@ resources:
   "cloudtrail/Trail":
     size: M
     matters: ["IsLogging (StartLogging)", "EventSelectors[]", "AdvancedEventSelectors[]", "InsightSelectors[]", "AggregationConfigurations[]"]
-    kinds: "`cloudtrail.aws.hfl.dev/TrailLogging` (sidecar kind by `trailRef`: `StartLogging`/`StopLogging`, `PutEventSelectors`, `PutAdvancedEventSelectors`, `PutInsightSelectors`), or the fields upstream (design question, plan section 9 question 1); F10"
+    kinds: "annotations on ACK's `Trail` acted on by our cloudtrail manager (`cloudtrail.aws.hfl.dev/is-logging`, `event-selectors`, `advanced-event-selectors`, `insight-selectors`; plan open question 26, answered and built 2026-11-23, `docs/extensions.md`); `TestTrailExtension` on moto; the coverage counts fields of kinds, so these attributes stay uncovered here; F10"
   "cloudtrail/EventDataStore": {matters: ["KmsKeyId", "IngestionEnabled", "FederationEnabled", "InsightSelectors[]", "MaxEventSize"], upstream: "ACK ignores `KmsKeyId`, `BillingMode` and `StartIngestion` on create"}
   "cloudtrail/Channel": {size: S, upstream: "ignored in ACK's generator.yaml", kinds: "`cloudtrail.aws.hfl.dev/Channel`, generated; low priority (CloudTrail Lake integrations)"}
   "cloudtrail/Dashboard": {size: S, upstream: "ignored in ACK's generator.yaml", kinds: "`cloudtrail.aws.hfl.dev/Dashboard`, generated; low priority"}
@@ -260,13 +260,14 @@ resources:
   "iam/AccessKey": {size: M, kinds: "`iam.aws.hfl.dev/AccessKey`, hand-written; the secret is returned once, so it needs a Kubernetes Secret write-back (F03 recommends not building it)", moto: "yes: `CreateAccessKey` is implemented"}
   "iam/VirtualMFADevice": {size: S, kinds: "`iam.aws.hfl.dev/VirtualMFADevice`, generated; low priority (a person's device)", moto: "yes: `CreateVirtualMFADevice` is implemented"}
   "iam/ServerCertificate": {size: S, kinds: "`iam.aws.hfl.dev/ServerCertificate`, generated; legacy (ACM replaced it)"}
+  "ec2/TransitGateway": {matters: ["SecurityGroupReferencingSupport", "EncryptionSupport", "AssociationDefaultRouteTableId", "PropagationDefaultRouteTableId"], upstream: "ec2-controller v1.25.1 and main (2026-11-20) ignore `SecurityGroupReferencingSupport` on create, have no field for the other three, and update tags only", kinds: "annotations on ACK's `TransitGateway` acted on by our ec2 manager with `ModifyTransitGateway` (`docs/extensions.md`, built 2026-11-23); `TestTransitGatewayExtension` on moto, encryption unit-tested only", moto: "partly: `ModifyTransitGateway` keeps the options; `EncryptionSupport` is answered with no state"}
   "ec2/TransitGatewayRouteTable": {size: M, kinds: "`ec2.aws.hfl.dev/TransitGatewayRouteTable`, generated, with `associations[]`, `propagations[]` and `routes[]` as fields (the pattern of ACK's `RouteTable`), F04", moto: "yes: `CreateTransitGatewayRouteTable`, `AssociateTransitGatewayRouteTable`, `EnableTransitGatewayRouteTablePropagation`, `CreateTransitGatewayRoute`"}
   "ec2/TransitGatewayPeeringAttachment": {size: M, kinds: "`ec2.aws.hfl.dev/TransitGatewayPeeringAttachment`, generated (create, accept in the peer account, delete), F04", moto: "yes: `CreateTransitGatewayPeeringAttachment` is implemented"}
   "ec2/TransitGatewayRouteTableAssociation": {inline: "to be a field of `TransitGatewayRouteTable.spec.associations[]` (F04)", kinds: "a field of the `TransitGatewayRouteTable` kind"}
   "ec2/TransitGatewayRouteTablePropagation": {inline: "to be a field of `TransitGatewayRouteTable.spec.propagations[]` (F04)", kinds: "a field of the `TransitGatewayRouteTable` kind"}
   "ec2/TransitGatewayRoute": {inline: "to be a field of `TransitGatewayRouteTable.spec.routes[]` (F04)", kinds: "a field of the `TransitGatewayRouteTable` kind"}
   "ec2/VPNConnection": {size: L, kinds: "`ec2.aws.hfl.dev/VPNConnection`, generated (`CreateVpnConnection` with tunnel options), static routes as a field, F05", moto: "partly: `CreateVpnConnection` yes, `CreateVpnConnectionRoute` no"}
-  "ec2/VPNConnectionRoute": {inline: "to be a field of `VPNConnection.spec.staticRoutes[]` (F05)", moto: "no: `CreateVpnConnectionRoute` is not in moto", kinds: "a field of the `VPNConnection` kind"}
+  "ec2/VPNConnectionRoute": {inline: "ours `VPNConnection.spec.staticRoutes[]` (built, plan 6.32; synced exclusively, so a kind per route would fight it)", moto: "no: `CreateVpnConnectionRoute` is not in moto", kinds: "none (a field of ours)"}
   "ec2/VPNGatewayRoutePropagation": {size: S, moto: "no: `EnableVgwRoutePropagation` is not in moto", kinds: "a field of `RouteTable` upstream (`propagatingVGWs`) or a sidecar kind; F05"}
   "ec2/VPNGateway": {note: "ours; ACK ignores it"}
   "ec2/CustomerGateway": {note: "ours; ACK ignores it"}
@@ -292,7 +293,7 @@ resources:
   "route53/DNSSEC": {size: S, moto: "no: `EnableHostedZoneDNSSEC` is not in moto", kinds: "`route53.aws.hfl.dev/DNSSEC`, hand-written (`EnableHostedZoneDNSSEC`/`DisableHostedZoneDNSSEC`), F08"}
   "route53/KeySigningKey": {size: S, moto: "no: `CreateKeySigningKey` is not in moto", kinds: "`route53.aws.hfl.dev/KeySigningKey`, generated (`CreateKeySigningKey`), F08"}
   "route53/QueryLoggingConfig": {size: S, kinds: "`route53.aws.hfl.dev/QueryLoggingConfig`, generated (`CreateQueryLoggingConfig`), F08", moto: "yes: `CreateQueryLoggingConfig` is implemented"}
-  "route53/HostedZone": {matters: ["VPCs[] (ACK `vpc`: one VPC only)", "HostedZoneFeatures.EnableAcceleratedRecovery", "QueryLoggingConfig"], kinds: "the fields upstream; a second VPC is `VPCAssociation` (F08)"}
+  "route53/HostedZone": {matters: ["HostedZoneFeatures.EnableAcceleratedRecovery", "QueryLoggingConfig"], upstream: "route53-controller v1.9.0 (2026-11-10) has `spec.vpcs`, every VPC of a private zone synced with `AssociateVPCWithHostedZone`/`DisassociateVPCFromHostedZone` (rechecked 2026-11-23)", kinds: "the fields upstream; a second VPC is ACK's `spec.vpcs`, so no `VPCAssociation` kind; query logging is the Cloud Control `QueryLoggingConfig`"}
   "route53/CidrCollection": {size: S, moto: "no: not in moto's route53", kinds: "`route53.aws.hfl.dev/CidrCollection`; low priority"}
   "route53/TrafficPolicy": {size: S, kinds: "`route53.aws.hfl.dev/TrafficPolicy`; low priority (traffic flow)"}
   "route53/TrafficPolicyInstance": {size: S, kinds: "`route53.aws.hfl.dev/TrafficPolicyInstance`; low priority"}
@@ -452,7 +453,7 @@ queue:
     moto: "Partial: `CreateHostedZone`, `ChangeResourceRecordSets`, `CreateQueryLoggingConfig`, `AssociateVPCWithHostedZone`, `CreateReusableDelegationSet` are implemented; `EnableHostedZoneDNSSEC`, `CreateKeySigningKey`, `CreateVPCAssociationAuthorization` and CIDR collections are not."
     modules: "`route53` (#13): DNSSEC, key-signing key, VPC association authorization."
     size: "S each"
-    approach: "Add to a new `services/route53/` manager; `QueryLoggingConfig` and `VPCAssociation` are provable on moto, the DNSSEC pair is not."
+    approach: "Add to a new `services/route53/` manager; `QueryLoggingConfig` and `VPCAssociation` are provable on moto, the DNSSEC pair is not. Rechecked 2026-11-23: route53-controller v1.9.0's `HostedZone.spec.vpcs` associates a private zone with every VPC listed, so `VPCAssociation` is upstream's and not built; the cross-account authorization waits (moto has none of it)."
     done: "`QueryLoggingConfig` and `VPCAssociation` proved on moto; DNSSEC kinds written with the gap documented."
 
   - id: F09
@@ -478,7 +479,7 @@ queue:
     moto: "Good for the first three: `StartLogging`, `StopLogging`, `PutEventSelectors`, `GetEventSelectors`, `PutInsightSelectors`, `GetTrailStatus` are implemented. `PutAdvancedEventSelectors` is not in moto's coverage list, and event data stores and channels are not implemented."
     modules: "None of the 40 tracked modules creates a Trail."
     size: "M"
-    approach: "New `services/cloudtrail/` manager (there is none yet). Read ACK's `Trail` hook (`pkg/resource/trail/hooks.go` at cloudtrail-controller v1.9.1) to see its tag and update handling before you write."
+    approach: "New `services/cloudtrail/` manager (there is none yet). Read ACK's `Trail` hook (`pkg/resource/trail/hooks.go` at cloudtrail-controller v1.9.1) to see its tag and update handling before you write. Built 2026-11-23 as annotations on ACK's `Trail` (plan open question 26's answer), not the sidecar: `services/cloudtrail`, `TestTrailExtension`. CloudTrail has no `PutAdvancedEventSelectors` operation: advanced selectors go through `PutEventSelectors`, which moto 5.2.5 takes."
     done: "An end-to-end test creates an ACK `Trail` and a `TrailLogging` that starts logging with one event selector, flips `isLogging` off and on, and deletes; the advanced-selector call is documented as unproved; `task coverage` moves `cloudtrail/Trail` above 70%."
 
   - id: F11

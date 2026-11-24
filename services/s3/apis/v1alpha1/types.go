@@ -664,13 +664,6 @@ type NotificationConfigurationFilter struct {
 	Key *KeyFilter `json:"key,omitempty"`
 }
 
-// An object consists of data and its descriptive metadata.
-type Object struct {
-	Key *string `json:"key,omitempty"`
-	// Container for the owner's display name and ID.
-	Owner *Owner `json:"owner,omitempty"`
-}
-
 // Object Identifier is unique value to identify objects.
 type ObjectIdentifier struct {
 	Key *string `json:"key,omitempty"`

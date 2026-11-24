@@ -358,6 +358,7 @@ each run; the ledger above has the runs.
 | ACK | applicationautoscaling | ScheduledAction | TestApplicationScheduledAction | PASS, `ackx-11160402-b394` (2026-11-16) |
 | ACK | autoscaling | ScalingPolicy | TestScalingPolicy | PASS, `ackx-11160326-bbdb` (2026-11-16) |
 | ACK | autoscaling | ScheduledAction | TestScheduledAction | PASS, `ackx-11160326-bbdb` (2026-11-16) |
+| ACK | cloudtrail | Trail extension (ACK's Trail) | TestTrailExtension | pending: not run live yet (built 2026-11-23); the live-test role needs the trail's `cloudtrail:` actions and `s3:PutBucketPolicy`, so the catalog instance updated from `cloudcontrol/config/live/role-policies.yaml` and applied again first |
 | ACK | ec2 | CustomerGateway | TestCustomerGateway | PASS, `ackx-11160326-b656` (2026-11-16) |
 | ACK | ec2 | DefaultSecurityGroup | TestDefaultSecurityGroup | PASS, `ackx-11160326-b656` (2026-11-16) |
 | ACK | ec2 | DefaultNetworkACL | TestDefaultNetworkACL | PASS, `ackx-11160847-4089` (2026-11-16) |
@@ -366,6 +367,7 @@ each run; the ledger above has the runs.
 | ACK | ec2 | NetworkInterfacePermission | (none: moto has no API) | pending: no test yet (moto has none of the API, plan 6.33); a live test needs a second account to grant to, and the catalog instance updated and applied again |
 | ACK | ec2 | LaunchTemplate | TestLaunchTemplate | pending: the live-test role lacks `ec2:CreateLaunchTemplate` and the other launch template actions until the catalog instance is updated from `cloudcontrol/config/live/role-policies.yaml` and applied again (fixed copy of ACK's, plan 6.43) |
 | ACK | ec2 | ResourceTag | TestResourceTag | PASS, `ackx-11160326-b656` (2026-11-16) |
+| ACK | ec2 | TransitGateway extension (ACK's TransitGateway) | TestTransitGatewayExtension | pending: not run live yet (built 2026-11-23); the live-test role needs `ec2:ModifyTransitGateway` and the transit gateway route table actions, so the catalog instance updated from `cloudcontrol/config/live/role-policies.yaml` and applied again first; a real gateway takes minutes to become available |
 | ACK | ec2 | Volume | TestVolume | PASS, `ackx-11160326-b656` (2026-11-16) |
 | ACK | ec2 | VolumeAttachment | TestVolumeAttachment | PASS, `ackx-11160326-b656` (2026-11-16) |
 | ACK | ec2 | VPNConnection | TestVPNConnection | PASS, `ackx-11160847-4089` (2026-11-16), after TestVpnGateway; its three earlier runs failed (a real connection takes six to ten minutes to become available, and the create's answer carries no type), not because of the order |
@@ -394,6 +396,7 @@ each run; the ledger above has the runs.
 | ACK | rds | DBRoleAssociation | TestDBRoleAssociation | pending: not run live yet; its fixtures (a DB instance and cluster) take many minutes and cost money, and the test does not delete them on a live run yet |
 | ACK | rds | OptionGroup | TestOptionGroup | PASS, `ackx-11161114-80b7` (2026-11-16), on `oracle-se2` 19's `STATSPACK` and `NATIVE_NETWORK_ENCRYPTION`, which need no setting, port or security group (MySQL's MEMCACHED needs a port and a security group, so real RDS refused the whole change in `ackx-11160415-8b7c`) |
 | ACK | s3 | Bucket extension (ACK's Bucket) | TestBucketExtension | PASS, `ackx-11160805-57c4` (2026-11-16); its force-destroy had asked real S3 to bypass governance retention on buckets without Object Lock, which S3 refuses (`ackx-11160411-5872`), fixed |
+| ACK | s3 | Object | TestS3Object | pending: not run live yet (built 2026-11-23); the live-test role needs the object tagging actions, so the catalog instance updated from `cloudcontrol/config/live/role-policies.yaml` and applied again first |
 | ACK | s3control | PublicAccessBlock | TestPublicAccessBlock | PASS, `ackx-11160402-b394` (2026-11-16) |
 | ACK | scheduler | Schedule | TestSchedule | PASS, `ackx-11160339-689d` (2026-11-16) |
 | ACK | scheduler | ScheduleGroup | TestScheduleGroup | PASS, `ackx-11160339-689d` (2026-11-16) |

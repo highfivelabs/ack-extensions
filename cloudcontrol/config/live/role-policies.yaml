@@ -75,6 +75,20 @@ policies:
       - '*'
       sid: ServiceCloudformation
     - actions:
+      - cloudtrail:CreateTrail
+      - cloudtrail:DeleteTrail
+      - cloudtrail:GetEventSelectors
+      - cloudtrail:GetInsightSelectors
+      - cloudtrail:GetTrailStatus
+      - cloudtrail:PutEventSelectors
+      - cloudtrail:PutInsightSelectors
+      - cloudtrail:StartLogging
+      - cloudtrail:StopLogging
+      effect: Allow
+      resources:
+      - '*'
+      sid: ServiceCloudtrail
+    - actions:
       - cognito-idp:AssociateWebACL
       - cognito-idp:DisassociateWebACL
       - cognito-idp:GetWebACLForResource
@@ -162,6 +176,7 @@ policies:
       - ec2:GetTransitGatewayRouteTableAssociations
       - ec2:GetTransitGatewayRouteTablePropagations
       - ec2:ModifyLaunchTemplate
+      - ec2:ModifyTransitGateway
       - ec2:ModifyVolume
       - ec2:ModifyVpcAttribute
       - ec2:ModifyVpnConnectionOptions
@@ -441,6 +456,7 @@ policies:
       - s3:DeleteBucketPolicy
       - s3:DeleteBucketWebsite
       - s3:DeleteObject
+      - s3:DeleteObjectTagging
       - s3:DeleteObjectVersion
       - s3:Get*Configuration
       - s3:GetAccelerateConfiguration
@@ -466,6 +482,7 @@ policies:
       - s3:GetLifecycleConfiguration
       - s3:GetMetricsConfiguration
       - s3:GetObject
+      - s3:GetObjectTagging
       - s3:GetReplicationConfiguration
       - s3:ListAllMyBuckets
       - s3:ListBucket
@@ -497,6 +514,7 @@ policies:
       - s3:PutMetricsConfiguration
       - s3:PutObject
       - s3:PutObjectRetention
+      - s3:PutObjectTagging
       - s3:PutReplicationConfiguration
       effect: Allow
       resources:

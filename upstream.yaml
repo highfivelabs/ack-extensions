@@ -101,6 +101,11 @@ pins:
     version: v1.15.0
     commit: 874152a6dbff23e60fcbaf8eda1a074121207ee0
     use: not a module; ACK's Bucket is left to it, extended by our s3 manager; its Bucket CRD copied for the tests; its generator.yaml, hook templates and hand-written Bucket code copied for our fixed copy (s3.aws.hfl.dev Bucket); the SDK client at its version
+  - name: cloudtrail-controller
+    repo: aws-controllers-k8s/cloudtrail-controller
+    version: v1.10.0
+    commit: 2cffdfa083fc390d5d9ad4ddb3ed468417ecd641
+    use: not a module; ACK's Trail and EventDataStore are left to it, extended by our cloudtrail manager; its Trail CRD copied for the tests; the SDK client at its version
   - name: cloudwatchlogs-controller
     repo: aws-controllers-k8s/cloudwatchlogs-controller
     version: v1.11.0
@@ -217,6 +222,8 @@ copied:
     from: {pin: autoscaling-controller, paths: [pkg/tags/tags.go]}
   - here: [hack/ack-crds/s3.services.k8s.aws_buckets.yaml]
     from: {pin: s3-controller, paths: [config/crd/bases/s3.services.k8s.aws_buckets.yaml]}
+  - here: [hack/ack-crds/cloudtrail.services.k8s.aws_trails.yaml]
+    from: {pin: cloudtrail-controller, paths: [config/crd/bases/cloudtrail.services.k8s.aws_trails.yaml]}
   - here: [services/s3/generator.yaml]
     from: {pin: s3-controller, paths: [generator.yaml]}
   - here:
@@ -355,6 +362,13 @@ copied:
       - services/ec2/pkg/resource/resource_tag/manager.go
       - services/ec2/pkg/resource/resource_tag/manager_factory.go
       - services/ec2/pkg/resource/resource_tag/resource.go
+    from: *skeleton
+  - here:
+      - services/s3/pkg/resource/object/descriptor.go
+      - services/s3/pkg/resource/object/identifiers.go
+      - services/s3/pkg/resource/object/manager.go
+      - services/s3/pkg/resource/object/manager_factory.go
+      - services/s3/pkg/resource/object/resource.go
     from: *skeleton
   - here:
       - services/ec2/pkg/resource/default_security_group/descriptor.go
