@@ -175,6 +175,25 @@ So:
   attributes: as our own kinds in our API group (copied by the copy-
   upstream rule), or as field kinds on upstream's kinds. When upstream
   releases it, ours retires.
+- **Versions follow upstream's.** The builder, 2026-11-24, verbatim: "this
+  raises the crtiicality of tracking main through automation across all of
+  our extensions providers. we shuld probably match the versions of the
+  upstream if we're going to do this - e.g. perhaps we would ship
+  1.162.0-1, 1.162.0-2, and 1.162.0-3 as we ship our extensions from their
+  main"; asked how, given that semver sorts 1.162.0-1 below 1.162.0, the
+  builder chose "1.162.1-hfl.N". So a build of ours is versioned
+  `X.Y.(Z+1)-hfl.N`: X.Y.Z is the ACK runtime's and code generator's (they
+  release together, `v0.67.0` both; ACK's controllers have versions of
+  their own)'s nearest release at or before the pinned main commit (for
+  ACK, the runtime and code generator release at or before the pinned
+  commits), and N counts our builds since that release, from 1. Config
+  Connector 1.162.0 plus main gives 1.162.1-hfl.1, 1.162.1-hfl.2 and so
+  on; when upstream releases 1.163.0 and the pin passes it, the next build
+  is 1.163.1-hfl.1. It sorts after upstream's X.Y.Z and before its next
+  release in every semver tool (Helm, Go, image tags), as Go's pseudo-
+  versions do. The git tag is `v` plus the version; images and the install
+  manifest carry the same. Tracking main is automated (factory), not left
+  to an agent remembering to.
 - **Transition is expected.** When ACK ships a kind or field we carry,
   ours retires as below. Users moving across is accepted churn, and the
   experience is worth observing and writing down.
