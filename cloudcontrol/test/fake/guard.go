@@ -12,7 +12,7 @@ import (
 )
 
 // The guard: nothing in these tests may reach real AWS. The Upjet spike in
-// highfivelabs/catalog (docs/terraform-leverage.md, spike 1) sent signed
+// highfivelabs/krm-packages (docs/terraform-leverage.md, spike 1) sent signed
 // requests to the public Organizations endpoint because an endpoint block
 // was mistyped, and nothing failed until AWS answered. Three locks stand in
 // the way, each enough on its own; they live in pkg/fakeaws, shared with

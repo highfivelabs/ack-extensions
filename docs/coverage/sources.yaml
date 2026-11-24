@@ -700,4 +700,4 @@ terraform:
     path: docs/coverage/inputs/terraform/terraform-resources.csv
     sha256: 53de14e1beba7ad23bf890f7fe4fe3b37b11c6f01cc23da72e8a9776988859d9
   provider: aws
-  repo: https://github.com/highfivelabs/catalog
+  repo: https://github.com/highfivelabs/krm-packages

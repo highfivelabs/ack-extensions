@@ -322,7 +322,7 @@ type's CloudFormation handler using moto through the SDK:
 
 **The guard against real AWS** (`pkg/fakeaws`, shared by every test path
 in the repository: the Cloud Control tests, the ACK kinds' harness, the
-operator on kind). The Upjet spike in `highfivelabs/catalog` sent signed
+operator on kind). The Upjet spike in `highfivelabs/krm-packages` sent signed
 requests to the real Organizations endpoint because an endpoint block was
 mistyped and nothing complained.
 
@@ -940,7 +940,7 @@ the trust policy's conditions. Everything on our side of that is proven
   request tokens live; whether a type the schema says is provisionable is
   served by Cloud Control in every region.
 - **Not Ready on the fake in the catalog's runs** (item RECCC,
-  2026-11-15). The catalog's fake-AWS layer (catalog PR #211) saw
+  2026-11-15). The catalog's fake-AWS layer (krm-packages PR #211) saw
   `secretsmanager` `ResourcePolicy` stay un-Ready on both AWS Emulator and
   moto, with ACK's "Unable to determine if desired resource state matches
   latest observed state"; the same open case as `EIPAssociation` and

@@ -31,7 +31,7 @@ func rootSection(r *results) string {
 		fmt.Fprintf(&b, ", %s of them copied from open upstream pull requests", commas(t.oursBeyondPR))
 	}
 	fmt.Fprintf(&b, ". By resource, ACK has a released kind for %d of %s (%s%%) and ours adds %d more (%s%%).\n\n", t.resOfficial, commas(t.resTotal), pct1(t.resOfficial, t.resTotal), t.resOursBeyond, pct1(t.resOursBeyond, t.resTotal))
-	fmt.Fprintf(&b, "The purple bar is **Terraform** for comparison: the share of the same attributes that a writable attribute of the Terraform `aws` provider matches, about %s%% (at least %s%%, the dark tick, by the strict rule). It is an estimate from the High Five Labs catalog repository, pinned like every other input, with the error of its matching; see [Terraform](docs/coverage/README.md#terraform).\n\n", pct1(r.tfTotal.l2, r.tfTotal.total), pct1(r.tfTotal.l1, r.tfTotal.total))
+	fmt.Fprintf(&b, "The purple bar is **Terraform** for comparison: the share of the same attributes that a writable attribute of the Terraform `aws` provider matches, about %s%% (at least %s%%, the dark tick, by the strict rule). It is an estimate from the High Five Labs krm-packages repository, pinned like every other input, with the error of its matching; see [Terraform](docs/coverage/README.md#terraform).\n\n", pct1(r.tfTotal.l2, r.tfTotal.total), pct1(r.tfTotal.l1, r.tfTotal.total))
 
 	var covered []svcRow
 	for _, s := range r.svcs {

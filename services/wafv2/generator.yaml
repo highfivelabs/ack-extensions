@@ -71,7 +71,7 @@ resources:
         is_immutable: true
         # An Application Load Balancer as ACK's elbv2 LoadBalancer (its
         # status.ackResourceMetadata.arn): the catalog's alb chart (the WAF
-        # association; catalog PR #234). elbv2-controller v1.9.0 is a Go
+        # association; krm-packages PR #234). elbv2-controller v1.9.0 is a Go
         # module here for its API types (UPSTREAM.md).
         references:
           service_name: elbv2

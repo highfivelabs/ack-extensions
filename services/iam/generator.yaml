@@ -35,7 +35,7 @@
 # pkg/resource/open_id_connect_provider, with one addition, urlRef: the
 # URL read from an EKS cluster's issuer (ACK's eks Cluster,
 # status.identity.oidc.issuer), which ACK's kind lacks (the catalog's eks
-# chart refused enable_irsa for want of it, catalog PR #237). The Cluster it
+# chart refused enable_irsa for want of it, krm-packages PR #237). The Cluster it
 # reads is a type of this package that mirrors the fields read
 # (apis/v1alpha1/eks_cluster.go), not eks-controller's module: every
 # eks-controller release needs aws-sdk-go-v2 v1.45.1 or later, past the

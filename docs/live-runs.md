@@ -86,7 +86,7 @@ ACK, never hand-written CloudFormation or CLI commands (the builder's rule,
 bundt `asks/estate-answers.md`, 2026-11-13). The role
 `ack-extensions-live-tests` is an instance of the
 catalog's
-[`google-federated-role`](https://github.com/highfivelabs/catalog/tree/main/charts/aws/google-federated-role)
+[`google-federated-role`](https://github.com/highfivelabs/krm-packages/tree/main/charts/aws/google-federated-role)
 chart: `charts/aws/google-federated-role/tests/ack-extensions-live-tests.values.yaml`
 there. It renders the same role, trust (IAM's built-in
 `accounts.google.com` principal, conditions on `sub` and `oaud`, no IAM
@@ -161,7 +161,7 @@ calls of the default EC2 kinds (ACKQ16-1: `DefaultVPC`,
 `DefaultNetworkACL`, `DefaultRouteTable`; `ec2:CreateDefaultVpc`,
 `ec2:ReplaceNetworkAclEntry` and others), their fixtures' clean-up
 (`ec2:DeleteNetworkAcl`) and `s3:PutObjectRetention` (the Bucket
-extension's Object Lock test), from the catalog branch of the follow-up
+extension's Object Lock test), from the krm-packages branch of the follow-up
 PR, the same way (offload run `off-apply-1116064933-4643`; all four
 objects `ACK.ResourceSynced`, each existing policy adopted by its ARN).
 Each policy's default version was then read back with the account's

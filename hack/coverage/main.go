@@ -23,7 +23,7 @@ func main() {
 	root := flag.String("root", ".", "repository root")
 	check := flag.Bool("check", false, "fail if the committed outputs differ from a regeneration from the pinned inputs")
 	update := flag.Bool("update-pins", false, "resolve the latest ACK releases and the CloudFormation schema zip, write docs/coverage/sources.yaml, then regenerate")
-	tfPin := flag.String("terraform-pin", "", "copy docs/terraform/ack-extensions/ of the catalog repository at this commit (a local checkout: $CATALOG_DIR, default ../catalog) into docs/coverage/inputs/terraform/, pin it in sources.yaml, then regenerate")
+	tfPin := flag.String("terraform-pin", "", "copy docs/terraform/ack-extensions/ of the krm-packages repository at this commit (a local checkout: $CATALOG_DIR, default ../krm-packages) into docs/coverage/inputs/terraform/, pin it in sources.yaml, then regenerate")
 	explainRes := flag.String("explain", "", "print how one resource (service/Name, e.g. rds/DBInstance) was matched, and exit")
 	flag.Parse()
 
