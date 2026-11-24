@@ -138,6 +138,41 @@ with the patch.
 
 ## 3. Keeping in step with ACK
 
+**Track ACK's `main`; never wait on an upstream pull request or release**
+(the builder, 2026-11-24, for all of the KRM extensions repositories).
+The builder, verbatim: "I think we shoudl not wait and make the
+extensions repo take these or build them and pull ahead. we can afford
+right now to have some churn in having folks transition and actually
+want to see what that experience looks like" and "let's reverse the
+earlier decision. I think if it's in PR we have no idea how long it'll
+take to land. for all krm extnsions repos let's take changes that land
+on main and of course those on official releases but our latest build
+should have the contents of their main + any fixes + what we extend".
+So:
+
+- **A gap with an upstream pull request is built now**, from the pull
+  request's code where it works, otherwise here: EC2 `KeyPair` (#396),
+  Secrets Manager rotation (#69), the Logs metric filter (#61), Network
+  Manager (F13: #3, #4, #16, through Cloud Control) and every other
+  "wait" in section 5, `docs/coverage/foundation.md` and
+  `cloudcontrol/excluded.yaml`.
+- **The pins follow `main`.** The code generator, the runtime and every
+  referenced controller move to the head of their `main` at least weekly
+  and before every release of ours, not to their latest release (the
+  procedure below still applies, with `main` commits in place of release
+  tags). A controller whose `main` will not build with the others stays
+  at its last good commit, recorded in `UPSTREAM.md` with the reason.
+- **Our latest build is ACK `main` + our fixes + our extensions.** What
+  ACK's `main` has and no release has yet ships in our build; our fixes
+  ship as `patches/` and fixed copies (below); our kinds ship as ours.
+- **Transition is expected.** When ACK ships a kind or field we carry,
+  ours retires as below. Users moving across is accepted churn, and the
+  experience is worth observing and writing down.
+- Unchanged: the copy-upstream rule, `patches/`, never editing
+  `third_party/`, the merge gate, and the live-run rules.
+- `docs/coverage/` still measures "official" at each controller's latest
+  release; measuring it at `main` is a follow-up.
+
 - `UPSTREAM.md` holds the pins (code generator, runtime, the referenced
   controllers, the SDK model tag) and a table of every copied file with
   its source commit and change. Each copied file says so in its header.
@@ -742,8 +777,13 @@ the catalog does not rank follow it, from rank 19.
 
 The rules are unchanged:
 
-- **Upstream first.** Build only what upstream has neither released nor
-  has in a pull request close to merging; otherwise wait for the release.
+- **Never wait on upstream** (section 3, "Track ACK's main", decided
+  2026-11-24; this replaced "upstream first: build only what upstream has
+  neither released nor has in a pull request close to merging").
+  A gap with an open upstream pull request is built now, from the pull
+  request's code where it works; "wait for the release" and "wait for
+  #NNN" are no longer reasons to skip one. The table's older "skipped:
+  close to merging" and "wait" rows are candidates again.
 - **Open questions.** Skip anything blocked on an open question
   (section 9), and say so here.
 - **The fake cloud.** Prove what moto can show, and list the rest as not
