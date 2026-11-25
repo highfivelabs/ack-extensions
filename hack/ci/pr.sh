@@ -56,7 +56,9 @@ case "${what}" in
         exit 1
       fi
     fi
-    if [[ "${emulator}" == true ]] && task --list-all 2>/dev/null | grep -q '^\* test:aws-emulator:ack:'; then
+    # The task list is read whole before grep, so grep -q's early exit
+    # cannot kill the writer (SIGPIPE under pipefail).
+    if [[ "${emulator}" == true ]] && grep -q '^\* test:aws-emulator:ack:' <<<"$(task --list-all 2>/dev/null)"; then
       task test:aws-emulator:ack
     fi
     ;;
