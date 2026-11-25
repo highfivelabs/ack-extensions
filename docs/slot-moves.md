@@ -88,12 +88,15 @@ lease, a tag on the AWS resource.
 The guard reads the tag from what the manager reads back, so it covers a
 kind only when the kind has tags and its read returns them.
 
-- **ACK-generated**: guarded are the 11 kinds in `slot.TaggedKinds`
-  (`AutoScalingGroup` (autoscaling); `CustomerGateway`, `LaunchTemplate`, `Volume`, `VPNConnection`, `VPNGateway` (ec2);
-  `OpenIDConnectProvider` (iam); `ReplicaKey` (kms); `Policy` (organizations); `OptionGroup` (rds);
-  `ScheduleGroup` (scheduler)); `TestTaggedKinds` keeps the list equal to
-  the generated reads. The other 26 are unguarded: they have no tags in
-  AWS (attachments, associations, permissions, account settings:
+- **ACK-generated**: guarded are the 16 kinds in `slot.TaggedKinds`
+  (`AutoScalingGroup` (autoscaling); `LogGroup` (cloudwatchlogs);
+  `CustomerGateway`, `LaunchTemplate`, `Volume`, `VPNConnection`,
+  `VPNGateway` (ec2); `FileSystem` (efs); `CacheCluster`,
+  `ReplicationGroup` (elasticache); `OpenIDConnectProvider` (iam);
+  `ReplicaKey` (kms); `Policy` (organizations); `OptionGroup` (rds);
+  `Object` (s3); `ScheduleGroup` (scheduler)); `TestTaggedKinds` keeps the
+  list equal to the generated reads. The other 37 are unguarded: most have
+  no tags in AWS (for example attachments, associations, permissions, account settings:
   `RolePolicyAttachment`, `UserGroupMembership`, `LoginProfile`,
   `SSHPublicKey`, `AccessKey`, `AccountAlias`, `AccountPasswordPolicy`,
   `VolumeAttachment`, `NetworkInterfacePermission`,
