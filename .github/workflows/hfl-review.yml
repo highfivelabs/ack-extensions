@@ -1,0 +1,44 @@
+# Copyright 2026 High Five Labs
+# SPDX-License-Identifier: Apache-2.0
+#
+# Rendered by highfivelabs/krm-ci ci/krm/sync.py from ci/krm/callers/; do
+# not edit here. Claude's automated review of a pull request, in krm-ci's
+# krm-review.yml (docs/krm-ci.md, "The review"): a security verdict as the
+# commit status hfl/security-review (needed before any live run) and an
+# advisory first-pass review, in one comment.
+#
+# Organisation members' pull requests are reviewed on every push. Anyone
+# else's waits until a maintainer comments `/review` (its first line), once
+# per head to review, so nobody outside can run up the review's cost.
+#
+# pull_request_target and issue_comment run this file as it is on main,
+# with the repository's secrets, for pull requests from forks too. That is
+# safe only because krm-review.yml never runs, builds or sources the pull
+# request's code: it reads it as data. Keep it that way.
+name: hfl-review
+
+on:
+  pull_request_target: # zizmor: ignore[dangerous-triggers] the pull request is only read (see above)
+    types: [opened, synchronize, reopened, ready_for_review]
+  issue_comment:
+    types: [created]
+
+permissions: {}
+
+jobs:
+  review:
+    if: >-
+      vars.HFL_REVIEW_ENABLED == 'true' && (
+        github.event_name == 'pull_request_target' ||
+        (github.event.issue.pull_request && startsWith(github.event.comment.body, '/review'))
+      )
+    uses: highfivelabs/krm-ci/.github/workflows/krm-review.yml@43eb967d93c5565abc05b2d6927073ccf3315b98 # v1.1.0
+    permissions:
+      contents: read
+      pull-requests: write
+      statuses: write
+    with:
+      ci-ref: 43eb967d93c5565abc05b2d6927073ccf3315b98
+    secrets:
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

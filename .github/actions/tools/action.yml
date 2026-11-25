@@ -40,7 +40,7 @@ runs:
     # The same script and pins as task ci:tools and the merge gate.
     - name: Install tools
       shell: bash
-      run: |
+      run: | # zizmor: ignore[github-env] constant paths under HOME, nothing from the event
         CI_TOOLS_DIR="${HOME}/ci-tools/bin" hack/ci/tools.sh
         echo "CI_TOOLS_DIR=${HOME}/ci-tools/bin" >> "${GITHUB_ENV}"
         echo "${HOME}/ci-tools/bin" >> "${GITHUB_PATH}"

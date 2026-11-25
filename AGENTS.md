@@ -62,8 +62,9 @@ itself lives in its own repository and is never changed from here.
 ## Always
 
 - Sign off every commit (`git commit -s`, DCO).
-- Merge only when the `offload/ci` status on the PR head is success
-  (`task ci`, which the pre-push hook runs; `docs/testing.md`, "The
+- Merge only when the `ci` check (`.github/workflows/hfl-ci.yml`, from
+  highfivelabs/krm-ci) is green on the PR head. `task ci` runs the same
+  jobs on an offload VM before a push (the pre-push hook; `docs/testing.md`, "The
   merge gate").
 - After `task ci` is green, run `../factory/review/run.sh --post` and loop
   as factory's `review/README.md` says. In this repository that is every
