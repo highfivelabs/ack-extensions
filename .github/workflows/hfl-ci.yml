@@ -21,11 +21,11 @@ concurrency:
 
 jobs:
   krm:
-    uses: highfivelabs/krm-ci/.github/workflows/krm-ci.yml@43eb967d93c5565abc05b2d6927073ccf3315b98 # v1.1.0
+    uses: highfivelabs/krm-ci/.github/workflows/krm-ci.yml@be81e851d513167fd0dae655e8f15583131edd10 # v1.2.1
     permissions:
       contents: read
     with:
-      ci-ref: 43eb967d93c5565abc05b2d6927073ccf3315b98
+      ci-ref: be81e851d513167fd0dae655e8f15583131edd10
       setup-command: ""
       check-command: "hack/ci/pr.sh check"
       e2e-command: "hack/ci/pr.sh e2e"
@@ -33,3 +33,4 @@ jobs:
       timeout-minutes: 180
       sibling-repo: ""
       sibling-ref: ""
+      licenses-packages: "./services/iam/cmd/controller ./services/rds/cmd/controller ./cmd/operator"

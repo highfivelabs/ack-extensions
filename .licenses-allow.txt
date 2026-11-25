@@ -1,0 +1,3 @@
+# Modules go-licenses cannot classify, settled by reading their LICENSE
+# (krm-ci taskfiles/licenses.yml). One per line: module licence # why.
+github.com/jmespath/go-jmespath Apache-2.0  # LICENSE is Apache-2.0; go-licenses v2 does not classify it
