@@ -1,0 +1,35 @@
+# Copyright 2026 High Five Labs
+# SPDX-License-Identifier: Apache-2.0
+#
+# How krm-registry (registry.highfivelabs.dev) shows this provider. Its build
+# reads this file from main (krm-registry config.py has the format).
+#
+# install: the provider page's Install card, one entry per variant. A variant
+# with oci: names where the chart is published on cr.highfivelabs.dev; the
+# registry shows it only once that chart is published, at the newest
+# release-shaped tag there ({version}). Until then the page has no card.
+schema: 1
+install:
+  - name: High Five Labs chart
+    oci: charts/ack-extensions
+    when: EKS and other clusters with ACK's CRDs (each service's ACK chart)
+    note: >-
+      Installs the CRDs and the operator in ack-extensions-system. An ACKContext named ack in a
+      namespace lists the services that environment uses; the operator then runs our manager and
+      ACK's controller for each, scoped to that namespace, as ServiceAccounts an EKS Pod Identity
+      association binds to the environment's IAM role (README, "Install").
+    steps: |
+      helm install ack-extensions oci://cr.highfivelabs.dev/charts/ack-extensions \
+        --version {version} \
+        --namespace ack-extensions-system --create-namespace
+
+      kubectl apply -f - <<EOF
+      apiVersion: core.aws.hfl.dev/v1alpha1
+      kind: ACKContext
+      metadata: {name: ack, namespace: team-a-prod}
+      spec:
+        roleARN: arn:aws:iam::111122223333:role/team-a-prod-ack
+        region: us-west-2
+        controllers:
+          - service: rds
+      EOF
