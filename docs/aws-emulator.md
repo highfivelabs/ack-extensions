@@ -480,7 +480,7 @@ there changed.
 | Expected failures | [`tests/e2e/aws-emulator-expected-failures.yaml`](../tests/e2e/aws-emulator-expected-failures.yaml): the 14 tests of "The 14 failures" above, each naming the operation the emulator lacks and linking here, on the emulator only |
 | Judged by | `hack/emulator-expect` (its own unit tests in `task check`). The run fails when a test not on the list fails, skips or does not finish (a panic, the binary's timeout); when a test on the list **passes** (the emulator gained the operation: take it off the list, so the list stays honest); when a listed test does not exist; or when the installed emulator is not the list's release. go test's exit status is not the result: the expected failures make it fail |
 | When | the plan's `emulator=true` (`hack/ci/select.sh`): mode full, or a group with ACK kinds or their tests (a service, `e2e:F`); not docs only, not `cloudcontrol` or `coverage` alone |
-| Where | the merge gate (`task ci`, `hack/ci/gate.sh`: a skippable step after `operator-e2e`, so a preempted VM resumes past it) and `ci.yml`'s `emulator` job, which the required `ci` status needs |
+| Where | the merge gate (`task ci`, `hack/ci/gate.sh`: a skippable step after `operator-e2e`, so a preempted VM resumes past it) and `hfl-ci.yml`'s `emulator` job, which the required `ci` status needs |
 | Telemetry | off (`EMULATOR_TELEMETRY=off`, `--telemetry off`, the dead proxy) |
 
 First run (offload run `off-ack-extensions-1113023721-5738`, c3d-standard-8):

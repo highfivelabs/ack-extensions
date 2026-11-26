@@ -8,8 +8,8 @@
 # moment; every one must exit 0. Without the lock, N bare `task --list` in
 # such checkouts fail most rounds (hack/ci/task-remote.sh says why).
 #
-# It fetches the factory include from GitHub with your credentials, so it
-# runs on a laptop, not in task check (an offload VM has no credentials).
+# It fetches the krm-ci include from GitHub, so it runs on a laptop, not
+# in task check (task check must not need the network).
 #
 #   hack/ci/task-remote-test.sh [N]   default 3
 set -euo pipefail

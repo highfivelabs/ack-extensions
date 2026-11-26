@@ -2,13 +2,12 @@
 # Copyright 2026 High Five Labs
 # SPDX-License-Identifier: Apache-2.0
 #
-# The merge gate while GitHub Actions is off (decided 2026-11-11: the
-# actions run locally or on an offload VM before a commit merges; the
-# workflows are kept but disabled).
+# The offload pre-push gate: the jobs of CI (hfl-ci.yml, which also runs
+# on GitHub for every pull request) on an offload VM before a push.
 #
 #   hack/ci/gate.sh [SHA]      task ci [SHA=...]; the pre-push hook runs it
 #
-# For one commit (default HEAD) it runs what .github/workflows/ci.yml's
+# For one commit (default HEAD) it runs what .github/workflows/hfl-ci.yml's
 # pull-request jobs run, then posts the commit status `offload/ci` on that
 # commit. A pull request merges only when that status on its head is
 # success (docs/testing.md, "The merge gate").
@@ -20,7 +19,7 @@
 # only, and a description that names the project or the bucket is
 # refused.
 #
-# What runs, as ci.yml decides it:
+# What runs, as hfl-ci.yml decides it:
 #   plan    hack/ci/select.sh plan BASE SHA, BASE = the merge base with
 #           origin/main (CI_BASE=<ref> for a stacked pull request)
 #   check   task tools, then task ci:check MODE GROUPS (mode=full: task
@@ -31,13 +30,13 @@
 #           the ACK-kind tests on AWS Emulator beside moto, judged against
 #           tests/e2e/aws-emulator-expected-failures.yaml
 #           (docs/aws-emulator.md, "In CI")
-# with ci.yml's versions: the command-line tools (task among them) at
+# with hfl-ci.yml's versions: the command-line tools (task among them) at
 # hack/ci/tools.sh's pins, which .github/actions/tools installs too, and
 # Go at go.mod's version, as setup-go's go-version-file picks it
 # (GOTOOLCHAIN; the VM image has the latest Go).
 # check and e2e run on one offload Spot VM (16 vCPUs, 64 GB; on a quota
 # error 8 vCPUs, 32 GB, never smaller), against the repository's fake
-# cloud only, as ci.yml's jobs do: no credentials reach a test.
+# cloud only, as hfl-ci.yml's jobs do: no credentials reach a test.
 #
 # The commit is checked out into a temporary worktree first, so the run
 # is of exactly SHA, whatever the working tree holds.
@@ -102,7 +101,7 @@ git worktree add -q --detach "$SRC" "$SHA"
 # gates started at once must not fetch it at once (hack/ci/task-remote.sh).
 hack/ci/task-remote.sh --dir "$SRC" --from "$ROOT"
 
-# The plan, as ci.yml's plan job makes it.
+# The plan, as hfl-ci.yml's plan job makes it.
 (cd "$SRC" && hack/ci/select.sh plan "$BASE" "$SHA") >"$TMP/plan" 2>"$TMP/summary" \
   || { cat "$TMP/summary" >&2; die "hack/ci/select.sh plan failed"; }
 cat "$TMP/summary"

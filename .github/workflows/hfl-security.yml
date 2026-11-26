@@ -1,0 +1,32 @@
+# Copyright 2026 High Five Labs
+# SPDX-License-Identifier: Apache-2.0
+#
+# Rendered by highfivelabs/krm-ci ci/krm/sync.py from ci/krm/callers/; do
+# not edit here. The weekly whole-repository security scan, CodeQL and
+# OpenSSF Scorecard, in krm-ci's krm-security.yml (docs/krm-ci.md).
+name: hfl-security
+
+on:
+  schedule:
+    - cron: "40 8 * * 1"
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: hfl-security-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  krm:
+    uses: highfivelabs/krm-ci/.github/workflows/krm-security.yml@be81e851d513167fd0dae655e8f15583131edd10 # v1.2.1
+    permissions:
+      contents: read
+      id-token: write
+      issues: write
+      security-events: write
+    with:
+      ci-ref: be81e851d513167fd0dae655e8f15583131edd10
+      setup-command: ""

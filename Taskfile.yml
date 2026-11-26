@@ -17,13 +17,13 @@ set: [errexit, pipefail]
 
 includes:
   # The tasks the extension repositories share (go:install-tool,
-  # go:fmt-check, go:committed, go:test-envtest), from factory at a tag,
-  # pinned by checksum (factory taskfiles/README.md). Task fetches it with
-  # your git credentials and caches it in .task/remote/ (.taskrc.yml);
-  # offload packs that cache for its VMs.
+  # go:fmt-check, go:committed, go:test-envtest), from highfivelabs/krm-ci
+  # at a tag, pinned by checksum (krm-ci taskfiles/README.md). The repository
+  # is public, so Task fetches it with no credentials and caches it in
+  # .task/remote/ (.taskrc.yml); offload packs that cache for its VMs.
   go:
-    taskfile: https://github.com/highfivelabs/factory.git//taskfiles/go.yml?ref=taskfiles/v1.0.0
-    checksum: 4e300f59230b59ea875e8409e786064dd76cc3c28d5de37ec46bb856d7366f32
+    taskfile: https://github.com/highfivelabs/krm-ci.git//taskfiles/go.yml?ref=v1.1.0
+    checksum: f5b542b671b9c361b4afbbe864280dfffcacab83a95e19f881debceb965a8d8d
     vars:
       BIN: '{{.ROOT_DIR}}/bin'
 
@@ -306,11 +306,11 @@ tasks:
     cmds:
       - go run -tags live ./hack/live/sweep --suite "{{.SUITE | default "all"}}" --list
 
-  # The merge gate while GitHub Actions is off (docs/testing.md, "The
-  # merge gate"): ci.yml's pull-request jobs on an offload Spot VM, then
+  # The offload pre-push gate, beside CI on GitHub (docs/testing.md, "The
+  # merge gate"): hfl-ci.yml's pull-request jobs on an offload Spot VM, then
   # the commit status offload/ci on the commit.
   ci:
-    desc: 'ci.yml''s pull-request jobs (plan, check, operator-e2e) for one commit on an offload Spot VM, then the offload/ci status on it: task ci [SHA=HEAD] [CI_BASE=origin/main].'
+    desc: 'hfl-ci.yml''s pull-request jobs (plan, check, operator-e2e) for one commit on an offload Spot VM, then the offload/ci status on it: task ci [SHA=HEAD] [CI_BASE=origin/main].'
     env:
       CI_BASE: '{{.CI_BASE}}'
     cmds:
@@ -321,9 +321,9 @@ tasks:
     cmds:
       - hack/ci/tools.sh
 
-  # ci.yml's check job: what the plan (hack/ci/select.sh plan) selects.
+  # hfl-ci.yml's check job: what the plan (hack/ci/select.sh plan) selects.
   "ci:check":
-    desc: 'ci.yml''s check job for a plan: task ci:check MODE=full|groups|none [GROUPS="iam cloudcontrol"].'
+    desc: 'hfl-ci.yml''s check job for a plan: task ci:check MODE=full|groups|none [GROUPS="iam cloudcontrol"].'
     requires:
       vars: [MODE]
     cmds:
@@ -336,7 +336,7 @@ tasks:
         esac
 
   "ci:remote":
-    desc: Fill this checkout's cache of the remote factory include (.task/remote) under a per-user lock; run it in a new worktree before starting several tasks at once (hack/ci/task-remote.sh).
+    desc: Fill this checkout's cache of the remote krm-ci include (.task/remote) under a per-user lock; run it in a new worktree before starting several tasks at once (hack/ci/task-remote.sh).
     cmds:
       - hack/ci/task-remote.sh
 
@@ -378,7 +378,7 @@ tasks:
         esac
 
   "operator-e2e:debug":
-    desc: The kind cluster's pods and recent events, after a failed operator-e2e (ci.yml and nightly.yml run it on failure).
+    desc: The kind cluster's pods and recent events, after a failed operator-e2e (hfl-ci.yml and nightly.yml run it on failure).
     cmds:
       # Diagnostics only: the job has failed already; a missing cluster
       # must not hide that failure behind this step's own.
