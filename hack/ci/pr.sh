@@ -16,6 +16,11 @@
 # docs-only pull request costs a checkout.
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/../.."
+# The pinned tools (hack/ci/tools.sh) first on PATH. The Taskfile's env
+# PATH does not reach the tasks' commands (Task keeps the PATH it was
+# started with), so a runner without ko on its image needs this.
+PATH="$(hack/ci/tools.sh --dir):${PATH}"
+export PATH
 
 what="${1:?usage: hack/ci/pr.sh check|e2e}"
 
