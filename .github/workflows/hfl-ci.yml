@@ -21,12 +21,13 @@ concurrency:
 
 jobs:
   krm:
-    uses: highfivelabs/krm-ci/.github/workflows/krm-ci.yml@be81e851d513167fd0dae655e8f15583131edd10 # v1.2.1
+    uses: highfivelabs/krm-ci/.github/workflows/krm-ci.yml@9505fdb467ffa23dd22aa7507152c959afb0f543 # v1.2.2
     permissions:
       contents: read
     with:
-      ci-ref: be81e851d513167fd0dae655e8f15583131edd10
+      ci-ref: 9505fdb467ffa23dd22aa7507152c959afb0f543
       setup-command: ""
+      lint-setup-command: "task upstream"
       check-command: "hack/ci/pr.sh check"
       e2e-command: "hack/ci/pr.sh e2e"
       free-disk: true
