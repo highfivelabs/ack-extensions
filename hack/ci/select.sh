@@ -31,11 +31,13 @@
 #             (group coverage)
 #   adjacent  what a service's pull request also touches and check:static
 #             or the operator e2e covers: config/crds/, config/rbac/,
-#             tests/operator/
+#             tests/operator/; and CI's own files, .github/ and hack/ci/
+#             (the lint job checks the workflows; a change to how CI runs
+#             is exercised by the run itself)
 #   full      everything else: go.mod, patches/, the pin, upstream.yaml,
-#             cmd/, pkg/ (the operator, the fake AWS), hack/, a tests/e2e/
-#             file without tests (the harness), Taskfile.yml, taskfiles/,
-#             config/ (the rest), .github/
+#             cmd/, pkg/ (the operator, the fake AWS), hack/ (the rest), a
+#             tests/e2e/ file without tests (the harness), Taskfile.yml,
+#             taskfiles/, config/ (the rest)
 # A pull request is full if any path is; else groups if any path is a
 # group or adjacent; else none. The nightly run (nightly.yml) runs
 # everything on main, which catches what a group's tests miss.
@@ -64,6 +66,7 @@ classify() {
     cloudcontrol/*|hack/cloudcontrol-gen/*|hack/cloudcontrol-batch/*) echo "group cloudcontrol" ;;
     hack/coverage/*) echo "group coverage" ;;
     config/crds/*|config/rbac/*|tests/operator/*) echo adjacent ;;
+    .github/*|hack/ci/*) echo adjacent ;;
     *) echo full ;;
   esac
 }

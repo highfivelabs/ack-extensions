@@ -148,6 +148,7 @@ var TaggedKinds = map[string]bool{
 	"OptionGroup.rds.aws.hfl.dev":              true,
 	"ScheduleGroup.scheduler.aws.hfl.dev":      true,
 	"OpenIDConnectProvider.iam.aws.hfl.dev":    true,
+	"Object.s3.aws.hfl.dev":                    true,
 }
 
 // GeneratedTags is the TagsFunc of the ACK-generated managers: spec.tags,
