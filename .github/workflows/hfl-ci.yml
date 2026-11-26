@@ -21,11 +21,12 @@ concurrency:
 
 jobs:
   krm:
-    uses: highfivelabs/krm-ci/.github/workflows/krm-ci.yml@9505fdb467ffa23dd22aa7507152c959afb0f543 # v1.2.2
+    uses: highfivelabs/krm-ci/.github/workflows/krm-ci.yml@a19229e684a2d19add5a2ed907e82b56e5073c2d # v1.2.4
     permissions:
       contents: read
+      statuses: read
     with:
-      ci-ref: 9505fdb467ffa23dd22aa7507152c959afb0f543
+      ci-ref: a19229e684a2d19add5a2ed907e82b56e5073c2d
       setup-command: ""
       lint-setup-command: "task upstream"
       check-command: "hack/ci/pr.sh check"
@@ -35,3 +36,6 @@ jobs:
       sibling-repo: ""
       sibling-ref: ""
       licenses-packages: "./services/iam/cmd/controller ./services/rds/cmd/controller ./cmd/operator"
+      govulncheck-packages: "./services/iam/cmd/controller ./services/rds/cmd/controller ./cmd/operator"
+      test-shards: 1
+      trust-offload-status: true
