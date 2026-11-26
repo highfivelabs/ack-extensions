@@ -29,10 +29,10 @@ includes:
 
 env:
   GOTOOLCHAIN: '{{.GOTOOLCHAIN | default "local"}}'
-  # The pinned command-line tools (hack/ci/tools.sh, task ci:tools) come
-  # first on PATH, so every task runs the versions CI runs.
-  PATH:
-    sh: echo "$(hack/ci/tools.sh --dir):$PATH"
+  # The pinned command-line tools (hack/ci/tools.sh, task ci:tools) are
+  # not put on PATH here: Task does not let env override a PATH already set
+  # (HFL-731). hack/ci/pr.sh puts them first; by hand,
+  # PATH="$(hack/ci/tools.sh --dir):$PATH".
   # Every task's end-to-end tests run against the fake; only
   # hack/live/run.sh (task test-live) sets "real" for its own go test.
   CLOUDCONTROL_E2E_TARGET: fake
