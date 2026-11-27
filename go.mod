@@ -2,6 +2,8 @@ module github.com/highfivelabs/ack-extensions
 
 go 1.25.0
 
+toolchain go1.27.4
+
 require (
 	github.com/aws-controllers-k8s/ec2-controller v1.23.1
 	github.com/aws-controllers-k8s/elbv2-controller v1.9.0
