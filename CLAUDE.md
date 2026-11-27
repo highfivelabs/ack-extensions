@@ -126,13 +126,16 @@ otherwise
 
 The essentials, in case you can't read it:
 
-* Claim the Linear issue in coord before you edit (`coord claim HFL-n`), and
+- Claim the Linear issue in coord before you edit (`coord claim HFL-n`), and
   put its key in the branch name and PR title.
-* Open pull requests as drafts. Mark one ready only when it's finished and
+- Open pull requests as drafts. Mark one ready only when it's finished and
   green, and put it back in draft before pushing to it again.
-* This repository is public. Issue keys are fine. Internal URLs, customer
+- Get a draft to ready within about 3 hours, and don't abandon it. If it has
+  to stay in draft longer, post a PR comment saying what it waits on and
+  when it should be ready.
+- This repository is public. Issue keys are fine. Internal URLs, customer
   names, credentials and personal details never go in commits, pull
   requests or files.
-* The Spectacle method doesn't apply here. The kinds are generated and held
+- The Spectacle method doesn't apply here. The kinds are generated and held
   in place by this repository's own checks.
 <!-- HFL-WORKSPACE: END -->
