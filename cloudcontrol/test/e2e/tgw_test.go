@@ -92,7 +92,7 @@ func staticRoutes(t *testing.T, e *env, rt string) map[string]string {
 // change; create-only changes refused; resyncs make no update; each
 // delete removes it from EC2.
 func TestTransitGatewayRouting(t *testing.T) {
-	e := start(t)
+	e := start(t, "TransitGatewayPeeringAttachment.ec2", "TransitGatewayRoute.ec2", "TransitGatewayRouteTable.ec2", "TransitGatewayRouteTableAssociation.ec2", "TransitGatewayRouteTablePropagation.ec2")
 	ec := ec2.NewFromConfig(e.moto)
 	f := makeTGWFixture(t, e)
 

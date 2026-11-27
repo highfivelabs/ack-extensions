@@ -32,8 +32,13 @@ fi
 echo "${plan}"
 get() { sed -n "s/^$1=//p" <<<"${plan}" | head -n 1; }
 
+# The pinned tools first on PATH, here in the shell: Task does not let a
+# Taskfile's env override a PATH already in the environment, and a
+# GitHub-hosted runner has kind, kubectl and helm but no crane (HFL-731).
 tools() {
   task ci:tools
+  PATH="$(hack/ci/tools.sh --dir):${PATH}"
+  export PATH
   task tools
 }
 

@@ -20,7 +20,7 @@ import (
 // VPC's DNSSEC validation, each made, left alone through resyncs, refused
 // a create-only change, and deleted.
 func TestDNS(t *testing.T) {
-	e := start(t)
+	e := start(t, "QueryLoggingConfig.route53", "ResolverDNSSECConfig.route53resolver")
 	r53 := route53.NewFromConfig(e.moto)
 	// Route 53 takes query logs only into a log group in us-east-1, as
 	// moto checks too, whatever the environment's region.
@@ -145,7 +145,7 @@ func TestDNS(t *testing.T) {
 // F08, Route 53: a reusable delegation set, made, read back with its
 // name servers, and deleted.
 func TestRoute53DelegationSet(t *testing.T) {
-	e := start(t)
+	e := start(t, "DelegationSet.route53")
 	r53 := route53.NewFromConfig(e.moto)
 
 	d := objOf("AWS::Route53::DelegationSet", "dns-e2e-dset", map[string]any{})

@@ -83,7 +83,7 @@ func TestLandingZone(t *testing.T) {
 	if target(t) == "real" {
 		t.Skip("a landing zone is never made on a live run: a test could not delete it")
 	}
-	e := start(t)
+	e := start(t, "LandingZone.controltower")
 	if e.emulator != nil {
 		t.Skip("ACK_TEST_BACKEND=aws-emulator: the landing zone is a test double of ours, which the emulator does not replace")
 	}

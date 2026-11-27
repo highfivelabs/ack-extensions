@@ -20,7 +20,7 @@ import (
 // action and criteria, drift made in GuardDuty put back, a create-only name
 // refused; then both deleted.
 func TestGuardDutyFilter(t *testing.T) {
-	e := start(t)
+	e := start(t, "Detector.guardduty", "Filter.guardduty")
 	gd := guardduty.NewFromConfig(e.moto)
 	const fType = "AWS::GuardDuty::Filter"
 

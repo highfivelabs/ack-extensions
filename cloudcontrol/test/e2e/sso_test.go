@@ -38,7 +38,7 @@ func managedPolicies(t *testing.T, e *env, inst, ps string) []string {
 // policy, a change to its policy list, and an assignment of it to a group
 // in an account; then both deleted.
 func TestIdentityCenter(t *testing.T) {
-	e := start(t)
+	e := start(t, "Assignment.sso", "PermissionSet.sso")
 	sso := ssoadmin.NewFromConfig(e.moto)
 	insts, err := sso.ListInstances(e.ctx, &ssoadmin.ListInstancesInput{})
 	if err != nil || len(insts.Instances) == 0 {

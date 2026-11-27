@@ -32,7 +32,7 @@ func TestSlotMove(t *testing.T) {
 		t.Skip("offline only: the slot move runs on the fake (docs/slot-moves.md)")
 	}
 	const typ = "AWS::EC2::TransitGatewayRouteTable"
-	e := startWith(t, []string{"--slot", "blue"}, nil)
+	e := startWith(t, []string{"--slot", "blue"}, nil, "TransitGatewayRouteTable.ec2")
 	e.runManager(t, otherNS, nil, []string{slot.EnvVar + "=green"})
 	const blueNS, greenNS = envNS, otherNS
 

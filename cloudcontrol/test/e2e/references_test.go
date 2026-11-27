@@ -55,7 +55,7 @@ func standInCRD(group, kind, plural string) *unstructured.Unstructured {
 // manager reads the ACK objects with the rights the generated ClusterRole
 // gives it, nothing more.
 func TestReferences(t *testing.T) {
-	e := start(t)
+	e := start(t, "SecurityGroupVpcAssociation.ec2")
 	if e.live || e.emulator != nil {
 		t.Skip("on the schema fake only: the kind is unproven (cloudcontrol/types.yaml)")
 	}
@@ -238,7 +238,7 @@ func refTo(name string) map[string]any { return map[string]any{"from": map[strin
 // gets its ID and the exclusion's mode, the object keeps the reference,
 // and the identifier is the exclusion's ID.
 func TestReferencesBlockPublicAccessExclusion(t *testing.T) {
-	e := start(t)
+	e := start(t, "VPCBlockPublicAccessExclusion.ec2")
 	if e.live || e.emulator != nil {
 		t.Skip("on the schema fake only: the kind is unproven (cloudcontrol/types.yaml)")
 	}

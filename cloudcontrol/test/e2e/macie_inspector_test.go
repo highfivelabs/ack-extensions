@@ -14,7 +14,7 @@ import (
 // F18, Macie: the account's Macie session, made, read back in moto, and
 // deleted (moto 5.2.5 has no UpdateMacieSession).
 func TestMacie(t *testing.T) {
-	e := start(t)
+	e := start(t, "Session.macie")
 	mc := macie2.NewFromConfig(e.moto)
 
 	sess := objOf("AWS::Macie::Session", "macie-session", map[string]any{
@@ -42,7 +42,7 @@ func TestMacie(t *testing.T) {
 // F18, Inspector v2: a findings filter, made, read back in moto, and
 // deleted (moto 5.2.5 has no UpdateFilter).
 func TestInspectorFilter(t *testing.T) {
-	e := start(t)
+	e := start(t, "Filter.inspectorv2")
 	ic := inspector2.NewFromConfig(e.moto)
 
 	flt := objOf("AWS::InspectorV2::Filter", "suppress-info", map[string]any{

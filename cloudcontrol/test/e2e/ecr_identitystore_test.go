@@ -46,7 +46,7 @@ func registryPolicy(principal string) map[string]any {
 // singletons per account and Region: made, changed, and deleted (the
 // scanning configuration back to BASIC with no rules).
 func TestECRRegistry(t *testing.T) {
-	e := start(t)
+	e := start(t, "RegistryPolicy.ecr", "RegistryScanningConfiguration.ecr")
 	c := ecr.NewFromConfig(e.moto)
 	src := fmt.Sprintf("arn:aws:iam::%s:root", "111122223333")
 	other := fmt.Sprintf("arn:aws:iam::%s:root", "444455556666")
@@ -145,7 +145,7 @@ func TestECRRegistry(t *testing.T) {
 // user's membership of it, made and deleted. moto has no UpdateGroup, so a
 // change to a group is not tested here.
 func TestIdentityStore(t *testing.T) {
-	e := start(t)
+	e := start(t, "Group.identitystore", "GroupMembership.identitystore")
 	insts, err := ssoadmin.NewFromConfig(e.moto).ListInstances(e.ctx, &ssoadmin.ListInstancesInput{})
 	if err != nil || len(insts.Instances) == 0 {
 		t.Fatalf("moto has no Identity Center instance: %v", err)
@@ -221,7 +221,7 @@ func TestIdentityStore(t *testing.T) {
 // refused a create-only change (userName), and deleted. moto 5.2.5 has no
 // UpdateUser, so a change to a user is not tested here.
 func TestIdentityStoreUser(t *testing.T) {
-	e := start(t)
+	e := start(t, "User.identitystore")
 	insts, err := ssoadmin.NewFromConfig(e.moto).ListInstances(e.ctx, &ssoadmin.ListInstancesInput{})
 	if err != nil || len(insts.Instances) == 0 {
 		t.Fatalf("moto has no Identity Center instance: %v", err)

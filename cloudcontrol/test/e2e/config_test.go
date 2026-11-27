@@ -23,7 +23,7 @@ import (
 // conformance pack; each made, left alone through resyncs, changed where
 // it can be, refused a create-only change, and deleted.
 func TestConfig(t *testing.T) {
-	e := start(t)
+	e := start(t, "AggregationAuthorization.config", "ConfigRule.config", "ConfigurationAggregator.config", "ConfigurationRecorder.config", "DeliveryChannel.config", "OrganizationConformancePack.config")
 	cs := configservice.NewFromConfig(e.moto)
 	ic := iam.NewFromConfig(e.moto)
 	sc := s3.NewFromConfig(e.moto, func(o *s3.Options) { o.UsePathStyle = true })

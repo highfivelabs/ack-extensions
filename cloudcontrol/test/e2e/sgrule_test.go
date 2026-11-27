@@ -33,7 +33,7 @@ import (
 //   - each delete revokes its own rule only: the group's other rules (the
 //     default outbound rule among them) stay.
 func TestSecurityGroupRules(t *testing.T) {
-	e := start(t)
+	e := start(t, "SecurityGroupEgress.ec2", "SecurityGroupIngress.ec2")
 	c := ec2.NewFromConfig(e.moto)
 	const ingress, egress = "AWS::EC2::SecurityGroupIngress", "AWS::EC2::SecurityGroupEgress"
 
@@ -240,7 +240,7 @@ func TestSecurityGroupRules(t *testing.T) {
 //     reconcile comes from a change to its spec (here the description);
 //   - deleting a refused object ends at once and sends no delete.
 func TestSecurityGroupRuleBesideOwner(t *testing.T) {
-	e := start(t)
+	e := start(t, "SecurityGroupEgress.ec2", "SecurityGroupIngress.ec2")
 	c := ec2.NewFromConfig(e.moto)
 	const ingress, egress = "AWS::EC2::SecurityGroupIngress", "AWS::EC2::SecurityGroupEgress"
 

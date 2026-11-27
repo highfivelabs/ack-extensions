@@ -87,7 +87,7 @@ func patchPaths(t *testing.T, calls []fake.Call) []string {
 // identifier; an update sends one replace and nothing read-only or
 // create-only; the API server refuses a create-only change; delete.
 func TestSAMLProvider(t *testing.T) {
-	e := start(t)
+	e := start(t, "SAMLProvider.iam")
 	const typ = "AWS::IAM::SAMLProvider"
 	_, key := samlCert()
 	if err := e.c.Create(e.ctx, secret("saml-key", map[string]string{"private.pem": key})); err != nil {
@@ -220,7 +220,7 @@ func rtTags(t *testing.T, e *env, id string) map[string]string {
 // primary identifier fills spec from AWS; delete; a handler failure's
 // error code and message reach ACK.Terminal.
 func TestTransitGatewayRouteTable(t *testing.T) {
-	e := start(t)
+	e := start(t, "TransitGatewayRouteTable.ec2")
 	const typ = "AWS::EC2::TransitGatewayRouteTable"
 	ec := ec2.NewFromConfig(e.moto)
 	tgw, err := ec.CreateTransitGateway(e.ctx, &ec2.CreateTransitGatewayInput{Description: aws.String("hub")})
@@ -381,7 +381,7 @@ func TestTransitGatewayRouteTable(t *testing.T) {
 // detector in another namespace is never touched by this namespace's
 // manager, which can neither see it nor write it.
 func TestDetector(t *testing.T) {
-	e := start(t)
+	e := start(t, "Detector.guardduty")
 	const typ = "AWS::GuardDuty::Detector"
 	outside := obj("Detector", "outside-detector", map[string]any{"enable": true})
 	outside.SetNamespace(otherNS)
