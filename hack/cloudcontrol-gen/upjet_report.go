@@ -16,6 +16,8 @@ import (
 
 // upjetType is what the Upjet facts gave one served type.
 type upjetType struct {
+	s       *cfn.Schema
+	t       typeEntry
 	entries []*upjetEntry
 	refs    []*derived
 	checks  []check
@@ -64,7 +66,7 @@ func upjetIndex(root string, files map[string][]byte, cfg config) (*upjetData, *
 
 // forType gathers the type's fold entries and derives its references.
 func (ix *servedIndex) forType(up *upjetData, t typeEntry, s *cfn.Schema) *upjetType {
-	ut := &upjetType{}
+	ut := &upjetType{s: s, t: t}
 	if up == nil {
 		return ut
 	}
@@ -75,6 +77,7 @@ func (ix *servedIndex) forType(up *upjetData, t typeEntry, s *cfn.Schema) *upjet
 		}
 	}
 	ut.refs = ix.deriveReferences(s, ut.entries)
+	ut.crossCheck(s, t)
 	return ut
 }
 
@@ -167,6 +170,13 @@ func upstreamLink(up *upjetData, at string) string {
 func writeUpjet(root, out string, up *upjetData, gens []generated) error {
 	if up == nil {
 		return nil
+	}
+	var fixtures []upjetFixture
+	for _, g := range gens {
+		fixtures = append(fixtures, g.Upjet.examples(g.Upjet.s, g.Upjet.t, g, up)...)
+	}
+	if err := writeExampleFixtures(out, fixtures); err != nil {
+		return err
 	}
 	var rows [][]string
 	add := func(g generated, kind, subject, outcome, detail string, slice int, upstream string) {
@@ -331,6 +341,3 @@ func reasonClass(r string) string {
 	}
 	return r
 }
-
-// writeUpjetSections writes the cross-check sections (upjet_checks.go).
-func writeUpjetSections(b *bytes.Buffer, up *upjetData, gens []generated) {}

@@ -17,6 +17,10 @@
 | Upjet references the overlay already had | 24 |
 | Upjet references that disagree (listed, not applied) | 2 |
 | Upjet references not applied (reason in the CSV) | 410 |
+| example checks | fixture 162, not-expressible 386 |
+| id checks | agrees 292, differs 97, listed 127 |
+| late-init checks | agrees 5, n/a 4 |
+| secret checks | listed 1, n/a 2 |
 
 ## References applied
 
@@ -234,3 +238,690 @@ The overlay is kept; each is a gap to settle by hand.
 | our Cloud Control target has a compound identifier | 3 |
 | ACK's kind serves the target; its ID path is not in `referenceTargets` | 2 |
 | our ACK-generated Organization | 1 |
+
+## Secrets: fields Upjet keeps secret
+
+`exposed` means this kind shows the field in plain text where Upjet treats it as a secret.
+
+| Type | Field | Outcome | Here | Upjet |
+| --- | --- | --- | --- | --- |
+| `AWS::CloudFront::PublicKey` | `encoded_key` | n/a | no top-level property of that name | `config/cluster/cloudfront/config.go:40` |
+| `AWS::DocDB::GlobalCluster` | `master_password` | n/a | no top-level property of that name | `config/cluster/docdb/config.go:49` |
+| `AWS::DocDB::GlobalCluster` | `connection details` | listed | Upjet publishes connection details (a Secret) for this resource; this kind publishes none (ACK's FieldExport can copy a status field) | `config/cluster/docdb/config.go:23` |
+
+## Identifier: who chooses it
+
+Upjet's external name against the type's primary identifier. `differs` is not a defect here (a Cloud Control kind is identified as CloudFormation identifies the type), but adoption and imports take a different value than Terraform's.
+
+| Type | Upjet | Here |
+| --- | --- | --- |
+| `AWS::Route53::DNSSEC` | provider | Upjet: assigned by AWS; ours written by the user (HostedZoneId) |
+| `AWS::Route53Resolver::ResolverConfig` | provider | Upjet: assigned by AWS; ours written by the user (ResourceId) |
+| `AWS::Route53Resolver::ResolverConfig` | provider | Upjet: assigned by AWS; ours written by the user (ResourceId) |
+| `AWS::GuardDuty::Member` | provider | Upjet: assigned by AWS; ours written by the user (DetectorId|MemberId) |
+| `AWS::AccessAnalyzer::Analyzer` | parameter | Upjet: a name the user writes (analyzer_name); ours assigned by AWS (Arn): adoption takes the AWS-assigned identifier |
+| `AWS::ACMPCA::Permission` | provider | Upjet: assigned by AWS; ours written by the user (CertificateAuthorityArn|Principal) |
+| `AWS::Detective::MemberInvitation` | provider | Upjet: assigned by AWS; ours written by the user (GraphArn|MemberId) |
+| `AWS::NetworkFirewall::LoggingConfiguration` | provider | Upjet: assigned by AWS; ours written by the user (FirewallArn) |
+| `AWS::EC2::GatewayRouteTableAssociation` | provider | Upjet: assigned by AWS; ours written by the user (GatewayId) |
+| `AWS::EC2::GatewayRouteTableAssociation` | provider | Upjet: assigned by AWS; ours written by the user (GatewayId) |
+| `AWS::EC2::NetworkPerformanceMetricSubscription` | provider | Upjet: assigned by AWS; ours written by the user (Source|Destination|Metric|Statistic) |
+| `AWS::EC2::PlacementGroup` | name | Upjet: a name the user writes; ours assigned by AWS (GroupName): adoption takes the AWS-assigned identifier |
+| `AWS::EC2::TransitGatewayMulticastDomainAssociation` | provider | Upjet: assigned by AWS; ours written by the user (TransitGatewayMulticastDomainId|TransitGatewayAttachmentId|SubnetId) |
+| `AWS::EC2::TransitGatewayMulticastGroupMember` | provider | Upjet: assigned by AWS; ours written by the user (TransitGatewayMulticastDomainId|GroupIpAddress|NetworkInterfaceId) |
+| `AWS::EC2::TransitGatewayMulticastGroupMember` | provider | Upjet: assigned by AWS; ours written by the user (TransitGatewayMulticastDomainId|GroupIpAddress|NetworkInterfaceId) |
+| `AWS::EC2::TransitGatewayMulticastGroupSource` | provider | Upjet: assigned by AWS; ours written by the user (TransitGatewayMulticastDomainId|GroupIpAddress|NetworkInterfaceId) |
+| `AWS::EC2::TransitGatewayMulticastGroupSource` | provider | Upjet: assigned by AWS; ours written by the user (TransitGatewayMulticastDomainId|GroupIpAddress|NetworkInterfaceId) |
+| `AWS::EC2::TransitGatewayPolicyTableAssociation` | provider | Upjet: assigned by AWS; ours written by the user (TransitGatewayPolicyTableId|TransitGatewayAttachmentId) |
+| `AWS::Logs::AccountPolicy` | parameter | Upjet: a name the user writes (policy_name); ours assigned by AWS (AccountId|PolicyType|PolicyName): adoption takes the AWS-assigned identifier |
+| `AWS::Logs::SubscriptionFilter` | provider | Upjet: assigned by AWS; ours written by the user (FilterName|LogGroupName) |
+| `AWS::CloudFront::MonitoringSubscription` | provider | Upjet: assigned by AWS; ours written by the user (DistributionId) |
+| `AWS::EventSchemas::RegistryPolicy` | parameter | Upjet: a name the user writes (registry_name); ours assigned by AWS (Id): adoption takes the AWS-assigned identifier |
+| `AWS::Logs::LogStream` | provider | Upjet: assigned by AWS; ours written by the user (LogGroupName|LogStreamName) |
+| `AWS::MSK::BatchScramSecret` | provider | Upjet: assigned by AWS; ours written by the user (ClusterArn) |
+| `AWS::RDS::ClusterSnapshot` | parameter | Upjet: a name the user writes (db_cluster_snapshot_identifier); ours assigned by AWS (DBClusterSnapshotArn): adoption takes the AWS-assigned identifier |
+| `AWS::RDS::ClusterSnapshot` | parameter | Upjet: a name the user writes (db_cluster_snapshot_identifier); ours assigned by AWS (DBClusterSnapshotArn): adoption takes the AWS-assigned identifier |
+| `AWS::S3Files::FileSystemPolicy` | provider | Upjet: assigned by AWS; ours written by the user (FileSystemId) |
+| `AWS::ApiGateway::BasePathMapping` | provider | Upjet: assigned by AWS; ours written by the user (DomainName|BasePath) |
+| `AWS::ApiGateway::DomainName` | provider | Upjet: assigned by AWS; ours written by the user (DomainName) |
+| `AWS::ApplicationInsights::Application` | parameter | Upjet: a name the user writes (resource_group_name); ours assigned by AWS (ApplicationARN): adoption takes the AWS-assigned identifier |
+| `AWS::AppStream::DirectoryConfig` | provider | Upjet: assigned by AWS; ours written by the user (DirectoryName) |
+| `AWS::AppStream::Fleet` | provider | Upjet: assigned by AWS; ours written by the user (Name) |
+| `AWS::AppStream::Stack` | provider | Upjet: assigned by AWS; ours written by the user (Name) |
+| `AWS::AppSync::DomainNameApiAssociation` | parameter | Upjet: a name the user writes (domain_name); ours assigned by AWS (ApiAssociationIdentifier): adoption takes the AWS-assigned identifier |
+| `AWS::Batch::ComputeEnvironment` | name | Upjet: a name the user writes; ours assigned by AWS (ComputeEnvironmentArn): adoption takes the AWS-assigned identifier |
+| `AWS::Batch::JobDefinition` | provider | Upjet: assigned by AWS; ours written by the user (JobDefinitionName) |
+| `AWS::BedrockAgentCore::ResourcePolicy` | provider | Upjet: assigned by AWS; ours written by the user (ResourceArn) |
+| `AWS::BedrockAgentCore::ResourcePolicy` | provider | Upjet: assigned by AWS; ours written by the user (ResourceArn) |
+| `AWS::BedrockAgentCore::ResourcePolicy` | provider | Upjet: assigned by AWS; ours written by the user (ResourceArn) |
+| `AWS::Chime::VoiceConnector` | name | Upjet: a name the user writes; ours assigned by AWS (VoiceConnectorArn): adoption takes the AWS-assigned identifier |
+| `AWS::Chime::VoiceConnector` | name | Upjet: a name the user writes; ours assigned by AWS (VoiceConnectorArn): adoption takes the AWS-assigned identifier |
+| `AWS::CloudFormation::StackSet` | name | Upjet: a name the user writes; ours assigned by AWS (StackSetId): adoption takes the AWS-assigned identifier |
+| `AWS::CodeCommit::Repository` | parameter | Upjet: a name the user writes (repository_name); ours assigned by AWS (RepositoryId): adoption takes the AWS-assigned identifier |
+| `AWS::CodePipeline::CustomActionType` | provider | Upjet: assigned by AWS; ours written by the user (Category|Provider|Version) |
+| `AWS::Cognito::IdentityPoolPrincipalTag` | provider | Upjet: assigned by AWS; ours written by the user (IdentityPoolId|IdentityProviderName) |
+| `AWS::Cognito::UserPoolDomain` | provider | Upjet: assigned by AWS; ours written by the user (UserPoolId|Domain) |
+| `AWS::Cognito::UserPoolGroup` | provider | Upjet: assigned by AWS; ours written by the user (UserPoolId|GroupName) |
+| `AWS::Cognito::UserPoolIdentityProvider` | provider | Upjet: assigned by AWS; ours written by the user (UserPoolId|ProviderName) |
+| `AWS::Cognito::UserPoolRiskConfigurationAttachment` | provider | Upjet: assigned by AWS; ours written by the user (UserPoolId|ClientId) |
+| `AWS::Cognito::UserPoolUICustomizationAttachment` | provider | Upjet: assigned by AWS; ours written by the user (UserPoolId|ClientId) |
+| `AWS::Cognito::UserPoolUserToGroupAttachment` | provider | Upjet: assigned by AWS; ours written by the user (UserPoolId|GroupName|Username) |
+| `AWS::DocDB::GlobalCluster` | provider | Upjet: assigned by AWS; ours written by the user (GlobalClusterIdentifier) |
+| `AWS::ElasticBeanstalk::ApplicationVersion` | name | Upjet: a name the user writes; ours assigned by AWS (ApplicationName|Id): adoption takes the AWS-assigned identifier |
+| `AWS::ElasticBeanstalk::ConfigurationTemplate` | name | Upjet: a name the user writes; ours assigned by AWS (ApplicationName|TemplateName): adoption takes the AWS-assigned identifier |
+| `AWS::ElasticBeanstalk::Environment` | provider | Upjet: assigned by AWS; ours written by the user (EnvironmentName) |
+| `AWS::EMR::StudioSessionMapping` | provider | Upjet: assigned by AWS; ours written by the user (StudioId|IdentityType|IdentityName) |
+| `AWS::GameLift::GameServerGroup` | parameter | Upjet: a name the user writes (game_server_group_name); ours assigned by AWS (GameServerGroupArn): adoption takes the AWS-assigned identifier |
+| `AWS::Glue::Classifier` | name | Upjet: a name the user writes; ours assigned by AWS (Name): adoption takes the AWS-assigned identifier |
+| `AWS::Glue::DataCatalogEncryptionSettings` | provider | Upjet: assigned by AWS; ours written by the user (CatalogId) |
+| `AWS::IoT::Logging` | provider | Upjet: assigned by AWS; ours written by the user (AccountId) |
+| `AWS::IoT::RoleAlias` | provider | Upjet: assigned by AWS; ours written by the user (RoleAlias) |
+| `AWS::IoT::ThingPrincipalAttachment` | provider | Upjet: assigned by AWS; ours written by the user (ThingName|Principal) |
+| `AWS::Lightsail::Database` | provider | Upjet: assigned by AWS; ours written by the user (RelationalDatabaseName) |
+| `AWS::Lightsail::Domain` | provider | Upjet: assigned by AWS; ours written by the user (DomainName) |
+| `AWS::Lightsail::KeyPair` | provider | Upjet: assigned by AWS; ours written by the user (KeyPairName) |
+| `AWS::Lightsail::StaticIp` | provider | Upjet: assigned by AWS; ours written by the user (StaticIpName) |
+| `AWS::Lightsail::StaticIp` | provider | Upjet: assigned by AWS; ours written by the user (StaticIpName) |
+| `AWS::Location::TrackerConsumer` | provider | Upjet: assigned by AWS; ours written by the user (TrackerName|ConsumerArn) |
+| `AWS::MediaPackage::Channel` | provider | Upjet: assigned by AWS; ours written by the user (Id) |
+| `AWS::NetworkMonitor::Monitor` | parameter | Upjet: a name the user writes (monitor_name); ours assigned by AWS (MonitorArn): adoption takes the AWS-assigned identifier |
+| `AWS::OSIS::Pipeline` | parameter | Upjet: a name the user writes (pipeline_name); ours assigned by AWS (PipelineArn): adoption takes the AWS-assigned identifier |
+| `AWS::S3Outposts::BucketPolicy` | provider | Upjet: assigned by AWS; ours written by the user (Bucket) |
+| `AWS::SageMaker::CodeRepository` | parameter | Upjet: a name the user writes (code_repository_name); ours assigned by AWS (CodeRepositoryArn): adoption takes the AWS-assigned identifier |
+| `AWS::SageMaker::HumanTaskUi` | parameter | Upjet: a name the user writes (human_task_ui_name); ours assigned by AWS (HumanTaskUiArn): adoption takes the AWS-assigned identifier |
+| `AWS::SageMaker::Image` | parameter | Upjet: a name the user writes (image_name); ours assigned by AWS (ImageArn): adoption takes the AWS-assigned identifier |
+| `AWS::SageMaker::Workforce` | parameter | Upjet: a name the user writes (workforce_name); ours assigned by AWS (WorkforceArn): adoption takes the AWS-assigned identifier |
+| `AWS::SageMaker::Workteam` | parameter | Upjet: a name the user writes (workteam_name); ours assigned by AWS (WorkteamArn): adoption takes the AWS-assigned identifier |
+| `AWS::ServiceCatalog::PortfolioPrincipalAssociation` | provider | Upjet: assigned by AWS; ours written by the user (PortfolioId|PrincipalARN) |
+| `AWS::ServiceCatalog::PortfolioProductAssociation` | provider | Upjet: assigned by AWS; ours written by the user (PortfolioId|ProductId) |
+| `AWS::ServiceCatalog::PortfolioShare` | provider | Upjet: assigned by AWS; ours written by the user (PortfolioId|AccountId) |
+| `AWS::SES::EmailIdentity` | provider | Upjet: assigned by AWS; ours written by the user (EmailIdentity) |
+| `AWS::SES::ReceiptFilter` | name | Upjet: a name the user writes; ours assigned by AWS (Id): adoption takes the AWS-assigned identifier |
+| `AWS::SES::ReceiptRuleSet` | provider | Upjet: assigned by AWS; ours written by the user (RuleSetName) |
+| `AWS::SES::ReceiptRuleSet` | provider | Upjet: assigned by AWS; ours written by the user (RuleSetName) |
+| `AWS::SES::Template` | name | Upjet: a name the user writes; ours assigned by AWS (Id): adoption takes the AWS-assigned identifier |
+| `AWS::Shield::ProtectionGroup` | parameter | Upjet: a name the user writes (protection_group_id); ours assigned by AWS (ProtectionGroupArn): adoption takes the AWS-assigned identifier |
+| `AWS::Signer::SigningProfile` | name | Upjet: a name the user writes; ours assigned by AWS (Arn): adoption takes the AWS-assigned identifier |
+| `AWS::SupportApp::AccountAlias` | parameter | Upjet: a name the user writes (account_alias); ours assigned by AWS (AccountAliasResourceId): adoption takes the AWS-assigned identifier |
+| `AWS::Transcribe::MedicalVocabulary` | parameter | Upjet: a name the user writes (vocabulary_name); ours assigned by AWS (Arn): adoption takes the AWS-assigned identifier |
+| `AWS::Transcribe::Vocabulary` | parameter | Upjet: a name the user writes (vocabulary_name); ours assigned by AWS (Arn): adoption takes the AWS-assigned identifier |
+| `AWS::Transcribe::VocabularyFilter` | parameter | Upjet: a name the user writes (vocabulary_filter_name); ours assigned by AWS (Arn): adoption takes the AWS-assigned identifier |
+| `AWS::VpcLattice::AuthPolicy` | provider | Upjet: assigned by AWS; ours written by the user (ResourceIdentifier) |
+| `AWS::VpcLattice::ResourcePolicy` | provider | Upjet: assigned by AWS; ours written by the user (ResourceArn) |
+| `AWS::VpcLattice::ResourcePolicy` | provider | Upjet: assigned by AWS; ours written by the user (ResourceArn) |
+| `AWS::VpcLattice::ResourcePolicy` | provider | Upjet: assigned by AWS; ours written by the user (ResourceArn) |
+| `AWS::VpcLattice::ResourcePolicy` | provider | Upjet: assigned by AWS; ours written by the user (ResourceArn) |
+| `AWS::XRay::SamplingRule` | parameter | Upjet: a name the user writes (rule_name); ours assigned by AWS (RuleARN): adoption takes the AWS-assigned identifier |
+
+## Late-init ignores
+
+| Type | Field | Here |
+| --- | --- | --- |
+| `AWS::EC2::NetworkInterface` | `interface_type` | agrees |
+| `AWS::EC2::NetworkInterface` | `private_ip_list` | n/a |
+| `AWS::EC2::NetworkInterface` | `private_ips` | n/a |
+| `AWS::EC2::NetworkInterface` | `ipv6_addresses` | agrees |
+| `AWS::EC2::NetworkInterface` | `ipv6_address_count` | agrees |
+| `AWS::OpenSearchServerless::VpcEndpoint` | `subnet_configuration` | n/a |
+| `AWS::RedshiftServerless::Namespace` | `kms_key_id` | agrees |
+| `AWS::RedshiftServerless::Workgroup` | `config_parameter` | n/a |
+| `AWS::SageMaker::Workforce` | `source_ip_config` | agrees |
+
+## List map keys
+
+0 of the served types' Upjet resources merge a list as a map (the slice has none for this provider release).
+
+## Upjet's hand examples (HFL-700)
+
+Each hand-written example of a served type: a fixture when the kind can express every field (`cloudcontrol/zz_generated.upjet-examples.json`, run by `TestUpjetExamples` in `cloudcontrol/test/fake` on the schema fake in `task check`), otherwise why not.
+
+| Type | Example | Outcome | Detail |
+| --- | --- | --- | --- |
+| `AWS::IAM::SAMLProvider` | `examples/iam/cluster/v1beta1/samlprovider.yaml` | not-expressible | saml_metadata_document: "### This content is issued by your IdP.\n### It includes the issuer's name, expiration information and keys.\n### This file content needs to be a valid UTF-8 XML.\n" is outside the schema's lengths |
+| `AWS::EC2::TransitGatewayRouteTable` | `examples/ec2/cluster/v1beta1/transitgatewaypolicytable.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: transitGatewayId |
+| `AWS::EC2::TransitGatewayRouteTable` | `examples/ec2/cluster/v1beta1/transitgatewayroutetable.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: transitGatewayId |
+| `AWS::GuardDuty::Detector` | `examples/guardduty/cluster/v1beta1/detector.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::GuardDuty::Detector` | `examples/guardduty/cluster/v1beta2/detector.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::SSO::PermissionSet` | `examples/ssoadmin/cluster/v1beta1/permissionset.yaml` | not-expressible | relay_state: no top-level property of that name |
+| `AWS::SSO::Assignment` | `examples/ssoadmin/cluster/v1beta1/accountassignment.yaml` | not-expressible | required PrincipalId is not in the example |
+| `AWS::SSO::InstanceAccessControlAttributeConfiguration` | `examples/ssoadmin/cluster/v1beta1/instanceaccesscontrolattributes.yaml` | not-expressible | attribute: no top-level property of that name |
+| `AWS::EC2::TransitGatewayRoute` | `examples/ec2/cluster/v1beta1/transitgatewayprefixlistreference.yaml` | not-expressible | prefix_list_id (by reference): no top-level property of that name |
+| `AWS::EC2::TransitGatewayRoute` | `examples/ec2/cluster/v1beta1/transitgatewayroute.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: transitGatewayAttachmentId, transitGatewayRouteTableId |
+| `AWS::EC2::TransitGatewayRouteTableAssociation` | `examples/ec2/cluster/v1beta1/transitgatewayprefixlistreference.yaml` | not-expressible | prefix_list_id (by reference): no top-level property of that name |
+| `AWS::EC2::TransitGatewayRouteTableAssociation` | `examples/ec2/cluster/v1beta1/transitgatewayroutetableassociation.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: transitGatewayAttachmentId, transitGatewayRouteTableId |
+| `AWS::EC2::TransitGatewayRouteTableAssociation` | `examples/ec2/cluster/v1beta1/transitgatewayroutetablepropagation.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: transitGatewayAttachmentId, transitGatewayRouteTableId |
+| `AWS::EC2::TransitGatewayRouteTablePropagation` | `examples/ec2/cluster/v1beta1/transitgatewayprefixlistreference.yaml` | not-expressible | prefix_list_id (by reference): no top-level property of that name |
+| `AWS::EC2::TransitGatewayRouteTablePropagation` | `examples/ec2/cluster/v1beta1/transitgatewayroutetableassociation.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: transitGatewayAttachmentId, transitGatewayRouteTableId |
+| `AWS::EC2::TransitGatewayRouteTablePropagation` | `examples/ec2/cluster/v1beta1/transitgatewayroutetablepropagation.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: transitGatewayAttachmentId, transitGatewayRouteTableId |
+| `AWS::EC2::TransitGatewayPeeringAttachment` | `examples/ec2/cluster/v1beta1/transitgatewaypeeringattachment.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::EC2::TransitGatewayPeeringAttachment` | `examples/ec2/cluster/v1beta1/transitgatewaypeeringattachmentaccepter.yaml` | not-expressible | transit_gateway_attachment_id (by reference): TransitGatewayAttachmentId is read-only |
+| `AWS::Route53::DNSSEC` | `examples/route53/cluster/v1beta1/hostedzonednssec.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: hostedZoneId |
+| `AWS::Route53Resolver::ResolverConfig` | `examples/route53/cluster/v1beta1/resolverconfig.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: resourceId |
+| `AWS::Route53Resolver::ResolverConfig` | `examples/route53resolver/cluster/v1beta1/dnssecconfig.yaml` | not-expressible | required AutodefinedReverseFlag is not in the example |
+| `AWS::Config::ConfigurationRecorder` | `examples/configservice/cluster/v1beta1/configurationrecorder.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: roleARN |
+| `AWS::Config::ConfigurationRecorder` | `examples/configservice/cluster/v1beta2/configurationrecorder.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: roleARN |
+| `AWS::Config::DeliveryChannel` | `examples/configservice/cluster/v1beta1/deliverychannel.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Config::DeliveryChannel` | `examples/configservice/cluster/v1beta2/deliverychannel.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Config::ConfigRule` | `examples/configservice/cluster/v1beta1/configrule.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Config::ConfigRule` | `examples/configservice/cluster/v1beta2/configrule.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Config::ConfigurationAggregator` | `examples/configservice/cluster/v1beta1/configurationaggregator.yaml` | not-expressible | account_aggregation_source: no top-level property of that name |
+| `AWS::Config::ConfigurationAggregator` | `examples/configservice/cluster/v1beta2/configurationaggregator.yaml` | not-expressible | account_aggregation_source: no top-level property of that name |
+| `AWS::Config::ConformancePack` | `examples/configservice/cluster/v1beta1/conformancepack.yaml` | not-expressible | input_parameter: no top-level property of that name |
+| `AWS::Config::RemediationConfiguration` | `examples/configservice/cluster/v1beta1/remediationconfiguration.yaml` | not-expressible | parameter: no top-level property of that name |
+| `AWS::Config::RemediationConfiguration` | `examples/configservice/cluster/v1beta2/remediationconfiguration.yaml` | not-expressible | parameter: no top-level property of that name |
+| `AWS::GuardDuty::Filter` | `examples/guardduty/cluster/v1beta1/filter.yaml` | not-expressible | finding_criteria.criterion: an object, not []interface {} |
+| `AWS::GuardDuty::Filter` | `examples/guardduty/cluster/v1beta2/filter.yaml` | not-expressible | finding_criteria.criterion: an object, not []interface {} |
+| `AWS::GuardDuty::Member` | `examples/guardduty/cluster/v1beta1/member.yaml` | not-expressible | account_id: no top-level property of that name |
+| `AWS::GuardDuty::MalwareProtectionPlan` | `examples/guardduty/cluster/v1beta1/malwareprotectionplan.yaml` | not-expressible | protected_resource.s3_bucket.bucket_name (by reference): no top-level property of that name |
+| `AWS::SecurityHub::Standard` | `examples/securityhub/cluster/v1beta1/standardssubscription.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::SecurityHub::FindingAggregator` | `examples/securityhub/cluster/v1beta1/findingaggregator.yaml` | not-expressible | linking_mode: no top-level property of that name |
+| `AWS::SecurityHub::ActionTarget` | `examples/securityhub/cluster/v1beta1/actiontarget.yaml` | not-expressible | required Id is not in the example |
+| `AWS::AccessAnalyzer::Analyzer` | `examples/accessanalyzer/cluster/v1beta1/analyzer.yaml` | not-expressible | required Type is not in the example |
+| `AWS::AccessAnalyzer::Analyzer` | `examples/accessanalyzer/cluster/v1beta2/analyzer.yaml` | not-expressible | required Type is not in the example |
+| `AWS::AccessAnalyzer::ArchiveRule` | `examples/accessanalyzer/cluster/v1beta1/archiverule.yaml` | not-expressible | filter: an object, not []interface {} |
+| `AWS::ACMPCA::Permission` | `examples/acmpca/cluster/v1beta1/permission.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: certificateAuthorityArn |
+| `AWS::Detective::Graph` | `examples/detective/cluster/v1beta1/graph.yaml` | not-expressible | no field of the resource's own |
+| `AWS::Detective::MemberInvitation` | `examples/detective/cluster/v1beta1/member.yaml` | not-expressible | account_id: no top-level property of that name |
+| `AWS::Macie::CustomDataIdentifier` | `examples/macie2/cluster/v1beta1/customdataidentifier.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Macie::FindingsFilter` | `examples/macie2/cluster/v1beta1/findingsfilter.yaml` | not-expressible | finding_criteria.criterion: a free-form object (Terraform writes it differently) |
+| `AWS::Macie::FindingsFilter` | `examples/macie2/cluster/v1beta2/findingsfilter.yaml` | not-expressible | finding_criteria.criterion: a free-form object (Terraform writes it differently) |
+| `AWS::NetworkFirewall::ContainerAssociation` | `examples/networkfirewall/cluster/v1beta1/containerassociation.yaml` | not-expressible | container_monitoring_configuration: no top-level property of that name |
+| `AWS::SecurityHub::Insight` | `examples/securityhub/cluster/v1beta1/insight.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::SecurityHub::Insight` | `examples/securityhub/cluster/v1beta2/insight.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::SecurityHub::ProductSubscription` | `examples/securityhub/cluster/v1beta1/productsubscription.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::WAFv2::LoggingConfiguration` | `examples/wafv2/cluster/v1beta1/webaclloggingconfiguration.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: resourceArn |
+| `AWS::WAFv2::RegexPatternSet` | `examples/wafv2/cluster/v1beta1/regexpatternset.yaml` | not-expressible | regular_expression: no top-level property of that name |
+| `AWS::ECR::RegistryPolicy` | `examples/ecr/cluster/v1beta1/registrypolicy.yaml` | not-expressible | policy: no top-level property of that name |
+| `AWS::ECR::RegistryScanningConfiguration` | `examples/ecr/cluster/v1beta1/registryscanningconfiguration.yaml` | not-expressible | rule: no top-level property of that name |
+| `AWS::IAM::ServerCertificate` | `examples/iam/cluster/v1beta1/servercertificate.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::IdentityStore::Group` | `examples/identitystore/cluster/v1beta1/group.yaml` | not-expressible | identity_store_id: "Identity store id from a manually created SSO instance in the same region specified below" is outside the schema's lengths |
+| `AWS::IdentityStore::GroupMembership` | `examples/identitystore/cluster/v1beta1/groupmembership.yaml` | not-expressible | identity_store_id: "Identity store id from a manually created SSO instance in the same region specified below" is outside the schema's lengths |
+| `AWS::IdentityStore::User` | `examples/identitystore/cluster/v1beta1/user.yaml` | not-expressible | identity_store_id: "Identity store id from a manually created SSO instance in the same region specified below" is outside the schema's lengths |
+| `AWS::IdentityStore::User` | `examples/identitystore/cluster/v1beta2/user.yaml` | not-expressible | emails: a list, not map[string]interface {} |
+| `AWS::RAM::PrincipalAssociation` | `examples/ram/cluster/v1beta1/principalassociation.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: resourceShareArn |
+| `AWS::RAM::ResourceAssociation` | `examples/ram/cluster/v1beta1/resourceassociation.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: resourceShareArn |
+| `AWS::Route53::TrafficPolicy` | `examples/route53/cluster/v1beta1/trafficpolicy.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Route53::TrafficPolicyInstance` | `examples/route53/cluster/v1beta1/trafficpolicyinstance.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: hostedZoneId, trafficPolicyId |
+| `AWS::Route53Profiles::Profile` | `examples/route53profiles/cluster/v1beta1/profile.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Route53Profiles::ProfileAssociation` | `examples/route53profiles/cluster/v1beta1/association.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: profileId, resourceId |
+| `AWS::Route53Profiles::ProfileResourceAssociation` | `examples/route53profiles/cluster/v1beta1/resourceassociation-zone.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: profileId |
+| `AWS::Route53Profiles::ProfileResourceAssociation` | `examples/route53profiles/cluster/v1beta1/resourceassociation.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: profileId |
+| `AWS::EC2::GatewayRouteTableAssociation` | `examples/ec2/cluster/v1beta1/mainroutetableassociation.yaml` | not-expressible | vpc_id (by reference): no top-level property of that name |
+| `AWS::EC2::GatewayRouteTableAssociation` | `examples/ec2/cluster/v1beta1/routetableassociation.yaml` | not-expressible | subnet_id (by reference): no top-level property of that name |
+| `AWS::EC2::NetworkInsightsAnalysis` | `examples/ec2/cluster/v1beta1/networkinsightsanalysis.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: networkInsightsPathId |
+| `AWS::EC2::NetworkInsightsPath` | `examples/ec2/cluster/v1beta1/networkinsightspath.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: destination, source |
+| `AWS::EC2::NetworkInterface` | `examples/ec2/cluster/v1beta1/networkinterface.yaml` | not-expressible | private_ips: no top-level property of that name |
+| `AWS::EC2::NetworkInterfaceAttachment` | `examples/ec2/cluster/v1beta1/networkinterfaceattachment.yaml` | not-expressible | device_index: a string, not float64 |
+| `AWS::EC2::NetworkPerformanceMetricSubscription` | `examples/vpc/cluster/v1beta1/networkperformancemetricsubscription.yaml` | not-expressible | required Metric is not in the example |
+| `AWS::EC2::PlacementGroup` | `examples/ec2/cluster/v1beta1/placementgroup.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::EC2::SecurityGroupEgress` | `examples/ec2/cluster/v1beta1/securitygroupegressrule.yaml` | not-expressible | cidr_ipv4: no top-level property of that name |
+| `AWS::EC2::SecurityGroupIngress` | `examples/ec2/cluster/v1beta1/securitygroupingressrule.yaml` | not-expressible | cidr_ipv4: no top-level property of that name |
+| `AWS::EC2::SubnetCidrReservation` | `examples/ec2/cluster/v1beta1/subnetcidrreservation.yaml` | not-expressible | cidr_block: no top-level property of that name |
+| `AWS::EC2::TrafficMirrorFilter` | `examples/ec2/cluster/v1beta1/trafficmirrorfilter.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::EC2::TrafficMirrorFilterRule` | `examples/ec2/cluster/v1beta1/trafficmirrorfilterrule.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: trafficMirrorFilterId |
+| `AWS::EC2::TrafficMirrorFilterRule` | `examples/ec2/cluster/v1beta2/trafficmirrorfilterrule.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: trafficMirrorFilterId |
+| `AWS::EC2::TransitGatewayConnect` | `examples/ec2/cluster/v1beta1/transitgatewayconnect.yaml` | not-expressible | transit_gateway_id (by reference): TransitGatewayId is read-only |
+| `AWS::EC2::TransitGatewayConnectPeer` | `examples/ec2/cluster/v1beta1/transitgatewayconnectpeer.yaml` | not-expressible | inside_cidr_blocks: no top-level property of that name |
+| `AWS::EC2::TransitGatewayMulticastDomain` | `examples/ec2/cluster/v1beta1/transitgatewaymulticastdomain.yaml` | not-expressible | static_sources_support: no top-level property of that name |
+| `AWS::EC2::TransitGatewayMulticastDomainAssociation` | `examples/ec2/cluster/v1beta1/transitgatewaymulticastdomainassociation.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: subnetId, transitGatewayAttachmentId, transitGatewayMulticastDomainId |
+| `AWS::EC2::TransitGatewayMulticastGroupMember` | `examples/ec2/cluster/v1beta1/transitgatewaymulticastgroupmember.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: networkInterfaceId, transitGatewayMulticastDomainId |
+| `AWS::EC2::TransitGatewayMulticastGroupMember` | `examples/ec2/cluster/v1beta1/transitgatewaymulticastgroupsource.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: networkInterfaceId, transitGatewayMulticastDomainId |
+| `AWS::EC2::TransitGatewayMulticastGroupSource` | `examples/ec2/cluster/v1beta1/transitgatewaymulticastgroupmember.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: networkInterfaceId, transitGatewayMulticastDomainId |
+| `AWS::EC2::TransitGatewayMulticastGroupSource` | `examples/ec2/cluster/v1beta1/transitgatewaymulticastgroupsource.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: networkInterfaceId, transitGatewayMulticastDomainId |
+| `AWS::EC2::TransitGatewayPolicyTable` | `examples/ec2/cluster/v1beta1/transitgatewaypolicytable.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: transitGatewayId |
+| `AWS::EC2::TransitGatewayPolicyTable` | `examples/ec2/cluster/v1beta1/transitgatewayroutetable.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: transitGatewayId |
+| `AWS::CloudWatch::CompositeAlarm` | `examples/cloudwatch/cluster/v1beta1/compositealarm.yaml` | not-expressible | alarm_actions (by reference): AlarmActions is not a string |
+| `AWS::CloudWatch::CompositeAlarm` | `examples/cloudwatch/cluster/v1beta2/compositealarm.yaml` | not-expressible | alarm_actions (by reference): AlarmActions is not a string |
+| `AWS::Logs::AccountPolicy` | `examples/cloudwatchlogs/cluster/v1beta1/accountpolicy-subscriptionfilterpolicy.yaml` | not-expressible | required PolicyName is not in the example |
+| `AWS::Logs::AccountPolicy` | `examples/cloudwatchlogs/cluster/v1beta1/accountpolicy.yaml` | not-expressible | required PolicyName is not in the example |
+| `AWS::Logs::Destination` | `examples/cloudwatchlogs/cluster/v1beta1/destination.yaml` | not-expressible | required DestinationName is not in the example |
+| `AWS::Logs::QueryDefinition` | `examples/cloudwatchlogs/cluster/v1beta1/definition.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Logs::SubscriptionFilter` | `examples/cloudwatchlogs/cluster/v1beta1/subscriptionfilter.yaml` | not-expressible | name: no top-level property of that name |
+| `AWS::RDS::EventSubscription` | `examples/rds/cluster/v1beta1/eventsubscription.yaml` | not-expressible | sns_topic (by reference): no top-level property of that name |
+| `AWS::RolesAnywhere::Profile` | `examples/rolesanywhere/cluster/v1beta1/profile.yaml` | not-expressible | role_arns (by reference): RoleArns is not a string |
+| `AWS::ApiGatewayV2::RoutingRule` | `examples/apigatewayv2/cluster/v1beta1/routingrule.yaml` | not-expressible | action: no top-level property of that name |
+| `AWS::AutoScaling::LifecycleHook` | `examples/autoscaling/cluster/v1beta1/lifecyclehook.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: autoScalingGroupName |
+| `AWS::CloudFront::FieldLevelEncryptionConfig` | `examples/cloudfront/cluster/v1beta1/fieldlevelencryptionconfig.yaml` | not-expressible | content_type_profile_config.content_type_profiles[0].items: no such property |
+| `AWS::CloudFront::FieldLevelEncryptionConfig` | `examples/cloudfront/cluster/v1beta2/fieldlevelencryptionconfig.yaml` | not-expressible | content_type_profile_config.content_type_profiles: a list, not map[string]interface {} |
+| `AWS::CloudFront::FieldLevelEncryptionProfile` | `examples/cloudfront/cluster/v1beta1/fieldlevelencryptionprofile.yaml` | not-expressible | comment: no top-level property of that name |
+| `AWS::CloudFront::FieldLevelEncryptionProfile` | `examples/cloudfront/cluster/v1beta2/fieldlevelencryptionprofile.yaml` | not-expressible | comment: no top-level property of that name |
+| `AWS::CloudFront::KeyValueStore` | `examples/cloudfront/cluster/v1beta1/keyvaluestore.yaml` | not-expressible | required Name is not in the example |
+| `AWS::CloudFront::PublicKey` | `examples/cloudfront/cluster/v1beta1/publickey.yaml` | not-expressible | comment: no top-level property of that name |
+| `AWS::CloudFront::RealtimeLogConfig` | `examples/cloudfront/cluster/v1beta1/realtimelogconfig.yaml` | not-expressible | endpoint: no top-level property of that name |
+| `AWS::CloudFront::RealtimeLogConfig` | `examples/cloudfront/cluster/v1beta2/realtimelogconfig.yaml` | not-expressible | endpoint: no top-level property of that name |
+| `AWS::CodeDeploy::DeploymentConfig` | `examples/deploy/cluster/v1beta1/deploymentconfig.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::CodeDeploy::DeploymentConfig` | `examples/deploy/cluster/v1beta2/deploymentconfig.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::CodeDeploy::DeploymentGroup` | `examples/deploy/cluster/v1beta1/deploymentgroup.yaml` | not-expressible | alarm_configuration.alarms[0]: an object, not string |
+| `AWS::CodeDeploy::DeploymentGroup` | `examples/deploy/cluster/v1beta2/deploymentgroup.yaml` | not-expressible | alarm_configuration.alarms[0]: an object, not string |
+| `AWS::ElasticLoadBalancingV2::TrustStore` | `examples/elbv2/cluster/v1beta1/lbtruststore.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::EventSchemas::Schema` | `examples/schemas/cluster/v1beta1/schema.yaml` | not-expressible | name: no top-level property of that name |
+| `AWS::Lambda::LayerVersionPermission` | `examples/lambda/cluster/v1beta1/layerversionpermission.yaml` | not-expressible | layer_name: no top-level property of that name |
+| `AWS::Lambda::NetworkConnector` | `examples/lambdacore/cluster/v1beta1/networkconnector.yaml` | not-expressible | configuration.vpc_egress_configuration: required SubnetIds is not in the example |
+| `AWS::Logs::LogStream` | `examples/cloudwatchlogs/cluster/v1beta1/stream.yaml` | not-expressible | name: no top-level property of that name |
+| `AWS::MSK::BatchScramSecret` | `examples/kafka/cluster/v1beta1/scramsecretassociation.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: clusterArn |
+| `AWS::MSK::BatchScramSecret` | `examples/kafka/cluster/v1beta1/singlescramsecretassociation.yaml` | not-expressible | secret_arn (by reference): no top-level property of that name |
+| `AWS::MSK::ClusterPolicy` | `examples/kafka/cluster/v1beta1/clusterpolicy.yaml` | not-expressible | policy: an object, not string |
+| `AWS::RDS::ClusterSnapshot` | `examples/rds/cluster/v1beta1/clustersnapshot.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: dbClusterIdentifier |
+| `AWS::RDS::ClusterSnapshot` | `examples/docdb/cluster/v1beta1/clustersnapshot.yaml` | not-expressible | required DBClusterSnapshotIdentifier is not in the example |
+| `AWS::RDS::ClusterSnapshot` | `examples/neptune/cluster/v1beta1/cluster-snapshot.yaml` | not-expressible | required DBClusterSnapshotIdentifier is not in the example |
+| `AWS::S3Files::FileSystemPolicy` | `examples/efs/cluster/v1beta1/filesystempolicy.yaml` | not-expressible | bypass_policy_lockout_safety_check: no top-level property of that name |
+| `AWS::S3Files::FileSystemPolicy` | `examples/s3files/cluster/v1beta1/filesystempolicy.yaml` | not-expressible | policy: an object, not string |
+| `AWS::SSM::MaintenanceWindow` | `examples/ssm/cluster/v1beta1/maintenancewindow.yaml` | not-expressible | required AllowUnassociatedTargets is not in the example |
+| `AWS::SSM::MaintenanceWindowTarget` | `examples/ssm/cluster/v1beta1/maintenancewindowtarget.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: windowId |
+| `AWS::SSM::MaintenanceWindowTask` | `examples/ssm/cluster/v1beta1/maintenancewindowtask.yaml` | not-expressible | task_invocation_parameters.lambda_parameters: no such property |
+| `AWS::SSM::MaintenanceWindowTask` | `examples/ssm/cluster/v1beta2/maintenancewindowtask.yaml` | not-expressible | task_invocation_parameters.lambda_parameters: no such property |
+| `AWS::SSM::ServiceSetting` | `examples/ssm/cluster/v1beta1/servicesetting.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Glue::Registry` | `examples/glue/cluster/v1beta1/registry.yaml` | not-expressible | required Name is not in the example |
+| `AWS::Glue::Schema` | `examples/glue/cluster/v1beta1/schema.yaml` | not-expressible | schema_name: no top-level property of that name |
+| `AWS::KafkaConnect::CustomPlugin` | `examples/kafkaconnect/cluster/v1beta1/customplugin.yaml` | not-expressible | location.s3: no such property |
+| `AWS::KafkaConnect::CustomPlugin` | `examples/kafkaconnect/cluster/v1beta2/customplugin.yaml` | not-expressible | location.s3: no such property |
+| `AWS::KafkaConnect::WorkerConfiguration` | `examples/kafkaconnect/cluster/v1beta1/workerconfiguration.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::S3Tables::TablePolicy` | `examples/s3tables/cluster/v1beta1/tablepolicy.yaml` | not-expressible | resource_policy: an object, not string |
+| `AWS::S3Tables::TablePolicy` | `examples/s3tables/cluster/v1beta1/tablereplication.yaml` | not-expressible | rule: no top-level property of that name |
+| `AWS::S3Vectors::VectorBucketPolicy` | `examples/s3vectors/cluster/v1beta1/vectorbucketpolicy.yaml` | not-expressible | policy: an object, not string |
+| `AWS::SSM::ResourcePolicy` | `examples/dynamodb/cluster/v1beta1/resourcepolicy.yaml` | not-expressible | policy: an object, not string |
+| `AWS::SSM::ResourcePolicy` | `examples/glue/cluster/v1beta1/resourcepolicy.yaml` | not-expressible | policy: an object, not string |
+| `AWS::SSM::ResourcePolicy` | `examples/redshiftserverless/cluster/v1beta1/resourcepolicy.yaml` | not-expressible | policy: an object, not string |
+| `AWS::MSK::Replicator` | `examples/kafka/cluster/v1beta1/replicator.yaml` | not-expressible | kafka_cluster: no top-level property of that name |
+| `AWS::AgentRegistry::Registry` | `examples/agentregistry/cluster/v1beta1/registry.yaml` | not-expressible | discovery_configuration.authorizer_type: no such property |
+| `AWS::Amplify::App` | `examples/amplify/cluster/v1beta1/app.yaml` | not-expressible | custom_rule: no top-level property of that name |
+| `AWS::Amplify::App` | `examples/amplify/cluster/v1beta2/app.yaml` | not-expressible | custom_rule: no top-level property of that name |
+| `AWS::Amplify::Branch` | `examples/amplify/cluster/v1beta1/branch.yaml` | not-expressible | environment_variables: a list, not map[string]interface {} |
+| `AWS::Amplify::Webhook` | `examples/amplify/cluster/v1beta1/webhook.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: appId, branchName |
+| `AWS::ApiGateway::Account` | `examples/apigateway/cluster/v1beta1/account.yaml` | not-expressible | no field of the resource's own |
+| `AWS::ApiGateway::BasePathMapping` | `examples/apigateway/cluster/v1beta1/domainname.yaml` | not-expressible | api_id (by reference): no top-level property of that name |
+| `AWS::ApiGateway::ClientCertificate` | `examples/apigateway/cluster/v1beta1/clientcertificate.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::ApiGateway::DomainName` | `examples/apigateway/cluster/v1beta2/domainname.yaml` | not-expressible | certificate_body: no top-level property of that name |
+| `AWS::ApiGateway::DomainNameAccessAssociation` | `examples/apigateway/cluster/v1beta1/domainnameaccessassociation.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::ApiGateway::GatewayResponse` | `examples/apigateway/cluster/v1beta1/integrationresponse.yaml` | not-expressible | response_templates: a free-form object (Terraform writes it differently) |
+| `AWS::ApiGateway::UsagePlan` | `examples/apigateway/cluster/v1beta2/usageplan.yaml` | not-expressible | name: no top-level property of that name |
+| `AWS::ApiGateway::UsagePlanKey` | `examples/apigateway/cluster/v1beta1/stage.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: keyId, usagePlanId |
+| `AWS::AppConfig::Application` | `examples/appconfig/cluster/v1beta1/application.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::AppConfig::ConfigurationProfile` | `examples/appconfig/cluster/v1beta1/configurationprofile.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: applicationId |
+| `AWS::AppConfig::Deployment` | `examples/appconfig/cluster/v1beta1/deployment.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: applicationId, configurationProfileId, deploymentStrategyId, environmentId |
+| `AWS::AppConfig::DeploymentStrategy` | `examples/appconfig/cluster/v1beta1/deploymentstrategy.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::AppConfig::Environment` | `examples/appconfig/cluster/v1beta1/environment.yaml` | not-expressible | monitor: no top-level property of that name |
+| `AWS::AppConfig::Extension` | `examples/appconfig/cluster/v1beta1/extension.yaml` | not-expressible | action_point: no top-level property of that name |
+| `AWS::AppConfig::ExtensionAssociation` | `examples/appconfig/cluster/v1beta1/extensionassociation.yaml` | not-expressible | extension_arn (by reference): ExtensionArn is read-only |
+| `AWS::AppConfig::HostedConfigurationVersion` | `examples/appconfig/cluster/v1beta1/hostedconfigurationversion.yaml` | not-expressible | required Content is not in the example |
+| `AWS::AppFlow::Flow` | `examples/appflow/cluster/v1beta1/flow.yaml` | not-expressible | destination_flow_config: no top-level property of that name |
+| `AWS::AppFlow::Flow` | `examples/appflow/cluster/v1beta2/flow.yaml` | not-expressible | destination_flow_config: no top-level property of that name |
+| `AWS::AppIntegrations::EventIntegration` | `examples/appintegrations/cluster/v1beta1/eventintegration.yaml` | not-expressible | required Name is not in the example |
+| `AWS::AppIntegrations::EventIntegration` | `examples/appintegrations/cluster/v1beta2/eventintegration.yaml` | not-expressible | required Name is not in the example |
+| `AWS::ApplicationInsights::Application` | `examples/applicationinsights/cluster/v1beta1/application.yaml` | not-expressible | required ResourceGroupName is not in the example |
+| `AWS::AppRunner::AutoScalingConfiguration` | `examples/apprunner/cluster/v1beta1/autoscalingconfigurationversion.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::AppRunner::ObservabilityConfiguration` | `examples/apprunner/cluster/v1beta1/observabilityconfiguration.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::AppRunner::ObservabilityConfiguration` | `examples/apprunner/cluster/v1beta2/observabilityconfiguration.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::AppRunner::Service` | `examples/apprunner/cluster/v1beta1/service.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::AppRunner::Service` | `examples/apprunner/cluster/v1beta2/service.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::AppRunner::VpcConnector` | `examples/apprunner/cluster/v1beta1/vpcconnector.yaml` | not-expressible | security_groups (by reference): SecurityGroups is not a string |
+| `AWS::AppStream::DirectoryConfig` | `examples/appstream/cluster/v1beta1/directoryconfig.yaml` | not-expressible | service_account_credentials: required AccountPassword is not in the example |
+| `AWS::AppStream::DirectoryConfig` | `examples/appstream/cluster/v1beta2/directoryconfig.yaml` | not-expressible | service_account_credentials: required AccountPassword is not in the example |
+| `AWS::AppStream::Fleet` | `examples/appstream/cluster/v1beta1/fleet.yaml` | not-expressible | vpc_config.subnet_ids (by reference): no top-level property of that name |
+| `AWS::AppStream::Fleet` | `examples/appstream/cluster/v1beta2/fleet.yaml` | not-expressible | vpc_config.subnet_ids (by reference): no top-level property of that name |
+| `AWS::AppStream::ImageBuilder` | `examples/appstream/cluster/v1beta1/imagebuilder.yaml` | not-expressible | vpc_config.subnet_ids (by reference): no top-level property of that name |
+| `AWS::AppStream::ImageBuilder` | `examples/appstream/cluster/v1beta2/imagebuilder.yaml` | not-expressible | vpc_config.subnet_ids (by reference): no top-level property of that name |
+| `AWS::AppStream::Stack` | `examples/appstream/cluster/v1beta1/stack.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::AppStream::Stack` | `examples/appstream/cluster/v1beta2/stack.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::AppStream::StackFleetAssociation` | `examples/appstream/cluster/v1beta1/fleetstackassociation.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: fleetName, stackName |
+| `AWS::AppStream::StackUserAssociation` | `examples/appstream/cluster/v1beta1/userstackassociation.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: authenticationType, stackName, userName |
+| `AWS::AppStream::User` | `examples/appstream/cluster/v1beta1/user.yaml` | not-expressible | required UserName is not in the example |
+| `AWS::AppSync::Api` | `examples/appsync/cluster/v1beta1/graphqlapi.yaml` | not-expressible | authentication_type: no top-level property of that name |
+| `AWS::AppSync::Api` | `examples/appsync/cluster/v1beta2/graphqlapi.yaml` | not-expressible | authentication_type: no top-level property of that name |
+| `AWS::AppSync::ApiCache` | `examples/appsync/cluster/v1beta1/apicache.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: apiId |
+| `AWS::AppSync::ApiKey` | `examples/appsync/cluster/v1beta1/apikey.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: apiId |
+| `AWS::AppSync::FunctionConfiguration` | `examples/appsync/cluster/v1beta1/function.yaml` | not-expressible | data_source (by reference): no top-level property of that name |
+| `AWS::AppSync::FunctionConfiguration` | `examples/appsync/cluster/v1beta2/function.yaml` | not-expressible | data_source (by reference): no top-level property of that name |
+| `AWS::AppSync::GraphQLApi` | `examples/appsync/cluster/v1beta1/graphqlapi.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::AppSync::GraphQLApi` | `examples/appsync/cluster/v1beta2/graphqlapi.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::AppSync::Resolver` | `examples/appsync/cluster/v1beta1/resolver.yaml` | not-expressible | field: no top-level property of that name |
+| `AWS::AppSync::Resolver` | `examples/appsync/cluster/v1beta2/resolver.yaml` | not-expressible | field: no top-level property of that name |
+| `AWS::Athena::NamedQuery` | `examples/athena/cluster/v1beta1/namedquery.yaml` | not-expressible | query: no top-level property of that name |
+| `AWS::AutoScalingPlans::ScalingPlan` | `examples/autoscalingplans/cluster/v1beta1/scalingplan.yaml` | not-expressible | application_source.tag_filter: no such property |
+| `AWS::AutoScalingPlans::ScalingPlan` | `examples/autoscalingplans/cluster/v1beta2/scalingplan.yaml` | not-expressible | application_source.tag_filter: no such property |
+| `AWS::Backup::Framework` | `examples/backup/cluster/v1beta1/framework.yaml` | not-expressible | control: no top-level property of that name |
+| `AWS::Backup::Framework` | `examples/backup/cluster/v1beta2/framework.yaml` | not-expressible | control: no top-level property of that name |
+| `AWS::Backup::ReportPlan` | `examples/backup/cluster/v1beta1/reportplan.yaml` | not-expressible | description: no top-level property of that name |
+| `AWS::Backup::ReportPlan` | `examples/backup/cluster/v1beta2/reportplan.yaml` | not-expressible | description: no top-level property of that name |
+| `AWS::Batch::ComputeEnvironment` | `examples/batch/cluster/v1beta1/computeenvironment.yaml` | not-expressible | compute_resources.instance_type: no such property |
+| `AWS::Batch::JobDefinition` | `examples/batch/cluster/v1beta1/jobdefinition.yaml` | not-expressible | container_properties: an object, not string |
+| `AWS::Batch::JobDefinition` | `examples/batch/cluster/v1beta2/jobdefinition.yaml` | not-expressible | container_properties: an object, not string |
+| `AWS::Batch::JobQueue` | `examples/batch/cluster/v1beta1/jobqueue.yaml` | not-expressible | compute_environment_order[0]: required ComputeEnvironment is not in the example |
+| `AWS::Batch::SchedulingPolicy` | `examples/batch/cluster/v1beta1/schedulingpolicy.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Batch::SchedulingPolicy` | `examples/batch/cluster/v1beta2/schedulingpolicy.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Bedrock::ApplicationInferenceProfile` | `examples/bedrock/cluster/v1beta1/inferenceprofile.yaml` | not-expressible | name: no top-level property of that name |
+| `AWS::Bedrock::DataSource` | `examples/bedrockagent/cluster/v1beta1/datasource.yaml` | not-expressible | data_source_configuration.s3_configuration: required BucketArn is not in the example |
+| `AWS::Bedrock::Guardrail` | `examples/bedrock/cluster/v1beta1/guardrail.yaml` | not-expressible | content_policy_config.tier_config: no such property |
+| `AWS::Bedrock::GuardrailVersion` | `examples/bedrock/cluster/v1beta1/guardrailversion.yaml` | not-expressible | guardrail_arn (by reference): GuardrailArn is read-only |
+| `AWS::BedrockAgentCore::Evaluator` | `examples/bedrockagentcore/cluster/v1beta1/evaluator.yaml` | not-expressible | evaluator_config.llm_as_a_judge: required Instructions is not in the example |
+| `AWS::BedrockAgentCore::OAuth2CredentialProvider` | `examples/bedrockagentcore/cluster/v1beta1/oauth2credentialprovider-cms.yaml` | not-expressible | oauth2_provider_config: no top-level property of that name |
+| `AWS::BedrockAgentCore::OAuth2CredentialProvider` | `examples/bedrockagentcore/cluster/v1beta1/oauth2credentialprovider.yaml` | not-expressible | oauth2_provider_config: no top-level property of that name |
+| `AWS::BedrockAgentCore::OnlineEvaluationConfig` | `examples/bedrockagentcore/cluster/v1beta1/onlineevaluationconfig.yaml` | not-expressible | enable_on_create: no top-level property of that name |
+| `AWS::BedrockAgentCore::ResourcePolicy` | `examples/bedrockagentcore/cluster/v1beta1/resourcepolicy.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::BedrockAgentCore::ResourcePolicy` | `examples/dynamodb/cluster/v1beta1/resourcepolicy.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: resourceArn |
+| `AWS::BedrockAgentCore::ResourcePolicy` | `examples/glue/cluster/v1beta1/resourcepolicy.yaml` | not-expressible | required ResourceArn is not in the example |
+| `AWS::BedrockAgentCore::ResourcePolicy` | `examples/redshiftserverless/cluster/v1beta1/resourcepolicy.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: resourceArn |
+| `AWS::Budgets::BudgetsAction` | `examples/budgets/cluster/v1beta1/budgetaction.yaml` | not-expressible | action_threshold.action_threshold_type: no such property |
+| `AWS::Budgets::BudgetsAction` | `examples/budgets/cluster/v1beta2/budgetaction.yaml` | not-expressible | action_threshold.action_threshold_type: no such property |
+| `AWS::CE::AnomalyMonitor` | `examples/ce/cluster/v1beta1/anomalymonitor.yaml` | not-expressible | name: no top-level property of that name |
+| `AWS::Chime::VoiceConnector` | `examples/chime/cluster/v1beta1/voiceconnector.yaml` | not-expressible | required Name is not in the example |
+| `AWS::Chime::VoiceConnector` | `examples/chime/cluster/v1beta1/voiceconnectorgroup.yaml` | not-expressible | connector: no top-level property of that name |
+| `AWS::Cloud9::EnvironmentEC2` | `examples/cloud9/cluster/v1beta1/environmentec2.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::CloudFormation::StackSet` | `examples/cloudformation/cluster/v1beta1/stackset.yaml` | not-expressible | parameters: a list, not map[string]interface {} |
+| `AWS::CloudFormation::StackSet` | `examples/cloudformation/cluster/v1beta2/stackset.yaml` | not-expressible | parameters: a list, not map[string]interface {} |
+| `AWS::CloudFormation::StackSet` | `examples/cloudformation/cluster/v1beta1/stacksetinstance.yaml` | not-expressible | account_id: no top-level property of that name |
+| `AWS::CloudFormation::StackSet` | `examples/cloudformation/cluster/v1beta2/stacksetinstance.yaml` | not-expressible | account_id: no top-level property of that name |
+| `AWS::CodeArtifact::Repository` | `examples/codeartifact/cluster/v1beta1/repository.yaml` | not-expressible | repository: no top-level property of that name |
+| `AWS::CodeBuild::Project` | `examples/codebuild/cluster/v1beta1/project.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: serviceRole |
+| `AWS::CodeBuild::ReportGroup` | `examples/codebuild/cluster/v1beta1/reportgroup.yaml` | not-expressible | export_config.s3_destination: required Bucket is not in the example |
+| `AWS::CodeBuild::SourceCredential` | `examples/codebuild/cluster/v1beta1/sourcecredential.yaml` | not-expressible | required Token is not in the example |
+| `AWS::CodeCommit::Repository` | `examples/codecommit/cluster/v1beta1/approvalruletemplateassociation.yaml` | not-expressible | description: no top-level property of that name |
+| `AWS::CodeCommit::Repository` | `examples/codecommit/cluster/v1beta1/trigger.yaml` | not-expressible | description: no top-level property of that name |
+| `AWS::CodeGuruProfiler::ProfilingGroup` | `examples/codeguruprofiler/cluster/v1beta1/profilinggroup.yaml` | not-expressible | agent_orchestration_config: no top-level property of that name |
+| `AWS::CodePipeline::CustomActionType` | `examples/codepipeline/cluster/v1beta1/customactiontype.yaml` | not-expressible | provider_name: no top-level property of that name |
+| `AWS::CodePipeline::CustomActionType` | `examples/codepipeline/cluster/v1beta2/customactiontype.yaml` | not-expressible | provider_name: no top-level property of that name |
+| `AWS::CodePipeline::Webhook` | `examples/codepipeline/cluster/v1beta1/webhook.yaml` | not-expressible | filter: no top-level property of that name |
+| `AWS::CodePipeline::Webhook` | `examples/codepipeline/cluster/v1beta2/webhook.yaml` | not-expressible | filter: no top-level property of that name |
+| `AWS::CodeStarConnections::Connection` | `examples/codestarconnections/cluster/v1beta1/connection.yaml` | not-expressible | name: no top-level property of that name |
+| `AWS::CodeStarNotifications::NotificationRule` | `examples/codestarnotifications/cluster/v1beta1/notificationrule.yaml` | not-expressible | required Targets is not in the example |
+| `AWS::Cognito::IdentityPoolPrincipalTag` | `examples/cognitoidentity/cluster/v1beta1/cognitoidentitypoolproviderprincipaltag.yaml` | not-expressible | principal_tags: a free-form object (Terraform writes it differently) |
+| `AWS::Cognito::IdentityPoolRoleAttachment` | `examples/cognitoidentity/cluster/v1beta1/poolrolesattachment.yaml` | not-expressible | role_mapping: no top-level property of that name |
+| `AWS::Cognito::LogDeliveryConfiguration` | `examples/cognitoidp/cluster/v1beta1/logdeliveryconfiguration.yaml` | not-expressible | log_configurations.cloud_watch_logs_configuration.log_group_arn (by reference): no top-level property of that name |
+| `AWS::Cognito::UserPoolGroup` | `examples/cognitoidp/cluster/v1beta1/usergroup.yaml` | not-expressible | name: no top-level property of that name |
+| `AWS::Cognito::UserPoolIdentityProvider` | `examples/cognitoidp/cluster/v1beta1/identityprovider.yaml` | not-expressible | attribute_mapping: a free-form object (Terraform writes it differently) |
+| `AWS::Cognito::UserPoolRiskConfigurationAttachment` | `examples/cognitoidp/cluster/v1beta1/riskconfiguration.yaml` | not-expressible | required ClientId is not in the example |
+| `AWS::Cognito::UserPoolRiskConfigurationAttachment` | `examples/cognitoidp/cluster/v1beta2/riskconfiguration.yaml` | not-expressible | required ClientId is not in the example |
+| `AWS::Cognito::UserPoolUICustomizationAttachment` | `examples/cognitoidp/cluster/v1beta1/userpooluicustomization.yaml` | not-expressible | image_file: no top-level property of that name |
+| `AWS::Cognito::UserPoolUser` | `examples/cognitoidp/cluster/v1beta1/user.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: userPoolId |
+| `AWS::Cognito::UserPoolUserToGroupAttachment` | `examples/cognitoidp/cluster/v1beta1/useringroup.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: groupName, userPoolId, username |
+| `AWS::Connect::ContactFlow` | `examples/connect/cluster/v1beta1/contactflow.yaml` | not-expressible | instance_id (by reference): no top-level property of that name |
+| `AWS::Connect::ContactFlowModule` | `examples/connect/cluster/v1beta1/contactflowmodule.yaml` | not-expressible | instance_id (by reference): no top-level property of that name |
+| `AWS::Connect::HoursOfOperation` | `examples/connect/cluster/v1beta1/hoursofoperation.yaml` | not-expressible | instance_id (by reference): no top-level property of that name |
+| `AWS::Connect::HoursOfOperation` | `examples/connect/cluster/v1beta2/hoursofoperation.yaml` | not-expressible | instance_id (by reference): no top-level property of that name |
+| `AWS::Connect::HoursOfOperation` | `examples/connect/cluster/v1beta3/hoursofoperation.yaml` | not-expressible | instance_id (by reference): no top-level property of that name |
+| `AWS::Connect::Instance` | `examples/connect/cluster/v1beta1/instance.yaml` | not-expressible | inbound_calls_enabled: no top-level property of that name |
+| `AWS::Connect::InstanceStorageConfig` | `examples/connect/cluster/v1beta1/instancestorageconfig.yaml` | not-expressible | storage_config: no top-level property of that name |
+| `AWS::Connect::InstanceStorageConfig` | `examples/connect/cluster/v1beta2/instancestorageconfig.yaml` | not-expressible | storage_config: no top-level property of that name |
+| `AWS::Connect::PhoneNumber` | `examples/connect/cluster/v1beta1/phonenumber.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: targetArn |
+| `AWS::Connect::Queue` | `examples/connect/cluster/v1beta1/queue.yaml` | not-expressible | hours_of_operation_id (by reference): no top-level property of that name |
+| `AWS::Connect::Queue` | `examples/connect/cluster/v1beta2/queue.yaml` | not-expressible | hours_of_operation_id (by reference): no top-level property of that name |
+| `AWS::Connect::Queue` | `examples/connect/cluster/v1beta3/queue.yaml` | not-expressible | hours_of_operation_id (by reference): no top-level property of that name |
+| `AWS::Connect::QuickConnect` | `examples/connect/cluster/v1beta1/quickconnect.yaml` | not-expressible | instance_id (by reference): no top-level property of that name |
+| `AWS::Connect::QuickConnect` | `examples/connect/cluster/v1beta2/quickconnect.yaml` | not-expressible | instance_id (by reference): no top-level property of that name |
+| `AWS::Connect::RoutingProfile` | `examples/connect/cluster/v1beta1/routingprofile.yaml` | not-expressible | default_outbound_queue_id (by reference): no top-level property of that name |
+| `AWS::Connect::RoutingProfile` | `examples/connect/cluster/v1beta2/routingprofile.yaml` | not-expressible | default_outbound_queue_id (by reference): no top-level property of that name |
+| `AWS::Connect::SecurityProfile` | `examples/connect/cluster/v1beta1/securityprofile.yaml` | not-expressible | name: no top-level property of that name |
+| `AWS::Connect::User` | `examples/connect/cluster/v1beta1/user.yaml` | not-expressible | name: no top-level property of that name |
+| `AWS::Connect::User` | `examples/connect/cluster/v1beta2/user.yaml` | not-expressible | name: no top-level property of that name |
+| `AWS::Connect::UserHierarchyStructure` | `examples/connect/cluster/v1beta1/userhierarchystructure.yaml` | not-expressible | hierarchy_structure: no top-level property of that name |
+| `AWS::Connect::UserHierarchyStructure` | `examples/connect/cluster/v1beta2/userhierarchystructure.yaml` | not-expressible | hierarchy_structure: no top-level property of that name |
+| `AWS::Connect::Vocabulary` | `examples/connect/cluster/v1beta1/vocabulary.yaml` | not-expressible | name: no top-level property of that name |
+| `AWS::CUR::ReportDefinition` | `examples/cur/cluster/v1beta1/reportdefinition.yaml` | not-expressible | s3_prefix: "" is outside the schema's lengths |
+| `AWS::DataExchange::DataSet` | `examples/dataexchange/cluster/v1beta1/dataset.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::DataPipeline::Pipeline` | `examples/datapipeline/cluster/v1beta1/pipeline.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::DataSync::LocationS3` | `examples/datasync/cluster/v1beta2/task.yaml` | not-expressible | s3_config: required BucketAccessRoleArn is not in the example |
+| `AWS::DataSync::Task` | `examples/datasync/cluster/v1beta1/task.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: cloudWatchLogGroupArn, destinationLocationArn, sourceLocationArn |
+| `AWS::DAX::Cluster` | `examples/dax/cluster/v1beta1/cluster.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: iamRoleARN |
+| `AWS::DAX::Cluster` | `examples/dax/cluster/v1beta2/cluster.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: iamRoleARN |
+| `AWS::DAX::ParameterGroup` | `examples/dax/cluster/v1beta1/parametergroup.yaml` | not-expressible | parameters: no top-level property of that name |
+| `AWS::DAX::SubnetGroup` | `examples/dax/cluster/v1beta1/subnetgroup.yaml` | not-expressible | subnet_ids (by reference): SubnetIds is not a string |
+| `AWS::DevOpsAgent::AgentSpace` | `examples/devopsagent/cluster/v1beta1/agentspace.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::DevOpsAgent::Asset` | `examples/devopsagent/cluster/v1beta1/asset.yaml` | not-expressible | content: no top-level property of that name |
+| `AWS::DLM::LifecyclePolicy` | `examples/dlm/cluster/v1beta1/lifecyclepolicy.yaml` | not-expressible | policy_details.schedule: no such property |
+| `AWS::DLM::LifecyclePolicy` | `examples/dlm/cluster/v1beta2/lifecyclepolicy.yaml` | not-expressible | policy_details.schedule: no such property |
+| `AWS::DocDB::DBClusterParameterGroup` | `examples/docdb/cluster/v1beta1/clusterparametergroup-loopfix.yaml` | not-expressible | parameter: no top-level property of that name |
+| `AWS::DocDB::DBClusterParameterGroup` | `examples/docdb/cluster/v1beta1/clusterparametergroup.yaml` | not-expressible | parameter: no top-level property of that name |
+| `AWS::DocDB::EventSubscription` | `examples/rds/cluster/v1beta1/eventsubscription.yaml` | not-expressible | sns_topic (by reference): no top-level property of that name |
+| `AWS::DocDB::EventSubscription` | `examples/docdb/cluster/v1beta1/eventsubscription.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: snsTopicArn |
+| `AWS::DocDB::GlobalCluster` | `examples/docdb/cluster/v1beta1/cluster.yaml` | not-expressible | autoGeneratePassword: no top-level property of that name |
+| `AWS::DocDB::GlobalCluster` | `examples/docdb/cluster/v1beta1/globalcluster.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::ElasticBeanstalk::Application` | `examples/elasticbeanstalk/cluster/v1beta1/application.yaml` | not-expressible | appversion_lifecycle: no top-level property of that name |
+| `AWS::ElasticBeanstalk::Application` | `examples/elasticbeanstalk/cluster/v1beta2/application.yaml` | not-expressible | appversion_lifecycle: no top-level property of that name |
+| `AWS::ElasticBeanstalk::ApplicationVersion` | `examples/elasticbeanstalk/cluster/v1beta1/applicationversion.yaml` | not-expressible | application: no top-level property of that name |
+| `AWS::ElasticBeanstalk::ConfigurationTemplate` | `examples/elasticbeanstalk/cluster/v1beta1/configurationtemplate.yaml` | not-expressible | application (by reference): no top-level property of that name |
+| `AWS::Evidently::Feature` | `examples/evidently/cluster/v1beta1/feature.yaml` | not-expressible | variations[0].name: no such property |
+| `AWS::Evidently::Feature` | `examples/evidently/cluster/v1beta2/feature.yaml` | not-expressible | variations[0].name: no such property |
+| `AWS::Evidently::Project` | `examples/evidently/cluster/v1beta1/project.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Evidently::Project` | `examples/evidently/cluster/v1beta2/project.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Evidently::Segment` | `examples/evidently/cluster/v1beta1/segment.yaml` | not-expressible | required Name is not in the example |
+| `AWS::FIS::ExperimentTemplate` | `examples/fis/cluster/v1beta1/experimenttemplate.yaml` | not-expressible | action: no top-level property of that name |
+| `AWS::FIS::ExperimentTemplate` | `examples/fis/cluster/v1beta2/experimenttemplate.yaml` | not-expressible | action: no top-level property of that name |
+| `AWS::FSx::Backup` | `examples/fsx/cluster/v1beta1/backup.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: fileSystemId |
+| `AWS::FSx::StorageVirtualMachine` | `examples/fsx/cluster/v1beta1/ontapstoragevirtualmachine.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: fileSystemId |
+| `AWS::FSx::StorageVirtualMachine` | `examples/fsx/cluster/v1beta2/ontapstoragevirtualmachine.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: fileSystemId |
+| `AWS::FSx::Volume` | `examples/fsx/cluster/v1beta1/ontapvolume.yaml` | not-expressible | junction_path: no top-level property of that name |
+| `AWS::GameLift::Alias` | `examples/gamelift/cluster/v1beta1/alias.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::GameLift::Alias` | `examples/gamelift/cluster/v1beta2/alias.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::GameLift::Build` | `examples/gamelift/cluster/v1beta1/build.yaml` | not-expressible | storage_location: required Bucket is not in the example |
+| `AWS::GameLift::Build` | `examples/gamelift/cluster/v1beta2/build.yaml` | not-expressible | storage_location: required Bucket is not in the example |
+| `AWS::GameLift::Fleet` | `examples/gamelift/cluster/v1beta1/fleet.yaml` | not-expressible | runtime_configuration.server_process: no such property |
+| `AWS::GameLift::Fleet` | `examples/gamelift/cluster/v1beta2/fleet.yaml` | not-expressible | runtime_configuration.server_process: no such property |
+| `AWS::GameLift::GameSessionQueue` | `examples/gamelift/cluster/v1beta1/gamesessionqueue.yaml` | not-expressible | player_latency_policy: no top-level property of that name |
+| `AWS::GameLift::Script` | `examples/gamelift/cluster/v1beta1/script.yaml` | not-expressible | storage_location: required Bucket is not in the example |
+| `AWS::GameLift::Script` | `examples/gamelift/cluster/v1beta2/script.yaml` | not-expressible | storage_location: required Bucket is not in the example |
+| `AWS::GlobalAccelerator::Accelerator` | `examples/globalaccelerator/cluster/v1beta1/accelerator.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::GlobalAccelerator::Accelerator` | `examples/globalaccelerator/cluster/v1beta2/accelerator.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::GlobalAccelerator::EndpointGroup` | `examples/globalaccelerator/cluster/v1beta1/endpoint-group.yaml` | not-expressible | required EndpointGroupRegion is not in the example |
+| `AWS::GlobalAccelerator::Listener` | `examples/globalaccelerator/cluster/v1beta1/listener.yaml` | not-expressible | port_range: no top-level property of that name |
+| `AWS::Glue::Classifier` | `examples/glue/cluster/v1beta1/classifier.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Glue::Classifier` | `examples/glue/cluster/v1beta2/classifier.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Glue::Connection` | `examples/glue/cluster/v1beta1/connection.yaml` | not-expressible | required ConnectionInput is not in the example |
+| `AWS::Glue::Connection` | `examples/glue/cluster/v1beta2/connection.yaml` | not-expressible | required ConnectionInput is not in the example |
+| `AWS::Glue::Crawler` | `examples/glue/cluster/v1beta1/crawler.yaml` | not-expressible | dynamodb_target: no top-level property of that name |
+| `AWS::Glue::Crawler` | `examples/glue/cluster/v1beta2/crawler.yaml` | not-expressible | dynamodb_target: no top-level property of that name |
+| `AWS::Glue::DataCatalogEncryptionSettings` | `examples/glue/cluster/v1beta1/datacatalogencryptionsettings.yaml` | not-expressible | data_catalog_encryption_settings.connection_password_encryption.aws_kms_key_id (by reference): no top-level property of that name |
+| `AWS::Glue::DataCatalogEncryptionSettings` | `examples/glue/cluster/v1beta2/datacatalogencryptionsettings.yaml` | not-expressible | data_catalog_encryption_settings.connection_password_encryption.aws_kms_key_id (by reference): no top-level property of that name |
+| `AWS::Glue::SecurityConfiguration` | `examples/glue/cluster/v1beta1/securityconfiguration.yaml` | not-expressible | encryption_configuration.s3_encryption: no such property |
+| `AWS::Glue::SecurityConfiguration` | `examples/glue/cluster/v1beta2/securityconfiguration.yaml` | not-expressible | encryption_configuration.s3_encryption: no such property |
+| `AWS::Glue::Table` | `examples/glue/cluster/v1beta1/catalogtable-with-pi.yaml` | not-expressible | partition_index: no top-level property of that name |
+| `AWS::Glue::Table` | `examples/glue/cluster/v1beta1/catalogtable.yaml` | not-expressible | storage_descriptor: no top-level property of that name |
+| `AWS::Glue::Table` | `examples/glue/cluster/v1beta2/catalogtable.yaml` | not-expressible | storage_descriptor: no top-level property of that name |
+| `AWS::Glue::TableOptimizer` | `examples/glue/cluster/v1beta1/catalogtableoptimizer-vpc-configuration.yaml` | not-expressible | configuration: no top-level property of that name |
+| `AWS::Glue::TableOptimizer` | `examples/glue/cluster/v1beta1/catalogtableoptimizer.yaml` | not-expressible | configuration: no top-level property of that name |
+| `AWS::Glue::Trigger` | `examples/glue/cluster/v1beta1/trigger.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Glue::Trigger` | `examples/glue/cluster/v1beta2/trigger.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Glue::UserDefinedFunction` | `examples/glue/cluster/v1beta1/userdefinedfunction.yaml` | not-expressible | catalog_id: no top-level property of that name |
+| `AWS::Glue::Workflow` | `examples/glue/cluster/v1beta1/workflow.yaml` | not-expressible | no field of the resource's own |
+| `AWS::Grafana::Workspace` | `examples/grafana/cluster/v1beta1/workspace.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: roleArn |
+| `AWS::Grafana::Workspace` | `examples/grafana/cluster/v1beta2/workspace.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: roleArn |
+| `AWS::ImageBuilder::Component` | `examples/imagebuilder/cluster/v1beta1/component.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::ImageBuilder::ContainerRecipe` | `examples/imagebuilder/cluster/v1beta1/containerrecipe.yaml` | not-expressible | component: no top-level property of that name |
+| `AWS::ImageBuilder::ContainerRecipe` | `examples/imagebuilder/cluster/v1beta2/containerrecipe.yaml` | not-expressible | component: no top-level property of that name |
+| `AWS::ImageBuilder::DistributionConfiguration` | `examples/imagebuilder/cluster/v1beta1/distributionconfiguration.yaml` | not-expressible | distribution: no top-level property of that name |
+| `AWS::ImageBuilder::DistributionConfiguration` | `examples/imagebuilder/cluster/v1beta2/distributionconfiguration.yaml` | not-expressible | distribution: no top-level property of that name |
+| `AWS::ImageBuilder::Image` | `examples/imagebuilder/cluster/v1beta1/image.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: imageRecipeArn, infrastructureConfigurationArn |
+| `AWS::ImageBuilder::Image` | `examples/imagebuilder/cluster/v1beta2/image.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: imageRecipeArn, infrastructureConfigurationArn |
+| `AWS::ImageBuilder::ImagePipeline` | `examples/imagebuilder/cluster/v1beta1/imagepipeline.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: imageRecipeArn, infrastructureConfigurationArn |
+| `AWS::ImageBuilder::ImagePipeline` | `examples/imagebuilder/cluster/v1beta2/imagepipeline.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: imageRecipeArn, infrastructureConfigurationArn |
+| `AWS::ImageBuilder::ImageRecipe` | `examples/imagebuilder/cluster/v1beta1/imagerecipe.yaml` | not-expressible | block_device_mapping: no top-level property of that name |
+| `AWS::ImageBuilder::ImageRecipe` | `examples/imagebuilder/cluster/v1beta2/imagerecipe.yaml` | not-expressible | block_device_mapping: no top-level property of that name |
+| `AWS::ImageBuilder::InfrastructureConfiguration` | `examples/imagebuilder/cluster/v1beta1/infrastructureconfiguration.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: instanceProfileName |
+| `AWS::ImageBuilder::InfrastructureConfiguration` | `examples/imagebuilder/cluster/v1beta2/infrastructureconfiguration.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: instanceProfileName |
+| `AWS::IoT::Authorizer` | `examples/iot/cluster/v1beta1/authorizer.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: authorizerFunctionArn |
+| `AWS::IoT::Certificate` | `examples/iot/cluster/v1beta1/certificate.yaml` | not-expressible | active: no top-level property of that name |
+| `AWS::IoT::DomainConfiguration` | `examples/iot/cluster/v1beta1/domainconfiguration.yaml` | not-expressible | server_certificate_arns (by reference): ServerCertificateArns is not a string |
+| `AWS::IoT::Logging` | `examples/iot/cluster/v1beta1/loggingoptions.yaml` | not-expressible | required AccountId is not in the example |
+| `AWS::IoT::ProvisioningTemplate` | `examples/iot/cluster/v1beta1/provisioningtemplate.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: provisioningRoleArn |
+| `AWS::IoT::ProvisioningTemplate` | `examples/iot/cluster/v1beta2/provisioningtemplate.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: provisioningRoleArn |
+| `AWS::IoT::RoleAlias` | `examples/iot/cluster/v1beta1/rolealias.yaml` | not-expressible | alias: no top-level property of that name |
+| `AWS::IoT::Thing` | `examples/iot/cluster/v1beta1/thing.yaml` | not-expressible | attributes: no top-level property of that name |
+| `AWS::IoT::ThingGroup` | `examples/iot/cluster/v1beta1/thinggroup.yaml` | not-expressible | no field of the resource's own |
+| `AWS::IoT::ThingGroup` | `examples/iot/cluster/v1beta2/thinggroup.yaml` | not-expressible | no field of the resource's own |
+| `AWS::IoT::ThingPrincipalAttachment` | `examples/iot/cluster/v1beta1/thingprincipalattachment.yaml` | not-expressible | thing (by reference): no top-level property of that name |
+| `AWS::IoT::ThingType` | `examples/iot/cluster/v1beta1/thingtype.yaml` | not-expressible | name: no top-level property of that name |
+| `AWS::IoT::ThingType` | `examples/iot/cluster/v1beta2/thingtype.yaml` | not-expressible | name: no top-level property of that name |
+| `AWS::IoT::TopicRule` | `examples/iot/cluster/v1beta1/topicrule.yaml` | not-expressible | description: no top-level property of that name |
+| `AWS::IoT::TopicRule` | `examples/iot/cluster/v1beta2/topicrule.yaml` | not-expressible | description: no top-level property of that name |
+| `AWS::IoT::TopicRuleDestination` | `examples/iot/cluster/v1beta1/topicruledestination.yaml` | not-expressible | vpc_configuration: no top-level property of that name |
+| `AWS::IoT::TopicRuleDestination` | `examples/iot/cluster/v1beta2/topicruledestination.yaml` | not-expressible | vpc_configuration: no top-level property of that name |
+| `AWS::IVS::Channel` | `examples/ivs/cluster/v1beta1/channel.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::IVS::RecordingConfiguration` | `examples/ivs/cluster/v1beta1/recordingconfiguration.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::IVS::RecordingConfiguration` | `examples/ivs/cluster/v1beta2/recordingconfiguration.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Kendra::DataSource` | `examples/kendra/cluster/v1beta1/datasource.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: indexId |
+| `AWS::Kendra::DataSource` | `examples/kendra/cluster/v1beta2/datasource.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: indexId |
+| `AWS::Kendra::Index` | `examples/kendra/cluster/v1beta1/index.yaml` | not-expressible | required Edition is not in the example |
+| `AWS::Kendra::Index` | `examples/kendra/cluster/v1beta2/index.yaml` | not-expressible | required Edition is not in the example |
+| `AWS::Kendra::QuerySuggestionsBlockList` | `examples/kendra/cluster/v1beta1/querysuggestionsblocklist.yaml` | not-expressible | source_s3_path: required Bucket is not in the example |
+| `AWS::Kendra::QuerySuggestionsBlockList` | `examples/kendra/cluster/v1beta2/querysuggestionsblocklist.yaml` | not-expressible | source_s3_path: required Bucket is not in the example |
+| `AWS::Kendra::QuerySuggestionsBlockList` | `examples/kendra/cluster/v1beta1/thesaurus.yaml` | not-expressible | source_s3_path: required Bucket is not in the example |
+| `AWS::Kendra::QuerySuggestionsBlockList` | `examples/kendra/cluster/v1beta2/thesaurus.yaml` | not-expressible | source_s3_path: required Bucket is not in the example |
+| `AWS::Kendra::Thesaurus` | `examples/kendra/cluster/v1beta1/querysuggestionsblocklist.yaml` | not-expressible | source_s3_path: required Bucket is not in the example |
+| `AWS::Kendra::Thesaurus` | `examples/kendra/cluster/v1beta2/querysuggestionsblocklist.yaml` | not-expressible | source_s3_path: required Bucket is not in the example |
+| `AWS::Kendra::Thesaurus` | `examples/kendra/cluster/v1beta1/thesaurus.yaml` | not-expressible | source_s3_path: required Bucket is not in the example |
+| `AWS::Kendra::Thesaurus` | `examples/kendra/cluster/v1beta2/thesaurus.yaml` | not-expressible | source_s3_path: required Bucket is not in the example |
+| `AWS::KinesisAnalyticsV2::Application` | `examples/kinesisanalyticsv2/cluster/v1beta1/application.yaml` | not-expressible | application_configuration.application_code_configuration: required CodeContent is not in the example |
+| `AWS::KinesisAnalyticsV2::Application` | `examples/kinesisanalyticsv2/cluster/v1beta2/application.yaml` | not-expressible | application_configuration.application_code_configuration: required CodeContent is not in the example |
+| `AWS::LakeFormation::Resource` | `examples/lakeformation/cluster/v1beta1/resource.yaml` | not-expressible | arn: no top-level property of that name |
+| `AWS::Lex::BotAlias` | `examples/lexmodels/cluster/v1beta1/botalias.yaml` | not-expressible | bot_name: no top-level property of that name |
+| `AWS::Lex::BotAlias` | `examples/lexmodels/cluster/v1beta2/botalias.yaml` | not-expressible | bot_name: no top-level property of that name |
+| `AWS::Lex::ResourcePolicy` | `examples/dynamodb/cluster/v1beta1/resourcepolicy.yaml` | not-expressible | policy: an object, not string |
+| `AWS::Lex::ResourcePolicy` | `examples/glue/cluster/v1beta1/resourcepolicy.yaml` | not-expressible | policy: an object, not string |
+| `AWS::Lex::ResourcePolicy` | `examples/redshiftserverless/cluster/v1beta1/resourcepolicy.yaml` | not-expressible | policy: an object, not string |
+| `AWS::LicenseManager::LicenseConfiguration` | `examples/licensemanager/cluster/v1beta1/licenseconfiguration.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Lightsail::Bucket` | `examples/lightsail/cluster/v1beta1/bucket.yaml` | not-expressible | required BucketName is not in the example |
+| `AWS::Lightsail::Certificate` | `examples/lightsail/cluster/v1beta1/certificate.yaml` | not-expressible | required CertificateName is not in the example |
+| `AWS::Lightsail::Certificate` | `examples/lightsail/cluster/v1beta1/lbcertificate.yaml` | not-expressible | lb_name (by reference): no top-level property of that name |
+| `AWS::Lightsail::Container` | `examples/lightsail/cluster/v1beta1/containerservice.yaml` | not-expressible | required ServiceName is not in the example |
+| `AWS::Lightsail::Container` | `examples/lightsail/cluster/v1beta2/containerservice.yaml` | not-expressible | required ServiceName is not in the example |
+| `AWS::Lightsail::Disk` | `examples/lightsail/cluster/v1beta1/disk.yaml` | not-expressible | required DiskName is not in the example |
+| `AWS::Lightsail::Domain` | `examples/lightsail/cluster/v1beta1/domain.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Lightsail::Instance` | `examples/lightsail/cluster/v1beta1/instance.yaml` | not-expressible | required InstanceName is not in the example |
+| `AWS::Lightsail::Instance` | `examples/lightsail/cluster/v1beta2/instance.yaml` | not-expressible | required InstanceName is not in the example |
+| `AWS::Lightsail::KeyPair` | `examples/ec2/cluster/v1beta1/keypair.yaml` | not-expressible | public_key: no top-level property of that name |
+| `AWS::Lightsail::KeyPair` | `examples/lightsail/cluster/v1beta1/keypair.yaml` | not-expressible | name: no top-level property of that name |
+| `AWS::Lightsail::StaticIp` | `examples/lightsail/cluster/v1beta1/staticip.yaml` | not-expressible | name: no top-level property of that name |
+| `AWS::Lightsail::StaticIp` | `examples/lightsail/cluster/v1beta1/staticipattachment.yaml` | not-expressible | instance_name (by reference): no top-level property of that name |
+| `AWS::Location::GeofenceCollection` | `examples/location/cluster/v1beta1/geofencecollection.yaml` | not-expressible | required CollectionName is not in the example |
+| `AWS::Location::PlaceIndex` | `examples/location/cluster/v1beta1/placeindex.yaml` | not-expressible | required IndexName is not in the example |
+| `AWS::Location::PlaceIndex` | `examples/location/cluster/v1beta2/placeindex.yaml` | not-expressible | required IndexName is not in the example |
+| `AWS::Location::RouteCalculator` | `examples/location/cluster/v1beta1/routecalculator.yaml` | not-expressible | required CalculatorName is not in the example |
+| `AWS::Location::Tracker` | `examples/location/cluster/v1beta1/tracker.yaml` | not-expressible | required TrackerName is not in the example |
+| `AWS::Location::TrackerConsumer` | `examples/location/cluster/v1beta1/trackerassociation.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: consumerArn, trackerName |
+| `AWS::MediaConvert::Queue` | `examples/mediaconvert/cluster/v1beta1/queue.yaml` | not-expressible | no field of the resource's own |
+| `AWS::MediaConvert::Queue` | `examples/mediaconvert/cluster/v1beta2/queue.yaml` | not-expressible | no field of the resource's own |
+| `AWS::MediaLive::Input` | `examples/medialive/cluster/v1beta1/input.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::MediaLive::Input` | `examples/medialive/cluster/v1beta2/input.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::MediaLive::InputSecurityGroup` | `examples/medialive/cluster/v1beta1/inputsecuritygroup.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::MediaLive::Multiplex` | `examples/medialive/cluster/v1beta1/multiplex.yaml` | not-expressible | start_multiplex: no top-level property of that name |
+| `AWS::MediaLive::Multiplex` | `examples/medialive/cluster/v1beta2/multiplex.yaml` | not-expressible | start_multiplex: no top-level property of that name |
+| `AWS::MediaPackage::Channel` | `examples/mediapackage/cluster/v1beta1/channel.yaml` | not-expressible | channel_id: no top-level property of that name |
+| `AWS::Neptune::DBClusterParameterGroup` | `examples/neptune/cluster/v1beta1/cluster-parameter-group-loopfix.yaml` | not-expressible | parameter: no top-level property of that name |
+| `AWS::Neptune::DBClusterParameterGroup` | `examples/neptune/cluster/v1beta1/cluster-parameter-group.yaml` | not-expressible | parameter: no top-level property of that name |
+| `AWS::Neptune::DBClusterParameterGroup` | `examples/neptune/cluster/v1beta1/parameter-group-loopfix.yaml` | not-expressible | parameter: no top-level property of that name |
+| `AWS::Neptune::DBClusterParameterGroup` | `examples/neptune/cluster/v1beta1/parameter-group.yaml` | not-expressible | parameter: no top-level property of that name |
+| `AWS::Neptune::DBParameterGroup` | `examples/neptune/cluster/v1beta1/cluster-parameter-group-loopfix.yaml` | not-expressible | parameter: no top-level property of that name |
+| `AWS::Neptune::DBParameterGroup` | `examples/neptune/cluster/v1beta1/cluster-parameter-group.yaml` | not-expressible | parameter: no top-level property of that name |
+| `AWS::Neptune::DBParameterGroup` | `examples/neptune/cluster/v1beta1/parameter-group-loopfix.yaml` | not-expressible | parameter: no top-level property of that name |
+| `AWS::Neptune::DBParameterGroup` | `examples/neptune/cluster/v1beta1/parameter-group.yaml` | not-expressible | parameter: no top-level property of that name |
+| `AWS::Neptune::EventSubscription` | `examples/rds/cluster/v1beta1/eventsubscription.yaml` | not-expressible | sns_topic (by reference): no top-level property of that name |
+| `AWS::Neptune::GlobalCluster` | `examples/neptune/cluster/v1beta1/cluster.yaml` | not-expressible | apply_immediately: no top-level property of that name |
+| `AWS::Neptune::GlobalCluster` | `examples/neptune/cluster/v1beta2/cluster.yaml` | not-expressible | apply_immediately: no top-level property of that name |
+| `AWS::Neptune::GlobalCluster` | `examples/neptune/cluster/v1beta1/globalcluster.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::NetworkMonitor::Monitor` | `examples/networkmonitor/cluster/v1beta1/monitor.yaml` | not-expressible | required MonitorName is not in the example |
+| `AWS::NetworkMonitor::Probe` | `examples/networkmonitor/cluster/v1beta1/probe.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: monitorName, sourceArn |
+| `AWS::Oam::Link` | `examples/oam/cluster/v1beta1/link.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: sinkIdentifier |
+| `AWS::Oam::Sink` | `examples/oam/cluster/v1beta1/sink.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Oam::Sink` | `examples/oam/cluster/v1beta1/sinkpolicy.yaml` | not-expressible | policy: an object, not string |
+| `AWS::OpenSearchServerless::VpcEndpoint` | `examples/opensearchserverless/cluster/v1beta1/vpcendpoint.yaml` | not-expressible | subnet_ids (by reference): SubnetIds is not a string |
+| `AWS::OpenSearchServerless::VpcEndpoint` | `examples/ec2/cluster/v1beta1/vpcendpoint.yaml` | not-expressible | service_name: no top-level property of that name |
+| `AWS::OpenSearchServerless::VpcEndpoint` | `examples/ec2/cluster/v1beta2/vpcendpoint.yaml` | not-expressible | service_name: no top-level property of that name |
+| `AWS::OSIS::Pipeline` | `examples/osis/cluster/v1beta1/pipeline.yaml` | not-expressible | required PipelineName is not in the example |
+| `AWS::QLDB::Stream` | `examples/qldb/cluster/v1beta1/stream.yaml` | not-expressible | kinesis_configuration.stream_arn (by reference): no top-level property of that name |
+| `AWS::QLDB::Stream` | `examples/qldb/cluster/v1beta2/stream.yaml` | not-expressible | kinesis_configuration.stream_arn (by reference): no top-level property of that name |
+| `AWS::QuickSight::Assignment` | `examples/ssoadmin/cluster/v1beta1/accountassignment.yaml` | not-expressible | instance_arn: no top-level property of that name |
+| `AWS::QuickSight::Group` | `examples/quicksight/cluster/v1beta1/group.yaml` | not-expressible | aws_account_id: no top-level property of that name |
+| `AWS::RedshiftServerless::Namespace` | `examples/redshiftserverless/cluster/v1beta1/redshiftserverlessnamespace.yaml` | not-expressible | required NamespaceName is not in the example |
+| `AWS::RedshiftServerless::Workgroup` | `examples/redshiftserverless/cluster/v1beta1/workgroup.yaml` | not-expressible | required WorkgroupName is not in the example |
+| `AWS::ResourceGroups::Group` | `examples/resourcegroups/cluster/v1beta1/group.yaml` | not-expressible | resource_query.query: an object, not string |
+| `AWS::ResourceGroups::Group` | `examples/resourcegroups/cluster/v1beta2/group.yaml` | not-expressible | resource_query.query: an object, not string |
+| `AWS::Route53RecoveryControl::ControlPanel` | `examples/route53recoverycontrolconfig/cluster/v1beta1/controlpanel.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: clusterArn |
+| `AWS::Route53RecoveryControl::RoutingControl` | `examples/route53recoverycontrolconfig/cluster/v1beta1/routingcontrol.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: clusterArn |
+| `AWS::Route53RecoveryControl::SafetyRule` | `examples/route53recoverycontrolconfig/cluster/v1beta1/safetyrule.yaml` | not-expressible | wait_period_ms: no top-level property of that name |
+| `AWS::Route53RecoveryControl::SafetyRule` | `examples/route53recoverycontrolconfig/cluster/v1beta2/safetyrule.yaml` | not-expressible | wait_period_ms: no top-level property of that name |
+| `AWS::Route53RecoveryReadiness::Cell` | `examples/route53recoveryreadiness/cluster/v1beta1/cell.yaml` | not-expressible | no field of the resource's own |
+| `AWS::Route53RecoveryReadiness::ReadinessCheck` | `examples/route53recoveryreadiness/cluster/v1beta1/readinesscheck.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Route53RecoveryReadiness::RecoveryGroup` | `examples/route53recoveryreadiness/cluster/v1beta1/recoverygroup.yaml` | not-expressible | no field of the resource's own |
+| `AWS::Route53RecoveryReadiness::ResourceSet` | `examples/route53recoveryreadiness/cluster/v1beta1/resourceset.yaml` | not-expressible | resources.resource_arn (by reference): no top-level property of that name |
+| `AWS::Route53RecoveryReadiness::ResourceSet` | `examples/route53recoveryreadiness/cluster/v1beta2/resourceset.yaml` | not-expressible | resources.resource_arn (by reference): no top-level property of that name |
+| `AWS::RUM::AppMonitor` | `examples/rum/cluster/v1beta1/appmonitor.yaml` | not-expressible | required Name is not in the example |
+| `AWS::RUM::AppMonitor` | `examples/rum/cluster/v1beta2/appmonitor.yaml` | not-expressible | required Name is not in the example |
+| `AWS::SageMaker::AppImageConfig` | `examples/sagemaker/cluster/v1beta1/appimageconfig.yaml` | not-expressible | kernel_gateway_image_config.kernel_spec: no such property |
+| `AWS::SageMaker::AppImageConfig` | `examples/sagemaker/cluster/v1beta2/appimageconfig.yaml` | not-expressible | kernel_gateway_image_config.kernel_spec: no such property |
+| `AWS::SageMaker::CodeRepository` | `examples/sagemaker/cluster/v1beta1/coderepository.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::SageMaker::CodeRepository` | `examples/sagemaker/cluster/v1beta2/coderepository.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::SageMaker::DeviceFleet` | `examples/sagemaker/cluster/v1beta1/devicefleet.yaml` | not-expressible | required DeviceFleetName is not in the example |
+| `AWS::SageMaker::DeviceFleet` | `examples/sagemaker/cluster/v1beta2/devicefleet.yaml` | not-expressible | required DeviceFleetName is not in the example |
+| `AWS::SageMaker::Image` | `examples/sagemaker/cluster/v1beta1/image.yaml` | not-expressible | role_arn (by reference): no top-level property of that name |
+| `AWS::SageMaker::ImageVersion` | `examples/sagemaker/cluster/v1beta1/imageversion.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: imageName |
+| `AWS::SageMaker::MlflowTrackingServer` | `examples/sagemaker/cluster/v1beta1/mlflowtrackingserver.yaml` | not-expressible | required TrackingServerName is not in the example |
+| `AWS::SageMaker::StudioLifecycleConfig` | `examples/sagemaker/cluster/v1beta1/studiolifecycleconfig.yaml` | not-expressible | required StudioLifecycleConfigName is not in the example |
+| `AWS::SageMaker::Workforce` | `examples/sagemaker/cluster/v1beta1/workforce.yaml` | not-expressible | cognito_config: required ClientId is not in the example |
+| `AWS::SageMaker::Workforce` | `examples/sagemaker/cluster/v1beta2/workforce.yaml` | not-expressible | cognito_config: required ClientId is not in the example |
+| `AWS::SageMaker::Workteam` | `examples/sagemaker/cluster/v1beta1/workteam.yaml` | not-expressible | member_definition: no top-level property of that name |
+| `AWS::SageMaker::Workteam` | `examples/sagemaker/cluster/v1beta2/workteam.yaml` | not-expressible | member_definition: no top-level property of that name |
+| `AWS::ServiceCatalog::CloudFormationProduct` | `examples/servicecatalog/cluster/v1beta1/product.yaml` | not-expressible | provisioning_artifact_parameters[0].template_url: no such property |
+| `AWS::ServiceCatalog::CloudFormationProduct` | `examples/servicecatalog/cluster/v1beta2/product.yaml` | not-expressible | provisioning_artifact_parameters: a list, not map[string]interface {} |
+| `AWS::ServiceCatalog::LaunchNotificationConstraint` | `examples/servicecatalog/cluster/v1beta1/constraint.yaml` | not-expressible | parameters: no top-level property of that name |
+| `AWS::ServiceCatalog::LaunchTemplateConstraint` | `examples/servicecatalog/cluster/v1beta1/constraint.yaml` | not-expressible | parameters: no top-level property of that name |
+| `AWS::ServiceCatalog::Portfolio` | `examples/servicecatalog/cluster/v1beta1/portfolio.yaml` | not-expressible | name: no top-level property of that name |
+| `AWS::ServiceCatalog::PortfolioPrincipalAssociation` | `examples/servicecatalog/cluster/v1beta1/principalportfolioassociation.yaml` | not-expressible | required PrincipalType is not in the example |
+| `AWS::ServiceCatalog::PortfolioProductAssociation` | `examples/servicecatalog/cluster/v1beta1/productportfolioassociation.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: portfolioId, productId |
+| `AWS::ServiceCatalog::PortfolioShare` | `examples/servicecatalog/cluster/v1beta1/portfolioshare.yaml` | not-expressible | principal_id: no top-level property of that name |
+| `AWS::ServiceCatalog::ResourceUpdateConstraint` | `examples/servicecatalog/cluster/v1beta1/constraint.yaml` | not-expressible | parameters: no top-level property of that name |
+| `AWS::ServiceCatalog::ServiceAction` | `examples/servicecatalog/cluster/v1beta1/serviceaction.yaml` | not-expressible | definition[0].name: no such property |
+| `AWS::ServiceCatalog::ServiceAction` | `examples/servicecatalog/cluster/v1beta2/serviceaction.yaml` | not-expressible | definition: a list, not map[string]interface {} |
+| `AWS::ServiceCatalog::TagOption` | `examples/servicecatalog/cluster/v1beta1/tagoption.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::ServiceCatalog::TagOptionAssociation` | `examples/servicecatalog/cluster/v1beta1/tagoptionresourceassociation.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: resourceId, tagOptionId |
+| `AWS::ServiceDiscovery::HttpNamespace` | `examples/servicediscovery/cluster/v1beta1/httpnamespace.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::ServiceDiscovery::PrivateDnsNamespace` | `examples/servicediscovery/cluster/v1beta1/privatednsnamespace.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: vpc |
+| `AWS::ServiceDiscovery::PublicDnsNamespace` | `examples/servicediscovery/cluster/v1beta1/publicdnsnamespace.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::ServiceDiscovery::Service` | `examples/servicediscovery/cluster/v1beta1/service.yaml` | not-expressible | dns_config.namespace_id (by reference): no top-level property of that name |
+| `AWS::ServiceDiscovery::Service` | `examples/servicediscovery/cluster/v1beta2/service.yaml` | not-expressible | dns_config.namespace_id (by reference): no top-level property of that name |
+| `AWS::SES::ConfigurationSetEventDestination` | `examples/sesv2/cluster/v1beta1/configurationseteventdestination.yaml` | not-expressible | event_destination.cloud_watch_destination.dimension_configuration: no such property |
+| `AWS::SES::ConfigurationSetEventDestination` | `examples/sesv2/cluster/v1beta2/configurationseteventdestination.yaml` | not-expressible | event_destination.cloud_watch_destination.dimension_configuration: no such property |
+| `AWS::SES::DedicatedIpPool` | `examples/sesv2/cluster/v1beta1/dedicatedippool.yaml` | not-expressible | no field of the resource's own |
+| `AWS::SES::EmailIdentity` | `examples/ses/cluster/v1beta1/emailidentity.yaml` | not-expressible | email: no top-level property of that name |
+| `AWS::SES::EmailIdentity` | `examples/sesv2/cluster/v1beta1/emailidentity.yaml` | not-expressible | required EmailIdentity is not in the example |
+| `AWS::SES::EmailIdentity` | `examples/sesv2/cluster/v1beta2/emailidentity.yaml` | not-expressible | required EmailIdentity is not in the example |
+| `AWS::SES::ReceiptFilter` | `examples/ses/cluster/v1beta1/receiptfilter.yaml` | not-expressible | cidr: no top-level property of that name |
+| `AWS::SES::ReceiptRule` | `examples/ses/cluster/v1beta1/receiptrule.yaml` | not-expressible | name: no top-level property of that name |
+| `AWS::SES::ReceiptRuleSet` | `examples/ses/cluster/v1beta1/activereceiptruleset.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::SES::ReceiptRuleSet` | `examples/ses/cluster/v1beta1/receiptruleset.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::SES::Template` | `examples/ses/cluster/v1beta1/template.yaml` | not-expressible | html: no top-level property of that name |
+| `AWS::Shield::Protection` | `examples/shield/cluster/v1beta1/protection.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: resourceArn |
+| `AWS::Signer::ProfilePermission` | `examples/signer/cluster/v1beta1/signingprofilepermission.yaml` | not-expressible | required StatementId is not in the example |
+| `AWS::Signer::SigningProfile` | `examples/signer/cluster/v1beta1/signingprofile.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Signer::SigningProfile` | `examples/signer/cluster/v1beta2/signingprofile.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::SupportApp::AccountAlias` | `examples/iam/cluster/v1beta1/accountalias.yaml` | not-expressible | required AccountAlias is not in the example |
+| `AWS::Transcribe::Vocabulary` | `examples/transcribe/cluster/v1beta1/vocabulary.yaml` | not-expressible | required VocabularyName is not in the example |
+| `AWS::Transcribe::VocabularyFilter` | `examples/transcribe/cluster/v1beta1/vocabularyfilter.yaml` | not-expressible | required VocabularyFilterName is not in the example |
+| `AWS::Transfer::Connector` | `examples/transfer/cluster/v1beta1/connector.yaml` | not-expressible | sftp_config.user_secret_id (by reference): no top-level property of that name |
+| `AWS::Transfer::Connector` | `examples/transfer/cluster/v1beta2/connector.yaml` | not-expressible | sftp_config.user_secret_id (by reference): no top-level property of that name |
+| `AWS::Transfer::Server` | `examples/transfer/cluster/v1beta1/server.yaml` | not-expressible | no field of the resource's own |
+| `AWS::Transfer::Server` | `examples/transfer/cluster/v1beta2/server.yaml` | not-expressible | no field of the resource's own |
+| `AWS::Transfer::User` | `examples/transfer/cluster/v1beta1/user.yaml` | not-expressible | required UserName is not in the example |
+| `AWS::Transfer::User` | `examples/transfer/cluster/v1beta2/user.yaml` | not-expressible | required UserName is not in the example |
+| `AWS::Transfer::Workflow` | `examples/transfer/cluster/v1beta1/workflow.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::Transfer::Workflow` | `examples/transfer/cluster/v1beta2/workflow.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::VpcLattice::AccessLogSubscription` | `examples/vpclattice/cluster/v1beta1/accesslogsubscription.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: resourceIdentifier |
+| `AWS::VpcLattice::AuthPolicy` | `examples/vpclattice/cluster/v1beta1/authpolicy.yaml` | not-expressible | policy: an object, not string |
+| `AWS::VpcLattice::Listener` | `examples/vpclattice/cluster/v1beta1/listener.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: serviceIdentifier |
+| `AWS::VpcLattice::ResourceConfiguration` | `examples/vpclattice/cluster/v1beta1/resourceconfiguration.yaml` | not-expressible | protocol: no top-level property of that name |
+| `AWS::VpcLattice::ResourceGateway` | `examples/vpclattice/cluster/v1beta1/resourcegateway.yaml` | not-expressible | subnet_ids (by reference): SubnetIds is not a string |
+| `AWS::VpcLattice::ResourcePolicy` | `examples/dynamodb/cluster/v1beta1/resourcepolicy.yaml` | not-expressible | policy: an object, not string |
+| `AWS::VpcLattice::ResourcePolicy` | `examples/glue/cluster/v1beta1/resourcepolicy.yaml` | not-expressible | policy: an object, not string |
+| `AWS::VpcLattice::ResourcePolicy` | `examples/redshiftserverless/cluster/v1beta1/resourcepolicy.yaml` | not-expressible | policy: an object, not string |
+| `AWS::VpcLattice::ResourcePolicy` | `examples/vpclattice/cluster/v1beta1/resourcepolicy.yaml` | not-expressible | policy: an object, not string |
+| `AWS::VpcLattice::Rule` | `examples/vpclattice/cluster/v1beta1/listenerrule.yaml` | not-expressible | action.forward.target_groups[0]: required TargetGroupIdentifier is not in the example |
+| `AWS::VpcLattice::Service` | `examples/vpclattice/cluster/v1beta1/service.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::VpcLattice::ServiceNetwork` | `examples/vpclattice/cluster/v1beta1/servicenetwork.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::VpcLattice::ServiceNetworkResourceAssociation` | `examples/vpclattice/cluster/v1beta1/servicenetworkresourceassociation.yaml` | not-expressible | resource_configuration_identifier (by reference): no top-level property of that name |
+| `AWS::VpcLattice::ServiceNetworkServiceAssociation` | `examples/vpclattice/cluster/v1beta1/servicenetworkserviceassociation.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: serviceIdentifier, serviceNetworkIdentifier |
+| `AWS::VpcLattice::ServiceNetworkVpcAssociation` | `examples/vpclattice/cluster/v1beta1/servicenetworkvpcassociation.yaml` | not-expressible | security_group_ids (by reference): SecurityGroupIds is not a string |
+| `AWS::VpcLattice::TargetGroup` | `examples/vpclattice/cluster/v1beta1/targetgroup.yaml` | not-expressible | config.vpc_identifier (by reference): no top-level property of that name |
+| `AWS::WorkSpaces::Directory` | `examples/workspaces/cluster/v1beta1/directory.yaml` | not-expressible | self_service_permissions.change_compute_type: a string, not bool |
+| `AWS::WorkSpaces::Directory` | `examples/workspaces/cluster/v1beta2/directory.yaml` | not-expressible | self_service_permissions.change_compute_type: a string, not bool |
+| `AWS::WorkSpaces::WorkspaceIpGroup` | `examples/workspaces/cluster/v1beta1/ipgroup.yaml` | not-expressible | description: no top-level property of that name |
+| `AWS::XRay::Group` | `examples/xray/cluster/v1beta1/group.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::XRay::Group` | `examples/xray/cluster/v1beta2/group.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::XRay::SamplingRule` | `examples/xray/cluster/v1beta1/samplingrule.yaml` | not-expressible | attributes: no top-level property of that name |
