@@ -33,7 +33,7 @@ Not every service matters equally. Each service has a **category**: *platform-fo
 | application | 33 | 40.3% / 45.2% | 47.9% / 31.7% | ~50.8% (≥46.4%) |
 | other | 238 | 7.3% / 83.0% | 3.0% / 21.6% | ~65.4% (≥48.5%) |
 
-The ranked work queue for the foundation and security categories, resource by resource, with what upstream has and what to build first, is [docs/coverage/foundation.md](docs/coverage/foundation.md).
+The ranked work queue for the foundation and security categories, resource by resource, with what upstream has and what to build first, is [docs/coverage/foundation.md](docs/coverage/foundation.md). What Crossplane's Upjet provider data turned into here (references, examples on the fake, checks), the per-kind "tested where" ledger, and the resources Upjet has that nothing here serves, ranked, are [docs/coverage/upjet.md](docs/coverage/upjet.md).
 
 ![Coverage by tier](docs/coverage/bars/_tiers.svg)
 
