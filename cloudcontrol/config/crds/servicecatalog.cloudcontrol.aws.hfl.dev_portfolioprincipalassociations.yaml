@@ -62,12 +62,52 @@ spec:
                 - message: 'portfolioId is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
+              portfolioRef:
+                description: 'A reference to a Portfolio (servicecatalog.cloudcontrol.aws.hfl.dev)
+                  whose status.id fills portfolioId: its Kubernetes name, and namespace
+                  when another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or portfolioId,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'portfolioRef is create-only, as portfolioId is: it cannot
+                    change after the resource is made'
+                  rule: self == oldSelf
               principalARN:
                 description: The ARN of the principal (user, role, or group).
                 type: string
                 x-kubernetes-validations:
                 - message: 'principalARN is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
+                  rule: self == oldSelf
+              principalRef:
+                description: 'A reference to a User (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills principalARN: its Kubernetes name, and namespace when another
+                  (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or principalARN,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'principalRef is create-only, as principalARN is: it cannot
+                    change after the resource is made'
                   rule: self == oldSelf
               principalType:
                 description: The principal type. The supported value is IAM if you
@@ -94,6 +134,16 @@ spec:
             - message: 'principalType is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.principalType) == has(oldSelf.principalType)
+            - message: portfolioId and portfolioRef cannot both be given
+              rule: '!(has(self.portfolioId) && has(self.portfolioRef))'
+            - message: 'portfolioRef is create-only, as portfolioId is: it cannot
+                be added or removed after the resource is made'
+              rule: has(self.portfolioRef) == has(oldSelf.portfolioRef)
+            - message: principalARN and principalRef cannot both be given
+              rule: '!(has(self.principalARN) && has(self.principalRef))'
+            - message: 'principalRef is create-only, as principalARN is: it cannot
+                be added or removed after the resource is made'
+              rule: has(self.principalRef) == has(oldSelf.principalRef)
           status:
             properties:
               ackResourceMetadata:

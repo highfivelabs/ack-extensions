@@ -86,6 +86,26 @@ spec:
                 - message: 'buildId is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
+              buildRef:
+                description: 'A reference to a Build (gamelift.cloudcontrol.aws.hfl.dev)
+                  whose status.buildId fills buildId: its Kubernetes name, and namespace
+                  when another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or buildId,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'buildRef is create-only, as buildId is: it cannot change
+                    after the resource is made'
+                  rule: self == oldSelf
               certificateConfiguration:
                 description: Information about the use of a TLS/SSL certificate for
                   a fleet. TLS certificate generation is enabled at the fleet level,
@@ -226,6 +246,26 @@ spec:
                 - message: 'instanceRoleCredentialsProvider is create-only (CloudFormation
                     createOnlyProperties): it cannot change after the resource is
                     made'
+                  rule: self == oldSelf
+              instanceRoleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills instanceRoleARN: its Kubernetes name, and namespace when another
+                  (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or instanceRoleARN,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'instanceRoleRef is create-only, as instanceRoleARN is:
+                    it cannot change after the resource is made'
                   rule: self == oldSelf
               locations:
                 items:
@@ -713,6 +753,16 @@ spec:
             - message: 'serverLaunchPath is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.serverLaunchPath) == has(oldSelf.serverLaunchPath)
+            - message: buildId and buildRef cannot both be given
+              rule: '!(has(self.buildId) && has(self.buildRef))'
+            - message: 'buildRef is create-only, as buildId is: it cannot be added
+                or removed after the resource is made'
+              rule: has(self.buildRef) == has(oldSelf.buildRef)
+            - message: instanceRoleARN and instanceRoleRef cannot both be given
+              rule: '!(has(self.instanceRoleARN) && has(self.instanceRoleRef))'
+            - message: 'instanceRoleRef is create-only, as instanceRoleARN is: it
+                cannot be added or removed after the resource is made'
+              rule: has(self.instanceRoleRef) == has(oldSelf.instanceRoleRef)
           status:
             properties:
               ackResourceMetadata:

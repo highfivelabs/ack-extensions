@@ -181,6 +181,21 @@ spec:
                 maxLength: 2048
                 minLength: 1
                 type: string
+              roleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills roleArn: its Kubernetes name, and namespace when another (cross-namespace
+                  references need the manager''s --enable-cross-namespace). The value
+                  is read once that object is synced. Give this or roleArn, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               samlConfiguration:
                 description: SAML configuration data associated with an AMG workspace.
                 properties:
@@ -334,6 +349,8 @@ spec:
             - message: 'clientToken is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.clientToken) == has(oldSelf.clientToken)
+            - message: roleArn and roleRef cannot both be given
+              rule: '!(has(self.roleArn) && has(self.roleRef))'
           status:
             properties:
               ackResourceMetadata:

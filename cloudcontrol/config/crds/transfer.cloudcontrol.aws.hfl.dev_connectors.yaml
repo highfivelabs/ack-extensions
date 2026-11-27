@@ -52,6 +52,22 @@ spec:
                 maxLength: 2048
                 minLength: 20
                 type: string
+              accessRoleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills accessRole: its Kubernetes name, and namespace when another
+                  (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or accessRole,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               as2Config:
                 description: Configuration for an AS2 connector.
                 properties:
@@ -250,9 +266,12 @@ spec:
                 description: URL for Connector
                 maxLength: 255
                 type: string
-            required:
-            - accessRole
             type: object
+            x-kubernetes-validations:
+            - message: one of accessRole or accessRoleRef is required
+              rule: has(self.accessRole) || has(self.accessRoleRef)
+            - message: accessRole and accessRoleRef cannot both be given
+              rule: '!(has(self.accessRole) && has(self.accessRoleRef))'
           status:
             properties:
               ackResourceMetadata:

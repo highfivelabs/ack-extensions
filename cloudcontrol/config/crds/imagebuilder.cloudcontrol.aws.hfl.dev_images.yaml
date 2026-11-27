@@ -74,6 +74,27 @@ spec:
                     createOnlyProperties): it cannot change after the resource is
                     made'
                   rule: self == oldSelf
+              distributionConfigurationRef:
+                description: 'A reference to a DistributionConfiguration (imagebuilder.cloudcontrol.aws.hfl.dev)
+                  whose status.ackResourceMetadata.arn fills distributionConfigurationArn:
+                  its Kubernetes name, and namespace when another (cross-namespace
+                  references need the manager''s --enable-cross-namespace). The value
+                  is read once that object is synced. Give this or distributionConfigurationArn,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'distributionConfigurationRef is create-only, as distributionConfigurationArn
+                    is: it cannot change after the resource is made'
+                  rule: self == oldSelf
               enhancedImageMetadataEnabled:
                 description: Collects additional information about the image being
                   created, including the operating system (OS) version and package
@@ -106,6 +127,26 @@ spec:
                 x-kubernetes-validations:
                 - message: 'imageRecipeArn is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
+                  rule: self == oldSelf
+              imageRecipeRef:
+                description: 'A reference to a ImageRecipe (imagebuilder.cloudcontrol.aws.hfl.dev)
+                  whose status.ackResourceMetadata.arn fills imageRecipeArn: its Kubernetes
+                  name, and namespace when another (cross-namespace references need
+                  the manager''s --enable-cross-namespace). The value is read once
+                  that object is synced. Give this or imageRecipeArn, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'imageRecipeRef is create-only, as imageRecipeArn is: it
+                    cannot change after the resource is made'
                   rule: self == oldSelf
               imageScanningConfiguration:
                 description: Contains settings for Image Builder image resource and
@@ -213,6 +254,27 @@ spec:
                     createOnlyProperties): it cannot change after the resource is
                     made'
                   rule: self == oldSelf
+              infrastructureConfigurationRef:
+                description: 'A reference to a InfrastructureConfiguration (imagebuilder.cloudcontrol.aws.hfl.dev)
+                  whose status.ackResourceMetadata.arn fills infrastructureConfigurationArn:
+                  its Kubernetes name, and namespace when another (cross-namespace
+                  references need the manager''s --enable-cross-namespace). The value
+                  is read once that object is synced. Give this or infrastructureConfigurationArn,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'infrastructureConfigurationRef is create-only, as infrastructureConfigurationArn
+                    is: it cannot change after the resource is made'
+                  rule: self == oldSelf
               loggingConfiguration:
                 description: The logging configuration settings for the image.
                 properties:
@@ -293,6 +355,23 @@ spec:
             - message: 'workflows is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.workflows) == has(oldSelf.workflows)
+            - message: distributionConfigurationArn and distributionConfigurationRef
+                cannot both be given
+              rule: '!(has(self.distributionConfigurationArn) && has(self.distributionConfigurationRef))'
+            - message: 'distributionConfigurationRef is create-only, as distributionConfigurationArn
+                is: it cannot be added or removed after the resource is made'
+              rule: has(self.distributionConfigurationRef) == has(oldSelf.distributionConfigurationRef)
+            - message: imageRecipeArn and imageRecipeRef cannot both be given
+              rule: '!(has(self.imageRecipeArn) && has(self.imageRecipeRef))'
+            - message: 'imageRecipeRef is create-only, as imageRecipeArn is: it cannot
+                be added or removed after the resource is made'
+              rule: has(self.imageRecipeRef) == has(oldSelf.imageRecipeRef)
+            - message: infrastructureConfigurationArn and infrastructureConfigurationRef
+                cannot both be given
+              rule: '!(has(self.infrastructureConfigurationArn) && has(self.infrastructureConfigurationRef))'
+            - message: 'infrastructureConfigurationRef is create-only, as infrastructureConfigurationArn
+                is: it cannot be added or removed after the resource is made'
+              rule: has(self.infrastructureConfigurationRef) == has(oldSelf.infrastructureConfigurationRef)
           status:
             properties:
               ackResourceMetadata:

@@ -56,6 +56,22 @@ spec:
                 maxLength: 2048
                 minLength: 20
                 type: string
+              administrationRoleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills administrationRoleARN: its Kubernetes name, and namespace
+                  when another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or administrationRoleARN,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               autoDeployment:
                 properties:
                   dependsOn:
@@ -327,6 +343,9 @@ spec:
             - message: 'stackSetName is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.stackSetName) == has(oldSelf.stackSetName)
+            - message: administrationRoleARN and administrationRoleRef cannot both
+                be given
+              rule: '!(has(self.administrationRoleARN) && has(self.administrationRoleRef))'
           status:
             properties:
               ackResourceMetadata:

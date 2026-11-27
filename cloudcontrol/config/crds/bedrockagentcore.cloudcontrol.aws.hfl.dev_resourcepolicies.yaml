@@ -63,14 +63,40 @@ spec:
                 - message: 'resourceArn is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
+              resourceRef:
+                description: 'A reference to a Table (dynamodb.services.k8s.aws) whose
+                  status.ackResourceMetadata.arn fills resourceArn: its Kubernetes
+                  name, and namespace when another (cross-namespace references need
+                  the manager''s --enable-cross-namespace). The value is read once
+                  that object is synced. Give this or resourceArn, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'resourceRef is create-only, as resourceArn is: it cannot
+                    change after the resource is made'
+                  rule: self == oldSelf
             required:
             - policy
-            - resourceArn
             type: object
             x-kubernetes-validations:
             - message: 'resourceArn is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.resourceArn) == has(oldSelf.resourceArn)
+            - message: one of resourceArn or resourceRef is required
+              rule: has(self.resourceArn) || has(self.resourceRef)
+            - message: resourceArn and resourceRef cannot both be given
+              rule: '!(has(self.resourceArn) && has(self.resourceRef))'
+            - message: 'resourceRef is create-only, as resourceArn is: it cannot be
+                added or removed after the resource is made'
+              rule: has(self.resourceRef) == has(oldSelf.resourceRef)
           status:
             properties:
               ackResourceMetadata:

@@ -1,0 +1,2796 @@
+{
+  "examples": [
+    {
+      "typeName": "AWS::EC2::TransitGatewayRouteTable",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "TransitGatewayRouteTable",
+      "plural": "transitgatewayroutetables",
+      "example": "ec2/v1beta1/transitgatewaypolicytable",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewaypolicytable.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:31076",
+      "referencesStoodIn": [
+        "transitGatewayId"
+      ],
+      "spec": {
+        "transitGatewayId": "upjet-ref-transit-gateway-id"
+      }
+    },
+    {
+      "typeName": "AWS::EC2::TransitGatewayRouteTable",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "TransitGatewayRouteTable",
+      "plural": "transitgatewayroutetables",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewayroutetable.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:31145",
+      "referencesStoodIn": [
+        "transitGatewayId"
+      ],
+      "spec": {
+        "transitGatewayId": "upjet-ref-transit-gateway-id"
+      }
+    },
+    {
+      "typeName": "AWS::GuardDuty::Detector",
+      "group": "guardduty.cloudcontrol.aws.hfl.dev",
+      "kind": "Detector",
+      "plural": "detectors",
+      "example": "guardduty/v1beta1/detector",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/guardduty/cluster/v1beta1/detector.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:40890",
+      "spec": {
+        "dataSources": {
+          "s3Logs": {
+            "enable": true
+          }
+        },
+        "enable": true
+      }
+    },
+    {
+      "typeName": "AWS::GuardDuty::Detector",
+      "group": "guardduty.cloudcontrol.aws.hfl.dev",
+      "kind": "Detector",
+      "plural": "detectors",
+      "example": "guardduty/v1beta2/detector",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/guardduty/cluster/v1beta2/detector.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:40915",
+      "spec": {
+        "dataSources": {
+          "s3Logs": {
+            "enable": true
+          }
+        },
+        "enable": true
+      }
+    },
+    {
+      "typeName": "AWS::EC2::TransitGatewayRoute",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "TransitGatewayRoute",
+      "plural": "transitgatewayroutes",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewayroute.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:31004",
+      "referencesStoodIn": [
+        "transitGatewayAttachmentId",
+        "transitGatewayRouteTableId"
+      ],
+      "spec": {
+        "destinationCidrBlock": "0.0.0.0/0",
+        "transitGatewayAttachmentId": "upjet-ref-transit-gateway-attachment-id",
+        "transitGatewayRouteTableId": "upjet-ref-transit-gateway-route-table-id"
+      }
+    },
+    {
+      "typeName": "AWS::EC2::TransitGatewayRouteTableAssociation",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "TransitGatewayRouteTableAssociation",
+      "plural": "transitgatewayroutetableassociations",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewayroutetableassociation.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:31315",
+      "manualIntervention": "For testing this resource, firstly disassociate the default association.",
+      "referencesStoodIn": [
+        "transitGatewayAttachmentId",
+        "transitGatewayRouteTableId"
+      ],
+      "spec": {
+        "transitGatewayAttachmentId": "upjet-ref-transit-gateway-attachment-id",
+        "transitGatewayRouteTableId": "upjet-ref-transit-gateway-route-table-id"
+      }
+    },
+    {
+      "typeName": "AWS::EC2::TransitGatewayRouteTableAssociation",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "TransitGatewayRouteTableAssociation",
+      "plural": "transitgatewayroutetableassociations",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewayroutetablepropagation.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:31392",
+      "manualIntervention": "For testing this resource, firstly delete the default propagation.",
+      "referencesStoodIn": [
+        "transitGatewayAttachmentId",
+        "transitGatewayRouteTableId"
+      ],
+      "spec": {
+        "transitGatewayAttachmentId": "upjet-ref-transit-gateway-attachment-id",
+        "transitGatewayRouteTableId": "upjet-ref-transit-gateway-route-table-id"
+      }
+    },
+    {
+      "typeName": "AWS::EC2::TransitGatewayRouteTablePropagation",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "TransitGatewayRouteTablePropagation",
+      "plural": "transitgatewayroutetablepropagations",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewayroutetableassociation.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:31568",
+      "manualIntervention": "For testing this resource, firstly disassociate the default association.",
+      "referencesStoodIn": [
+        "transitGatewayAttachmentId",
+        "transitGatewayRouteTableId"
+      ],
+      "spec": {
+        "transitGatewayAttachmentId": "upjet-ref-transit-gateway-attachment-id",
+        "transitGatewayRouteTableId": "upjet-ref-transit-gateway-route-table-id"
+      }
+    },
+    {
+      "typeName": "AWS::EC2::TransitGatewayRouteTablePropagation",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "TransitGatewayRouteTablePropagation",
+      "plural": "transitgatewayroutetablepropagations",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewayroutetablepropagation.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:31645",
+      "manualIntervention": "For testing this resource, firstly delete the default propagation.",
+      "referencesStoodIn": [
+        "transitGatewayAttachmentId",
+        "transitGatewayRouteTableId"
+      ],
+      "spec": {
+        "transitGatewayAttachmentId": "upjet-ref-transit-gateway-attachment-id",
+        "transitGatewayRouteTableId": "upjet-ref-transit-gateway-route-table-id"
+      }
+    },
+    {
+      "typeName": "AWS::EC2::TransitGatewayPeeringAttachment",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "TransitGatewayPeeringAttachment",
+      "plural": "transitgatewaypeeringattachments",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewaypeeringattachment.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:30597",
+      "manualIntervention": "Requires references to replaced manually.",
+      "spec": {
+        "peerAccountId": "${aws_ec2_transit_gateway.peer.owner_id}",
+        "peerRegion": "${data.aws_region.peer.name}",
+        "peerTransitGatewayId": "${aws_ec2_transit_gateway.peer.id}",
+        "transitGatewayId": "${aws_ec2_transit_gateway.local.id}"
+      }
+    },
+    {
+      "typeName": "AWS::Route53::DNSSEC",
+      "group": "route53.cloudcontrol.aws.hfl.dev",
+      "kind": "DNSSEC",
+      "plural": "dnssecs",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53/cluster/v1beta1/hostedzonednssec.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:63556",
+      "manualIntervention": "This resource is not stable due to https://github.com/crossplane/upjet/issues/80.",
+      "referencesStoodIn": [
+        "hostedZoneId"
+      ],
+      "spec": {
+        "hostedZoneId": "upjet-ref-hosted-zone-id"
+      }
+    },
+    {
+      "typeName": "AWS::Route53Resolver::ResolverConfig",
+      "group": "route53resolver.cloudcontrol.aws.hfl.dev",
+      "kind": "ResolverConfig",
+      "plural": "resolverconfigs",
+      "example": "route53/v1beta1/resolverconfig",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53/cluster/v1beta1/resolverconfig.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:63033",
+      "referencesStoodIn": [
+        "resourceId"
+      ],
+      "spec": {
+        "autodefinedReverseFlag": "DISABLE",
+        "resourceId": "upjet-ref-resource-id"
+      }
+    },
+    {
+      "typeName": "AWS::Config::ConfigurationRecorder",
+      "group": "config.cloudcontrol.aws.hfl.dev",
+      "kind": "ConfigurationRecorder",
+      "plural": "configurationrecorders",
+      "example": "configservice/v1beta1/configurationrecorder",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/configservice/cluster/v1beta1/configurationrecorder.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:19790",
+      "referencesStoodIn": [
+        "roleARN"
+      ],
+      "spec": {
+        "roleARN": "upjet-ref-role-arn"
+      }
+    },
+    {
+      "typeName": "AWS::Config::ConfigurationRecorder",
+      "group": "config.cloudcontrol.aws.hfl.dev",
+      "kind": "ConfigurationRecorder",
+      "plural": "configurationrecorders",
+      "example": "configservice/v1beta2/configurationrecorder",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/configservice/cluster/v1beta2/configurationrecorder.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:19807",
+      "referencesStoodIn": [
+        "roleARN"
+      ],
+      "spec": {
+        "roleARN": "upjet-ref-role-arn"
+      }
+    },
+    {
+      "typeName": "AWS::Config::DeliveryChannel",
+      "group": "config.cloudcontrol.aws.hfl.dev",
+      "kind": "DeliveryChannel",
+      "plural": "deliverychannels",
+      "example": "configservice/v1beta1/deliverychannel",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/configservice/cluster/v1beta1/deliverychannel.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:19942",
+      "spec": {
+        "s3BucketName": "test-channel-bucket"
+      }
+    },
+    {
+      "typeName": "AWS::Config::DeliveryChannel",
+      "group": "config.cloudcontrol.aws.hfl.dev",
+      "kind": "DeliveryChannel",
+      "plural": "deliverychannels",
+      "example": "configservice/v1beta2/deliverychannel",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/configservice/cluster/v1beta2/deliverychannel.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:19965",
+      "spec": {
+        "s3BucketName": "test-channel-bucket"
+      }
+    },
+    {
+      "typeName": "AWS::Config::ConfigRule",
+      "group": "config.cloudcontrol.aws.hfl.dev",
+      "kind": "ConfigRule",
+      "plural": "configrules",
+      "example": "configservice/v1beta1/configrule",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/configservice/cluster/v1beta1/configrule.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:19594",
+      "spec": {
+        "source": {
+          "owner": "AWS",
+          "sourceIdentifier": "S3_BUCKET_VERSIONING_ENABLED"
+        }
+      }
+    },
+    {
+      "typeName": "AWS::Config::ConfigRule",
+      "group": "config.cloudcontrol.aws.hfl.dev",
+      "kind": "ConfigRule",
+      "plural": "configrules",
+      "example": "configservice/v1beta2/configrule",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/configservice/cluster/v1beta2/configrule.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:19618",
+      "spec": {
+        "source": {
+          "owner": "AWS",
+          "sourceIdentifier": "S3_BUCKET_VERSIONING_ENABLED"
+        }
+      }
+    },
+    {
+      "typeName": "AWS::SecurityHub::Standard",
+      "group": "securityhub.cloudcontrol.aws.hfl.dev",
+      "kind": "Standard",
+      "plural": "standards",
+      "example": "securityhub/v1beta1/standardssubscription",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/securityhub/cluster/v1beta1/standardssubscription.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:69401",
+      "spec": {
+        "standardsArn": "arn:aws:securityhub:::ruleset/cis-aws-foundations-benchmark/v/1.2.0"
+      }
+    },
+    {
+      "typeName": "AWS::ACMPCA::Permission",
+      "group": "acmpca.cloudcontrol.aws.hfl.dev",
+      "kind": "Permission",
+      "plural": "permissions",
+      "example": "acmpca/v1beta1/permission",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/acmpca/cluster/v1beta1/permission.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:514",
+      "manualIntervention": "Creation of CertificateAuthority resource costs over $100, so it is not suitable for continuous testing.",
+      "referencesStoodIn": [
+        "certificateAuthorityArn"
+      ],
+      "spec": {
+        "actions": [
+          "IssueCertificate",
+          "GetCertificate",
+          "ListPermissions"
+        ],
+        "certificateAuthorityArn": "upjet-ref-certificate-authority-arn",
+        "principal": "acm.amazonaws.com"
+      }
+    },
+    {
+      "typeName": "AWS::Macie::CustomDataIdentifier",
+      "group": "macie.cloudcontrol.aws.hfl.dev",
+      "kind": "CustomDataIdentifier",
+      "plural": "customdataidentifiers",
+      "example": "macie2/v1beta1/customdataidentifier",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/macie2/cluster/v1beta1/customdataidentifier.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:50611",
+      "spec": {
+        "description": "DESCRIPTION",
+        "ignoreWords": [
+          "ignore"
+        ],
+        "keywords": [
+          "keyword"
+        ],
+        "maximumMatchDistance": 10,
+        "name": "example",
+        "regex": "[0-9]{3}-[0-9]{2}-[0-9]{4}"
+      }
+    },
+    {
+      "typeName": "AWS::SecurityHub::Insight",
+      "group": "securityhub.cloudcontrol.aws.hfl.dev",
+      "kind": "Insight",
+      "plural": "insights",
+      "example": "securityhub/v1beta1/insight",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/securityhub/cluster/v1beta1/insight.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:69232",
+      "spec": {
+        "filters": {
+          "awsAccountId": [
+            {
+              "comparison": "EQUALS",
+              "value": "1234567890"
+            },
+            {
+              "comparison": "EQUALS",
+              "value": "09876543210"
+            }
+          ]
+        },
+        "groupByAttribute": "AwsAccountId",
+        "name": "example-insight"
+      }
+    },
+    {
+      "typeName": "AWS::SecurityHub::Insight",
+      "group": "securityhub.cloudcontrol.aws.hfl.dev",
+      "kind": "Insight",
+      "plural": "insights",
+      "example": "securityhub/v1beta2/insight",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/securityhub/cluster/v1beta2/insight.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:69265",
+      "spec": {
+        "filters": {
+          "awsAccountId": [
+            {
+              "comparison": "EQUALS",
+              "value": "1234567890"
+            },
+            {
+              "comparison": "EQUALS",
+              "value": "09876543210"
+            }
+          ]
+        },
+        "groupByAttribute": "AwsAccountId",
+        "name": "example-insight"
+      }
+    },
+    {
+      "typeName": "AWS::SecurityHub::ProductSubscription",
+      "group": "securityhub.cloudcontrol.aws.hfl.dev",
+      "kind": "ProductSubscription",
+      "plural": "productsubscriptions",
+      "example": "securityhub/v1beta1/productsubscription",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/securityhub/cluster/v1beta1/productsubscription.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:69351",
+      "spec": {
+        "productArn": "arn:aws:securityhub:${data.aws_region}:733251395267:product/alertlogic/althreatmanagement"
+      }
+    },
+    {
+      "typeName": "AWS::WAFv2::LoggingConfiguration",
+      "group": "wafv2.cloudcontrol.aws.hfl.dev",
+      "kind": "LoggingConfiguration",
+      "plural": "loggingconfigurations",
+      "example": "wafv2/v1beta1/webaclloggingconfiguration",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/wafv2/cluster/v1beta1/webaclloggingconfiguration.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:77171",
+      "referencesStoodIn": [
+        "resourceArn"
+      ],
+      "spec": {
+        "logDestinationConfigs": [
+          "arn:aws:firehose:us-west-1:${data.aws_account_id}:deliverystream/aws-waf-logs-example"
+        ],
+        "redactedFields": [
+          {
+            "singleHeader": {
+              "name": "user-agent"
+            }
+          }
+        ],
+        "resourceArn": "upjet-ref-resource-arn"
+      }
+    },
+    {
+      "typeName": "AWS::IAM::ServerCertificate",
+      "group": "iam.cloudcontrol.aws.hfl.dev",
+      "kind": "ServerCertificate",
+      "plural": "servercertificates",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/iam/cluster/v1beta1/servercertificate.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:42106",
+      "manualIntervention": "This resource requires a valid certificate and private key.",
+      "spec": {
+        "certificateBody": "-----BEGIN CERTIFICATE-----\n[......] # cert contents\n-----END CERTIFICATE-----\n"
+      }
+    },
+    {
+      "typeName": "AWS::RAM::PrincipalAssociation",
+      "group": "ram.cloudcontrol.aws.hfl.dev",
+      "kind": "PrincipalAssociation",
+      "plural": "principalassociations",
+      "example": "ram/v1beta1/principalassociation",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ram/cluster/v1beta1/principalassociation.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:59494",
+      "referencesStoodIn": [
+        "resourceShareArn"
+      ],
+      "spec": {
+        "principal": "123456789012",
+        "resourceShareArn": "upjet-ref-resource-share-arn"
+      }
+    },
+    {
+      "typeName": "AWS::RAM::ResourceAssociation",
+      "group": "ram.cloudcontrol.aws.hfl.dev",
+      "kind": "ResourceAssociation",
+      "plural": "resourceassociations",
+      "example": "ram/v1beta1/resourceassociation",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ram/cluster/v1beta1/resourceassociation.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:59568",
+      "manualIntervention": "This resource requires to enable resource sharing within your organization and adding an resourceArn",
+      "referencesStoodIn": [
+        "resourceShareArn"
+      ],
+      "spec": {
+        "resourceArn": "${arn}",
+        "resourceShareArn": "upjet-ref-resource-share-arn"
+      }
+    },
+    {
+      "typeName": "AWS::Route53::TrafficPolicy",
+      "group": "route53.cloudcontrol.aws.hfl.dev",
+      "kind": "TrafficPolicy",
+      "plural": "trafficpolicies",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53/cluster/v1beta1/trafficpolicy.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:63936",
+      "spec": {
+        "comment": "example comment",
+        "document": "{\n  \"AWSPolicyFormatVersion\": \"2015-10-01\",\n  \"RecordType\": \"A\",\n  \"Endpoints\": {\n    \"endpoint-start-NkPh\": {\n      \"Type\": \"value\",\n      \"Value\": \"10.0.0.2\"\n    }\n  },\n  \"StartEndpoint\": \"endpoint-start-NkPh\"\n}\n",
+        "name": "example"
+      }
+    },
+    {
+      "typeName": "AWS::Route53::TrafficPolicyInstance",
+      "group": "route53.cloudcontrol.aws.hfl.dev",
+      "kind": "TrafficPolicyInstance",
+      "plural": "trafficpolicyinstances",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53/cluster/v1beta1/trafficpolicyinstance.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:64004",
+      "referencesStoodIn": [
+        "hostedZoneId",
+        "trafficPolicyId"
+      ],
+      "spec": {
+        "hostedZoneId": "upjet-ref-hosted-zone-id",
+        "name": "mycompany.test",
+        "trafficPolicyId": "upjet-ref-traffic-policy-id",
+        "trafficPolicyVersion": 1,
+        "ttl": 360
+      }
+    },
+    {
+      "typeName": "AWS::Route53Profiles::Profile",
+      "group": "route53profiles.cloudcontrol.aws.hfl.dev",
+      "kind": "Profile",
+      "plural": "profiles",
+      "example": "route53profiles/v1beta1/profile",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53profiles/cluster/v1beta1/profile.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:62194",
+      "spec": {
+        "name": "example"
+      }
+    },
+    {
+      "typeName": "AWS::Route53Profiles::ProfileAssociation",
+      "group": "route53profiles.cloudcontrol.aws.hfl.dev",
+      "kind": "ProfileAssociation",
+      "plural": "profileassociations",
+      "example": "route53profiles/v1beta1/association",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53profiles/cluster/v1beta1/association.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:62273",
+      "referencesStoodIn": [
+        "profileId",
+        "resourceId"
+      ],
+      "spec": {
+        "name": "example",
+        "profileId": "upjet-ref-profile-id",
+        "resourceId": "upjet-ref-resource-id"
+      }
+    },
+    {
+      "typeName": "AWS::Route53Profiles::ProfileResourceAssociation",
+      "group": "route53profiles.cloudcontrol.aws.hfl.dev",
+      "kind": "ProfileResourceAssociation",
+      "plural": "profileresourceassociations",
+      "example": "route53profiles/v1beta1/resourceassociation",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53profiles/cluster/v1beta1/resourceassociation-zone.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:62360",
+      "manualIntervention": "resourceArn does not support reference fields due to multiple\nvalid referenceable kinds. Needs to be manually set to the private hosted zone\nARN, via compositions or manually.\n",
+      "referencesStoodIn": [
+        "profileId"
+      ],
+      "spec": {
+        "name": "example",
+        "profileId": "upjet-ref-profile-id",
+        "resourceArn": "arn:aws:route53:::hostedzone/Z01234567ABABA0123A01"
+      }
+    },
+    {
+      "typeName": "AWS::Route53Profiles::ProfileResourceAssociation",
+      "group": "route53profiles.cloudcontrol.aws.hfl.dev",
+      "kind": "ProfileResourceAssociation",
+      "plural": "profileresourceassociations",
+      "example": "route53profiles/v1beta1/resourceassociation",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53profiles/cluster/v1beta1/resourceassociation.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:62384",
+      "referencesStoodIn": [
+        "profileId"
+      ],
+      "spec": {
+        "name": "example",
+        "profileId": "upjet-ref-profile-id",
+        "resourceArn": "arn:aws:route53resolver:us-west-1:${data.aws_account_id}:firewall-rule-group/rslvr-frg-4bc9c0829b9e43ea",
+        "resourceProperties": "{\"priority\":201}"
+      }
+    },
+    {
+      "typeName": "AWS::EC2::NetworkInsightsAnalysis",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "NetworkInsightsAnalysis",
+      "plural": "networkinsightsanalysises",
+      "example": "ec2/v1beta1/networkinsightsanalysis",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/networkinsightsanalysis.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:27983",
+      "referencesStoodIn": [
+        "networkInsightsPathId"
+      ],
+      "spec": {
+        "networkInsightsPathId": "upjet-ref-network-insights-path-id"
+      }
+    },
+    {
+      "typeName": "AWS::EC2::NetworkInsightsPath",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "NetworkInsightsPath",
+      "plural": "networkinsightspaths",
+      "example": "ec2/v1beta1/networkinsightspath",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/networkinsightspath.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:28063",
+      "referencesStoodIn": [
+        "destination",
+        "source"
+      ],
+      "spec": {
+        "destination": "upjet-ref-destination",
+        "protocol": "tcp",
+        "source": "upjet-ref-source"
+      }
+    },
+    {
+      "typeName": "AWS::EC2::PlacementGroup",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "PlacementGroup",
+      "plural": "placementgroups",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/placementgroup.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:28368",
+      "spec": {
+        "strategy": "cluster"
+      }
+    },
+    {
+      "typeName": "AWS::EC2::TrafficMirrorFilter",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "TrafficMirrorFilter",
+      "plural": "trafficmirrorfilters",
+      "example": "ec2/v1beta1/trafficmirrorfilter",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/trafficmirrorfilter.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:29640",
+      "spec": {
+        "description": "traffic mirror filter - terraform example",
+        "networkServices": [
+          "amazon-dns"
+        ]
+      }
+    },
+    {
+      "typeName": "AWS::EC2::TrafficMirrorFilterRule",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "TrafficMirrorFilterRule",
+      "plural": "trafficmirrorfilterrules",
+      "example": "ec2/v1beta1/trafficmirrorfilterrule",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/trafficmirrorfilterrule.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:29711",
+      "referencesStoodIn": [
+        "trafficMirrorFilterId"
+      ],
+      "spec": {
+        "description": "test rule",
+        "destinationCidrBlock": "10.0.0.0/8",
+        "ruleAction": "accept",
+        "ruleNumber": 1,
+        "sourceCidrBlock": "10.0.0.0/8",
+        "trafficDirection": "egress",
+        "trafficMirrorFilterId": "upjet-ref-traffic-mirror-filter-id"
+      }
+    },
+    {
+      "typeName": "AWS::EC2::TrafficMirrorFilterRule",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "TrafficMirrorFilterRule",
+      "plural": "trafficmirrorfilterrules",
+      "example": "ec2/v1beta2/trafficmirrorfilterrule",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta2/trafficmirrorfilterrule.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:29740",
+      "referencesStoodIn": [
+        "trafficMirrorFilterId"
+      ],
+      "spec": {
+        "description": "test rule",
+        "destinationCidrBlock": "10.0.0.0/8",
+        "ruleAction": "accept",
+        "ruleNumber": 1,
+        "sourceCidrBlock": "10.0.0.0/8",
+        "trafficDirection": "egress",
+        "trafficMirrorFilterId": "upjet-ref-traffic-mirror-filter-id"
+      }
+    },
+    {
+      "typeName": "AWS::EC2::TransitGatewayMulticastDomainAssociation",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "TransitGatewayMulticastDomainAssociation",
+      "plural": "transitgatewaymulticastdomainassociations",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewaymulticastdomainassociation.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:30190",
+      "manualIntervention": "This resource requires manual intervention.",
+      "referencesStoodIn": [
+        "subnetId",
+        "transitGatewayAttachmentId",
+        "transitGatewayMulticastDomainId"
+      ],
+      "spec": {
+        "subnetId": "upjet-ref-subnet-id",
+        "transitGatewayAttachmentId": "upjet-ref-transit-gateway-attachment-id",
+        "transitGatewayMulticastDomainId": "upjet-ref-transit-gateway-multicast-domain-id"
+      }
+    },
+    {
+      "typeName": "AWS::EC2::TransitGatewayMulticastGroupMember",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "TransitGatewayMulticastGroupMember",
+      "plural": "transitgatewaymulticastgroupmembers",
+      "example": "ec2/v1beta1/transitgatewaymulticastgroupmember",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewaymulticastgroupmember.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:30273",
+      "referencesStoodIn": [
+        "networkInterfaceId",
+        "transitGatewayMulticastDomainId"
+      ],
+      "spec": {
+        "groupIpAddress": "224.0.0.1",
+        "networkInterfaceId": "upjet-ref-network-interface-id",
+        "transitGatewayMulticastDomainId": "upjet-ref-transit-gateway-multicast-domain-id"
+      }
+    },
+    {
+      "typeName": "AWS::EC2::TransitGatewayMulticastGroupMember",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "TransitGatewayMulticastGroupMember",
+      "plural": "transitgatewaymulticastgroupmembers",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewaymulticastgroupsource.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:30352",
+      "manualIntervention": "This resource requires manual intervention.",
+      "referencesStoodIn": [
+        "networkInterfaceId",
+        "transitGatewayMulticastDomainId"
+      ],
+      "spec": {
+        "groupIpAddress": "224.0.0.1",
+        "networkInterfaceId": "upjet-ref-network-interface-id",
+        "transitGatewayMulticastDomainId": "upjet-ref-transit-gateway-multicast-domain-id"
+      }
+    },
+    {
+      "typeName": "AWS::EC2::TransitGatewayMulticastGroupSource",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "TransitGatewayMulticastGroupSource",
+      "plural": "transitgatewaymulticastgroupsources",
+      "example": "ec2/v1beta1/transitgatewaymulticastgroupmember",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewaymulticastgroupmember.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:30433",
+      "referencesStoodIn": [
+        "networkInterfaceId",
+        "transitGatewayMulticastDomainId"
+      ],
+      "spec": {
+        "groupIpAddress": "224.0.0.1",
+        "networkInterfaceId": "upjet-ref-network-interface-id",
+        "transitGatewayMulticastDomainId": "upjet-ref-transit-gateway-multicast-domain-id"
+      }
+    },
+    {
+      "typeName": "AWS::EC2::TransitGatewayMulticastGroupSource",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "TransitGatewayMulticastGroupSource",
+      "plural": "transitgatewaymulticastgroupsources",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewaymulticastgroupsource.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:30512",
+      "manualIntervention": "This resource requires manual intervention.",
+      "referencesStoodIn": [
+        "networkInterfaceId",
+        "transitGatewayMulticastDomainId"
+      ],
+      "spec": {
+        "groupIpAddress": "224.0.0.1",
+        "networkInterfaceId": "upjet-ref-network-interface-id",
+        "transitGatewayMulticastDomainId": "upjet-ref-transit-gateway-multicast-domain-id"
+      }
+    },
+    {
+      "typeName": "AWS::EC2::TransitGatewayPolicyTable",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "TransitGatewayPolicyTable",
+      "plural": "transitgatewaypolicytables",
+      "example": "ec2/v1beta1/transitgatewaypolicytable",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewaypolicytable.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:30745",
+      "referencesStoodIn": [
+        "transitGatewayId"
+      ],
+      "spec": {
+        "transitGatewayId": "upjet-ref-transit-gateway-id"
+      }
+    },
+    {
+      "typeName": "AWS::EC2::TransitGatewayPolicyTable",
+      "group": "ec2.cloudcontrol.aws.hfl.dev",
+      "kind": "TransitGatewayPolicyTable",
+      "plural": "transitgatewaypolicytables",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewayroutetable.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:30814",
+      "referencesStoodIn": [
+        "transitGatewayId"
+      ],
+      "spec": {
+        "transitGatewayId": "upjet-ref-transit-gateway-id"
+      }
+    },
+    {
+      "typeName": "AWS::Logs::QueryDefinition",
+      "group": "logs.cloudcontrol.aws.hfl.dev",
+      "kind": "QueryDefinition",
+      "plural": "querydefinitions",
+      "example": "cloudwatchlogs/v1beta1/definition",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/cloudwatchlogs/cluster/v1beta1/definition.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:50406",
+      "spec": {
+        "logGroupNames": [
+          "/aws/logGroup1",
+          "/aws/logGroup2"
+        ],
+        "name": "custom_query",
+        "queryString": "fields @timestamp, @message\n| sort @timestamp desc\n| limit 25\n"
+      }
+    },
+    {
+      "typeName": "AWS::AutoScaling::LifecycleHook",
+      "group": "autoscaling.cloudcontrol.aws.hfl.dev",
+      "kind": "LifecycleHook",
+      "plural": "lifecyclehooks",
+      "example": "autoscaling/v1beta1/lifecyclehook",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/autoscaling/cluster/v1beta1/lifecyclehook.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:8600",
+      "manualIntervention": "This resource depends on AutoscalingGroup with manual intervention.",
+      "referencesStoodIn": [
+        "autoScalingGroupName"
+      ],
+      "spec": {
+        "autoScalingGroupName": "upjet-ref-autoscaling-group-name",
+        "defaultResult": "CONTINUE",
+        "heartbeatTimeout": 2000,
+        "lifecycleTransition": "autoscaling:EC2_INSTANCE_LAUNCHING",
+        "notificationMetadata": "{\n  \"foo\": \"bar\"\n}\n"
+      }
+    },
+    {
+      "typeName": "AWS::CodeDeploy::DeploymentConfig",
+      "group": "codedeploy.cloudcontrol.aws.hfl.dev",
+      "kind": "DeploymentConfig",
+      "plural": "deploymentconfigs",
+      "example": "deploy/v1beta1/deploymentconfig",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/deploy/cluster/v1beta1/deploymentconfig.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:17240",
+      "spec": {
+        "minimumHealthyHosts": {
+          "type": "HOST_COUNT",
+          "value": 2
+        }
+      }
+    },
+    {
+      "typeName": "AWS::CodeDeploy::DeploymentConfig",
+      "group": "codedeploy.cloudcontrol.aws.hfl.dev",
+      "kind": "DeploymentConfig",
+      "plural": "deploymentconfigs",
+      "example": "deploy/v1beta2/deploymentconfig",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/deploy/cluster/v1beta2/deploymentconfig.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:17260",
+      "spec": {
+        "minimumHealthyHosts": {
+          "type": "HOST_COUNT",
+          "value": 2
+        }
+      }
+    },
+    {
+      "typeName": "AWS::ElasticLoadBalancingV2::TrustStore",
+      "group": "elasticloadbalancingv2.cloudcontrol.aws.hfl.dev",
+      "kind": "TrustStore",
+      "plural": "truststores",
+      "example": "elbv2/v1beta1/lbtruststore",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/elbv2/cluster/v1beta1/lbtruststore.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:36415",
+      "spec": {
+        "caCertificatesBundleS3Bucket": "uptest-test-lbtrusttore",
+        "caCertificatesBundleS3Key": "certificates/ca_certificate.pem",
+        "name": "upbound-ex-lb-ts"
+      }
+    },
+    {
+      "typeName": "AWS::MSK::BatchScramSecret",
+      "group": "msk.cloudcontrol.aws.hfl.dev",
+      "kind": "BatchScramSecret",
+      "plural": "batchscramsecrets",
+      "example": "kafka/v1beta1/scramsecretassociation",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/kafka/cluster/v1beta1/scramsecretassociation.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:52456",
+      "referencesStoodIn": [
+        "clusterArn"
+      ],
+      "spec": {
+        "clusterArn": "upjet-ref-cluster-arn"
+      }
+    },
+    {
+      "typeName": "AWS::RDS::ClusterSnapshot",
+      "group": "rds.cloudcontrol.aws.hfl.dev",
+      "kind": "ClusterSnapshot",
+      "plural": "clustersnapshots",
+      "example": "rds/v1beta1/clustersnapshot",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/rds/cluster/v1beta1/clustersnapshot.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:59698",
+      "referencesStoodIn": [
+        "dbClusterIdentifier"
+      ],
+      "spec": {
+        "dbClusterIdentifier": "upjet-ref-db-cluster-identifier",
+        "dbClusterSnapshotIdentifier": "resourcetestsnapshot1234"
+      }
+    },
+    {
+      "typeName": "AWS::SSM::MaintenanceWindowTarget",
+      "group": "ssm.cloudcontrol.aws.hfl.dev",
+      "kind": "MaintenanceWindowTarget",
+      "plural": "maintenancewindowtargets",
+      "example": "ssm/v1beta1/maintenancewindowtarget",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ssm/cluster/v1beta1/maintenancewindowtarget.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:72568",
+      "referencesStoodIn": [
+        "windowId"
+      ],
+      "spec": {
+        "description": "This is a maintenance window target",
+        "name": "maintenance-window-target",
+        "resourceType": "INSTANCE",
+        "targets": [
+          {
+            "key": "tag:Name",
+            "values": [
+              "acceptance_test"
+            ]
+          }
+        ],
+        "windowId": "upjet-ref-window-id"
+      }
+    },
+    {
+      "typeName": "AWS::SSM::ServiceSetting",
+      "group": "ssm.cloudcontrol.aws.hfl.dev",
+      "kind": "ServiceSetting",
+      "plural": "servicesettings",
+      "example": "ssm/v1beta1/servicesetting",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ssm/cluster/v1beta1/servicesetting.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:73318",
+      "spec": {
+        "settingId": "arn:aws:ssm:us-west-1:${data.aws_account_id}:servicesetting/ssm/parameter-store/high-throughput-enabled",
+        "settingValue": "true"
+      }
+    },
+    {
+      "typeName": "AWS::KafkaConnect::WorkerConfiguration",
+      "group": "kafkaconnect.cloudcontrol.aws.hfl.dev",
+      "kind": "WorkerConfiguration",
+      "plural": "workerconfigurations",
+      "example": "kafkaconnect/v1beta1/workerconfiguration",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/kafkaconnect/cluster/v1beta1/workerconfiguration.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:45054",
+      "spec": {
+        "name": "example",
+        "propertiesFileContent": "key.converter=org.apache.kafka.connect.storage.StringConverter\nvalue.converter=org.apache.kafka.connect.storage.StringConverter\n"
+      }
+    },
+    {
+      "typeName": "AWS::Amplify::Webhook",
+      "group": "amplify.cloudcontrol.aws.hfl.dev",
+      "kind": "Webhook",
+      "plural": "webhooks",
+      "example": "amplify/v1beta1/webhook",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/amplify/cluster/v1beta1/webhook.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:912",
+      "referencesStoodIn": [
+        "appId",
+        "branchName"
+      ],
+      "spec": {
+        "appId": "upjet-ref-app-id",
+        "branchName": "upjet-ref-branch-name",
+        "description": "triggermaster"
+      }
+    },
+    {
+      "typeName": "AWS::ApiGateway::ClientCertificate",
+      "group": "apigateway.cloudcontrol.aws.hfl.dev",
+      "kind": "ClientCertificate",
+      "plural": "clientcertificates",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/apigateway/cluster/v1beta1/clientcertificate.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:2372",
+      "spec": {
+        "description": "My client certificate"
+      }
+    },
+    {
+      "typeName": "AWS::ApiGateway::DomainNameAccessAssociation",
+      "group": "apigateway.cloudcontrol.aws.hfl.dev",
+      "kind": "DomainNameAccessAssociation",
+      "plural": "domainnameaccessassociations",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/apigateway/cluster/v1beta1/domainnameaccessassociation.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:2704",
+      "manualIntervention": "Requires a PRIVATE API Gateway DomainName (with a valid ACM certificate) and a VPC endpoint for execute-api.",
+      "spec": {
+        "accessAssociationSource": "vpce-0123456789abcdef0",
+        "accessAssociationSourceType": "VPCE",
+        "domainNameArn": "arn:aws:apigateway:us-west-1::/domainnames/example.com"
+      }
+    },
+    {
+      "typeName": "AWS::ApiGateway::UsagePlanKey",
+      "group": "apigateway.cloudcontrol.aws.hfl.dev",
+      "kind": "UsagePlanKey",
+      "plural": "usageplankeys",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/apigateway/cluster/v1beta1/stage.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:3644",
+      "referencesStoodIn": [
+        "keyId",
+        "usagePlanId"
+      ],
+      "spec": {
+        "keyId": "upjet-ref-key-id",
+        "keyType": "API_KEY",
+        "usagePlanId": "upjet-ref-usage-plan-id"
+      }
+    },
+    {
+      "typeName": "AWS::AppConfig::Application",
+      "group": "appconfig.cloudcontrol.aws.hfl.dev",
+      "kind": "Application",
+      "plural": "applications",
+      "example": "appconfig/v1beta1/application",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/appconfig/cluster/v1beta1/application.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:3788",
+      "spec": {
+        "description": "Example AppConfig Application",
+        "name": "example-application-tf"
+      }
+    },
+    {
+      "typeName": "AWS::AppConfig::ConfigurationProfile",
+      "group": "appconfig.cloudcontrol.aws.hfl.dev",
+      "kind": "ConfigurationProfile",
+      "plural": "configurationprofiles",
+      "example": "appconfig/v1beta1/configurationprofile",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/appconfig/cluster/v1beta1/configurationprofile.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:3866",
+      "referencesStoodIn": [
+        "applicationId"
+      ],
+      "spec": {
+        "applicationId": "upjet-ref-application-id",
+        "description": "Example Configuration Profile",
+        "locationUri": "hosted",
+        "name": "example-configuration-profile-tf"
+      }
+    },
+    {
+      "typeName": "AWS::AppConfig::Deployment",
+      "group": "appconfig.cloudcontrol.aws.hfl.dev",
+      "kind": "Deployment",
+      "plural": "deployments",
+      "example": "appconfig/v1beta1/deployment",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/appconfig/cluster/v1beta1/deployment.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:3994",
+      "manualIntervention": "Requires configuration version to replaced manually.",
+      "referencesStoodIn": [
+        "applicationId",
+        "configurationProfileId",
+        "deploymentStrategyId",
+        "environmentId"
+      ],
+      "spec": {
+        "applicationId": "upjet-ref-application-id",
+        "configurationProfileId": "upjet-ref-configuration-profile-id",
+        "configurationVersion": "1",
+        "deploymentStrategyId": "upjet-ref-deployment-strategy-id",
+        "description": "My example deployment",
+        "environmentId": "upjet-ref-environment-id"
+      }
+    },
+    {
+      "typeName": "AWS::AppConfig::DeploymentStrategy",
+      "group": "appconfig.cloudcontrol.aws.hfl.dev",
+      "kind": "DeploymentStrategy",
+      "plural": "deploymentstrategies",
+      "example": "appconfig/v1beta1/deploymentstrategy",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/appconfig/cluster/v1beta1/deploymentstrategy.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:4087",
+      "spec": {
+        "deploymentDurationInMinutes": 3,
+        "description": "Example Deployment Strategy",
+        "finalBakeTimeInMinutes": 4,
+        "growthFactor": 10,
+        "growthType": "LINEAR",
+        "name": "example-deployment-strategy-tf",
+        "replicateTo": "NONE"
+      }
+    },
+    {
+      "typeName": "AWS::AppRunner::AutoScalingConfiguration",
+      "group": "apprunner.cloudcontrol.aws.hfl.dev",
+      "kind": "AutoScalingConfiguration",
+      "plural": "autoscalingconfigurations",
+      "example": "apprunner/v1beta1/autoscalingconfigurationversion",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/apprunner/cluster/v1beta1/autoscalingconfigurationversion.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:5912",
+      "spec": {
+        "autoScalingConfigurationName": "example",
+        "maxConcurrency": 50,
+        "maxSize": 10,
+        "minSize": 2
+      }
+    },
+    {
+      "typeName": "AWS::AppRunner::ObservabilityConfiguration",
+      "group": "apprunner.cloudcontrol.aws.hfl.dev",
+      "kind": "ObservabilityConfiguration",
+      "plural": "observabilityconfigurations",
+      "example": "apprunner/v1beta1/observabilityconfiguration",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/apprunner/cluster/v1beta1/observabilityconfiguration.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:5971",
+      "spec": {
+        "observabilityConfigurationName": "example",
+        "traceConfiguration": {
+          "vendor": "AWSXRAY"
+        }
+      }
+    },
+    {
+      "typeName": "AWS::AppRunner::ObservabilityConfiguration",
+      "group": "apprunner.cloudcontrol.aws.hfl.dev",
+      "kind": "ObservabilityConfiguration",
+      "plural": "observabilityconfigurations",
+      "example": "apprunner/v1beta2/observabilityconfiguration",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/apprunner/cluster/v1beta2/observabilityconfiguration.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:5995",
+      "spec": {
+        "observabilityConfigurationName": "example",
+        "traceConfiguration": {
+          "vendor": "AWSXRAY"
+        }
+      }
+    },
+    {
+      "typeName": "AWS::AppRunner::Service",
+      "group": "apprunner.cloudcontrol.aws.hfl.dev",
+      "kind": "Service",
+      "plural": "services",
+      "example": "apprunner/v1beta1/service",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/apprunner/cluster/v1beta1/service.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:6098",
+      "spec": {
+        "serviceName": "example",
+        "sourceConfiguration": {
+          "autoDeploymentsEnabled": false,
+          "imageRepository": {
+            "imageConfiguration": {
+              "port": "8000"
+            },
+            "imageIdentifier": "public.ecr.aws/aws-containers/hello-app-runner:latest",
+            "imageRepositoryType": "ECR_PUBLIC"
+          }
+        }
+      }
+    },
+    {
+      "typeName": "AWS::AppRunner::Service",
+      "group": "apprunner.cloudcontrol.aws.hfl.dev",
+      "kind": "Service",
+      "plural": "services",
+      "example": "apprunner/v1beta2/service",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/apprunner/cluster/v1beta2/service.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:6138",
+      "spec": {
+        "serviceName": "example",
+        "sourceConfiguration": {
+          "autoDeploymentsEnabled": false,
+          "imageRepository": {
+            "imageConfiguration": {
+              "port": "8000"
+            },
+            "imageIdentifier": "public.ecr.aws/aws-containers/hello-app-runner:latest",
+            "imageRepositoryType": "ECR_PUBLIC"
+          }
+        }
+      }
+    },
+    {
+      "typeName": "AWS::AppStream::Stack",
+      "group": "appstream.cloudcontrol.aws.hfl.dev",
+      "kind": "Stack",
+      "plural": "stacks",
+      "example": "appstream/v1beta1/stack",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/appstream/cluster/v1beta1/stack.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:6759",
+      "spec": {
+        "applicationSettings": {
+          "enabled": true,
+          "settingsGroup": "SettingsGroup"
+        },
+        "description": "stack description",
+        "displayName": "stack display name",
+        "feedbackURL": "https://aws.amazon.com",
+        "name": "new-test-stack-example",
+        "redirectURL": "https://aws.amazon.com",
+        "storageConnectors": [
+          {
+            "connectorType": "HOMEFOLDERS"
+          }
+        ],
+        "userSettings": [
+          {
+            "action": "CLIPBOARD_COPY_FROM_LOCAL_DEVICE",
+            "permission": "ENABLED"
+          },
+          {
+            "action": "CLIPBOARD_COPY_TO_LOCAL_DEVICE",
+            "permission": "ENABLED"
+          },
+          {
+            "action": "FILE_UPLOAD",
+            "permission": "ENABLED"
+          },
+          {
+            "action": "FILE_DOWNLOAD",
+            "permission": "ENABLED"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "AWS::AppStream::Stack",
+      "group": "appstream.cloudcontrol.aws.hfl.dev",
+      "kind": "Stack",
+      "plural": "stacks",
+      "example": "appstream/v1beta2/stack",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/appstream/cluster/v1beta2/stack.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:6821",
+      "spec": {
+        "applicationSettings": {
+          "enabled": true,
+          "settingsGroup": "SettingsGroup"
+        },
+        "description": "stack description",
+        "displayName": "stack display name",
+        "feedbackURL": "https://aws.amazon.com",
+        "name": "new-test-stack-example",
+        "redirectURL": "https://aws.amazon.com",
+        "storageConnectors": [
+          {
+            "connectorType": "HOMEFOLDERS"
+          }
+        ],
+        "userSettings": [
+          {
+            "action": "CLIPBOARD_COPY_FROM_LOCAL_DEVICE",
+            "permission": "ENABLED"
+          },
+          {
+            "action": "CLIPBOARD_COPY_TO_LOCAL_DEVICE",
+            "permission": "ENABLED"
+          },
+          {
+            "action": "FILE_UPLOAD",
+            "permission": "ENABLED"
+          },
+          {
+            "action": "FILE_DOWNLOAD",
+            "permission": "ENABLED"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "AWS::AppStream::StackFleetAssociation",
+      "group": "appstream.cloudcontrol.aws.hfl.dev",
+      "kind": "StackFleetAssociation",
+      "plural": "stackfleetassociations",
+      "example": "appstream/v1beta1/fleetstackassociation",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/appstream/cluster/v1beta1/fleetstackassociation.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:6940",
+      "referencesStoodIn": [
+        "fleetName",
+        "stackName"
+      ],
+      "spec": {
+        "fleetName": "upjet-ref-fleet-name",
+        "stackName": "upjet-ref-stack-name"
+      }
+    },
+    {
+      "typeName": "AWS::AppStream::StackUserAssociation",
+      "group": "appstream.cloudcontrol.aws.hfl.dev",
+      "kind": "StackUserAssociation",
+      "plural": "stackuserassociations",
+      "example": "appstream/v1beta1/userstackassociation",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/appstream/cluster/v1beta1/userstackassociation.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:7039",
+      "referencesStoodIn": [
+        "authenticationType",
+        "stackName",
+        "userName"
+      ],
+      "spec": {
+        "authenticationType": "upjet-ref-authentication-type",
+        "stackName": "upjet-ref-stack-name",
+        "userName": "upjet-ref-user-name"
+      }
+    },
+    {
+      "typeName": "AWS::AppSync::ApiCache",
+      "group": "appsync.cloudcontrol.aws.hfl.dev",
+      "kind": "ApiCache",
+      "plural": "apicaches",
+      "example": "appsync/v1beta1/apicache",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/appsync/cluster/v1beta1/apicache.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:7270",
+      "referencesStoodIn": [
+        "apiId"
+      ],
+      "spec": {
+        "apiCachingBehavior": "FULL_REQUEST_CACHING",
+        "apiId": "upjet-ref-api-id",
+        "ttl": 900,
+        "type": "LARGE"
+      }
+    },
+    {
+      "typeName": "AWS::AppSync::ApiKey",
+      "group": "appsync.cloudcontrol.aws.hfl.dev",
+      "kind": "ApiKey",
+      "plural": "apikeys",
+      "example": "appsync/v1beta1/apikey",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/appsync/cluster/v1beta1/apikey.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:7349",
+      "referencesStoodIn": [
+        "apiId"
+      ],
+      "spec": {
+        "apiId": "upjet-ref-api-id"
+      }
+    },
+    {
+      "typeName": "AWS::AppSync::GraphQLApi",
+      "group": "appsync.cloudcontrol.aws.hfl.dev",
+      "kind": "GraphQLApi",
+      "plural": "graphqlapis",
+      "example": "appsync/v1beta1/graphqlapi",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/appsync/cluster/v1beta1/graphqlapi.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:7588",
+      "spec": {
+        "authenticationType": "API_KEY",
+        "name": "example"
+      }
+    },
+    {
+      "typeName": "AWS::AppSync::GraphQLApi",
+      "group": "appsync.cloudcontrol.aws.hfl.dev",
+      "kind": "GraphQLApi",
+      "plural": "graphqlapis",
+      "example": "appsync/v1beta2/graphqlapi",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/appsync/cluster/v1beta2/graphqlapi.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:7603",
+      "spec": {
+        "authenticationType": "API_KEY",
+        "name": "example"
+      }
+    },
+    {
+      "typeName": "AWS::Batch::SchedulingPolicy",
+      "group": "batch.cloudcontrol.aws.hfl.dev",
+      "kind": "SchedulingPolicy",
+      "plural": "schedulingpolicies",
+      "example": "batch/v1beta1/schedulingpolicy",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/batch/cluster/v1beta1/schedulingpolicy.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:9900",
+      "spec": {
+        "fairsharePolicy": {
+          "computeReservation": 1,
+          "shareDecaySeconds": 3600,
+          "shareDistribution": [
+            {
+              "shareIdentifier": "A1*",
+              "weightFactor": 0.1
+            },
+            {
+              "shareIdentifier": "A2",
+              "weightFactor": 0.2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "typeName": "AWS::Batch::SchedulingPolicy",
+      "group": "batch.cloudcontrol.aws.hfl.dev",
+      "kind": "SchedulingPolicy",
+      "plural": "schedulingpolicies",
+      "example": "batch/v1beta2/schedulingpolicy",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/batch/cluster/v1beta2/schedulingpolicy.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:9937",
+      "spec": {
+        "fairsharePolicy": {
+          "computeReservation": 1,
+          "shareDecaySeconds": 3600,
+          "shareDistribution": [
+            {
+              "shareIdentifier": "A1*",
+              "weightFactor": 0.1
+            },
+            {
+              "shareIdentifier": "A2",
+              "weightFactor": 0.2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "typeName": "AWS::BedrockAgentCore::ResourcePolicy",
+      "group": "bedrockagentcore.cloudcontrol.aws.hfl.dev",
+      "kind": "ResourcePolicy",
+      "plural": "resourcepolicies",
+      "example": "bedrockagentcore/v1beta1/resourcepolicy",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/bedrockagentcore/cluster/v1beta1/resourcepolicy.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:12022",
+      "manualIntervention": "requires a Gateway or AgentRuntime resourceArn. Both has provider-assigned identifiers. resourceArn does not support Reference/Selector fields, due to multiple types.\n",
+      "spec": {
+        "policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"AllowInvokeFromVPC\",\n      \"Effect\": \"Allow\",\n      \"Principal\": \"*\",\n      \"Action\": [\"bedrock-agentcore:InvokeAgentRuntime\"],\n      \"Resource\": \"arn:aws:bedrock-agentcore:us-west-2:${data.aws_account_id}:runtime/example_agent_runtime-qaaXoEF5i2\",\n      \"Condition\": {\n        \"StringEquals\": {\"aws:SourceVpc\": \"vpc-1a2b3c4d\"}\n      }\n    }\n  ]\n}\n",
+        "resourceArn": "arn:aws:bedrock-agentcore:us-west-2:${data.aws_account_id}:runtime/example_agent_runtime-qaaXoEF5i2"
+      }
+    },
+    {
+      "typeName": "AWS::BedrockAgentCore::ResourcePolicy",
+      "group": "bedrockagentcore.cloudcontrol.aws.hfl.dev",
+      "kind": "ResourcePolicy",
+      "plural": "resourcepolicies",
+      "example": "dynamodb/v1beta1/resourcepolicy",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/dynamodb/cluster/v1beta1/resourcepolicy.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:12105",
+      "referencesStoodIn": [
+        "resourceArn"
+      ],
+      "spec": {
+        "policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::${data.aws_account_id}:root\"\n      },\n      \"Action\": [\n        \"dynamodb:BatchGetItem\",\n        \"dynamodb:BatchWriteItem\",\n        \"dynamodb:DescribeTable\",\n        \"dynamodb:GetItem\",\n        \"dynamodb:PutItem\",\n        \"dynamodb:Scan\",\n        \"dynamodb:UpdateItem\",\n        \"dynamodb:Query\",\n        \"dynamodb:DeleteItem\"\n      ],\n      \"Resource\": [\n        \"arn:aws:dynamodb:us-east-2:${data.aws_account_id}:table/examplerp\"\n      ]\n    }\n  ]\n}\n",
+        "resourceArn": "upjet-ref-resource-arn"
+      }
+    },
+    {
+      "typeName": "AWS::BedrockAgentCore::ResourcePolicy",
+      "group": "bedrockagentcore.cloudcontrol.aws.hfl.dev",
+      "kind": "ResourcePolicy",
+      "plural": "resourcepolicies",
+      "example": "redshiftserverless/v1beta1/resourcepolicy",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/redshiftserverless/cluster/v1beta1/resourcepolicy.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:12240",
+      "referencesStoodIn": [
+        "resourceArn"
+      ],
+      "spec": {
+        "policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Action\": \"redshift-serverless:RestoreFromSnapshot\",\n      \"Principal\": {\n        \"AWS\": \"${data.aws_peer_account_id}\"\n      },\n      \"Effect\": \"Allow\",\n      \"Sid\": \"\"\n    }\n  ]\n}\n",
+        "resourceArn": "upjet-ref-resource-arn"
+      }
+    },
+    {
+      "typeName": "AWS::Cloud9::EnvironmentEC2",
+      "group": "cloud9.cloudcontrol.aws.hfl.dev",
+      "kind": "EnvironmentEC2",
+      "plural": "environmentec2s",
+      "example": "cloud9/v1beta1/environmentec2",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/cloud9/cluster/v1beta1/environmentec2.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:13963",
+      "spec": {
+        "imageId": "amazonlinux-2023-x86_64",
+        "instanceType": "t2.micro",
+        "name": "example-env"
+      }
+    },
+    {
+      "typeName": "AWS::CodeBuild::Project",
+      "group": "codebuild.cloudcontrol.aws.hfl.dev",
+      "kind": "Project",
+      "plural": "projects",
+      "example": "codebuild/v1beta1/project",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/codebuild/cluster/v1beta1/project.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:16904",
+      "referencesStoodIn": [
+        "serviceRole"
+      ],
+      "spec": {
+        "artifacts": {
+          "type": "NO_ARTIFACTS"
+        },
+        "description": "Example CodeBuild Project",
+        "environment": {
+          "computeType": "BUILD_GENERAL1_SMALL",
+          "image": "aws/codebuild/standard:5.0",
+          "type": "LINUX_CONTAINER"
+        },
+        "serviceRole": "upjet-ref-service-role",
+        "source": {
+          "buildSpec": "version: 0.2\nphases:\n  build:\n    commands:\n      - echo \"Hello, World!\"\n",
+          "type": "NO_SOURCE"
+        }
+      }
+    },
+    {
+      "typeName": "AWS::Cognito::UserPoolUser",
+      "group": "cognito.cloudcontrol.aws.hfl.dev",
+      "kind": "UserPoolUser",
+      "plural": "userpoolusers",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/cognitoidp/cluster/v1beta1/user.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:19361",
+      "referencesStoodIn": [
+        "userPoolId"
+      ],
+      "spec": {
+        "userPoolId": "upjet-ref-user-pool-id"
+      }
+    },
+    {
+      "typeName": "AWS::Cognito::UserPoolUserToGroupAttachment",
+      "group": "cognito.cloudcontrol.aws.hfl.dev",
+      "kind": "UserPoolUserToGroupAttachment",
+      "plural": "userpoolusertogroupattachments",
+      "example": "cognitoidp/v1beta1/useringroup",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/cognitoidp/cluster/v1beta1/useringroup.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:19450",
+      "referencesStoodIn": [
+        "groupName",
+        "userPoolId",
+        "username"
+      ],
+      "spec": {
+        "groupName": "upjet-ref-group-name",
+        "userPoolId": "upjet-ref-user-pool-id",
+        "username": "upjet-ref-username"
+      }
+    },
+    {
+      "typeName": "AWS::Connect::PhoneNumber",
+      "group": "connect.cloudcontrol.aws.hfl.dev",
+      "kind": "PhoneNumber",
+      "plural": "phonenumbers",
+      "example": "connect/v1beta1/phonenumber",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/connect/cluster/v1beta1/phonenumber.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:20889",
+      "referencesStoodIn": [
+        "targetArn"
+      ],
+      "spec": {
+        "countryCode": "US",
+        "targetArn": "upjet-ref-target-arn",
+        "type": "DID"
+      }
+    },
+    {
+      "typeName": "AWS::DataExchange::DataSet",
+      "group": "dataexchange.cloudcontrol.aws.hfl.dev",
+      "kind": "DataSet",
+      "plural": "datasets",
+      "example": "dataexchange/v1beta1/dataset",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/dataexchange/cluster/v1beta1/dataset.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:21972",
+      "spec": {
+        "assetType": "S3_SNAPSHOT",
+        "description": "example",
+        "name": "example"
+      }
+    },
+    {
+      "typeName": "AWS::DataPipeline::Pipeline",
+      "group": "datapipeline.cloudcontrol.aws.hfl.dev",
+      "kind": "Pipeline",
+      "plural": "pipelines",
+      "example": "datapipeline/v1beta1/pipeline",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/datapipeline/cluster/v1beta1/pipeline.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:22022",
+      "spec": {
+        "name": "tf-pipeline-default"
+      }
+    },
+    {
+      "typeName": "AWS::DataSync::Task",
+      "group": "datasync.cloudcontrol.aws.hfl.dev",
+      "kind": "Task",
+      "plural": "tasks",
+      "example": "datasync/v1beta1/task",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/datasync/cluster/v1beta1/task.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:22400",
+      "referencesStoodIn": [
+        "cloudWatchLogGroupArn",
+        "destinationLocationArn",
+        "sourceLocationArn"
+      ],
+      "spec": {
+        "cloudWatchLogGroupArn": "upjet-ref-cloudwatch-log-group-arn",
+        "destinationLocationArn": "upjet-ref-destination-location-arn",
+        "name": "datasync-task-example",
+        "options": {
+          "bytesPerSecond": -1,
+          "gid": "NONE",
+          "posixPermissions": "NONE",
+          "preserveDeletedFiles": "REMOVE",
+          "uid": "NONE",
+          "verifyMode": "ONLY_FILES_TRANSFERRED"
+        },
+        "sourceLocationArn": "upjet-ref-source-location-arn"
+      }
+    },
+    {
+      "typeName": "AWS::DAX::Cluster",
+      "group": "dax.cloudcontrol.aws.hfl.dev",
+      "kind": "Cluster",
+      "plural": "clusters",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/dax/cluster/v1beta1/cluster.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:22508",
+      "referencesStoodIn": [
+        "iamRoleARN"
+      ],
+      "spec": {
+        "iamRoleARN": "upjet-ref-iam-role-arn",
+        "nodeType": "dax.r4.large",
+        "replicationFactor": 1
+      }
+    },
+    {
+      "typeName": "AWS::DAX::Cluster",
+      "group": "dax.cloudcontrol.aws.hfl.dev",
+      "kind": "Cluster",
+      "plural": "clusters",
+      "example": "dax/v1beta2/cluster",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/dax/cluster/v1beta2/cluster.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:22529",
+      "referencesStoodIn": [
+        "iamRoleARN"
+      ],
+      "spec": {
+        "iamRoleARN": "upjet-ref-iam-role-arn",
+        "nodeType": "dax.r4.large",
+        "replicationFactor": 1
+      }
+    },
+    {
+      "typeName": "AWS::DevOpsAgent::AgentSpace",
+      "group": "devopsagent.cloudcontrol.aws.hfl.dev",
+      "kind": "AgentSpace",
+      "plural": "agentspaces",
+      "example": "devopsagent/v1beta1/agentspace",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/devopsagent/cluster/v1beta1/agentspace.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:22854",
+      "spec": {
+        "name": "my-agent-space"
+      }
+    },
+    {
+      "typeName": "AWS::DocDB::EventSubscription",
+      "group": "docdb.cloudcontrol.aws.hfl.dev",
+      "kind": "EventSubscription",
+      "plural": "eventsubscriptions",
+      "example": "docdb/v1beta1/eventsubscription",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/docdb/cluster/v1beta1/eventsubscription.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:24615",
+      "referencesStoodIn": [
+        "snsTopicArn"
+      ],
+      "spec": {
+        "enabled": true,
+        "eventCategories": [
+          "creation",
+          "failure"
+        ],
+        "snsTopicArn": "upjet-ref-sns-topic-arn",
+        "sourceType": "db-cluster"
+      }
+    },
+    {
+      "typeName": "AWS::DocDB::GlobalCluster",
+      "group": "docdb.cloudcontrol.aws.hfl.dev",
+      "kind": "GlobalCluster",
+      "plural": "globalclusters",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/docdb/cluster/v1beta1/globalcluster.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:24824",
+      "spec": {
+        "engine": "docdb",
+        "engineVersion": "4.0.0",
+        "globalClusterIdentifier": "global-test"
+      }
+    },
+    {
+      "typeName": "AWS::Evidently::Project",
+      "group": "evidently.cloudcontrol.aws.hfl.dev",
+      "kind": "Project",
+      "plural": "projects",
+      "example": "evidently/v1beta1/project",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/evidently/cluster/v1beta1/project.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:37419",
+      "spec": {
+        "description": "Example Description",
+        "name": "evidentlyproject"
+      }
+    },
+    {
+      "typeName": "AWS::Evidently::Project",
+      "group": "evidently.cloudcontrol.aws.hfl.dev",
+      "kind": "Project",
+      "plural": "projects",
+      "example": "evidently/v1beta2/project",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/evidently/cluster/v1beta2/project.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:37438",
+      "spec": {
+        "description": "Example Description",
+        "name": "evidentlyproject"
+      }
+    },
+    {
+      "typeName": "AWS::FSx::Backup",
+      "group": "fsx.cloudcontrol.aws.hfl.dev",
+      "kind": "Backup",
+      "plural": "backups",
+      "example": "fsx/v1beta1/backup",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/fsx/cluster/v1beta1/backup.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:37798",
+      "referencesStoodIn": [
+        "fileSystemId"
+      ],
+      "spec": {
+        "fileSystemId": "upjet-ref-file-system"
+      }
+    },
+    {
+      "typeName": "AWS::FSx::StorageVirtualMachine",
+      "group": "fsx.cloudcontrol.aws.hfl.dev",
+      "kind": "StorageVirtualMachine",
+      "plural": "storagevirtualmachines",
+      "example": "fsx/v1beta1/ontapstoragevirtualmachine",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/fsx/cluster/v1beta1/ontapstoragevirtualmachine.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:38065",
+      "referencesStoodIn": [
+        "fileSystemId"
+      ],
+      "spec": {
+        "fileSystemId": "upjet-ref-file-system-id",
+        "name": "test"
+      }
+    },
+    {
+      "typeName": "AWS::FSx::StorageVirtualMachine",
+      "group": "fsx.cloudcontrol.aws.hfl.dev",
+      "kind": "StorageVirtualMachine",
+      "plural": "storagevirtualmachines",
+      "example": "fsx/v1beta2/ontapstoragevirtualmachine",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/fsx/cluster/v1beta2/ontapstoragevirtualmachine.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:38089",
+      "referencesStoodIn": [
+        "fileSystemId"
+      ],
+      "spec": {
+        "fileSystemId": "upjet-ref-file-system-id",
+        "name": "test"
+      }
+    },
+    {
+      "typeName": "AWS::GameLift::Alias",
+      "group": "gamelift.cloudcontrol.aws.hfl.dev",
+      "kind": "Alias",
+      "plural": "aliases",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/gamelift/cluster/v1beta1/alias.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:38243",
+      "spec": {
+        "description": "Example Description",
+        "name": "example-alias",
+        "routingStrategy": {
+          "message": "Example Message",
+          "type": "TERMINAL"
+        }
+      }
+    },
+    {
+      "typeName": "AWS::GameLift::Alias",
+      "group": "gamelift.cloudcontrol.aws.hfl.dev",
+      "kind": "Alias",
+      "plural": "aliases",
+      "example": "gamelift/v1beta2/alias",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/gamelift/cluster/v1beta2/alias.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:38267",
+      "spec": {
+        "description": "Example Description",
+        "name": "example-alias",
+        "routingStrategy": {
+          "message": "Example Message",
+          "type": "TERMINAL"
+        }
+      }
+    },
+    {
+      "typeName": "AWS::GlobalAccelerator::Accelerator",
+      "group": "globalaccelerator.cloudcontrol.aws.hfl.dev",
+      "kind": "Accelerator",
+      "plural": "accelerators",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/globalaccelerator/cluster/v1beta1/accelerator.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:38839",
+      "spec": {
+        "ipAddressType": "IPV4",
+        "name": "sample-accelerator"
+      }
+    },
+    {
+      "typeName": "AWS::GlobalAccelerator::Accelerator",
+      "group": "globalaccelerator.cloudcontrol.aws.hfl.dev",
+      "kind": "Accelerator",
+      "plural": "accelerators",
+      "example": "globalaccelerator/v1beta2/accelerator",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/globalaccelerator/cluster/v1beta2/accelerator.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:38852",
+      "spec": {
+        "ipAddressType": "IPV4",
+        "name": "sample-accelerator"
+      }
+    },
+    {
+      "typeName": "AWS::Glue::Classifier",
+      "group": "glue.cloudcontrol.aws.hfl.dev",
+      "kind": "Classifier",
+      "plural": "classifiers",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/glue/cluster/v1beta1/classifier.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:39043",
+      "spec": {
+        "csvClassifier": {
+          "allowSingleColumn": false,
+          "containsHeader": "PRESENT",
+          "delimiter": ",",
+          "disableValueTrimming": false,
+          "header": [
+            "example1",
+            "example2"
+          ],
+          "quoteSymbol": "'"
+        }
+      }
+    },
+    {
+      "typeName": "AWS::Glue::Classifier",
+      "group": "glue.cloudcontrol.aws.hfl.dev",
+      "kind": "Classifier",
+      "plural": "classifiers",
+      "example": "glue/v1beta2/classifier",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/glue/cluster/v1beta2/classifier.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:39074",
+      "spec": {
+        "csvClassifier": {
+          "allowSingleColumn": false,
+          "containsHeader": "PRESENT",
+          "delimiter": ",",
+          "disableValueTrimming": false,
+          "header": [
+            "example1",
+            "example2"
+          ],
+          "quoteSymbol": "'"
+        }
+      }
+    },
+    {
+      "typeName": "AWS::Glue::Trigger",
+      "group": "glue.cloudcontrol.aws.hfl.dev",
+      "kind": "Trigger",
+      "plural": "triggers",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/glue/cluster/v1beta1/trigger.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:40504",
+      "spec": {
+        "actions": [
+          {
+            "jobName": "example"
+          }
+        ],
+        "predicate": {
+          "conditions": [
+            {
+              "jobName": "another",
+              "state": "SUCCEEDED"
+            }
+          ]
+        },
+        "type": "CONDITIONAL"
+      }
+    },
+    {
+      "typeName": "AWS::Glue::Trigger",
+      "group": "glue.cloudcontrol.aws.hfl.dev",
+      "kind": "Trigger",
+      "plural": "triggers",
+      "example": "glue/v1beta2/trigger",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/glue/cluster/v1beta2/trigger.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:40538",
+      "spec": {
+        "actions": [
+          {
+            "jobName": "example"
+          }
+        ],
+        "predicate": {
+          "conditions": [
+            {
+              "jobName": "another",
+              "state": "SUCCEEDED"
+            }
+          ]
+        },
+        "type": "CONDITIONAL"
+      }
+    },
+    {
+      "typeName": "AWS::Grafana::Workspace",
+      "group": "grafana.cloudcontrol.aws.hfl.dev",
+      "kind": "Workspace",
+      "plural": "workspaces",
+      "example": "grafana/v1beta1/workspace",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/grafana/cluster/v1beta1/workspace.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:40788",
+      "referencesStoodIn": [
+        "roleArn"
+      ],
+      "spec": {
+        "accountAccessType": "CURRENT_ACCOUNT",
+        "authenticationProviders": [
+          "SAML"
+        ],
+        "permissionType": "SERVICE_MANAGED",
+        "roleArn": "upjet-ref-role-arn"
+      }
+    },
+    {
+      "typeName": "AWS::Grafana::Workspace",
+      "group": "grafana.cloudcontrol.aws.hfl.dev",
+      "kind": "Workspace",
+      "plural": "workspaces",
+      "example": "grafana/v1beta2/workspace",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/grafana/cluster/v1beta2/workspace.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:40813",
+      "referencesStoodIn": [
+        "roleArn"
+      ],
+      "spec": {
+        "accountAccessType": "CURRENT_ACCOUNT",
+        "authenticationProviders": [
+          "SAML"
+        ],
+        "permissionType": "SERVICE_MANAGED",
+        "roleArn": "upjet-ref-role-arn"
+      }
+    },
+    {
+      "typeName": "AWS::ImageBuilder::Component",
+      "group": "imagebuilder.cloudcontrol.aws.hfl.dev",
+      "kind": "Component",
+      "plural": "components",
+      "example": "imagebuilder/v1beta1/component",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/imagebuilder/cluster/v1beta1/component.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:42580",
+      "spec": {
+        "data": "${yamlencode({\n    phases = [{\n      name = \"build\"\n      steps = [{\n        action = \"ExecuteBash\"\n        inputs = {\n          commands = [\"echo 'hello world'\"]\n        }\n        name      = \"example\"\n        onFailure = \"Continue\"\n      }]\n    }]\n    schemaVersion = 1.0\n  })}",
+        "name": "component",
+        "platform": "Linux",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "typeName": "AWS::ImageBuilder::Image",
+      "group": "imagebuilder.cloudcontrol.aws.hfl.dev",
+      "kind": "Image",
+      "plural": "images",
+      "example": "imagebuilder/v1beta1/image",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/imagebuilder/cluster/v1beta1/image.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:42929",
+      "manualIntervention": "It requires a ImageRecipe with manual intervention",
+      "referencesStoodIn": [
+        "imageRecipeArn",
+        "infrastructureConfigurationArn"
+      ],
+      "spec": {
+        "imageRecipeArn": "upjet-ref-image-recipe-arn",
+        "infrastructureConfigurationArn": "upjet-ref-infrastructure-configuration-arn"
+      }
+    },
+    {
+      "typeName": "AWS::ImageBuilder::Image",
+      "group": "imagebuilder.cloudcontrol.aws.hfl.dev",
+      "kind": "Image",
+      "plural": "images",
+      "example": "imagebuilder/v1beta2/image",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/imagebuilder/cluster/v1beta2/image.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:42952",
+      "manualIntervention": "It requires a ImageRecipe with manual intervention",
+      "referencesStoodIn": [
+        "imageRecipeArn",
+        "infrastructureConfigurationArn"
+      ],
+      "spec": {
+        "imageRecipeArn": "upjet-ref-image-recipe-arn",
+        "infrastructureConfigurationArn": "upjet-ref-infrastructure-configuration-arn"
+      }
+    },
+    {
+      "typeName": "AWS::ImageBuilder::ImagePipeline",
+      "group": "imagebuilder.cloudcontrol.aws.hfl.dev",
+      "kind": "ImagePipeline",
+      "plural": "imagepipelines",
+      "example": "imagebuilder/v1beta1/imagepipeline",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/imagebuilder/cluster/v1beta1/imagepipeline.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:43046",
+      "manualIntervention": "It requires a ImageRecipe with manual intervention",
+      "referencesStoodIn": [
+        "imageRecipeArn",
+        "infrastructureConfigurationArn"
+      ],
+      "spec": {
+        "imageRecipeArn": "upjet-ref-image-recipe-arn",
+        "infrastructureConfigurationArn": "upjet-ref-infrastructure-configuration-arn",
+        "name": "example"
+      }
+    },
+    {
+      "typeName": "AWS::ImageBuilder::ImagePipeline",
+      "group": "imagebuilder.cloudcontrol.aws.hfl.dev",
+      "kind": "ImagePipeline",
+      "plural": "imagepipelines",
+      "example": "imagebuilder/v1beta2/imagepipeline",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/imagebuilder/cluster/v1beta2/imagepipeline.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:43070",
+      "manualIntervention": "It requires a ImageRecipe with manual intervention",
+      "referencesStoodIn": [
+        "imageRecipeArn",
+        "infrastructureConfigurationArn"
+      ],
+      "spec": {
+        "imageRecipeArn": "upjet-ref-image-recipe-arn",
+        "infrastructureConfigurationArn": "upjet-ref-infrastructure-configuration-arn",
+        "name": "example"
+      }
+    },
+    {
+      "typeName": "AWS::ImageBuilder::InfrastructureConfiguration",
+      "group": "imagebuilder.cloudcontrol.aws.hfl.dev",
+      "kind": "InfrastructureConfiguration",
+      "plural": "infrastructureconfigurations",
+      "example": "imagebuilder/v1beta1/infrastructureconfiguration",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/imagebuilder/cluster/v1beta1/infrastructureconfiguration.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:43342",
+      "referencesStoodIn": [
+        "instanceProfileName"
+      ],
+      "spec": {
+        "description": "example description",
+        "instanceProfileName": "upjet-ref-instance-profile-name",
+        "name": "exmple"
+      }
+    },
+    {
+      "typeName": "AWS::ImageBuilder::InfrastructureConfiguration",
+      "group": "imagebuilder.cloudcontrol.aws.hfl.dev",
+      "kind": "InfrastructureConfiguration",
+      "plural": "infrastructureconfigurations",
+      "example": "imagebuilder/v1beta2/infrastructureconfiguration",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/imagebuilder/cluster/v1beta2/infrastructureconfiguration.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:43364",
+      "referencesStoodIn": [
+        "instanceProfileName"
+      ],
+      "spec": {
+        "description": "example description",
+        "instanceProfileName": "upjet-ref-instance-profile-name",
+        "name": "exmple"
+      }
+    },
+    {
+      "typeName": "AWS::IoT::Authorizer",
+      "group": "iot.cloudcontrol.aws.hfl.dev",
+      "kind": "Authorizer",
+      "plural": "authorizers",
+      "example": "iot/v1beta1/authorizer",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/iot/cluster/v1beta1/authorizer.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:43646",
+      "referencesStoodIn": [
+        "authorizerFunctionArn"
+      ],
+      "spec": {
+        "authorizerFunctionArn": "upjet-ref-authorizer-function-arn",
+        "signingDisabled": false,
+        "status": "ACTIVE",
+        "tokenKeyName": "Token-Header"
+      }
+    },
+    {
+      "typeName": "AWS::IoT::ProvisioningTemplate",
+      "group": "iot.cloudcontrol.aws.hfl.dev",
+      "kind": "ProvisioningTemplate",
+      "plural": "provisioningtemplates",
+      "example": "iot/v1beta1/provisioningtemplate",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/iot/cluster/v1beta1/provisioningtemplate.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:43967",
+      "referencesStoodIn": [
+        "provisioningRoleArn"
+      ],
+      "spec": {
+        "description": "My provisioning template",
+        "provisioningRoleArn": "upjet-ref-provisioning-role-arn",
+        "templateBody": "${jsonencode({\n    Parameters = {\n      SerialNumber = { Type = \"String\" }\n    }\n    Resources = {\n      certificate = {\n        Properties = {\n          CertificateId = { Ref = \"AWS::IoT::Certificate::Id\" }\n          Status        = \"Active\"\n        }\n        Type = \"AWS::IoT::Certificate\"\n      }\n      policy = {\n        Properties = {\n          PolicyName = \"policy\"\n        }\n        Type = \"AWS::IoT::Policy\"\n      }\n    }\n  })}"
+      }
+    },
+    {
+      "typeName": "AWS::IoT::ProvisioningTemplate",
+      "group": "iot.cloudcontrol.aws.hfl.dev",
+      "kind": "ProvisioningTemplate",
+      "plural": "provisioningtemplates",
+      "example": "iot/v1beta2/provisioningtemplate",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/iot/cluster/v1beta2/provisioningtemplate.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:43991",
+      "referencesStoodIn": [
+        "provisioningRoleArn"
+      ],
+      "spec": {
+        "description": "My provisioning template",
+        "provisioningRoleArn": "upjet-ref-provisioning-role-arn",
+        "templateBody": "${jsonencode({\n    Parameters = {\n      SerialNumber = { Type = \"String\" }\n    }\n    Resources = {\n      certificate = {\n        Properties = {\n          CertificateId = { Ref = \"AWS::IoT::Certificate::Id\" }\n          Status        = \"Active\"\n        }\n        Type = \"AWS::IoT::Certificate\"\n      }\n      policy = {\n        Properties = {\n          PolicyName = \"policy\"\n        }\n        Type = \"AWS::IoT::Policy\"\n      }\n    }\n  })}"
+      }
+    },
+    {
+      "typeName": "AWS::IVS::Channel",
+      "group": "ivs.cloudcontrol.aws.hfl.dev",
+      "kind": "Channel",
+      "plural": "channels",
+      "example": "ivs/v1beta1/channel",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ivs/cluster/v1beta1/channel.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:44756",
+      "spec": {
+        "name": "channel-1"
+      }
+    },
+    {
+      "typeName": "AWS::IVS::RecordingConfiguration",
+      "group": "ivs.cloudcontrol.aws.hfl.dev",
+      "kind": "RecordingConfiguration",
+      "plural": "recordingconfigurations",
+      "example": "ivs/v1beta1/recordingconfiguration",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ivs/cluster/v1beta1/recordingconfiguration.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:44845",
+      "spec": {
+        "destinationConfiguration": {
+          "s3": {
+            "bucketName": "upbound-provider-test-data"
+          }
+        },
+        "name": "recording_configuration-1"
+      }
+    },
+    {
+      "typeName": "AWS::IVS::RecordingConfiguration",
+      "group": "ivs.cloudcontrol.aws.hfl.dev",
+      "kind": "RecordingConfiguration",
+      "plural": "recordingconfigurations",
+      "example": "ivs/v1beta2/recordingconfiguration",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ivs/cluster/v1beta2/recordingconfiguration.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:44870",
+      "spec": {
+        "destinationConfiguration": {
+          "s3": {
+            "bucketName": "upbound-provider-test-data"
+          }
+        },
+        "name": "recording_configuration-1"
+      }
+    },
+    {
+      "typeName": "AWS::Kendra::DataSource",
+      "group": "kendra.cloudcontrol.aws.hfl.dev",
+      "kind": "DataSource",
+      "plural": "datasources",
+      "example": "kendra/v1beta1/datasource",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/kendra/cluster/v1beta1/datasource.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:45151",
+      "manualIntervention": "Uptest doesn't pick up successful resource status",
+      "referencesStoodIn": [
+        "indexId"
+      ],
+      "spec": {
+        "description": "example",
+        "indexId": "upjet-ref-index-id000000000000000000",
+        "languageCode": "en",
+        "name": "datasource",
+        "type": "CUSTOM"
+      }
+    },
+    {
+      "typeName": "AWS::Kendra::DataSource",
+      "group": "kendra.cloudcontrol.aws.hfl.dev",
+      "kind": "DataSource",
+      "plural": "datasources",
+      "example": "kendra/v1beta2/datasource",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/kendra/cluster/v1beta2/datasource.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:45184",
+      "manualIntervention": "Uptest doesn't pick up successful resource status",
+      "referencesStoodIn": [
+        "indexId"
+      ],
+      "spec": {
+        "description": "example",
+        "indexId": "upjet-ref-index-id000000000000000000",
+        "languageCode": "en",
+        "name": "datasource",
+        "type": "CUSTOM"
+      }
+    },
+    {
+      "typeName": "AWS::LicenseManager::LicenseConfiguration",
+      "group": "licensemanager.cloudcontrol.aws.hfl.dev",
+      "kind": "LicenseConfiguration",
+      "plural": "licenseconfigurations",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/licensemanager/cluster/v1beta1/licenseconfiguration.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:48691",
+      "spec": {
+        "description": "Example",
+        "licenseCount": 10,
+        "licenseCountHardLimit": true,
+        "licenseCountingType": "Socket",
+        "licenseRules": [
+          "#minimumSockets=2"
+        ],
+        "name": "Example"
+      }
+    },
+    {
+      "typeName": "AWS::Lightsail::Domain",
+      "group": "lightsail.cloudcontrol.aws.hfl.dev",
+      "kind": "Domain",
+      "plural": "domains",
+      "example": "lightsail/v1beta1/domain",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/lightsail/cluster/v1beta1/domain.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:49067",
+      "spec": {
+        "domainName": "myDomain.com"
+      }
+    },
+    {
+      "typeName": "AWS::Location::TrackerConsumer",
+      "group": "location.cloudcontrol.aws.hfl.dev",
+      "kind": "TrackerConsumer",
+      "plural": "trackerconsumers",
+      "example": "location/v1beta1/trackerassociation",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/location/cluster/v1beta1/trackerassociation.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:49675",
+      "referencesStoodIn": [
+        "consumerArn",
+        "trackerName"
+      ],
+      "spec": {
+        "consumerArn": "upjet-ref-consumer-arn",
+        "trackerName": "upjet-ref-tracker-name"
+      }
+    },
+    {
+      "typeName": "AWS::MediaLive::Input",
+      "group": "medialive.cloudcontrol.aws.hfl.dev",
+      "kind": "Input",
+      "plural": "inputs",
+      "example": "medialive/v1beta1/input",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/medialive/cluster/v1beta1/input.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:51259",
+      "manualIntervention": "Input resource requires at least one valid input_security_group id.",
+      "spec": {
+        "inputSecurityGroups": [
+          "${aws_medialive_input_security_group.id}"
+        ],
+        "name": "example-input",
+        "type": "UDP_PUSH"
+      }
+    },
+    {
+      "typeName": "AWS::MediaLive::Input",
+      "group": "medialive.cloudcontrol.aws.hfl.dev",
+      "kind": "Input",
+      "plural": "inputs",
+      "example": "medialive/v1beta2/input",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/medialive/cluster/v1beta2/input.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:51286",
+      "manualIntervention": "Input resource requires at least one valid input_security_group id.",
+      "spec": {
+        "inputSecurityGroups": [
+          "${aws_medialive_input_security_group.id}"
+        ],
+        "name": "example-input",
+        "type": "UDP_PUSH"
+      }
+    },
+    {
+      "typeName": "AWS::MediaLive::InputSecurityGroup",
+      "group": "medialive.cloudcontrol.aws.hfl.dev",
+      "kind": "InputSecurityGroup",
+      "plural": "inputsecuritygroups",
+      "example": "medialive/v1beta1/inputsecuritygroup",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/medialive/cluster/v1beta1/inputsecuritygroup.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:51357",
+      "spec": {
+        "whitelistRules": [
+          {
+            "cidr": "10.0.0.8/32"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "AWS::Neptune::GlobalCluster",
+      "group": "neptune.cloudcontrol.aws.hfl.dev",
+      "kind": "GlobalCluster",
+      "plural": "globalclusters",
+      "example": "neptune/v1beta1/globalcluster",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/neptune/cluster/v1beta1/globalcluster.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:54847",
+      "spec": {
+        "engine": "neptune",
+        "engineVersion": "1.2.0.0"
+      }
+    },
+    {
+      "typeName": "AWS::NetworkMonitor::Probe",
+      "group": "networkmonitor.cloudcontrol.aws.hfl.dev",
+      "kind": "Probe",
+      "plural": "probes",
+      "example": "networkmonitor/v1beta1/probe",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/networkmonitor/cluster/v1beta1/probe.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:56715",
+      "referencesStoodIn": [
+        "monitorName",
+        "sourceArn"
+      ],
+      "spec": {
+        "destination": "127.0.0.1",
+        "destinationPort": 80,
+        "monitorName": "upjet-ref-monitor-name",
+        "packetSize": 200,
+        "protocol": "TCP",
+        "sourceArn": "upjet-ref-source-arn"
+      }
+    },
+    {
+      "typeName": "AWS::Oam::Link",
+      "group": "oam.cloudcontrol.aws.hfl.dev",
+      "kind": "Link",
+      "plural": "links",
+      "example": "oam/v1beta1/link",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/oam/cluster/v1beta1/link.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:56803",
+      "referencesStoodIn": [
+        "sinkIdentifier"
+      ],
+      "spec": {
+        "labelTemplate": "$AccountName",
+        "linkConfiguration": {
+          "logGroupConfiguration": {
+            "filter": "LogGroupName LIKE '/aws/eks/%'"
+          }
+        },
+        "resourceTypes": [
+          "AWS::Logs::LogGroup"
+        ],
+        "sinkIdentifier": "upjet-ref-sink-identifier"
+      }
+    },
+    {
+      "typeName": "AWS::Oam::Sink",
+      "group": "oam.cloudcontrol.aws.hfl.dev",
+      "kind": "Sink",
+      "plural": "sinks",
+      "example": "oam/v1beta1/sink",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/oam/cluster/v1beta1/sink.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:56878",
+      "spec": {
+        "name": "ExampleSink"
+      }
+    },
+    {
+      "typeName": "AWS::Route53RecoveryControl::ControlPanel",
+      "group": "route53recoverycontrol.cloudcontrol.aws.hfl.dev",
+      "kind": "ControlPanel",
+      "plural": "controlpanels",
+      "example": "route53recoverycontrolconfig/v1beta1/controlpanel",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53recoverycontrolconfig/cluster/v1beta1/controlpanel.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:62457",
+      "referencesStoodIn": [
+        "clusterArn"
+      ],
+      "spec": {
+        "clusterArn": "upjet-ref-cluster-arn",
+        "name": "balmorhea"
+      }
+    },
+    {
+      "typeName": "AWS::Route53RecoveryControl::RoutingControl",
+      "group": "route53recoverycontrol.cloudcontrol.aws.hfl.dev",
+      "kind": "RoutingControl",
+      "plural": "routingcontrols",
+      "example": "route53recoverycontrolconfig/v1beta1/routingcontrol",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53recoverycontrolconfig/cluster/v1beta1/routingcontrol.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:62527",
+      "referencesStoodIn": [
+        "clusterArn"
+      ],
+      "spec": {
+        "clusterArn": "upjet-ref-cluster-arn",
+        "name": "tinlicker"
+      }
+    },
+    {
+      "typeName": "AWS::Route53RecoveryReadiness::ReadinessCheck",
+      "group": "route53recoveryreadiness.cloudcontrol.aws.hfl.dev",
+      "kind": "ReadinessCheck",
+      "plural": "readinesschecks",
+      "example": "route53recoveryreadiness/v1beta1/readinesscheck",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53recoveryreadiness/cluster/v1beta1/readinesscheck.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:62764",
+      "spec": {
+        "resourceSetName": "example"
+      }
+    },
+    {
+      "typeName": "AWS::SageMaker::CodeRepository",
+      "group": "sagemaker.cloudcontrol.aws.hfl.dev",
+      "kind": "CodeRepository",
+      "plural": "coderepositories",
+      "example": "sagemaker/v1beta1/coderepository",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/sagemaker/cluster/v1beta1/coderepository.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:66798",
+      "spec": {
+        "gitConfig": {
+          "repositoryUrl": "https://github.com/hashicorp/terraform-provider-aws.git"
+        }
+      }
+    },
+    {
+      "typeName": "AWS::SageMaker::CodeRepository",
+      "group": "sagemaker.cloudcontrol.aws.hfl.dev",
+      "kind": "CodeRepository",
+      "plural": "coderepositories",
+      "example": "sagemaker/v1beta2/coderepository",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/sagemaker/cluster/v1beta2/coderepository.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:66816",
+      "spec": {
+        "gitConfig": {
+          "repositoryUrl": "https://github.com/hashicorp/terraform-provider-aws.git"
+        }
+      }
+    },
+    {
+      "typeName": "AWS::SageMaker::ImageVersion",
+      "group": "sagemaker.cloudcontrol.aws.hfl.dev",
+      "kind": "ImageVersion",
+      "plural": "imageversions",
+      "example": "sagemaker/v1beta1/imageversion",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/sagemaker/cluster/v1beta1/imageversion.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:67735",
+      "manualIntervention": "It requires an image which can be create/deleted only using AWS CLI",
+      "referencesStoodIn": [
+        "imageName"
+      ],
+      "spec": {
+        "baseImage": "${data.aws_account_id}.dkr.ecr.us-east-1.amazonaws.com/sagemaker-scikit-learn:latest",
+        "imageName": "upjet-ref-image-name"
+      }
+    },
+    {
+      "typeName": "AWS::ServiceCatalog::PortfolioProductAssociation",
+      "group": "servicecatalog.cloudcontrol.aws.hfl.dev",
+      "kind": "PortfolioProductAssociation",
+      "plural": "portfolioproductassociations",
+      "example": "servicecatalog/v1beta1/productportfolioassociation",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/servicecatalog/cluster/v1beta1/productportfolioassociation.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:69929",
+      "referencesStoodIn": [
+        "portfolioId",
+        "productId"
+      ],
+      "spec": {
+        "acceptLanguage": "en",
+        "portfolioId": "upjet-ref-portfolio-id",
+        "productId": "upjet-ref-product-id"
+      }
+    },
+    {
+      "typeName": "AWS::ServiceCatalog::TagOption",
+      "group": "servicecatalog.cloudcontrol.aws.hfl.dev",
+      "kind": "TagOption",
+      "plural": "tagoptions",
+      "example": "servicecatalog/v1beta1/tagoption",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/servicecatalog/cluster/v1beta1/tagoption.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:70239",
+      "spec": {
+        "key": "nyckel",
+        "value": "värde"
+      }
+    },
+    {
+      "typeName": "AWS::ServiceCatalog::TagOptionAssociation",
+      "group": "servicecatalog.cloudcontrol.aws.hfl.dev",
+      "kind": "TagOptionAssociation",
+      "plural": "tagoptionassociations",
+      "example": "servicecatalog/v1beta1/tagoptionresourceassociation",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/servicecatalog/cluster/v1beta1/tagoptionresourceassociation.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:70307",
+      "referencesStoodIn": [
+        "resourceId",
+        "tagOptionId"
+      ],
+      "spec": {
+        "resourceId": "upjet-ref-resource-id",
+        "tagOptionId": "upjet-ref-tag-option-id"
+      }
+    },
+    {
+      "typeName": "AWS::ServiceDiscovery::HttpNamespace",
+      "group": "servicediscovery.cloudcontrol.aws.hfl.dev",
+      "kind": "HttpNamespace",
+      "plural": "httpnamespaces",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/servicediscovery/cluster/v1beta1/httpnamespace.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:70367",
+      "spec": {
+        "description": "example",
+        "name": "development"
+      }
+    },
+    {
+      "typeName": "AWS::ServiceDiscovery::PrivateDnsNamespace",
+      "group": "servicediscovery.cloudcontrol.aws.hfl.dev",
+      "kind": "PrivateDnsNamespace",
+      "plural": "privatednsnamespaces",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/servicediscovery/cluster/v1beta1/privatednsnamespace.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:70450",
+      "referencesStoodIn": [
+        "vpc"
+      ],
+      "spec": {
+        "description": "example",
+        "name": "example",
+        "vpc": "upjet-ref-vpc"
+      }
+    },
+    {
+      "typeName": "AWS::ServiceDiscovery::PublicDnsNamespace",
+      "group": "servicediscovery.cloudcontrol.aws.hfl.dev",
+      "kind": "PublicDnsNamespace",
+      "plural": "publicdnsnamespaces",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/servicediscovery/cluster/v1beta1/publicdnsnamespace.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:70506",
+      "spec": {
+        "description": "example",
+        "name": "upbound.example.com"
+      }
+    },
+    {
+      "typeName": "AWS::SES::ReceiptRuleSet",
+      "group": "ses.cloudcontrol.aws.hfl.dev",
+      "kind": "ReceiptRuleSet",
+      "plural": "receiptrulesets",
+      "example": "ses/v1beta1/activereceiptruleset",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ses/cluster/v1beta1/activereceiptruleset.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:71331",
+      "spec": {
+        "ruleSetName": "primary-rules"
+      }
+    },
+    {
+      "typeName": "AWS::SES::ReceiptRuleSet",
+      "group": "ses.cloudcontrol.aws.hfl.dev",
+      "kind": "ReceiptRuleSet",
+      "plural": "receiptrulesets",
+      "example": "ses/v1beta1/receiptruleset",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ses/cluster/v1beta1/receiptruleset.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:71380",
+      "spec": {
+        "ruleSetName": "primary-rules"
+      }
+    },
+    {
+      "typeName": "AWS::Shield::Protection",
+      "group": "shield.cloudcontrol.aws.hfl.dev",
+      "kind": "Protection",
+      "plural": "protections",
+      "example": "shield/v1beta1/protection",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/shield/cluster/v1beta1/protection.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:71494",
+      "manualIntervention": "Requires an active AWS Shield Advanced subscription in the account, which has a monthly fee and a one-year commitment.\n",
+      "referencesStoodIn": [
+        "resourceArn"
+      ],
+      "spec": {
+        "name": "example",
+        "resourceArn": "upjet-ref-resource-arn"
+      }
+    },
+    {
+      "typeName": "AWS::Signer::SigningProfile",
+      "group": "signer.cloudcontrol.aws.hfl.dev",
+      "kind": "SigningProfile",
+      "plural": "signingprofiles",
+      "example": "",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/signer/cluster/v1beta1/signingprofile.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:71657",
+      "spec": {
+        "platformId": "AWSLambda-SHA384-ECDSA"
+      }
+    },
+    {
+      "typeName": "AWS::Signer::SigningProfile",
+      "group": "signer.cloudcontrol.aws.hfl.dev",
+      "kind": "SigningProfile",
+      "plural": "signingprofiles",
+      "example": "signer/v1beta2/signingprofile",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/signer/cluster/v1beta2/signingprofile.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:71670",
+      "spec": {
+        "platformId": "AWSLambda-SHA384-ECDSA"
+      }
+    },
+    {
+      "typeName": "AWS::Transfer::Workflow",
+      "group": "transfer.cloudcontrol.aws.hfl.dev",
+      "kind": "Workflow",
+      "plural": "workflows",
+      "example": "transfer/v1beta1/workflow",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/transfer/cluster/v1beta1/workflow.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:74604",
+      "manualIntervention": "This resource manual intervention due to Uptest failed without any errors.",
+      "spec": {
+        "steps": [
+          {
+            "deleteStepDetails": {
+              "name": "example"
+            },
+            "type": "DELETE"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "AWS::Transfer::Workflow",
+      "group": "transfer.cloudcontrol.aws.hfl.dev",
+      "kind": "Workflow",
+      "plural": "workflows",
+      "example": "transfer/v1beta2/workflow",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/transfer/cluster/v1beta2/workflow.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:74630",
+      "manualIntervention": "This resource manual intervention due to Uptest failed without any errors.",
+      "spec": {
+        "steps": [
+          {
+            "deleteStepDetails": {
+              "name": "example"
+            },
+            "type": "DELETE"
+          }
+        ]
+      }
+    },
+    {
+      "typeName": "AWS::VpcLattice::AccessLogSubscription",
+      "group": "vpclattice.cloudcontrol.aws.hfl.dev",
+      "kind": "AccessLogSubscription",
+      "plural": "accesslogsubscriptions",
+      "example": "vpclattice/v1beta1/accesslogsubscription",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/vpclattice/cluster/v1beta1/accesslogsubscription.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:74713",
+      "referencesStoodIn": [
+        "resourceIdentifier"
+      ],
+      "spec": {
+        "destinationArn": "arn:aws:s3:::crossplane-provider-upjet-aws-accesslogsubscription-test-0932",
+        "resourceIdentifier": "upjet-ref-resource-identifier"
+      }
+    },
+    {
+      "typeName": "AWS::VpcLattice::Listener",
+      "group": "vpclattice.cloudcontrol.aws.hfl.dev",
+      "kind": "Listener",
+      "plural": "listeners",
+      "example": "vpclattice/v1beta1/listener",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/vpclattice/cluster/v1beta1/listener.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:74875",
+      "referencesStoodIn": [
+        "serviceIdentifier"
+      ],
+      "spec": {
+        "defaultAction": {
+          "fixedResponse": {
+            "statusCode": 404
+          }
+        },
+        "name": "example",
+        "protocol": "HTTPS",
+        "serviceIdentifier": "upjet-ref-service-identifier"
+      }
+    },
+    {
+      "typeName": "AWS::VpcLattice::Service",
+      "group": "vpclattice.cloudcontrol.aws.hfl.dev",
+      "kind": "Service",
+      "plural": "services",
+      "example": "vpclattice/v1beta1/service",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/vpclattice/cluster/v1beta1/service.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:75615",
+      "spec": {
+        "authType": "AWS_IAM",
+        "customDomainName": "example.com",
+        "name": "example"
+      }
+    },
+    {
+      "typeName": "AWS::VpcLattice::ServiceNetwork",
+      "group": "vpclattice.cloudcontrol.aws.hfl.dev",
+      "kind": "ServiceNetwork",
+      "plural": "servicenetworks",
+      "example": "vpclattice/v1beta1/servicenetwork",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/vpclattice/cluster/v1beta1/servicenetwork.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:75666",
+      "spec": {
+        "authType": "AWS_IAM",
+        "name": "example"
+      }
+    },
+    {
+      "typeName": "AWS::VpcLattice::ServiceNetworkServiceAssociation",
+      "group": "vpclattice.cloudcontrol.aws.hfl.dev",
+      "kind": "ServiceNetworkServiceAssociation",
+      "plural": "servicenetworkserviceassociations",
+      "example": "vpclattice/v1beta1/servicenetworkserviceassociation",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/vpclattice/cluster/v1beta1/servicenetworkserviceassociation.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:75826",
+      "referencesStoodIn": [
+        "serviceIdentifier",
+        "serviceNetworkIdentifier"
+      ],
+      "spec": {
+        "serviceIdentifier": "upjet-ref-service-identifier",
+        "serviceNetworkIdentifier": "upjet-ref-service-network-identifier"
+      }
+    },
+    {
+      "typeName": "AWS::XRay::Group",
+      "group": "xray.cloudcontrol.aws.hfl.dev",
+      "kind": "Group",
+      "plural": "groups",
+      "example": "xray/v1beta1/group",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/xray/cluster/v1beta1/group.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:78697",
+      "spec": {
+        "filterExpression": "responsetime \u003e 5",
+        "groupName": "example",
+        "insightsConfiguration": {
+          "insightsEnabled": true,
+          "notificationsEnabled": true
+        }
+      }
+    },
+    {
+      "typeName": "AWS::XRay::Group",
+      "group": "xray.cloudcontrol.aws.hfl.dev",
+      "kind": "Group",
+      "plural": "groups",
+      "example": "xray/v1beta2/group",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/xray/cluster/v1beta2/group.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:78721",
+      "spec": {
+        "filterExpression": "responsetime \u003e 5",
+        "groupName": "example",
+        "insightsConfiguration": {
+          "insightsEnabled": true,
+          "notificationsEnabled": true
+        }
+      }
+    }
+  ],
+  "generatedBy": "Code generated by cloudcontrol-gen. DO NOT EDIT."
+}

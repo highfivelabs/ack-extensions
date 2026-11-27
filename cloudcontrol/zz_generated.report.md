@@ -7,15 +7,15 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | Type | Kind | Spec fields | Status fields | CEL rules | Secret refs | Lossy nodes | Patterns dropped |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | `AWS::IAM::SAMLProvider` | `SAMLProvider.iam.cloudcontrol.aws.hfl.dev` | 7 | 2 | 6 | 1 | 0 | 4 |
-| `AWS::EC2::TransitGatewayRouteTable` | `TransitGatewayRouteTable.ec2.cloudcontrol.aws.hfl.dev` | 2 | 1 | 2 | 0 | 0 | 0 |
+| `AWS::EC2::TransitGatewayRouteTable` | `TransitGatewayRouteTable.ec2.cloudcontrol.aws.hfl.dev` | 2 | 1 | 6 | 0 | 0 | 0 |
 | `AWS::GuardDuty::Detector` | `Detector.guardduty.cloudcontrol.aws.hfl.dev` | 5 | 1 | 0 | 0 | 0 | 0 |
 | `AWS::SSO::PermissionSet` | `PermissionSet.sso.cloudcontrol.aws.hfl.dev` | 10 | 1 | 4 | 0 | 1 | 12 |
 | `AWS::SSO::Assignment` | `Assignment.sso.cloudcontrol.aws.hfl.dev` | 6 | 0 | 12 | 0 | 0 | 4 |
 | `AWS::SSO::InstanceAccessControlAttributeConfiguration` | `InstanceAccessControlAttributeConfiguration.sso.cloudcontrol.aws.hfl.dev` | 3 | 0 | 2 | 0 | 0 | 5 |
-| `AWS::EC2::TransitGatewayRoute` | `TransitGatewayRoute.ec2.cloudcontrol.aws.hfl.dev` | 4 | 0 | 8 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayRouteTableAssociation` | `TransitGatewayRouteTableAssociation.ec2.cloudcontrol.aws.hfl.dev` | 2 | 0 | 4 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayRouteTablePropagation` | `TransitGatewayRouteTablePropagation.ec2.cloudcontrol.aws.hfl.dev` | 2 | 0 | 4 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayPeeringAttachment` | `TransitGatewayPeeringAttachment.ec2.cloudcontrol.aws.hfl.dev` | 5 | 4 | 8 | 0 | 0 | 0 |
+| `AWS::EC2::TransitGatewayRoute` | `TransitGatewayRoute.ec2.cloudcontrol.aws.hfl.dev` | 4 | 0 | 15 | 0 | 0 | 0 |
+| `AWS::EC2::TransitGatewayRouteTableAssociation` | `TransitGatewayRouteTableAssociation.ec2.cloudcontrol.aws.hfl.dev` | 2 | 0 | 12 | 0 | 0 | 0 |
+| `AWS::EC2::TransitGatewayRouteTablePropagation` | `TransitGatewayRouteTablePropagation.ec2.cloudcontrol.aws.hfl.dev` | 2 | 0 | 12 | 0 | 0 | 0 |
+| `AWS::EC2::TransitGatewayPeeringAttachment` | `TransitGatewayPeeringAttachment.ec2.cloudcontrol.aws.hfl.dev` | 5 | 4 | 16 | 0 | 0 | 0 |
 | `AWS::ControlTower::EnabledControl` | `EnabledControl.controltower.cloudcontrol.aws.hfl.dev` | 4 | 0 | 4 | 0 | 1 | 2 |
 | `AWS::ControlTower::EnabledBaseline` | `EnabledBaseline.controltower.cloudcontrol.aws.hfl.dev` | 5 | 1 | 4 | 0 | 1 | 4 |
 | `AWS::ControlTower::LandingZone` | `LandingZone.controltower.cloudcontrol.aws.hfl.dev` | 4 | 5 | 0 | 0 | 1 | 3 |
@@ -24,13 +24,13 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::Route53::KeySigningKey` | `KeySigningKey.route53.cloudcontrol.aws.hfl.dev` | 4 | 0 | 14 | 0 | 0 | 2 |
 | `AWS::Route53::CidrCollection` | `CidrCollection.route53.cloudcontrol.aws.hfl.dev` | 2 | 2 | 2 | 0 | 0 | 1 |
 | `AWS::Route53Resolver::ResolverDNSSECConfig` | `ResolverDNSSECConfig.route53resolver.cloudcontrol.aws.hfl.dev` | 1 | 3 | 2 | 0 | 0 | 0 |
-| `AWS::Route53Resolver::ResolverConfig` | `ResolverConfig.route53resolver.cloudcontrol.aws.hfl.dev` | 2 | 3 | 4 | 0 | 0 | 0 |
+| `AWS::Route53Resolver::ResolverConfig` | `ResolverConfig.route53resolver.cloudcontrol.aws.hfl.dev` | 2 | 3 | 8 | 0 | 0 | 0 |
 | `AWS::Route53Resolver::FirewallDomainList` | `FirewallDomainList.route53resolver.cloudcontrol.aws.hfl.dev` | 4 | 9 | 2 | 0 | 0 | 1 |
 | `AWS::Route53Resolver::FirewallRuleGroup` | `FirewallRuleGroup.route53resolver.cloudcontrol.aws.hfl.dev` | 3 | 10 | 2 | 0 | 0 | 1 |
 | `AWS::Route53Resolver::FirewallRuleGroupAssociation` | `FirewallRuleGroupAssociation.route53resolver.cloudcontrol.aws.hfl.dev` | 6 | 8 | 4 | 0 | 0 | 1 |
 | `AWS::Route53Resolver::FirewallConfig` | `FirewallConfig.route53resolver.cloudcontrol.aws.hfl.dev` | 2 | 3 | 2 | 0 | 0 | 0 |
-| `AWS::Config::ConfigurationRecorder` | `ConfigurationRecorder.config.cloudcontrol.aws.hfl.dev` | 5 | 1 | 4 | 0 | 0 | 2 |
-| `AWS::Config::DeliveryChannel` | `DeliveryChannel.config.cloudcontrol.aws.hfl.dev` | 6 | 0 | 2 | 0 | 0 | 0 |
+| `AWS::Config::ConfigurationRecorder` | `ConfigurationRecorder.config.cloudcontrol.aws.hfl.dev` | 5 | 1 | 6 | 0 | 0 | 2 |
+| `AWS::Config::DeliveryChannel` | `DeliveryChannel.config.cloudcontrol.aws.hfl.dev` | 6 | 0 | 4 | 0 | 0 | 0 |
 | `AWS::Config::ConfigRule` | `ConfigRule.config.cloudcontrol.aws.hfl.dev` | 8 | 2 | 2 | 0 | 1 | 0 |
 | `AWS::Config::ConfigurationAggregator` | `ConfigurationAggregator.config.cloudcontrol.aws.hfl.dev` | 4 | 1 | 2 | 0 | 0 | 1 |
 | `AWS::Config::AggregationAuthorization` | `AggregationAuthorization.config.cloudcontrol.aws.hfl.dev` | 3 | 1 | 4 | 0 | 0 | 1 |
@@ -40,12 +40,12 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::Config::RemediationConfiguration` | `RemediationConfiguration.config.cloudcontrol.aws.hfl.dev` | 10 | 0 | 2 | 0 | 0 | 0 |
 | `AWS::Config::StoredQuery` | `StoredQuery.config.cloudcontrol.aws.hfl.dev` | 4 | 2 | 2 | 0 | 0 | 4 |
 | `AWS::Config::Connector` | `Connector.config.cloudcontrol.aws.hfl.dev` | 2 | 3 | 2 | 0 | 0 | 0 |
-| `AWS::GuardDuty::Filter` | `Filter.guardduty.cloudcontrol.aws.hfl.dev` | 7 | 0 | 4 | 0 | 0 | 0 |
+| `AWS::GuardDuty::Filter` | `Filter.guardduty.cloudcontrol.aws.hfl.dev` | 7 | 0 | 8 | 0 | 0 | 0 |
 | `AWS::GuardDuty::IPSet` | `IPSet.guardduty.cloudcontrol.aws.hfl.dev` | 7 | 1 | 4 | 0 | 0 | 0 |
 | `AWS::GuardDuty::ThreatIntelSet` | `ThreatIntelSet.guardduty.cloudcontrol.aws.hfl.dev` | 7 | 1 | 4 | 0 | 0 | 0 |
-| `AWS::GuardDuty::Member` | `Member.guardduty.cloudcontrol.aws.hfl.dev` | 6 | 0 | 4 | 0 | 0 | 0 |
+| `AWS::GuardDuty::Member` | `Member.guardduty.cloudcontrol.aws.hfl.dev` | 6 | 0 | 7 | 0 | 0 | 0 |
 | `AWS::GuardDuty::PublishingDestination` | `PublishingDestination.guardduty.cloudcontrol.aws.hfl.dev` | 4 | 3 | 2 | 0 | 0 | 0 |
-| `AWS::GuardDuty::MalwareProtectionPlan` | `MalwareProtectionPlan.guardduty.cloudcontrol.aws.hfl.dev` | 4 | 5 | 0 | 0 | 0 | 0 |
+| `AWS::GuardDuty::MalwareProtectionPlan` | `MalwareProtectionPlan.guardduty.cloudcontrol.aws.hfl.dev` | 4 | 5 | 2 | 0 | 0 | 0 |
 | `AWS::GuardDuty::Master` | `Master.guardduty.cloudcontrol.aws.hfl.dev` | 3 | 0 | 6 | 0 | 0 | 0 |
 | `AWS::SecurityHub::Hub` | `Hub.securityhub.cloudcontrol.aws.hfl.dev` | 4 | 2 | 0 | 0 | 0 | 2 |
 | `AWS::SecurityHub::OrganizationConfiguration` | `OrganizationConfiguration.securityhub.cloudcontrol.aws.hfl.dev` | 3 | 4 | 0 | 0 | 0 | 1 |
@@ -59,7 +59,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::SecretsManager::ResourcePolicy` | `ResourcePolicy.secretsmanager.cloudcontrol.aws.hfl.dev` | 3 | 1 | 2 | 0 | 1 | 0 |
 | `AWS::AccessAnalyzer::Analyzer` | `Analyzer.accessanalyzer.cloudcontrol.aws.hfl.dev` | 5 | 1 | 4 | 0 | 0 | 1 |
 | `AWS::AccessAnalyzer::ArchiveRule` | `ArchiveRule.accessanalyzer.cloudcontrol.aws.hfl.dev` | 3 | 3 | 4 | 0 | 0 | 2 |
-| `AWS::ACMPCA::Permission` | `Permission.acmpca.cloudcontrol.aws.hfl.dev` | 4 | 0 | 8 | 0 | 0 | 0 |
+| `AWS::ACMPCA::Permission` | `Permission.acmpca.cloudcontrol.aws.hfl.dev` | 4 | 0 | 12 | 0 | 0 | 0 |
 | `AWS::AuditManager::Assessment` | `Assessment.auditmanager.cloudcontrol.aws.hfl.dev` | 10 | 3 | 4 | 0 | 0 | 18 |
 | `AWS::AuditManager::AssessmentFramework` | `AssessmentFramework.auditmanager.cloudcontrol.aws.hfl.dev` | 5 | 7 | 0 | 0 | 0 | 10 |
 | `AWS::CertificateManager::Account` | `Account.certificatemanager.cloudcontrol.aws.hfl.dev` | 1 | 1 | 0 | 0 | 0 | 0 |
@@ -85,7 +85,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::Macie::Member` | `Member.macie.cloudcontrol.aws.hfl.dev` | 3 | 4 | 4 | 0 | 0 | 1 |
 | `AWS::Macie::Session` | `Session.macie.cloudcontrol.aws.hfl.dev` | 2 | 3 | 0 | 0 | 0 | 0 |
 | `AWS::NetworkFirewall::ContainerAssociation` | `ContainerAssociation.networkfirewall.cloudcontrol.aws.hfl.dev` | 5 | 3 | 4 | 0 | 0 | 8 |
-| `AWS::NetworkFirewall::LoggingConfiguration` | `LoggingConfiguration.networkfirewall.cloudcontrol.aws.hfl.dev` | 4 | 0 | 4 | 0 | 0 | 2 |
+| `AWS::NetworkFirewall::LoggingConfiguration` | `LoggingConfiguration.networkfirewall.cloudcontrol.aws.hfl.dev` | 4 | 0 | 8 | 0 | 0 | 2 |
 | `AWS::NetworkFirewall::TLSInspectionConfiguration` | `TLSInspectionConfiguration.networkfirewall.cloudcontrol.aws.hfl.dev` | 4 | 2 | 2 | 0 | 0 | 10 |
 | `AWS::NetworkFirewall::VpcEndpointAssociation` | `VpcEndpointAssociation.networkfirewall.cloudcontrol.aws.hfl.dev` | 5 | 3 | 8 | 0 | 0 | 7 |
 | `AWS::SecretsManager::SecretTargetAttachment` | `SecretTargetAttachment.secretsmanager.cloudcontrol.aws.hfl.dev` | 3 | 1 | 2 | 0 | 0 | 0 |
@@ -101,7 +101,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::SecurityLake::DataLake` | `DataLake.securitylake.cloudcontrol.aws.hfl.dev` | 5 | 2 | 0 | 0 | 0 | 3 |
 | `AWS::SecurityLake::Subscriber` | `Subscriber.securitylake.cloudcontrol.aws.hfl.dev` | 7 | 5 | 2 | 0 | 0 | 6 |
 | `AWS::SecurityLake::SubscriberNotification` | `SubscriberNotification.securitylake.cloudcontrol.aws.hfl.dev` | 2 | 1 | 2 | 1 | 0 | 3 |
-| `AWS::WAFv2::LoggingConfiguration` | `LoggingConfiguration.wafv2.cloudcontrol.aws.hfl.dev` | 4 | 1 | 2 | 0 | 0 | 0 |
+| `AWS::WAFv2::LoggingConfiguration` | `LoggingConfiguration.wafv2.cloudcontrol.aws.hfl.dev` | 4 | 1 | 6 | 0 | 0 | 0 |
 | `AWS::WAFv2::RegexPatternSet` | `RegexPatternSet.wafv2.cloudcontrol.aws.hfl.dev` | 5 | 2 | 4 | 0 | 0 | 3 |
 | `AWS::CloudTrail::Channel` | `Channel.cloudtrail.cloudcontrol.aws.hfl.dev` | 4 | 1 | 2 | 0 | 0 | 4 |
 | `AWS::CloudTrail::Dashboard` | `Dashboard.cloudtrail.cloudcontrol.aws.hfl.dev` | 5 | 5 | 0 | 0 | 0 | 6 |
@@ -117,15 +117,15 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::IdentityStore::GroupMembership` | `GroupMembership.identitystore.cloudcontrol.aws.hfl.dev` | 3 | 1 | 6 | 0 | 0 | 4 |
 | `AWS::IdentityStore::User` | `User.identitystore.cloudcontrol.aws.hfl.dev` | 18 | 7 | 14 | 0 | 0 | 3 |
 | `AWS::RAM::PermissionAssociation` | `PermissionAssociation.ram.cloudcontrol.aws.hfl.dev` | 3 | 6 | 4 | 0 | 0 | 0 |
-| `AWS::RAM::PrincipalAssociation` | `PrincipalAssociation.ram.cloudcontrol.aws.hfl.dev` | 2 | 5 | 4 | 0 | 0 | 0 |
-| `AWS::RAM::ResourceAssociation` | `ResourceAssociation.ram.cloudcontrol.aws.hfl.dev` | 2 | 5 | 4 | 0 | 0 | 0 |
+| `AWS::RAM::PrincipalAssociation` | `PrincipalAssociation.ram.cloudcontrol.aws.hfl.dev` | 2 | 5 | 8 | 0 | 0 | 0 |
+| `AWS::RAM::ResourceAssociation` | `ResourceAssociation.ram.cloudcontrol.aws.hfl.dev` | 2 | 5 | 8 | 0 | 0 | 0 |
 | `AWS::RAM::SourceAssociation` | `SourceAssociation.ram.cloudcontrol.aws.hfl.dev` | 2 | 4 | 4 | 0 | 0 | 0 |
 | `AWS::Route53::DelegationSet` | `DelegationSet.route53.cloudcontrol.aws.hfl.dev` | 0 | 4 | 0 | 0 | 0 | 1 |
 | `AWS::Route53::TrafficPolicy` | `TrafficPolicy.route53.cloudcontrol.aws.hfl.dev` | 3 | 4 | 4 | 0 | 0 | 1 |
-| `AWS::Route53::TrafficPolicyInstance` | `TrafficPolicyInstance.route53.cloudcontrol.aws.hfl.dev` | 5 | 4 | 4 | 0 | 0 | 4 |
+| `AWS::Route53::TrafficPolicyInstance` | `TrafficPolicyInstance.route53.cloudcontrol.aws.hfl.dev` | 5 | 4 | 8 | 0 | 0 | 4 |
 | `AWS::Route53Profiles::Profile` | `Profile.route53profiles.cloudcontrol.aws.hfl.dev` | 2 | 4 | 2 | 0 | 0 | 0 |
-| `AWS::Route53Profiles::ProfileAssociation` | `ProfileAssociation.route53profiles.cloudcontrol.aws.hfl.dev` | 6 | 1 | 6 | 0 | 0 | 0 |
-| `AWS::Route53Profiles::ProfileResourceAssociation` | `ProfileResourceAssociation.route53profiles.cloudcontrol.aws.hfl.dev` | 4 | 2 | 6 | 0 | 0 | 0 |
+| `AWS::Route53Profiles::ProfileAssociation` | `ProfileAssociation.route53profiles.cloudcontrol.aws.hfl.dev` | 6 | 1 | 14 | 0 | 0 | 0 |
+| `AWS::Route53Profiles::ProfileResourceAssociation` | `ProfileResourceAssociation.route53profiles.cloudcontrol.aws.hfl.dev` | 4 | 2 | 10 | 0 | 0 | 0 |
 | `AWS::SSO::Application` | `Application.sso.cloudcontrol.aws.hfl.dev` | 7 | 2 | 4 | 0 | 0 | 8 |
 | `AWS::SSO::ApplicationAssignment` | `ApplicationAssignment.sso.cloudcontrol.aws.hfl.dev` | 3 | 0 | 6 | 0 | 0 | 2 |
 | `AWS::EC2::ApplicationStatusCheck` | `ApplicationStatusCheck.ec2.cloudcontrol.aws.hfl.dev` | 15 | 3 | 4 | 0 | 0 | 2 |
@@ -136,7 +136,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::EC2::ClientVpnTargetNetworkAssociation` | `ClientVpnTargetNetworkAssociation.ec2.cloudcontrol.aws.hfl.dev` | 4 | 1 | 8 | 0 | 0 | 0 |
 | `AWS::EC2::EIPAssociation` | `EIPAssociation.ec2.cloudcontrol.aws.hfl.dev` | 5 | 1 | 19 | 0 | 0 | 0 |
 | `AWS::EC2::EnclaveCertificateIamRoleAssociation` | `EnclaveCertificateIamRoleAssociation.ec2.cloudcontrol.aws.hfl.dev` | 2 | 3 | 4 | 0 | 0 | 2 |
-| `AWS::EC2::GatewayRouteTableAssociation` | `GatewayRouteTableAssociation.ec2.cloudcontrol.aws.hfl.dev` | 2 | 1 | 2 | 0 | 0 | 0 |
+| `AWS::EC2::GatewayRouteTableAssociation` | `GatewayRouteTableAssociation.ec2.cloudcontrol.aws.hfl.dev` | 2 | 1 | 8 | 0 | 0 | 0 |
 | `AWS::EC2::InstanceConnectEndpoint` | `InstanceConnectEndpoint.ec2.cloudcontrol.aws.hfl.dev` | 5 | 11 | 8 | 0 | 0 | 0 |
 | `AWS::EC2::InstanceEventWindow` | `InstanceEventWindow.ec2.cloudcontrol.aws.hfl.dev` | 4 | 3 | 0 | 0 | 0 | 0 |
 | `AWS::EC2::IPAM` | `IPAM.ec2.cloudcontrol.aws.hfl.dev` | 7 | 8 | 0 | 0 | 0 | 0 |
@@ -153,10 +153,10 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::EC2::IpPoolRouteTableAssociation` | `IpPoolRouteTableAssociation.ec2.cloudcontrol.aws.hfl.dev` | 2 | 1 | 4 | 0 | 0 | 0 |
 | `AWS::EC2::NetworkInsightsAccessScope` | `NetworkInsightsAccessScope.ec2.cloudcontrol.aws.hfl.dev` | 3 | 4 | 4 | 0 | 0 | 0 |
 | `AWS::EC2::NetworkInsightsAccessScopeAnalysis` | `NetworkInsightsAccessScopeAnalysis.ec2.cloudcontrol.aws.hfl.dev` | 2 | 8 | 2 | 0 | 0 | 0 |
-| `AWS::EC2::NetworkInsightsAnalysis` | `NetworkInsightsAnalysis.ec2.cloudcontrol.aws.hfl.dev` | 5 | 11 | 6 | 0 | 0 | 0 |
+| `AWS::EC2::NetworkInsightsAnalysis` | `NetworkInsightsAnalysis.ec2.cloudcontrol.aws.hfl.dev` | 5 | 11 | 10 | 0 | 0 | 0 |
 | `AWS::EC2::NetworkInsightsPath` | `NetworkInsightsPath.ec2.cloudcontrol.aws.hfl.dev` | 9 | 5 | 16 | 0 | 0 | 0 |
-| `AWS::EC2::NetworkInterface` | `NetworkInterface.ec2.cloudcontrol.aws.hfl.dev` | 18 | 6 | 6 | 0 | 0 | 0 |
-| `AWS::EC2::NetworkInterfaceAttachment` | `NetworkInterfaceAttachment.ec2.cloudcontrol.aws.hfl.dev` | 6 | 1 | 6 | 0 | 0 | 0 |
+| `AWS::EC2::NetworkInterface` | `NetworkInterface.ec2.cloudcontrol.aws.hfl.dev` | 18 | 6 | 10 | 0 | 0 | 0 |
+| `AWS::EC2::NetworkInterfaceAttachment` | `NetworkInterfaceAttachment.ec2.cloudcontrol.aws.hfl.dev` | 6 | 1 | 14 | 0 | 0 | 0 |
 | `AWS::EC2::NetworkPerformanceMetricSubscription` | `NetworkPerformanceMetricSubscription.ec2.cloudcontrol.aws.hfl.dev` | 4 | 0 | 8 | 0 | 0 | 0 |
 | `AWS::EC2::PlacementGroup` | `PlacementGroup.ec2.cloudcontrol.aws.hfl.dev` | 5 | 2 | 10 | 0 | 0 | 0 |
 | `AWS::EC2::RouteServer` | `RouteServer.ec2.cloudcontrol.aws.hfl.dev` | 5 | 2 | 2 | 0 | 0 | 0 |
@@ -170,21 +170,21 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::EC2::SecurityGroupVpcAssociation` | `SecurityGroupVpcAssociation.ec2.cloudcontrol.aws.hfl.dev` | 2 | 3 | 12 | 0 | 0 | 0 |
 | `AWS::EC2::Snapshot` | `Snapshot.ec2.cloudcontrol.aws.hfl.dev` | 3 | 10 | 4 | 0 | 0 | 0 |
 | `AWS::EC2::SnapshotBlockPublicAccess` | `SnapshotBlockPublicAccess.ec2.cloudcontrol.aws.hfl.dev` | 1 | 1 | 0 | 0 | 0 | 0 |
-| `AWS::EC2::SubnetCidrReservation` | `SubnetCidrReservation.ec2.cloudcontrol.aws.hfl.dev` | 5 | 3 | 8 | 0 | 0 | 1 |
+| `AWS::EC2::SubnetCidrReservation` | `SubnetCidrReservation.ec2.cloudcontrol.aws.hfl.dev` | 5 | 3 | 12 | 0 | 0 | 1 |
 | `AWS::EC2::TrafficMirrorFilter` | `TrafficMirrorFilter.ec2.cloudcontrol.aws.hfl.dev` | 3 | 1 | 2 | 0 | 0 | 0 |
-| `AWS::EC2::TrafficMirrorFilterRule` | `TrafficMirrorFilterRule.ec2.cloudcontrol.aws.hfl.dev` | 11 | 1 | 2 | 0 | 0 | 0 |
+| `AWS::EC2::TrafficMirrorFilterRule` | `TrafficMirrorFilterRule.ec2.cloudcontrol.aws.hfl.dev` | 11 | 1 | 6 | 0 | 0 | 0 |
 | `AWS::EC2::TrafficMirrorSession` | `TrafficMirrorSession.ec2.cloudcontrol.aws.hfl.dev` | 9 | 1 | 0 | 0 | 0 | 0 |
 | `AWS::EC2::TrafficMirrorTarget` | `TrafficMirrorTarget.ec2.cloudcontrol.aws.hfl.dev` | 5 | 1 | 8 | 0 | 0 | 0 |
 | `AWS::EC2::TransitGatewayAttachmentNatConfiguration` | `TransitGatewayAttachmentNatConfiguration.ec2.cloudcontrol.aws.hfl.dev` | 4 | 1 | 2 | 0 | 0 | 2 |
 | `AWS::EC2::TransitGatewayConnect` | `TransitGatewayConnect.ec2.cloudcontrol.aws.hfl.dev` | 3 | 4 | 4 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayConnectPeer` | `TransitGatewayConnectPeer.ec2.cloudcontrol.aws.hfl.dev` | 3 | 3 | 10 | 0 | 0 | 0 |
+| `AWS::EC2::TransitGatewayConnectPeer` | `TransitGatewayConnectPeer.ec2.cloudcontrol.aws.hfl.dev` | 3 | 3 | 14 | 0 | 0 | 0 |
 | `AWS::EC2::TransitGatewayMeteringPolicy` | `TransitGatewayMeteringPolicy.ec2.cloudcontrol.aws.hfl.dev` | 3 | 3 | 2 | 0 | 0 | 0 |
 | `AWS::EC2::TransitGatewayMeteringPolicyEntry` | `TransitGatewayMeteringPolicyEntry.ec2.cloudcontrol.aws.hfl.dev` | 12 | 2 | 24 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayMulticastDomain` | `TransitGatewayMulticastDomain.ec2.cloudcontrol.aws.hfl.dev` | 3 | 4 | 2 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayMulticastDomainAssociation` | `TransitGatewayMulticastDomainAssociation.ec2.cloudcontrol.aws.hfl.dev` | 3 | 3 | 6 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayMulticastGroupMember` | `TransitGatewayMulticastGroupMember.ec2.cloudcontrol.aws.hfl.dev` | 3 | 7 | 6 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayMulticastGroupSource` | `TransitGatewayMulticastGroupSource.ec2.cloudcontrol.aws.hfl.dev` | 3 | 7 | 6 | 0 | 0 | 0 |
-| `AWS::EC2::TransitGatewayPolicyTable` | `TransitGatewayPolicyTable.ec2.cloudcontrol.aws.hfl.dev` | 2 | 3 | 2 | 0 | 0 | 0 |
+| `AWS::EC2::TransitGatewayMulticastDomain` | `TransitGatewayMulticastDomain.ec2.cloudcontrol.aws.hfl.dev` | 3 | 4 | 6 | 0 | 0 | 0 |
+| `AWS::EC2::TransitGatewayMulticastDomainAssociation` | `TransitGatewayMulticastDomainAssociation.ec2.cloudcontrol.aws.hfl.dev` | 3 | 3 | 18 | 0 | 0 | 0 |
+| `AWS::EC2::TransitGatewayMulticastGroupMember` | `TransitGatewayMulticastGroupMember.ec2.cloudcontrol.aws.hfl.dev` | 3 | 7 | 14 | 0 | 0 | 0 |
+| `AWS::EC2::TransitGatewayMulticastGroupSource` | `TransitGatewayMulticastGroupSource.ec2.cloudcontrol.aws.hfl.dev` | 3 | 7 | 14 | 0 | 0 | 0 |
+| `AWS::EC2::TransitGatewayPolicyTable` | `TransitGatewayPolicyTable.ec2.cloudcontrol.aws.hfl.dev` | 2 | 3 | 6 | 0 | 0 | 0 |
 | `AWS::EC2::TransitGatewayPolicyTableAssociation` | `TransitGatewayPolicyTableAssociation.ec2.cloudcontrol.aws.hfl.dev` | 2 | 1 | 4 | 0 | 0 | 0 |
 | `AWS::EC2::TransitGatewayPolicyTableEntry` | `TransitGatewayPolicyTableEntry.ec2.cloudcontrol.aws.hfl.dev` | 4 | 1 | 4 | 0 | 0 | 0 |
 | `AWS::EC2::VerifiedAccessEndpoint` | `VerifiedAccessEndpoint.ec2.cloudcontrol.aws.hfl.dev` | 16 | 7 | 30 | 0 | 0 | 0 |
@@ -199,27 +199,27 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::CloudWatch::CompositeAlarm` | `CompositeAlarm.cloudwatch.cloudcontrol.aws.hfl.dev` | 12 | 1 | 2 | 0 | 0 | 0 |
 | `AWS::CloudWatch::InsightRule` | `InsightRule.cloudwatch.cloudcontrol.aws.hfl.dev` | 5 | 1 | 2 | 0 | 0 | 0 |
 | `AWS::Logs::AccountPolicy` | `AccountPolicy.logs.cloudcontrol.aws.hfl.dev` | 5 | 1 | 4 | 0 | 0 | 2 |
-| `AWS::Logs::Destination` | `Destination.logs.cloudcontrol.aws.hfl.dev` | 5 | 1 | 2 | 0 | 0 | 1 |
+| `AWS::Logs::Destination` | `Destination.logs.cloudcontrol.aws.hfl.dev` | 5 | 1 | 4 | 0 | 0 | 1 |
 | `AWS::Logs::Integration` | `Integration.logs.cloudcontrol.aws.hfl.dev` | 3 | 1 | 6 | 0 | 0 | 5 |
 | `AWS::Logs::LogAnomalyDetector` | `LogAnomalyDetector.logs.cloudcontrol.aws.hfl.dev` | 7 | 4 | 0 | 0 | 0 | 0 |
 | `AWS::Logs::QueryDefinition` | `QueryDefinition.logs.cloudcontrol.aws.hfl.dev` | 5 | 1 | 0 | 0 | 0 | 2 |
 | `AWS::Logs::ScheduledQuery` | `ScheduledQuery.logs.cloudcontrol.aws.hfl.dev` | 14 | 5 | 2 | 0 | 0 | 2 |
 | `AWS::Logs::StorageTierPolicy` | `StorageTierPolicy.logs.cloudcontrol.aws.hfl.dev` | 1 | 2 | 0 | 0 | 0 | 1 |
-| `AWS::Logs::SubscriptionFilter` | `SubscriptionFilter.logs.cloudcontrol.aws.hfl.dev` | 9 | 0 | 4 | 0 | 0 | 0 |
+| `AWS::Logs::SubscriptionFilter` | `SubscriptionFilter.logs.cloudcontrol.aws.hfl.dev` | 9 | 0 | 5 | 0 | 0 | 0 |
 | `AWS::Logs::Transformer` | `Transformer.logs.cloudcontrol.aws.hfl.dev` | 2 | 0 | 2 | 0 | 0 | 32 |
 | `AWS::RDS::EventSubscription` | `EventSubscription.rds.cloudcontrol.aws.hfl.dev` | 7 | 0 | 4 | 0 | 0 | 0 |
 | `AWS::RolesAnywhere::CRL` | `CRL.rolesanywhere.cloudcontrol.aws.hfl.dev` | 5 | 1 | 0 | 0 | 0 | 2 |
 | `AWS::RolesAnywhere::Profile` | `Profile.rolesanywhere.cloudcontrol.aws.hfl.dev` | 10 | 2 | 2 | 0 | 0 | 1 |
 | `AWS::RolesAnywhere::TrustAnchor` | `TrustAnchor.rolesanywhere.cloudcontrol.aws.hfl.dev` | 5 | 2 | 0 | 0 | 0 | 2 |
 | `AWS::ApiGatewayV2::ApiGatewayManagedOverrides` | `ApiGatewayManagedOverrides.apigatewayv2.cloudcontrol.aws.hfl.dev` | 4 | 1 | 2 | 0 | 0 | 0 |
-| `AWS::ApiGatewayV2::IntegrationResponse` | `IntegrationResponse.apigatewayv2.cloudcontrol.aws.hfl.dev` | 7 | 1 | 4 | 0 | 0 | 0 |
-| `AWS::ApiGatewayV2::Model` | `Model.apigatewayv2.cloudcontrol.aws.hfl.dev` | 5 | 1 | 2 | 0 | 0 | 0 |
+| `AWS::ApiGatewayV2::IntegrationResponse` | `IntegrationResponse.apigatewayv2.cloudcontrol.aws.hfl.dev` | 7 | 1 | 12 | 0 | 0 | 0 |
+| `AWS::ApiGatewayV2::Model` | `Model.apigatewayv2.cloudcontrol.aws.hfl.dev` | 5 | 1 | 6 | 0 | 0 | 0 |
 | `AWS::ApiGatewayV2::PortalProduct` | `PortalProduct.apigatewayv2.cloudcontrol.aws.hfl.dev` | 3 | 3 | 0 | 0 | 0 | 1 |
-| `AWS::ApiGatewayV2::RouteResponse` | `RouteResponse.apigatewayv2.cloudcontrol.aws.hfl.dev` | 6 | 1 | 4 | 0 | 0 | 0 |
+| `AWS::ApiGatewayV2::RouteResponse` | `RouteResponse.apigatewayv2.cloudcontrol.aws.hfl.dev` | 6 | 1 | 12 | 0 | 0 | 0 |
 | `AWS::ApiGatewayV2::RoutingRule` | `RoutingRule.apigatewayv2.cloudcontrol.aws.hfl.dev` | 4 | 2 | 2 | 0 | 0 | 0 |
 | `AWS::APS::AnomalyDetector` | `AnomalyDetector.aps.cloudcontrol.aws.hfl.dev` | 7 | 1 | 4 | 0 | 0 | 2 |
 | `AWS::APS::ResourcePolicy` | `ResourcePolicy.aps.cloudcontrol.aws.hfl.dev` | 2 | 0 | 2 | 0 | 0 | 1 |
-| `AWS::AutoScaling::LifecycleHook` | `LifecycleHook.autoscaling.cloudcontrol.aws.hfl.dev` | 8 | 0 | 4 | 0 | 0 | 0 |
+| `AWS::AutoScaling::LifecycleHook` | `LifecycleHook.autoscaling.cloudcontrol.aws.hfl.dev` | 8 | 0 | 9 | 0 | 0 | 0 |
 | `AWS::AutoScaling::WarmPool` | `WarmPool.autoscaling.cloudcontrol.aws.hfl.dev` | 5 | 0 | 2 | 0 | 0 | 0 |
 | `AWS::CloudFront::AnycastIpList` | `AnycastIpList.cloudfront.cloudcontrol.aws.hfl.dev` | 5 | 4 | 6 | 0 | 0 | 4 |
 | `AWS::CloudFront::CloudFrontOriginAccessIdentity` | `CloudFrontOriginAccessIdentity.cloudfront.cloudcontrol.aws.hfl.dev` | 1 | 2 | 0 | 0 | 0 | 0 |
@@ -229,7 +229,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::CloudFront::FieldLevelEncryptionProfile` | `FieldLevelEncryptionProfile.cloudfront.cloudcontrol.aws.hfl.dev` | 1 | 3 | 2 | 0 | 0 | 0 |
 | `AWS::CloudFront::KeyGroup` | `KeyGroup.cloudfront.cloudcontrol.aws.hfl.dev` | 1 | 2 | 0 | 0 | 0 | 0 |
 | `AWS::CloudFront::KeyValueStore` | `KeyValueStore.cloudfront.cloudcontrol.aws.hfl.dev` | 4 | 3 | 2 | 0 | 0 | 2 |
-| `AWS::CloudFront::MonitoringSubscription` | `MonitoringSubscription.cloudfront.cloudcontrol.aws.hfl.dev` | 2 | 0 | 2 | 0 | 0 | 0 |
+| `AWS::CloudFront::MonitoringSubscription` | `MonitoringSubscription.cloudfront.cloudcontrol.aws.hfl.dev` | 2 | 0 | 6 | 0 | 0 | 0 |
 | `AWS::CloudFront::PublicKey` | `PublicKey.cloudfront.cloudcontrol.aws.hfl.dev` | 1 | 2 | 0 | 0 | 0 | 0 |
 | `AWS::CloudFront::RealtimeLogConfig` | `RealtimeLogConfig.cloudfront.cloudcontrol.aws.hfl.dev` | 4 | 1 | 2 | 0 | 0 | 0 |
 | `AWS::CloudFront::TrustStore` | `TrustStore.cloudfront.cloudcontrol.aws.hfl.dev` | 4 | 6 | 2 | 0 | 0 | 3 |
@@ -249,7 +249,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::CloudWatch::View` | `View.cloudwatch.cloudcontrol.aws.hfl.dev` | 4 | 4 | 2 | 0 | 0 | 1 |
 | `AWS::CodeDeploy::Application` | `Application.codedeploy.cloudcontrol.aws.hfl.dev` | 3 | 0 | 4 | 0 | 0 | 0 |
 | `AWS::CodeDeploy::DeploymentConfig` | `DeploymentConfig.codedeploy.cloudcontrol.aws.hfl.dev` | 5 | 0 | 10 | 0 | 0 | 0 |
-| `AWS::CodeDeploy::DeploymentGroup` | `DeploymentGroup.codedeploy.cloudcontrol.aws.hfl.dev` | 21 | 0 | 4 | 0 | 0 | 0 |
+| `AWS::CodeDeploy::DeploymentGroup` | `DeploymentGroup.codedeploy.cloudcontrol.aws.hfl.dev` | 21 | 0 | 6 | 0 | 0 | 0 |
 | `AWS::DMS::DataMigration` | `DataMigration.dms.cloudcontrol.aws.hfl.dev` | 8 | 2 | 0 | 0 | 0 | 0 |
 | `AWS::DMS::DataProvider` | `DataProvider.dms.cloudcontrol.aws.hfl.dev` | 8 | 2 | 0 | 0 | 0 | 0 |
 | `AWS::DMS::InstanceProfile` | `InstanceProfile.dms.cloudcontrol.aws.hfl.dev` | 10 | 2 | 0 | 0 | 0 | 0 |
@@ -271,13 +271,13 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::Lambda::CapacityProvider` | `CapacityProvider.lambda.cloudcontrol.aws.hfl.dev` | 9 | 2 | 10 | 0 | 0 | 9 |
 | `AWS::Lambda::LayerVersionPermission` | `LayerVersionPermission.lambda.cloudcontrol.aws.hfl.dev` | 4 | 1 | 8 | 0 | 0 | 0 |
 | `AWS::Lambda::MicrovmImage` | `MicrovmImage.lambda.cloudcontrol.aws.hfl.dev` | 15 | 6 | 2 | 0 | 0 | 9 |
-| `AWS::Lambda::NetworkConnector` | `NetworkConnector.lambda.cloudcontrol.aws.hfl.dev` | 4 | 4 | 2 | 0 | 0 | 6 |
+| `AWS::Lambda::NetworkConnector` | `NetworkConnector.lambda.cloudcontrol.aws.hfl.dev` | 4 | 4 | 3 | 0 | 0 | 6 |
 | `AWS::Lambda::WebFunction` | `WebFunction.lambda.cloudcontrol.aws.hfl.dev` | 2 | 5 | 2 | 0 | 0 | 1 |
 | `AWS::Lambda::WebFunctionEndpoint` | `WebFunctionEndpoint.lambda.cloudcontrol.aws.hfl.dev` | 9 | 10 | 8 | 0 | 0 | 4 |
 | `AWS::Lambda::WebFunctionRevision` | `WebFunctionRevision.lambda.cloudcontrol.aws.hfl.dev` | 5 | 6 | 10 | 0 | 0 | 8 |
-| `AWS::Logs::LogStream` | `LogStream.logs.cloudcontrol.aws.hfl.dev` | 2 | 0 | 4 | 0 | 0 | 0 |
-| `AWS::MSK::BatchScramSecret` | `BatchScramSecret.msk.cloudcontrol.aws.hfl.dev` | 2 | 0 | 2 | 0 | 0 | 0 |
-| `AWS::MSK::ClusterPolicy` | `ClusterPolicy.msk.cloudcontrol.aws.hfl.dev` | 2 | 1 | 2 | 0 | 0 | 2 |
+| `AWS::Logs::LogStream` | `LogStream.logs.cloudcontrol.aws.hfl.dev` | 2 | 0 | 8 | 0 | 0 | 0 |
+| `AWS::MSK::BatchScramSecret` | `BatchScramSecret.msk.cloudcontrol.aws.hfl.dev` | 2 | 0 | 6 | 0 | 0 | 0 |
+| `AWS::MSK::ClusterPolicy` | `ClusterPolicy.msk.cloudcontrol.aws.hfl.dev` | 2 | 1 | 6 | 0 | 0 | 2 |
 | `AWS::MSK::Topic` | `Topic.msk.cloudcontrol.aws.hfl.dev` | 5 | 1 | 6 | 0 | 0 | 0 |
 | `AWS::RDS::ClusterSnapshot` | `ClusterSnapshot.rds.cloudcontrol.aws.hfl.dev` | 3 | 18 | 4 | 0 | 0 | 1 |
 | `AWS::RDS::CustomDBEngineVersion` | `CustomDBEngineVersion.rds.cloudcontrol.aws.hfl.dev` | 13 | 1 | 20 | 0 | 0 | 0 |
@@ -292,11 +292,11 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::S3::MultiRegionAccessPointPolicy` | `MultiRegionAccessPointPolicy.s3.cloudcontrol.aws.hfl.dev` | 2 | 1 | 2 | 0 | 0 | 1 |
 | `AWS::S3::StorageLens` | `StorageLens.s3.cloudcontrol.aws.hfl.dev` | 2 | 0 | 2 | 0 | 0 | 3 |
 | `AWS::S3::StorageLensGroup` | `StorageLensGroup.s3.cloudcontrol.aws.hfl.dev` | 3 | 1 | 2 | 0 | 0 | 1 |
-| `AWS::S3Files::FileSystemPolicy` | `FileSystemPolicy.s3files.cloudcontrol.aws.hfl.dev` | 2 | 0 | 2 | 0 | 0 | 1 |
+| `AWS::S3Files::FileSystemPolicy` | `FileSystemPolicy.s3files.cloudcontrol.aws.hfl.dev` | 2 | 0 | 6 | 0 | 0 | 1 |
 | `AWS::SSM::CloudConnector` | `CloudConnector.ssm.cloudcontrol.aws.hfl.dev` | 6 | 4 | 6 | 0 | 0 | 12 |
 | `AWS::SSM::MaintenanceWindow` | `MaintenanceWindow.ssm.cloudcontrol.aws.hfl.dev` | 11 | 1 | 0 | 0 | 0 | 0 |
-| `AWS::SSM::MaintenanceWindowTarget` | `MaintenanceWindowTarget.ssm.cloudcontrol.aws.hfl.dev` | 6 | 1 | 2 | 0 | 0 | 0 |
-| `AWS::SSM::MaintenanceWindowTask` | `MaintenanceWindowTask.ssm.cloudcontrol.aws.hfl.dev` | 14 | 1 | 4 | 0 | 0 | 0 |
+| `AWS::SSM::MaintenanceWindowTarget` | `MaintenanceWindowTarget.ssm.cloudcontrol.aws.hfl.dev` | 6 | 1 | 6 | 0 | 0 | 0 |
+| `AWS::SSM::MaintenanceWindowTask` | `MaintenanceWindowTask.ssm.cloudcontrol.aws.hfl.dev` | 14 | 1 | 11 | 0 | 0 | 0 |
 | `AWS::SSM::OpsItem` | `OpsItem.ssm.cloudcontrol.aws.hfl.dev` | 7 | 9 | 2 | 0 | 0 | 1 |
 | `AWS::SSM::ServiceSetting` | `ServiceSetting.ssm.cloudcontrol.aws.hfl.dev` | 2 | 4 | 2 | 0 | 0 | 0 |
 | `AWS::StepFunctions::StateMachineVersion` | `StateMachineVersion.stepfunctions.cloudcontrol.aws.hfl.dev` | 3 | 1 | 6 | 0 | 0 | 0 |
@@ -305,12 +305,12 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::KafkaConnect::CustomPlugin` | `CustomPlugin.kafkaconnect.cloudcontrol.aws.hfl.dev` | 5 | 3 | 8 | 0 | 0 | 1 |
 | `AWS::KafkaConnect::WorkerConfiguration` | `WorkerConfiguration.kafkaconnect.cloudcontrol.aws.hfl.dev` | 4 | 2 | 6 | 0 | 0 | 1 |
 | `AWS::S3Express::DirectoryBucket` | `DirectoryBucket.s3express.cloudcontrol.aws.hfl.dev` | 8 | 2 | 6 | 0 | 0 | 5 |
-| `AWS::S3Tables::TablePolicy` | `TablePolicy.s3tables.cloudcontrol.aws.hfl.dev` | 2 | 3 | 2 | 0 | 1 | 0 |
+| `AWS::S3Tables::TablePolicy` | `TablePolicy.s3tables.cloudcontrol.aws.hfl.dev` | 2 | 3 | 6 | 0 | 1 | 0 |
 | `AWS::S3Vectors::VectorBucketPolicy` | `VectorBucketPolicy.s3vectors.cloudcontrol.aws.hfl.dev` | 3 | 0 | 4 | 0 | 1 | 0 |
-| `AWS::SSM::ResourcePolicy` | `ResourcePolicy.ssm.cloudcontrol.aws.hfl.dev` | 2 | 2 | 2 | 0 | 1 | 0 |
+| `AWS::SSM::ResourcePolicy` | `ResourcePolicy.ssm.cloudcontrol.aws.hfl.dev` | 2 | 2 | 6 | 0 | 1 | 0 |
 | `AWS::CloudTrail::ResourcePolicy` | `ResourcePolicy.cloudtrail.cloudcontrol.aws.hfl.dev` | 2 | 0 | 2 | 0 | 1 | 0 |
 | `AWS::Organizations::ResourcePolicy` | `ResourcePolicy.organizations.cloudcontrol.aws.hfl.dev` | 2 | 2 | 0 | 0 | 1 | 3 |
-| `AWS::MSK::Replicator` | `Replicator.msk.cloudcontrol.aws.hfl.dev` | 7 | 2 | 8 | 0 | 0 | 6 |
+| `AWS::MSK::Replicator` | `Replicator.msk.cloudcontrol.aws.hfl.dev` | 7 | 2 | 12 | 0 | 0 | 6 |
 | `AWS::MSK::Channel` | `Channel.msk.cloudcontrol.aws.hfl.dev` | 8 | 3 | 64 | 0 | 0 | 10 |
 | `AWS::OpenSearchService::Application` | `Application.opensearchservice.cloudcontrol.aws.hfl.dev` | 7 | 2 | 4 | 0 | 2 | 2 |
 | `AWS::AccountAccess::Application` | `Application.accountaccess.cloudcontrol.aws.hfl.dev` | 2 | 5 | 2 | 0 | 0 | 2 |
@@ -319,32 +319,32 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::AgentRegistry::RegistryRecord` | `RegistryRecord.agentregistry.cloudcontrol.aws.hfl.dev` | 9 | 7 | 4 | 0 | 0 | 22 |
 | `AWS::AIOps::InvestigationGroup` | `InvestigationGroup.aiops.cloudcontrol.aws.hfl.dev` | 10 | 5 | 4 | 0 | 0 | 0 |
 | `AWS::AmazonMQ::Configuration` | `Configuration.amazonmq.cloudcontrol.aws.hfl.dev` | 7 | 3 | 8 | 0 | 0 | 0 |
-| `AWS::Amplify::App` | `App.amplify.cloudcontrol.aws.hfl.dev` | 18 | 4 | 0 | 0 | 0 | 22 |
+| `AWS::Amplify::App` | `App.amplify.cloudcontrol.aws.hfl.dev` | 18 | 4 | 1 | 0 | 0 | 22 |
 | `AWS::Amplify::Branch` | `Branch.amplify.cloudcontrol.aws.hfl.dev` | 16 | 1 | 4 | 0 | 0 | 12 |
 | `AWS::Amplify::Domain` | `Domain.amplify.cloudcontrol.aws.hfl.dev` | 7 | 6 | 4 | 0 | 0 | 9 |
 | `AWS::Amplify::Webhook` | `Webhook.amplify.cloudcontrol.aws.hfl.dev` | 4 | 3 | 2 | 0 | 0 | 2 |
-| `AWS::ApiGateway::Account` | `Account.apigateway.cloudcontrol.aws.hfl.dev` | 1 | 1 | 0 | 0 | 0 | 0 |
+| `AWS::ApiGateway::Account` | `Account.apigateway.cloudcontrol.aws.hfl.dev` | 1 | 1 | 1 | 0 | 0 | 0 |
 | `AWS::ApiGateway::BasePathMapping` | `BasePathMapping.apigateway.cloudcontrol.aws.hfl.dev` | 4 | 0 | 4 | 0 | 0 | 0 |
 | `AWS::ApiGateway::BasePathMappingV2` | `BasePathMappingV2.apigateway.cloudcontrol.aws.hfl.dev` | 4 | 1 | 4 | 0 | 0 | 0 |
 | `AWS::ApiGateway::ClientCertificate` | `ClientCertificate.apigateway.cloudcontrol.aws.hfl.dev` | 2 | 1 | 0 | 0 | 0 | 0 |
-| `AWS::ApiGateway::DocumentationPart` | `DocumentationPart.apigateway.cloudcontrol.aws.hfl.dev` | 3 | 1 | 4 | 0 | 0 | 0 |
-| `AWS::ApiGateway::DocumentationVersion` | `DocumentationVersion.apigateway.cloudcontrol.aws.hfl.dev` | 3 | 0 | 4 | 0 | 0 | 0 |
+| `AWS::ApiGateway::DocumentationPart` | `DocumentationPart.apigateway.cloudcontrol.aws.hfl.dev` | 3 | 1 | 8 | 0 | 0 | 0 |
+| `AWS::ApiGateway::DocumentationVersion` | `DocumentationVersion.apigateway.cloudcontrol.aws.hfl.dev` | 3 | 0 | 8 | 0 | 0 | 0 |
 | `AWS::ApiGateway::DomainName` | `DomainName.apigateway.cloudcontrol.aws.hfl.dev` | 10 | 5 | 2 | 0 | 0 | 0 |
 | `AWS::ApiGateway::DomainNameAccessAssociation` | `DomainNameAccessAssociation.apigateway.cloudcontrol.aws.hfl.dev` | 4 | 1 | 8 | 0 | 0 | 0 |
-| `AWS::ApiGateway::GatewayResponse` | `GatewayResponse.apigateway.cloudcontrol.aws.hfl.dev` | 5 | 1 | 4 | 0 | 0 | 0 |
-| `AWS::ApiGateway::RequestValidator` | `RequestValidator.apigateway.cloudcontrol.aws.hfl.dev` | 4 | 1 | 4 | 0 | 0 | 0 |
+| `AWS::ApiGateway::GatewayResponse` | `GatewayResponse.apigateway.cloudcontrol.aws.hfl.dev` | 5 | 1 | 8 | 0 | 0 | 0 |
+| `AWS::ApiGateway::RequestValidator` | `RequestValidator.apigateway.cloudcontrol.aws.hfl.dev` | 4 | 1 | 8 | 0 | 0 | 0 |
 | `AWS::ApiGateway::UsagePlan` | `UsagePlan.apigateway.cloudcontrol.aws.hfl.dev` | 6 | 1 | 0 | 0 | 0 | 0 |
-| `AWS::ApiGateway::UsagePlanKey` | `UsagePlanKey.apigateway.cloudcontrol.aws.hfl.dev` | 3 | 1 | 6 | 0 | 0 | 0 |
+| `AWS::ApiGateway::UsagePlanKey` | `UsagePlanKey.apigateway.cloudcontrol.aws.hfl.dev` | 3 | 1 | 14 | 0 | 0 | 0 |
 | `AWS::AppConfig::Application` | `Application.appconfig.cloudcontrol.aws.hfl.dev` | 3 | 1 | 0 | 0 | 0 | 0 |
-| `AWS::AppConfig::ConfigurationProfile` | `ConfigurationProfile.appconfig.cloudcontrol.aws.hfl.dev` | 10 | 2 | 4 | 0 | 0 | 4 |
-| `AWS::AppConfig::Deployment` | `Deployment.appconfig.cloudcontrol.aws.hfl.dev` | 9 | 2 | 18 | 0 | 0 | 0 |
+| `AWS::AppConfig::ConfigurationProfile` | `ConfigurationProfile.appconfig.cloudcontrol.aws.hfl.dev` | 10 | 2 | 9 | 0 | 0 | 4 |
+| `AWS::AppConfig::Deployment` | `Deployment.appconfig.cloudcontrol.aws.hfl.dev` | 9 | 2 | 29 | 0 | 0 | 0 |
 | `AWS::AppConfig::DeploymentStrategy` | `DeploymentStrategy.appconfig.cloudcontrol.aws.hfl.dev` | 8 | 1 | 4 | 0 | 0 | 0 |
-| `AWS::AppConfig::Environment` | `Environment.appconfig.cloudcontrol.aws.hfl.dev` | 6 | 1 | 2 | 0 | 0 | 2 |
+| `AWS::AppConfig::Environment` | `Environment.appconfig.cloudcontrol.aws.hfl.dev` | 6 | 1 | 6 | 0 | 0 | 2 |
 | `AWS::AppConfig::ExperimentDefinition` | `ExperimentDefinition.appconfig.cloudcontrol.aws.hfl.dev` | 12 | 5 | 10 | 0 | 0 | 2 |
 | `AWS::AppConfig::ExperimentRun` | `ExperimentRun.appconfig.cloudcontrol.aws.hfl.dev` | 6 | 6 | 4 | 0 | 0 | 2 |
 | `AWS::AppConfig::Extension` | `Extension.appconfig.cloudcontrol.aws.hfl.dev` | 6 | 3 | 2 | 0 | 0 | 0 |
 | `AWS::AppConfig::ExtensionAssociation` | `ExtensionAssociation.appconfig.cloudcontrol.aws.hfl.dev` | 5 | 4 | 6 | 0 | 0 | 0 |
-| `AWS::AppConfig::HostedConfigurationVersion` | `HostedConfigurationVersion.appconfig.cloudcontrol.aws.hfl.dev` | 7 | 1 | 14 | 0 | 0 | 3 |
+| `AWS::AppConfig::HostedConfigurationVersion` | `HostedConfigurationVersion.appconfig.cloudcontrol.aws.hfl.dev` | 7 | 1 | 18 | 0 | 0 | 3 |
 | `AWS::AppFabric::AppAuthorization` | `AppAuthorization.appfabric.cloudcontrol.aws.hfl.dev` | 6 | 7 | 6 | 0 | 0 | 4 |
 | `AWS::AppFabric::AppBundle` | `AppBundle.appfabric.cloudcontrol.aws.hfl.dev` | 2 | 1 | 2 | 0 | 0 | 2 |
 | `AWS::AppFabric::Ingestion` | `Ingestion.appfabric.cloudcontrol.aws.hfl.dev` | 5 | 4 | 8 | 0 | 0 | 2 |
@@ -372,8 +372,8 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::AppStream::ApplicationFleetAssociation` | `ApplicationFleetAssociation.appstream.cloudcontrol.aws.hfl.dev` | 2 | 0 | 4 | 0 | 0 | 0 |
 | `AWS::AppStream::DirectoryConfig` | `DirectoryConfig.appstream.cloudcontrol.aws.hfl.dev` | 4 | 0 | 2 | 0 | 0 | 0 |
 | `AWS::AppStream::Entitlement` | `Entitlement.appstream.cloudcontrol.aws.hfl.dev` | 5 | 2 | 4 | 0 | 0 | 0 |
-| `AWS::AppStream::Fleet` | `Fleet.appstream.cloudcontrol.aws.hfl.dev` | 25 | 1 | 4 | 0 | 0 | 6 |
-| `AWS::AppStream::ImageBuilder` | `ImageBuilder.appstream.cloudcontrol.aws.hfl.dev` | 17 | 1 | 2 | 0 | 0 | 0 |
+| `AWS::AppStream::Fleet` | `Fleet.appstream.cloudcontrol.aws.hfl.dev` | 25 | 1 | 5 | 0 | 0 | 6 |
+| `AWS::AppStream::ImageBuilder` | `ImageBuilder.appstream.cloudcontrol.aws.hfl.dev` | 17 | 1 | 3 | 0 | 0 | 0 |
 | `AWS::AppStream::Stack` | `Stack.appstream.cloudcontrol.aws.hfl.dev` | 17 | 0 | 2 | 0 | 0 | 0 |
 | `AWS::AppStream::StackFleetAssociation` | `StackFleetAssociation.appstream.cloudcontrol.aws.hfl.dev` | 2 | 0 | 0 | 0 | 0 | 0 |
 | `AWS::AppStream::StackUserAssociation` | `StackUserAssociation.appstream.cloudcontrol.aws.hfl.dev` | 4 | 0 | 8 | 0 | 0 | 0 |
@@ -386,7 +386,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::AppSync::DomainName` | `DomainName.appsync.cloudcontrol.aws.hfl.dev` | 4 | 3 | 4 | 0 | 0 | 4 |
 | `AWS::AppSync::DomainNameApiAssociation` | `DomainNameApiAssociation.appsync.cloudcontrol.aws.hfl.dev` | 2 | 1 | 2 | 0 | 0 | 1 |
 | `AWS::AppSync::FunctionConfiguration` | `FunctionConfiguration.appsync.cloudcontrol.aws.hfl.dev` | 14 | 2 | 2 | 0 | 0 | 0 |
-| `AWS::AppSync::GraphQLApi` | `GraphQLApi.appsync.cloudcontrol.aws.hfl.dev` | 18 | 7 | 0 | 0 | 0 | 1 |
+| `AWS::AppSync::GraphQLApi` | `GraphQLApi.appsync.cloudcontrol.aws.hfl.dev` | 18 | 7 | 1 | 0 | 0 | 1 |
 | `AWS::AppSync::Resolver` | `Resolver.appsync.cloudcontrol.aws.hfl.dev` | 17 | 1 | 6 | 0 | 0 | 0 |
 | `AWS::AppSync::SourceApiAssociation` | `SourceApiAssociation.appsync.cloudcontrol.aws.hfl.dev` | 4 | 9 | 4 | 0 | 0 | 2 |
 | `AWS::AppSync::Type` | `Type.appsync.cloudcontrol.aws.hfl.dev` | 3 | 2 | 2 | 0 | 0 | 1 |
@@ -408,10 +408,10 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::Backup::RestoreTestingSelection` | `RestoreTestingSelection.backup.cloudcontrol.aws.hfl.dev` | 8 | 0 | 6 | 0 | 0 | 0 |
 | `AWS::Backup::TieringConfiguration` | `TieringConfiguration.backup.cloudcontrol.aws.hfl.dev` | 4 | 3 | 2 | 0 | 0 | 0 |
 | `AWS::BackupGateway::Hypervisor` | `Hypervisor.backupgateway.cloudcontrol.aws.hfl.dev` | 7 | 1 | 4 | 0 | 0 | 9 |
-| `AWS::Batch::ComputeEnvironment` | `ComputeEnvironment.batch.cloudcontrol.aws.hfl.dev` | 12 | 1 | 16 | 0 | 0 | 0 |
+| `AWS::Batch::ComputeEnvironment` | `ComputeEnvironment.batch.cloudcontrol.aws.hfl.dev` | 12 | 1 | 17 | 0 | 0 | 0 |
 | `AWS::Batch::ConsumableResource` | `ConsumableResource.batch.cloudcontrol.aws.hfl.dev` | 4 | 4 | 4 | 0 | 0 | 0 |
 | `AWS::Batch::JobDefinition` | `JobDefinition.batch.cloudcontrol.aws.hfl.dev` | 15 | 1 | 2 | 0 | 0 | 2 |
-| `AWS::Batch::JobQueue` | `JobQueue.batch.cloudcontrol.aws.hfl.dev` | 9 | 1 | 4 | 0 | 0 | 2 |
+| `AWS::Batch::JobQueue` | `JobQueue.batch.cloudcontrol.aws.hfl.dev` | 9 | 1 | 5 | 0 | 0 | 2 |
 | `AWS::Batch::QuotaShare` | `QuotaShare.batch.cloudcontrol.aws.hfl.dev` | 7 | 1 | 4 | 0 | 0 | 1 |
 | `AWS::Batch::SchedulingPolicy` | `SchedulingPolicy.batch.cloudcontrol.aws.hfl.dev` | 4 | 1 | 2 | 0 | 0 | 0 |
 | `AWS::Batch::ServiceEnvironment` | `ServiceEnvironment.batch.cloudcontrol.aws.hfl.dev` | 5 | 1 | 4 | 0 | 0 | 0 |
@@ -430,7 +430,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::Bedrock::DataSource` | `DataSource.bedrock.cloudcontrol.aws.hfl.dev` | 7 | 5 | 8 | 0 | 0 | 18 |
 | `AWS::Bedrock::EnforcedGuardrailConfiguration` | `EnforcedGuardrailConfiguration.bedrock.cloudcontrol.aws.hfl.dev` | 4 | 8 | 0 | 0 | 0 | 7 |
 | `AWS::Bedrock::FlowAlias` | `FlowAlias.bedrock.cloudcontrol.aws.hfl.dev` | 6 | 5 | 2 | 0 | 0 | 7 |
-| `AWS::Bedrock::Guardrail` | `Guardrail.bedrock.cloudcontrol.aws.hfl.dev` | 13 | 8 | 0 | 0 | 0 | 10 |
+| `AWS::Bedrock::Guardrail` | `Guardrail.bedrock.cloudcontrol.aws.hfl.dev` | 13 | 8 | 1 | 0 | 0 | 10 |
 | `AWS::Bedrock::GuardrailVersion` | `GuardrailVersion.bedrock.cloudcontrol.aws.hfl.dev` | 2 | 3 | 4 | 0 | 0 | 4 |
 | `AWS::Bedrock::IntelligentPromptRouter` | `IntelligentPromptRouter.bedrock.cloudcontrol.aws.hfl.dev` | 6 | 5 | 10 | 0 | 0 | 7 |
 | `AWS::Bedrock::KnowledgeBasePolicy` | `KnowledgeBasePolicy.bedrock.cloudcontrol.aws.hfl.dev` | 2 | 1 | 2 | 0 | 0 | 1 |
@@ -445,11 +445,11 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::BedrockAgentCore::Dataset` | `Dataset.bedrockagentcore.cloudcontrol.aws.hfl.dev` | 6 | 6 | 8 | 0 | 0 | 5 |
 | `AWS::BedrockAgentCore::Evaluator` | `Evaluator.bedrockagentcore.cloudcontrol.aws.hfl.dev` | 6 | 7 | 4 | 0 | 0 | 7 |
 | `AWS::BedrockAgentCore::OAuth2CredentialProvider` | `OAuth2CredentialProvider.bedrockagentcore.cloudcontrol.aws.hfl.dev` | 4 | 9 | 4 | 0 | 0 | 29 |
-| `AWS::BedrockAgentCore::OnlineEvaluationConfig` | `OnlineEvaluationConfig.bedrockagentcore.cloudcontrol.aws.hfl.dev` | 11 | 5 | 2 | 0 | 0 | 13 |
+| `AWS::BedrockAgentCore::OnlineEvaluationConfig` | `OnlineEvaluationConfig.bedrockagentcore.cloudcontrol.aws.hfl.dev` | 11 | 5 | 4 | 0 | 0 | 13 |
 | `AWS::BedrockAgentCore::PaymentConnector` | `PaymentConnector.bedrockagentcore.cloudcontrol.aws.hfl.dev` | 6 | 6 | 8 | 0 | 0 | 6 |
 | `AWS::BedrockAgentCore::PaymentCredentialProvider` | `PaymentCredentialProvider.bedrockagentcore.cloudcontrol.aws.hfl.dev` | 4 | 4 | 4 | 0 | 0 | 8 |
 | `AWS::BedrockAgentCore::PaymentManager` | `PaymentManager.bedrockagentcore.cloudcontrol.aws.hfl.dev` | 6 | 6 | 6 | 0 | 0 | 10 |
-| `AWS::BedrockAgentCore::ResourcePolicy` | `ResourcePolicy.bedrockagentcore.cloudcontrol.aws.hfl.dev` | 2 | 0 | 2 | 0 | 0 | 1 |
+| `AWS::BedrockAgentCore::ResourcePolicy` | `ResourcePolicy.bedrockagentcore.cloudcontrol.aws.hfl.dev` | 2 | 0 | 6 | 0 | 0 | 1 |
 | `AWS::BedrockMantle::Project` | `Project.bedrockmantle.cloudcontrol.aws.hfl.dev` | 2 | 3 | 0 | 0 | 0 | 2 |
 | `AWS::Billing::BillingView` | `BillingView.billing.cloudcontrol.aws.hfl.dev` | 5 | 5 | 4 | 0 | 0 | 7 |
 | `AWS::BillingConductor::BillingGroup` | `BillingGroup.billingconductor.cloudcontrol.aws.hfl.dev` | 6 | 6 | 2 | 0 | 0 | 6 |
@@ -457,7 +457,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::BillingConductor::PricingPlan` | `PricingPlan.billingconductor.cloudcontrol.aws.hfl.dev` | 4 | 4 | 0 | 0 | 0 | 3 |
 | `AWS::BillingConductor::PricingRule` | `PricingRule.billingconductor.cloudcontrol.aws.hfl.dev` | 11 | 4 | 10 | 0 | 0 | 5 |
 | `AWS::Braket::SpendingLimit` | `SpendingLimit.braket.cloudcontrol.aws.hfl.dev` | 4 | 5 | 2 | 0 | 0 | 2 |
-| `AWS::Budgets::BudgetsAction` | `BudgetsAction.budgets.cloudcontrol.aws.hfl.dev` | 9 | 1 | 4 | 0 | 0 | 0 |
+| `AWS::Budgets::BudgetsAction` | `BudgetsAction.budgets.cloudcontrol.aws.hfl.dev` | 9 | 1 | 6 | 0 | 0 | 0 |
 | `AWS::Cases::Case` | `Case.cases.cloudcontrol.aws.hfl.dev` | 5 | 2 | 6 | 0 | 0 | 2 |
 | `AWS::Cases::CaseRule` | `CaseRule.cases.cloudcontrol.aws.hfl.dev` | 5 | 4 | 2 | 0 | 0 | 2 |
 | `AWS::Cases::Domain` | `Domain.cases.cloudcontrol.aws.hfl.dev` | 2 | 4 | 2 | 0 | 0 | 2 |
@@ -492,7 +492,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::CleanRoomsML::ConfiguredModelAlgorithm` | `ConfiguredModelAlgorithm.cleanroomsml.cloudcontrol.aws.hfl.dev` | 7 | 1 | 12 | 0 | 0 | 11 |
 | `AWS::CleanRoomsML::ConfiguredModelAlgorithmAssociation` | `ConfiguredModelAlgorithmAssociation.cleanroomsml.cloudcontrol.aws.hfl.dev` | 6 | 2 | 10 | 0 | 0 | 10 |
 | `AWS::CleanRoomsML::TrainingDataset` | `TrainingDataset.cleanroomsml.cloudcontrol.aws.hfl.dev` | 5 | 2 | 8 | 0 | 0 | 8 |
-| `AWS::Cloud9::EnvironmentEC2` | `EnvironmentEC2.cloud9.cloudcontrol.aws.hfl.dev` | 10 | 2 | 14 | 0 | 0 | 0 |
+| `AWS::Cloud9::EnvironmentEC2` | `EnvironmentEC2.cloud9.cloudcontrol.aws.hfl.dev` | 10 | 2 | 17 | 0 | 0 | 0 |
 | `AWS::CloudFormation::ChangeSet` | `ChangeSet.cloudformation.cloudcontrol.aws.hfl.dev` | 15 | 3 | 30 | 0 | 0 | 2 |
 | `AWS::CloudFormation::GeneratedTemplate` | `GeneratedTemplate.cloudformation.cloudcontrol.aws.hfl.dev` | 2 | 6 | 0 | 0 | 0 | 0 |
 | `AWS::CloudFormation::GuardHook` | `GuardHook.cloudformation.cloudcontrol.aws.hfl.dev` | 10 | 1 | 4 | 0 | 0 | 7 |
@@ -506,15 +506,15 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::CloudFormation::Publisher` | `Publisher.cloudformation.cloudcontrol.aws.hfl.dev` | 2 | 4 | 4 | 0 | 0 | 3 |
 | `AWS::CloudFormation::ResourceDefaultVersion` | `ResourceDefaultVersion.cloudformation.cloudcontrol.aws.hfl.dev` | 3 | 1 | 0 | 0 | 0 | 4 |
 | `AWS::CloudFormation::ResourceVersion` | `ResourceVersion.cloudformation.cloudcontrol.aws.hfl.dev` | 4 | 6 | 8 | 0 | 0 | 5 |
-| `AWS::CloudFormation::StackSet` | `StackSet.cloudformation.cloudcontrol.aws.hfl.dev` | 15 | 1 | 4 | 0 | 0 | 7 |
+| `AWS::CloudFormation::StackSet` | `StackSet.cloudformation.cloudcontrol.aws.hfl.dev` | 15 | 1 | 5 | 0 | 0 | 7 |
 | `AWS::CloudFormation::TypeActivation` | `TypeActivation.cloudformation.cloudcontrol.aws.hfl.dev` | 10 | 1 | 2 | 0 | 0 | 6 |
 | `AWS::CloudHSM::Cluster` | `Cluster.cloudhsm.cloudcontrol.aws.hfl.dev` | 6 | 7 | 8 | 0 | 0 | 5 |
 | `AWS::CodeArtifact::Repository` | `Repository.codeartifact.cloudcontrol.aws.hfl.dev` | 7 | 3 | 4 | 0 | 0 | 4 |
 | `AWS::CodeBuild::Fleet` | `Fleet.codebuild.cloudcontrol.aws.hfl.dev` | 12 | 1 | 2 | 0 | 0 | 4 |
-| `AWS::CodeBuild::Project` | `Project.codebuild.cloudcontrol.aws.hfl.dev` | 25 | 1 | 2 | 0 | 0 | 1 |
+| `AWS::CodeBuild::Project` | `Project.codebuild.cloudcontrol.aws.hfl.dev` | 25 | 1 | 4 | 0 | 0 | 1 |
 | `AWS::CodeBuild::ReportGroup` | `ReportGroup.codebuild.cloudcontrol.aws.hfl.dev` | 5 | 1 | 4 | 0 | 0 | 0 |
 | `AWS::CodeBuild::SourceCredential` | `SourceCredential.codebuild.cloudcontrol.aws.hfl.dev` | 4 | 1 | 2 | 0 | 0 | 0 |
-| `AWS::CodeCommit::Repository` | `Repository.codecommit.cloudcontrol.aws.hfl.dev` | 6 | 5 | 0 | 0 | 0 | 0 |
+| `AWS::CodeCommit::Repository` | `Repository.codecommit.cloudcontrol.aws.hfl.dev` | 6 | 5 | 1 | 0 | 0 | 0 |
 | `AWS::CodeConnections::Connection` | `Connection.codeconnections.cloudcontrol.aws.hfl.dev` | 4 | 3 | 6 | 0 | 0 | 3 |
 | `AWS::CodeConnections::Host` | `Host.codeconnections.cloudcontrol.aws.hfl.dev` | 5 | 3 | 4 | 0 | 0 | 4 |
 | `AWS::CodeGuruProfiler::ProfilingGroup` | `ProfilingGroup.codeguruprofiler.cloudcontrol.aws.hfl.dev` | 5 | 1 | 4 | 0 | 0 | 5 |
@@ -525,22 +525,22 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::CodeStarConnections::Connection` | `Connection.codestarconnections.cloudcontrol.aws.hfl.dev` | 4 | 3 | 6 | 0 | 0 | 3 |
 | `AWS::CodeStarConnections::RepositoryLink` | `RepositoryLink.codestarconnections.cloudcontrol.aws.hfl.dev` | 5 | 3 | 4 | 0 | 0 | 6 |
 | `AWS::CodeStarConnections::SyncConfiguration` | `SyncConfiguration.codestarconnections.cloudcontrol.aws.hfl.dev` | 8 | 3 | 4 | 0 | 0 | 4 |
-| `AWS::CodeStarNotifications::NotificationRule` | `NotificationRule.codestarnotifications.cloudcontrol.aws.hfl.dev` | 10 | 1 | 2 | 0 | 0 | 3 |
+| `AWS::CodeStarNotifications::NotificationRule` | `NotificationRule.codestarnotifications.cloudcontrol.aws.hfl.dev` | 10 | 1 | 6 | 0 | 0 | 3 |
 | `AWS::Cognito::IdentityPool` | `IdentityPool.cognito.cloudcontrol.aws.hfl.dev` | 12 | 2 | 0 | 0 | 0 | 0 |
-| `AWS::Cognito::IdentityPoolPrincipalTag` | `IdentityPoolPrincipalTag.cognito.cloudcontrol.aws.hfl.dev` | 4 | 0 | 4 | 0 | 0 | 0 |
-| `AWS::Cognito::IdentityPoolRoleAttachment` | `IdentityPoolRoleAttachment.cognito.cloudcontrol.aws.hfl.dev` | 3 | 1 | 2 | 0 | 0 | 0 |
-| `AWS::Cognito::LogDeliveryConfiguration` | `LogDeliveryConfiguration.cognito.cloudcontrol.aws.hfl.dev` | 2 | 1 | 2 | 0 | 0 | 0 |
+| `AWS::Cognito::IdentityPoolPrincipalTag` | `IdentityPoolPrincipalTag.cognito.cloudcontrol.aws.hfl.dev` | 4 | 0 | 8 | 0 | 0 | 0 |
+| `AWS::Cognito::IdentityPoolRoleAttachment` | `IdentityPoolRoleAttachment.cognito.cloudcontrol.aws.hfl.dev` | 3 | 1 | 6 | 0 | 0 | 0 |
+| `AWS::Cognito::LogDeliveryConfiguration` | `LogDeliveryConfiguration.cognito.cloudcontrol.aws.hfl.dev` | 2 | 1 | 6 | 0 | 0 | 0 |
 | `AWS::Cognito::ManagedLoginBranding` | `ManagedLoginBranding.cognito.cloudcontrol.aws.hfl.dev` | 6 | 1 | 4 | 0 | 0 | 2 |
 | `AWS::Cognito::Terms` | `Terms.cognito.cloudcontrol.aws.hfl.dev` | 6 | 1 | 4 | 0 | 0 | 3 |
-| `AWS::Cognito::UserPoolDomain` | `UserPoolDomain.cognito.cloudcontrol.aws.hfl.dev` | 5 | 1 | 4 | 0 | 0 | 0 |
-| `AWS::Cognito::UserPoolGroup` | `UserPoolGroup.cognito.cloudcontrol.aws.hfl.dev` | 5 | 0 | 4 | 0 | 0 | 0 |
-| `AWS::Cognito::UserPoolIdentityProvider` | `UserPoolIdentityProvider.cognito.cloudcontrol.aws.hfl.dev` | 6 | 0 | 6 | 0 | 0 | 0 |
+| `AWS::Cognito::UserPoolDomain` | `UserPoolDomain.cognito.cloudcontrol.aws.hfl.dev` | 5 | 1 | 8 | 0 | 0 | 0 |
+| `AWS::Cognito::UserPoolGroup` | `UserPoolGroup.cognito.cloudcontrol.aws.hfl.dev` | 5 | 0 | 9 | 0 | 0 | 0 |
+| `AWS::Cognito::UserPoolIdentityProvider` | `UserPoolIdentityProvider.cognito.cloudcontrol.aws.hfl.dev` | 6 | 0 | 10 | 0 | 0 | 0 |
 | `AWS::Cognito::UserPoolRegionalConfigurationAttachment` | `UserPoolRegionalConfigurationAttachment.cognito.cloudcontrol.aws.hfl.dev` | 6 | 0 | 2 | 0 | 0 | 0 |
 | `AWS::Cognito::UserPoolReplica` | `UserPoolReplica.cognito.cloudcontrol.aws.hfl.dev` | 3 | 0 | 6 | 0 | 0 | 0 |
-| `AWS::Cognito::UserPoolRiskConfigurationAttachment` | `UserPoolRiskConfigurationAttachment.cognito.cloudcontrol.aws.hfl.dev` | 5 | 0 | 4 | 0 | 0 | 0 |
-| `AWS::Cognito::UserPoolUICustomizationAttachment` | `UserPoolUICustomizationAttachment.cognito.cloudcontrol.aws.hfl.dev` | 3 | 0 | 4 | 0 | 0 | 0 |
-| `AWS::Cognito::UserPoolUser` | `UserPoolUser.cognito.cloudcontrol.aws.hfl.dev` | 8 | 0 | 16 | 0 | 0 | 0 |
-| `AWS::Cognito::UserPoolUserToGroupAttachment` | `UserPoolUserToGroupAttachment.cognito.cloudcontrol.aws.hfl.dev` | 3 | 0 | 6 | 0 | 0 | 0 |
+| `AWS::Cognito::UserPoolRiskConfigurationAttachment` | `UserPoolRiskConfigurationAttachment.cognito.cloudcontrol.aws.hfl.dev` | 5 | 0 | 8 | 0 | 0 | 0 |
+| `AWS::Cognito::UserPoolUICustomizationAttachment` | `UserPoolUICustomizationAttachment.cognito.cloudcontrol.aws.hfl.dev` | 3 | 0 | 12 | 0 | 0 | 0 |
+| `AWS::Cognito::UserPoolUser` | `UserPoolUser.cognito.cloudcontrol.aws.hfl.dev` | 8 | 0 | 20 | 0 | 0 | 0 |
+| `AWS::Cognito::UserPoolUserToGroupAttachment` | `UserPoolUserToGroupAttachment.cognito.cloudcontrol.aws.hfl.dev` | 3 | 0 | 10 | 0 | 0 | 0 |
 | `AWS::Comprehend::DocumentClassifier` | `DocumentClassifier.comprehend.cloudcontrol.aws.hfl.dev` | 12 | 1 | 20 | 0 | 0 | 15 |
 | `AWS::Comprehend::DocumentClassifierEndpoint` | `DocumentClassifierEndpoint.comprehend.cloudcontrol.aws.hfl.dev` | 4 | 4 | 2 | 0 | 0 | 3 |
 | `AWS::Comprehend::EntityRecognizer` | `EntityRecognizer.comprehend.cloudcontrol.aws.hfl.dev` | 10 | 1 | 18 | 0 | 0 | 19 |
@@ -565,7 +565,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::Connect::IntegrationAssociation` | `IntegrationAssociation.connect.cloudcontrol.aws.hfl.dev` | 7 | 1 | 12 | 0 | 0 | 3 |
 | `AWS::Connect::Metric` | `Metric.connect.cloudcontrol.aws.hfl.dev` | 8 | 18 | 4 | 0 | 0 | 4 |
 | `AWS::Connect::Notification` | `Notification.connect.cloudcontrol.aws.hfl.dev` | 6 | 3 | 8 | 0 | 0 | 17 |
-| `AWS::Connect::PhoneNumber` | `PhoneNumber.connect.cloudcontrol.aws.hfl.dev` | 7 | 2 | 8 | 0 | 0 | 7 |
+| `AWS::Connect::PhoneNumber` | `PhoneNumber.connect.cloudcontrol.aws.hfl.dev` | 7 | 2 | 10 | 0 | 0 | 7 |
 | `AWS::Connect::PredefinedAttribute` | `PredefinedAttribute.connect.cloudcontrol.aws.hfl.dev` | 5 | 2 | 4 | 0 | 0 | 2 |
 | `AWS::Connect::Prompt` | `Prompt.connect.cloudcontrol.aws.hfl.dev` | 5 | 1 | 0 | 0 | 0 | 3 |
 | `AWS::Connect::Queue` | `Queue.connect.cloudcontrol.aws.hfl.dev` | 11 | 4 | 0 | 0 | 0 | 10 |
@@ -587,7 +587,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::Connect::Workspace` | `Workspace.connect.cloudcontrol.aws.hfl.dev` | 10 | 2 | 2 | 0 | 0 | 39 |
 | `AWS::ConnectCampaigns::Campaign` | `Campaign.connectcampaigns.cloudcontrol.aws.hfl.dev` | 5 | 1 | 2 | 0 | 0 | 5 |
 | `AWS::ConnectCampaignsV2::Campaign` | `Campaign.connectcampaignsv2.cloudcontrol.aws.hfl.dev` | 11 | 1 | 2 | 0 | 0 | 29 |
-| `AWS::CUR::ReportDefinition` | `ReportDefinition.cur.cloudcontrol.aws.hfl.dev` | 13 | 0 | 10 | 0 | 0 | 4 |
+| `AWS::CUR::ReportDefinition` | `ReportDefinition.cur.cloudcontrol.aws.hfl.dev` | 13 | 0 | 12 | 0 | 0 | 4 |
 | `AWS::CustomerProfiles::CalculatedAttributeDefinition` | `CalculatedAttributeDefinition.customerprofiles.cloudcontrol.aws.hfl.dev` | 10 | 4 | 16 | 0 | 0 | 4 |
 | `AWS::CustomerProfiles::Domain` | `Domain.customerprofiles.cloudcontrol.aws.hfl.dev` | 8 | 3 | 2 | 0 | 0 | 7 |
 | `AWS::CustomerProfiles::DomainObjectType` | `DomainObjectType.customerprofiles.cloudcontrol.aws.hfl.dev` | 6 | 2 | 6 | 0 | 0 | 2 |
@@ -618,9 +618,9 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::DataSync::LocationHDFS` | `LocationHDFS.datasync.cloudcontrol.aws.hfl.dev` | 15 | 3 | 0 | 0 | 0 | 12 |
 | `AWS::DataSync::LocationNFS` | `LocationNFS.datasync.cloudcontrol.aws.hfl.dev` | 5 | 2 | 0 | 0 | 0 | 7 |
 | `AWS::DataSync::LocationObjectStorage` | `LocationObjectStorage.datasync.cloudcontrol.aws.hfl.dev` | 13 | 3 | 2 | 0 | 0 | 19 |
-| `AWS::DataSync::LocationS3` | `LocationS3.datasync.cloudcontrol.aws.hfl.dev` | 5 | 2 | 2 | 0 | 0 | 7 |
+| `AWS::DataSync::LocationS3` | `LocationS3.datasync.cloudcontrol.aws.hfl.dev` | 5 | 2 | 5 | 0 | 0 | 7 |
 | `AWS::DataSync::LocationSMB` | `LocationSMB.datasync.cloudcontrol.aws.hfl.dev` | 15 | 3 | 0 | 0 | 0 | 16 |
-| `AWS::DataSync::Task` | `Task.datasync.cloudcontrol.aws.hfl.dev` | 12 | 4 | 6 | 0 | 0 | 21 |
+| `AWS::DataSync::Task` | `Task.datasync.cloudcontrol.aws.hfl.dev` | 12 | 4 | 7 | 0 | 0 | 21 |
 | `AWS::DataZone::Connection` | `Connection.datazone.cloudcontrol.aws.hfl.dev` | 10 | 7 | 12 | 0 | 0 | 59 |
 | `AWS::DataZone::DataSource` | `DataSource.datazone.cloudcontrol.aws.hfl.dev` | 13 | 11 | 10 | 0 | 0 | 13 |
 | `AWS::DataZone::Domain` | `Domain.datazone.cloudcontrol.aws.hfl.dev` | 8 | 8 | 4 | 0 | 0 | 7 |
@@ -637,7 +637,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::DataZone::ProjectMembership` | `ProjectMembership.datazone.cloudcontrol.aws.hfl.dev` | 4 | 2 | 6 | 0 | 0 | 3 |
 | `AWS::DataZone::ProjectProfile` | `ProjectProfile.datazone.cloudcontrol.aws.hfl.dev` | 10 | 7 | 4 | 0 | 0 | 14 |
 | `AWS::DataZone::SubscriptionTarget` | `SubscriptionTarget.datazone.cloudcontrol.aws.hfl.dev` | 9 | 8 | 6 | 0 | 0 | 9 |
-| `AWS::DAX::Cluster` | `Cluster.dax.cloudcontrol.aws.hfl.dev` | 15 | 3 | 14 | 0 | 0 | 0 |
+| `AWS::DAX::Cluster` | `Cluster.dax.cloudcontrol.aws.hfl.dev` | 15 | 3 | 18 | 0 | 0 | 0 |
 | `AWS::DAX::ParameterGroup` | `ParameterGroup.dax.cloudcontrol.aws.hfl.dev` | 3 | 0 | 4 | 0 | 0 | 0 |
 | `AWS::DAX::SubnetGroup` | `SubnetGroup.dax.cloudcontrol.aws.hfl.dev` | 3 | 0 | 2 | 0 | 0 | 0 |
 | `AWS::Deadline::Budget` | `Budget.deadline.cloudcontrol.aws.hfl.dev` | 8 | 3 | 4 | 0 | 0 | 3 |
@@ -663,9 +663,9 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::DevOpsGuru::ResourceCollection` | `ResourceCollection.devopsguru.cloudcontrol.aws.hfl.dev` | 1 | 1 | 0 | 0 | 0 | 1 |
 | `AWS::DirectoryService::MicrosoftAD` | `MicrosoftAD.directoryservice.cloudcontrol.aws.hfl.dev` | 7 | 3 | 12 | 0 | 0 | 0 |
 | `AWS::DirectoryService::SimpleAD` | `SimpleAD.directoryservice.cloudcontrol.aws.hfl.dev` | 9 | 3 | 14 | 0 | 0 | 0 |
-| `AWS::DLM::LifecyclePolicy` | `LifecyclePolicy.dlm.cloudcontrol.aws.hfl.dev` | 12 | 2 | 0 | 0 | 0 | 1 |
+| `AWS::DLM::LifecyclePolicy` | `LifecyclePolicy.dlm.cloudcontrol.aws.hfl.dev` | 12 | 2 | 1 | 0 | 0 | 1 |
 | `AWS::DocDB::DBClusterParameterGroup` | `DBClusterParameterGroup.docdb.cloudcontrol.aws.hfl.dev` | 5 | 0 | 6 | 0 | 0 | 1 |
-| `AWS::DocDB::EventSubscription` | `EventSubscription.docdb.cloudcontrol.aws.hfl.dev` | 6 | 0 | 4 | 0 | 0 | 1 |
+| `AWS::DocDB::EventSubscription` | `EventSubscription.docdb.cloudcontrol.aws.hfl.dev` | 6 | 0 | 8 | 0 | 0 | 1 |
 | `AWS::DocDB::GlobalCluster` | `GlobalCluster.docdb.cloudcontrol.aws.hfl.dev` | 7 | 2 | 10 | 0 | 0 | 1 |
 | `AWS::DocDBElastic::Cluster` | `Cluster.docdbelastic.cloudcontrol.aws.hfl.dev` | 14 | 2 | 8 | 0 | 0 | 2 |
 | `AWS::DocDBElastic::ClusterSnapshot` | `ClusterSnapshot.docdbelastic.cloudcontrol.aws.hfl.dev` | 3 | 9 | 4 | 0 | 0 | 1 |
@@ -701,7 +701,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::Evidently::Segment` | `Segment.evidently.cloudcontrol.aws.hfl.dev` | 4 | 1 | 0 | 0 | 0 | 3 |
 | `AWS::EVS::Environment` | `Environment.evs.cloudcontrol.aws.hfl.dev` | 14 | 8 | 22 | 0 | 0 | 32 |
 | `AWS::FinSpace::Environment` | `Environment.finspace.cloudcontrol.aws.hfl.dev` | 8 | 7 | 10 | 0 | 0 | 17 |
-| `AWS::FIS::ExperimentTemplate` | `ExperimentTemplate.fis.cloudcontrol.aws.hfl.dev` | 9 | 1 | 2 | 0 | 0 | 0 |
+| `AWS::FIS::ExperimentTemplate` | `ExperimentTemplate.fis.cloudcontrol.aws.hfl.dev` | 9 | 1 | 4 | 0 | 0 | 0 |
 | `AWS::FIS::TargetAccountConfiguration` | `TargetAccountConfiguration.fis.cloudcontrol.aws.hfl.dev` | 4 | 0 | 4 | 0 | 0 | 0 |
 | `AWS::Forecast::Dataset` | `Dataset.forecast.cloudcontrol.aws.hfl.dev` | 7 | 1 | 2 | 0 | 0 | 6 |
 | `AWS::Forecast::DatasetGroup` | `DatasetGroup.forecast.cloudcontrol.aws.hfl.dev` | 4 | 1 | 2 | 0 | 0 | 3 |
@@ -720,9 +720,9 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::GameLift::Build` | `Build.gamelift.cloudcontrol.aws.hfl.dev` | 6 | 2 | 6 | 0 | 0 | 1 |
 | `AWS::GameLift::ContainerFleet` | `ContainerFleet.gamelift.cloudcontrol.aws.hfl.dev` | 18 | 8 | 6 | 0 | 0 | 11 |
 | `AWS::GameLift::ContainerGroupDefinition` | `ContainerGroupDefinition.gamelift.cloudcontrol.aws.hfl.dev` | 10 | 5 | 4 | 0 | 0 | 22 |
-| `AWS::GameLift::Fleet` | `Fleet.gamelift.cloudcontrol.aws.hfl.dev` | 30 | 2 | 30 | 0 | 0 | 13 |
-| `AWS::GameLift::GameServerGroup` | `GameServerGroup.gamelift.cloudcontrol.aws.hfl.dev` | 12 | 2 | 0 | 0 | 0 | 6 |
-| `AWS::GameLift::GameSessionQueue` | `GameSessionQueue.gamelift.cloudcontrol.aws.hfl.dev` | 10 | 1 | 2 | 0 | 0 | 8 |
+| `AWS::GameLift::Fleet` | `Fleet.gamelift.cloudcontrol.aws.hfl.dev` | 30 | 2 | 36 | 0 | 0 | 13 |
+| `AWS::GameLift::GameServerGroup` | `GameServerGroup.gamelift.cloudcontrol.aws.hfl.dev` | 12 | 2 | 2 | 0 | 0 | 6 |
+| `AWS::GameLift::GameSessionQueue` | `GameSessionQueue.gamelift.cloudcontrol.aws.hfl.dev` | 10 | 1 | 3 | 0 | 0 | 8 |
 | `AWS::GameLift::Location` | `Location.gamelift.cloudcontrol.aws.hfl.dev` | 2 | 1 | 2 | 0 | 0 | 2 |
 | `AWS::GameLift::MatchmakingConfiguration` | `MatchmakingConfiguration.gamelift.cloudcontrol.aws.hfl.dev` | 17 | 1 | 2 | 0 | 0 | 6 |
 | `AWS::GameLift::MatchmakingRuleSet` | `MatchmakingRuleSet.gamelift.cloudcontrol.aws.hfl.dev` | 3 | 2 | 4 | 0 | 0 | 2 |
@@ -736,7 +736,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::Glue::Classifier` | `Classifier.glue.cloudcontrol.aws.hfl.dev` | 4 | 1 | 8 | 0 | 0 | 0 |
 | `AWS::Glue::Connection` | `Connection.glue.cloudcontrol.aws.hfl.dev` | 3 | 1 | 4 | 0 | 0 | 0 |
 | `AWS::Glue::ConnectionType` | `ConnectionType.glue.cloudcontrol.aws.hfl.dev` | 7 | 1 | 12 | 0 | 0 | 56 |
-| `AWS::Glue::Crawler` | `Crawler.glue.cloudcontrol.aws.hfl.dev` | 14 | 0 | 2 | 0 | 0 | 0 |
+| `AWS::Glue::Crawler` | `Crawler.glue.cloudcontrol.aws.hfl.dev` | 14 | 0 | 5 | 0 | 0 | 0 |
 | `AWS::Glue::CustomEntityType` | `CustomEntityType.glue.cloudcontrol.aws.hfl.dev` | 4 | 0 | 2 | 0 | 0 | 0 |
 | `AWS::Glue::DataCatalogEncryptionSettings` | `DataCatalogEncryptionSettings.glue.cloudcontrol.aws.hfl.dev` | 2 | 0 | 2 | 0 | 0 | 0 |
 | `AWS::Glue::DataQualityRuleset` | `DataQualityRuleset.glue.cloudcontrol.aws.hfl.dev` | 6 | 0 | 2 | 0 | 0 | 0 |
@@ -749,13 +749,13 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::Glue::SchemaVersionMetadata` | `SchemaVersionMetadata.glue.cloudcontrol.aws.hfl.dev` | 3 | 0 | 6 | 0 | 0 | 1 |
 | `AWS::Glue::SecurityConfiguration` | `SecurityConfiguration.glue.cloudcontrol.aws.hfl.dev` | 2 | 0 | 2 | 0 | 0 | 0 |
 | `AWS::Glue::Session` | `Session.glue.cloudcontrol.aws.hfl.dev` | 15 | 4 | 28 | 0 | 0 | 9 |
-| `AWS::Glue::Table` | `Table.glue.cloudcontrol.aws.hfl.dev` | 5 | 0 | 8 | 0 | 0 | 0 |
-| `AWS::Glue::TableOptimizer` | `TableOptimizer.glue.cloudcontrol.aws.hfl.dev` | 5 | 0 | 8 | 0 | 0 | 0 |
+| `AWS::Glue::Table` | `Table.glue.cloudcontrol.aws.hfl.dev` | 5 | 0 | 12 | 0 | 0 | 0 |
+| `AWS::Glue::TableOptimizer` | `TableOptimizer.glue.cloudcontrol.aws.hfl.dev` | 5 | 0 | 12 | 0 | 0 | 0 |
 | `AWS::Glue::Trigger` | `Trigger.glue.cloudcontrol.aws.hfl.dev` | 10 | 0 | 6 | 0 | 0 | 0 |
 | `AWS::Glue::UsageProfile` | `UsageProfile.glue.cloudcontrol.aws.hfl.dev` | 4 | 1 | 2 | 0 | 0 | 1 |
-| `AWS::Glue::UserDefinedFunction` | `UserDefinedFunction.glue.cloudcontrol.aws.hfl.dev` | 7 | 1 | 6 | 0 | 0 | 5 |
+| `AWS::Glue::UserDefinedFunction` | `UserDefinedFunction.glue.cloudcontrol.aws.hfl.dev` | 7 | 1 | 10 | 0 | 0 | 5 |
 | `AWS::Glue::Workflow` | `Workflow.glue.cloudcontrol.aws.hfl.dev` | 5 | 0 | 2 | 0 | 0 | 0 |
-| `AWS::Grafana::Workspace` | `Workspace.grafana.cloudcontrol.aws.hfl.dev` | 18 | 7 | 2 | 0 | 0 | 3 |
+| `AWS::Grafana::Workspace` | `Workspace.grafana.cloudcontrol.aws.hfl.dev` | 18 | 7 | 3 | 0 | 0 | 3 |
 | `AWS::GreengrassV2::ComponentVersion` | `ComponentVersion.greengrassv2.cloudcontrol.aws.hfl.dev` | 3 | 3 | 4 | 0 | 0 | 1 |
 | `AWS::GreengrassV2::Deployment` | `Deployment.greengrassv2.cloudcontrol.aws.hfl.dev` | 7 | 1 | 12 | 0 | 0 | 3 |
 | `AWS::GroundStation::Config` | `Config.groundstation.cloudcontrol.aws.hfl.dev` | 3 | 3 | 0 | 0 | 0 | 12 |
@@ -766,13 +766,13 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::HealthImaging::Datastore` | `Datastore.healthimaging.cloudcontrol.aws.hfl.dev` | 3 | 5 | 6 | 0 | 0 | 3 |
 | `AWS::HealthLake::DataTransformationProfile` | `DataTransformationProfile.healthlake.cloudcontrol.aws.hfl.dev` | 6 | 3 | 10 | 0 | 0 | 2 |
 | `AWS::HealthLake::FHIRDatastore` | `FHIRDatastore.healthlake.cloudcontrol.aws.hfl.dev` | 9 | 5 | 6 | 0 | 0 | 3 |
-| `AWS::ImageBuilder::Component` | `Component.imagebuilder.cloudcontrol.aws.hfl.dev` | 10 | 4 | 18 | 0 | 0 | 1 |
-| `AWS::ImageBuilder::ContainerRecipe` | `ContainerRecipe.imagebuilder.cloudcontrol.aws.hfl.dev` | 15 | 2 | 28 | 0 | 0 | 1 |
+| `AWS::ImageBuilder::Component` | `Component.imagebuilder.cloudcontrol.aws.hfl.dev` | 10 | 4 | 21 | 0 | 0 | 1 |
+| `AWS::ImageBuilder::ContainerRecipe` | `ContainerRecipe.imagebuilder.cloudcontrol.aws.hfl.dev` | 15 | 2 | 31 | 0 | 0 | 1 |
 | `AWS::ImageBuilder::DistributionConfiguration` | `DistributionConfiguration.imagebuilder.cloudcontrol.aws.hfl.dev` | 4 | 1 | 2 | 0 | 0 | 1 |
-| `AWS::ImageBuilder::Image` | `Image.imagebuilder.cloudcontrol.aws.hfl.dev` | 13 | 5 | 16 | 0 | 0 | 1 |
-| `AWS::ImageBuilder::ImagePipeline` | `ImagePipeline.imagebuilder.cloudcontrol.aws.hfl.dev` | 16 | 2 | 2 | 0 | 0 | 2 |
+| `AWS::ImageBuilder::Image` | `Image.imagebuilder.cloudcontrol.aws.hfl.dev` | 13 | 5 | 25 | 0 | 0 | 1 |
+| `AWS::ImageBuilder::ImagePipeline` | `ImagePipeline.imagebuilder.cloudcontrol.aws.hfl.dev` | 16 | 2 | 4 | 0 | 0 | 2 |
 | `AWS::ImageBuilder::ImageRecipe` | `ImageRecipe.imagebuilder.cloudcontrol.aws.hfl.dev` | 11 | 2 | 20 | 0 | 0 | 2 |
-| `AWS::ImageBuilder::InfrastructureConfiguration` | `InfrastructureConfiguration.imagebuilder.cloudcontrol.aws.hfl.dev` | 16 | 1 | 2 | 0 | 0 | 1 |
+| `AWS::ImageBuilder::InfrastructureConfiguration` | `InfrastructureConfiguration.imagebuilder.cloudcontrol.aws.hfl.dev` | 16 | 1 | 6 | 0 | 0 | 1 |
 | `AWS::ImageBuilder::LifecyclePolicy` | `LifecyclePolicy.imagebuilder.cloudcontrol.aws.hfl.dev` | 8 | 1 | 2 | 0 | 0 | 1 |
 | `AWS::ImageBuilder::Workflow` | `Workflow.imagebuilder.cloudcontrol.aws.hfl.dev` | 9 | 2 | 16 | 0 | 0 | 0 |
 | `AWS::Interconnect::Connection` | `Connection.interconnect.cloudcontrol.aws.hfl.dev` | 8 | 8 | 8 | 0 | 0 | 8 |
@@ -780,7 +780,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::Invoicing::InvoiceUnit` | `InvoiceUnit.invoicing.cloudcontrol.aws.hfl.dev` | 6 | 2 | 4 | 0 | 0 | 5 |
 | `AWS::Invoicing::ProcurementPortalPreference` | `ProcurementPortalPreference.invoicing.cloudcontrol.aws.hfl.dev` | 14 | 8 | 10 | 0 | 0 | 12 |
 | `AWS::IoT::AccountAuditConfiguration` | `AccountAuditConfiguration.iot.cloudcontrol.aws.hfl.dev` | 4 | 0 | 2 | 0 | 0 | 0 |
-| `AWS::IoT::Authorizer` | `Authorizer.iot.cloudcontrol.aws.hfl.dev` | 8 | 1 | 4 | 0 | 0 | 1 |
+| `AWS::IoT::Authorizer` | `Authorizer.iot.cloudcontrol.aws.hfl.dev` | 8 | 1 | 6 | 0 | 0 | 1 |
 | `AWS::IoT::BillingGroup` | `BillingGroup.iot.cloudcontrol.aws.hfl.dev` | 3 | 2 | 2 | 0 | 0 | 3 |
 | `AWS::IoT::CACertificate` | `CACertificate.iot.cloudcontrol.aws.hfl.dev` | 8 | 2 | 6 | 0 | 0 | 5 |
 | `AWS::IoT::Certificate` | `Certificate.iot.cloudcontrol.aws.hfl.dev` | 5 | 2 | 8 | 0 | 0 | 0 |
@@ -793,13 +793,13 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::IoT::FleetMetric` | `FleetMetric.iot.cloudcontrol.aws.hfl.dev` | 10 | 4 | 2 | 0 | 0 | 2 |
 | `AWS::IoT::Job` | `Job.iot.cloudcontrol.aws.hfl.dev` | 16 | 2 | 20 | 0 | 0 | 4 |
 | `AWS::IoT::JobTemplate` | `JobTemplate.iot.cloudcontrol.aws.hfl.dev` | 13 | 1 | 26 | 0 | 0 | 2 |
-| `AWS::IoT::Logging` | `Logging.iot.cloudcontrol.aws.hfl.dev` | 4 | 0 | 2 | 0 | 0 | 2 |
+| `AWS::IoT::Logging` | `Logging.iot.cloudcontrol.aws.hfl.dev` | 4 | 0 | 4 | 0 | 0 | 2 |
 | `AWS::IoT::MitigationAction` | `MitigationAction.iot.cloudcontrol.aws.hfl.dev` | 4 | 2 | 2 | 0 | 0 | 1 |
 | `AWS::IoT::OTAUpdate` | `OTAUpdate.iot.cloudcontrol.aws.hfl.dev` | 13 | 4 | 24 | 0 | 0 | 3 |
 | `AWS::IoT::PolicyPrincipalAttachment` | `PolicyPrincipalAttachment.iot.cloudcontrol.aws.hfl.dev` | 2 | 0 | 4 | 0 | 0 | 0 |
-| `AWS::IoT::ProvisioningTemplate` | `ProvisioningTemplate.iot.cloudcontrol.aws.hfl.dev` | 8 | 1 | 4 | 0 | 0 | 1 |
+| `AWS::IoT::ProvisioningTemplate` | `ProvisioningTemplate.iot.cloudcontrol.aws.hfl.dev` | 8 | 1 | 6 | 0 | 0 | 1 |
 | `AWS::IoT::ResourceSpecificLogging` | `ResourceSpecificLogging.iot.cloudcontrol.aws.hfl.dev` | 3 | 1 | 4 | 0 | 0 | 2 |
-| `AWS::IoT::RoleAlias` | `RoleAlias.iot.cloudcontrol.aws.hfl.dev` | 4 | 1 | 2 | 0 | 0 | 5 |
+| `AWS::IoT::RoleAlias` | `RoleAlias.iot.cloudcontrol.aws.hfl.dev` | 4 | 1 | 4 | 0 | 0 | 5 |
 | `AWS::IoT::ScheduledAudit` | `ScheduledAudit.iot.cloudcontrol.aws.hfl.dev` | 6 | 1 | 2 | 0 | 0 | 2 |
 | `AWS::IoT::SecurityProfile` | `SecurityProfile.iot.cloudcontrol.aws.hfl.dev` | 8 | 1 | 2 | 0 | 0 | 6 |
 | `AWS::IoT::SoftwarePackage` | `SoftwarePackage.iot.cloudcontrol.aws.hfl.dev` | 3 | 1 | 2 | 0 | 0 | 3 |
@@ -807,7 +807,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::IoT::Stream` | `Stream.iot.cloudcontrol.aws.hfl.dev` | 5 | 4 | 2 | 0 | 0 | 3 |
 | `AWS::IoT::Thing` | `Thing.iot.cloudcontrol.aws.hfl.dev` | 2 | 2 | 2 | 0 | 0 | 1 |
 | `AWS::IoT::ThingGroup` | `ThingGroup.iot.cloudcontrol.aws.hfl.dev` | 5 | 2 | 4 | 0 | 0 | 4 |
-| `AWS::IoT::ThingPrincipalAttachment` | `ThingPrincipalAttachment.iot.cloudcontrol.aws.hfl.dev` | 3 | 0 | 6 | 0 | 0 | 0 |
+| `AWS::IoT::ThingPrincipalAttachment` | `ThingPrincipalAttachment.iot.cloudcontrol.aws.hfl.dev` | 3 | 0 | 10 | 0 | 0 | 0 |
 | `AWS::IoT::ThingType` | `ThingType.iot.cloudcontrol.aws.hfl.dev` | 4 | 2 | 2 | 0 | 0 | 6 |
 | `AWS::IoT::TopicRule` | `TopicRule.iot.cloudcontrol.aws.hfl.dev` | 3 | 1 | 2 | 0 | 0 | 0 |
 | `AWS::IoT::TopicRuleDestination` | `TopicRuleDestination.iot.cloudcontrol.aws.hfl.dev` | 4 | 2 | 6 | 0 | 0 | 0 |
@@ -863,27 +863,27 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::IVSChat::LoggingConfiguration` | `LoggingConfiguration.ivschat.cloudcontrol.aws.hfl.dev` | 3 | 3 | 0 | 0 | 0 | 6 |
 | `AWS::IVSChat::Room` | `Room.ivschat.cloudcontrol.aws.hfl.dev` | 6 | 2 | 0 | 0 | 0 | 5 |
 | `AWS::KafkaConnect::Connector` | `Connector.kafkaconnect.cloudcontrol.aws.hfl.dev` | 14 | 1 | 18 | 0 | 0 | 4 |
-| `AWS::Kendra::DataSource` | `DataSource.kendra.cloudcontrol.aws.hfl.dev` | 10 | 2 | 4 | 0 | 0 | 38 |
+| `AWS::Kendra::DataSource` | `DataSource.kendra.cloudcontrol.aws.hfl.dev` | 10 | 2 | 9 | 0 | 0 | 38 |
 | `AWS::Kendra::Faq` | `Faq.kendra.cloudcontrol.aws.hfl.dev` | 8 | 2 | 12 | 0 | 0 | 3 |
 | `AWS::Kendra::FeaturedResultsSet` | `FeaturedResultsSet.kendra.cloudcontrol.aws.hfl.dev` | 7 | 2 | 2 | 0 | 0 | 5 |
-| `AWS::Kendra::Index` | `Index.kendra.cloudcontrol.aws.hfl.dev` | 10 | 2 | 4 | 0 | 0 | 4 |
-| `AWS::Kendra::QuerySuggestionsBlockList` | `QuerySuggestionsBlockList.kendra.cloudcontrol.aws.hfl.dev` | 6 | 2 | 2 | 0 | 0 | 6 |
-| `AWS::Kendra::Thesaurus` | `Thesaurus.kendra.cloudcontrol.aws.hfl.dev` | 6 | 2 | 2 | 0 | 0 | 7 |
+| `AWS::Kendra::Index` | `Index.kendra.cloudcontrol.aws.hfl.dev` | 10 | 2 | 6 | 0 | 0 | 4 |
+| `AWS::Kendra::QuerySuggestionsBlockList` | `QuerySuggestionsBlockList.kendra.cloudcontrol.aws.hfl.dev` | 6 | 2 | 8 | 0 | 0 | 6 |
+| `AWS::Kendra::Thesaurus` | `Thesaurus.kendra.cloudcontrol.aws.hfl.dev` | 6 | 2 | 8 | 0 | 0 | 7 |
 | `AWS::KendraRanking::ExecutionPlan` | `ExecutionPlan.kendraranking.cloudcontrol.aws.hfl.dev` | 4 | 2 | 0 | 0 | 0 | 0 |
 | `AWS::Kinesis::Channel` | `Channel.kinesis.cloudcontrol.aws.hfl.dev` | 8 | 4 | 16 | 0 | 0 | 20 |
 | `AWS::Kinesis::ResourcePolicy` | `ResourcePolicy.kinesis.cloudcontrol.aws.hfl.dev` | 2 | 0 | 2 | 0 | 0 | 1 |
-| `AWS::KinesisAnalyticsV2::Application` | `Application.kinesisanalyticsv2.cloudcontrol.aws.hfl.dev` | 9 | 0 | 4 | 0 | 0 | 14 |
+| `AWS::KinesisAnalyticsV2::Application` | `Application.kinesisanalyticsv2.cloudcontrol.aws.hfl.dev` | 9 | 0 | 6 | 0 | 0 | 14 |
 | `AWS::KinesisVideo::SignalingChannel` | `SignalingChannel.kinesisvideo.cloudcontrol.aws.hfl.dev` | 4 | 1 | 2 | 0 | 0 | 1 |
 | `AWS::KinesisVideo::Stream` | `Stream.kinesisvideo.cloudcontrol.aws.hfl.dev` | 7 | 1 | 2 | 0 | 0 | 4 |
 | `AWS::LakeFormation::DataCellsFilter` | `DataCellsFilter.lakeformation.cloudcontrol.aws.hfl.dev` | 7 | 0 | 14 | 0 | 0 | 0 |
 | `AWS::LakeFormation::PrincipalPermissions` | `PrincipalPermissions.lakeformation.cloudcontrol.aws.hfl.dev` | 5 | 2 | 10 | 0 | 0 | 0 |
-| `AWS::LakeFormation::Resource` | `Resource.lakeformation.cloudcontrol.aws.hfl.dev` | 5 | 1 | 2 | 0 | 0 | 2 |
+| `AWS::LakeFormation::Resource` | `Resource.lakeformation.cloudcontrol.aws.hfl.dev` | 5 | 1 | 3 | 0 | 0 | 2 |
 | `AWS::LakeFormation::Tag` | `Tag.lakeformation.cloudcontrol.aws.hfl.dev` | 3 | 0 | 4 | 0 | 0 | 2 |
 | `AWS::LakeFormation::TagAssociation` | `TagAssociation.lakeformation.cloudcontrol.aws.hfl.dev` | 2 | 2 | 4 | 0 | 0 | 0 |
 | `AWS::LaunchWizard::Deployment` | `Deployment.launchwizard.cloudcontrol.aws.hfl.dev` | 5 | 6 | 6 | 0 | 0 | 6 |
 | `AWS::Lex::BotAlias` | `BotAlias.lex.cloudcontrol.aws.hfl.dev` | 8 | 3 | 2 | 0 | 0 | 6 |
 | `AWS::Lex::BotVersion` | `BotVersion.lex.cloudcontrol.aws.hfl.dev` | 3 | 1 | 2 | 0 | 0 | 3 |
-| `AWS::Lex::ResourcePolicy` | `ResourcePolicy.lex.cloudcontrol.aws.hfl.dev` | 2 | 2 | 2 | 0 | 0 | 1 |
+| `AWS::Lex::ResourcePolicy` | `ResourcePolicy.lex.cloudcontrol.aws.hfl.dev` | 2 | 2 | 6 | 0 | 0 | 1 |
 | `AWS::LicenseManager::Grant` | `Grant.licensemanager.cloudcontrol.aws.hfl.dev` | 7 | 2 | 0 | 0 | 0 | 0 |
 | `AWS::LicenseManager::License` | `License.licensemanager.cloudcontrol.aws.hfl.dev` | 12 | 2 | 0 | 0 | 0 | 0 |
 | `AWS::LicenseManager::LicenseAssetGroup` | `LicenseAssetGroup.licensemanager.cloudcontrol.aws.hfl.dev` | 6 | 1 | 2 | 0 | 0 | 2 |
@@ -910,12 +910,12 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::Lightsail::LoadBalancerTlsCertificate` | `LoadBalancerTlsCertificate.lightsail.cloudcontrol.aws.hfl.dev` | 6 | 2 | 8 | 0 | 0 | 1 |
 | `AWS::Lightsail::StaticIp` | `StaticIp.lightsail.cloudcontrol.aws.hfl.dev` | 2 | 3 | 2 | 0 | 0 | 0 |
 | `AWS::Location::APIKey` | `APIKey.location.cloudcontrol.aws.hfl.dev` | 8 | 4 | 2 | 0 | 0 | 14 |
-| `AWS::Location::GeofenceCollection` | `GeofenceCollection.location.cloudcontrol.aws.hfl.dev` | 6 | 4 | 4 | 0 | 0 | 7 |
+| `AWS::Location::GeofenceCollection` | `GeofenceCollection.location.cloudcontrol.aws.hfl.dev` | 6 | 4 | 7 | 0 | 0 | 7 |
 | `AWS::Location::Map` | `Map.location.cloudcontrol.aws.hfl.dev` | 5 | 4 | 4 | 0 | 0 | 10 |
 | `AWS::Location::PlaceIndex` | `PlaceIndex.location.cloudcontrol.aws.hfl.dev` | 6 | 4 | 4 | 0 | 0 | 7 |
 | `AWS::Location::RouteCalculator` | `RouteCalculator.location.cloudcontrol.aws.hfl.dev` | 5 | 4 | 4 | 0 | 0 | 7 |
-| `AWS::Location::Tracker` | `Tracker.location.cloudcontrol.aws.hfl.dev` | 9 | 4 | 4 | 0 | 0 | 7 |
-| `AWS::Location::TrackerConsumer` | `TrackerConsumer.location.cloudcontrol.aws.hfl.dev` | 2 | 0 | 4 | 0 | 0 | 2 |
+| `AWS::Location::Tracker` | `Tracker.location.cloudcontrol.aws.hfl.dev` | 9 | 4 | 7 | 0 | 0 | 7 |
+| `AWS::Location::TrackerConsumer` | `TrackerConsumer.location.cloudcontrol.aws.hfl.dev` | 2 | 0 | 8 | 0 | 0 | 2 |
 | `AWS::LookoutEquipment::InferenceScheduler` | `InferenceScheduler.lookoutequipment.cloudcontrol.aws.hfl.dev` | 9 | 1 | 6 | 0 | 0 | 13 |
 | `AWS::M2::Application` | `Application.m2.cloudcontrol.aws.hfl.dev` | 7 | 2 | 8 | 0 | 0 | 5 |
 | `AWS::M2::Deployment` | `Deployment.m2.cloudcontrol.aws.hfl.dev` | 3 | 2 | 4 | 0 | 0 | 3 |
@@ -944,7 +944,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::MediaLive::Cluster` | `Cluster.medialive.cloudcontrol.aws.hfl.dev` | 5 | 4 | 4 | 0 | 0 | 2 |
 | `AWS::MediaLive::EventBridgeRuleTemplate` | `EventBridgeRuleTemplate.medialive.cloudcontrol.aws.hfl.dev` | 6 | 6 | 2 | 0 | 0 | 6 |
 | `AWS::MediaLive::EventBridgeRuleTemplateGroup` | `EventBridgeRuleTemplateGroup.medialive.cloudcontrol.aws.hfl.dev` | 3 | 5 | 4 | 0 | 0 | 3 |
-| `AWS::MediaLive::Input` | `Input.medialive.cloudcontrol.aws.hfl.dev` | 16 | 10 | 8 | 0 | 0 | 0 |
+| `AWS::MediaLive::Input` | `Input.medialive.cloudcontrol.aws.hfl.dev` | 16 | 10 | 9 | 0 | 0 | 0 |
 | `AWS::MediaLive::InputSecurityGroup` | `InputSecurityGroup.medialive.cloudcontrol.aws.hfl.dev` | 2 | 3 | 0 | 0 | 0 | 0 |
 | `AWS::MediaLive::Multiplex` | `Multiplex.medialive.cloudcontrol.aws.hfl.dev` | 5 | 5 | 2 | 0 | 0 | 0 |
 | `AWS::MediaLive::Multiplexprogram` | `Multiplexprogram.medialive.cloudcontrol.aws.hfl.dev` | 6 | 1 | 4 | 0 | 0 | 0 |
@@ -980,7 +980,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::Neptune::DBInstance` | `DBInstance.neptune.cloudcontrol.aws.hfl.dev` | 12 | 2 | 10 | 0 | 0 | 0 |
 | `AWS::Neptune::DBParameterGroup` | `DBParameterGroup.neptune.cloudcontrol.aws.hfl.dev` | 5 | 0 | 6 | 0 | 0 | 0 |
 | `AWS::Neptune::DBSubnetGroup` | `DBSubnetGroup.neptune.cloudcontrol.aws.hfl.dev` | 4 | 0 | 2 | 0 | 0 | 0 |
-| `AWS::Neptune::EventSubscription` | `EventSubscription.neptune.cloudcontrol.aws.hfl.dev` | 7 | 0 | 4 | 0 | 0 | 0 |
+| `AWS::Neptune::EventSubscription` | `EventSubscription.neptune.cloudcontrol.aws.hfl.dev` | 7 | 0 | 8 | 0 | 0 | 0 |
 | `AWS::Neptune::GlobalCluster` | `GlobalCluster.neptune.cloudcontrol.aws.hfl.dev` | 7 | 0 | 8 | 0 | 0 | 1 |
 | `AWS::NeptuneGraph::Graph` | `Graph.neptunegraph.cloudcontrol.aws.hfl.dev` | 9 | 5 | 10 | 0 | 0 | 3 |
 | `AWS::NeptuneGraph::GraphSnapshot` | `GraphSnapshot.neptunegraph.cloudcontrol.aws.hfl.dev` | 3 | 5 | 4 | 0 | 0 | 4 |
@@ -988,7 +988,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::NetworkFlowMonitor::Monitor` | `Monitor.networkflowmonitor.cloudcontrol.aws.hfl.dev` | 5 | 4 | 4 | 0 | 0 | 3 |
 | `AWS::NetworkFlowMonitor::Scope` | `Scope.networkflowmonitor.cloudcontrol.aws.hfl.dev` | 2 | 3 | 2 | 0 | 0 | 2 |
 | `AWS::NetworkMonitor::Monitor` | `Monitor.networkmonitor.cloudcontrol.aws.hfl.dev` | 3 | 4 | 2 | 0 | 0 | 2 |
-| `AWS::NetworkMonitor::Probe` | `Probe.networkmonitor.cloudcontrol.aws.hfl.dev` | 7 | 7 | 4 | 0 | 0 | 5 |
+| `AWS::NetworkMonitor::Probe` | `Probe.networkmonitor.cloudcontrol.aws.hfl.dev` | 7 | 7 | 8 | 0 | 0 | 5 |
 | `AWS::NetworkSecurityManager::Deployment` | `Deployment.networksecuritymanager.cloudcontrol.aws.hfl.dev` | 6 | 5 | 2 | 0 | 0 | 1 |
 | `AWS::NetworkSecurityManager::Policy` | `Policy.networksecuritymanager.cloudcontrol.aws.hfl.dev` | 7 | 5 | 4 | 0 | 0 | 5 |
 | `AWS::NetworkSecurityManager::Rule` | `Rule.networksecuritymanager.cloudcontrol.aws.hfl.dev` | 6 | 5 | 6 | 0 | 0 | 1 |
@@ -1003,7 +1003,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::Notifications::OrganizationalUnitAssociation` | `OrganizationalUnitAssociation.notifications.cloudcontrol.aws.hfl.dev` | 2 | 0 | 4 | 0 | 0 | 2 |
 | `AWS::NotificationsContacts::EmailContact` | `EmailContact.notificationscontacts.cloudcontrol.aws.hfl.dev` | 3 | 2 | 6 | 0 | 0 | 6 |
 | `AWS::NovaAct::WorkflowDefinition` | `WorkflowDefinition.novaact.cloudcontrol.aws.hfl.dev` | 3 | 3 | 6 | 0 | 0 | 4 |
-| `AWS::Oam::Link` | `Link.oam.cloudcontrol.aws.hfl.dev` | 5 | 2 | 4 | 0 | 0 | 1 |
+| `AWS::Oam::Link` | `Link.oam.cloudcontrol.aws.hfl.dev` | 5 | 2 | 8 | 0 | 0 | 1 |
 | `AWS::Oam::Sink` | `Sink.oam.cloudcontrol.aws.hfl.dev` | 3 | 1 | 2 | 0 | 0 | 2 |
 | `AWS::ObservabilityAdmin::DatasetIntegration` | `DatasetIntegration.observabilityadmin.cloudcontrol.aws.hfl.dev` | 2 | 3 | 0 | 0 | 0 | 2 |
 | `AWS::ObservabilityAdmin::OrganizationCentralizationRule` | `OrganizationCentralizationRule.observabilityadmin.cloudcontrol.aws.hfl.dev` | 3 | 1 | 2 | 0 | 0 | 7 |
@@ -1027,8 +1027,8 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::Omics::WorkflowVersion` | `WorkflowVersion.omics.cloudcontrol.aws.hfl.dev` | 19 | 5 | 28 | 0 | 0 | 21 |
 | `AWS::OpenSearch::DataSource` | `DataSource.opensearch.cloudcontrol.aws.hfl.dev` | 4 | 2 | 4 | 0 | 0 | 4 |
 | `AWS::OpenSearchServerless::CollectionIndex` | `CollectionIndex.opensearchserverless.cloudcontrol.aws.hfl.dev` | 3 | 0 | 4 | 0 | 0 | 3 |
-| `AWS::OpenSearchServerless::VpcEndpoint` | `VpcEndpoint.opensearchserverless.cloudcontrol.aws.hfl.dev` | 4 | 1 | 4 | 0 | 0 | 5 |
-| `AWS::OSIS::Pipeline` | `Pipeline.osis.cloudcontrol.aws.hfl.dev` | 11 | 4 | 2 | 0 | 0 | 10 |
+| `AWS::OpenSearchServerless::VpcEndpoint` | `VpcEndpoint.opensearchserverless.cloudcontrol.aws.hfl.dev` | 4 | 1 | 8 | 0 | 0 | 5 |
+| `AWS::OSIS::Pipeline` | `Pipeline.osis.cloudcontrol.aws.hfl.dev` | 11 | 4 | 3 | 0 | 0 | 10 |
 | `AWS::OSIS::PipelineEndpoint` | `PipelineEndpoint.osis.cloudcontrol.aws.hfl.dev` | 2 | 5 | 4 | 0 | 0 | 5 |
 | `AWS::Outposts::Outpost` | `Outpost.outposts.cloudcontrol.aws.hfl.dev` | 7 | 5 | 6 | 0 | 0 | 12 |
 | `AWS::Outposts::Site` | `Site.outposts.cloudcontrol.aws.hfl.dev` | 7 | 2 | 4 | 0 | 0 | 29 |
@@ -1069,7 +1069,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::QBusiness::Plugin` | `Plugin.qbusiness.cloudcontrol.aws.hfl.dev` | 8 | 5 | 4 | 0 | 0 | 12 |
 | `AWS::QBusiness::Retriever` | `Retriever.qbusiness.cloudcontrol.aws.hfl.dev` | 6 | 5 | 4 | 0 | 0 | 7 |
 | `AWS::QBusiness::WebExperience` | `WebExperience.qbusiness.cloudcontrol.aws.hfl.dev` | 11 | 6 | 2 | 0 | 0 | 15 |
-| `AWS::QLDB::Stream` | `Stream.qldb.cloudcontrol.aws.hfl.dev` | 7 | 2 | 12 | 0 | 0 | 3 |
+| `AWS::QLDB::Stream` | `Stream.qldb.cloudcontrol.aws.hfl.dev` | 7 | 2 | 16 | 0 | 0 | 3 |
 | `AWS::QuickSight::ActionConnector` | `ActionConnector.quicksight.cloudcontrol.aws.hfl.dev` | 9 | 5 | 6 | 0 | 0 | 15 |
 | `AWS::QuickSight::Agent` | `Agent.quicksight.cloudcontrol.aws.hfl.dev` | 12 | 7 | 6 | 0 | 0 | 6 |
 | `AWS::QuickSight::ApprovalPolicy` | `ApprovalPolicy.quicksight.cloudcontrol.aws.hfl.dev` | 7 | 3 | 2 | 0 | 0 | 1 |
@@ -1087,7 +1087,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::QuickSight::Topic` | `Topic.quicksight.cloudcontrol.aws.hfl.dev` | 10 | 1 | 8 | 0 | 0 | 2 |
 | `AWS::QuickSight::TopicV2` | `TopicV2.quicksight.cloudcontrol.aws.hfl.dev` | 10 | 1 | 8 | 0 | 0 | 2 |
 | `AWS::QuickSight::VPCConnection` | `VPCConnection.quicksight.cloudcontrol.aws.hfl.dev` | 9 | 6 | 4 | 0 | 0 | 6 |
-| `AWS::RedshiftServerless::Namespace` | `Namespace.redshiftserverless.cloudcontrol.aws.hfl.dev` | 16 | 1 | 2 | 0 | 0 | 7 |
+| `AWS::RedshiftServerless::Namespace` | `Namespace.redshiftserverless.cloudcontrol.aws.hfl.dev` | 16 | 1 | 4 | 0 | 0 | 7 |
 | `AWS::RedshiftServerless::Workgroup` | `Workgroup.redshiftserverless.cloudcontrol.aws.hfl.dev` | 18 | 0 | 4 | 0 | 0 | 5 |
 | `AWS::RefactorSpaces::Application` | `Application.refactorspaces.cloudcontrol.aws.hfl.dev` | 6 | 8 | 10 | 0 | 0 | 13 |
 | `AWS::RefactorSpaces::Environment` | `Environment.refactorspaces.cloudcontrol.aws.hfl.dev` | 4 | 3 | 6 | 0 | 0 | 6 |
@@ -1154,7 +1154,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::SageMaker::CodeRepository` | `CodeRepository.sagemaker.cloudcontrol.aws.hfl.dev` | 3 | 1 | 6 | 0 | 0 | 1 |
 | `AWS::SageMaker::ComputeQuota` | `ComputeQuota.sagemaker.cloudcontrol.aws.hfl.dev` | 7 | 6 | 6 | 0 | 0 | 6 |
 | `AWS::SageMaker::Context` | `Context.sagemaker.cloudcontrol.aws.hfl.dev` | 6 | 3 | 6 | 0 | 0 | 4 |
-| `AWS::SageMaker::DeviceFleet` | `DeviceFleet.sagemaker.cloudcontrol.aws.hfl.dev` | 5 | 0 | 2 | 0 | 0 | 7 |
+| `AWS::SageMaker::DeviceFleet` | `DeviceFleet.sagemaker.cloudcontrol.aws.hfl.dev` | 5 | 0 | 4 | 0 | 0 | 7 |
 | `AWS::SageMaker::Experiment` | `Experiment.sagemaker.cloudcontrol.aws.hfl.dev` | 4 | 3 | 2 | 0 | 0 | 5 |
 | `AWS::SageMaker::Hub` | `Hub.sagemaker.cloudcontrol.aws.hfl.dev` | 6 | 4 | 4 | 0 | 0 | 6 |
 | `AWS::SageMaker::HumanTaskUi` | `HumanTaskUi.sagemaker.cloudcontrol.aws.hfl.dev` | 3 | 2 | 4 | 0 | 0 | 4 |
@@ -1162,7 +1162,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::SageMaker::ImageVersion` | `ImageVersion.sagemaker.cloudcontrol.aws.hfl.dev` | 11 | 4 | 4 | 0 | 0 | 10 |
 | `AWS::SageMaker::InferenceExperiment` | `InferenceExperiment.sagemaker.cloudcontrol.aws.hfl.dev` | 13 | 5 | 10 | 0 | 0 | 19 |
 | `AWS::SageMaker::MlflowApp` | `MlflowApp.sagemaker.cloudcontrol.aws.hfl.dev` | 6 | 6 | 4 | 0 | 0 | 6 |
-| `AWS::SageMaker::MlflowTrackingServer` | `MlflowTrackingServer.sagemaker.cloudcontrol.aws.hfl.dev` | 8 | 1 | 2 | 0 | 0 | 6 |
+| `AWS::SageMaker::MlflowTrackingServer` | `MlflowTrackingServer.sagemaker.cloudcontrol.aws.hfl.dev` | 8 | 1 | 4 | 0 | 0 | 6 |
 | `AWS::SageMaker::PartnerApp` | `PartnerApp.sagemaker.cloudcontrol.aws.hfl.dev` | 13 | 3 | 10 | 0 | 0 | 7 |
 | `AWS::SageMaker::StudioLifecycleConfig` | `StudioLifecycleConfig.sagemaker.cloudcontrol.aws.hfl.dev` | 4 | 1 | 8 | 0 | 0 | 3 |
 | `AWS::SageMaker::TrialComponent` | `TrialComponent.sagemaker.cloudcontrol.aws.hfl.dev` | 8 | 4 | 4 | 0 | 0 | 7 |
@@ -1185,29 +1185,29 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::ServiceCatalog::AcceptedPortfolioShare` | `AcceptedPortfolioShare.servicecatalog.cloudcontrol.aws.hfl.dev` | 2 | 0 | 4 | 0 | 0 | 1 |
 | `AWS::ServiceCatalog::CloudFormationProduct` | `CloudFormationProduct.servicecatalog.cloudcontrol.aws.hfl.dev` | 13 | 4 | 0 | 0 | 0 | 0 |
 | `AWS::ServiceCatalog::CloudFormationProvisionedProduct` | `CloudFormationProvisionedProduct.servicecatalog.cloudcontrol.aws.hfl.dev` | 12 | 4 | 4 | 0 | 0 | 5 |
-| `AWS::ServiceCatalog::LaunchNotificationConstraint` | `LaunchNotificationConstraint.servicecatalog.cloudcontrol.aws.hfl.dev` | 5 | 1 | 4 | 0 | 0 | 0 |
+| `AWS::ServiceCatalog::LaunchNotificationConstraint` | `LaunchNotificationConstraint.servicecatalog.cloudcontrol.aws.hfl.dev` | 5 | 1 | 12 | 0 | 0 | 0 |
 | `AWS::ServiceCatalog::LaunchRoleConstraint` | `LaunchRoleConstraint.servicecatalog.cloudcontrol.aws.hfl.dev` | 6 | 1 | 4 | 0 | 0 | 1 |
-| `AWS::ServiceCatalog::LaunchTemplateConstraint` | `LaunchTemplateConstraint.servicecatalog.cloudcontrol.aws.hfl.dev` | 5 | 1 | 4 | 0 | 0 | 0 |
+| `AWS::ServiceCatalog::LaunchTemplateConstraint` | `LaunchTemplateConstraint.servicecatalog.cloudcontrol.aws.hfl.dev` | 5 | 1 | 12 | 0 | 0 | 0 |
 | `AWS::ServiceCatalog::Portfolio` | `Portfolio.servicecatalog.cloudcontrol.aws.hfl.dev` | 5 | 2 | 0 | 0 | 0 | 0 |
-| `AWS::ServiceCatalog::PortfolioPrincipalAssociation` | `PortfolioPrincipalAssociation.servicecatalog.cloudcontrol.aws.hfl.dev` | 4 | 0 | 8 | 0 | 0 | 1 |
-| `AWS::ServiceCatalog::PortfolioProductAssociation` | `PortfolioProductAssociation.servicecatalog.cloudcontrol.aws.hfl.dev` | 4 | 0 | 8 | 0 | 0 | 0 |
-| `AWS::ServiceCatalog::PortfolioShare` | `PortfolioShare.servicecatalog.cloudcontrol.aws.hfl.dev` | 4 | 0 | 4 | 0 | 0 | 1 |
-| `AWS::ServiceCatalog::ResourceUpdateConstraint` | `ResourceUpdateConstraint.servicecatalog.cloudcontrol.aws.hfl.dev` | 5 | 1 | 4 | 0 | 0 | 0 |
+| `AWS::ServiceCatalog::PortfolioPrincipalAssociation` | `PortfolioPrincipalAssociation.servicecatalog.cloudcontrol.aws.hfl.dev` | 4 | 0 | 14 | 0 | 0 | 1 |
+| `AWS::ServiceCatalog::PortfolioProductAssociation` | `PortfolioProductAssociation.servicecatalog.cloudcontrol.aws.hfl.dev` | 4 | 0 | 14 | 0 | 0 | 0 |
+| `AWS::ServiceCatalog::PortfolioShare` | `PortfolioShare.servicecatalog.cloudcontrol.aws.hfl.dev` | 4 | 0 | 8 | 0 | 0 | 1 |
+| `AWS::ServiceCatalog::ResourceUpdateConstraint` | `ResourceUpdateConstraint.servicecatalog.cloudcontrol.aws.hfl.dev` | 5 | 1 | 12 | 0 | 0 | 0 |
 | `AWS::ServiceCatalog::ServiceAction` | `ServiceAction.servicecatalog.cloudcontrol.aws.hfl.dev` | 5 | 1 | 0 | 0 | 0 | 0 |
 | `AWS::ServiceCatalog::ServiceActionAssociation` | `ServiceActionAssociation.servicecatalog.cloudcontrol.aws.hfl.dev` | 3 | 0 | 6 | 0 | 0 | 3 |
 | `AWS::ServiceCatalog::StackSetConstraint` | `StackSetConstraint.servicecatalog.cloudcontrol.aws.hfl.dev` | 9 | 1 | 4 | 0 | 0 | 0 |
 | `AWS::ServiceCatalog::TagOption` | `TagOption.servicecatalog.cloudcontrol.aws.hfl.dev` | 3 | 1 | 4 | 0 | 0 | 0 |
-| `AWS::ServiceCatalog::TagOptionAssociation` | `TagOptionAssociation.servicecatalog.cloudcontrol.aws.hfl.dev` | 2 | 0 | 4 | 0 | 0 | 0 |
+| `AWS::ServiceCatalog::TagOptionAssociation` | `TagOptionAssociation.servicecatalog.cloudcontrol.aws.hfl.dev` | 2 | 0 | 10 | 0 | 0 | 0 |
 | `AWS::ServiceCatalogAppRegistry::Application` | `Application.servicecatalogappregistry.cloudcontrol.aws.hfl.dev` | 3 | 5 | 0 | 0 | 0 | 6 |
 | `AWS::ServiceCatalogAppRegistry::AttributeGroup` | `AttributeGroup.servicecatalogappregistry.cloudcontrol.aws.hfl.dev` | 4 | 2 | 0 | 0 | 0 | 3 |
 | `AWS::ServiceCatalogAppRegistry::AttributeGroupAssociation` | `AttributeGroupAssociation.servicecatalogappregistry.cloudcontrol.aws.hfl.dev` | 2 | 2 | 4 | 0 | 0 | 4 |
 | `AWS::ServiceCatalogAppRegistry::ResourceAssociation` | `ResourceAssociation.servicecatalogappregistry.cloudcontrol.aws.hfl.dev` | 3 | 2 | 6 | 0 | 0 | 4 |
 | `AWS::ServiceDiscovery::HttpNamespace` | `HttpNamespace.servicediscovery.cloudcontrol.aws.hfl.dev` | 3 | 2 | 2 | 0 | 0 | 1 |
 | `AWS::ServiceDiscovery::Instance` | `Instance.servicediscovery.cloudcontrol.aws.hfl.dev` | 3 | 0 | 4 | 0 | 0 | 0 |
-| `AWS::ServiceDiscovery::PrivateDnsNamespace` | `PrivateDnsNamespace.servicediscovery.cloudcontrol.aws.hfl.dev` | 5 | 3 | 4 | 0 | 0 | 1 |
+| `AWS::ServiceDiscovery::PrivateDnsNamespace` | `PrivateDnsNamespace.servicediscovery.cloudcontrol.aws.hfl.dev` | 5 | 3 | 7 | 0 | 0 | 1 |
 | `AWS::ServiceDiscovery::PublicDnsNamespace` | `PublicDnsNamespace.servicediscovery.cloudcontrol.aws.hfl.dev` | 4 | 3 | 2 | 0 | 0 | 1 |
 | `AWS::ServiceDiscovery::Service` | `Service.servicediscovery.cloudcontrol.aws.hfl.dev` | 9 | 2 | 8 | 0 | 0 | 1 |
-| `AWS::SES::ConfigurationSetEventDestination` | `ConfigurationSetEventDestination.ses.cloudcontrol.aws.hfl.dev` | 2 | 1 | 2 | 0 | 0 | 5 |
+| `AWS::SES::ConfigurationSetEventDestination` | `ConfigurationSetEventDestination.ses.cloudcontrol.aws.hfl.dev` | 2 | 1 | 6 | 0 | 0 | 5 |
 | `AWS::SES::ContactList` | `ContactList.ses.cloudcontrol.aws.hfl.dev` | 4 | 0 | 2 | 0 | 0 | 2 |
 | `AWS::SES::CustomVerificationEmailTemplate` | `CustomVerificationEmailTemplate.ses.cloudcontrol.aws.hfl.dev` | 7 | 0 | 2 | 0 | 0 | 0 |
 | `AWS::SES::DedicatedIpPool` | `DedicatedIpPool.ses.cloudcontrol.aws.hfl.dev` | 3 | 0 | 2 | 0 | 0 | 2 |
@@ -1229,7 +1229,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::SES::VdmAttributes` | `VdmAttributes.ses.cloudcontrol.aws.hfl.dev` | 2 | 1 | 0 | 0 | 0 | 2 |
 | `AWS::Shield::DRTAccess` | `DRTAccess.shield.cloudcontrol.aws.hfl.dev` | 2 | 1 | 0 | 0 | 0 | 0 |
 | `AWS::Shield::ProactiveEngagement` | `ProactiveEngagement.shield.cloudcontrol.aws.hfl.dev` | 2 | 1 | 0 | 0 | 0 | 3 |
-| `AWS::Shield::Protection` | `Protection.shield.cloudcontrol.aws.hfl.dev` | 5 | 2 | 4 | 0 | 0 | 1 |
+| `AWS::Shield::Protection` | `Protection.shield.cloudcontrol.aws.hfl.dev` | 5 | 2 | 8 | 0 | 0 | 1 |
 | `AWS::Shield::ProtectionGroup` | `ProtectionGroup.shield.cloudcontrol.aws.hfl.dev` | 6 | 1 | 2 | 0 | 0 | 1 |
 | `AWS::Signer::ProfilePermission` | `ProfilePermission.signer.cloudcontrol.aws.hfl.dev` | 5 | 0 | 10 | 0 | 0 | 2 |
 | `AWS::Signer::SigningProfile` | `SigningProfile.signer.cloudcontrol.aws.hfl.dev` | 3 | 4 | 4 | 0 | 0 | 5 |
@@ -1279,11 +1279,11 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::Transcribe::VocabularyFilter` | `VocabularyFilter.transcribe.cloudcontrol.aws.hfl.dev` | 6 | 1 | 4 | 0 | 0 | 3 |
 | `AWS::Transfer::Agreement` | `Agreement.transfer.cloudcontrol.aws.hfl.dev` | 11 | 2 | 2 | 0 | 0 | 13 |
 | `AWS::Transfer::Certificate` | `Certificate.transfer.cloudcontrol.aws.hfl.dev` | 8 | 7 | 6 | 0 | 0 | 7 |
-| `AWS::Transfer::Connector` | `Connector.transfer.cloudcontrol.aws.hfl.dev` | 10 | 5 | 0 | 0 | 0 | 11 |
+| `AWS::Transfer::Connector` | `Connector.transfer.cloudcontrol.aws.hfl.dev` | 10 | 5 | 2 | 0 | 0 | 11 |
 | `AWS::Transfer::HostKey` | `HostKey.transfer.cloudcontrol.aws.hfl.dev` | 6 | 6 | 4 | 0 | 0 | 5 |
 | `AWS::Transfer::Profile` | `Profile.transfer.cloudcontrol.aws.hfl.dev` | 4 | 2 | 2 | 0 | 0 | 4 |
-| `AWS::Transfer::Server` | `Server.transfer.cloudcontrol.aws.hfl.dev` | 18 | 4 | 2 | 0 | 0 | 17 |
-| `AWS::Transfer::User` | `User.transfer.cloudcontrol.aws.hfl.dev` | 10 | 1 | 4 | 0 | 0 | 8 |
+| `AWS::Transfer::Server` | `Server.transfer.cloudcontrol.aws.hfl.dev` | 18 | 4 | 4 | 0 | 0 | 17 |
+| `AWS::Transfer::User` | `User.transfer.cloudcontrol.aws.hfl.dev` | 10 | 1 | 6 | 0 | 0 | 8 |
 | `AWS::Transfer::WebApp` | `WebApp.transfer.cloudcontrol.aws.hfl.dev` | 7 | 3 | 8 | 0 | 0 | 8 |
 | `AWS::Transfer::Workflow` | `Workflow.transfer.cloudcontrol.aws.hfl.dev` | 5 | 2 | 8 | 0 | 0 | 38 |
 | `AWS::Translate::ParallelData` | `ParallelData.translate.cloudcontrol.aws.hfl.dev` | 5 | 10 | 6 | 0 | 0 | 3 |
@@ -1295,8 +1295,8 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::VerifiedPermissions::PolicyStoreAlias` | `PolicyStoreAlias.verifiedpermissions.cloudcontrol.aws.hfl.dev` | 2 | 0 | 4 | 0 | 0 | 2 |
 | `AWS::VerifiedPermissions::PolicyTemplate` | `PolicyTemplate.verifiedpermissions.cloudcontrol.aws.hfl.dev` | 4 | 1 | 2 | 0 | 0 | 3 |
 | `AWS::VoiceID::Domain` | `Domain.voiceid.cloudcontrol.aws.hfl.dev` | 4 | 1 | 0 | 0 | 0 | 5 |
-| `AWS::VpcLattice::AccessLogSubscription` | `AccessLogSubscription.vpclattice.cloudcontrol.aws.hfl.dev` | 4 | 4 | 2 | 0 | 0 | 6 |
-| `AWS::VpcLattice::AuthPolicy` | `AuthPolicy.vpclattice.cloudcontrol.aws.hfl.dev` | 2 | 1 | 2 | 0 | 0 | 1 |
+| `AWS::VpcLattice::AccessLogSubscription` | `AccessLogSubscription.vpclattice.cloudcontrol.aws.hfl.dev` | 4 | 4 | 4 | 0 | 0 | 6 |
+| `AWS::VpcLattice::AuthPolicy` | `AuthPolicy.vpclattice.cloudcontrol.aws.hfl.dev` | 2 | 1 | 6 | 0 | 0 | 1 |
 | `AWS::VpcLattice::DomainVerification` | `DomainVerification.vpclattice.cloudcontrol.aws.hfl.dev` | 2 | 4 | 2 | 0 | 0 | 2 |
 | `AWS::VpcLattice::Listener` | `Listener.vpclattice.cloudcontrol.aws.hfl.dev` | 6 | 4 | 8 | 0 | 0 | 7 |
 | `AWS::VpcLattice::ResourceConfiguration` | `ResourceConfiguration.vpclattice.cloudcontrol.aws.hfl.dev` | 13 | 2 | 14 | 0 | 0 | 7 |
@@ -1307,7 +1307,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::VpcLattice::ServiceNetwork` | `ServiceNetwork.vpclattice.cloudcontrol.aws.hfl.dev` | 4 | 4 | 4 | 0 | 0 | 3 |
 | `AWS::VpcLattice::ServiceNetworkResourceAssociation` | `ServiceNetworkResourceAssociation.vpclattice.cloudcontrol.aws.hfl.dev` | 4 | 2 | 6 | 0 | 0 | 4 |
 | `AWS::VpcLattice::ServiceNetworkServiceAssociation` | `ServiceNetworkServiceAssociation.vpclattice.cloudcontrol.aws.hfl.dev` | 4 | 10 | 4 | 0 | 0 | 10 |
-| `AWS::VpcLattice::ServiceNetworkVpcAssociation` | `ServiceNetworkVpcAssociation.vpclattice.cloudcontrol.aws.hfl.dev` | 6 | 8 | 4 | 0 | 0 | 9 |
+| `AWS::VpcLattice::ServiceNetworkVpcAssociation` | `ServiceNetworkVpcAssociation.vpclattice.cloudcontrol.aws.hfl.dev` | 6 | 8 | 7 | 0 | 0 | 9 |
 | `AWS::VpcLattice::TargetGroup` | `TargetGroup.vpclattice.cloudcontrol.aws.hfl.dev` | 5 | 5 | 16 | 0 | 0 | 6 |
 | `AWS::WellArchitected::AgentContext` | `AgentContext.wellarchitected.cloudcontrol.aws.hfl.dev` | 4 | 8 | 4 | 0 | 0 | 4 |
 | `AWS::WellArchitected::AgentGoal` | `AgentGoal.wellarchitected.cloudcontrol.aws.hfl.dev` | 4 | 6 | 2 | 0 | 0 | 5 |
@@ -1372,6 +1372,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::TransitGatewayRouteTable`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `transitGatewayRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -1432,6 +1433,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::TransitGatewayRoute`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `transitGatewayAttachmentRef`, `transitGatewayRouteTableRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -1444,6 +1446,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::TransitGatewayRouteTableAssociation`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `transitGatewayAttachmentRef`, `transitGatewayRouteTableRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -1456,6 +1459,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::TransitGatewayRouteTablePropagation`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `transitGatewayAttachmentRef`, `transitGatewayRouteTableRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -1468,6 +1472,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::TransitGatewayPeeringAttachment`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `peerTransitGatewayRef`, `transitGatewayRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -1528,7 +1533,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Route53::DNSSEC`
 
 - Secret references (opted in, `secrets` in types.yaml): none
-- Reference fields (the overlay, `references` in types.yaml): `hostedZoneRef`
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `hostedZoneRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -1541,7 +1546,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Route53::KeySigningKey`
 
 - Secret references (opted in, `secrets` in types.yaml): none
-- Reference fields (the overlay, `references` in types.yaml): `hostedZoneRef`, `keyManagementServiceRef`
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `hostedZoneRef`, `keyManagementServiceRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -1578,6 +1583,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Route53Resolver::ResolverConfig`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `resourceRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -1638,6 +1644,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Config::ConfigurationRecorder`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `roleRef`
 - Write-only kept as plain fields: `/properties/StartedOnCreate`
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -1650,6 +1657,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Config::DeliveryChannel`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `s3BucketRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -1770,6 +1778,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::GuardDuty::Filter`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `detectorRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -1806,6 +1815,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::GuardDuty::Member`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `detectorRef`
 - Write-only kept as plain fields: `/properties/DisableEmailNotification`, `/properties/Message`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/Message`
 - Create-only paths without a CEL rule: none
@@ -1830,6 +1840,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::GuardDuty::MalwareProtectionPlan`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `roleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -1998,6 +2009,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ACMPCA::Permission`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `certificateAuthorityRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -2310,6 +2322,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::NetworkFirewall::LoggingConfiguration`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `firewallRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -2502,6 +2515,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::WAFv2::LoggingConfiguration`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `resourceRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -2694,6 +2708,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::RAM::PrincipalAssociation`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `resourceShareRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -2706,6 +2721,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::RAM::ResourceAssociation`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `resourceShareRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -2754,6 +2770,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Route53::TrafficPolicyInstance`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `hostedZoneRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -2778,6 +2795,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Route53Profiles::ProfileAssociation`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `profileRef`, `resourceRef`
 - Write-only kept as plain fields: `/properties/Arn`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/Arn`
 - Create-only paths without a CEL rule: none
@@ -2790,6 +2808,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Route53Profiles::ProfileResourceAssociation`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `profileRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -2898,7 +2917,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::EIPAssociation`
 
 - Secret references (opted in, `secrets` in types.yaml): none
-- Reference fields (the overlay, `references` in types.yaml): `allocationRef`, `instanceRef`, `networkInterfaceRef`
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `allocationRef`, `instanceRef`, `networkInterfaceRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -2923,6 +2942,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::GatewayRouteTableAssociation`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `gatewayRef`, `routeTableRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3127,6 +3147,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::NetworkInsightsAnalysis`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `networkInsightsPathRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3151,6 +3172,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::NetworkInterface`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `subnetRef`
 - Write-only kept as plain fields: `/properties/PublicIpDnsHostnameTypeSpecification`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/PublicIpDnsHostnameTypeSpecification`
 - Create-only paths without a CEL rule: none
@@ -3163,6 +3185,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::NetworkInterfaceAttachment`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `instanceRef`, `networkInterfaceRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3271,7 +3294,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::SecurityGroupEgress`
 
 - Secret references (opted in, `secrets` in types.yaml): none
-- Reference fields (the overlay, `references` in types.yaml): `destinationPrefixListRef`, `destinationSecurityGroupRef`, `groupRef`
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `destinationPrefixListRef`, `destinationSecurityGroupRef`, `groupRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3284,7 +3307,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::SecurityGroupIngress`
 
 - Secret references (opted in, `secrets` in types.yaml): none
-- Reference fields (the overlay, `references` in types.yaml): `groupRef`, `sourcePrefixListRef`, `sourceSecurityGroupRef`
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `groupRef`, `sourcePrefixListRef`, `sourceSecurityGroupRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3297,7 +3320,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::SecurityGroupVpcAssociation`
 
 - Secret references (opted in, `secrets` in types.yaml): none
-- Reference fields (the overlay, `references` in types.yaml): `groupRef`, `vpcRef`
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `groupRef`, `vpcRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3334,6 +3357,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::SubnetCidrReservation`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `subnetRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3358,6 +3382,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::TrafficMirrorFilterRule`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `trafficMirrorFilterRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3418,6 +3443,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::TransitGatewayConnectPeer`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `transitGatewayAttachmentRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3454,6 +3480,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::TransitGatewayMulticastDomain`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `transitGatewayRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3466,6 +3493,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::TransitGatewayMulticastDomainAssociation`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `subnetRef`, `transitGatewayAttachmentRef`, `transitGatewayMulticastDomainRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3478,6 +3506,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::TransitGatewayMulticastGroupMember`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `networkInterfaceRef`, `transitGatewayMulticastDomainRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3490,6 +3519,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::TransitGatewayMulticastGroupSource`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `networkInterfaceRef`, `transitGatewayMulticastDomainRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3502,6 +3532,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::TransitGatewayPolicyTable`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `transitGatewayRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3586,7 +3617,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::EC2::VPCBlockPublicAccessExclusion`
 
 - Secret references (opted in, `secrets` in types.yaml): none
-- Reference fields (the overlay, `references` in types.yaml): `subnetRef`, `vpcRef`
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `subnetRef`, `vpcRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3683,6 +3714,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Logs::Destination`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `roleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3755,6 +3787,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Logs::SubscriptionFilter`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `roleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3839,6 +3872,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ApiGatewayV2::IntegrationResponse`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `apiRef`, `integrationRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3851,6 +3885,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ApiGatewayV2::Model`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `apiRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3875,6 +3910,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ApiGatewayV2::RouteResponse`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `apiRef`, `routeRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -3923,6 +3959,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::AutoScaling::LifecycleHook`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `autoScalingGroupRef`, `roleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -4043,6 +4080,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::CloudFront::MonitoringSubscription`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `distributionRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -4283,6 +4321,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::CodeDeploy::DeploymentGroup`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `serviceRoleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -4547,6 +4586,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Lambda::NetworkConnector`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `operatorRoleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -4595,6 +4635,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Logs::LogStream`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `logGroupRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -4607,6 +4648,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::MSK::BatchScramSecret`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `clusterRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -4619,6 +4661,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::MSK::ClusterPolicy`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `clusterRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -4799,6 +4842,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::S3Files::FileSystemPolicy`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `fileSystemRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -4835,6 +4879,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::SSM::MaintenanceWindowTarget`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `windowRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -4847,6 +4892,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::SSM::MaintenanceWindowTask`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `serviceRoleRef`, `taskRef`, `windowRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -4955,6 +5001,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::S3Tables::TablePolicy`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `tableRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -4979,6 +5026,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::SSM::ResourcePolicy`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `resourceRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -5015,6 +5063,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::MSK::Replicator`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `serviceExecutionRoleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: `/properties/ReplicationInfoList/*/ConsumerGroupReplication/ConsumerGroupOffsetSyncMode (inside an array)`, `/properties/ReplicationInfoList/*/SourceKafkaClusterArn (inside an array)`, `/properties/ReplicationInfoList/*/SourceKafkaClusterId (inside an array)`, `/properties/ReplicationInfoList/*/TargetCompressionType (inside an array)`, `/properties/ReplicationInfoList/*/TargetKafkaClusterArn (inside an array)`, `/properties/ReplicationInfoList/*/TargetKafkaClusterId (inside an array)`, `/properties/ReplicationInfoList/*/TopicReplication/StartingPosition (inside an array)`, `/properties/ReplicationInfoList/*/TopicReplication/TopicNameConfiguration (inside an array)`
@@ -5123,6 +5172,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Amplify::App`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `computeRoleRef`
 - Write-only kept as plain fields: `/properties/AccessToken`, `/properties/BasicAuthConfig`, `/properties/OauthToken`, `/properties/AutoBranchCreationConfig`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/AccessToken`, `/properties/OauthToken`
 - Create-only paths without a CEL rule: none
@@ -5171,6 +5221,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ApiGateway::Account`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `cloudWatchRoleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -5219,6 +5270,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ApiGateway::DocumentationPart`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `restApiRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -5231,6 +5283,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ApiGateway::DocumentationVersion`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `restApiRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -5267,6 +5320,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ApiGateway::GatewayResponse`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `restApiRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -5279,6 +5333,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ApiGateway::RequestValidator`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `restApiRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -5303,6 +5358,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ApiGateway::UsagePlanKey`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `keyRef`, `usagePlanRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -5327,6 +5383,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::AppConfig::ConfigurationProfile`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `applicationRef`, `retrievalRoleRef`
 - Write-only kept as plain fields: `/properties/DeletionProtectionCheck`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/DeletionProtectionCheck`
 - Create-only paths without a CEL rule: none
@@ -5339,6 +5396,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::AppConfig::Deployment`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `applicationRef`, `deploymentStrategyRef`, `kmsKeyIdentifierRef`
 - Write-only kept as plain fields: `/properties/DynamicExtensionParameters`
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -5363,6 +5421,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::AppConfig::Environment`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `applicationRef`
 - Write-only kept as plain fields: `/properties/DeletionProtectionCheck`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/DeletionProtectionCheck`
 - Create-only paths without a CEL rule: none
@@ -5423,6 +5482,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::AppConfig::HostedConfigurationVersion`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `applicationRef`
 - Write-only kept as plain fields: `/properties/LatestVersionNumber`
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -5759,6 +5819,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::AppStream::Fleet`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `iamRoleRef`
 - Write-only kept as plain fields: `/properties/AttributesToDelete`
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -5771,6 +5832,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::AppStream::ImageBuilder`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `iamRoleRef`
 - Write-only kept as plain fields: `/properties/SoftwaresToInstall`, `/properties/SoftwaresToUninstall`, `/properties/ImageName`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/ImageName`
 - Create-only paths without a CEL rule: none
@@ -5927,6 +5989,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::AppSync::GraphQLApi`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `mergedApiExecutionRoleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -6191,6 +6254,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Batch::ComputeEnvironment`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `serviceRoleRef`
 - Write-only kept as plain fields: `/properties/ComputeResources/UpdateToLatestImageVersion`, `/properties/ReplaceComputeEnvironment`, `/properties/UpdatePolicy`
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -6227,6 +6291,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Batch::JobQueue`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `schedulingPolicyRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -6455,6 +6520,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Bedrock::Guardrail`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `kmsKeyRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -6635,6 +6701,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::BedrockAgentCore::OnlineEvaluationConfig`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `evaluationExecutionRoleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -6683,6 +6750,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::BedrockAgentCore::ResourcePolicy`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `resourceRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -6779,6 +6847,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Budgets::BudgetsAction`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `executionRoleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -7199,6 +7268,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Cloud9::EnvironmentEC2`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `subnetRef`
 - Write-only kept as plain fields: `/properties/InstanceType`, `/properties/ImageId`, `/properties/SubnetId`, `/properties/AutomaticStopTimeMinutes`, `/properties/Repositories`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/ImageId`, `/properties/InstanceType`, `/properties/SubnetId`
 - Create-only paths without a CEL rule: none
@@ -7367,6 +7437,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::CloudFormation::StackSet`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `administrationRoleRef`
 - Write-only kept as plain fields: `/properties/TemplateURL`, `/properties/OperationPreferences`, `/properties/StackInstancesGroup`, `/properties/CallAs`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/CallAs`, `/properties/TemplateURL`
 - Create-only paths without a CEL rule: none
@@ -7427,6 +7498,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::CodeBuild::Project`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `serviceRoleRef`
 - Write-only kept as plain fields: `/properties/Triggers`
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -7463,6 +7535,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::CodeCommit::Repository`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `kmsKeyRef`
 - Write-only kept as plain fields: `/properties/Code`
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -7595,6 +7668,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::CodeStarNotifications::NotificationRule`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `resourceRef`
 - Write-only kept as plain fields: `/properties/EventTypeId`, `/properties/TargetAddress`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/EventTypeId`, `/properties/TargetAddress`
 - Create-only paths without a CEL rule: none
@@ -7619,6 +7693,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Cognito::IdentityPoolPrincipalTag`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `identityPoolRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -7631,6 +7706,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Cognito::IdentityPoolRoleAttachment`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `identityPoolRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -7643,6 +7719,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Cognito::LogDeliveryConfiguration`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `userPoolRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -7679,6 +7756,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Cognito::UserPoolDomain`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `userPoolRef`
 - Write-only kept as plain fields: `/properties/ManagedLoginVersion`
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -7691,6 +7769,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Cognito::UserPoolGroup`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `roleRef`, `userPoolRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -7703,6 +7782,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Cognito::UserPoolIdentityProvider`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `userPoolRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -7739,6 +7819,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Cognito::UserPoolRiskConfigurationAttachment`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `userPoolRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -7751,6 +7832,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Cognito::UserPoolUICustomizationAttachment`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `clientRef`, `userPoolRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -7763,6 +7845,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Cognito::UserPoolUser`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `userPoolRef`
 - Write-only kept as plain fields: `/properties/DesiredDeliveryMediums`, `/properties/ForceAliasCreation`, `/properties/ValidationData`, `/properties/ClientMetadata`, `/properties/MessageAction`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/MessageAction`
 - Create-only paths without a CEL rule: none
@@ -7775,6 +7858,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Cognito::UserPoolUserToGroupAttachment`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `userPoolRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -8075,6 +8159,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Connect::PhoneNumber`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `targetRef`
 - Write-only kept as plain fields: `/properties/Prefix`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/Prefix`
 - Create-only paths without a CEL rule: none
@@ -8339,6 +8424,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::CUR::ReportDefinition`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `s3BucketRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -8711,6 +8797,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::DataSync::LocationS3`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `s3BucketRef`
 - Write-only kept as plain fields: `/properties/Subdirectory`, `/properties/S3BucketArn`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/S3BucketArn`, `/properties/Subdirectory`
 - Create-only paths without a CEL rule: none
@@ -8735,6 +8822,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::DataSync::Task`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `cloudWatchLogGroupRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -8939,6 +9027,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::DAX::Cluster`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `iamRoleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -9251,6 +9340,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::DLM::LifecyclePolicy`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `executionRoleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -9275,6 +9365,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::DocDB::EventSubscription`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `snsTopicRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -9707,6 +9798,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::FIS::ExperimentTemplate`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `roleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -9935,6 +10027,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::GameLift::Fleet`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `buildRef`, `instanceRoleRef`
 - Write-only kept as plain fields: `/properties/ApplyCapacity`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/ApplyCapacity`
 - Create-only paths without a CEL rule: none
@@ -9947,6 +10040,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::GameLift::GameServerGroup`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `roleRef`
 - Write-only kept as plain fields: `/properties/DeleteOption`, `/properties/LaunchTemplate`, `/properties/MinSize`, `/properties/MaxSize`, `/properties/AutoScalingPolicy`, `/properties/VpcSubnets`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/DeleteOption`
 - Create-only paths without a CEL rule: none
@@ -9959,6 +10053,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::GameLift::GameSessionQueue`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `notificationTargetRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -10127,6 +10222,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Glue::Crawler`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `databaseRef`, `roleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -10283,6 +10379,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Glue::Table`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `databaseRef`
 - Write-only kept as plain fields: `/properties/OpenTableFormatInput`, `/properties/TableInput/ViewDefinition/Representations/*/ViewOriginalText`, `/properties/TableInput/ViewDefinition/Representations/*/ValidationConnection`, `/properties/TableInput/ViewDefinition/Representations/*/ViewExpandedText`, `/properties/TableInput/ViewDefinition/SubObjects`
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -10295,6 +10392,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Glue::TableOptimizer`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `databaseRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -10331,6 +10429,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Glue::UserDefinedFunction`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `databaseRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -10355,6 +10454,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Grafana::Workspace`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `roleRef`
 - Write-only kept as plain fields: `/properties/ClientToken`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/ClientToken`
 - Create-only paths without a CEL rule: none
@@ -10487,6 +10587,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ImageBuilder::Component`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `kmsKeyRef`
 - Write-only kept as plain fields: `/properties/Data`, `/properties/Uri`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/Data`, `/properties/Uri`
 - Create-only paths without a CEL rule: none
@@ -10499,6 +10600,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ImageBuilder::ContainerRecipe`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `kmsKeyRef`
 - Write-only kept as plain fields: `/properties/DockerfileTemplateData`, `/properties/DockerfileTemplateUri`, `/properties/ImageOsVersionOverride`, `/properties/PlatformOverride`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/DockerfileTemplateData`, `/properties/DockerfileTemplateUri`, `/properties/ImageOsVersionOverride`, `/properties/PlatformOverride`
 - Create-only paths without a CEL rule: none
@@ -10523,6 +10625,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ImageBuilder::Image`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `distributionConfigurationRef`, `imageRecipeRef`, `infrastructureConfigurationRef`
 - Write-only kept as plain fields: `/properties/DeletionSettings`, `/properties/ImagePipelineExecutionSettings`
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -10535,6 +10638,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ImageBuilder::ImagePipeline`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `imageRecipeRef`, `infrastructureConfigurationRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -10559,6 +10663,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ImageBuilder::InfrastructureConfiguration`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `instanceProfileRef`, `snsTopicRef`, `subnetRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -10655,6 +10760,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::IoT::Authorizer`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `authorizerFunctionRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -10811,6 +10917,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::IoT::Logging`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `roleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -10859,6 +10966,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::IoT::ProvisioningTemplate`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `provisioningRoleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -10883,6 +10991,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::IoT::RoleAlias`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `roleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -10979,6 +11088,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::IoT::ThingPrincipalAttachment`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `principalRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -11651,6 +11761,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Kendra::DataSource`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `indexRef`, `roleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -11687,6 +11798,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Kendra::Index`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `roleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -11699,6 +11811,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Kendra::QuerySuggestionsBlockList`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `indexRef`, `roleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -11711,6 +11824,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Kendra::Thesaurus`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `indexRef`, `roleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -11759,6 +11873,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::KinesisAnalyticsV2::Application`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `serviceExecutionRoleRef`
 - Write-only kept as plain fields: `/properties/RunConfiguration`, `/properties/ApplicationConfiguration/EnvironmentProperties`, `/properties/ApplicationConfiguration/ApplicationCodeConfiguration/CodeContent/ZipFileContent`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/ApplicationConfiguration/ApplicationCodeConfiguration/CodeContent/ZipFileContent`
 - Create-only paths without a CEL rule: none
@@ -11819,6 +11934,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::LakeFormation::Resource`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `roleRef`
 - Write-only kept as plain fields: `/properties/UseServiceLinkedRole`
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -11891,6 +12007,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Lex::ResourcePolicy`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `resourceRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -12215,6 +12332,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Location::GeofenceCollection`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `kmsKeyRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -12263,6 +12381,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Location::Tracker`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `kmsKeyRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -12275,6 +12394,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Location::TrackerConsumer`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `trackerRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -12623,6 +12743,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::MediaLive::Input`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `roleRef`
 - Write-only kept as plain fields: `/properties/InputSecurityGroups`, `/properties/Vpc`, `/properties/Destinations/*/StaticIpAddress`
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -13055,6 +13176,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Neptune::EventSubscription`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `snsTopicRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -13151,6 +13273,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::NetworkMonitor::Probe`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `sourceRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -13331,6 +13454,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Oam::Link`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `sinkIdentifierRef`
 - Write-only kept as plain fields: `/properties/LabelTemplate`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/LabelTemplate`
 - Create-only paths without a CEL rule: none
@@ -13619,6 +13743,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::OpenSearchServerless::VpcEndpoint`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `vpcRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -13631,6 +13756,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::OSIS::Pipeline`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `pipelineRoleRef`
 - Write-only kept as plain fields: `/properties/VpcOptions`
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -14123,6 +14249,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::QLDB::Stream`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `roleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -14339,6 +14466,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::RedshiftServerless::Namespace`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `defaultIamRoleRef`, `kmsKeyRef`
 - Write-only kept as plain fields: `/properties/AdminUserPassword`, `/properties/FinalSnapshotName`, `/properties/FinalSnapshotRetentionPeriod`, `/properties/ManageAdminPassword`, `/properties/RedshiftIdcApplicationArn`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/AdminUserPassword`, `/properties/FinalSnapshotName`, `/properties/RedshiftIdcApplicationArn`
 - Create-only paths without a CEL rule: none
@@ -15143,6 +15271,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::SageMaker::DeviceFleet`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `roleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -15239,6 +15368,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::SageMaker::MlflowTrackingServer`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `roleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -15515,6 +15645,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ServiceCatalog::LaunchNotificationConstraint`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `portfolioRef`, `productRef`
 - Write-only kept as plain fields: `/properties/AcceptLanguage`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/AcceptLanguage`
 - Create-only paths without a CEL rule: none
@@ -15539,6 +15670,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ServiceCatalog::LaunchTemplateConstraint`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `portfolioRef`, `productRef`
 - Write-only kept as plain fields: `/properties/AcceptLanguage`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/AcceptLanguage`
 - Create-only paths without a CEL rule: none
@@ -15563,6 +15695,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ServiceCatalog::PortfolioPrincipalAssociation`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `portfolioRef`, `principalRef`
 - Write-only kept as plain fields: `/properties/AcceptLanguage`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/AcceptLanguage`
 - Create-only paths without a CEL rule: none
@@ -15575,6 +15708,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ServiceCatalog::PortfolioProductAssociation`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `portfolioRef`, `productRef`
 - Write-only kept as plain fields: `/properties/SourcePortfolioId`, `/properties/AcceptLanguage`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/AcceptLanguage`, `/properties/SourcePortfolioId`
 - Create-only paths without a CEL rule: none
@@ -15587,6 +15721,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ServiceCatalog::PortfolioShare`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `portfolioRef`
 - Write-only kept as plain fields: `/properties/AcceptLanguage`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/AcceptLanguage`
 - Create-only paths without a CEL rule: none
@@ -15599,6 +15734,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ServiceCatalog::ResourceUpdateConstraint`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `portfolioRef`, `productRef`
 - Write-only kept as plain fields: `/properties/AcceptLanguage`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/AcceptLanguage`
 - Create-only paths without a CEL rule: none
@@ -15659,6 +15795,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ServiceCatalog::TagOptionAssociation`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `resourceRef`, `tagOptionRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -15743,6 +15880,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::ServiceDiscovery::PrivateDnsNamespace`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `vpcRef`
 - Write-only kept as plain fields: `/properties/Vpc`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/Vpc`
 - Create-only paths without a CEL rule: none
@@ -15779,6 +15917,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::SES::ConfigurationSetEventDestination`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `configurationSetRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -16043,6 +16182,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Shield::Protection`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `resourceRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -16643,6 +16783,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Transfer::Connector`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `accessRoleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -16679,6 +16820,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Transfer::Server`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `certificateRef`, `loggingRoleRef`
 - Write-only kept as plain fields: `/properties/CreateWithHostKey`
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -16691,6 +16833,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::Transfer::User`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `roleRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -16835,6 +16978,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::VpcLattice::AccessLogSubscription`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `destinationRef`
 - Write-only kept as plain fields: `/properties/ResourceIdentifier`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/ResourceIdentifier`
 - Create-only paths without a CEL rule: none
@@ -16847,6 +16991,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::VpcLattice::AuthPolicy`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `resourceIdentifierRef`
 - Write-only kept as plain fields: none
 - Of those, write-only strings that could be opted in if they are secrets: none
 - Create-only paths without a CEL rule: none
@@ -16979,6 +17124,7 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 ## `AWS::VpcLattice::ServiceNetworkVpcAssociation`
 
 - Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `vpcIdentifierRef`
 - Write-only kept as plain fields: `/properties/ServiceNetworkIdentifier`, `/properties/VpcIdentifier`
 - Of those, write-only strings that could be opted in if they are secrets: `/properties/ServiceNetworkIdentifier`, `/properties/VpcIdentifier`
 - Create-only paths without a CEL rule: none

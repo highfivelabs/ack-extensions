@@ -74,9 +74,28 @@ spec:
                 - message: 'resourceShareArn is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
+              resourceShareRef:
+                description: 'A reference to a ResourceShare (ram.services.k8s.aws)
+                  whose status.ackResourceMetadata.arn fills resourceShareArn: its
+                  Kubernetes name, and namespace when another (cross-namespace references
+                  need the manager''s --enable-cross-namespace). The value is read
+                  once that object is synced. Give this or resourceShareArn, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'resourceShareRef is create-only, as resourceShareArn is:
+                    it cannot change after the resource is made'
+                  rule: self == oldSelf
             required:
             - principal
-            - resourceShareArn
             type: object
             x-kubernetes-validations:
             - message: 'principal is create-only (CloudFormation createOnlyProperties):
@@ -85,6 +104,13 @@ spec:
             - message: 'resourceShareArn is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.resourceShareArn) == has(oldSelf.resourceShareArn)
+            - message: one of resourceShareArn or resourceShareRef is required
+              rule: has(self.resourceShareArn) || has(self.resourceShareRef)
+            - message: resourceShareArn and resourceShareRef cannot both be given
+              rule: '!(has(self.resourceShareArn) && has(self.resourceShareRef))'
+            - message: 'resourceShareRef is create-only, as resourceShareArn is: it
+                cannot be added or removed after the resource is made'
+              rule: has(self.resourceShareRef) == has(oldSelf.resourceShareRef)
           status:
             properties:
               ackResourceMetadata:

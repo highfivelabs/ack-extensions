@@ -4156,6 +4156,35 @@ Before it can run on a real cluster:
       cluster-wide controller, is Bundt's to build.
     - **A real run** of a context with ACK's controllers on EKS (Pod
       Identity, the managed policies) is for `docs/live-runs.md`.
+19. The Upjet facts (`hack/upjet`, HFL-699, HFL-700, HFL-701; 2026-11-27).
+    Built: `hack/cloudcontrol-gen` reads factory's fold of
+    provider-upjet-aws v2.10.0 and wires Upjet's references into the Cloud
+    Control kinds (186 reference fields on 146 more kinds; all 24 the
+    overlay had agree), cross-checks secrets, identifier style and late-init
+    ignores, and turns 162 hand examples into fixtures `TestUpjetExamples`
+    runs on the schema fake (`docs/cloudcontrol.md` section 12 item 4,
+    `docs/testing.md`). `docs/coverage/upjet.md` counts it, holds the
+    per-kind "tested where" ledger (`tested.csv`) and ranks the 112 API
+    resources Upjet has and nothing here serves (`upjet-gaps.csv`). Left:
+    - **ACK-generated kinds' references.** 22 Upjet references to served
+      targets have no reference in `services/<svc>/generator.yaml`
+      (`docs/coverage/upjet.md` lists them: `ScalingPolicy`'s
+      `AutoScalingGroupName`, `VolumeAttachment`'s `InstanceID`,
+      `APIDestination`'s `ConnectionARN`, ...). Not added: `task generate`
+      does not run on the 4-core box the work was done on
+      (`hack/generate.sh` fails at controller-gen, after goimports rewrote
+      every file's imports), and a reference to a kind of a service we
+      also build (iam, kms) needs ACK's group, which `service_name`
+      cannot name. Add them where `task generate` runs.
+    - **References into nested fields and lists** (192 and 30 of Upjet's):
+      the overlay's references are top-level strings only.
+    - **ACK kinds' ID paths**: `referenceTargets` in `types.yaml` lists 33;
+      a reference to another ACK kind by ID waits for its row.
+    - **The 386 examples the kinds cannot express** (mostly a Terraform
+      block CloudFormation shapes differently, or a required property
+      Terraform defaults): a translation per type would add more.
+    - **Each new reference resolved end to end**: proven by the generic
+      tests and the CRD, not per type on the fake.
 
 ## 9. Open questions
 

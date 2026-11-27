@@ -62,6 +62,22 @@ spec:
                 type: object
               provisioningRoleArn:
                 type: string
+              provisioningRoleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills provisioningRoleArn: its Kubernetes name, and namespace when
+                  another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or provisioningRoleArn,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               tags:
                 items:
                   properties:
@@ -94,7 +110,6 @@ spec:
                     it cannot change after the resource is made'
                   rule: self == oldSelf
             required:
-            - provisioningRoleArn
             - templateBody
             type: object
             x-kubernetes-validations:
@@ -104,6 +119,11 @@ spec:
             - message: 'templateType is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.templateType) == has(oldSelf.templateType)
+            - message: one of provisioningRoleArn or provisioningRoleRef is required
+              rule: has(self.provisioningRoleArn) || has(self.provisioningRoleRef)
+            - message: provisioningRoleArn and provisioningRoleRef cannot both be
+                given
+              rule: '!(has(self.provisioningRoleArn) && has(self.provisioningRoleRef))'
           status:
             properties:
               ackResourceMetadata:

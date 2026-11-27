@@ -107,6 +107,22 @@ spec:
                 maxLength: 100
                 minLength: 1
                 type: string
+              kmsKeyRef:
+                description: 'A reference to a Key (kms.services.k8s.aws) whose status.keyID
+                  fills kmsKeyId: its Kubernetes name, and namespace when another
+                  (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or kmsKeyId,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               repositoryDescription:
                 description: A comment or description about the new repository.
                 maxLength: 1000
@@ -174,6 +190,9 @@ spec:
             required:
             - repositoryName
             type: object
+            x-kubernetes-validations:
+            - message: kmsKeyId and kmsKeyRef cannot both be given
+              rule: '!(has(self.kmsKeyId) && has(self.kmsKeyRef))'
           status:
             properties:
               ackResourceMetadata:

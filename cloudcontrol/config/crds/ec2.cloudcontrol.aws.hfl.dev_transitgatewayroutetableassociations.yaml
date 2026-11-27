@@ -54,6 +54,27 @@ spec:
                     createOnlyProperties): it cannot change after the resource is
                     made'
                   rule: self == oldSelf
+              transitGatewayAttachmentRef:
+                description: 'A reference to a TransitGatewayVPCAttachment (ec2.services.k8s.aws)
+                  whose status.id fills transitGatewayAttachmentId: its Kubernetes
+                  name, and namespace when another (cross-namespace references need
+                  the manager''s --enable-cross-namespace). The value is read once
+                  that object is synced. Give this or transitGatewayAttachmentId,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'transitGatewayAttachmentRef is create-only, as transitGatewayAttachmentId
+                    is: it cannot change after the resource is made'
+                  rule: self == oldSelf
               transitGatewayRouteTableId:
                 description: The ID of transit gateway route table.
                 type: string
@@ -62,9 +83,27 @@ spec:
                     createOnlyProperties): it cannot change after the resource is
                     made'
                   rule: self == oldSelf
-            required:
-            - transitGatewayAttachmentId
-            - transitGatewayRouteTableId
+              transitGatewayRouteTableRef:
+                description: 'A reference to a TransitGatewayRouteTable (ec2.cloudcontrol.aws.hfl.dev)
+                  whose status.transitGatewayRouteTableId fills transitGatewayRouteTableId:
+                  its Kubernetes name, and namespace when another (cross-namespace
+                  references need the manager''s --enable-cross-namespace). The value
+                  is read once that object is synced. Give this or transitGatewayRouteTableId,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'transitGatewayRouteTableRef is create-only, as transitGatewayRouteTableId
+                    is: it cannot change after the resource is made'
+                  rule: self == oldSelf
             type: object
             x-kubernetes-validations:
             - message: 'transitGatewayAttachmentId is create-only (CloudFormation
@@ -75,6 +114,24 @@ spec:
                 createOnlyProperties): it cannot be added or removed after the resource
                 is made'
               rule: has(self.transitGatewayRouteTableId) == has(oldSelf.transitGatewayRouteTableId)
+            - message: one of transitGatewayAttachmentId or transitGatewayAttachmentRef
+                is required
+              rule: has(self.transitGatewayAttachmentId) || has(self.transitGatewayAttachmentRef)
+            - message: transitGatewayAttachmentId and transitGatewayAttachmentRef
+                cannot both be given
+              rule: '!(has(self.transitGatewayAttachmentId) && has(self.transitGatewayAttachmentRef))'
+            - message: 'transitGatewayAttachmentRef is create-only, as transitGatewayAttachmentId
+                is: it cannot be added or removed after the resource is made'
+              rule: has(self.transitGatewayAttachmentRef) == has(oldSelf.transitGatewayAttachmentRef)
+            - message: one of transitGatewayRouteTableId or transitGatewayRouteTableRef
+                is required
+              rule: has(self.transitGatewayRouteTableId) || has(self.transitGatewayRouteTableRef)
+            - message: transitGatewayRouteTableId and transitGatewayRouteTableRef
+                cannot both be given
+              rule: '!(has(self.transitGatewayRouteTableId) && has(self.transitGatewayRouteTableRef))'
+            - message: 'transitGatewayRouteTableRef is create-only, as transitGatewayRouteTableId
+                is: it cannot be added or removed after the resource is made'
+              rule: has(self.transitGatewayRouteTableRef) == has(oldSelf.transitGatewayRouteTableRef)
           status:
             properties:
               ackResourceMetadata:

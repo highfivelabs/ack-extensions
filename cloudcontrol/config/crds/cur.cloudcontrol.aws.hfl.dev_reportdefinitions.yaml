@@ -133,6 +133,22 @@ spec:
                 maxLength: 256
                 minLength: 1
                 type: string
+              s3BucketRef:
+                description: 'A reference to a Bucket (s3.services.k8s.aws) whose
+                  spec.name fills s3Bucket: its Kubernetes name, and namespace when
+                  another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or s3Bucket,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               s3Prefix:
                 description: The prefix that AWS adds to the report name when AWS
                   delivers the report. Your prefix can't include spaces.
@@ -178,7 +194,6 @@ spec:
             - refreshClosedReports
             - reportName
             - reportVersioning
-            - s3Bucket
             - s3Prefix
             - s3Region
             - timeUnit
@@ -199,6 +214,10 @@ spec:
             - message: 'timeUnit is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.timeUnit) == has(oldSelf.timeUnit)
+            - message: one of s3Bucket or s3BucketRef is required
+              rule: has(self.s3Bucket) || has(self.s3BucketRef)
+            - message: s3Bucket and s3BucketRef cannot both be given
+              rule: '!(has(self.s3Bucket) && has(self.s3BucketRef))'
           status:
             properties:
               ackResourceMetadata:

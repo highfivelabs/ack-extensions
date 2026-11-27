@@ -25,6 +25,18 @@ service list) and runs on the schema fake; one with neither fails the
 harness ("no fake backend"). Nothing in a test path can reach AWS
 (`pkg/fakeaws`, `task noaws`; `docs/cloudcontrol.md` section 6).
 
+Upjet's hand-written examples (HFL-700) run there too: `hack/cloudcontrol-gen`
+turns each example of a served Cloud Control type whose every field the kind
+can express into a fixture (`cloudcontrol/zz_generated.upjet-examples.json`,
+162 of 548 on the first run), and `TestUpjetExamples` (`cloudcontrol/test/fake`,
+no envtest) checks each against the kind's generated CRD (its schema and CEL
+rules, as the API server would) and runs it through the fake Cloud Control on
+the schema fake: created, read back with every property it set, deleted. A
+field Upjet fills by reference gets a stand-in value. The rest, and why each
+cannot be expressed (mostly a Terraform block CloudFormation shapes
+differently), are listed in `cloudcontrol/zz_generated.upjet.md`. This proves
+the example fits our kind, not what the service does with its values.
+
 ## Live runs
 
 - **Where:** the sandbox account `$AWS_SANDBOX_ACCOUNT_ID` only (`.env.example`),

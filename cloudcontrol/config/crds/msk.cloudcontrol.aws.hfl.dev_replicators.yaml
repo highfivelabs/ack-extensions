@@ -463,6 +463,26 @@ spec:
                     createOnlyProperties): it cannot change after the resource is
                     made'
                   rule: self == oldSelf
+              serviceExecutionRoleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills serviceExecutionRoleArn: its Kubernetes name, and namespace
+                  when another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or serviceExecutionRoleArn,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'serviceExecutionRoleRef is create-only, as serviceExecutionRoleArn
+                    is: it cannot change after the resource is made'
+                  rule: self == oldSelf
               tags:
                 description: A collection of tags associated with a resource
                 items:
@@ -483,7 +503,6 @@ spec:
             - kafkaClusters
             - replicationInfoList
             - replicatorName
-            - serviceExecutionRoleArn
             type: object
             x-kubernetes-validations:
             - message: 'description is create-only (CloudFormation createOnlyProperties):
@@ -498,6 +517,15 @@ spec:
             - message: 'serviceExecutionRoleArn is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.serviceExecutionRoleArn) == has(oldSelf.serviceExecutionRoleArn)
+            - message: one of serviceExecutionRoleArn or serviceExecutionRoleRef is
+                required
+              rule: has(self.serviceExecutionRoleArn) || has(self.serviceExecutionRoleRef)
+            - message: serviceExecutionRoleArn and serviceExecutionRoleRef cannot
+                both be given
+              rule: '!(has(self.serviceExecutionRoleArn) && has(self.serviceExecutionRoleRef))'
+            - message: 'serviceExecutionRoleRef is create-only, as serviceExecutionRoleArn
+                is: it cannot be added or removed after the resource is made'
+              rule: has(self.serviceExecutionRoleRef) == has(oldSelf.serviceExecutionRoleRef)
           status:
             properties:
               ackResourceMetadata:

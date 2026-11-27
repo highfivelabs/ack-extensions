@@ -68,6 +68,9 @@ func outputs(c config, m *model, r *results) (map[string][]byte, error) {
 		return nil, err
 	}
 	files[dir+"foundation.md"] = fr
+	if err := m.upjetOutputs(c, r, files); err != nil {
+		return nil, err
+	}
 
 	readme, err := os.ReadFile(filepath.Join(c.root, "README.md"))
 	if err != nil {

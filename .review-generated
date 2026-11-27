@@ -313,3 +313,5 @@ services/wafv2/pkg/resource/web_acl_association/sdk.go
 services/wafv2/pkg/version/version.go
 config/ack-controllers/*
 pkg/ackiam/recommended/*
+hack/upjet/*
+cloudcontrol/zz_generated.upjet.*

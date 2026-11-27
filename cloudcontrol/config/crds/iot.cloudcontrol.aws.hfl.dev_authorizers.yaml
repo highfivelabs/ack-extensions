@@ -49,6 +49,23 @@ spec:
             properties:
               authorizerFunctionArn:
                 type: string
+              authorizerFunctionRef:
+                description: 'A reference to a Function (lambda.services.k8s.aws)
+                  whose status.ackResourceMetadata.arn fills authorizerFunctionArn:
+                  its Kubernetes name, and namespace when another (cross-namespace
+                  references need the manager''s --enable-cross-namespace). The value
+                  is read once that object is synced. Give this or authorizerFunctionArn,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               authorizerName:
                 maxLength: 128
                 minLength: 1
@@ -89,8 +106,6 @@ spec:
                   maxLength: 5120
                   type: string
                 type: object
-            required:
-            - authorizerFunctionArn
             type: object
             x-kubernetes-validations:
             - message: 'authorizerName is create-only (CloudFormation createOnlyProperties):
@@ -99,6 +114,11 @@ spec:
             - message: 'signingDisabled is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.signingDisabled) == has(oldSelf.signingDisabled)
+            - message: one of authorizerFunctionArn or authorizerFunctionRef is required
+              rule: has(self.authorizerFunctionArn) || has(self.authorizerFunctionRef)
+            - message: authorizerFunctionArn and authorizerFunctionRef cannot both
+                be given
+              rule: '!(has(self.authorizerFunctionArn) && has(self.authorizerFunctionRef))'
           status:
             properties:
               ackResourceMetadata:

@@ -1,0 +1,12 @@
+# gitleaks findings in pushed history that are placeholders, not
+# credentials (gitleaks reads a fingerprint as commit:file:rule:line).
+
+# hack/upjet/provider-upjet-aws.json:2714: access_association_source in
+# Upjet's hand example for aws_api_gateway_domain_name_access_association,
+# a VPC endpoint ID made of AWS's documentation placeholder digits; it is
+# an ID, not a key. The slice comes unchanged from factory.
+cc28a8d63040d98a200d424ed642b0419a32dcb7:hack/upjet/provider-upjet-aws.json:generic-api-key:2714
+# cloudcontrol/zz_generated.upjet-examples.json:1007: the same placeholder
+# VPC endpoint ID, as accessAssociationSource in the example generated from
+# that Upjet example.
+89984430a7fe07659bd80d558ab4524eeffe675d:cloudcontrol/zz_generated.upjet-examples.json:generic-api-key:1007

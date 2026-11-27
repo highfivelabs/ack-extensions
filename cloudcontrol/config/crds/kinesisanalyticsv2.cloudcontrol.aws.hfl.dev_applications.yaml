@@ -561,6 +561,22 @@ spec:
                 maxLength: 2048
                 minLength: 1
                 type: string
+              serviceExecutionRoleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills serviceExecutionRole: its Kubernetes name, and namespace when
+                  another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or serviceExecutionRole,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               tags:
                 description: A list of one or more tags to assign to the application.
                   A tag is a key-value pair that identifies an application. Note that
@@ -593,7 +609,6 @@ spec:
                 type: array
             required:
             - runtimeEnvironment
-            - serviceExecutionRole
             type: object
             x-kubernetes-validations:
             - message: 'applicationMode is create-only (CloudFormation createOnlyProperties):
@@ -602,6 +617,11 @@ spec:
             - message: 'applicationName is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.applicationName) == has(oldSelf.applicationName)
+            - message: one of serviceExecutionRole or serviceExecutionRoleRef is required
+              rule: has(self.serviceExecutionRole) || has(self.serviceExecutionRoleRef)
+            - message: serviceExecutionRole and serviceExecutionRoleRef cannot both
+                be given
+              rule: '!(has(self.serviceExecutionRole) && has(self.serviceExecutionRoleRef))'
           status:
             properties:
               ackResourceMetadata:

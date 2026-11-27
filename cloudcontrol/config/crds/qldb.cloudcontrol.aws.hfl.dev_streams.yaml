@@ -82,6 +82,25 @@ spec:
                 - message: 'roleArn is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
+              roleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills roleArn: its Kubernetes name, and namespace when another (cross-namespace
+                  references need the manager''s --enable-cross-namespace). The value
+                  is read once that object is synced. Give this or roleArn, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'roleRef is create-only, as roleArn is: it cannot change
+                    after the resource is made'
+                  rule: self == oldSelf
               streamName:
                 type: string
                 x-kubernetes-validations:
@@ -121,7 +140,6 @@ spec:
             - inclusiveStartTime
             - kinesisConfiguration
             - ledgerName
-            - roleArn
             - streamName
             type: object
             x-kubernetes-validations:
@@ -143,6 +161,13 @@ spec:
             - message: 'streamName is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.streamName) == has(oldSelf.streamName)
+            - message: one of roleArn or roleRef is required
+              rule: has(self.roleArn) || has(self.roleRef)
+            - message: roleArn and roleRef cannot both be given
+              rule: '!(has(self.roleArn) && has(self.roleRef))'
+            - message: 'roleRef is create-only, as roleArn is: it cannot be added
+                or removed after the resource is made'
+              rule: has(self.roleRef) == has(oldSelf.roleRef)
           status:
             properties:
               ackResourceMetadata:

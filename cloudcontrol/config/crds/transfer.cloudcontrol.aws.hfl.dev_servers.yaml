@@ -51,6 +51,22 @@ spec:
                 maxLength: 1600
                 minLength: 0
                 type: string
+              certificateRef:
+                description: 'A reference to a Certificate (acm.services.k8s.aws)
+                  whose status.ackResourceMetadata.arn fills certificate: its Kubernetes
+                  name, and namespace when another (cross-namespace references need
+                  the manager''s --enable-cross-namespace). The value is read once
+                  that object is synced. Give this or certificate, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               createWithHostKey:
                 description: 'When this property is `true`, AWS Transfer Family will
                   generate an initial host key for your server, making it immediately
@@ -139,6 +155,22 @@ spec:
                 maxLength: 2048
                 minLength: 0
                 type: string
+              loggingRoleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills loggingRole: its Kubernetes name, and namespace when another
+                  (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or loggingRole,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               postAuthenticationLoginBanner:
                 maxLength: 4096
                 minLength: 0
@@ -294,6 +326,10 @@ spec:
             - message: 'domain is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.domain) == has(oldSelf.domain)
+            - message: certificate and certificateRef cannot both be given
+              rule: '!(has(self.certificate) && has(self.certificateRef))'
+            - message: loggingRole and loggingRoleRef cannot both be given
+              rule: '!(has(self.loggingRole) && has(self.loggingRoleRef))'
           status:
             properties:
               ackResourceMetadata:

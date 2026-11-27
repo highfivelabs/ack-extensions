@@ -78,6 +78,22 @@ spec:
                 description: The default IAM role ARN for the namespace that is being
                   created.
                 type: string
+              defaultIamRoleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills defaultIamRoleArn: its Kubernetes name, and namespace when
+                  another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or defaultIamRoleArn,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               finalSnapshotName:
                 description: The name of the namespace the source snapshot was created
                   from. Please specify the name if needed before deleting namespace
@@ -103,6 +119,22 @@ spec:
                 description: The AWS Key Management Service (KMS) key ID of the encryption
                   key that you want to use to encrypt data in the namespace.
                 type: string
+              kmsKeyRef:
+                description: 'A reference to a Key (kms.services.k8s.aws) whose status.keyID
+                  fills kmsKeyId: its Kubernetes name, and namespace when another
+                  (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or kmsKeyId,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               logExports:
                 description: 'The collection of log types to be exported provided
                   by the customer. Should only be one of the three supported log types:
@@ -187,6 +219,10 @@ spec:
             - message: 'namespaceName is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.namespaceName) == has(oldSelf.namespaceName)
+            - message: defaultIamRoleArn and defaultIamRoleRef cannot both be given
+              rule: '!(has(self.defaultIamRoleArn) && has(self.defaultIamRoleRef))'
+            - message: kmsKeyId and kmsKeyRef cannot both be given
+              rule: '!(has(self.kmsKeyId) && has(self.kmsKeyRef))'
           status:
             properties:
               ackResourceMetadata:

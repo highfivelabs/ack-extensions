@@ -57,7 +57,7 @@ func rootSection(r *results) string {
 	for _, t := range r.categoryRows() {
 		fmt.Fprintf(&b, "| %s | %d | %s%% / %s%% | %s%% / %s%% | %s |\n", t.label, t.services, pct1(t.resOfficial, t.resTotal), pct1(t.resOursBeyond, t.resTotal), pct1(t.attrOfficial, t.attrTotal), pct1(t.attrOursBeyond, t.attrTotal), tfCell(t.tf, true))
 	}
-	b.WriteString("\nThe ranked work queue for the foundation and security categories, resource by resource, with what upstream has and what to build first, is [docs/coverage/foundation.md](docs/coverage/foundation.md).\n\n")
+	b.WriteString("\nThe ranked work queue for the foundation and security categories, resource by resource, with what upstream has and what to build first, is [docs/coverage/foundation.md](docs/coverage/foundation.md). What Crossplane's Upjet provider data turned into here (references, examples on the fake, checks), the per-kind \"tested where\" ledger, and the resources Upjet has that nothing here serves, ranked, are [docs/coverage/upjet.md](docs/coverage/upjet.md).\n\n")
 	b.WriteString("![Coverage by tier](docs/coverage/bars/_tiers.svg)\n\n")
 	b.WriteString("| Tier | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) | Terraform attributes (estimate) |\n| --- | ---: | ---: | ---: | ---: |\n")
 	for _, t := range r.tierRows() {

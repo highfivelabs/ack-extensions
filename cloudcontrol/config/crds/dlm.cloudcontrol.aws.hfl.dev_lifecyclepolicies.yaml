@@ -119,6 +119,22 @@ spec:
                 description: The Amazon Resource Name (ARN) of the IAM role used to
                   run the operations specified by the lifecycle policy.
                 type: string
+              executionRoleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills executionRoleArn: its Kubernetes name, and namespace when
+                  another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or executionRoleArn,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               extendDeletion:
                 description: '**[Default policies only]** Defines the snapshot or
                   AMI retention behavior for the policy if the source volume or instance
@@ -807,6 +823,9 @@ spec:
                   type: object
                 type: array
             type: object
+            x-kubernetes-validations:
+            - message: executionRoleArn and executionRoleRef cannot both be given
+              rule: '!(has(self.executionRoleArn) && has(self.executionRoleRef))'
           status:
             properties:
               ackResourceMetadata:

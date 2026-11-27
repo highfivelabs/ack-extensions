@@ -61,6 +61,26 @@ spec:
                 - message: 'portfolioId is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
+              portfolioRef:
+                description: 'A reference to a Portfolio (servicecatalog.cloudcontrol.aws.hfl.dev)
+                  whose status.id fills portfolioId: its Kubernetes name, and namespace
+                  when another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or portfolioId,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'portfolioRef is create-only, as portfolioId is: it cannot
+                    change after the resource is made'
+                  rule: self == oldSelf
               productId:
                 description: The product identifier
                 type: string
@@ -68,14 +88,32 @@ spec:
                 - message: 'productId is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
+              productRef:
+                description: 'A reference to a CloudFormationProduct (servicecatalog.cloudcontrol.aws.hfl.dev)
+                  whose status.id fills productId: its Kubernetes name, and namespace
+                  when another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or productId,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'productRef is create-only, as productId is: it cannot
+                    change after the resource is made'
+                  rule: self == oldSelf
               tagUpdateOnProvisionedProduct:
                 description: ALLOWED or NOT_ALLOWED, to permit or prevent changes
                   to the tags on provisioned instances of the specified portfolio
                   / product combination
                 type: string
             required:
-            - portfolioId
-            - productId
             - tagUpdateOnProvisionedProduct
             type: object
             x-kubernetes-validations:
@@ -85,6 +123,20 @@ spec:
             - message: 'productId is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.productId) == has(oldSelf.productId)
+            - message: one of portfolioId or portfolioRef is required
+              rule: has(self.portfolioId) || has(self.portfolioRef)
+            - message: portfolioId and portfolioRef cannot both be given
+              rule: '!(has(self.portfolioId) && has(self.portfolioRef))'
+            - message: 'portfolioRef is create-only, as portfolioId is: it cannot
+                be added or removed after the resource is made'
+              rule: has(self.portfolioRef) == has(oldSelf.portfolioRef)
+            - message: one of productId or productRef is required
+              rule: has(self.productId) || has(self.productRef)
+            - message: productId and productRef cannot both be given
+              rule: '!(has(self.productId) && has(self.productRef))'
+            - message: 'productRef is create-only, as productId is: it cannot be added
+                or removed after the resource is made'
+              rule: has(self.productRef) == has(oldSelf.productRef)
           status:
             properties:
               ackResourceMetadata:

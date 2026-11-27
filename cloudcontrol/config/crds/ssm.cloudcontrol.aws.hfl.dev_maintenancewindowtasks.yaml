@@ -89,6 +89,22 @@ spec:
                   for AWS Systems Manager to assume when running a maintenance window
                   task.
                 type: string
+              serviceRoleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills serviceRoleArn: its Kubernetes name, and namespace when another
+                  (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or serviceRoleArn,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               targets:
                 description: The targets (either instances or window target ids).
                 items:
@@ -184,6 +200,22 @@ spec:
                 description: The parameters to pass to the task when it runs.
                 type: object
                 x-kubernetes-preserve-unknown-fields: true
+              taskRef:
+                description: 'A reference to a Function (lambda.services.k8s.aws)
+                  whose status.ackResourceMetadata.arn fills taskArn: its Kubernetes
+                  name, and namespace when another (cross-namespace references need
+                  the manager''s --enable-cross-namespace). The value is read once
+                  that object is synced. Give this or taskArn, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               taskType:
                 description: The type of task.
                 type: string
@@ -198,11 +230,29 @@ spec:
                 - message: 'windowId is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
+              windowRef:
+                description: 'A reference to a MaintenanceWindow (ssm.cloudcontrol.aws.hfl.dev)
+                  whose status.windowId fills windowId: its Kubernetes name, and namespace
+                  when another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or windowId,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'windowRef is create-only, as windowId is: it cannot change
+                    after the resource is made'
+                  rule: self == oldSelf
             required:
             - priority
-            - taskArn
             - taskType
-            - windowId
             type: object
             x-kubernetes-validations:
             - message: 'taskType is create-only (CloudFormation createOnlyProperties):
@@ -211,6 +261,19 @@ spec:
             - message: 'windowId is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.windowId) == has(oldSelf.windowId)
+            - message: serviceRoleArn and serviceRoleRef cannot both be given
+              rule: '!(has(self.serviceRoleArn) && has(self.serviceRoleRef))'
+            - message: one of taskArn or taskRef is required
+              rule: has(self.taskArn) || has(self.taskRef)
+            - message: taskArn and taskRef cannot both be given
+              rule: '!(has(self.taskArn) && has(self.taskRef))'
+            - message: one of windowId or windowRef is required
+              rule: has(self.windowId) || has(self.windowRef)
+            - message: windowId and windowRef cannot both be given
+              rule: '!(has(self.windowId) && has(self.windowRef))'
+            - message: 'windowRef is create-only, as windowId is: it cannot be added
+                or removed after the resource is made'
+              rule: has(self.windowRef) == has(oldSelf.windowRef)
           status:
             properties:
               ackResourceMetadata:

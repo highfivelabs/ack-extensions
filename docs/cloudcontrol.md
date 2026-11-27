@@ -1112,6 +1112,31 @@ limits":
    nothing. `TestSecurityGroupRuleBesideOwner` proves it on moto;
    `TestResolveReferencesRefuseWhenSet` the resolver and `ReadOne`.
    Renames and dropped fields are not built.
+   **References from the Upjet facts** (2026-11-27, HFL-699): the
+   generator also reads `hack/upjet/provider-upjet-aws.json`, factory's
+   fold of Crossplane's provider-upjet-aws v2.10.0 onto our API resources
+   (data only: no provider runs). A field Upjet fills by reference becomes
+   a reference field here when it names a writable top-level string
+   property, its target is served here (ACK's kind first, then our Cloud
+   Control kind), and the path of the value is known: an ARN is
+   `status.ackResourceMetadata.arn` on both; an ID is the path
+   `referenceTargets` in `types.yaml` gives for ACK's kind (read from its
+   CRD at the pinned release), or our kind's single primary identifier when
+   the property's name ends in it. Stricter rule: a property named `...Arn`
+   is never filled with an ID, nor `...Name` with an ARN; the overlay's own
+   `references` win, and a disagreement (with the overlay, or between
+   Upjet's resources mapped onto one type) is listed, not applied; a CRD
+   the API server would refuse with them is generated without them.
+   `cloudcontrol/zz_generated.upjet.md` and `.csv` list every reference
+   (applied, agreeing, disagreeing, or not applied and why) with its line
+   in the slice and Upjet's file and line. First run: 186 applied on 146
+   kinds (7 kinds and 16 reference fields before, 153 and 202 after); all
+   24 the overlay already had agree. The resolver, the CEL rules and the
+   RBAC are the existing ones (`TestReferences` and friends), so nothing
+   per type was written; each new reference is proven on the schema fake
+   only as far as the CRD and the generated registry go
+   (`TestUpjetReferencesOnTheRealInputs`, `TestDeriveReferences` in
+   `hack/cloudcontrol-gen`), not resolved end to end per type.
 5. Selective CRD installation (only the kinds some context enables), once
    the kind count makes installing them all costly.
 6. Currency: the factory's watcher diffs the schemas' behaviour keys; a
