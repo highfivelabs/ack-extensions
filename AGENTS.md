@@ -129,7 +129,8 @@ The essentials, in case you can't read it:
 - Claim the Linear issue in coord before you edit (`coord claim HFL-n`), and
   put its key in the branch name and PR title.
 - Open pull requests as drafts. Mark one ready only when it's finished and
-  green, and put it back in draft before pushing to it again.
+  green, and put it back in draft before pushing to it again. Ready is how
+  you ask a person to look; never leave a PR in draft for someone's review.
 - Get a draft to ready within about 3 hours, and don't abandon it. If it has
   to stay in draft longer, post a PR comment saying what it waits on and
   when it should be ready.
