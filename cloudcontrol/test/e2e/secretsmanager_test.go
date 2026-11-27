@@ -31,7 +31,7 @@ func secretPolicy(principal string) map[string]any {
 // a resync of an unchanged policy, a change, drift made in Secrets Manager
 // put back, a create-only secret refused; its delete leaves the secret.
 func TestSecretResourcePolicy(t *testing.T) {
-	e := start(t)
+	e := start(t, "ResourcePolicy.secretsmanager")
 	sm := secretsmanager.NewFromConfig(e.moto)
 	const typ = "AWS::SecretsManager::ResourcePolicy"
 	reader := fmt.Sprintf("arn:aws:iam::%s:role/reader", e.account)

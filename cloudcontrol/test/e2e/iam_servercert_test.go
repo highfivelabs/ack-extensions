@@ -17,7 +17,7 @@ import (
 // F03, IAM: a server certificate with its private key from a Kubernetes Secret,
 // made, updated (tags), refused a create-only change, and deleted.
 func TestIAMServerCertificate(t *testing.T) {
-	e := start(t)
+	e := start(t, "ServerCertificate.iam")
 	ic := iam.NewFromConfig(e.moto)
 	cert, key := samlCert()
 	if err := e.c.Create(e.ctx, secret("servercert-key", map[string]string{"private.pem": key})); err != nil {

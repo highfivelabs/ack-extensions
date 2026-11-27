@@ -96,6 +96,8 @@ type env struct {
 	managers int
 	// allKinds: the manager runs with no --cloudcontrol-kinds (startOptions.crds).
 	allKinds bool
+	// kinds: the manager runs only these (start); none is every kind.
+	kinds []*registry.Type
 }
 
 // Target is where the end-to-end tests run, CLOUDCONTROL_E2E_TARGET:
@@ -360,16 +362,24 @@ func startFake(t *testing.T, root string) (*fake.Server, string, aws.Config) {
 
 // start brings up moto, the fake Cloud Control over it, envtest and the
 // manager. It refuses to start unless both endpoints are local.
-func start(t *testing.T) *env {
+//
+// kinds are the kinds the test creates, as a context names them
+// (SAMLProvider.iam): the manager runs only their reconcilers, as the
+// operator starts it for a context that lists them. Every kind's
+// reconciler in one manager (1,350) is minutes of informer start-up per
+// test, past the sync waits on a shared CI VM (HFL-751). A test that
+// creates a kind it did not ask for fails at the create (kindGuard). No
+// kinds: every kind in the registry, for the tests that sweep them all.
+func start(t *testing.T, kinds ...string) *env {
 	t.Helper()
-	return startWith(t, nil, nil)
+	return startWithOptions(t, startOptions{kinds: kinds})
 }
 
 // startWith is start, the manager given extra arguments and environment
 // (a later flag wins).
-func startWith(t *testing.T, extraManagerArgs, extraManagerEnv []string) *env {
+func startWith(t *testing.T, extraManagerArgs, extraManagerEnv []string, kinds ...string) *env {
 	t.Helper()
-	return startWithOptions(t, startOptions{managerArgs: extraManagerArgs, managerEnv: extraManagerEnv})
+	return startWithOptions(t, startOptions{managerArgs: extraManagerArgs, managerEnv: extraManagerEnv, kinds: kinds})
 }
 
 // startOptions shape the cluster and the manager start brings up.
@@ -382,6 +392,8 @@ type startOptions struct {
 	// a cluster that installs only the CRDs it uses, as the catalog's
 	// fake-AWS run does (docs/cloudcontrol.md section 11, RECCC).
 	crds []string
+	// kinds, when set, are the only kinds the manager runs (start).
+	kinds []string
 }
 
 func startWithOptions(t *testing.T, o startOptions) *env {
@@ -419,8 +431,40 @@ func startWithOptions(t *testing.T, o startOptions) *env {
 		t.Fatal(err)
 	}
 
+	var kinds []*registry.Type
+	for _, k := range o.kinds {
+		ty := registry.ByRef(k)
+		if ty == nil {
+			t.Fatalf("start: no kind %q in the registry", k)
+		}
+		kinds = append(kinds, ty)
+	}
 	crdDir := filepath.Join(root, "cloudcontrol", "config", "crds")
 	files, _ := filepath.Glob(filepath.Join(crdDir, "*_*.yaml"))
+	if len(kinds) > 0 {
+		// Only the CRDs of the test's kinds and of the Cloud Control kinds
+		// their references name: installing all 1,351 is most of a test's
+		// start-up.
+		files = nil
+		seen := map[string]bool{}
+		add := func(group, plural string) {
+			f := filepath.Join(crdDir, group+"_"+plural+".yaml")
+			if !seen[f] {
+				seen[f] = true
+				files = append(files, f)
+			}
+		}
+		for _, ty := range kinds {
+			add(ty.Group, ty.Plural)
+			for _, r := range ty.References {
+				for _, ref := range registry.Types {
+					if ref.Group == r.Group && ref.Kind == r.Kind {
+						add(ref.Group, ref.Plural)
+					}
+				}
+			}
+		}
+	}
 	if o.crds != nil {
 		files = nil
 		for _, f := range o.crds {
@@ -463,6 +507,10 @@ func startWithOptions(t *testing.T, o startOptions) *env {
 	e := &env{c: c, cc: cc, ccURL: ccURL, moto: motoCfg, account: account, live: live, emulator: emu, ctx: context.Background(), schema: sch,
 		te: te, endpoint: endpoint, root: root}
 	e.allKinds = o.crds != nil
+	e.kinds = kinds
+	if len(e.kinds) > 0 {
+		e.c = kindGuard(t, c, e.kinds)
+	}
 	e.logs = e.runManager(t, envNS, append(extraArgs, extraManagerArgs...), extraManagerEnv)
 	return e
 }
@@ -482,7 +530,11 @@ func (e *env) runManager(t *testing.T, ns string, extraArgs, extraEnv []string) 
 	e.managers++
 	var kinds []string
 	if !e.allKinds {
-		for _, ty := range registry.Types {
+		types := e.kinds
+		if len(types) == 0 {
+			types = registry.Types
+		}
+		for _, ty := range types {
 			kinds = append(kinds, ty.Ref())
 		}
 	}
@@ -554,6 +606,31 @@ func (e *env) runManager(t *testing.T, ns string, extraArgs, extraEnv []string) 
 		}
 	})
 	return logs
+}
+
+// kindGuard fails a create of a Cloud Control kind the manager was not
+// started with: without it the test would wait out its sync timeout on an
+// object nothing reconciles.
+func kindGuard(t *testing.T, c client.Client, kinds []*registry.Type) client.Client {
+	g := guardedClient{Client: c, t: t, served: map[schema.GroupKind]bool{}}
+	for _, ty := range kinds {
+		g.served[ty.GVK().GroupKind()] = true
+	}
+	return g
+}
+
+type guardedClient struct {
+	client.Client
+	t      *testing.T
+	served map[schema.GroupKind]bool
+}
+
+func (g guardedClient) Create(ctx context.Context, o client.Object, opts ...client.CreateOption) error {
+	gk := o.GetObjectKind().GroupVersionKind().GroupKind()
+	if strings.HasSuffix(gk.Group, "."+registry.GroupSuffix) && !g.served[gk] {
+		g.t.Fatalf("create %s/%s %s: the manager was not started with that kind; add it to the test's start", gk.Group, gk.Kind, o.GetName())
+	}
+	return g.Client.Create(ctx, o, opts...)
 }
 
 // ---- object helpers ----

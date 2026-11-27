@@ -25,7 +25,7 @@ func TestSecurityHub(t *testing.T) {
 	if target(t) == "real" {
 		t.Skip("the organization configuration needs an organization; a live run's sandbox account has none")
 	}
-	e := start(t)
+	e := start(t, "Hub.securityhub", "OrganizationConfiguration.securityhub")
 	sh := securityhub.NewFromConfig(e.moto)
 	const hubType, ocType = "AWS::SecurityHub::Hub", "AWS::SecurityHub::OrganizationConfiguration"
 

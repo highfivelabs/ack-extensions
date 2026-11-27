@@ -25,7 +25,7 @@ import (
 // change to a create-only reference is refused by the CRD; the delete
 // disassociates the address and leaves it allocated.
 func TestEIPAssociation(t *testing.T) {
-	e := start(t)
+	e := start(t, "EIPAssociation.ec2")
 	c := ec2.NewFromConfig(e.moto)
 	const typ = "AWS::EC2::EIPAssociation"
 

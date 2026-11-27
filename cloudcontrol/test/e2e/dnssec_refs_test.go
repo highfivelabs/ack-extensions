@@ -23,7 +23,7 @@ import (
 // /hostedzone/Z...; Cloud Control is sent the bare ID (the reference's
 // trimPrefix). Nothing is sent before the referenced objects sync.
 func TestReferencesDNSSEC(t *testing.T) {
-	e := start(t)
+	e := start(t, "DNSSEC.route53", "KeySigningKey.route53")
 	if e.live || e.emulator != nil {
 		t.Skip("on the schema fake only: the kinds are unproven (cloudcontrol/types.yaml)")
 	}

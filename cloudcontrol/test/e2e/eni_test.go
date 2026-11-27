@@ -19,7 +19,7 @@ import (
 // group and a tag; its description, groups and source/destination check
 // changed; drift made in EC2 put back; the subnet create-only; deleted.
 func TestNetworkInterface(t *testing.T) {
-	e := start(t)
+	e := start(t, "NetworkInterface.ec2")
 	c := ec2.NewFromConfig(e.moto)
 	const typ = "AWS::EC2::NetworkInterface"
 	vpc, err := c.CreateVpc(e.ctx, &ec2.CreateVpcInput{CidrBlock: aws.String("10.40.0.0/16")})
