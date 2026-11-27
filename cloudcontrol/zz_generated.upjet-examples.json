@@ -7,7 +7,7 @@
       "plural": "transitgatewayroutetables",
       "example": "ec2/v1beta1/transitgatewaypolicytable",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewaypolicytable.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:31073",
+      "slice": "hack/upjet/provider-upjet-aws.json:31076",
       "referencesStoodIn": [
         "transitGatewayId"
       ],
@@ -22,7 +22,7 @@
       "plural": "transitgatewayroutetables",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewayroutetable.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:31142",
+      "slice": "hack/upjet/provider-upjet-aws.json:31145",
       "referencesStoodIn": [
         "transitGatewayId"
       ],
@@ -37,7 +37,7 @@
       "plural": "detectors",
       "example": "guardduty/v1beta1/detector",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/guardduty/cluster/v1beta1/detector.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:40887",
+      "slice": "hack/upjet/provider-upjet-aws.json:40890",
       "spec": {
         "dataSources": {
           "s3Logs": {
@@ -54,7 +54,7 @@
       "plural": "detectors",
       "example": "guardduty/v1beta2/detector",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/guardduty/cluster/v1beta2/detector.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:40912",
+      "slice": "hack/upjet/provider-upjet-aws.json:40915",
       "spec": {
         "dataSources": {
           "s3Logs": {
@@ -71,7 +71,7 @@
       "plural": "transitgatewayroutes",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewayroute.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:31001",
+      "slice": "hack/upjet/provider-upjet-aws.json:31004",
       "referencesStoodIn": [
         "transitGatewayAttachmentId",
         "transitGatewayRouteTableId"
@@ -89,7 +89,7 @@
       "plural": "transitgatewayroutetableassociations",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewayroutetableassociation.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:31312",
+      "slice": "hack/upjet/provider-upjet-aws.json:31315",
       "manualIntervention": "For testing this resource, firstly disassociate the default association.",
       "referencesStoodIn": [
         "transitGatewayAttachmentId",
@@ -107,7 +107,7 @@
       "plural": "transitgatewayroutetableassociations",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewayroutetablepropagation.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:31389",
+      "slice": "hack/upjet/provider-upjet-aws.json:31392",
       "manualIntervention": "For testing this resource, firstly delete the default propagation.",
       "referencesStoodIn": [
         "transitGatewayAttachmentId",
@@ -125,7 +125,7 @@
       "plural": "transitgatewayroutetablepropagations",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewayroutetableassociation.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:31565",
+      "slice": "hack/upjet/provider-upjet-aws.json:31568",
       "manualIntervention": "For testing this resource, firstly disassociate the default association.",
       "referencesStoodIn": [
         "transitGatewayAttachmentId",
@@ -143,7 +143,7 @@
       "plural": "transitgatewayroutetablepropagations",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewayroutetablepropagation.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:31642",
+      "slice": "hack/upjet/provider-upjet-aws.json:31645",
       "manualIntervention": "For testing this resource, firstly delete the default propagation.",
       "referencesStoodIn": [
         "transitGatewayAttachmentId",
@@ -161,7 +161,7 @@
       "plural": "transitgatewaypeeringattachments",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewaypeeringattachment.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:30594",
+      "slice": "hack/upjet/provider-upjet-aws.json:30597",
       "manualIntervention": "Requires references to replaced manually.",
       "spec": {
         "peerAccountId": "${aws_ec2_transit_gateway.peer.owner_id}",
@@ -177,7 +177,7 @@
       "plural": "dnssecs",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53/cluster/v1beta1/hostedzonednssec.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:63553",
+      "slice": "hack/upjet/provider-upjet-aws.json:63556",
       "manualIntervention": "This resource is not stable due to https://github.com/crossplane/upjet/issues/80.",
       "referencesStoodIn": [
         "hostedZoneId"
@@ -193,7 +193,7 @@
       "plural": "resolverconfigs",
       "example": "route53/v1beta1/resolverconfig",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53/cluster/v1beta1/resolverconfig.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:63030",
+      "slice": "hack/upjet/provider-upjet-aws.json:63033",
       "referencesStoodIn": [
         "resourceId"
       ],
@@ -209,7 +209,7 @@
       "plural": "configurationrecorders",
       "example": "configservice/v1beta1/configurationrecorder",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/configservice/cluster/v1beta1/configurationrecorder.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:19787",
+      "slice": "hack/upjet/provider-upjet-aws.json:19790",
       "referencesStoodIn": [
         "roleARN"
       ],
@@ -224,7 +224,7 @@
       "plural": "configurationrecorders",
       "example": "configservice/v1beta2/configurationrecorder",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/configservice/cluster/v1beta2/configurationrecorder.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:19804",
+      "slice": "hack/upjet/provider-upjet-aws.json:19807",
       "referencesStoodIn": [
         "roleARN"
       ],
@@ -239,7 +239,7 @@
       "plural": "deliverychannels",
       "example": "configservice/v1beta1/deliverychannel",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/configservice/cluster/v1beta1/deliverychannel.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:19939",
+      "slice": "hack/upjet/provider-upjet-aws.json:19942",
       "spec": {
         "s3BucketName": "test-channel-bucket"
       }
@@ -251,7 +251,7 @@
       "plural": "deliverychannels",
       "example": "configservice/v1beta2/deliverychannel",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/configservice/cluster/v1beta2/deliverychannel.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:19962",
+      "slice": "hack/upjet/provider-upjet-aws.json:19965",
       "spec": {
         "s3BucketName": "test-channel-bucket"
       }
@@ -263,7 +263,7 @@
       "plural": "configrules",
       "example": "configservice/v1beta1/configrule",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/configservice/cluster/v1beta1/configrule.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:19591",
+      "slice": "hack/upjet/provider-upjet-aws.json:19594",
       "spec": {
         "source": {
           "owner": "AWS",
@@ -278,7 +278,7 @@
       "plural": "configrules",
       "example": "configservice/v1beta2/configrule",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/configservice/cluster/v1beta2/configrule.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:19615",
+      "slice": "hack/upjet/provider-upjet-aws.json:19618",
       "spec": {
         "source": {
           "owner": "AWS",
@@ -293,7 +293,7 @@
       "plural": "standards",
       "example": "securityhub/v1beta1/standardssubscription",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/securityhub/cluster/v1beta1/standardssubscription.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:69398",
+      "slice": "hack/upjet/provider-upjet-aws.json:69401",
       "spec": {
         "standardsArn": "arn:aws:securityhub:::ruleset/cis-aws-foundations-benchmark/v/1.2.0"
       }
@@ -327,7 +327,7 @@
       "plural": "customdataidentifiers",
       "example": "macie2/v1beta1/customdataidentifier",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/macie2/cluster/v1beta1/customdataidentifier.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:50608",
+      "slice": "hack/upjet/provider-upjet-aws.json:50611",
       "spec": {
         "description": "DESCRIPTION",
         "ignoreWords": [
@@ -348,7 +348,7 @@
       "plural": "insights",
       "example": "securityhub/v1beta1/insight",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/securityhub/cluster/v1beta1/insight.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:69229",
+      "slice": "hack/upjet/provider-upjet-aws.json:69232",
       "spec": {
         "filters": {
           "awsAccountId": [
@@ -373,7 +373,7 @@
       "plural": "insights",
       "example": "securityhub/v1beta2/insight",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/securityhub/cluster/v1beta2/insight.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:69262",
+      "slice": "hack/upjet/provider-upjet-aws.json:69265",
       "spec": {
         "filters": {
           "awsAccountId": [
@@ -398,7 +398,7 @@
       "plural": "productsubscriptions",
       "example": "securityhub/v1beta1/productsubscription",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/securityhub/cluster/v1beta1/productsubscription.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:69348",
+      "slice": "hack/upjet/provider-upjet-aws.json:69351",
       "spec": {
         "productArn": "arn:aws:securityhub:${data.aws_region}:733251395267:product/alertlogic/althreatmanagement"
       }
@@ -410,7 +410,7 @@
       "plural": "loggingconfigurations",
       "example": "wafv2/v1beta1/webaclloggingconfiguration",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/wafv2/cluster/v1beta1/webaclloggingconfiguration.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:77168",
+      "slice": "hack/upjet/provider-upjet-aws.json:77171",
       "referencesStoodIn": [
         "resourceArn"
       ],
@@ -435,7 +435,7 @@
       "plural": "servercertificates",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/iam/cluster/v1beta1/servercertificate.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:42103",
+      "slice": "hack/upjet/provider-upjet-aws.json:42106",
       "manualIntervention": "This resource requires a valid certificate and private key.",
       "spec": {
         "certificateBody": "-----BEGIN CERTIFICATE-----\n[......] # cert contents\n-----END CERTIFICATE-----\n"
@@ -448,7 +448,7 @@
       "plural": "principalassociations",
       "example": "ram/v1beta1/principalassociation",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ram/cluster/v1beta1/principalassociation.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:59491",
+      "slice": "hack/upjet/provider-upjet-aws.json:59494",
       "referencesStoodIn": [
         "resourceShareArn"
       ],
@@ -464,7 +464,7 @@
       "plural": "resourceassociations",
       "example": "ram/v1beta1/resourceassociation",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ram/cluster/v1beta1/resourceassociation.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:59565",
+      "slice": "hack/upjet/provider-upjet-aws.json:59568",
       "manualIntervention": "This resource requires to enable resource sharing within your organization and adding an resourceArn",
       "referencesStoodIn": [
         "resourceShareArn"
@@ -481,7 +481,7 @@
       "plural": "trafficpolicies",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53/cluster/v1beta1/trafficpolicy.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:63933",
+      "slice": "hack/upjet/provider-upjet-aws.json:63936",
       "spec": {
         "comment": "example comment",
         "document": "{\n  \"AWSPolicyFormatVersion\": \"2015-10-01\",\n  \"RecordType\": \"A\",\n  \"Endpoints\": {\n    \"endpoint-start-NkPh\": {\n      \"Type\": \"value\",\n      \"Value\": \"10.0.0.2\"\n    }\n  },\n  \"StartEndpoint\": \"endpoint-start-NkPh\"\n}\n",
@@ -495,7 +495,7 @@
       "plural": "trafficpolicyinstances",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53/cluster/v1beta1/trafficpolicyinstance.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:64001",
+      "slice": "hack/upjet/provider-upjet-aws.json:64004",
       "referencesStoodIn": [
         "hostedZoneId",
         "trafficPolicyId"
@@ -515,7 +515,7 @@
       "plural": "profiles",
       "example": "route53profiles/v1beta1/profile",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53profiles/cluster/v1beta1/profile.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:62191",
+      "slice": "hack/upjet/provider-upjet-aws.json:62194",
       "spec": {
         "name": "example"
       }
@@ -527,7 +527,7 @@
       "plural": "profileassociations",
       "example": "route53profiles/v1beta1/association",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53profiles/cluster/v1beta1/association.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:62270",
+      "slice": "hack/upjet/provider-upjet-aws.json:62273",
       "referencesStoodIn": [
         "profileId",
         "resourceId"
@@ -545,7 +545,7 @@
       "plural": "profileresourceassociations",
       "example": "route53profiles/v1beta1/resourceassociation",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53profiles/cluster/v1beta1/resourceassociation-zone.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:62357",
+      "slice": "hack/upjet/provider-upjet-aws.json:62360",
       "manualIntervention": "resourceArn does not support reference fields due to multiple\nvalid referenceable kinds. Needs to be manually set to the private hosted zone\nARN, via compositions or manually.\n",
       "referencesStoodIn": [
         "profileId"
@@ -563,7 +563,7 @@
       "plural": "profileresourceassociations",
       "example": "route53profiles/v1beta1/resourceassociation",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53profiles/cluster/v1beta1/resourceassociation.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:62381",
+      "slice": "hack/upjet/provider-upjet-aws.json:62384",
       "referencesStoodIn": [
         "profileId"
       ],
@@ -581,7 +581,7 @@
       "plural": "networkinsightsanalysises",
       "example": "ec2/v1beta1/networkinsightsanalysis",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/networkinsightsanalysis.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:27980",
+      "slice": "hack/upjet/provider-upjet-aws.json:27983",
       "referencesStoodIn": [
         "networkInsightsPathId"
       ],
@@ -596,7 +596,7 @@
       "plural": "networkinsightspaths",
       "example": "ec2/v1beta1/networkinsightspath",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/networkinsightspath.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:28060",
+      "slice": "hack/upjet/provider-upjet-aws.json:28063",
       "referencesStoodIn": [
         "destination",
         "source"
@@ -614,7 +614,7 @@
       "plural": "placementgroups",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/placementgroup.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:28365",
+      "slice": "hack/upjet/provider-upjet-aws.json:28368",
       "spec": {
         "strategy": "cluster"
       }
@@ -626,7 +626,7 @@
       "plural": "trafficmirrorfilters",
       "example": "ec2/v1beta1/trafficmirrorfilter",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/trafficmirrorfilter.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:29637",
+      "slice": "hack/upjet/provider-upjet-aws.json:29640",
       "spec": {
         "description": "traffic mirror filter - terraform example",
         "networkServices": [
@@ -641,7 +641,7 @@
       "plural": "trafficmirrorfilterrules",
       "example": "ec2/v1beta1/trafficmirrorfilterrule",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/trafficmirrorfilterrule.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:29708",
+      "slice": "hack/upjet/provider-upjet-aws.json:29711",
       "referencesStoodIn": [
         "trafficMirrorFilterId"
       ],
@@ -662,7 +662,7 @@
       "plural": "trafficmirrorfilterrules",
       "example": "ec2/v1beta2/trafficmirrorfilterrule",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta2/trafficmirrorfilterrule.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:29737",
+      "slice": "hack/upjet/provider-upjet-aws.json:29740",
       "referencesStoodIn": [
         "trafficMirrorFilterId"
       ],
@@ -683,7 +683,7 @@
       "plural": "transitgatewaymulticastdomainassociations",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewaymulticastdomainassociation.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:30187",
+      "slice": "hack/upjet/provider-upjet-aws.json:30190",
       "manualIntervention": "This resource requires manual intervention.",
       "referencesStoodIn": [
         "subnetId",
@@ -703,7 +703,7 @@
       "plural": "transitgatewaymulticastgroupmembers",
       "example": "ec2/v1beta1/transitgatewaymulticastgroupmember",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewaymulticastgroupmember.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:30270",
+      "slice": "hack/upjet/provider-upjet-aws.json:30273",
       "referencesStoodIn": [
         "networkInterfaceId",
         "transitGatewayMulticastDomainId"
@@ -721,7 +721,7 @@
       "plural": "transitgatewaymulticastgroupmembers",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewaymulticastgroupsource.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:30349",
+      "slice": "hack/upjet/provider-upjet-aws.json:30352",
       "manualIntervention": "This resource requires manual intervention.",
       "referencesStoodIn": [
         "networkInterfaceId",
@@ -740,7 +740,7 @@
       "plural": "transitgatewaymulticastgroupsources",
       "example": "ec2/v1beta1/transitgatewaymulticastgroupmember",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewaymulticastgroupmember.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:30430",
+      "slice": "hack/upjet/provider-upjet-aws.json:30433",
       "referencesStoodIn": [
         "networkInterfaceId",
         "transitGatewayMulticastDomainId"
@@ -758,7 +758,7 @@
       "plural": "transitgatewaymulticastgroupsources",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewaymulticastgroupsource.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:30509",
+      "slice": "hack/upjet/provider-upjet-aws.json:30512",
       "manualIntervention": "This resource requires manual intervention.",
       "referencesStoodIn": [
         "networkInterfaceId",
@@ -777,7 +777,7 @@
       "plural": "transitgatewaypolicytables",
       "example": "ec2/v1beta1/transitgatewaypolicytable",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewaypolicytable.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:30742",
+      "slice": "hack/upjet/provider-upjet-aws.json:30745",
       "referencesStoodIn": [
         "transitGatewayId"
       ],
@@ -792,7 +792,7 @@
       "plural": "transitgatewaypolicytables",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ec2/cluster/v1beta1/transitgatewayroutetable.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:30811",
+      "slice": "hack/upjet/provider-upjet-aws.json:30814",
       "referencesStoodIn": [
         "transitGatewayId"
       ],
@@ -807,7 +807,7 @@
       "plural": "querydefinitions",
       "example": "cloudwatchlogs/v1beta1/definition",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/cloudwatchlogs/cluster/v1beta1/definition.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:50403",
+      "slice": "hack/upjet/provider-upjet-aws.json:50406",
       "spec": {
         "logGroupNames": [
           "/aws/logGroup1",
@@ -874,7 +874,7 @@
       "plural": "truststores",
       "example": "elbv2/v1beta1/lbtruststore",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/elbv2/cluster/v1beta1/lbtruststore.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:36412",
+      "slice": "hack/upjet/provider-upjet-aws.json:36415",
       "spec": {
         "caCertificatesBundleS3Bucket": "uptest-test-lbtrusttore",
         "caCertificatesBundleS3Key": "certificates/ca_certificate.pem",
@@ -888,7 +888,7 @@
       "plural": "batchscramsecrets",
       "example": "kafka/v1beta1/scramsecretassociation",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/kafka/cluster/v1beta1/scramsecretassociation.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:52453",
+      "slice": "hack/upjet/provider-upjet-aws.json:52456",
       "referencesStoodIn": [
         "clusterArn"
       ],
@@ -903,7 +903,7 @@
       "plural": "clustersnapshots",
       "example": "rds/v1beta1/clustersnapshot",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/rds/cluster/v1beta1/clustersnapshot.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:59695",
+      "slice": "hack/upjet/provider-upjet-aws.json:59698",
       "referencesStoodIn": [
         "dbClusterIdentifier"
       ],
@@ -919,7 +919,7 @@
       "plural": "maintenancewindowtargets",
       "example": "ssm/v1beta1/maintenancewindowtarget",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ssm/cluster/v1beta1/maintenancewindowtarget.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:72565",
+      "slice": "hack/upjet/provider-upjet-aws.json:72568",
       "referencesStoodIn": [
         "windowId"
       ],
@@ -945,7 +945,7 @@
       "plural": "servicesettings",
       "example": "ssm/v1beta1/servicesetting",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ssm/cluster/v1beta1/servicesetting.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:73315",
+      "slice": "hack/upjet/provider-upjet-aws.json:73318",
       "spec": {
         "settingId": "arn:aws:ssm:us-west-1:${data.aws_account_id}:servicesetting/ssm/parameter-store/high-throughput-enabled",
         "settingValue": "true"
@@ -958,7 +958,7 @@
       "plural": "workerconfigurations",
       "example": "kafkaconnect/v1beta1/workerconfiguration",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/kafkaconnect/cluster/v1beta1/workerconfiguration.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:45051",
+      "slice": "hack/upjet/provider-upjet-aws.json:45054",
       "spec": {
         "name": "example",
         "propertiesFileContent": "key.converter=org.apache.kafka.connect.storage.StringConverter\nvalue.converter=org.apache.kafka.connect.storage.StringConverter\n"
@@ -1515,7 +1515,7 @@
       "plural": "userpoolusers",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/cognitoidp/cluster/v1beta1/user.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:19358",
+      "slice": "hack/upjet/provider-upjet-aws.json:19361",
       "referencesStoodIn": [
         "userPoolId"
       ],
@@ -1530,7 +1530,7 @@
       "plural": "userpoolusertogroupattachments",
       "example": "cognitoidp/v1beta1/useringroup",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/cognitoidp/cluster/v1beta1/useringroup.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:19447",
+      "slice": "hack/upjet/provider-upjet-aws.json:19450",
       "referencesStoodIn": [
         "groupName",
         "userPoolId",
@@ -1549,7 +1549,7 @@
       "plural": "phonenumbers",
       "example": "connect/v1beta1/phonenumber",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/connect/cluster/v1beta1/phonenumber.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:20886",
+      "slice": "hack/upjet/provider-upjet-aws.json:20889",
       "referencesStoodIn": [
         "targetArn"
       ],
@@ -1566,7 +1566,7 @@
       "plural": "datasets",
       "example": "dataexchange/v1beta1/dataset",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/dataexchange/cluster/v1beta1/dataset.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:21969",
+      "slice": "hack/upjet/provider-upjet-aws.json:21972",
       "spec": {
         "assetType": "S3_SNAPSHOT",
         "description": "example",
@@ -1580,7 +1580,7 @@
       "plural": "pipelines",
       "example": "datapipeline/v1beta1/pipeline",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/datapipeline/cluster/v1beta1/pipeline.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:22019",
+      "slice": "hack/upjet/provider-upjet-aws.json:22022",
       "spec": {
         "name": "tf-pipeline-default"
       }
@@ -1592,7 +1592,7 @@
       "plural": "tasks",
       "example": "datasync/v1beta1/task",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/datasync/cluster/v1beta1/task.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:22397",
+      "slice": "hack/upjet/provider-upjet-aws.json:22400",
       "referencesStoodIn": [
         "cloudWatchLogGroupArn",
         "destinationLocationArn",
@@ -1620,7 +1620,7 @@
       "plural": "clusters",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/dax/cluster/v1beta1/cluster.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:22505",
+      "slice": "hack/upjet/provider-upjet-aws.json:22508",
       "referencesStoodIn": [
         "iamRoleARN"
       ],
@@ -1637,7 +1637,7 @@
       "plural": "clusters",
       "example": "dax/v1beta2/cluster",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/dax/cluster/v1beta2/cluster.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:22526",
+      "slice": "hack/upjet/provider-upjet-aws.json:22529",
       "referencesStoodIn": [
         "iamRoleARN"
       ],
@@ -1654,7 +1654,7 @@
       "plural": "agentspaces",
       "example": "devopsagent/v1beta1/agentspace",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/devopsagent/cluster/v1beta1/agentspace.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:22851",
+      "slice": "hack/upjet/provider-upjet-aws.json:22854",
       "spec": {
         "name": "my-agent-space"
       }
@@ -1666,7 +1666,7 @@
       "plural": "eventsubscriptions",
       "example": "docdb/v1beta1/eventsubscription",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/docdb/cluster/v1beta1/eventsubscription.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:24612",
+      "slice": "hack/upjet/provider-upjet-aws.json:24615",
       "referencesStoodIn": [
         "snsTopicArn"
       ],
@@ -1687,7 +1687,7 @@
       "plural": "globalclusters",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/docdb/cluster/v1beta1/globalcluster.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:24821",
+      "slice": "hack/upjet/provider-upjet-aws.json:24824",
       "spec": {
         "engine": "docdb",
         "engineVersion": "4.0.0",
@@ -1701,7 +1701,7 @@
       "plural": "projects",
       "example": "evidently/v1beta1/project",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/evidently/cluster/v1beta1/project.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:37416",
+      "slice": "hack/upjet/provider-upjet-aws.json:37419",
       "spec": {
         "description": "Example Description",
         "name": "evidentlyproject"
@@ -1714,7 +1714,7 @@
       "plural": "projects",
       "example": "evidently/v1beta2/project",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/evidently/cluster/v1beta2/project.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:37435",
+      "slice": "hack/upjet/provider-upjet-aws.json:37438",
       "spec": {
         "description": "Example Description",
         "name": "evidentlyproject"
@@ -1727,7 +1727,7 @@
       "plural": "backups",
       "example": "fsx/v1beta1/backup",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/fsx/cluster/v1beta1/backup.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:37795",
+      "slice": "hack/upjet/provider-upjet-aws.json:37798",
       "referencesStoodIn": [
         "fileSystemId"
       ],
@@ -1742,7 +1742,7 @@
       "plural": "storagevirtualmachines",
       "example": "fsx/v1beta1/ontapstoragevirtualmachine",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/fsx/cluster/v1beta1/ontapstoragevirtualmachine.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:38062",
+      "slice": "hack/upjet/provider-upjet-aws.json:38065",
       "referencesStoodIn": [
         "fileSystemId"
       ],
@@ -1758,7 +1758,7 @@
       "plural": "storagevirtualmachines",
       "example": "fsx/v1beta2/ontapstoragevirtualmachine",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/fsx/cluster/v1beta2/ontapstoragevirtualmachine.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:38086",
+      "slice": "hack/upjet/provider-upjet-aws.json:38089",
       "referencesStoodIn": [
         "fileSystemId"
       ],
@@ -1774,7 +1774,7 @@
       "plural": "aliases",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/gamelift/cluster/v1beta1/alias.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:38240",
+      "slice": "hack/upjet/provider-upjet-aws.json:38243",
       "spec": {
         "description": "Example Description",
         "name": "example-alias",
@@ -1791,7 +1791,7 @@
       "plural": "aliases",
       "example": "gamelift/v1beta2/alias",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/gamelift/cluster/v1beta2/alias.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:38264",
+      "slice": "hack/upjet/provider-upjet-aws.json:38267",
       "spec": {
         "description": "Example Description",
         "name": "example-alias",
@@ -1808,7 +1808,7 @@
       "plural": "accelerators",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/globalaccelerator/cluster/v1beta1/accelerator.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:38836",
+      "slice": "hack/upjet/provider-upjet-aws.json:38839",
       "spec": {
         "ipAddressType": "IPV4",
         "name": "sample-accelerator"
@@ -1821,7 +1821,7 @@
       "plural": "accelerators",
       "example": "globalaccelerator/v1beta2/accelerator",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/globalaccelerator/cluster/v1beta2/accelerator.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:38849",
+      "slice": "hack/upjet/provider-upjet-aws.json:38852",
       "spec": {
         "ipAddressType": "IPV4",
         "name": "sample-accelerator"
@@ -1834,7 +1834,7 @@
       "plural": "classifiers",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/glue/cluster/v1beta1/classifier.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:39040",
+      "slice": "hack/upjet/provider-upjet-aws.json:39043",
       "spec": {
         "csvClassifier": {
           "allowSingleColumn": false,
@@ -1856,7 +1856,7 @@
       "plural": "classifiers",
       "example": "glue/v1beta2/classifier",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/glue/cluster/v1beta2/classifier.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:39071",
+      "slice": "hack/upjet/provider-upjet-aws.json:39074",
       "spec": {
         "csvClassifier": {
           "allowSingleColumn": false,
@@ -1878,7 +1878,7 @@
       "plural": "triggers",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/glue/cluster/v1beta1/trigger.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:40501",
+      "slice": "hack/upjet/provider-upjet-aws.json:40504",
       "spec": {
         "actions": [
           {
@@ -1903,7 +1903,7 @@
       "plural": "triggers",
       "example": "glue/v1beta2/trigger",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/glue/cluster/v1beta2/trigger.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:40535",
+      "slice": "hack/upjet/provider-upjet-aws.json:40538",
       "spec": {
         "actions": [
           {
@@ -1928,7 +1928,7 @@
       "plural": "workspaces",
       "example": "grafana/v1beta1/workspace",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/grafana/cluster/v1beta1/workspace.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:40785",
+      "slice": "hack/upjet/provider-upjet-aws.json:40788",
       "referencesStoodIn": [
         "roleArn"
       ],
@@ -1948,7 +1948,7 @@
       "plural": "workspaces",
       "example": "grafana/v1beta2/workspace",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/grafana/cluster/v1beta2/workspace.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:40810",
+      "slice": "hack/upjet/provider-upjet-aws.json:40813",
       "referencesStoodIn": [
         "roleArn"
       ],
@@ -1968,7 +1968,7 @@
       "plural": "components",
       "example": "imagebuilder/v1beta1/component",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/imagebuilder/cluster/v1beta1/component.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:42577",
+      "slice": "hack/upjet/provider-upjet-aws.json:42580",
       "spec": {
         "data": "${yamlencode({\n    phases = [{\n      name = \"build\"\n      steps = [{\n        action = \"ExecuteBash\"\n        inputs = {\n          commands = [\"echo 'hello world'\"]\n        }\n        name      = \"example\"\n        onFailure = \"Continue\"\n      }]\n    }]\n    schemaVersion = 1.0\n  })}",
         "name": "component",
@@ -1983,7 +1983,7 @@
       "plural": "images",
       "example": "imagebuilder/v1beta1/image",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/imagebuilder/cluster/v1beta1/image.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:42926",
+      "slice": "hack/upjet/provider-upjet-aws.json:42929",
       "manualIntervention": "It requires a ImageRecipe with manual intervention",
       "referencesStoodIn": [
         "imageRecipeArn",
@@ -2001,7 +2001,7 @@
       "plural": "images",
       "example": "imagebuilder/v1beta2/image",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/imagebuilder/cluster/v1beta2/image.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:42949",
+      "slice": "hack/upjet/provider-upjet-aws.json:42952",
       "manualIntervention": "It requires a ImageRecipe with manual intervention",
       "referencesStoodIn": [
         "imageRecipeArn",
@@ -2019,7 +2019,7 @@
       "plural": "imagepipelines",
       "example": "imagebuilder/v1beta1/imagepipeline",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/imagebuilder/cluster/v1beta1/imagepipeline.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:43043",
+      "slice": "hack/upjet/provider-upjet-aws.json:43046",
       "manualIntervention": "It requires a ImageRecipe with manual intervention",
       "referencesStoodIn": [
         "imageRecipeArn",
@@ -2038,7 +2038,7 @@
       "plural": "imagepipelines",
       "example": "imagebuilder/v1beta2/imagepipeline",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/imagebuilder/cluster/v1beta2/imagepipeline.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:43067",
+      "slice": "hack/upjet/provider-upjet-aws.json:43070",
       "manualIntervention": "It requires a ImageRecipe with manual intervention",
       "referencesStoodIn": [
         "imageRecipeArn",
@@ -2057,7 +2057,7 @@
       "plural": "infrastructureconfigurations",
       "example": "imagebuilder/v1beta1/infrastructureconfiguration",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/imagebuilder/cluster/v1beta1/infrastructureconfiguration.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:43339",
+      "slice": "hack/upjet/provider-upjet-aws.json:43342",
       "referencesStoodIn": [
         "instanceProfileName"
       ],
@@ -2074,7 +2074,7 @@
       "plural": "infrastructureconfigurations",
       "example": "imagebuilder/v1beta2/infrastructureconfiguration",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/imagebuilder/cluster/v1beta2/infrastructureconfiguration.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:43361",
+      "slice": "hack/upjet/provider-upjet-aws.json:43364",
       "referencesStoodIn": [
         "instanceProfileName"
       ],
@@ -2091,7 +2091,7 @@
       "plural": "authorizers",
       "example": "iot/v1beta1/authorizer",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/iot/cluster/v1beta1/authorizer.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:43643",
+      "slice": "hack/upjet/provider-upjet-aws.json:43646",
       "referencesStoodIn": [
         "authorizerFunctionArn"
       ],
@@ -2109,7 +2109,7 @@
       "plural": "provisioningtemplates",
       "example": "iot/v1beta1/provisioningtemplate",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/iot/cluster/v1beta1/provisioningtemplate.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:43964",
+      "slice": "hack/upjet/provider-upjet-aws.json:43967",
       "referencesStoodIn": [
         "provisioningRoleArn"
       ],
@@ -2126,7 +2126,7 @@
       "plural": "provisioningtemplates",
       "example": "iot/v1beta2/provisioningtemplate",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/iot/cluster/v1beta2/provisioningtemplate.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:43988",
+      "slice": "hack/upjet/provider-upjet-aws.json:43991",
       "referencesStoodIn": [
         "provisioningRoleArn"
       ],
@@ -2143,7 +2143,7 @@
       "plural": "channels",
       "example": "ivs/v1beta1/channel",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ivs/cluster/v1beta1/channel.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:44753",
+      "slice": "hack/upjet/provider-upjet-aws.json:44756",
       "spec": {
         "name": "channel-1"
       }
@@ -2155,7 +2155,7 @@
       "plural": "recordingconfigurations",
       "example": "ivs/v1beta1/recordingconfiguration",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ivs/cluster/v1beta1/recordingconfiguration.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:44842",
+      "slice": "hack/upjet/provider-upjet-aws.json:44845",
       "spec": {
         "destinationConfiguration": {
           "s3": {
@@ -2172,7 +2172,7 @@
       "plural": "recordingconfigurations",
       "example": "ivs/v1beta2/recordingconfiguration",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ivs/cluster/v1beta2/recordingconfiguration.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:44867",
+      "slice": "hack/upjet/provider-upjet-aws.json:44870",
       "spec": {
         "destinationConfiguration": {
           "s3": {
@@ -2189,7 +2189,7 @@
       "plural": "datasources",
       "example": "kendra/v1beta1/datasource",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/kendra/cluster/v1beta1/datasource.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:45148",
+      "slice": "hack/upjet/provider-upjet-aws.json:45151",
       "manualIntervention": "Uptest doesn't pick up successful resource status",
       "referencesStoodIn": [
         "indexId"
@@ -2209,7 +2209,7 @@
       "plural": "datasources",
       "example": "kendra/v1beta2/datasource",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/kendra/cluster/v1beta2/datasource.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:45181",
+      "slice": "hack/upjet/provider-upjet-aws.json:45184",
       "manualIntervention": "Uptest doesn't pick up successful resource status",
       "referencesStoodIn": [
         "indexId"
@@ -2229,7 +2229,7 @@
       "plural": "licenseconfigurations",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/licensemanager/cluster/v1beta1/licenseconfiguration.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:48688",
+      "slice": "hack/upjet/provider-upjet-aws.json:48691",
       "spec": {
         "description": "Example",
         "licenseCount": 10,
@@ -2248,7 +2248,7 @@
       "plural": "domains",
       "example": "lightsail/v1beta1/domain",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/lightsail/cluster/v1beta1/domain.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:49064",
+      "slice": "hack/upjet/provider-upjet-aws.json:49067",
       "spec": {
         "domainName": "myDomain.com"
       }
@@ -2260,7 +2260,7 @@
       "plural": "trackerconsumers",
       "example": "location/v1beta1/trackerassociation",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/location/cluster/v1beta1/trackerassociation.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:49672",
+      "slice": "hack/upjet/provider-upjet-aws.json:49675",
       "referencesStoodIn": [
         "consumerArn",
         "trackerName"
@@ -2277,7 +2277,7 @@
       "plural": "inputs",
       "example": "medialive/v1beta1/input",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/medialive/cluster/v1beta1/input.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:51256",
+      "slice": "hack/upjet/provider-upjet-aws.json:51259",
       "manualIntervention": "Input resource requires at least one valid input_security_group id.",
       "spec": {
         "inputSecurityGroups": [
@@ -2294,7 +2294,7 @@
       "plural": "inputs",
       "example": "medialive/v1beta2/input",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/medialive/cluster/v1beta2/input.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:51283",
+      "slice": "hack/upjet/provider-upjet-aws.json:51286",
       "manualIntervention": "Input resource requires at least one valid input_security_group id.",
       "spec": {
         "inputSecurityGroups": [
@@ -2311,7 +2311,7 @@
       "plural": "inputsecuritygroups",
       "example": "medialive/v1beta1/inputsecuritygroup",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/medialive/cluster/v1beta1/inputsecuritygroup.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:51354",
+      "slice": "hack/upjet/provider-upjet-aws.json:51357",
       "spec": {
         "whitelistRules": [
           {
@@ -2327,7 +2327,7 @@
       "plural": "globalclusters",
       "example": "neptune/v1beta1/globalcluster",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/neptune/cluster/v1beta1/globalcluster.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:54844",
+      "slice": "hack/upjet/provider-upjet-aws.json:54847",
       "spec": {
         "engine": "neptune",
         "engineVersion": "1.2.0.0"
@@ -2340,7 +2340,7 @@
       "plural": "probes",
       "example": "networkmonitor/v1beta1/probe",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/networkmonitor/cluster/v1beta1/probe.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:56712",
+      "slice": "hack/upjet/provider-upjet-aws.json:56715",
       "referencesStoodIn": [
         "monitorName",
         "sourceArn"
@@ -2361,7 +2361,7 @@
       "plural": "links",
       "example": "oam/v1beta1/link",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/oam/cluster/v1beta1/link.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:56800",
+      "slice": "hack/upjet/provider-upjet-aws.json:56803",
       "referencesStoodIn": [
         "sinkIdentifier"
       ],
@@ -2385,7 +2385,7 @@
       "plural": "sinks",
       "example": "oam/v1beta1/sink",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/oam/cluster/v1beta1/sink.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:56875",
+      "slice": "hack/upjet/provider-upjet-aws.json:56878",
       "spec": {
         "name": "ExampleSink"
       }
@@ -2397,7 +2397,7 @@
       "plural": "controlpanels",
       "example": "route53recoverycontrolconfig/v1beta1/controlpanel",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53recoverycontrolconfig/cluster/v1beta1/controlpanel.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:62454",
+      "slice": "hack/upjet/provider-upjet-aws.json:62457",
       "referencesStoodIn": [
         "clusterArn"
       ],
@@ -2413,7 +2413,7 @@
       "plural": "routingcontrols",
       "example": "route53recoverycontrolconfig/v1beta1/routingcontrol",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53recoverycontrolconfig/cluster/v1beta1/routingcontrol.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:62524",
+      "slice": "hack/upjet/provider-upjet-aws.json:62527",
       "referencesStoodIn": [
         "clusterArn"
       ],
@@ -2429,7 +2429,7 @@
       "plural": "readinesschecks",
       "example": "route53recoveryreadiness/v1beta1/readinesscheck",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/route53recoveryreadiness/cluster/v1beta1/readinesscheck.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:62761",
+      "slice": "hack/upjet/provider-upjet-aws.json:62764",
       "spec": {
         "resourceSetName": "example"
       }
@@ -2441,7 +2441,7 @@
       "plural": "coderepositories",
       "example": "sagemaker/v1beta1/coderepository",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/sagemaker/cluster/v1beta1/coderepository.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:66795",
+      "slice": "hack/upjet/provider-upjet-aws.json:66798",
       "spec": {
         "gitConfig": {
           "repositoryUrl": "https://github.com/hashicorp/terraform-provider-aws.git"
@@ -2455,7 +2455,7 @@
       "plural": "coderepositories",
       "example": "sagemaker/v1beta2/coderepository",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/sagemaker/cluster/v1beta2/coderepository.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:66813",
+      "slice": "hack/upjet/provider-upjet-aws.json:66816",
       "spec": {
         "gitConfig": {
           "repositoryUrl": "https://github.com/hashicorp/terraform-provider-aws.git"
@@ -2469,7 +2469,7 @@
       "plural": "imageversions",
       "example": "sagemaker/v1beta1/imageversion",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/sagemaker/cluster/v1beta1/imageversion.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:67732",
+      "slice": "hack/upjet/provider-upjet-aws.json:67735",
       "manualIntervention": "It requires an image which can be create/deleted only using AWS CLI",
       "referencesStoodIn": [
         "imageName"
@@ -2486,7 +2486,7 @@
       "plural": "portfolioproductassociations",
       "example": "servicecatalog/v1beta1/productportfolioassociation",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/servicecatalog/cluster/v1beta1/productportfolioassociation.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:69926",
+      "slice": "hack/upjet/provider-upjet-aws.json:69929",
       "referencesStoodIn": [
         "portfolioId",
         "productId"
@@ -2504,7 +2504,7 @@
       "plural": "tagoptions",
       "example": "servicecatalog/v1beta1/tagoption",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/servicecatalog/cluster/v1beta1/tagoption.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:70236",
+      "slice": "hack/upjet/provider-upjet-aws.json:70239",
       "spec": {
         "key": "nyckel",
         "value": "värde"
@@ -2517,7 +2517,7 @@
       "plural": "tagoptionassociations",
       "example": "servicecatalog/v1beta1/tagoptionresourceassociation",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/servicecatalog/cluster/v1beta1/tagoptionresourceassociation.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:70304",
+      "slice": "hack/upjet/provider-upjet-aws.json:70307",
       "referencesStoodIn": [
         "resourceId",
         "tagOptionId"
@@ -2534,7 +2534,7 @@
       "plural": "httpnamespaces",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/servicediscovery/cluster/v1beta1/httpnamespace.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:70364",
+      "slice": "hack/upjet/provider-upjet-aws.json:70367",
       "spec": {
         "description": "example",
         "name": "development"
@@ -2547,7 +2547,7 @@
       "plural": "privatednsnamespaces",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/servicediscovery/cluster/v1beta1/privatednsnamespace.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:70447",
+      "slice": "hack/upjet/provider-upjet-aws.json:70450",
       "referencesStoodIn": [
         "vpc"
       ],
@@ -2564,7 +2564,7 @@
       "plural": "publicdnsnamespaces",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/servicediscovery/cluster/v1beta1/publicdnsnamespace.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:70503",
+      "slice": "hack/upjet/provider-upjet-aws.json:70506",
       "spec": {
         "description": "example",
         "name": "upbound.example.com"
@@ -2577,7 +2577,7 @@
       "plural": "receiptrulesets",
       "example": "ses/v1beta1/activereceiptruleset",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ses/cluster/v1beta1/activereceiptruleset.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:71328",
+      "slice": "hack/upjet/provider-upjet-aws.json:71331",
       "spec": {
         "ruleSetName": "primary-rules"
       }
@@ -2589,7 +2589,7 @@
       "plural": "receiptrulesets",
       "example": "ses/v1beta1/receiptruleset",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/ses/cluster/v1beta1/receiptruleset.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:71377",
+      "slice": "hack/upjet/provider-upjet-aws.json:71380",
       "spec": {
         "ruleSetName": "primary-rules"
       }
@@ -2601,7 +2601,7 @@
       "plural": "protections",
       "example": "shield/v1beta1/protection",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/shield/cluster/v1beta1/protection.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:71491",
+      "slice": "hack/upjet/provider-upjet-aws.json:71494",
       "manualIntervention": "Requires an active AWS Shield Advanced subscription in the account, which has a monthly fee and a one-year commitment.\n",
       "referencesStoodIn": [
         "resourceArn"
@@ -2618,7 +2618,7 @@
       "plural": "signingprofiles",
       "example": "",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/signer/cluster/v1beta1/signingprofile.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:71654",
+      "slice": "hack/upjet/provider-upjet-aws.json:71657",
       "spec": {
         "platformId": "AWSLambda-SHA384-ECDSA"
       }
@@ -2630,7 +2630,7 @@
       "plural": "signingprofiles",
       "example": "signer/v1beta2/signingprofile",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/signer/cluster/v1beta2/signingprofile.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:71667",
+      "slice": "hack/upjet/provider-upjet-aws.json:71670",
       "spec": {
         "platformId": "AWSLambda-SHA384-ECDSA"
       }
@@ -2642,7 +2642,7 @@
       "plural": "workflows",
       "example": "transfer/v1beta1/workflow",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/transfer/cluster/v1beta1/workflow.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:74601",
+      "slice": "hack/upjet/provider-upjet-aws.json:74604",
       "manualIntervention": "This resource manual intervention due to Uptest failed without any errors.",
       "spec": {
         "steps": [
@@ -2662,7 +2662,7 @@
       "plural": "workflows",
       "example": "transfer/v1beta2/workflow",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/transfer/cluster/v1beta2/workflow.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:74627",
+      "slice": "hack/upjet/provider-upjet-aws.json:74630",
       "manualIntervention": "This resource manual intervention due to Uptest failed without any errors.",
       "spec": {
         "steps": [
@@ -2682,7 +2682,7 @@
       "plural": "accesslogsubscriptions",
       "example": "vpclattice/v1beta1/accesslogsubscription",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/vpclattice/cluster/v1beta1/accesslogsubscription.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:74710",
+      "slice": "hack/upjet/provider-upjet-aws.json:74713",
       "referencesStoodIn": [
         "resourceIdentifier"
       ],
@@ -2698,7 +2698,7 @@
       "plural": "listeners",
       "example": "vpclattice/v1beta1/listener",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/vpclattice/cluster/v1beta1/listener.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:74872",
+      "slice": "hack/upjet/provider-upjet-aws.json:74875",
       "referencesStoodIn": [
         "serviceIdentifier"
       ],
@@ -2720,7 +2720,7 @@
       "plural": "services",
       "example": "vpclattice/v1beta1/service",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/vpclattice/cluster/v1beta1/service.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:75612",
+      "slice": "hack/upjet/provider-upjet-aws.json:75615",
       "spec": {
         "authType": "AWS_IAM",
         "customDomainName": "example.com",
@@ -2734,7 +2734,7 @@
       "plural": "servicenetworks",
       "example": "vpclattice/v1beta1/servicenetwork",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/vpclattice/cluster/v1beta1/servicenetwork.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:75663",
+      "slice": "hack/upjet/provider-upjet-aws.json:75666",
       "spec": {
         "authType": "AWS_IAM",
         "name": "example"
@@ -2747,7 +2747,7 @@
       "plural": "servicenetworkserviceassociations",
       "example": "vpclattice/v1beta1/servicenetworkserviceassociation",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/vpclattice/cluster/v1beta1/servicenetworkserviceassociation.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:75823",
+      "slice": "hack/upjet/provider-upjet-aws.json:75826",
       "referencesStoodIn": [
         "serviceIdentifier",
         "serviceNetworkIdentifier"
@@ -2764,7 +2764,7 @@
       "plural": "groups",
       "example": "xray/v1beta1/group",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/xray/cluster/v1beta1/group.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:78694",
+      "slice": "hack/upjet/provider-upjet-aws.json:78697",
       "spec": {
         "filterExpression": "responsetime \u003e 5",
         "groupName": "example",
@@ -2781,7 +2781,7 @@
       "plural": "groups",
       "example": "xray/v1beta2/group",
       "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/xray/cluster/v1beta2/group.yaml",
-      "slice": "hack/upjet/provider-upjet-aws.json:78718",
+      "slice": "hack/upjet/provider-upjet-aws.json:78721",
       "spec": {
         "filterExpression": "responsetime \u003e 5",
         "groupName": "example",
