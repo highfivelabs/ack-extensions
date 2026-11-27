@@ -117,6 +117,22 @@ spec:
                 maxLength: 2048
                 minLength: 20
                 type: string
+              pipelineRoleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills pipelineRoleArn: its Kubernetes name, and namespace when another
+                  (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or pipelineRoleArn,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               resourcePolicy:
                 properties:
                   policy:
@@ -209,6 +225,8 @@ spec:
             - message: 'pipelineName is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.pipelineName) == has(oldSelf.pipelineName)
+            - message: pipelineRoleArn and pipelineRoleRef cannot both be given
+              rule: '!(has(self.pipelineRoleArn) && has(self.pipelineRoleRef))'
           status:
             properties:
               ackResourceMetadata:

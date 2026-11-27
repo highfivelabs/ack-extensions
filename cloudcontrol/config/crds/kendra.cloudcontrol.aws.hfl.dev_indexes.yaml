@@ -145,6 +145,21 @@ spec:
                 maxLength: 1284
                 minLength: 1
                 type: string
+              roleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills roleArn: its Kubernetes name, and namespace when another (cross-namespace
+                  references need the manager''s --enable-cross-namespace). The value
+                  is read once that object is synced. Give this or roleArn, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               serverSideEncryptionConfiguration:
                 properties:
                   kmsKeyId:
@@ -241,7 +256,6 @@ spec:
             required:
             - edition
             - name
-            - roleArn
             type: object
             x-kubernetes-validations:
             - message: 'edition is create-only (CloudFormation createOnlyProperties):
@@ -251,6 +265,10 @@ spec:
                 createOnlyProperties): it cannot be added or removed after the resource
                 is made'
               rule: has(self.serverSideEncryptionConfiguration) == has(oldSelf.serverSideEncryptionConfiguration)
+            - message: one of roleArn or roleRef is required
+              rule: has(self.roleArn) || has(self.roleRef)
+            - message: roleArn and roleRef cannot both be given
+              rule: '!(has(self.roleArn) && has(self.roleRef))'
           status:
             properties:
               ackResourceMetadata:

@@ -106,6 +106,21 @@ spec:
                   need to provide the ARN when you are working with a logical destination
                   for cross-account delivery.
                 type: string
+              roleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills roleArn: its Kubernetes name, and namespace when another (cross-namespace
+                  references need the manager''s --enable-cross-namespace). The value
+                  is read once that object is synced. Give this or roleArn, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
             required:
             - destinationArn
             - filterPattern
@@ -118,6 +133,8 @@ spec:
             - message: 'logGroupName is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.logGroupName) == has(oldSelf.logGroupName)
+            - message: roleArn and roleRef cannot both be given
+              rule: '!(has(self.roleArn) && has(self.roleRef))'
           status:
             properties:
               ackResourceMetadata:

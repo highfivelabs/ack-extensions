@@ -52,6 +52,22 @@ spec:
                 maxLength: 2048
                 minLength: 20
                 type: string
+              destinationRef:
+                description: 'A reference to a Bucket (s3.services.k8s.aws) whose
+                  status.ackResourceMetadata.arn fills destinationArn: its Kubernetes
+                  name, and namespace when another (cross-namespace references need
+                  the manager''s --enable-cross-namespace). The value is read once
+                  that object is synced. Give this or destinationArn, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               resourceIdentifier:
                 maxLength: 2048
                 minLength: 17
@@ -83,13 +99,15 @@ spec:
                 maxItems: 50
                 minItems: 0
                 type: array
-            required:
-            - destinationArn
             type: object
             x-kubernetes-validations:
             - message: 'resourceIdentifier is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.resourceIdentifier) == has(oldSelf.resourceIdentifier)
+            - message: one of destinationArn or destinationRef is required
+              rule: has(self.destinationArn) || has(self.destinationRef)
+            - message: destinationArn and destinationRef cannot both be given
+              rule: '!(has(self.destinationArn) && has(self.destinationRef))'
           status:
             properties:
               ackResourceMetadata:

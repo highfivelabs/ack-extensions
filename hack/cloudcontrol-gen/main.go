@@ -55,6 +55,9 @@ type config struct {
 	// role holds their permissions only (plan question 21).
 	LiveKinds []string    `json:"liveKinds"`
 	Types     []typeEntry `json:"types"`
+	// ReferenceTargets are where ACK's kinds keep their ID, for the
+	// references the Upjet facts give (hack/upjet; upjet.go).
+	ReferenceTargets []refTarget `json:"referenceTargets"`
 }
 
 // typeEntry is one type of cloudcontrol/types.yaml.
@@ -259,6 +262,7 @@ type generated struct {
 	NeverDelete                         bool
 	Live                                bool
 	References                          []cfn.Reference
+	Upjet                               *upjetType
 	Report                              *crdgen.Report
 	IAM                                 iamgen.Result
 }
@@ -272,6 +276,10 @@ func generate(root string, files map[string][]byte, cfg config) error {
 		}
 	}
 	live, err := liveKinds(cfg)
+	if err != nil {
+		return err
+	}
+	up, ix, err := upjetIndex(root, files, cfg)
 	if err != nil {
 		return err
 	}
@@ -294,15 +302,32 @@ func generate(root string, files map[string][]byte, cfg config) error {
 			kind = s.Resource()
 		}
 		group := groupOf(s, cfg.GroupSuffix)
-		refs, err := s.References(t.References)
+		// The overlay's references, and those the Upjet facts add
+		// (upjet.go): the overlay's alone must be right; the CRD with
+		// Upjet's must be accepted, or they are listed and left out.
+		if _, err := s.References(t.References); err != nil {
+			return err
+		}
+		ut := ix.forType(up, t, s)
+		refs, err := s.References(ut.merged(s, t.References))
 		if err != nil {
 			return err
 		}
 		crd, rep, err := crdgen.Generate(s, crdgen.Options{Group: group, Version: cfg.Version, Kind: kind, Secrets: t.Secrets, Unproven: t.Unproven, NeverDelete: t.NeverDelete, References: refs})
-		if err != nil {
-			return err
+		if err == nil {
+			err = crdcheck.Validate(crd)
 		}
-		if err := crdcheck.Validate(crd); err != nil {
+		if err != nil && len(refs) > len(t.References) {
+			ut.refused(err)
+			if refs, err = s.References(t.References); err != nil {
+				return err
+			}
+			crd, rep, err = crdgen.Generate(s, crdgen.Options{Group: group, Version: cfg.Version, Kind: kind, Secrets: t.Secrets, Unproven: t.Unproven, NeverDelete: t.NeverDelete, References: refs})
+			if err == nil {
+				err = crdcheck.Validate(crd)
+			}
+		}
+		if err != nil {
 			return fmt.Errorf("%s: the generated CRD would be refused: %w", t.TypeName, err)
 		}
 		y, err := crdYAML(crd)
@@ -321,7 +346,7 @@ func generate(root string, files map[string][]byte, cfg config) error {
 		if err := writeFile(filepath.Join(out, "config/iam", base+".json"), append(pj, '\n')); err != nil {
 			return err
 		}
-		gens = append(gens, generated{TypeName: t.TypeName, Group: group, Kind: kind, Plural: crd.Spec.Names.Plural, File: file, Secrets: t.Secrets, Unproven: t.Unproven, NeverDelete: t.NeverDelete, Live: live[t.TypeName], References: refs, Report: rep, IAM: pol})
+		gens = append(gens, generated{TypeName: t.TypeName, Group: group, Kind: kind, Plural: crd.Spec.Names.Plural, File: file, Secrets: t.Secrets, Unproven: t.Unproven, NeverDelete: t.NeverDelete, Live: live[t.TypeName], References: refs, Upjet: ut, Report: rep, IAM: pol})
 	}
 	if err := writeRBAC(out, gens); err != nil {
 		return err
@@ -333,6 +358,9 @@ func generate(root string, files map[string][]byte, cfg config) error {
 		return err
 	}
 	if err := writeLiveTemplate(root, out, cfg, gens); err != nil {
+		return err
+	}
+	if err := writeUpjet(root, out, up, gens); err != nil {
 		return err
 	}
 	return writeReport(out, gens)
@@ -494,7 +522,7 @@ func writeReport(out string, gens []generated) error {
 		fmt.Fprintf(&b, "\n## `%s`\n\n", g.TypeName)
 		fmt.Fprintf(&b, "- Secret references (opted in, `secrets` in types.yaml): %s\n", list(r.SecretRefs))
 		if len(r.References) > 0 {
-			fmt.Fprintf(&b, "- Reference fields (the overlay, `references` in types.yaml): %s\n", list(r.References))
+			fmt.Fprintf(&b, "- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): %s\n", list(r.References))
 		}
 		fmt.Fprintf(&b, "- Write-only kept as plain fields: %s\n", list(r.PlainWriteOnly))
 		fmt.Fprintf(&b, "- Of those, write-only strings that could be opted in if they are secrets: %s\n", list(r.SecretCandidate))

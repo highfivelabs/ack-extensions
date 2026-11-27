@@ -105,6 +105,22 @@ spec:
               targetArn:
                 description: The ARN of the target the phone number is claimed to.
                 type: string
+              targetRef:
+                description: 'A reference to a Instance (connect.cloudcontrol.aws.hfl.dev)
+                  whose status.ackResourceMetadata.arn fills targetArn: its Kubernetes
+                  name, and namespace when another (cross-namespace references need
+                  the manager''s --enable-cross-namespace). The value is read once
+                  that object is synced. Give this or targetArn, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               type:
                 description: The phone number type
                 type: string
@@ -112,8 +128,6 @@ spec:
                 - message: 'type is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
-            required:
-            - targetArn
             type: object
             x-kubernetes-validations:
             - message: 'countryCode is create-only (CloudFormation createOnlyProperties):
@@ -128,6 +142,10 @@ spec:
             - message: 'type is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.type) == has(oldSelf.type)
+            - message: one of targetArn or targetRef is required
+              rule: has(self.targetArn) || has(self.targetRef)
+            - message: targetArn and targetRef cannot both be given
+              rule: '!(has(self.targetArn) && has(self.targetRef))'
           status:
             properties:
               ackResourceMetadata:

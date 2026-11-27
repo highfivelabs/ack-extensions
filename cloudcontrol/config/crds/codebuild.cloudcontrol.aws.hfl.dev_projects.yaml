@@ -371,6 +371,22 @@ spec:
                 type: array
               serviceRole:
                 type: string
+              serviceRoleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills serviceRole: its Kubernetes name, and namespace when another
+                  (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or serviceRole,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               source:
                 properties:
                   auth:
@@ -504,13 +520,16 @@ spec:
             required:
             - artifacts
             - environment
-            - serviceRole
             - source
             type: object
             x-kubernetes-validations:
             - message: 'name is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.name) == has(oldSelf.name)
+            - message: one of serviceRole or serviceRoleRef is required
+              rule: has(self.serviceRole) || has(self.serviceRoleRef)
+            - message: serviceRole and serviceRoleRef cannot both be given
+              rule: '!(has(self.serviceRole) && has(self.serviceRoleRef))'
           status:
             properties:
               ackResourceMetadata:

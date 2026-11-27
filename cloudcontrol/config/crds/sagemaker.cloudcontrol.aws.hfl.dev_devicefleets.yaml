@@ -81,6 +81,21 @@ spec:
                 maxLength: 2048
                 minLength: 20
                 type: string
+              roleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills roleArn: its Kubernetes name, and namespace when another (cross-namespace
+                  references need the manager''s --enable-cross-namespace). The value
+                  is read once that object is synced. Give this or roleArn, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               tags:
                 description: Associate tags with the resource
                 items:
@@ -112,12 +127,15 @@ spec:
             required:
             - deviceFleetName
             - outputConfig
-            - roleArn
             type: object
             x-kubernetes-validations:
             - message: 'deviceFleetName is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.deviceFleetName) == has(oldSelf.deviceFleetName)
+            - message: one of roleArn or roleRef is required
+              rule: has(self.roleArn) || has(self.roleRef)
+            - message: roleArn and roleRef cannot both be given
+              rule: '!(has(self.roleArn) && has(self.roleRef))'
           status:
             properties:
               ackResourceMetadata:

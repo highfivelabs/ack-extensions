@@ -67,6 +67,27 @@ spec:
                     createOnlyProperties): it cannot change after the resource is
                     made'
                   rule: self == oldSelf
+              certificateAuthorityRef:
+                description: 'A reference to a CertificateAuthority (acmpca.services.k8s.aws)
+                  whose status.ackResourceMetadata.arn fills certificateAuthorityArn:
+                  its Kubernetes name, and namespace when another (cross-namespace
+                  references need the manager''s --enable-cross-namespace). The value
+                  is read once that object is synced. Give this or certificateAuthorityArn,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'certificateAuthorityRef is create-only, as certificateAuthorityArn
+                    is: it cannot change after the resource is made'
+                  rule: self == oldSelf
               principal:
                 description: The AWS service or identity that receives the permission.
                   At this time, the only valid principal is acm.amazonaws.com.
@@ -84,7 +105,6 @@ spec:
                   rule: self == oldSelf
             required:
             - actions
-            - certificateAuthorityArn
             - principal
             type: object
             x-kubernetes-validations:
@@ -100,6 +120,15 @@ spec:
             - message: 'sourceAccount is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.sourceAccount) == has(oldSelf.sourceAccount)
+            - message: one of certificateAuthorityArn or certificateAuthorityRef is
+                required
+              rule: has(self.certificateAuthorityArn) || has(self.certificateAuthorityRef)
+            - message: certificateAuthorityArn and certificateAuthorityRef cannot
+                both be given
+              rule: '!(has(self.certificateAuthorityArn) && has(self.certificateAuthorityRef))'
+            - message: 'certificateAuthorityRef is create-only, as certificateAuthorityArn
+                is: it cannot be added or removed after the resource is made'
+              rule: has(self.certificateAuthorityRef) == has(oldSelf.certificateAuthorityRef)
           status:
             properties:
               ackResourceMetadata:

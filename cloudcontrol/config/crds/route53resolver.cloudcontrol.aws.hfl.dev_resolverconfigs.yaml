@@ -69,9 +69,28 @@ spec:
                 - message: 'resourceId is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
+              resourceRef:
+                description: 'A reference to a VPC (ec2.services.k8s.aws) whose status.vpcID
+                  fills resourceId: its Kubernetes name, and namespace when another
+                  (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or resourceId,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'resourceRef is create-only, as resourceId is: it cannot
+                    change after the resource is made'
+                  rule: self == oldSelf
             required:
             - autodefinedReverseFlag
-            - resourceId
             type: object
             x-kubernetes-validations:
             - message: 'autodefinedReverseFlag is create-only (CloudFormation createOnlyProperties):
@@ -80,6 +99,13 @@ spec:
             - message: 'resourceId is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.resourceId) == has(oldSelf.resourceId)
+            - message: one of resourceId or resourceRef is required
+              rule: has(self.resourceId) || has(self.resourceRef)
+            - message: resourceId and resourceRef cannot both be given
+              rule: '!(has(self.resourceId) && has(self.resourceRef))'
+            - message: 'resourceRef is create-only, as resourceId is: it cannot be
+                added or removed after the resource is made'
+              rule: has(self.resourceRef) == has(oldSelf.resourceRef)
           status:
             properties:
               ackResourceMetadata:

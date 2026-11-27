@@ -62,6 +62,26 @@ spec:
                 - message: 'databaseName is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
+              databaseRef:
+                description: 'A reference to a Database (glue.services.k8s.aws) whose
+                  spec.name fills databaseName: its Kubernetes name, and namespace
+                  when another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or databaseName,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'databaseRef is create-only, as databaseName is: it cannot
+                    change after the resource is made'
+                  rule: self == oldSelf
               name:
                 description: The table name. For Hive compatibility, this is folded
                   to lowercase when it is stored.
@@ -481,7 +501,6 @@ spec:
                   rule: has(self.name) == has(oldSelf.name)
             required:
             - catalogId
-            - databaseName
             type: object
             x-kubernetes-validations:
             - message: 'catalogId is create-only (CloudFormation createOnlyProperties):
@@ -493,6 +512,13 @@ spec:
             - message: 'name is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.name) == has(oldSelf.name)
+            - message: one of databaseName or databaseRef is required
+              rule: has(self.databaseName) || has(self.databaseRef)
+            - message: databaseName and databaseRef cannot both be given
+              rule: '!(has(self.databaseName) && has(self.databaseRef))'
+            - message: 'databaseRef is create-only, as databaseName is: it cannot
+                be added or removed after the resource is made'
+              rule: has(self.databaseRef) == has(oldSelf.databaseRef)
           status:
             properties:
               ackResourceMetadata:

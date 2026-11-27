@@ -55,17 +55,61 @@ spec:
                 - message: 'gatewayId is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
+              gatewayRef:
+                description: 'A reference to a InternetGateway (ec2.services.k8s.aws)
+                  whose status.internetGatewayID fills gatewayId: its Kubernetes name,
+                  and namespace when another (cross-namespace references need the
+                  manager''s --enable-cross-namespace). The value is read once that
+                  object is synced. Give this or gatewayId, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'gatewayRef is create-only, as gatewayId is: it cannot
+                    change after the resource is made'
+                  rule: self == oldSelf
               routeTableId:
                 description: The ID of the route table.
                 type: string
-            required:
-            - gatewayId
-            - routeTableId
+              routeTableRef:
+                description: 'A reference to a RouteTable (ec2.services.k8s.aws) whose
+                  status.routeTableID fills routeTableId: its Kubernetes name, and
+                  namespace when another (cross-namespace references need the manager''s
+                  --enable-cross-namespace). The value is read once that object is
+                  synced. Give this or routeTableId, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
             type: object
             x-kubernetes-validations:
             - message: 'gatewayId is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.gatewayId) == has(oldSelf.gatewayId)
+            - message: one of gatewayId or gatewayRef is required
+              rule: has(self.gatewayId) || has(self.gatewayRef)
+            - message: gatewayId and gatewayRef cannot both be given
+              rule: '!(has(self.gatewayId) && has(self.gatewayRef))'
+            - message: 'gatewayRef is create-only, as gatewayId is: it cannot be added
+                or removed after the resource is made'
+              rule: has(self.gatewayRef) == has(oldSelf.gatewayRef)
+            - message: one of routeTableId or routeTableRef is required
+              rule: has(self.routeTableId) || has(self.routeTableRef)
+            - message: routeTableId and routeTableRef cannot both be given
+              rule: '!(has(self.routeTableId) && has(self.routeTableRef))'
           status:
             properties:
               ackResourceMetadata:

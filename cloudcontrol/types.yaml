@@ -94,6 +94,50 @@ liveTestActions:
   - config:DescribeConfigurationRecorderStatus
   - secretsmanager:CreateSecret
   - secretsmanager:DeleteSecret
+# Where ACK's kinds keep their identifier, for the references the Upjet
+# facts give (hack/upjet; hack/cloudcontrol-gen/upjet.go, HFL-699): a
+# reference whose Upjet extractor copies the target's Terraform ID is wired
+# to ACK's kind only when the kind is listed here. Each path was read from
+# the kind's CRD at the ACK release pinned in docs/coverage/sources.yaml;
+# the kinds Upjet names by a user-written name (NameAsIdentifier,
+# ParameterAsIdentifier, a name template) keep it in spec. A reference to
+# an ARN needs no entry: ACK's kinds keep it in
+# status.ackResourceMetadata.arn.
+referenceTargets:
+  - {group: apigateway.services.k8s.aws, kind: APIKey, id: status.id}
+  - {group: apigateway.services.k8s.aws, kind: Resource, id: status.id}
+  - {group: apigateway.services.k8s.aws, kind: RestAPI, id: status.id}
+  - {group: apigatewayv2.services.k8s.aws, kind: API, id: status.apiID}
+  - {group: apigatewayv2.services.k8s.aws, kind: Integration, id: status.integrationID}
+  - {group: apigatewayv2.services.k8s.aws, kind: Route, id: status.routeID}
+  - {group: autoscaling.services.k8s.aws, kind: AutoScalingGroup, id: spec.name}
+  - {group: cloudfront.services.k8s.aws, kind: Distribution, id: status.id}
+  - {group: cloudwatchlogs.services.k8s.aws, kind: LogGroup, id: spec.name}
+  - {group: cognitoidentityprovider.services.k8s.aws, kind: UserPool, id: status.id}
+  - {group: cognitoidentityprovider.services.k8s.aws, kind: UserPoolClient, id: status.id}
+  - {group: ec2.services.k8s.aws, kind: ElasticIPAddress, id: status.allocationID}
+  - {group: ec2.services.k8s.aws, kind: Instance, id: status.instanceID}
+  - {group: ec2.services.k8s.aws, kind: InternetGateway, id: status.internetGatewayID}
+  - {group: ec2.services.k8s.aws, kind: ManagedPrefixList, id: status.id}
+  - {group: ec2.services.k8s.aws, kind: RouteTable, id: status.routeTableID}
+  - {group: ec2.services.k8s.aws, kind: SecurityGroup, id: status.id}
+  - {group: ec2.services.k8s.aws, kind: Subnet, id: status.subnetID}
+  - {group: ec2.services.k8s.aws, kind: TransitGateway, id: status.transitGatewayID}
+  - {group: ec2.services.k8s.aws, kind: TransitGatewayVPCAttachment, id: status.id}
+  - {group: ec2.services.k8s.aws, kind: VPC, id: status.vpcID}
+  - {group: ecr.services.k8s.aws, kind: Repository, id: spec.name}
+  - {group: efs.services.k8s.aws, kind: FileSystem, id: status.fileSystemID}
+  - {group: eks.services.k8s.aws, kind: Cluster, id: spec.name}
+  - {group: glue.services.k8s.aws, kind: Database, id: spec.name}
+  - {group: glue.services.k8s.aws, kind: Job, id: spec.name}
+  - {group: iam.services.k8s.aws, kind: InstanceProfile, id: spec.name}
+  - {group: iam.services.k8s.aws, kind: Role, id: spec.name}
+  - {group: kms.services.k8s.aws, kind: Key, id: status.keyID}
+  - {group: memorydb.services.k8s.aws, kind: SubnetGroup, id: spec.name}
+  - {group: route53.services.k8s.aws, kind: HostedZone, id: status.id, trimPrefix: /hostedzone/}
+  - {group: s3.services.k8s.aws, kind: Bucket, id: spec.name}
+  - {group: ses.services.k8s.aws, kind: ConfigurationSet, id: spec.name}
+
 types:
   # F03: IAM SAML providers. ACK's iam-controller ignores SAMLProvider.
   - typeName: AWS::IAM::SAMLProvider

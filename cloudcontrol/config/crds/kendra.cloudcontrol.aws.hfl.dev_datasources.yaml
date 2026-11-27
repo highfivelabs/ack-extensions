@@ -1430,6 +1430,26 @@ spec:
                 - message: 'indexId is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
+              indexRef:
+                description: 'A reference to a Index (kendra.cloudcontrol.aws.hfl.dev)
+                  whose status.id fills indexId: its Kubernetes name, and namespace
+                  when another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or indexId,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'indexRef is create-only, as indexId is: it cannot change
+                    after the resource is made'
+                  rule: self == oldSelf
               languageCode:
                 description: The code for a language.
                 maxLength: 10
@@ -1445,6 +1465,21 @@ spec:
                 maxLength: 1284
                 minLength: 1
                 type: string
+              roleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills roleArn: its Kubernetes name, and namespace when another (cross-namespace
+                  references need the manager''s --enable-cross-namespace). The value
+                  is read once that object is synced. Give this or roleArn, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               schedule:
                 description: Schedule
                 maxLength: 1000
@@ -1491,7 +1526,6 @@ spec:
                     it cannot change after the resource is made'
                   rule: self == oldSelf
             required:
-            - indexId
             - name
             - type
             type: object
@@ -1502,6 +1536,15 @@ spec:
             - message: 'type is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.type) == has(oldSelf.type)
+            - message: one of indexId or indexRef is required
+              rule: has(self.indexId) || has(self.indexRef)
+            - message: indexId and indexRef cannot both be given
+              rule: '!(has(self.indexId) && has(self.indexRef))'
+            - message: 'indexRef is create-only, as indexId is: it cannot be added
+                or removed after the resource is made'
+              rule: has(self.indexRef) == has(oldSelf.indexRef)
+            - message: roleArn and roleRef cannot both be given
+              rule: '!(has(self.roleArn) && has(self.roleRef))'
           status:
             properties:
               ackResourceMetadata:

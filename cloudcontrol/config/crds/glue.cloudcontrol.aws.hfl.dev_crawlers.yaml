@@ -65,6 +65,22 @@ spec:
                 description: The name of the database in which the crawler's output
                   is stored.
                 type: string
+              databaseRef:
+                description: 'A reference to a Database (glue.services.k8s.aws) whose
+                  spec.name fills databaseName: its Kubernetes name, and namespace
+                  when another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or databaseName,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               description:
                 description: A description of the crawler.
                 type: string
@@ -110,6 +126,21 @@ spec:
                   used to access customer resources, such as Amazon Simple Storage
                   Service (Amazon S3) data.
                 type: string
+              roleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills role: its Kubernetes name, and namespace when another (cross-namespace
+                  references need the manager''s --enable-cross-namespace). The value
+                  is read once that object is synced. Give this or role, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               schedule:
                 description: A scheduling object using a cron statement to schedule
                   an event.
@@ -382,13 +413,18 @@ spec:
                     type: array
                 type: object
             required:
-            - role
             - targets
             type: object
             x-kubernetes-validations:
             - message: 'name is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.name) == has(oldSelf.name)
+            - message: databaseName and databaseRef cannot both be given
+              rule: '!(has(self.databaseName) && has(self.databaseRef))'
+            - message: one of role or roleRef is required
+              rule: has(self.role) || has(self.roleRef)
+            - message: role and roleRef cannot both be given
+              rule: '!(has(self.role) && has(self.roleRef))'
           status:
             properties:
               ackResourceMetadata:

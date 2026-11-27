@@ -142,6 +142,22 @@ spec:
                 maxLength: 1000
                 minLength: 0
                 type: string
+              computeRoleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills computeRoleArn: its Kubernetes name, and namespace when another
+                  (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or computeRoleArn,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               customHeaders:
                 maxLength: 25000
                 minLength: 0
@@ -238,6 +254,9 @@ spec:
             required:
             - name
             type: object
+            x-kubernetes-validations:
+            - message: computeRoleArn and computeRoleRef cannot both be given
+              rule: '!(has(self.computeRoleArn) && has(self.computeRoleRef))'
           status:
             properties:
               ackResourceMetadata:

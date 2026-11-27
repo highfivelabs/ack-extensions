@@ -67,6 +67,26 @@ spec:
                 - message: 'peerTransitGatewayId is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
+              peerTransitGatewayRef:
+                description: 'A reference to a TransitGateway (ec2.services.k8s.aws)
+                  whose status.transitGatewayID fills peerTransitGatewayId: its Kubernetes
+                  name, and namespace when another (cross-namespace references need
+                  the manager''s --enable-cross-namespace). The value is read once
+                  that object is synced. Give this or peerTransitGatewayId, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'peerTransitGatewayRef is create-only, as peerTransitGatewayId
+                    is: it cannot change after the resource is made'
+                  rule: self == oldSelf
               tags:
                 description: The tags for the transit gateway peering attachment.
                 items:
@@ -89,11 +109,29 @@ spec:
                 - message: 'transitGatewayId is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
+              transitGatewayRef:
+                description: 'A reference to a TransitGateway (ec2.services.k8s.aws)
+                  whose status.transitGatewayID fills transitGatewayId: its Kubernetes
+                  name, and namespace when another (cross-namespace references need
+                  the manager''s --enable-cross-namespace). The value is read once
+                  that object is synced. Give this or transitGatewayId, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'transitGatewayRef is create-only, as transitGatewayId
+                    is: it cannot change after the resource is made'
+                  rule: self == oldSelf
             required:
             - peerAccountId
             - peerRegion
-            - peerTransitGatewayId
-            - transitGatewayId
             type: object
             x-kubernetes-validations:
             - message: 'peerAccountId is create-only (CloudFormation createOnlyProperties):
@@ -108,6 +146,21 @@ spec:
             - message: 'transitGatewayId is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.transitGatewayId) == has(oldSelf.transitGatewayId)
+            - message: one of peerTransitGatewayId or peerTransitGatewayRef is required
+              rule: has(self.peerTransitGatewayId) || has(self.peerTransitGatewayRef)
+            - message: peerTransitGatewayId and peerTransitGatewayRef cannot both
+                be given
+              rule: '!(has(self.peerTransitGatewayId) && has(self.peerTransitGatewayRef))'
+            - message: 'peerTransitGatewayRef is create-only, as peerTransitGatewayId
+                is: it cannot be added or removed after the resource is made'
+              rule: has(self.peerTransitGatewayRef) == has(oldSelf.peerTransitGatewayRef)
+            - message: one of transitGatewayId or transitGatewayRef is required
+              rule: has(self.transitGatewayId) || has(self.transitGatewayRef)
+            - message: transitGatewayId and transitGatewayRef cannot both be given
+              rule: '!(has(self.transitGatewayId) && has(self.transitGatewayRef))'
+            - message: 'transitGatewayRef is create-only, as transitGatewayId is:
+                it cannot be added or removed after the resource is made'
+              rule: has(self.transitGatewayRef) == has(oldSelf.transitGatewayRef)
           status:
             properties:
               ackResourceMetadata:

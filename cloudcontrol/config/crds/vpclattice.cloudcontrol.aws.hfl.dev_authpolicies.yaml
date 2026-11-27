@@ -59,14 +59,42 @@ spec:
                 - message: 'resourceIdentifier is create-only (CloudFormation createOnlyProperties):
                     it cannot change after the resource is made'
                   rule: self == oldSelf
+              resourceIdentifierRef:
+                description: 'A reference to a Service (vpclattice.cloudcontrol.aws.hfl.dev)
+                  whose status.ackResourceMetadata.arn fills resourceIdentifier: its
+                  Kubernetes name, and namespace when another (cross-namespace references
+                  need the manager''s --enable-cross-namespace). The value is read
+                  once that object is synced. Give this or resourceIdentifier, not
+                  both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - message: 'resourceIdentifierRef is create-only, as resourceIdentifier
+                    is: it cannot change after the resource is made'
+                  rule: self == oldSelf
             required:
             - policy
-            - resourceIdentifier
             type: object
             x-kubernetes-validations:
             - message: 'resourceIdentifier is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.resourceIdentifier) == has(oldSelf.resourceIdentifier)
+            - message: one of resourceIdentifier or resourceIdentifierRef is required
+              rule: has(self.resourceIdentifier) || has(self.resourceIdentifierRef)
+            - message: resourceIdentifier and resourceIdentifierRef cannot both be
+                given
+              rule: '!(has(self.resourceIdentifier) && has(self.resourceIdentifierRef))'
+            - message: 'resourceIdentifierRef is create-only, as resourceIdentifier
+                is: it cannot be added or removed after the resource is made'
+              rule: has(self.resourceIdentifierRef) == has(oldSelf.resourceIdentifierRef)
           status:
             properties:
               ackResourceMetadata:

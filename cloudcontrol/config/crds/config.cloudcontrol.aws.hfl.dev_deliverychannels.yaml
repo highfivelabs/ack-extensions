@@ -75,6 +75,22 @@ spec:
                 description: The name of the Amazon S3 bucket to which AWS Config
                   delivers configuration snapshots and configuration history files.
                 type: string
+              s3BucketRef:
+                description: 'A reference to a Bucket (s3.services.k8s.aws) whose
+                  spec.name fills s3BucketName: its Kubernetes name, and namespace
+                  when another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or s3BucketName,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               s3KeyPrefix:
                 description: The prefix for the specified Amazon S3 bucket.
                 type: string
@@ -88,13 +104,15 @@ spec:
                 description: The Amazon Resource Name (ARN) of the Amazon SNS topic
                   to which AWS Config sends notifications about configuration changes.
                 type: string
-            required:
-            - s3BucketName
             type: object
             x-kubernetes-validations:
             - message: 'name is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.name) == has(oldSelf.name)
+            - message: one of s3BucketName or s3BucketRef is required
+              rule: has(self.s3BucketName) || has(self.s3BucketRef)
+            - message: s3BucketName and s3BucketRef cannot both be given
+              rule: '!(has(self.s3BucketName) && has(self.s3BucketRef))'
           status:
             properties:
               ackResourceMetadata:

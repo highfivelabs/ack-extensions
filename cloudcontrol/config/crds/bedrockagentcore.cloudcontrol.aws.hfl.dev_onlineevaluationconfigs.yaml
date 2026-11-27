@@ -124,6 +124,22 @@ spec:
                 maxLength: 2048
                 minLength: 1
                 type: string
+              evaluationExecutionRoleRef:
+                description: 'A reference to a Role (iam.services.k8s.aws) whose status.ackResourceMetadata.arn
+                  fills evaluationExecutionRoleArn: its Kubernetes name, and namespace
+                  when another (cross-namespace references need the manager''s --enable-cross-namespace).
+                  The value is read once that object is synced. Give this or evaluationExecutionRoleArn,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               evaluators:
                 description: The list of evaluators to apply during online evaluation.
                 items:
@@ -307,7 +323,6 @@ spec:
                 type: array
             required:
             - dataSourceConfig
-            - evaluationExecutionRoleArn
             - onlineEvaluationConfigName
             - rule
             type: object
@@ -316,6 +331,12 @@ spec:
                 createOnlyProperties): it cannot be added or removed after the resource
                 is made'
               rule: has(self.onlineEvaluationConfigName) == has(oldSelf.onlineEvaluationConfigName)
+            - message: one of evaluationExecutionRoleArn or evaluationExecutionRoleRef
+                is required
+              rule: has(self.evaluationExecutionRoleArn) || has(self.evaluationExecutionRoleRef)
+            - message: evaluationExecutionRoleArn and evaluationExecutionRoleRef cannot
+                both be given
+              rule: '!(has(self.evaluationExecutionRoleArn) && has(self.evaluationExecutionRoleRef))'
           status:
             properties:
               ackResourceMetadata:

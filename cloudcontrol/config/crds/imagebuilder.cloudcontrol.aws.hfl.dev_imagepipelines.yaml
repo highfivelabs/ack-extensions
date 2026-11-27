@@ -71,6 +71,22 @@ spec:
                 description: The Amazon Resource Name (ARN) of the image recipe that
                   defines how images are configured, tested, and assessed.
                 type: string
+              imageRecipeRef:
+                description: 'A reference to a ImageRecipe (imagebuilder.cloudcontrol.aws.hfl.dev)
+                  whose status.ackResourceMetadata.arn fills imageRecipeArn: its Kubernetes
+                  name, and namespace when another (cross-namespace references need
+                  the manager''s --enable-cross-namespace). The value is read once
+                  that object is synced. Give this or imageRecipeArn, not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               imageScanningConfiguration:
                 description: Determines if tests should run after building the image.
                   Image Builder defaults to enable tests to run following the image
@@ -169,6 +185,23 @@ spec:
                 description: The Amazon Resource Name (ARN) of the infrastructure
                   configuration associated with this image pipeline.
                 type: string
+              infrastructureConfigurationRef:
+                description: 'A reference to a InfrastructureConfiguration (imagebuilder.cloudcontrol.aws.hfl.dev)
+                  whose status.ackResourceMetadata.arn fills infrastructureConfigurationArn:
+                  its Kubernetes name, and namespace when another (cross-namespace
+                  references need the manager''s --enable-cross-namespace). The value
+                  is read once that object is synced. Give this or infrastructureConfigurationArn,
+                  not both.'
+                properties:
+                  from:
+                    description: The referenced object.
+                    properties:
+                      name:
+                        type: string
+                      namespace:
+                        type: string
+                    type: object
+                type: object
               loggingConfiguration:
                 description: The logging configuration settings for the image pipeline.
                 properties:
@@ -271,6 +304,11 @@ spec:
             - message: 'name is create-only (CloudFormation createOnlyProperties):
                 it cannot be added or removed after the resource is made'
               rule: has(self.name) == has(oldSelf.name)
+            - message: imageRecipeArn and imageRecipeRef cannot both be given
+              rule: '!(has(self.imageRecipeArn) && has(self.imageRecipeRef))'
+            - message: infrastructureConfigurationArn and infrastructureConfigurationRef
+                cannot both be given
+              rule: '!(has(self.infrastructureConfigurationArn) && has(self.infrastructureConfigurationRef))'
           status:
             properties:
               ackResourceMetadata:

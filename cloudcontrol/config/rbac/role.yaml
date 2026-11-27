@@ -7631,9 +7631,109 @@ rules:
   - patch
   - update
 - apiGroups:
+  - acm.services.k8s.aws
+  resources:
+  - certificates
+  verbs:
+  - get
+- apiGroups:
+  - acmpca.services.k8s.aws
+  resources:
+  - certificateauthorities
+  verbs:
+  - get
+- apiGroups:
+  - apigateway.cloudcontrol.aws.hfl.dev
+  resources:
+  - usageplans
+  verbs:
+  - get
+- apiGroups:
+  - apigateway.services.k8s.aws
+  resources:
+  - apikeys
+  - restapis
+  verbs:
+  - get
+- apiGroups:
+  - apigatewayv2.services.k8s.aws
+  resources:
+  - apis
+  - integrations
+  - routes
+  verbs:
+  - get
+- apiGroups:
+  - appconfig.cloudcontrol.aws.hfl.dev
+  resources:
+  - applications
+  - deploymentstrategies
+  verbs:
+  - get
+- apiGroups:
+  - autoscaling.services.k8s.aws
+  resources:
+  - autoscalinggroups
+  verbs:
+  - get
+- apiGroups:
+  - batch.cloudcontrol.aws.hfl.dev
+  resources:
+  - schedulingpolicies
+  verbs:
+  - get
+- apiGroups:
+  - cloudfront.services.k8s.aws
+  resources:
+  - distributions
+  verbs:
+  - get
+- apiGroups:
+  - cloudwatchlogs.services.k8s.aws
+  resources:
+  - loggroups
+  verbs:
+  - get
+- apiGroups:
+  - codecommit.cloudcontrol.aws.hfl.dev
+  resources:
+  - repositories
+  verbs:
+  - get
+- apiGroups:
+  - cognito.cloudcontrol.aws.hfl.dev
+  resources:
+  - identitypools
+  verbs:
+  - get
+- apiGroups:
+  - cognitoidentityprovider.services.k8s.aws
+  resources:
+  - userpoolclients
+  - userpools
+  verbs:
+  - get
+- apiGroups:
+  - connect.cloudcontrol.aws.hfl.dev
+  resources:
+  - instances
+  verbs:
+  - get
+- apiGroups:
+  - dynamodb.services.k8s.aws
+  resources:
+  - tables
+  verbs:
+  - get
+- apiGroups:
   - ec2.cloudcontrol.aws.hfl.dev
   resources:
+  - networkinsightspaths
   - networkinterfaces
+  - trafficmirrorfilters
+  - transitgatewayconnects
+  - transitgatewaymulticastdomains
+  - transitgatewayroutetables
   verbs:
   - get
 - apiGroups:
@@ -7641,10 +7741,72 @@ rules:
   resources:
   - elasticipaddresses
   - instances
+  - internetgateways
   - managedprefixlists
+  - routetables
   - securitygroups
   - subnets
+  - transitgateways
+  - transitgatewayvpcattachments
   - vpcs
+  verbs:
+  - get
+- apiGroups:
+  - efs.services.k8s.aws
+  resources:
+  - filesystems
+  verbs:
+  - get
+- apiGroups:
+  - gamelift.cloudcontrol.aws.hfl.dev
+  resources:
+  - builds
+  verbs:
+  - get
+- apiGroups:
+  - glue.services.k8s.aws
+  resources:
+  - databases
+  verbs:
+  - get
+- apiGroups:
+  - guardduty.cloudcontrol.aws.hfl.dev
+  resources:
+  - detectors
+  verbs:
+  - get
+- apiGroups:
+  - iam.services.k8s.aws
+  resources:
+  - instanceprofiles
+  - roles
+  - users
+  verbs:
+  - get
+- apiGroups:
+  - imagebuilder.cloudcontrol.aws.hfl.dev
+  resources:
+  - distributionconfigurations
+  - imagerecipes
+  - infrastructureconfigurations
+  verbs:
+  - get
+- apiGroups:
+  - iot.cloudcontrol.aws.hfl.dev
+  resources:
+  - certificates
+  verbs:
+  - get
+- apiGroups:
+  - kafka.services.k8s.aws
+  resources:
+  - clusters
+  verbs:
+  - get
+- apiGroups:
+  - kendra.cloudcontrol.aws.hfl.dev
+  resources:
+  - indexes
   verbs:
   - get
 - apiGroups:
@@ -7654,9 +7816,95 @@ rules:
   verbs:
   - get
 - apiGroups:
+  - lambda.services.k8s.aws
+  resources:
+  - functions
+  verbs:
+  - get
+- apiGroups:
+  - location.cloudcontrol.aws.hfl.dev
+  resources:
+  - trackers
+  verbs:
+  - get
+- apiGroups:
+  - networkfirewall.services.k8s.aws
+  resources:
+  - firewalls
+  verbs:
+  - get
+- apiGroups:
+  - oam.cloudcontrol.aws.hfl.dev
+  resources:
+  - sinks
+  verbs:
+  - get
+- apiGroups:
+  - ram.services.k8s.aws
+  resources:
+  - resourceshares
+  verbs:
+  - get
+- apiGroups:
   - route53.services.k8s.aws
   resources:
   - hostedzones
+  verbs:
+  - get
+- apiGroups:
+  - route53profiles.cloudcontrol.aws.hfl.dev
+  resources:
+  - profiles
+  verbs:
+  - get
+- apiGroups:
+  - s3.services.k8s.aws
+  resources:
+  - buckets
+  verbs:
+  - get
+- apiGroups:
+  - s3tables.services.k8s.aws
+  resources:
+  - tables
+  verbs:
+  - get
+- apiGroups:
+  - servicecatalog.cloudcontrol.aws.hfl.dev
+  resources:
+  - cloudformationproducts
+  - portfolios
+  - tagoptions
+  verbs:
+  - get
+- apiGroups:
+  - ses.services.k8s.aws
+  resources:
+  - configurationsets
+  verbs:
+  - get
+- apiGroups:
+  - sns.services.k8s.aws
+  resources:
+  - topics
+  verbs:
+  - get
+- apiGroups:
+  - ssm.cloudcontrol.aws.hfl.dev
+  resources:
+  - maintenancewindows
+  verbs:
+  - get
+- apiGroups:
+  - vpclattice.cloudcontrol.aws.hfl.dev
+  resources:
+  - services
+  verbs:
+  - get
+- apiGroups:
+  - wafv2.services.k8s.aws
+  resources:
+  - webacls
   verbs:
   - get
 - apiGroups:
