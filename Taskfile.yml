@@ -314,7 +314,7 @@ tasks:
     cmds:
       - go run -tags live ./hack/live/sweep --suite "{{.SUITE | default "all"}}" --list
 
-  # The offload pre-push gate, beside CI on GitHub (docs/testing.md, "The
+  # The optional offload gate, beside CI on GitHub (docs/testing.md, "The
   # merge gate"): hfl-ci.yml's pull-request jobs on an offload Spot VM, then
   # the commit status offload/ci on the commit.
   ci:
@@ -354,7 +354,7 @@ tasks:
       - hack/ci/task-remote-test.sh {{.N | default "3"}}
 
   hooks:
-    desc: Install the pre-push hook (hack/hooks/pre-push, which runs task ci) with core.hooksPath.
+    desc: Install the pre-push hook (hack/hooks/pre-push, which runs task ci when HFL_PREPUSH_GATE=1) with core.hooksPath.
     cmds:
       - git config core.hooksPath hack/hooks
 

@@ -2,15 +2,15 @@
 # Copyright 2026 High Five Labs
 # SPDX-License-Identifier: Apache-2.0
 #
-# The offload pre-push gate: the jobs of CI (hfl-ci.yml, which also runs
-# on GitHub for every pull request) on an offload VM before a push.
+# The optional offload gate: the jobs of CI (hfl-ci.yml, which runs on
+# GitHub for every pull request and is the merge gate, HFL-818) on an
+# offload VM before a push.
 #
-#   hack/ci/gate.sh [SHA]      task ci [SHA=...]; the pre-push hook runs it
+#   hack/ci/gate.sh [SHA]      task ci [SHA=...]; the pre-push hook runs it with HFL_PREPUSH_GATE=1
 #
 # For one commit (default HEAD) it runs what .github/workflows/hfl-ci.yml's
 # pull-request jobs run, then posts the commit status `offload/ci` on that
-# commit. A pull request merges only when that status on its head is
-# success (docs/testing.md, "The merge gate").
+# commit (docs/testing.md, "The merge gate").
 #
 # This repository is public, and so are its commit statuses. The status
 # says what ran, on what machine type, how it ended and in how long,

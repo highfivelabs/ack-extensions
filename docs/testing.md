@@ -99,12 +99,14 @@ worktree. `task ci:remote-test` checks it.
 ## The merge gate
 
 CI runs on GitHub for every pull request (`.github/workflows/hfl-ci.yml`,
-from highfivelabs/krm-ci); its `ci` status is the one to require. The
-same jobs can also run before the push, on an offload Spot VM:
+from highfivelabs/krm-ci) on GitHub's free runners, since the repository
+is public (HFL-818). **Its `ci` status is the merge gate: merge only when
+`ci` is green on the pull request's head.** The same jobs can also run
+before the push, on an offload Spot VM, which is optional:
 
 ```sh
-task hooks          # once per clone: core.hooksPath=hack/hooks
-task ci             # by hand: HEAD (or SHA=..., CI_BASE=<base branch>)
+task ci                                # by hand: HEAD (or SHA=..., CI_BASE=<base branch>)
+task hooks; export HFL_PREPUSH_GATE=1  # opt in to running it on every push
 ```
 
 `task ci` (`hack/ci/gate.sh`) checks the commit out into a temporary
@@ -122,9 +124,8 @@ It then posts the commit status `offload/ci` (success or failure, the
 machine type and the minutes; no link and no environment identifiers,
 since the repository's statuses are public: the gate prints the run's
 log location in the private offload bucket locally)
-on the commit. The pre-push hook (`hack/hooks/pre-push`) runs it for
-every branch commit pushed and refuses the push on a failure; a commit
-that already has `offload/ci` success is not run again.
-
-**Merge only when the `offload/ci` status on the pull request's head is
-success.** A new commit on the branch needs its own run.
+on the commit. The pre-push hook (`hack/hooks/pre-push`) does nothing
+unless `HFL_PREPUSH_GATE=1`; with it, it runs the gate for every branch
+commit pushed and refuses the push on a failure, and a commit that already
+has `offload/ci` success is not run again. GitHub's `ci` runs `test` and
+`e2e` whatever `offload/ci` says.

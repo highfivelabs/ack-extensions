@@ -14,7 +14,7 @@
 #   mode=groups  check:static, build and the tests of the groups only
 #   mode=full    task check
 #   groups=...   the groups (mode=groups)
-#   e2e=true     task operator-e2e runs too (on a Spot runner)
+#   e2e=true     task operator-e2e runs too
 #   emulator=true  task test:aws-emulator:ack runs too: the ACK-kind tests
 #                on AWS Emulator, beside moto (docs/aws-emulator.md, "In
 #                CI"); for mode full, or a group with ACK kinds or their

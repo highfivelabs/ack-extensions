@@ -2,17 +2,14 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 # The whole suite on main, once a day (decided 2026-11-10): task check
-# and task operator-e2e, one after the other on one offload Spot VM (no
-# Actions minutes but the launcher's). A failure opens one issue labelled
+# and task operator-e2e, as two jobs on GitHub's free runners (the
+# repository is public; HFL-818). A failure opens one issue labelled
 # ci-nightly, or comments on it if it is open already (a green night runs
-# no reporting job, to spend no minutes; close the issue by hand). Needs the Spot runners (repository variable
-# SPOT_RUNNERS_ENABLED); without them nothing runs.
+# no reporting job; close the issue by hand).
 name: nightly
 
 on:
   schedule:
-    # The three extension repositories an hour apart, so their 16-vCPU VMs
-    # do not compete for the project's CPU quota (CPUS_ALL_REGIONS).
     - cron: "40 8 * * *"
   workflow_dispatch:
 
@@ -23,64 +20,49 @@ concurrency:
   group: nightly
   cancel-in-progress: false
 
-env:
-  # offload, vendored in the factory repository (offload/), at this commit.
-  FACTORY_REF: ba59cca20632966e07bd5b9f36ed0a1b525ea023
-
 jobs:
-  launch:
-    if: vars.SPOT_RUNNERS_ENABLED == 'true' && github.ref == 'refs/heads/main'
+  check:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    permissions:
-      contents: read
-      id-token: write
-    outputs:
-      label: ${{ steps.label.outputs.label }}
+    timeout-minutes: 180
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - id: label
-        env:
-          REPO: ${{ github.event.repository.name }}
-        run: echo "label=nightly-${REPO}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "${GITHUB_OUTPUT}"
-      - uses: ./.github/actions/spot-runner
-        with:
-          label: ${{ steps.label.outputs.label }}
-          hours: "4"
-          save-cache: "true"
-
-  full:
-    needs: launch
-    runs-on: ${{ needs.launch.outputs.label }}
-    timeout-minutes: 210
-    outputs:
-      check: ${{ steps.outcome.outputs.check }}
-      e2e: ${{ steps.outcome.outputs.e2e }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - run: task tools
-      - id: check
-        run: task check
-      # Runs even when check failed: the two fail for different reasons.
-      - id: e2e
-        if: success() || steps.check.outcome == 'failure'
-        run: task operator-e2e
-      - id: outcome
-        if: always()
-        env:
-          CHECK: ${{ steps.check.outcome }}
-          E2E: ${{ steps.e2e.outcome }}
+      # The runner's unused SDKs (about 30 GB), for the module graph.
+      - working-directory: /
         run: |
-          echo "check=${CHECK}" >> "${GITHUB_OUTPUT}"
-          echo "e2e=${E2E}" >> "${GITHUB_OUTPUT}"
+          trash="$(sudo mktemp -d /.free-disk.XXXXXX)"
+          for d in /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL; do
+            [ -e "$d" ] && sudo mv "$d" "$trash/$(echo "$d" | tr / _)"
+          done
+          sudo setsid nohup rm -rf "$trash" >/dev/null 2>&1 < /dev/null &
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/tools
+      - run: task tools
+      - run: task check
+
+  e2e:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - working-directory: /
+        run: |
+          trash="$(sudo mktemp -d /.free-disk.XXXXXX)"
+          for d in /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL; do
+            [ -e "$d" ] && sudo mv "$d" "$trash/$(echo "$d" | tr / _)"
+          done
+          sudo setsid nohup rm -rf "$trash" >/dev/null 2>&1 < /dev/null &
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/tools
+      - run: task tools
+      - run: task operator-e2e
 
   report:
-    needs: [launch, full]
-    if: always() && needs.launch.result != 'skipped' && (needs.launch.result != 'success' || needs.full.result != 'success')
+    needs: [check, e2e]
+    if: always() && github.ref == 'refs/heads/main' && (needs.check.result != 'success' || needs.e2e.result != 'success')
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
@@ -92,10 +74,8 @@ jobs:
       - env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-          LAUNCH: ${{ needs.launch.result }}
-          FULL: ${{ needs.full.result }}
-          CHECK: ${{ needs.full.outputs.check }}
-          E2E: ${{ needs.full.outputs.e2e }}
+          CHECK: ${{ needs.check.result }}
+          E2E: ${{ needs.e2e.result }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           SHA: ${{ github.sha }}
         run: hack/ci/nightly-report.sh
