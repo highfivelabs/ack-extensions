@@ -6,95 +6,94 @@ rank,service,resource,tier,terraform,upjet_kind,upjet_tested,external_name,refer
 5,directconnect,PublicVirtualInterface,1,aws_dx_hosted_public_virtual_interface aws_dx_public_virtual_interface,directconnect.aws.upbound.io/HostedPublicVirtualInterface directconnect.aws.upbound.io/PublicVirtualInterface,yes,provider,2,0,2,,FULLY_MUTABLE,ok,,false
 6,directconnect,TransitVirtualInterface,1,aws_dx_transit_virtual_interface,directconnect.aws.upbound.io/TransitVirtualInterface,yes,provider,2,0,1,,FULLY_MUTABLE,ok,,false
 7,ec2,Host,1,aws_ec2_host,ec2.aws.upbound.io/Host,yes,provider,0,0,1,,FULLY_MUTABLE,ok,,false
-8,ec2,KeyPair,1,aws_key_pair,ec2.aws.upbound.io/KeyPair,yes,parameter,0,0,1,Requires a valid public key.,IMMUTABLE,ok,,false
-9,ec2,LocalGatewayRoute,1,aws_ec2_local_gateway_route,,no,template,0,0,0,,FULLY_MUTABLE,ok,,false
-10,ec2,LocalGatewayRouteTableVPCAssociation,1,aws_ec2_local_gateway_route_table_vpc_association,,no,provider,0,0,0,,FULLY_MUTABLE,ok,,false
-11,sso,Instance,1,aws_instance,ec2.aws.upbound.io/Instance,yes,provider,7,5,2,,FULLY_MUTABLE,ok,,true
-12,s3tables,TableBucketPolicy,2,aws_s3tables_table_bucket_policy aws_s3tables_table_bucket_replication,s3tables.aws.upbound.io/TableBucketPolicy s3tables.aws.upbound.io/TableBucketReplication,yes,custom,4,4,2,The table bucket ARN in the resourcePolicy should be changed manually since it is only known after the referenced Table Bucket is created.,FULLY_MUTABLE,ok,,false
-13,redshift,Cluster,2,aws_redshift_cluster,redshift.aws.upbound.io/Cluster,yes,parameter,4,3,2,,FULLY_MUTABLE,ok,,false
-14,lambda,EventInvokeConfig,2,aws_lambda_function_event_invoke_config,lambda.aws.upbound.io/FunctionEventInvokeConfig,yes,provider,2,2,2,,FULLY_MUTABLE,ok,,false
-15,redshift,EventSubscription,2,aws_db_event_subscription aws_redshift_event_subscription,rds.aws.upbound.io/EventSubscription redshift.aws.upbound.io/EventSubscription,yes,name,4,2,2,"This resource has a reference to Instance, which needs manual intervention.",FULLY_MUTABLE,ok,,false
-16,s3,BucketPolicy,2,aws_s3_bucket_abac aws_s3_bucket_acl aws_s3_bucket_inventory aws_s3_bucket_logging aws_s3_bucket_metric aws_s3_bucket_object aws_s3_bucket_policy aws_s3_bucket_versioning aws_s3_directory_bucket aws_s3control_bucket_policy,s3.aws.upbound.io/BucketAbac s3.aws.upbound.io/BucketACL s3.aws.upbound.io/BucketInventory s3.aws.upbound.io/BucketLogging s3.aws.upbound.io/BucketMetric s3.aws.upbound.io/BucketObject s3.aws.upbound.io/BucketPolicy s3.aws.upbound.io/BucketVersioning s3.aws.upbound.io/DirectoryBucket,no,provider,12,12,16,Requires adding canonical ID of the owner user who created the Bucket.,FULLY_MUTABLE,ok,,false
-17,ssm,Association,2,aws_ssm_association,ssm.aws.upbound.io/Association,yes,provider,2,2,2,,FULLY_MUTABLE,ok,,false
-18,ecs,ClusterCapacityProviderAssociations,2,aws_ecs_cluster_capacity_providers,ecs.aws.upbound.io/ClusterCapacityProviders,yes,provider,1,1,1,,FULLY_MUTABLE,ok,,false
-19,elasticache,GlobalReplicationGroup,2,aws_elasticache_global_replication_group,elasticache.aws.upbound.io/GlobalReplicationGroup,yes,provider,1,1,1,,FULLY_MUTABLE,ok,,false
-20,inspector,AssessmentTemplate,2,aws_inspector_assessment_template,inspector.aws.upbound.io/AssessmentTemplate,yes,provider,2,1,1,,IMMUTABLE,ok,,false
-21,redshift,ClusterSubnetGroup,2,aws_redshift_subnet_group,redshift.aws.upbound.io/SubnetGroup,yes,name,1,1,1,,FULLY_MUTABLE,ok,,false
-22,redshift,EndpointAccess,2,aws_redshift_endpoint_access aws_redshiftserverless_endpoint_access,redshift.aws.upbound.io/EndpointAccess redshiftserverless.aws.upbound.io/EndpointAccess,yes,parameter,5,1,2,,FULLY_MUTABLE,ok,,false
-23,redshift,ScheduledAction,2,aws_redshift_scheduled_action,redshift.aws.upbound.io/ScheduledAction,yes,name,1,1,2,,FULLY_MUTABLE,ok,,false
-24,redshift,SnapshotCopyGrant,2,aws_redshift_snapshot_copy_grant,redshift.aws.upbound.io/SnapshotCopyGrant,yes,provider,1,1,1,,FULLY_MUTABLE,ok,,false
-25,redshift,UsageLimit,2,aws_redshift_usage_limit aws_redshiftserverless_usage_limit,redshift.aws.upbound.io/UsageLimit redshiftserverless.aws.upbound.io/UsageLimit,yes,provider,2,1,2,,FULLY_MUTABLE,ok,,false
-26,sqs,QueueInlinePolicy,2,aws_sqs_queue_policy,sqs.aws.upbound.io/QueuePolicy,yes,provider,1,1,1,,FULLY_MUTABLE,ok,,false
-27,autoscaling,LaunchConfiguration,2,aws_launch_configuration,autoscaling.aws.upbound.io/LaunchConfiguration,yes,name,0,0,2,,IMMUTABLE,ok,,false
-28,inspector,AssessmentTarget,2,aws_inspector_assessment_target,inspector.aws.upbound.io/AssessmentTarget,yes,provider,1,0,1,,FULLY_MUTABLE,ok,,false
-29,inspector,ResourceGroup,2,aws_inspector_resource_group,inspector.aws.upbound.io/ResourceGroup,yes,provider,0,0,1,,IMMUTABLE,ok,,false
-30,redshift,ClusterParameterGroup,2,aws_redshift_parameter_group,redshift.aws.upbound.io/ParameterGroup,yes,provider,0,0,1,,FULLY_MUTABLE,ok,,false
-31,redshift,SnapshotSchedule,2,aws_redshift_snapshot_schedule aws_redshift_snapshot_schedule_association,redshift.aws.upbound.io/SnapshotSchedule redshift.aws.upbound.io/SnapshotScheduleAssociation,yes,provider,2,0,2,,FULLY_MUTABLE,ok,,false
-32,sns,TopicPolicy,2,aws_sns_topic_policy,sns.aws.upbound.io/TopicPolicy,yes,custom,1,1,1,,NON_PROVISIONABLE,not provisionable,,false
-33,sqs,QueuePolicy,2,aws_sqs_queue_policy,sqs.aws.upbound.io/QueuePolicy,yes,provider,1,1,1,,NON_PROVISIONABLE,not provisionable,,false
-34,redshift,ClusterSecurityGroup,2,aws_redshift_parameter_group,redshift.aws.upbound.io/ParameterGroup,yes,provider,0,0,1,,NON_PROVISIONABLE,not provisionable,,false
-35,redshift,EndpointAuthorization,2,aws_redshift_endpoint_authorization,,no,template,0,0,0,,FULLY_MUTABLE,ok,,false
-36,waf,ByteMatchSet,2,aws_waf_byte_match_set,waf.aws.upbound.io/ByteMatchSet,yes,provider,0,0,2,,NON_PROVISIONABLE,not provisionable,,false
-37,waf,IPSet,2,aws_waf_ipset,waf.aws.upbound.io/IPSet,yes,provider,0,0,1,,NON_PROVISIONABLE,not provisionable,,false
-38,waf,Rule,2,aws_waf_rate_based_rule aws_waf_rule,waf.aws.upbound.io/RateBasedRule waf.aws.upbound.io/Rule,yes,provider,2,0,2,,NON_PROVISIONABLE,not provisionable,,false
-39,waf,SizeConstraintSet,2,aws_waf_size_constraint_set,waf.aws.upbound.io/SizeConstraintSet,yes,provider,0,0,2,,NON_PROVISIONABLE,not provisionable,,false
-40,waf,SqlInjectionMatchSet,2,aws_waf_sql_injection_match_set,waf.aws.upbound.io/SQLInjectionMatchSet,yes,provider,0,0,2,,NON_PROVISIONABLE,not provisionable,,false
-41,waf,WebACL,2,aws_waf_web_acl,waf.aws.upbound.io/WebACL,yes,provider,2,0,2,,NON_PROVISIONABLE,not provisionable,,false
-42,waf,XssMatchSet,2,aws_waf_regex_match_set aws_waf_xss_match_set,waf.aws.upbound.io/RegexMatchSet waf.aws.upbound.io/XSSMatchSet,yes,provider,1,0,4,,NON_PROVISIONABLE,not provisionable,,false
-43,wafregional,ByteMatchSet,2,aws_wafregional_byte_match_set,wafregional.aws.upbound.io/ByteMatchSet,yes,provider,0,0,2,,NON_PROVISIONABLE,not provisionable,,false
-44,wafregional,GeoMatchSet,2,aws_waf_geo_match_set aws_wafregional_geo_match_set,waf.aws.upbound.io/GeoMatchSet wafregional.aws.upbound.io/GeoMatchSet,yes,provider,0,0,2,,NON_PROVISIONABLE,not provisionable,,false
-45,wafregional,IPSet,2,aws_wafregional_ipset,wafregional.aws.upbound.io/IPSet,yes,provider,0,0,1,,NON_PROVISIONABLE,not provisionable,,false
-46,wafregional,RateBasedRule,2,aws_wafregional_rate_based_rule,wafregional.aws.upbound.io/RateBasedRule,yes,provider,1,0,1,,NON_PROVISIONABLE,not provisionable,,false
-47,wafregional,RegexPatternSet,2,aws_waf_regex_pattern_set aws_wafregional_regex_pattern_set,waf.aws.upbound.io/RegexPatternSet wafregional.aws.upbound.io/RegexPatternSet,yes,provider,0,0,2,,NON_PROVISIONABLE,not provisionable,,false
-48,wafregional,Rule,2,aws_wafregional_rule,wafregional.aws.upbound.io/Rule,yes,provider,1,0,1,,NON_PROVISIONABLE,not provisionable,,false
-49,wafregional,SizeConstraintSet,2,aws_wafregional_size_constraint_set,wafregional.aws.upbound.io/SizeConstraintSet,yes,provider,0,0,2,,NON_PROVISIONABLE,not provisionable,,false
-50,wafregional,SqlInjectionMatchSet,2,aws_wafregional_sql_injection_match_set,wafregional.aws.upbound.io/SQLInjectionMatchSet,yes,provider,0,0,2,,NON_PROVISIONABLE,not provisionable,,false
-51,wafregional,WebACL,2,aws_wafregional_web_acl,wafregional.aws.upbound.io/WebACL,yes,provider,2,0,2,,NON_PROVISIONABLE,not provisionable,,false
-52,wafregional,XssMatchSet,2,aws_wafregional_regex_match_set aws_wafregional_xss_match_set,wafregional.aws.upbound.io/RegexMatchSet wafregional.aws.upbound.io/XSSMatchSet,yes,provider,1,0,4,,NON_PROVISIONABLE,not provisionable,,false
-53,bedrock,KnowledgeBase,3,aws_bedrockagent_knowledge_base,bedrockagent.aws.upbound.io/KnowledgeBase,yes,custom,10,8,1,,FULLY_MUTABLE,ok,,false
-54,logs,MetricFilter,2,aws_cloudwatch_log_metric_filter,cloudwatchlogs.aws.upbound.io/MetricFilter,yes,name,1,1,2,,FULLY_MUTABLE,ok,,true
-55,bedrockagentcore,GatewayRule,3,aws_bedrockagentcore_gateway_rule,bedrockagentcore.aws.upbound.io/GatewayRule,yes,computed,3,3,1,,FULLY_MUTABLE,ok,,false
-56,cloudformation,Stack,3,aws_cloudformation_stack aws_serverlessapplicationrepository_cloudformation_stack,cloudformation.aws.upbound.io/Stack serverlessrepo.aws.upbound.io/CloudFormationStack,yes,provider,1,1,2,,FULLY_MUTABLE,ok,,false
-57,kinesis,StreamConsumer,3,aws_kinesis_stream_consumer,kinesis.aws.upbound.io/StreamConsumer,yes,provider,1,1,1,,IMMUTABLE,ok,,false
-58,redshiftserverless,Snapshot,3,aws_redshiftserverless_snapshot,redshiftserverless.aws.upbound.io/Snapshot,yes,parameter,1,1,1,,FULLY_MUTABLE,ok,,false
-59,sagemaker,Device,3,aws_sagemaker_device,sagemaker.aws.upbound.io/Device,yes,provider,1,1,2,,FULLY_MUTABLE,ok,,false
-60,budgets,Budget,3,aws_budgets_budget,budgets.aws.upbound.io/Budget,yes,template,0,0,2,,FULLY_MUTABLE,ok,,false
-61,fsx,DataRepositoryAssociation,3,aws_fsx_data_repository_association,fsx.aws.upbound.io/DataRepositoryAssociation,yes,provider,1,0,2,,FULLY_MUTABLE,ok,,false
-62,iot,Policy,3,aws_iot_policy,iot.aws.upbound.io/Policy,yes,name,0,0,1,,FULLY_MUTABLE,ok,,false
-63,lex,Bot,3,aws_lex_bot,lexmodels.aws.upbound.io/Bot,yes,name,0,0,2,,FULLY_MUTABLE,ok,,false
-64,opensearchserverless,SecurityConfig,3,aws_opensearchserverless_security_config,opensearchserverless.aws.upbound.io/SecurityConfig,yes,template,0,0,1,,FULLY_MUTABLE,ok,,false
-65,apigateway,Model,3,aws_api_gateway_model,apigateway.aws.upbound.io/Model,yes,provider,1,1,0,,FULLY_MUTABLE,ok,,false
-66,elasticache,SecurityGroup,2,aws_default_security_group aws_security_group aws_security_group_rule aws_vpc_security_group_ingress_rule,ec2.aws.upbound.io/DefaultSecurityGroup ec2.aws.upbound.io/SecurityGroup ec2.aws.upbound.io/SecurityGroupRule ec2.aws.upbound.io/SecurityGroupIngressRule,yes,custom,10,6,5,,NON_PROVISIONABLE,not provisionable,,true
-67,elasticloadbalancingv2,ListenerCertificate,2,aws_lb_listener_certificate,elbv2.aws.upbound.io/LBListenerCertificate,yes,provider,2,1,1,This resource requires a valid Certificate,NON_PROVISIONABLE,not provisionable,,true
-68,lakeformation,Permissions,3,aws_lakeformation_permissions,lakeformation.aws.upbound.io/Permissions,yes,provider,3,3,2,,NON_PROVISIONABLE,not provisionable,,false
-69,medialive,Channel,3,aws_medialive_channel,medialive.aws.upbound.io/Channel,yes,provider,2,2,2,Input resource requires at least one valid input_security_group id.,NON_PROVISIONABLE,not provisionable,,false
-70,appmesh,VirtualGateway,3,aws_appmesh_virtual_gateway,appmesh.aws.upbound.io/VirtualGateway,yes,provider,1,1,2,,NON_PROVISIONABLE,not provisionable,,false
-71,appmesh,VirtualNode,3,aws_appmesh_virtual_node,appmesh.aws.upbound.io/VirtualNode,yes,provider,2,1,2,,NON_PROVISIONABLE,not provisionable,,false
-72,lakeformation,DataLakeSettings,3,aws_lakeformation_data_lake_settings,lakeformation.aws.upbound.io/DataLakeSettings,yes,provider,1,1,1,,NON_PROVISIONABLE,not provisionable,,false
-73,qldb,Ledger,3,aws_qldb_ledger,qldb.aws.upbound.io/Ledger,yes,name,1,1,1,,NON_PROVISIONABLE,not provisionable,,false
-74,appmesh,GatewayRoute,3,aws_appmesh_gateway_route,appmesh.aws.upbound.io/GatewayRoute,yes,provider,2,0,2,,NON_PROVISIONABLE,not provisionable,,false
-75,appmesh,Mesh,3,aws_appmesh_mesh,appmesh.aws.upbound.io/Mesh,yes,name,0,0,2,,NON_PROVISIONABLE,not provisionable,,false
-76,appmesh,Route,3,aws_appmesh_route,appmesh.aws.upbound.io/Route,yes,provider,4,0,2,,NON_PROVISIONABLE,not provisionable,,false
-77,appmesh,VirtualRouter,3,aws_appmesh_virtual_router,appmesh.aws.upbound.io/VirtualRouter,yes,provider,1,0,2,,NON_PROVISIONABLE,not provisionable,,false
-78,appmesh,VirtualService,3,aws_appmesh_virtual_service,appmesh.aws.upbound.io/VirtualService,yes,provider,3,0,2,,NON_PROVISIONABLE,not provisionable,,false
-79,emr,Cluster,3,aws_emr_cluster,,no,provider,0,0,0,,FULLY_MUTABLE,ok,,false
-80,emr,InstanceFleetConfig,3,aws_emr_instance_fleet,,no,provider,0,0,0,,FULLY_MUTABLE,ok,,false
-81,mediastore,Container,3,aws_media_store_container,mediastore.aws.upbound.io/Container,yes,name,0,0,1,,NON_PROVISIONABLE,not provisionable,,false
-82,pinpoint,App,3,aws_pinpoint_app,pinpoint.aws.upbound.io/App,yes,provider,0,0,2,,NON_PROVISIONABLE,not provisionable,,false
-83,pinpoint,VoiceChannel,3,aws_pinpoint_adm_channel aws_pinpoint_gcm_channel aws_pinpoint_sms_channel,pinpoint.aws.upbound.io/SMSChannel,no,custom,1,0,1,,NON_PROVISIONABLE,not provisionable,,false
-84,glue,DevEndpoint,3,aws_glue_dev_endpoint,,no,name,0,0,0,,NON_PROVISIONABLE,not provisionable,,false
-85,pinpoint,APNSChannel,3,aws_pinpoint_apns_channel aws_pinpoint_apns_sandbox_channel aws_pinpoint_apns_voip_sandbox_channel,,no,custom,0,0,0,,NON_PROVISIONABLE,not provisionable,,false
-86,pinpoint,APNSSandboxChannel,3,aws_pinpoint_apns_channel aws_pinpoint_apns_sandbox_channel aws_pinpoint_apns_voip_sandbox_channel,,no,custom,0,0,0,,NON_PROVISIONABLE,not provisionable,,false
-87,pinpoint,APNSVoipChannel,3,aws_pinpoint_apns_channel aws_pinpoint_apns_sandbox_channel aws_pinpoint_apns_voip_sandbox_channel,,no,custom,0,0,0,,NON_PROVISIONABLE,not provisionable,,false
-88,pinpoint,APNSVoipSandboxChannel,3,aws_pinpoint_apns_channel aws_pinpoint_apns_sandbox_channel aws_pinpoint_apns_voip_sandbox_channel,,no,custom,0,0,0,,NON_PROVISIONABLE,not provisionable,,false
-89,pinpoint,BaiduChannel,3,aws_pinpoint_baidu_channel,,no,custom,0,0,0,,NON_PROVISIONABLE,not provisionable,,false
-90,pinpoint,EmailChannel,3,aws_pinpoint_email_channel,,no,custom,0,0,0,,NON_PROVISIONABLE,not provisionable,,false
-91,pinpoint,EventStream,3,aws_pinpoint_event_stream,,no,custom,0,0,0,,NON_PROVISIONABLE,not provisionable,,false
-92,pinpointemail,ConfigurationSetEventDestination,3,aws_sesv2_configuration_set_event_destination,sesv2.aws.upbound.io/ConfigurationSetEventDestination,yes,provider,5,3,2,,NON_PROVISIONABLE,not provisionable,,true
-93,pinpointemail,DedicatedIpPool,3,aws_sesv2_dedicated_ip_pool,sesv2.aws.upbound.io/DedicatedIPPool,yes,parameter,0,0,1,,NON_PROVISIONABLE,not provisionable,,true
-94,s3express,BucketPolicy,3,aws_s3control_bucket_policy,,no,provider,0,0,0,,FULLY_MUTABLE,ok,,true
-95,ec2,Route,1,aws_route,ec2.aws.upbound.io/Route,yes,custom,10,10,2,,FULLY_MUTABLE,ok,ACK `RouteTable.spec.routes[]` (14 route fields),false
-96,ec2,SubnetRouteTableAssociation,1,aws_main_route_table_association aws_route_table_association,ec2.aws.upbound.io/MainRouteTableAssociation ec2.aws.upbound.io/RouteTableAssociation,yes,provider,5,5,2,,IMMUTABLE,ok,ACK `Subnet.spec.routeTables[]` and `routeTableRefs`,false
-97,iam,RolePolicy,1,aws_iam_role_policy,iam.aws.upbound.io/RolePolicy,yes,template,1,1,1,,FULLY_MUTABLE,ok,ACK `Role.spec.inlinePolicies`,false
-98,iam,UserToGroupAddition,1,aws_iam_user_group_membership,iam.aws.upbound.io/UserGroupMembership,yes,custom,2,2,1,,NON_PROVISIONABLE,not provisionable,ours `UserGroupMembership` (user in groups); ACK PR #167 is group-side,false
-99,ec2,SubnetNetworkAclAssociation,1,aws_network_acl_association,,no,provider,0,0,0,,IMMUTABLE,ok,ACK `NetworkACL.spec.associations[]`,true
+8,ec2,LocalGatewayRoute,1,aws_ec2_local_gateway_route,,no,template,0,0,0,,FULLY_MUTABLE,ok,,false
+9,ec2,LocalGatewayRouteTableVPCAssociation,1,aws_ec2_local_gateway_route_table_vpc_association,,no,provider,0,0,0,,FULLY_MUTABLE,ok,,false
+10,sso,Instance,1,aws_instance,ec2.aws.upbound.io/Instance,yes,provider,7,5,2,,FULLY_MUTABLE,ok,,true
+11,s3tables,TableBucketPolicy,2,aws_s3tables_table_bucket_policy aws_s3tables_table_bucket_replication,s3tables.aws.upbound.io/TableBucketPolicy s3tables.aws.upbound.io/TableBucketReplication,yes,custom,4,4,2,The table bucket ARN in the resourcePolicy should be changed manually since it is only known after the referenced Table Bucket is created.,FULLY_MUTABLE,ok,,false
+12,redshift,Cluster,2,aws_redshift_cluster,redshift.aws.upbound.io/Cluster,yes,parameter,4,3,2,,FULLY_MUTABLE,ok,,false
+13,lambda,EventInvokeConfig,2,aws_lambda_function_event_invoke_config,lambda.aws.upbound.io/FunctionEventInvokeConfig,yes,provider,2,2,2,,FULLY_MUTABLE,ok,,false
+14,redshift,EventSubscription,2,aws_db_event_subscription aws_redshift_event_subscription,rds.aws.upbound.io/EventSubscription redshift.aws.upbound.io/EventSubscription,yes,name,4,2,2,"This resource has a reference to Instance, which needs manual intervention.",FULLY_MUTABLE,ok,,false
+15,s3,BucketPolicy,2,aws_s3_bucket_abac aws_s3_bucket_acl aws_s3_bucket_inventory aws_s3_bucket_logging aws_s3_bucket_metric aws_s3_bucket_object aws_s3_bucket_policy aws_s3_bucket_versioning aws_s3_directory_bucket aws_s3control_bucket_policy,s3.aws.upbound.io/BucketAbac s3.aws.upbound.io/BucketACL s3.aws.upbound.io/BucketInventory s3.aws.upbound.io/BucketLogging s3.aws.upbound.io/BucketMetric s3.aws.upbound.io/BucketObject s3.aws.upbound.io/BucketPolicy s3.aws.upbound.io/BucketVersioning s3.aws.upbound.io/DirectoryBucket,no,provider,12,12,16,Requires adding canonical ID of the owner user who created the Bucket.,FULLY_MUTABLE,ok,,false
+16,ssm,Association,2,aws_ssm_association,ssm.aws.upbound.io/Association,yes,provider,2,2,2,,FULLY_MUTABLE,ok,,false
+17,ecs,ClusterCapacityProviderAssociations,2,aws_ecs_cluster_capacity_providers,ecs.aws.upbound.io/ClusterCapacityProviders,yes,provider,1,1,1,,FULLY_MUTABLE,ok,,false
+18,elasticache,GlobalReplicationGroup,2,aws_elasticache_global_replication_group,elasticache.aws.upbound.io/GlobalReplicationGroup,yes,provider,1,1,1,,FULLY_MUTABLE,ok,,false
+19,inspector,AssessmentTemplate,2,aws_inspector_assessment_template,inspector.aws.upbound.io/AssessmentTemplate,yes,provider,2,1,1,,IMMUTABLE,ok,,false
+20,redshift,ClusterSubnetGroup,2,aws_redshift_subnet_group,redshift.aws.upbound.io/SubnetGroup,yes,name,1,1,1,,FULLY_MUTABLE,ok,,false
+21,redshift,EndpointAccess,2,aws_redshift_endpoint_access aws_redshiftserverless_endpoint_access,redshift.aws.upbound.io/EndpointAccess redshiftserverless.aws.upbound.io/EndpointAccess,yes,parameter,5,1,2,,FULLY_MUTABLE,ok,,false
+22,redshift,ScheduledAction,2,aws_redshift_scheduled_action,redshift.aws.upbound.io/ScheduledAction,yes,name,1,1,2,,FULLY_MUTABLE,ok,,false
+23,redshift,SnapshotCopyGrant,2,aws_redshift_snapshot_copy_grant,redshift.aws.upbound.io/SnapshotCopyGrant,yes,provider,1,1,1,,FULLY_MUTABLE,ok,,false
+24,redshift,UsageLimit,2,aws_redshift_usage_limit aws_redshiftserverless_usage_limit,redshift.aws.upbound.io/UsageLimit redshiftserverless.aws.upbound.io/UsageLimit,yes,provider,2,1,2,,FULLY_MUTABLE,ok,,false
+25,sqs,QueueInlinePolicy,2,aws_sqs_queue_policy,sqs.aws.upbound.io/QueuePolicy,yes,provider,1,1,1,,FULLY_MUTABLE,ok,,false
+26,autoscaling,LaunchConfiguration,2,aws_launch_configuration,autoscaling.aws.upbound.io/LaunchConfiguration,yes,name,0,0,2,,IMMUTABLE,ok,,false
+27,inspector,AssessmentTarget,2,aws_inspector_assessment_target,inspector.aws.upbound.io/AssessmentTarget,yes,provider,1,0,1,,FULLY_MUTABLE,ok,,false
+28,inspector,ResourceGroup,2,aws_inspector_resource_group,inspector.aws.upbound.io/ResourceGroup,yes,provider,0,0,1,,IMMUTABLE,ok,,false
+29,redshift,ClusterParameterGroup,2,aws_redshift_parameter_group,redshift.aws.upbound.io/ParameterGroup,yes,provider,0,0,1,,FULLY_MUTABLE,ok,,false
+30,redshift,SnapshotSchedule,2,aws_redshift_snapshot_schedule aws_redshift_snapshot_schedule_association,redshift.aws.upbound.io/SnapshotSchedule redshift.aws.upbound.io/SnapshotScheduleAssociation,yes,provider,2,0,2,,FULLY_MUTABLE,ok,,false
+31,sns,TopicPolicy,2,aws_sns_topic_policy,sns.aws.upbound.io/TopicPolicy,yes,custom,1,1,1,,NON_PROVISIONABLE,not provisionable,,false
+32,sqs,QueuePolicy,2,aws_sqs_queue_policy,sqs.aws.upbound.io/QueuePolicy,yes,provider,1,1,1,,NON_PROVISIONABLE,not provisionable,,false
+33,redshift,ClusterSecurityGroup,2,aws_redshift_parameter_group,redshift.aws.upbound.io/ParameterGroup,yes,provider,0,0,1,,NON_PROVISIONABLE,not provisionable,,false
+34,redshift,EndpointAuthorization,2,aws_redshift_endpoint_authorization,,no,template,0,0,0,,FULLY_MUTABLE,ok,,false
+35,waf,ByteMatchSet,2,aws_waf_byte_match_set,waf.aws.upbound.io/ByteMatchSet,yes,provider,0,0,2,,NON_PROVISIONABLE,not provisionable,,false
+36,waf,IPSet,2,aws_waf_ipset,waf.aws.upbound.io/IPSet,yes,provider,0,0,1,,NON_PROVISIONABLE,not provisionable,,false
+37,waf,Rule,2,aws_waf_rate_based_rule aws_waf_rule,waf.aws.upbound.io/RateBasedRule waf.aws.upbound.io/Rule,yes,provider,2,0,2,,NON_PROVISIONABLE,not provisionable,,false
+38,waf,SizeConstraintSet,2,aws_waf_size_constraint_set,waf.aws.upbound.io/SizeConstraintSet,yes,provider,0,0,2,,NON_PROVISIONABLE,not provisionable,,false
+39,waf,SqlInjectionMatchSet,2,aws_waf_sql_injection_match_set,waf.aws.upbound.io/SQLInjectionMatchSet,yes,provider,0,0,2,,NON_PROVISIONABLE,not provisionable,,false
+40,waf,WebACL,2,aws_waf_web_acl,waf.aws.upbound.io/WebACL,yes,provider,2,0,2,,NON_PROVISIONABLE,not provisionable,,false
+41,waf,XssMatchSet,2,aws_waf_regex_match_set aws_waf_xss_match_set,waf.aws.upbound.io/RegexMatchSet waf.aws.upbound.io/XSSMatchSet,yes,provider,1,0,4,,NON_PROVISIONABLE,not provisionable,,false
+42,wafregional,ByteMatchSet,2,aws_wafregional_byte_match_set,wafregional.aws.upbound.io/ByteMatchSet,yes,provider,0,0,2,,NON_PROVISIONABLE,not provisionable,,false
+43,wafregional,GeoMatchSet,2,aws_waf_geo_match_set aws_wafregional_geo_match_set,waf.aws.upbound.io/GeoMatchSet wafregional.aws.upbound.io/GeoMatchSet,yes,provider,0,0,2,,NON_PROVISIONABLE,not provisionable,,false
+44,wafregional,IPSet,2,aws_wafregional_ipset,wafregional.aws.upbound.io/IPSet,yes,provider,0,0,1,,NON_PROVISIONABLE,not provisionable,,false
+45,wafregional,RateBasedRule,2,aws_wafregional_rate_based_rule,wafregional.aws.upbound.io/RateBasedRule,yes,provider,1,0,1,,NON_PROVISIONABLE,not provisionable,,false
+46,wafregional,RegexPatternSet,2,aws_waf_regex_pattern_set aws_wafregional_regex_pattern_set,waf.aws.upbound.io/RegexPatternSet wafregional.aws.upbound.io/RegexPatternSet,yes,provider,0,0,2,,NON_PROVISIONABLE,not provisionable,,false
+47,wafregional,Rule,2,aws_wafregional_rule,wafregional.aws.upbound.io/Rule,yes,provider,1,0,1,,NON_PROVISIONABLE,not provisionable,,false
+48,wafregional,SizeConstraintSet,2,aws_wafregional_size_constraint_set,wafregional.aws.upbound.io/SizeConstraintSet,yes,provider,0,0,2,,NON_PROVISIONABLE,not provisionable,,false
+49,wafregional,SqlInjectionMatchSet,2,aws_wafregional_sql_injection_match_set,wafregional.aws.upbound.io/SQLInjectionMatchSet,yes,provider,0,0,2,,NON_PROVISIONABLE,not provisionable,,false
+50,wafregional,WebACL,2,aws_wafregional_web_acl,wafregional.aws.upbound.io/WebACL,yes,provider,2,0,2,,NON_PROVISIONABLE,not provisionable,,false
+51,wafregional,XssMatchSet,2,aws_wafregional_regex_match_set aws_wafregional_xss_match_set,wafregional.aws.upbound.io/RegexMatchSet wafregional.aws.upbound.io/XSSMatchSet,yes,provider,1,0,4,,NON_PROVISIONABLE,not provisionable,,false
+52,bedrock,KnowledgeBase,3,aws_bedrockagent_knowledge_base,bedrockagent.aws.upbound.io/KnowledgeBase,yes,custom,10,8,1,,FULLY_MUTABLE,ok,,false
+53,logs,MetricFilter,2,aws_cloudwatch_log_metric_filter,cloudwatchlogs.aws.upbound.io/MetricFilter,yes,name,1,1,2,,FULLY_MUTABLE,ok,,true
+54,bedrockagentcore,GatewayRule,3,aws_bedrockagentcore_gateway_rule,bedrockagentcore.aws.upbound.io/GatewayRule,yes,computed,3,3,1,,FULLY_MUTABLE,ok,,false
+55,cloudformation,Stack,3,aws_cloudformation_stack aws_serverlessapplicationrepository_cloudformation_stack,cloudformation.aws.upbound.io/Stack serverlessrepo.aws.upbound.io/CloudFormationStack,yes,provider,1,1,2,,FULLY_MUTABLE,ok,,false
+56,kinesis,StreamConsumer,3,aws_kinesis_stream_consumer,kinesis.aws.upbound.io/StreamConsumer,yes,provider,1,1,1,,IMMUTABLE,ok,,false
+57,redshiftserverless,Snapshot,3,aws_redshiftserverless_snapshot,redshiftserverless.aws.upbound.io/Snapshot,yes,parameter,1,1,1,,FULLY_MUTABLE,ok,,false
+58,sagemaker,Device,3,aws_sagemaker_device,sagemaker.aws.upbound.io/Device,yes,provider,1,1,2,,FULLY_MUTABLE,ok,,false
+59,budgets,Budget,3,aws_budgets_budget,budgets.aws.upbound.io/Budget,yes,template,0,0,2,,FULLY_MUTABLE,ok,,false
+60,fsx,DataRepositoryAssociation,3,aws_fsx_data_repository_association,fsx.aws.upbound.io/DataRepositoryAssociation,yes,provider,1,0,2,,FULLY_MUTABLE,ok,,false
+61,iot,Policy,3,aws_iot_policy,iot.aws.upbound.io/Policy,yes,name,0,0,1,,FULLY_MUTABLE,ok,,false
+62,lex,Bot,3,aws_lex_bot,lexmodels.aws.upbound.io/Bot,yes,name,0,0,2,,FULLY_MUTABLE,ok,,false
+63,opensearchserverless,SecurityConfig,3,aws_opensearchserverless_security_config,opensearchserverless.aws.upbound.io/SecurityConfig,yes,template,0,0,1,,FULLY_MUTABLE,ok,,false
+64,apigateway,Model,3,aws_api_gateway_model,apigateway.aws.upbound.io/Model,yes,provider,1,1,0,,FULLY_MUTABLE,ok,,false
+65,elasticache,SecurityGroup,2,aws_default_security_group aws_security_group aws_security_group_rule aws_vpc_security_group_ingress_rule,ec2.aws.upbound.io/DefaultSecurityGroup ec2.aws.upbound.io/SecurityGroup ec2.aws.upbound.io/SecurityGroupRule ec2.aws.upbound.io/SecurityGroupIngressRule,yes,custom,10,6,5,,NON_PROVISIONABLE,not provisionable,,true
+66,elasticloadbalancingv2,ListenerCertificate,2,aws_lb_listener_certificate,elbv2.aws.upbound.io/LBListenerCertificate,yes,provider,2,1,1,This resource requires a valid Certificate,NON_PROVISIONABLE,not provisionable,,true
+67,lakeformation,Permissions,3,aws_lakeformation_permissions,lakeformation.aws.upbound.io/Permissions,yes,provider,3,3,2,,NON_PROVISIONABLE,not provisionable,,false
+68,medialive,Channel,3,aws_medialive_channel,medialive.aws.upbound.io/Channel,yes,provider,2,2,2,Input resource requires at least one valid input_security_group id.,NON_PROVISIONABLE,not provisionable,,false
+69,appmesh,VirtualGateway,3,aws_appmesh_virtual_gateway,appmesh.aws.upbound.io/VirtualGateway,yes,provider,1,1,2,,NON_PROVISIONABLE,not provisionable,,false
+70,appmesh,VirtualNode,3,aws_appmesh_virtual_node,appmesh.aws.upbound.io/VirtualNode,yes,provider,2,1,2,,NON_PROVISIONABLE,not provisionable,,false
+71,lakeformation,DataLakeSettings,3,aws_lakeformation_data_lake_settings,lakeformation.aws.upbound.io/DataLakeSettings,yes,provider,1,1,1,,NON_PROVISIONABLE,not provisionable,,false
+72,qldb,Ledger,3,aws_qldb_ledger,qldb.aws.upbound.io/Ledger,yes,name,1,1,1,,NON_PROVISIONABLE,not provisionable,,false
+73,appmesh,GatewayRoute,3,aws_appmesh_gateway_route,appmesh.aws.upbound.io/GatewayRoute,yes,provider,2,0,2,,NON_PROVISIONABLE,not provisionable,,false
+74,appmesh,Mesh,3,aws_appmesh_mesh,appmesh.aws.upbound.io/Mesh,yes,name,0,0,2,,NON_PROVISIONABLE,not provisionable,,false
+75,appmesh,Route,3,aws_appmesh_route,appmesh.aws.upbound.io/Route,yes,provider,4,0,2,,NON_PROVISIONABLE,not provisionable,,false
+76,appmesh,VirtualRouter,3,aws_appmesh_virtual_router,appmesh.aws.upbound.io/VirtualRouter,yes,provider,1,0,2,,NON_PROVISIONABLE,not provisionable,,false
+77,appmesh,VirtualService,3,aws_appmesh_virtual_service,appmesh.aws.upbound.io/VirtualService,yes,provider,3,0,2,,NON_PROVISIONABLE,not provisionable,,false
+78,emr,Cluster,3,aws_emr_cluster,,no,provider,0,0,0,,FULLY_MUTABLE,ok,,false
+79,emr,InstanceFleetConfig,3,aws_emr_instance_fleet,,no,provider,0,0,0,,FULLY_MUTABLE,ok,,false
+80,mediastore,Container,3,aws_media_store_container,mediastore.aws.upbound.io/Container,yes,name,0,0,1,,NON_PROVISIONABLE,not provisionable,,false
+81,pinpoint,App,3,aws_pinpoint_app,pinpoint.aws.upbound.io/App,yes,provider,0,0,2,,NON_PROVISIONABLE,not provisionable,,false
+82,pinpoint,VoiceChannel,3,aws_pinpoint_adm_channel aws_pinpoint_gcm_channel aws_pinpoint_sms_channel,pinpoint.aws.upbound.io/SMSChannel,no,custom,1,0,1,,NON_PROVISIONABLE,not provisionable,,false
+83,glue,DevEndpoint,3,aws_glue_dev_endpoint,,no,name,0,0,0,,NON_PROVISIONABLE,not provisionable,,false
+84,pinpoint,APNSChannel,3,aws_pinpoint_apns_channel aws_pinpoint_apns_sandbox_channel aws_pinpoint_apns_voip_sandbox_channel,,no,custom,0,0,0,,NON_PROVISIONABLE,not provisionable,,false
+85,pinpoint,APNSSandboxChannel,3,aws_pinpoint_apns_channel aws_pinpoint_apns_sandbox_channel aws_pinpoint_apns_voip_sandbox_channel,,no,custom,0,0,0,,NON_PROVISIONABLE,not provisionable,,false
+86,pinpoint,APNSVoipChannel,3,aws_pinpoint_apns_channel aws_pinpoint_apns_sandbox_channel aws_pinpoint_apns_voip_sandbox_channel,,no,custom,0,0,0,,NON_PROVISIONABLE,not provisionable,,false
+87,pinpoint,APNSVoipSandboxChannel,3,aws_pinpoint_apns_channel aws_pinpoint_apns_sandbox_channel aws_pinpoint_apns_voip_sandbox_channel,,no,custom,0,0,0,,NON_PROVISIONABLE,not provisionable,,false
+88,pinpoint,BaiduChannel,3,aws_pinpoint_baidu_channel,,no,custom,0,0,0,,NON_PROVISIONABLE,not provisionable,,false
+89,pinpoint,EmailChannel,3,aws_pinpoint_email_channel,,no,custom,0,0,0,,NON_PROVISIONABLE,not provisionable,,false
+90,pinpoint,EventStream,3,aws_pinpoint_event_stream,,no,custom,0,0,0,,NON_PROVISIONABLE,not provisionable,,false
+91,pinpointemail,ConfigurationSetEventDestination,3,aws_sesv2_configuration_set_event_destination,sesv2.aws.upbound.io/ConfigurationSetEventDestination,yes,provider,5,3,2,,NON_PROVISIONABLE,not provisionable,,true
+92,pinpointemail,DedicatedIpPool,3,aws_sesv2_dedicated_ip_pool,sesv2.aws.upbound.io/DedicatedIPPool,yes,parameter,0,0,1,,NON_PROVISIONABLE,not provisionable,,true
+93,s3express,BucketPolicy,3,aws_s3control_bucket_policy,,no,provider,0,0,0,,FULLY_MUTABLE,ok,,true
+94,ec2,Route,1,aws_route,ec2.aws.upbound.io/Route,yes,custom,10,10,2,,FULLY_MUTABLE,ok,ACK `RouteTable.spec.routes[]` (14 route fields),false
+95,ec2,SubnetRouteTableAssociation,1,aws_main_route_table_association aws_route_table_association,ec2.aws.upbound.io/MainRouteTableAssociation ec2.aws.upbound.io/RouteTableAssociation,yes,provider,5,5,2,,IMMUTABLE,ok,ACK `Subnet.spec.routeTables[]` and `routeTableRefs`,false
+96,iam,RolePolicy,1,aws_iam_role_policy,iam.aws.upbound.io/RolePolicy,yes,template,1,1,1,,FULLY_MUTABLE,ok,ACK `Role.spec.inlinePolicies`,false
+97,iam,UserToGroupAddition,1,aws_iam_user_group_membership,iam.aws.upbound.io/UserGroupMembership,yes,custom,2,2,1,,NON_PROVISIONABLE,not provisionable,ours `UserGroupMembership` (user in groups); ACK PR #167 is group-side,false
+98,ec2,SubnetNetworkAclAssociation,1,aws_network_acl_association,,no,provider,0,0,0,,IMMUTABLE,ok,ACK `NetworkACL.spec.associations[]`,true

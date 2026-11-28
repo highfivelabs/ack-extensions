@@ -11570,11 +11570,11 @@ ec2,IpPoolRouteTableAssociation,RouteTableId,string,true,ours,,spec.routeTableId
 ec2,IPv4Pool,Tags[].Key,string,false,none,,
 ec2,IPv4Pool,Tags[].Value,string,false,none,,
 ec2,KeyPair,KeyFormat,string,false,none,,
-ec2,KeyPair,KeyName,string,true,none,,
+ec2,KeyPair,KeyName,string,true,ours,,spec.keyName
 ec2,KeyPair,KeyType,string,false,none,,
-ec2,KeyPair,PublicKeyMaterial,string,false,none,,
-ec2,KeyPair,Tags[].Key,string,false,none,,
-ec2,KeyPair,Tags[].Value,string,false,none,,
+ec2,KeyPair,PublicKeyMaterial,string,false,ours,,spec.publicKeyMaterial
+ec2,KeyPair,Tags[].Key,string,false,ours,,spec.tags[].key
+ec2,KeyPair,Tags[].Value,string,false,ours,,spec.tags[].value
 ec2,LaunchTemplate,LaunchTemplateData.BlockDeviceMappings[].DeviceName,string,false,both,spec.data.blockDeviceMappings[].deviceName,spec.data.blockDeviceMappings[].deviceName
 ec2,LaunchTemplate,LaunchTemplateData.BlockDeviceMappings[].Ebs.DeleteOnTermination,boolean,false,both,spec.data.blockDeviceMappings[].ebs.deleteOnTermination,spec.data.blockDeviceMappings[].ebs.deleteOnTermination
 ec2,LaunchTemplate,LaunchTemplateData.BlockDeviceMappings[].Ebs.EbsCardIndex,integer,false,ours,,spec.data.blockDeviceMappings[].ebs.ebsCardIndex

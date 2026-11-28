@@ -173,9 +173,11 @@ type AddressAttribute struct {
 // Elastic IP addresses (https://docs.aws.amazon.com/vpc/latest/userguide/vpc-eips.html#transfer-EIPs-intro)
 // in the Amazon VPC User Guide.
 type AddressTransfer struct {
-	AllocationID      *string `json:"allocationID,omitempty"`
-	PublicIP          *string `json:"publicIP,omitempty"`
-	TransferAccountID *string `json:"transferAccountID,omitempty"`
+	AllocationID                     *string      `json:"allocationID,omitempty"`
+	PublicIP                         *string      `json:"publicIP,omitempty"`
+	TransferAccountID                *string      `json:"transferAccountID,omitempty"`
+	TransferOfferAcceptedTimestamp   *metav1.Time `json:"transferOfferAcceptedTimestamp,omitempty"`
+	TransferOfferExpirationTimestamp *metav1.Time `json:"transferOfferExpirationTimestamp,omitempty"`
 }
 
 // Describes a principal.
@@ -272,7 +274,9 @@ type AssociationStatus struct {
 
 // Describes integration options for Amazon Athena.
 type AthenaIntegration struct {
-	IntegrationResultS3DestinationARN *string `json:"integrationResultS3DestinationARN,omitempty"`
+	IntegrationResultS3DestinationARN *string      `json:"integrationResultS3DestinationARN,omitempty"`
+	PartitionEndDate                  *metav1.Time `json:"partitionEndDate,omitempty"`
+	PartitionStartDate                *metav1.Time `json:"partitionStartDate,omitempty"`
 }
 
 // ENA Express uses Amazon Web Services Scalable Reliable Datagram (SRD) technology
@@ -426,6 +430,10 @@ type BaselinePerformanceFactorsRequest struct {
 	CPU *CPUPerformanceFactorRequest `json:"cpu,omitempty"`
 }
 
+type BlobAttributeValue struct {
+	Value []byte `json:"value,omitempty"`
+}
+
 // Describes a block device mapping, which defines the EBS volumes and instance
 // store volumes to attach to an instance at launch.
 type BlockDeviceMapping struct {
@@ -558,49 +566,60 @@ type CapacityAllocationMetadataEntry struct {
 // require significant processing power. For more information, see Amazon EC2
 // UltraServers.
 type CapacityBlock struct {
-	AvailabilityZone   *string `json:"availabilityZone,omitempty"`
-	AvailabilityZoneID *string `json:"availabilityZoneID,omitempty"`
-	Tags               []*Tag  `json:"tags,omitempty"`
-	UltraserverType    *string `json:"ultraserverType,omitempty"`
+	AvailabilityZone   *string      `json:"availabilityZone,omitempty"`
+	AvailabilityZoneID *string      `json:"availabilityZoneID,omitempty"`
+	CreateDate         *metav1.Time `json:"createDate,omitempty"`
+	EndDate            *metav1.Time `json:"endDate,omitempty"`
+	StartDate          *metav1.Time `json:"startDate,omitempty"`
+	Tags               []*Tag       `json:"tags,omitempty"`
+	UltraserverType    *string      `json:"ultraserverType,omitempty"`
 }
 
 // Describes a Capacity Block extension. With an extension, you can extend the
 // duration of time for an existing Capacity Block.
 type CapacityBlockExtension struct {
-	AvailabilityZone                    *string `json:"availabilityZone,omitempty"`
-	AvailabilityZoneID                  *string `json:"availabilityZoneID,omitempty"`
-	CapacityBlockExtensionDurationHours *int64  `json:"capacityBlockExtensionDurationHours,omitempty"`
-	CapacityReservationID               *string `json:"capacityReservationID,omitempty"`
-	CurrencyCode                        *string `json:"currencyCode,omitempty"`
-	InstanceCount                       *int64  `json:"instanceCount,omitempty"`
-	InstanceType                        *string `json:"instanceType,omitempty"`
-	UpfrontFee                          *string `json:"upfrontFee,omitempty"`
-	ZoneType                            *string `json:"zoneType,omitempty"`
+	AvailabilityZone                    *string      `json:"availabilityZone,omitempty"`
+	AvailabilityZoneID                  *string      `json:"availabilityZoneID,omitempty"`
+	CapacityBlockExtensionDurationHours *int64       `json:"capacityBlockExtensionDurationHours,omitempty"`
+	CapacityBlockExtensionEndDate       *metav1.Time `json:"capacityBlockExtensionEndDate,omitempty"`
+	CapacityBlockExtensionPurchaseDate  *metav1.Time `json:"capacityBlockExtensionPurchaseDate,omitempty"`
+	CapacityBlockExtensionStartDate     *metav1.Time `json:"capacityBlockExtensionStartDate,omitempty"`
+	CapacityReservationID               *string      `json:"capacityReservationID,omitempty"`
+	CurrencyCode                        *string      `json:"currencyCode,omitempty"`
+	InstanceCount                       *int64       `json:"instanceCount,omitempty"`
+	InstanceType                        *string      `json:"instanceType,omitempty"`
+	UpfrontFee                          *string      `json:"upfrontFee,omitempty"`
+	ZoneType                            *string      `json:"zoneType,omitempty"`
 }
 
 // The recommended Capacity Block extension that fits your search requirements.
 type CapacityBlockExtensionOffering struct {
-	AvailabilityZone                    *string `json:"availabilityZone,omitempty"`
-	AvailabilityZoneID                  *string `json:"availabilityZoneID,omitempty"`
-	CapacityBlockExtensionDurationHours *int64  `json:"capacityBlockExtensionDurationHours,omitempty"`
-	CurrencyCode                        *string `json:"currencyCode,omitempty"`
-	InstanceCount                       *int64  `json:"instanceCount,omitempty"`
-	InstanceType                        *string `json:"instanceType,omitempty"`
-	UpfrontFee                          *string `json:"upfrontFee,omitempty"`
-	ZoneType                            *string `json:"zoneType,omitempty"`
+	AvailabilityZone                    *string      `json:"availabilityZone,omitempty"`
+	AvailabilityZoneID                  *string      `json:"availabilityZoneID,omitempty"`
+	CapacityBlockExtensionDurationHours *int64       `json:"capacityBlockExtensionDurationHours,omitempty"`
+	CapacityBlockExtensionEndDate       *metav1.Time `json:"capacityBlockExtensionEndDate,omitempty"`
+	CapacityBlockExtensionStartDate     *metav1.Time `json:"capacityBlockExtensionStartDate,omitempty"`
+	CurrencyCode                        *string      `json:"currencyCode,omitempty"`
+	InstanceCount                       *int64       `json:"instanceCount,omitempty"`
+	InstanceType                        *string      `json:"instanceType,omitempty"`
+	StartDate                           *metav1.Time `json:"startDate,omitempty"`
+	UpfrontFee                          *string      `json:"upfrontFee,omitempty"`
+	ZoneType                            *string      `json:"zoneType,omitempty"`
 }
 
 // The recommended Capacity Block that fits your search requirements.
 type CapacityBlockOffering struct {
-	AvailabilityZone             *string `json:"availabilityZone,omitempty"`
-	CapacityBlockDurationHours   *int64  `json:"capacityBlockDurationHours,omitempty"`
-	CapacityBlockDurationMinutes *int64  `json:"capacityBlockDurationMinutes,omitempty"`
-	CurrencyCode                 *string `json:"currencyCode,omitempty"`
-	InstanceCount                *int64  `json:"instanceCount,omitempty"`
-	InstanceType                 *string `json:"instanceType,omitempty"`
-	UltraserverType              *string `json:"ultraserverType,omitempty"`
-	UpfrontFee                   *string `json:"upfrontFee,omitempty"`
-	ZoneType                     *string `json:"zoneType,omitempty"`
+	AvailabilityZone             *string      `json:"availabilityZone,omitempty"`
+	CapacityBlockDurationHours   *int64       `json:"capacityBlockDurationHours,omitempty"`
+	CapacityBlockDurationMinutes *int64       `json:"capacityBlockDurationMinutes,omitempty"`
+	CurrencyCode                 *string      `json:"currencyCode,omitempty"`
+	EndDate                      *metav1.Time `json:"endDate,omitempty"`
+	InstanceCount                *int64       `json:"instanceCount,omitempty"`
+	InstanceType                 *string      `json:"instanceType,omitempty"`
+	StartDate                    *metav1.Time `json:"startDate,omitempty"`
+	UltraserverType              *string      `json:"ultraserverType,omitempty"`
+	UpfrontFee                   *string      `json:"upfrontFee,omitempty"`
+	ZoneType                     *string      `json:"zoneType,omitempty"`
 }
 
 // Describes the availability of capacity for a Capacity Block.
@@ -613,27 +632,32 @@ type CapacityBlockStatus struct {
 // Contains information about a Capacity Manager data export configuration,
 // including export settings, delivery status, and recent export activity.
 type CapacityManagerDataExportResponse struct {
-	LatestDeliveryS3LocationURI *string `json:"latestDeliveryS3LocationURI,omitempty"`
-	LatestDeliveryStatusMessage *string `json:"latestDeliveryStatusMessage,omitempty"`
-	S3BucketName                *string `json:"s3BucketName,omitempty"`
-	S3BucketPrefix              *string `json:"s3BucketPrefix,omitempty"`
-	Tags                        []*Tag  `json:"tags,omitempty"`
+	CreateTime                  *metav1.Time `json:"createTime,omitempty"`
+	LatestDeliveryS3LocationURI *string      `json:"latestDeliveryS3LocationURI,omitempty"`
+	LatestDeliveryStatusMessage *string      `json:"latestDeliveryStatusMessage,omitempty"`
+	LatestDeliveryTime          *metav1.Time `json:"latestDeliveryTime,omitempty"`
+	S3BucketName                *string      `json:"s3BucketName,omitempty"`
+	S3BucketPrefix              *string      `json:"s3BucketPrefix,omitempty"`
+	Tags                        []*Tag       `json:"tags,omitempty"`
 }
 
 // Represents dimension values for capacity metrics, including resource identifiers,
 // geographic information, and reservation details used for grouping and filtering
 // capacity data.
 type CapacityManagerDimension struct {
-	AccountID                        *string `json:"accountID,omitempty"`
-	AvailabilityZoneID               *string `json:"availabilityZoneID,omitempty"`
-	InstanceFamily                   *string `json:"instanceFamily,omitempty"`
-	InstancePlatform                 *string `json:"instancePlatform,omitempty"`
-	InstanceType                     *string `json:"instanceType,omitempty"`
-	ReservationARN                   *string `json:"reservationARN,omitempty"`
-	ReservationID                    *string `json:"reservationID,omitempty"`
-	ReservationInstanceMatchCriteria *string `json:"reservationInstanceMatchCriteria,omitempty"`
-	ReservationUnusedFinancialOwner  *string `json:"reservationUnusedFinancialOwner,omitempty"`
-	ResourceRegion                   *string `json:"resourceRegion,omitempty"`
+	AccountID                        *string      `json:"accountID,omitempty"`
+	AvailabilityZoneID               *string      `json:"availabilityZoneID,omitempty"`
+	InstanceFamily                   *string      `json:"instanceFamily,omitempty"`
+	InstancePlatform                 *string      `json:"instancePlatform,omitempty"`
+	InstanceType                     *string      `json:"instanceType,omitempty"`
+	ReservationARN                   *string      `json:"reservationARN,omitempty"`
+	ReservationCreateTimestamp       *metav1.Time `json:"reservationCreateTimestamp,omitempty"`
+	ReservationEndTimestamp          *metav1.Time `json:"reservationEndTimestamp,omitempty"`
+	ReservationID                    *string      `json:"reservationID,omitempty"`
+	ReservationInstanceMatchCriteria *string      `json:"reservationInstanceMatchCriteria,omitempty"`
+	ReservationStartTimestamp        *metav1.Time `json:"reservationStartTimestamp,omitempty"`
+	ReservationUnusedFinancialOwner  *string      `json:"reservationUnusedFinancialOwner,omitempty"`
+	ResourceRegion                   *string      `json:"resourceRegion,omitempty"`
 }
 
 // Describes a Capacity Reservation.
@@ -650,6 +674,7 @@ type CapacityReservation struct {
 	EphemeralStorage           *bool        `json:"ephemeralStorage,omitempty"`
 	InstanceType               *string      `json:"instanceType,omitempty"`
 	OwnerID                    *string      `json:"ownerID,omitempty"`
+	StartDate                  *metav1.Time `json:"startDate,omitempty"`
 	Tags                       []*Tag       `json:"tags,omitempty"`
 	TotalInstanceCount         *int64       `json:"totalInstanceCount,omitempty"`
 }
@@ -657,23 +682,27 @@ type CapacityReservation struct {
 // Information about a request to assign billing of the unused capacity of a
 // Capacity Reservation.
 type CapacityReservationBillingRequest struct {
-	CapacityReservationID *string `json:"capacityReservationID,omitempty"`
-	RequestedBy           *string `json:"requestedBy,omitempty"`
-	StatusMessage         *string `json:"statusMessage,omitempty"`
+	CapacityReservationID *string      `json:"capacityReservationID,omitempty"`
+	LastUpdateTime        *metav1.Time `json:"lastUpdateTime,omitempty"`
+	RequestedBy           *string      `json:"requestedBy,omitempty"`
+	StatusMessage         *string      `json:"statusMessage,omitempty"`
 }
 
 // Information about your commitment for a future-dated Capacity Reservation.
 type CapacityReservationCommitmentInfo struct {
-	CommittedInstanceCount *int64 `json:"committedInstanceCount,omitempty"`
+	CommitmentEndDate      *metav1.Time `json:"commitmentEndDate,omitempty"`
+	CommittedInstanceCount *int64       `json:"committedInstanceCount,omitempty"`
 }
 
 // Information about a Capacity Reservation Fleet.
 type CapacityReservationFleet struct {
-	AllocationStrategy          *string  `json:"allocationStrategy,omitempty"`
-	CapacityReservationFleetARN *string  `json:"capacityReservationFleetARN,omitempty"`
-	Tags                        []*Tag   `json:"tags,omitempty"`
-	TotalFulfilledCapacity      *float64 `json:"totalFulfilledCapacity,omitempty"`
-	TotalTargetCapacity         *int64   `json:"totalTargetCapacity,omitempty"`
+	AllocationStrategy          *string      `json:"allocationStrategy,omitempty"`
+	CapacityReservationFleetARN *string      `json:"capacityReservationFleetARN,omitempty"`
+	CreateTime                  *metav1.Time `json:"createTime,omitempty"`
+	EndDate                     *metav1.Time `json:"endDate,omitempty"`
+	Tags                        []*Tag       `json:"tags,omitempty"`
+	TotalFulfilledCapacity      *float64     `json:"totalFulfilledCapacity,omitempty"`
+	TotalTargetCapacity         *int64       `json:"totalTargetCapacity,omitempty"`
 }
 
 // Describes a resource group to which a Capacity Reservation has been added.
@@ -1169,11 +1198,13 @@ type DataResponse struct {
 
 // Describes the metadata of the account status report.
 type DeclarativePoliciesReport struct {
-	ReportID *string `json:"reportID,omitempty"`
-	S3Bucket *string `json:"s3Bucket,omitempty"`
-	S3Prefix *string `json:"s3Prefix,omitempty"`
-	Tags     []*Tag  `json:"tags,omitempty"`
-	TargetID *string `json:"targetID,omitempty"`
+	EndTime   *metav1.Time `json:"endTime,omitempty"`
+	ReportID  *string      `json:"reportID,omitempty"`
+	S3Bucket  *string      `json:"s3Bucket,omitempty"`
+	S3Prefix  *string      `json:"s3Prefix,omitempty"`
+	StartTime *metav1.Time `json:"startTime,omitempty"`
+	Tags      []*Tag       `json:"tags,omitempty"`
+	TargetID  *string      `json:"targetID,omitempty"`
 }
 
 // Describes an EC2 Fleet error.
@@ -1218,20 +1249,26 @@ type DeregisterInstanceTagAttributeRequest struct {
 // meets the requested criteria. Criteria are defined by the DescribeFastLaunchImages
 // action filters.
 type DescribeFastLaunchImagesSuccessItem struct {
-	ImageID               *string `json:"imageID,omitempty"`
-	MaxParallelLaunches   *int64  `json:"maxParallelLaunches,omitempty"`
-	OwnerID               *string `json:"ownerID,omitempty"`
-	StateTransitionReason *string `json:"stateTransitionReason,omitempty"`
+	ImageID               *string      `json:"imageID,omitempty"`
+	MaxParallelLaunches   *int64       `json:"maxParallelLaunches,omitempty"`
+	OwnerID               *string      `json:"ownerID,omitempty"`
+	StateTransitionReason *string      `json:"stateTransitionReason,omitempty"`
+	StateTransitionTime   *metav1.Time `json:"stateTransitionTime,omitempty"`
 }
 
 // Describes fast snapshot restores for a snapshot.
 type DescribeFastSnapshotRestoreSuccessItem struct {
-	AvailabilityZone      *string `json:"availabilityZone,omitempty"`
-	AvailabilityZoneID    *string `json:"availabilityZoneID,omitempty"`
-	OwnerAlias            *string `json:"ownerAlias,omitempty"`
-	OwnerID               *string `json:"ownerID,omitempty"`
-	SnapshotID            *string `json:"snapshotID,omitempty"`
-	StateTransitionReason *string `json:"stateTransitionReason,omitempty"`
+	AvailabilityZone      *string      `json:"availabilityZone,omitempty"`
+	AvailabilityZoneID    *string      `json:"availabilityZoneID,omitempty"`
+	DisabledTime          *metav1.Time `json:"disabledTime,omitempty"`
+	DisablingTime         *metav1.Time `json:"disablingTime,omitempty"`
+	EnabledTime           *metav1.Time `json:"enabledTime,omitempty"`
+	EnablingTime          *metav1.Time `json:"enablingTime,omitempty"`
+	OptimizingTime        *metav1.Time `json:"optimizingTime,omitempty"`
+	OwnerAlias            *string      `json:"ownerAlias,omitempty"`
+	OwnerID               *string      `json:"ownerID,omitempty"`
+	SnapshotID            *string      `json:"snapshotID,omitempty"`
+	StateTransitionReason *string      `json:"stateTransitionReason,omitempty"`
 }
 
 // Describes the instances that could not be launched by the fleet.
@@ -1295,12 +1332,17 @@ type DisableFastSnapshotRestoreStateErrorItem struct {
 
 // Describes fast snapshot restores that were successfully disabled.
 type DisableFastSnapshotRestoreSuccessItem struct {
-	AvailabilityZone      *string `json:"availabilityZone,omitempty"`
-	AvailabilityZoneID    *string `json:"availabilityZoneID,omitempty"`
-	OwnerAlias            *string `json:"ownerAlias,omitempty"`
-	OwnerID               *string `json:"ownerID,omitempty"`
-	SnapshotID            *string `json:"snapshotID,omitempty"`
-	StateTransitionReason *string `json:"stateTransitionReason,omitempty"`
+	AvailabilityZone      *string      `json:"availabilityZone,omitempty"`
+	AvailabilityZoneID    *string      `json:"availabilityZoneID,omitempty"`
+	DisabledTime          *metav1.Time `json:"disabledTime,omitempty"`
+	DisablingTime         *metav1.Time `json:"disablingTime,omitempty"`
+	EnabledTime           *metav1.Time `json:"enabledTime,omitempty"`
+	EnablingTime          *metav1.Time `json:"enablingTime,omitempty"`
+	OptimizingTime        *metav1.Time `json:"optimizingTime,omitempty"`
+	OwnerAlias            *string      `json:"ownerAlias,omitempty"`
+	OwnerID               *string      `json:"ownerID,omitempty"`
+	SnapshotID            *string      `json:"snapshotID,omitempty"`
+	StateTransitionReason *string      `json:"stateTransitionReason,omitempty"`
 }
 
 // Describes a disk image.
@@ -1375,18 +1417,24 @@ type EBSInstanceBlockDeviceSpecification struct {
 	VolumeID            *string `json:"volumeID,omitempty"`
 }
 
+// Describes the attached EBS status check for an instance.
+type EBSStatusDetails struct {
+	ImpairedSince *metav1.Time `json:"impairedSince,omitempty"`
+}
+
 // Describes an EC2 Instance Connect Endpoint.
 type EC2InstanceConnectEndpoint struct {
-	AvailabilityZone   *string `json:"availabilityZone,omitempty"`
-	AvailabilityZoneID *string `json:"availabilityZoneID,omitempty"`
-	DNSName            *string `json:"dnsName,omitempty"`
-	FipsDNSName        *string `json:"fipsDNSName,omitempty"`
-	OwnerID            *string `json:"ownerID,omitempty"`
-	PreserveClientIP   *bool   `json:"preserveClientIP,omitempty"`
-	StateMessage       *string `json:"stateMessage,omitempty"`
-	SubnetID           *string `json:"subnetID,omitempty"`
-	Tags               []*Tag  `json:"tags,omitempty"`
-	VPCID              *string `json:"vpcID,omitempty"`
+	AvailabilityZone   *string      `json:"availabilityZone,omitempty"`
+	AvailabilityZoneID *string      `json:"availabilityZoneID,omitempty"`
+	CreatedAt          *metav1.Time `json:"createdAt,omitempty"`
+	DNSName            *string      `json:"dnsName,omitempty"`
+	FipsDNSName        *string      `json:"fipsDNSName,omitempty"`
+	OwnerID            *string      `json:"ownerID,omitempty"`
+	PreserveClientIP   *bool        `json:"preserveClientIP,omitempty"`
+	StateMessage       *string      `json:"stateMessage,omitempty"`
+	SubnetID           *string      `json:"subnetID,omitempty"`
+	Tags               []*Tag       `json:"tags,omitempty"`
+	VPCID              *string      `json:"vpcID,omitempty"`
 }
 
 // ENA Express uses Amazon Web Services Scalable Reliable Datagram (SRD) technology
@@ -1504,12 +1552,17 @@ type EnableFastSnapshotRestoreStateErrorItem struct {
 
 // Describes fast snapshot restores that were successfully enabled.
 type EnableFastSnapshotRestoreSuccessItem struct {
-	AvailabilityZone      *string `json:"availabilityZone,omitempty"`
-	AvailabilityZoneID    *string `json:"availabilityZoneID,omitempty"`
-	OwnerAlias            *string `json:"ownerAlias,omitempty"`
-	OwnerID               *string `json:"ownerID,omitempty"`
-	SnapshotID            *string `json:"snapshotID,omitempty"`
-	StateTransitionReason *string `json:"stateTransitionReason,omitempty"`
+	AvailabilityZone      *string      `json:"availabilityZone,omitempty"`
+	AvailabilityZoneID    *string      `json:"availabilityZoneID,omitempty"`
+	DisabledTime          *metav1.Time `json:"disabledTime,omitempty"`
+	DisablingTime         *metav1.Time `json:"disablingTime,omitempty"`
+	EnabledTime           *metav1.Time `json:"enabledTime,omitempty"`
+	EnablingTime          *metav1.Time `json:"enablingTime,omitempty"`
+	OptimizingTime        *metav1.Time `json:"optimizingTime,omitempty"`
+	OwnerAlias            *string      `json:"ownerAlias,omitempty"`
+	OwnerID               *string      `json:"ownerID,omitempty"`
+	SnapshotID            *string      `json:"snapshotID,omitempty"`
+	StateTransitionReason *string      `json:"stateTransitionReason,omitempty"`
 }
 
 // Indicates whether the instance is enabled for Amazon Web Services Nitro Enclaves.
@@ -1733,13 +1786,14 @@ type FleetBlockDeviceMappingRequest struct {
 
 // Information about a Capacity Reservation in a Capacity Reservation Fleet.
 type FleetCapacityReservation struct {
-	AvailabilityZone      *string  `json:"availabilityZone,omitempty"`
-	AvailabilityZoneID    *string  `json:"availabilityZoneID,omitempty"`
-	CapacityReservationID *string  `json:"capacityReservationID,omitempty"`
-	EBSOptimized          *bool    `json:"ebsOptimized,omitempty"`
-	FulfilledCapacity     *float64 `json:"fulfilledCapacity,omitempty"`
-	InstanceType          *string  `json:"instanceType,omitempty"`
-	TotalInstanceCount    *int64   `json:"totalInstanceCount,omitempty"`
+	AvailabilityZone      *string      `json:"availabilityZone,omitempty"`
+	AvailabilityZoneID    *string      `json:"availabilityZoneID,omitempty"`
+	CapacityReservationID *string      `json:"capacityReservationID,omitempty"`
+	CreateDate            *metav1.Time `json:"createDate,omitempty"`
+	EBSOptimized          *bool        `json:"ebsOptimized,omitempty"`
+	FulfilledCapacity     *float64     `json:"fulfilledCapacity,omitempty"`
+	InstanceType          *string      `json:"instanceType,omitempty"`
+	TotalInstanceCount    *int64       `json:"totalInstanceCount,omitempty"`
 }
 
 // Describes an EC2 Fleet.
@@ -1903,18 +1957,19 @@ type FleetSpotCapacityRebalanceRequest struct {
 
 // Describes a flow log.
 type FlowLog struct {
-	DeliverCrossAccountRole  *string `json:"deliverCrossAccountRole,omitempty"`
-	DeliverLogsErrorMessage  *string `json:"deliverLogsErrorMessage,omitempty"`
-	DeliverLogsPermissionARN *string `json:"deliverLogsPermissionARN,omitempty"`
-	DeliverLogsStatus        *string `json:"deliverLogsStatus,omitempty"`
-	FlowLogID                *string `json:"flowLogID,omitempty"`
-	FlowLogStatus            *string `json:"flowLogStatus,omitempty"`
-	LogDestination           *string `json:"logDestination,omitempty"`
-	LogFormat                *string `json:"logFormat,omitempty"`
-	LogGroupName             *string `json:"logGroupName,omitempty"`
-	MaxAggregationInterval   *int64  `json:"maxAggregationInterval,omitempty"`
-	ResourceID               *string `json:"resourceID,omitempty"`
-	Tags                     []*Tag  `json:"tags,omitempty"`
+	CreationTime             *metav1.Time `json:"creationTime,omitempty"`
+	DeliverCrossAccountRole  *string      `json:"deliverCrossAccountRole,omitempty"`
+	DeliverLogsErrorMessage  *string      `json:"deliverLogsErrorMessage,omitempty"`
+	DeliverLogsPermissionARN *string      `json:"deliverLogsPermissionARN,omitempty"`
+	DeliverLogsStatus        *string      `json:"deliverLogsStatus,omitempty"`
+	FlowLogID                *string      `json:"flowLogID,omitempty"`
+	FlowLogStatus            *string      `json:"flowLogStatus,omitempty"`
+	LogDestination           *string      `json:"logDestination,omitempty"`
+	LogFormat                *string      `json:"logFormat,omitempty"`
+	LogGroupName             *string      `json:"logGroupName,omitempty"`
+	MaxAggregationInterval   *int64       `json:"maxAggregationInterval,omitempty"`
+	ResourceID               *string      `json:"resourceID,omitempty"`
+	Tags                     []*Tag       `json:"tags,omitempty"`
 }
 
 // Describes a security group.
@@ -2063,12 +2118,14 @@ type IPAM struct {
 // see View the history of IP addresses (https://docs.aws.amazon.com/vpc/latest/ipam/view-history-cidr-ipam.html)
 // in the Amazon VPC IPAM User Guide.
 type IPAMAddressHistoryRecord struct {
-	ResourceCIDR    *string `json:"resourceCIDR,omitempty"`
-	ResourceID      *string `json:"resourceID,omitempty"`
-	ResourceName    *string `json:"resourceName,omitempty"`
-	ResourceOwnerID *string `json:"resourceOwnerID,omitempty"`
-	ResourceRegion  *string `json:"resourceRegion,omitempty"`
-	VPCID           *string `json:"vpcID,omitempty"`
+	ResourceCIDR     *string      `json:"resourceCIDR,omitempty"`
+	ResourceID       *string      `json:"resourceID,omitempty"`
+	ResourceName     *string      `json:"resourceName,omitempty"`
+	ResourceOwnerID  *string      `json:"resourceOwnerID,omitempty"`
+	ResourceRegion   *string      `json:"resourceRegion,omitempty"`
+	SampledEndTime   *metav1.Time `json:"sampledEndTime,omitempty"`
+	SampledStartTime *metav1.Time `json:"sampledStartTime,omitempty"`
+	VPCID            *string      `json:"vpcID,omitempty"`
 }
 
 // A signed document that proves that you are authorized to bring the specified
@@ -2083,25 +2140,28 @@ type IPAMCIDRAuthorizationContext struct {
 // IPAM with Amazon Web Services Organizations, all accounts in the organization
 // are discovered accounts.
 type IPAMDiscoveredAccount struct {
-	AccountID            *string `json:"accountID,omitempty"`
-	DiscoveryRegion      *string `json:"discoveryRegion,omitempty"`
-	OrganizationalUnitID *string `json:"organizationalUnitID,omitempty"`
+	AccountID                   *string      `json:"accountID,omitempty"`
+	DiscoveryRegion             *string      `json:"discoveryRegion,omitempty"`
+	LastAttemptedDiscoveryTime  *metav1.Time `json:"lastAttemptedDiscoveryTime,omitempty"`
+	LastSuccessfulDiscoveryTime *metav1.Time `json:"lastSuccessfulDiscoveryTime,omitempty"`
+	OrganizationalUnitID        *string      `json:"organizationalUnitID,omitempty"`
 }
 
 // A public IP Address discovered by IPAM.
 type IPAMDiscoveredPublicAddress struct {
-	Address                     *string `json:"address,omitempty"`
-	AddressAllocationID         *string `json:"addressAllocationID,omitempty"`
-	AddressOwnerID              *string `json:"addressOwnerID,omitempty"`
-	AddressRegion               *string `json:"addressRegion,omitempty"`
-	InstanceID                  *string `json:"instanceID,omitempty"`
-	NetworkBorderGroup          *string `json:"networkBorderGroup,omitempty"`
-	NetworkInterfaceDescription *string `json:"networkInterfaceDescription,omitempty"`
-	NetworkInterfaceID          *string `json:"networkInterfaceID,omitempty"`
-	PublicIPv4PoolID            *string `json:"publicIPv4PoolID,omitempty"`
-	ServiceResource             *string `json:"serviceResource,omitempty"`
-	SubnetID                    *string `json:"subnetID,omitempty"`
-	VPCID                       *string `json:"vpcID,omitempty"`
+	Address                     *string      `json:"address,omitempty"`
+	AddressAllocationID         *string      `json:"addressAllocationID,omitempty"`
+	AddressOwnerID              *string      `json:"addressOwnerID,omitempty"`
+	AddressRegion               *string      `json:"addressRegion,omitempty"`
+	InstanceID                  *string      `json:"instanceID,omitempty"`
+	NetworkBorderGroup          *string      `json:"networkBorderGroup,omitempty"`
+	NetworkInterfaceDescription *string      `json:"networkInterfaceDescription,omitempty"`
+	NetworkInterfaceID          *string      `json:"networkInterfaceID,omitempty"`
+	PublicIPv4PoolID            *string      `json:"publicIPv4PoolID,omitempty"`
+	SampleTime                  *metav1.Time `json:"sampleTime,omitempty"`
+	ServiceResource             *string      `json:"serviceResource,omitempty"`
+	SubnetID                    *string      `json:"subnetID,omitempty"`
+	VPCID                       *string      `json:"vpcID,omitempty"`
 }
 
 // An IPAM discovered resource CIDR. A discovered resource is a resource CIDR
@@ -2110,13 +2170,14 @@ type IPAMDiscoveredPublicAddress struct {
 // resource CIDR is the IP address range in CIDR notation that is associated
 // with the resource.
 type IPAMDiscoveredResourceCIDR struct {
-	AvailabilityZoneID *string `json:"availabilityZoneID,omitempty"`
-	ResourceCIDR       *string `json:"resourceCIDR,omitempty"`
-	ResourceID         *string `json:"resourceID,omitempty"`
-	ResourceOwnerID    *string `json:"resourceOwnerID,omitempty"`
-	ResourceRegion     *string `json:"resourceRegion,omitempty"`
-	SubnetID           *string `json:"subnetID,omitempty"`
-	VPCID              *string `json:"vpcID,omitempty"`
+	AvailabilityZoneID *string      `json:"availabilityZoneID,omitempty"`
+	ResourceCIDR       *string      `json:"resourceCIDR,omitempty"`
+	ResourceID         *string      `json:"resourceID,omitempty"`
+	ResourceOwnerID    *string      `json:"resourceOwnerID,omitempty"`
+	ResourceRegion     *string      `json:"resourceRegion,omitempty"`
+	SampleTime         *metav1.Time `json:"sampleTime,omitempty"`
+	SubnetID           *string      `json:"subnetID,omitempty"`
+	VPCID              *string      `json:"vpcID,omitempty"`
 }
 
 // The discovery failure reason.
@@ -2129,10 +2190,11 @@ type IPAMDiscoveryFailureReason struct {
 // can use a verification token to validate that you control a public IP address
 // range when you bring an IP address range to Amazon Web Services (BYOIP).
 type IPAMExternalResourceVerificationToken struct {
-	IPAMRegion *string `json:"ipamRegion,omitempty"`
-	Tags       []*Tag  `json:"tags,omitempty"`
-	TokenName  *string `json:"tokenName,omitempty"`
-	TokenValue *string `json:"tokenValue,omitempty"`
+	IPAMRegion *string      `json:"ipamRegion,omitempty"`
+	NotAfter   *metav1.Time `json:"notAfter,omitempty"`
+	Tags       []*Tag       `json:"tags,omitempty"`
+	TokenName  *string      `json:"tokenName,omitempty"`
+	TokenValue *string      `json:"tokenValue,omitempty"`
 }
 
 // The operating Regions for an IPAM. Operating Regions are Amazon Web Services
@@ -2604,10 +2666,11 @@ type Image struct {
 // Information about a single AMI in the ancestry chain and its source (parent)
 // AMI.
 type ImageAncestryEntry struct {
-	ImageID           *string `json:"imageID,omitempty"`
-	ImageOwnerAlias   *string `json:"imageOwnerAlias,omitempty"`
-	SourceImageID     *string `json:"sourceImageID,omitempty"`
-	SourceImageRegion *string `json:"sourceImageRegion,omitempty"`
+	CreationDate      *metav1.Time `json:"creationDate,omitempty"`
+	ImageID           *string      `json:"imageID,omitempty"`
+	ImageOwnerAlias   *string      `json:"imageOwnerAlias,omitempty"`
+	SourceImageID     *string      `json:"sourceImageID,omitempty"`
+	SourceImageRegion *string      `json:"sourceImageRegion,omitempty"`
 }
 
 // Describes the disk container object for an import image task.
@@ -2632,9 +2695,11 @@ type ImageMetadata struct {
 
 // Information about an AMI that is currently in the Recycle Bin.
 type ImageRecycleBinInfo struct {
-	Description *string `json:"description,omitempty"`
-	ImageID     *string `json:"imageID,omitempty"`
-	Name        *string `json:"name,omitempty"`
+	Description         *string      `json:"description,omitempty"`
+	ImageID             *string      `json:"imageID,omitempty"`
+	Name                *string      `json:"name,omitempty"`
+	RecycleBinEnterTime *metav1.Time `json:"recycleBinEnterTime,omitempty"`
+	RecycleBinExitTime  *metav1.Time `json:"recycleBinExitTime,omitempty"`
 }
 
 // A resource that is referencing an image.
@@ -2645,16 +2710,19 @@ type ImageReference struct {
 
 // The configuration and status of an image usage report.
 type ImageUsageReport struct {
-	ImageID *string `json:"imageID,omitempty"`
-	Tags    []*Tag  `json:"tags,omitempty"`
+	CreationTime   *metav1.Time `json:"creationTime,omitempty"`
+	ExpirationTime *metav1.Time `json:"expirationTime,omitempty"`
+	ImageID        *string      `json:"imageID,omitempty"`
+	Tags           []*Tag       `json:"tags,omitempty"`
 }
 
 // A single entry in an image usage report, detailing how an image is being
 // used by a specific Amazon Web Services account and resource type.
 type ImageUsageReportEntry struct {
-	AccountID  *string `json:"accountID,omitempty"`
-	ImageID    *string `json:"imageID,omitempty"`
-	UsageCount *int64  `json:"usageCount,omitempty"`
+	AccountID          *string      `json:"accountID,omitempty"`
+	ImageID            *string      `json:"imageID,omitempty"`
+	ReportCreationTime *metav1.Time `json:"reportCreationTime,omitempty"`
+	UsageCount         *int64       `json:"usageCount,omitempty"`
 }
 
 // The options that affect the scope of the report.
@@ -2870,8 +2938,9 @@ type InstanceIPv6Prefix struct {
 
 // Information about the instance and the AMI used to launch the instance.
 type InstanceImageMetadata struct {
-	AvailabilityZone *string `json:"availabilityZone,omitempty"`
-	InstanceType     *string `json:"instanceType,omitempty"`
+	AvailabilityZone *string      `json:"availabilityZone,omitempty"`
+	InstanceType     *string      `json:"instanceType,omitempty"`
+	LaunchTime       *metav1.Time `json:"launchTime,omitempty"`
 	// Describes whether the resource is managed by a service provider and, if so,
 	// describes the service provider that manages it.
 	Operator *OperatorResponse `json:"operator,omitempty"`
@@ -3233,11 +3302,12 @@ type InstanceSecondaryInterface struct {
 
 // Describes the attachment of a secondary interface to an instance.
 type InstanceSecondaryInterfaceAttachment struct {
-	AttachmentID        *string `json:"attachmentID,omitempty"`
-	DeleteOnTermination *bool   `json:"deleteOnTermination,omitempty"`
-	DeviceIndex         *int64  `json:"deviceIndex,omitempty"`
-	NetworkCardIndex    *int64  `json:"networkCardIndex,omitempty"`
-	Status              *string `json:"status,omitempty"`
+	AttachTime          *metav1.Time `json:"attachTime,omitempty"`
+	AttachmentID        *string      `json:"attachmentID,omitempty"`
+	DeleteOnTermination *bool        `json:"deleteOnTermination,omitempty"`
+	DeviceIndex         *int64       `json:"deviceIndex,omitempty"`
+	NetworkCardIndex    *int64       `json:"networkCardIndex,omitempty"`
+	Status              *string      `json:"status,omitempty"`
 }
 
 // Describes a private IPv4 address for a secondary interface.
@@ -3366,11 +3436,13 @@ type InterruptionInfo struct {
 
 // Describes a key pair.
 type KeyPairInfo struct {
-	KeyFingerprint *string `json:"keyFingerprint,omitempty"`
-	KeyName        *string `json:"keyName,omitempty"`
-	KeyPairID      *string `json:"keyPairID,omitempty"`
-	PublicKey      *string `json:"publicKey,omitempty"`
-	Tags           []*Tag  `json:"tags,omitempty"`
+	CreateTime     *metav1.Time `json:"createTime,omitempty"`
+	KeyFingerprint *string      `json:"keyFingerprint,omitempty"`
+	KeyName        *string      `json:"keyName,omitempty"`
+	KeyPairID      *string      `json:"keyPairID,omitempty"`
+	KeyType        *string      `json:"keyType,omitempty"`
+	PublicKey      *string      `json:"publicKey,omitempty"`
+	Tags           []*Tag       `json:"tags,omitempty"`
 }
 
 // The last error that occurred for a VPC endpoint.
@@ -3990,8 +4062,12 @@ type LocalGatewayVirtualInterfaceGroup struct {
 
 // Information about a locked snapshot.
 type LockedSnapshotsInfo struct {
-	OwnerID    *string `json:"ownerID,omitempty"`
-	SnapshotID *string `json:"snapshotID,omitempty"`
+	CoolOffPeriodExpiresOn *metav1.Time `json:"coolOffPeriodExpiresOn,omitempty"`
+	LockCreatedOn          *metav1.Time `json:"lockCreatedOn,omitempty"`
+	LockDurationStartTime  *metav1.Time `json:"lockDurationStartTime,omitempty"`
+	LockExpiresOn          *metav1.Time `json:"lockExpiresOn,omitempty"`
+	OwnerID                *string      `json:"ownerID,omitempty"`
+	SnapshotID             *string      `json:"snapshotID,omitempty"`
 }
 
 // Information about the EC2 Mac Dedicated Host.
@@ -4002,12 +4078,15 @@ type MacHost struct {
 // Information about a System Integrity Protection (SIP) modification task or
 // volume ownership delegation task for an Amazon EC2 Mac instance.
 type MacModificationTask struct {
-	Tags []*Tag `json:"tags,omitempty"`
+	StartTime *metav1.Time `json:"startTime,omitempty"`
+	Tags      []*Tag       `json:"tags,omitempty"`
 }
 
 // Details for Site-to-Site VPN tunnel endpoint maintenance events.
 type MaintenanceDetails struct {
-	PendingMaintenance *string `json:"pendingMaintenance,omitempty"`
+	LastMaintenanceApplied      *metav1.Time `json:"lastMaintenanceApplied,omitempty"`
+	MaintenanceAutoAppliedAfter *metav1.Time `json:"maintenanceAutoAppliedAfter,omitempty"`
+	PendingMaintenance          *string      `json:"pendingMaintenance,omitempty"`
 }
 
 // Describes a managed prefix list.
@@ -4047,11 +4126,19 @@ type MemoryMiBRequest struct {
 	Min *int64 `json:"min,omitempty"`
 }
 
+// Contains a single data point from a capacity metrics query, including the
+// dimension values, timestamp, and metric values for that specific combination.
+type MetricDataResult struct {
+	Timestamp *metav1.Time `json:"timestamp,omitempty"`
+}
+
 // Indicates whether the network was healthy or degraded at a particular point.
 // The value is aggregated from the startDate to the endDate. Currently only
 // five_minutes is supported.
 type MetricPoint struct {
-	Status *string `json:"status,omitempty"`
+	EndDate   *metav1.Time `json:"endDate,omitempty"`
+	StartDate *metav1.Time `json:"startDate,omitempty"`
+	Status    *string      `json:"status,omitempty"`
 }
 
 // Represents a single metric value with its associated statistic, such as the
@@ -4230,33 +4317,39 @@ type NetworkBandwidthGbpsRequest struct {
 
 // Describes a Network Access Scope.
 type NetworkInsightsAccessScope struct {
-	Tags []*Tag `json:"tags,omitempty"`
+	CreatedDate *metav1.Time `json:"createdDate,omitempty"`
+	Tags        []*Tag       `json:"tags,omitempty"`
+	UpdatedDate *metav1.Time `json:"updatedDate,omitempty"`
 }
 
 // Describes a Network Access Scope analysis.
 type NetworkInsightsAccessScopeAnalysis struct {
-	AnalyzedEniCount *int64  `json:"analyzedEniCount,omitempty"`
-	StatusMessage    *string `json:"statusMessage,omitempty"`
-	Tags             []*Tag  `json:"tags,omitempty"`
-	WarningMessage   *string `json:"warningMessage,omitempty"`
+	AnalyzedEniCount *int64       `json:"analyzedEniCount,omitempty"`
+	EndDate          *metav1.Time `json:"endDate,omitempty"`
+	StartDate        *metav1.Time `json:"startDate,omitempty"`
+	StatusMessage    *string      `json:"statusMessage,omitempty"`
+	Tags             []*Tag       `json:"tags,omitempty"`
+	WarningMessage   *string      `json:"warningMessage,omitempty"`
 }
 
 // Describes a network insights analysis.
 type NetworkInsightsAnalysis struct {
-	AdditionalAccounts []*string `json:"additionalAccounts,omitempty"`
-	NetworkPathFound   *bool     `json:"networkPathFound,omitempty"`
-	StatusMessage      *string   `json:"statusMessage,omitempty"`
-	SuggestedAccounts  []*string `json:"suggestedAccounts,omitempty"`
-	Tags               []*Tag    `json:"tags,omitempty"`
-	WarningMessage     *string   `json:"warningMessage,omitempty"`
+	AdditionalAccounts []*string    `json:"additionalAccounts,omitempty"`
+	NetworkPathFound   *bool        `json:"networkPathFound,omitempty"`
+	StartDate          *metav1.Time `json:"startDate,omitempty"`
+	StatusMessage      *string      `json:"statusMessage,omitempty"`
+	SuggestedAccounts  []*string    `json:"suggestedAccounts,omitempty"`
+	Tags               []*Tag       `json:"tags,omitempty"`
+	WarningMessage     *string      `json:"warningMessage,omitempty"`
 }
 
 // Describes a path.
 type NetworkInsightsPath struct {
-	Destination     *string `json:"destination,omitempty"`
-	DestinationPort *int64  `json:"destinationPort,omitempty"`
-	Source          *string `json:"source,omitempty"`
-	Tags            []*Tag  `json:"tags,omitempty"`
+	CreatedDate     *metav1.Time `json:"createdDate,omitempty"`
+	Destination     *string      `json:"destination,omitempty"`
+	DestinationPort *int64       `json:"destinationPort,omitempty"`
+	Source          *string      `json:"source,omitempty"`
+	Tags            []*Tag       `json:"tags,omitempty"`
 }
 
 // Describes a network interface.
@@ -4804,9 +4897,10 @@ type RegisterInstanceTagAttributeRequest struct {
 // Describes an Amazon EC2 instance that is enabled for SQL Server High Availability
 // standby detection monitoring.
 type RegisteredInstance struct {
-	ProcessingStatus     *string `json:"processingStatus,omitempty"`
-	SQLServerCredentials *string `json:"sqlServerCredentials,omitempty"`
-	Tags                 []*Tag  `json:"tags,omitempty"`
+	LastUpdatedTime      *metav1.Time `json:"lastUpdatedTime,omitempty"`
+	ProcessingStatus     *string      `json:"processingStatus,omitempty"`
+	SQLServerCredentials *string      `json:"sqlServerCredentials,omitempty"`
+	Tags                 []*Tag       `json:"tags,omitempty"`
 }
 
 // Remove an operating Region from an IPAM. Operating Regions are Amazon Web
@@ -4961,6 +5055,7 @@ type RequestSpotLaunchSpecification struct {
 	ImageID        *string `json:"imageID,omitempty"`
 	InstanceType   *string `json:"instanceType,omitempty"`
 	KernelID       *string `json:"kernelID,omitempty"`
+	KeyName        *string `json:"keyName,omitempty"`
 	RAMDiskID      *string `json:"ramDiskID,omitempty"`
 	SubnetID       *string `json:"subnetID,omitempty"`
 	UserData       *string `json:"userData,omitempty"`
@@ -5364,6 +5459,7 @@ type S3Storage struct {
 	AWSAccessKeyID *string `json:"awsAccessKeyID,omitempty"`
 	Bucket         *string `json:"bucket,omitempty"`
 	Prefix         *string `json:"prefix,omitempty"`
+	UploadPolicy   []byte  `json:"uploadPolicy,omitempty"`
 }
 
 // Describes a Scheduled Instance.
@@ -5500,13 +5596,14 @@ type SecondaryInterface struct {
 
 // Describes the attachment of a secondary interface to an instance.
 type SecondaryInterfaceAttachment struct {
-	AttachmentID        *string `json:"attachmentID,omitempty"`
-	DeleteOnTermination *bool   `json:"deleteOnTermination,omitempty"`
-	DeviceIndex         *int64  `json:"deviceIndex,omitempty"`
-	InstanceID          *string `json:"instanceID,omitempty"`
-	InstanceOwnerID     *string `json:"instanceOwnerID,omitempty"`
-	NetworkCardIndex    *int64  `json:"networkCardIndex,omitempty"`
-	Status              *string `json:"status,omitempty"`
+	AttachTime          *metav1.Time `json:"attachTime,omitempty"`
+	AttachmentID        *string      `json:"attachmentID,omitempty"`
+	DeleteOnTermination *bool        `json:"deleteOnTermination,omitempty"`
+	DeviceIndex         *int64       `json:"deviceIndex,omitempty"`
+	InstanceID          *string      `json:"instanceID,omitempty"`
+	InstanceOwnerID     *string      `json:"instanceOwnerID,omitempty"`
+	NetworkCardIndex    *int64       `json:"networkCardIndex,omitempty"`
+	Status              *string      `json:"status,omitempty"`
 }
 
 // Describes a private IPv4 address for a secondary interface.
@@ -5728,24 +5825,27 @@ type SnapshotDiskContainer struct {
 
 // Information about a snapshot.
 type SnapshotInfo struct {
-	AvailabilityZone *string `json:"availabilityZone,omitempty"`
-	Description      *string `json:"description,omitempty"`
-	Encrypted        *bool   `json:"encrypted,omitempty"`
-	OutpostARN       *string `json:"outpostARN,omitempty"`
-	OwnerID          *string `json:"ownerID,omitempty"`
-	Progress         *string `json:"progress,omitempty"`
-	SnapshotID       *string `json:"snapshotID,omitempty"`
-	SSEType          *string `json:"sseType,omitempty"`
-	Tags             []*Tag  `json:"tags,omitempty"`
-	VolumeID         *string `json:"volumeID,omitempty"`
-	VolumeSize       *int64  `json:"volumeSize,omitempty"`
+	AvailabilityZone *string      `json:"availabilityZone,omitempty"`
+	Description      *string      `json:"description,omitempty"`
+	Encrypted        *bool        `json:"encrypted,omitempty"`
+	OutpostARN       *string      `json:"outpostARN,omitempty"`
+	OwnerID          *string      `json:"ownerID,omitempty"`
+	Progress         *string      `json:"progress,omitempty"`
+	SnapshotID       *string      `json:"snapshotID,omitempty"`
+	SSEType          *string      `json:"sseType,omitempty"`
+	StartTime        *metav1.Time `json:"startTime,omitempty"`
+	Tags             []*Tag       `json:"tags,omitempty"`
+	VolumeID         *string      `json:"volumeID,omitempty"`
+	VolumeSize       *int64       `json:"volumeSize,omitempty"`
 }
 
 // Information about a snapshot that is currently in the Recycle Bin.
 type SnapshotRecycleBinInfo struct {
-	Description *string `json:"description,omitempty"`
-	SnapshotID  *string `json:"snapshotID,omitempty"`
-	VolumeID    *string `json:"volumeID,omitempty"`
+	Description         *string      `json:"description,omitempty"`
+	RecycleBinEnterTime *metav1.Time `json:"recycleBinEnterTime,omitempty"`
+	RecycleBinExitTime  *metav1.Time `json:"recycleBinExitTime,omitempty"`
+	SnapshotID          *string      `json:"snapshotID,omitempty"`
+	VolumeID            *string      `json:"volumeID,omitempty"`
 }
 
 // Details about the import snapshot task.
@@ -5763,12 +5863,15 @@ type SnapshotTaskDetail struct {
 
 // Provides information about a snapshot's storage tier.
 type SnapshotTierStatus struct {
-	LastTieringOperationStatusDetail *string `json:"lastTieringOperationStatusDetail,omitempty"`
-	LastTieringProgress              *int64  `json:"lastTieringProgress,omitempty"`
-	OwnerID                          *string `json:"ownerID,omitempty"`
-	SnapshotID                       *string `json:"snapshotID,omitempty"`
-	Tags                             []*Tag  `json:"tags,omitempty"`
-	VolumeID                         *string `json:"volumeID,omitempty"`
+	ArchivalCompleteTime             *metav1.Time `json:"archivalCompleteTime,omitempty"`
+	LastTieringOperationStatusDetail *string      `json:"lastTieringOperationStatusDetail,omitempty"`
+	LastTieringProgress              *int64       `json:"lastTieringProgress,omitempty"`
+	LastTieringStartTime             *metav1.Time `json:"lastTieringStartTime,omitempty"`
+	OwnerID                          *string      `json:"ownerID,omitempty"`
+	RestoreExpiryTime                *metav1.Time `json:"restoreExpiryTime,omitempty"`
+	SnapshotID                       *string      `json:"snapshotID,omitempty"`
+	Tags                             []*Tag       `json:"tags,omitempty"`
+	VolumeID                         *string      `json:"volumeID,omitempty"`
 }
 
 // The Spot Instance replacement strategy to use when Amazon EC2 emits a signal
@@ -5846,8 +5949,9 @@ type SpotFleetMonitoring struct {
 
 // Describes a Spot Fleet request.
 type SpotFleetRequestConfig struct {
-	SpotFleetRequestID *string `json:"spotFleetRequestID,omitempty"`
-	Tags               []*Tag  `json:"tags,omitempty"`
+	CreateTime         *metav1.Time `json:"createTime,omitempty"`
+	SpotFleetRequestID *string      `json:"spotFleetRequestID,omitempty"`
+	Tags               []*Tag       `json:"tags,omitempty"`
 }
 
 // Describes the configuration of a Spot Fleet request.
@@ -5996,12 +6100,13 @@ type StorageLocation struct {
 
 // The information about the AMI store task, including the progress of the task.
 type StoreImageTaskResult struct {
-	AMIID                  *string `json:"amiID,omitempty"`
-	Bucket                 *string `json:"bucket,omitempty"`
-	ProgressPercentage     *int64  `json:"progressPercentage,omitempty"`
-	S3ObjectKey            *string `json:"s3ObjectKey,omitempty"`
-	StoreTaskFailureReason *string `json:"storeTaskFailureReason,omitempty"`
-	StoreTaskState         *string `json:"storeTaskState,omitempty"`
+	AMIID                  *string      `json:"amiID,omitempty"`
+	Bucket                 *string      `json:"bucket,omitempty"`
+	ProgressPercentage     *int64       `json:"progressPercentage,omitempty"`
+	S3ObjectKey            *string      `json:"s3ObjectKey,omitempty"`
+	StoreTaskFailureReason *string      `json:"storeTaskFailureReason,omitempty"`
+	StoreTaskState         *string      `json:"storeTaskState,omitempty"`
+	TaskStartTime          *metav1.Time `json:"taskStartTime,omitempty"`
 }
 
 // Describes the subnet association with the transit gateway multicast domain.
@@ -6296,14 +6401,17 @@ type TransitGatewayConnectRequestBGPOptions struct {
 
 // Describes a transit gateway metering policy.
 type TransitGatewayMeteringPolicy struct {
-	MiddleboxAttachmentIDs []*string `json:"middleboxAttachmentIDs,omitempty"`
-	Tags                   []*Tag    `json:"tags,omitempty"`
-	TransitGatewayID       *string   `json:"transitGatewayID,omitempty"`
+	MiddleboxAttachmentIDs []*string    `json:"middleboxAttachmentIDs,omitempty"`
+	Tags                   []*Tag       `json:"tags,omitempty"`
+	TransitGatewayID       *string      `json:"transitGatewayID,omitempty"`
+	UpdateEffectiveAt      *metav1.Time `json:"updateEffectiveAt,omitempty"`
 }
 
 // Describes an entry in a transit gateway metering policy.
 type TransitGatewayMeteringPolicyEntry struct {
-	PolicyRuleNumber *string `json:"policyRuleNumber,omitempty"`
+	PolicyRuleNumber  *string      `json:"policyRuleNumber,omitempty"`
+	UpdateEffectiveAt *metav1.Time `json:"updateEffectiveAt,omitempty"`
+	UpdatedAt         *metav1.Time `json:"updatedAt,omitempty"`
 }
 
 // Describes the traffic matching criteria for a transit gateway metering policy
@@ -6646,8 +6754,11 @@ type VPCAttachment struct {
 // VPC BPA, see Block public access to VPCs and subnets (https://docs.aws.amazon.com/vpc/latest/userguide/security-vpc-bpa.html)
 // in the Amazon VPC User Guide.
 type VPCBlockPublicAccessExclusion struct {
-	Reason *string `json:"reason,omitempty"`
-	Tags   []*Tag  `json:"tags,omitempty"`
+	CreationTimestamp   *metav1.Time `json:"creationTimestamp,omitempty"`
+	DeletionTimestamp   *metav1.Time `json:"deletionTimestamp,omitempty"`
+	LastUpdateTimestamp *metav1.Time `json:"lastUpdateTimestamp,omitempty"`
+	Reason              *string      `json:"reason,omitempty"`
+	Tags                []*Tag       `json:"tags,omitempty"`
 }
 
 // VPC Block Public Access (BPA) enables you to block resources in VPCs and
@@ -6656,9 +6767,10 @@ type VPCBlockPublicAccessExclusion struct {
 // learn more about VPC BPA, see Block public access to VPCs and subnets (https://docs.aws.amazon.com/vpc/latest/userguide/security-vpc-bpa.html)
 // in the Amazon VPC User Guide.
 type VPCBlockPublicAccessOptions struct {
-	AWSAccountID *string `json:"awsAccountID,omitempty"`
-	AWSRegion    *string `json:"awsRegion,omitempty"`
-	Reason       *string `json:"reason,omitempty"`
+	AWSAccountID        *string      `json:"awsAccountID,omitempty"`
+	AWSRegion           *string      `json:"awsRegion,omitempty"`
+	LastUpdateTimestamp *metav1.Time `json:"lastUpdateTimestamp,omitempty"`
+	Reason              *string      `json:"reason,omitempty"`
 }
 
 // Describes an IPv4 CIDR block associated with a VPC.
@@ -6712,19 +6824,20 @@ type VPCEncryptionNonCompliantResource struct {
 
 // Describes a VPC endpoint.
 type VPCEndpoint struct {
-	FailureReason       *string   `json:"failureReason,omitempty"`
-	NetworkInterfaceIDs []*string `json:"networkInterfaceIDs,omitempty"`
-	OwnerID             *string   `json:"ownerID,omitempty"`
-	PolicyDocument      *string   `json:"policyDocument,omitempty"`
-	PrivateDNSEnabled   *bool     `json:"privateDNSEnabled,omitempty"`
-	RequesterManaged    *bool     `json:"requesterManaged,omitempty"`
-	RouteTableIDs       []*string `json:"routeTableIDs,omitempty"`
-	ServiceName         *string   `json:"serviceName,omitempty"`
-	ServiceRegion       *string   `json:"serviceRegion,omitempty"`
-	SubnetIDs           []*string `json:"subnetIDs,omitempty"`
-	Tags                []*Tag    `json:"tags,omitempty"`
-	VPCEndpointID       *string   `json:"vpcEndpointID,omitempty"`
-	VPCID               *string   `json:"vpcID,omitempty"`
+	CreationTimestamp   *metav1.Time `json:"creationTimestamp,omitempty"`
+	FailureReason       *string      `json:"failureReason,omitempty"`
+	NetworkInterfaceIDs []*string    `json:"networkInterfaceIDs,omitempty"`
+	OwnerID             *string      `json:"ownerID,omitempty"`
+	PolicyDocument      *string      `json:"policyDocument,omitempty"`
+	PrivateDNSEnabled   *bool        `json:"privateDNSEnabled,omitempty"`
+	RequesterManaged    *bool        `json:"requesterManaged,omitempty"`
+	RouteTableIDs       []*string    `json:"routeTableIDs,omitempty"`
+	ServiceName         *string      `json:"serviceName,omitempty"`
+	ServiceRegion       *string      `json:"serviceRegion,omitempty"`
+	SubnetIDs           []*string    `json:"subnetIDs,omitempty"`
+	Tags                []*Tag       `json:"tags,omitempty"`
+	VPCEndpointID       *string      `json:"vpcEndpointID,omitempty"`
+	VPCID               *string      `json:"vpcID,omitempty"`
 }
 
 // Describes the VPC resources, VPC endpoint services, Lattice services, or
@@ -6742,14 +6855,15 @@ type VPCEndpointAssociation struct {
 
 // Describes a VPC endpoint connection to a service.
 type VPCEndpointConnection struct {
-	GatewayLoadBalancerARNs []*string `json:"gatewayLoadBalancerARNs,omitempty"`
-	NetworkLoadBalancerARNs []*string `json:"networkLoadBalancerARNs,omitempty"`
-	ServiceID               *string   `json:"serviceID,omitempty"`
-	Tags                    []*Tag    `json:"tags,omitempty"`
-	VPCEndpointConnectionID *string   `json:"vpcEndpointConnectionID,omitempty"`
-	VPCEndpointID           *string   `json:"vpcEndpointID,omitempty"`
-	VPCEndpointOwner        *string   `json:"vpcEndpointOwner,omitempty"`
-	VPCEndpointRegion       *string   `json:"vpcEndpointRegion,omitempty"`
+	CreationTimestamp       *metav1.Time `json:"creationTimestamp,omitempty"`
+	GatewayLoadBalancerARNs []*string    `json:"gatewayLoadBalancerARNs,omitempty"`
+	NetworkLoadBalancerARNs []*string    `json:"networkLoadBalancerARNs,omitempty"`
+	ServiceID               *string      `json:"serviceID,omitempty"`
+	Tags                    []*Tag       `json:"tags,omitempty"`
+	VPCEndpointConnectionID *string      `json:"vpcEndpointConnectionID,omitempty"`
+	VPCEndpointID           *string      `json:"vpcEndpointID,omitempty"`
+	VPCEndpointOwner        *string      `json:"vpcEndpointOwner,omitempty"`
+	VPCEndpointRegion       *string      `json:"vpcEndpointRegion,omitempty"`
 }
 
 // Describes an IPv6 CIDR block associated with a VPC.
@@ -7158,15 +7272,17 @@ type VolumeRecycleBinInfo struct {
 	IOPS               *int64       `json:"iops,omitempty"`
 	// Describes whether the resource is managed by a service provider and, if so,
 	// describes the service provider that manages it.
-	Operator       *OperatorResponse `json:"operator,omitempty"`
-	OutpostARN     *string           `json:"outpostARN,omitempty"`
-	Size           *int64            `json:"size,omitempty"`
-	SnapshotID     *string           `json:"snapshotID,omitempty"`
-	SourceVolumeID *string           `json:"sourceVolumeID,omitempty"`
-	State          *string           `json:"state,omitempty"`
-	Throughput     *int64            `json:"throughput,omitempty"`
-	VolumeID       *string           `json:"volumeID,omitempty"`
-	VolumeType     *string           `json:"volumeType,omitempty"`
+	Operator            *OperatorResponse `json:"operator,omitempty"`
+	OutpostARN          *string           `json:"outpostARN,omitempty"`
+	RecycleBinEnterTime *metav1.Time      `json:"recycleBinEnterTime,omitempty"`
+	RecycleBinExitTime  *metav1.Time      `json:"recycleBinExitTime,omitempty"`
+	Size                *int64            `json:"size,omitempty"`
+	SnapshotID          *string           `json:"snapshotID,omitempty"`
+	SourceVolumeID      *string           `json:"sourceVolumeID,omitempty"`
+	State               *string           `json:"state,omitempty"`
+	Throughput          *int64            `json:"throughput,omitempty"`
+	VolumeID            *string           `json:"volumeID,omitempty"`
+	VolumeType          *string           `json:"volumeType,omitempty"`
 }
 
 // Describes a volume status operation code.
@@ -7190,10 +7306,12 @@ type VolumeStatusDetails struct {
 
 // Describes a volume status event.
 type VolumeStatusEvent struct {
-	Description *string `json:"description,omitempty"`
-	EventID     *string `json:"eventID,omitempty"`
-	EventType   *string `json:"eventType,omitempty"`
-	InstanceID  *string `json:"instanceID,omitempty"`
+	Description *string      `json:"description,omitempty"`
+	EventID     *string      `json:"eventID,omitempty"`
+	EventType   *string      `json:"eventType,omitempty"`
+	InstanceID  *string      `json:"instanceID,omitempty"`
+	NotAfter    *metav1.Time `json:"notAfter,omitempty"`
+	NotBefore   *metav1.Time `json:"notBefore,omitempty"`
 }
 
 // Describes the volume status.

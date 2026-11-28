@@ -12,7 +12,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 
 | Category | Services | Resources | ACK | Ours beyond | None | Attributes | ACK | Ours beyond | Uncovered |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 16 | 241 | 55 (22.8%) | 146 (60.6%) | 40 | 2,418 | 28.0% | 43.1% | 28.9% |
+| platform-foundation | 16 | 241 | 55 (22.8%) | 147 (61.0%) | 39 | 2,418 | 28.0% | 43.3% | 28.7% |
 | security-adjacent | 18 | 112 | 14 (12.5%) | 76 (67.9%) | 22 | 2,082 | 37.6% | 50.9% | 11.6% |
 | application | 33 | 263 | 106 (40.3%) | 119 (45.2%) | 38 | 4,788 | 47.9% | 31.7% | 20.4% |
 | other | 238 | 1262 | 92 (7.3%) | 1048 (83.0%) | 122 | 76,543 | 3.0% | 21.6% | 75.4% |
@@ -24,7 +24,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | 1 | `organizations` | 5 | 2 | 3 | 0 | 42.9% / 52.4% / 4.8% | `organizations-controller` v1.8.0 |
 | 2 | `sso` | 6 | 0 | 5 | 1 | 0.0% / 92.7% / 7.3% | none |
 | 3 | `iam` | 16 | 7 | 4 | 5 | 41.2% / 25.9% / 32.9% | `iam-controller` v1.12.0 |
-| 4 | `ec2` | 126 | 20 | 80 | 26 | 22.7% / 44.8% / 32.4% | `ec2-controller` v1.24.0 |
+| 4 | `ec2` | 126 | 20 | 81 | 25 | 22.7% / 45.1% / 32.2% | `ec2-controller` v1.24.0 |
 | 5 | `controltower` | 3 | 0 | 3 | 0 | 0.0% / 100.0% / 0.0% | none |
 | 6 | `route53` | 11 | 3 | 7 | 1 | 47.9% / 18.8% / 33.3% | `route53-controller` v1.9.0 |
 | 7 | `route53resolver` | 12 | 5 | 6 | 1 | 35.1% / 44.2% / 20.8% | `route53resolver-controller` v1.12.0 |
@@ -645,7 +645,7 @@ One section per service in queue order; inside a service, resources that still n
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
 | `LaunchTemplate` | `LaunchTemplate` v1.24.0: 116/133 | `LaunchTemplate`: +9 | 8 of 133 attrs: `LaunchTemplateData.SecurityGroupIds[]`, `LaunchTemplateData.SecurityGroups[]`, `TagSpecifications[].ResourceType`, `LaunchTemplateData.TagSpecifications[].ResourceType`, `TagSpecifications[].Tags[].Key`, `TagSpecifications[].Tags[].Value` and 2 more | kind released; the rest is not in it | 2 | service-level only: moto `ec2`: 232 of 809 operations | L | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
-| `KeyPair` | none | - | whole resource (6 attrs) | ACK PR #396 (open, updated 2026-11-04): wait for it | 1 | service-level only: moto `ec2`: 232 of 809 operations | S | none: wait for ACK PR #396 |  |
+| `KeyPair` | none | `KeyPair`: +4 | 2 of 6 attrs: `KeyFormat`, `KeyType` | ACK PR #396 (open, updated 2026-11-04): wait for it | 1 | service-level only: moto `ec2`: 232 of 809 operations | S | none: wait for ACK PR #396 |  |
 | `VolumeAttachment` | none | `VolumeAttachment`: +3 | 1 of 4 attrs: `EbsCardIndex` | controller exists; resource not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/VolumeAttachment`, generated |  |
 | `Instance` | `Instance` v1.24.0: 66/79 | - | 13 of 79 attrs: `AdditionalInfo`, `IamInstanceProfile`, `Monitoring`, `PlacementGroupName`, `PropagateTagsToVolumeOnCreation`, `SsmAssociations[].DocumentName` and 7 more | kind released; the rest is not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | L | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
 | `FpgaImage` | none | - | whole resource (8 attrs) | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/FpgaImage`, generated |  |

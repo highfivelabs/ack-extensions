@@ -24,6 +24,14 @@ operations:
     custom_check_required_fields_missing_method: checkForMissingRequiredFields
   CreateCustomerGateway:
     output_wrapper_field_path: CustomerGateway
+  # KeyPair, from ec2-controller pull request #396 (head 91d99b7a): made by
+  # ImportKeyPair, so the private key never leaves its owner.
+  ImportKeyPair:
+    operation_type:
+      - Create
+    resource_name: KeyPair
+  DescribeKeyPairs:
+    custom_check_required_fields_missing_method: checkForMissingRequiredFields
   CreateVpnGateway:
     output_wrapper_field_path: VpnGateway
   CreateVpnConnection:
@@ -129,6 +137,51 @@ resources:
           service_name: kms
           resource: Key
           path: Status.ACKResourceMetadata.ARN
+  # KeyPair: ec2-controller pull request #396's entry (head 91d99b7a),
+  # copied unchanged (docs/plan.md section 6.50).
+  KeyPair:
+    exceptions:
+      errors:
+        404:
+          code: InvalidKeyPair.NotFound
+      terminal_codes:
+      - InvalidKeyPair.Duplicate
+      - InvalidKey.Format
+      - InvalidParameterCombination
+      - InvalidParameterValue
+      - MissingParameter
+    fields:
+      KeyName:
+        is_primary_key: true
+        is_immutable: true
+      # ImportKeyPair takes the public key as a blob; the spec carries the
+      # public key text and the create hook converts it.
+      # ImportKeyPair needs it, but DescribeKeyPairs never returns it, so an
+      # adopted KeyPair has no value to write back; the create hook rejects a
+      # missing key the way MinCount and MaxCount are handled on Instance.
+      PublicKeyMaterial:
+        is_required: false
+        is_immutable: true
+        type: string
+        set:
+          - ignore: "all"
+      KeyPairId:
+        print:
+          name: ID
+      Tags:
+        from:
+          operation: CreateTags
+          path: Tags
+    list_operation:
+      match_fields:
+      - KeyName
+    hooks:
+      sdk_create_post_build_request:
+        template_path: hooks/key_pair/sdk_create_post_build_request.go.tpl
+      sdk_read_many_post_build_request:
+        template_path: hooks/key_pair/sdk_read_many_post_build_request.go.tpl
+    update_operation:
+      custom_method_name: customUpdateKeyPair
   CustomerGateway:
     fields:
       Tags:
@@ -396,6 +449,10 @@ resources:
             - available
             - in-use
 ignore:
+  operations:
+    # KeyPair is created with ImportKeyPair; the private key stays outside
+    # AWS (ec2-controller pull request #396).
+    - CreateKeyPair
   shape_names:
     # The SDK's shapes named like ACK's ec2 kinds that our references name
     # (apis/v1alpha1/ack_kinds.go) would clash with the aliases; no field of
@@ -424,6 +481,11 @@ ignore:
     - CreateVolumeInput.TagSpecifications
     - CreateVolumeInput.Operator
     - CreateNetworkInterfacePermissionInput.DryRun
+    # KeyPair (ec2-controller pull request #396's ignores).
+    - ImportKeyPairInput.DryRun
+    - ImportKeyPairInput.TagSpecifications
+    - DeleteKeyPairInput.DryRun
+    - DeleteKeyPairInput.KeyPairId
     - EnableVgwRoutePropagationInput.DryRun
     - DisableVgwRoutePropagationInput.DryRun
     - DescribeRouteTablesInput.DryRun
@@ -467,7 +529,6 @@ ignore:
     - IpamPrefixListResolverTarget
     - IpamResourceDiscovery
     - IpamScope
-    - KeyPair
     - LaunchTemplateVersion
     - LocalGatewayRoute
     - LocalGatewayRouteTable

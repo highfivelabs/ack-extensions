@@ -93,6 +93,7 @@ fromUpstreamPR:
   rds/OptionGroup: rds-controller#257
   kms/ReplicaKey: kms-controller#112
   ecr/ReplicationConfiguration: ecr-controller#121
+  ec2/KeyPair: ec2-controller#396
 
 # Path-prefix renames, official kinds: CRD spec path -> CloudFormation path.
 attributes:

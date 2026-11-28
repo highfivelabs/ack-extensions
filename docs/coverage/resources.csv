@@ -612,7 +612,7 @@ ec2,IPAMResourceDiscoveryAssociation,4,,0,IPAMResourceDiscoveryAssociation (Clou
 ec2,IPAMScope,6,,0,IPAMScope (Cloud Control),6,0,false,ours IPAMScope (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,IpPoolRouteTableAssociation,2,,0,IpPoolRouteTableAssociation (Cloud Control),2,0,false,ours IpPoolRouteTableAssociation (Cloud Control) unproven on fake: no moto backend yet (moto 5.2.5 has ec2); on the schema fake only
 ec2,IPv4Pool,2,,0,,0,2,false,
-ec2,KeyPair,6,,0,,0,6,false,
+ec2,KeyPair,6,,0,KeyPair,4,2,true,ours KeyPair copied from ec2-controller#396
 ec2,LaunchTemplate,133,LaunchTemplate,116,LaunchTemplate,9,8,false,official_unmapped=11;ours_unmapped=23
 ec2,LocalGatewayRoute,4,,0,,0,4,false,
 ec2,LocalGatewayRouteTable,4,,0,,0,4,false,

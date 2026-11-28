@@ -18,7 +18,7 @@ How much of AWS the official ACK controllers cover, and how much more this repos
 
 `quicksight` alone is 51,640 of the 85,831 attributes, so the attribute bar mostly describes it; the resource bar counts a resource as covered if ACK has a kind for it, however few of its fields.
 
-Of 85,831 attributes in 1878 resources across 305 services, ACK covers 6,044 (7.0%) and ours adds 20,160 more (23.5%), 22 of them copied from open upstream pull requests. By resource, ACK has a released kind for 267 of 1,878 (14.2%) and ours adds 1389 more (74.0%).
+Of 85,831 attributes in 1878 resources across 305 services, ACK covers 6,044 (7.0%) and ours adds 20,164 more (23.5%), 26 of them copied from open upstream pull requests. By resource, ACK has a released kind for 267 of 1,878 (14.2%) and ours adds 1390 more (74.0%).
 
 The purple bar is **Terraform** for comparison: the share of the same attributes that a writable attribute of the Terraform `aws` provider matches, about 64.4% (at least 48.8%, the dark tick, by the strict rule). It is an estimate from the High Five Labs krm-packages repository, pinned like every other input, with the error of its matching; see [Terraform](docs/coverage/README.md#terraform).
 
@@ -28,7 +28,7 @@ Not every service matters equally. Each service has a **category**: *platform-fo
 
 | Category | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) | Terraform attributes (estimate) |
 | --- | ---: | ---: | ---: | ---: |
-| platform-foundation | 16 | 22.8% / 60.6% | 28.0% / 43.1% | ~51.5% (≥43.5%) |
+| platform-foundation | 16 | 22.8% / 61.0% | 28.0% / 43.3% | ~51.5% (≥43.5%) |
 | security-adjacent | 18 | 12.5% / 67.9% | 37.6% / 50.9% | ~74.1% (≥72.0%) |
 | application | 33 | 40.3% / 45.2% | 47.9% / 31.7% | ~50.8% (≥46.4%) |
 | other | 238 | 7.3% / 83.0% | 3.0% / 21.6% | ~65.4% (≥48.5%) |
@@ -39,13 +39,13 @@ The ranked work queue for the foundation and security categories, resource by re
 
 | Tier | Services | Resources (ACK / ours beyond) | Attributes (ACK / ours beyond) | Terraform attributes (estimate) |
 | --- | ---: | ---: | ---: | ---: |
-| 1 | 16 | 22.8% / 60.6% | 28.0% / 43.1% | ~51.5% (≥43.5%) |
+| 1 | 16 | 22.8% / 61.0% | 28.0% / 43.3% | ~51.5% (≥43.5%) |
 | 2 | 51 | 32.0% / 52.0% | 44.8% / 37.5% | ~57.9% (≥54.2%) |
 | 3 | 238 | 7.3% / 83.0% | 3.0% / 21.6% | ~65.4% (≥48.5%) |
 
 | Tier | Category | Service | Coverage | Official | Ours beyond | Uncovered | Terraform (estimate) |
 | ---: | --- | --- | --- | ---: | ---: | ---: | ---: |
-| 1 | platform-foundation | `ec2` | ![ec2](docs/coverage/bars/ec2.svg) | 22.7% | 44.8% | 32.4% | ~48.8% (≥36.1%) |
+| 1 | platform-foundation | `ec2` | ![ec2](docs/coverage/bars/ec2.svg) | 22.7% | 45.1% | 32.2% | ~48.8% (≥36.1%) |
 | 1 | platform-foundation | `eks` | ![eks](docs/coverage/bars/eks.svg) | 82.5% | 0.6% | 16.9% | ~57.5% (≥57.5%) |
 | 1 | platform-foundation | `networkmanager` | ![networkmanager](docs/coverage/bars/networkmanager.svg) | 0.0% | 100.0% | 0.0% | ~94.0% (≥94.0%) |
 | 1 | platform-foundation | `route53` | ![route53](docs/coverage/bars/route53.svg) | 47.9% | 18.8% | 33.3% | ~24.0% (≥24.0%) |
@@ -359,6 +359,7 @@ Services are sorted by tier, then by attributes covered, and every tier 1 servic
 | `autoscaling.aws.hfl.dev/v1alpha1` `ScheduledAction` | A scheduled change of an EC2 Auto Scaling group's capacity, once or on a recurrence, put with `PutScheduledUpdateGroupAction`. ACK's `AutoScalingGroup` has none. | Generated, as `ScalingPolicy`; no ACK pull request adds it |
 | `autoscaling.aws.hfl.dev/v1alpha1` `TrafficSourceAttachment` | Attaches load balancer target groups, Classic Load Balancers, or VPC Lattice target groups to an `AutoScalingGroup` via `AttachTrafficSources` / `DetachTrafficSources`. | Hand-written on `DBRoleAssociation`'s skeleton |
 | `ec2.aws.hfl.dev/v1alpha1` `CustomerGateway` | The on-premises end of a site-to-site VPN (address, BGP ASN, type), with tags. ACK's ec2-controller ignores it. | Generated, with ACK ec2-controller's own tag patterns copied from its `InternetGateway`; no ACK pull request adds it |
+| `ec2.aws.hfl.dev/v1alpha1` `KeyPair` | An EC2 key pair imported from an OpenSSH public key (`ImportKeyPair`), so the private key never reaches AWS or the cluster; name and key immutable, tags synced. Terraform's `aws_key_pair`. | Generated, from ec2-controller pull request #396 (open; its `generator.yaml` entry and hooks); retires when ACK releases it |
 | `ec2.aws.hfl.dev/v1alpha1` `DefaultNetworkACL` | A VPC's default network ACL, taken over by `vpcID` or `vpcRef` (ACK's `VPC`): its entries and tags made the spec's, exclusively (EC2's allow-all entries deleted unless listed), and the listed subnets (`subnetIDs` or `subnetRefs` to ACK's `Subnet`) moved onto it; never created or deleted. Terraform's `aws_default_network_acl`. | Hand-written on `DefaultSecurityGroup`'s skeleton, with ACK ec2-controller `NetworkACL`'s entry calls copied; no ACK pull request adds it |
 | `ec2.aws.hfl.dev/v1alpha1` `DefaultRouteTable` | A VPC's main route table, taken over by `vpcID` or `vpcRef`: its routes (ACK `RouteTable`'s shape, `gatewayRef` and the other references included), propagating VPN gateways and tags made the spec's, exclusively; the local route kept; never created or deleted. Terraform's `aws_default_route_table`. | Hand-written on the same skeleton, with ACK ec2-controller `RouteTable`'s route code copied; no ACK pull request adds it |
 | `ec2.aws.hfl.dev/v1alpha1` `DefaultVPC` | The region's default VPC, taken over with no ID or reference: its DNS settings, Network Address Usage metrics setting and tags made the spec's; a region without one retried; never created or deleted. Terraform's `aws_default_vpc`. | Hand-written on the same skeleton; no ACK pull request adds it |
