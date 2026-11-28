@@ -9,6 +9,7 @@ resources:
   - bases/autoscaling.aws.hfl.dev_scheduledactions.yaml
   - bases/cloudwatchlogs.aws.hfl.dev_loggroups.yaml
   - bases/ec2.aws.hfl.dev_customergateways.yaml
+  - bases/ec2.aws.hfl.dev_keypairs.yaml
   - bases/ec2.aws.hfl.dev_networkinterfacepermissions.yaml
   - bases/ec2.aws.hfl.dev_resourcetags.yaml
   - bases/ec2.aws.hfl.dev_defaultnetworkacls.yaml

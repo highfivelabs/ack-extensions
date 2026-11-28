@@ -45,6 +45,7 @@ import (
 	svcresource "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource"
 
 	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/customer_gateway"
+	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/key_pair"
 	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/launch_template"
 	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/network_interface_permission"
 	_ "github.com/highfivelabs/ack-extensions/services/ec2/pkg/resource/volume"

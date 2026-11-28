@@ -12,7 +12,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 
 | Category | Services | Resources | ACK | Ours beyond | None | Attributes | ACK | Ours beyond | Uncovered |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 16 | 241 | 55 (22.8%) | 130 (53.9%) | 56 | 2,418 | 28.0% | 38.3% | 33.8% |
+| platform-foundation | 16 | 241 | 55 (22.8%) | 147 (61.0%) | 39 | 2,418 | 28.0% | 43.3% | 28.7% |
 | security-adjacent | 18 | 112 | 14 (12.5%) | 76 (67.9%) | 22 | 2,082 | 37.6% | 50.9% | 11.6% |
 | application | 33 | 263 | 106 (40.3%) | 119 (45.2%) | 38 | 4,788 | 47.9% | 31.7% | 20.4% |
 | other | 238 | 1262 | 92 (7.3%) | 1048 (83.0%) | 122 | 76,543 | 3.0% | 21.6% | 75.4% |
@@ -24,7 +24,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | 1 | `organizations` | 5 | 2 | 3 | 0 | 42.9% / 52.4% / 4.8% | `organizations-controller` v1.8.0 |
 | 2 | `sso` | 6 | 0 | 5 | 1 | 0.0% / 92.7% / 7.3% | none |
 | 3 | `iam` | 16 | 7 | 4 | 5 | 41.2% / 25.9% / 32.9% | `iam-controller` v1.12.0 |
-| 4 | `ec2` | 126 | 20 | 80 | 26 | 22.7% / 44.8% / 32.4% | `ec2-controller` v1.24.0 |
+| 4 | `ec2` | 126 | 20 | 81 | 25 | 22.7% / 45.1% / 32.2% | `ec2-controller` v1.24.0 |
 | 5 | `controltower` | 3 | 0 | 3 | 0 | 0.0% / 100.0% / 0.0% | none |
 | 6 | `route53` | 11 | 3 | 7 | 1 | 47.9% / 18.8% / 33.3% | `route53-controller` v1.9.0 |
 | 7 | `route53resolver` | 12 | 5 | 6 | 1 | 35.1% / 44.2% / 20.8% | `route53resolver-controller` v1.12.0 |
@@ -34,7 +34,7 @@ Attributes are writable CloudFormation properties (see [README.md](README.md) fo
 | 11 | `ecr` | 9 | 4 | 5 | 0 | 63.0% / 24.1% / 13.0% | `ecr-controller` v1.12.0 |
 | 12 | `eks` | 9 | 8 | 1 | 0 | 82.5% / 0.6% / 16.9% | `eks-controller` v1.27.0 |
 | 13 | `identitystore` | 3 | 0 | 3 | 0 | 0.0% / 100.0% / 0.0% | none |
-| 14 | `networkmanager` | 16 | 0 | 0 | 16 | 0.0% / 0.0% / 100.0% | none |
+| 14 | `networkmanager` | 16 | 0 | 16 | 0 | 0.0% / 100.0% / 0.0% | none |
 | 15 | `directconnect` | 8 | 0 | 2 | 6 | 0.0% / 11.0% / 89.0% | none |
 | 16 | `route53profiles` | 3 | 0 | 3 | 0 | 0.0% / 100.0% / 0.0% | none |
 
@@ -79,7 +79,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 | [F10](#f10) | CloudTrail: start logging and select events on a Trail (and organization trails) | platform-foundation | 5 | 28 / 19 / 28 | M | Good for the first three: `StartLogging`, `StopLogging`, `PutEventSelectors`, `GetEventSel... |
 | [F11](#f11) | ECR: registry policy, registry scanning, replication (ours), signing | platform-foundation | 6 | 3 / 13 / 6 | S, S | Good: `PutRegistryPolicy`, `PutRegistryScanningConfiguration`, `PutReplicationConfiguratio... |
 | [F12](#f12) | Identity Store: users, groups and group memberships of the Identity Center directory | platform-foundation | 3 | 0 / 45 / 0 | M (User), S, S | Good: `CreateUser`, `CreateGroup`, `CreateGroupMembership`, `DescribeUser`, `ListUsers`, `... |
-| [F13](#f13) | Network Manager (Cloud WAN) and Direct Connect (wait for ACK on the first) | platform-foundation | 6 | 0 / 4 / 48 | wait; M for the gateway | Network Manager: `CreateGlobalNetwork`, `CreateCoreNetwork`, `CreateSite` are implemented ... |
+| [F13](#f13) | Network Manager (Cloud WAN) and Direct Connect (wait for ACK on the first) | platform-foundation | 6 | 0 / 28 / 24 | wait; M for the gateway | Network Manager: `CreateGlobalNetwork`, `CreateCoreNetwork`, `CreateSite` are implemented ... |
 | [F14](#f14) | Config: recorder, delivery channel, rules, aggregators, organization rules and conformance packs | security-adjacent | 11 | 0 / 118 / 0 | L (new service, eleven resources); S each after the first | Good for the first six: `PutConfigRule`, `PutConfigurationRecorder`, `PutDeliveryChannel`,... |
 | [F15](#f15) | GuardDuty: detector, filters, IP and threat intel sets, members | security-adjacent | 8 | 0 / 69 / 0 | L (new service) | Partial: `CreateDetector`, `UpdateDetector`, `CreateFilter`, `EnableOrganizationAdminAccou... |
 | [F16](#f16) | Security Hub: hub, standards, organization configuration, aggregator, automation rules | security-adjacent | 9 | 0 / 141 / 0 | L (new service; `AutomationRule` has 105 attributes and `Insight` 238) | Partial: `EnableSecurityHub`, `EnableOrganizationAdminAccount`, `UpdateOrganizationConfigu... |
@@ -246,7 +246,7 @@ Ranked by foundation importance first, then by how many of the tracked Terraform
 
 ### F13 Network Manager (Cloud WAN) and Direct Connect (wait for ACK on the first)
 
-- **Resources:** `networkmanager/GlobalNetwork`, `networkmanager/CoreNetwork`, `networkmanager/VpcAttachment`, `directconnect/DirectConnectGateway`, `directconnect/Connection`, `directconnect/PrivateVirtualInterface`. Today ACK covers 0, ours 4, nothing covers 48 of 52 attributes.
+- **Resources:** `networkmanager/GlobalNetwork`, `networkmanager/CoreNetwork`, `networkmanager/VpcAttachment`, `directconnect/DirectConnectGateway`, `directconnect/Connection`, `directconnect/PrivateVirtualInterface`. Today ACK covers 0, ours 28, nothing covers 24 of 52 attributes.
 - **Why first:** Backbone networking: Cloud WAN and Direct Connect. ACK's `networkmanager-controller` has three open PRs (#3, #4, #16) and no release: wait. Direct Connect has no controller or issue, and a physical circuit is not something a chart creates.
 - **Proposed kinds:** None for Network Manager (wait for ACK PRs #3, #4, #16, then re-evaluate). Direct Connect: `DirectConnectGateway` and its association first if the builder wants them.
 - **Upstream:** networkmanager-controller: PRs #3 'adds corenetwork', #4 'CoreNetwork, CoreNetworkPolicy and attachment resources', #16 VPC attachment, none merged. Direct Connect: nothing.
@@ -594,22 +594,22 @@ One section per service in queue order; inside a service, resources that still n
 
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
-| `CoreNetwork` | none | - | whole resource (5 attrs) | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | S | `networkmanager.aws.hfl.dev/CoreNetwork`, in a new service manager | [F13](#f13) |
-| `GlobalNetwork` | none | - | whole resource (5 attrs) | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | S | `networkmanager.aws.hfl.dev/GlobalNetwork`, in a new service manager | [F13](#f13) |
-| `VpcAttachment` | none | - | whole resource (14 attrs) | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | S | `networkmanager.aws.hfl.dev/VpcAttachment`, in a new service manager | [F13](#f13) |
-| `ConnectAttachment` | none | - | whole resource (12 attrs) | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | S | `networkmanager.aws.hfl.dev/ConnectAttachment`, in a new service manager |  |
-| `ConnectPeer` | none | - | whole resource (8 attrs) | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | S | `networkmanager.aws.hfl.dev/ConnectPeer`, in a new service manager |  |
-| `CoreNetworkPrefixListAssociation` | none | - | whole resource (3 attrs) | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | S | `networkmanager.aws.hfl.dev/CoreNetworkPrefixListAssociation`, in a new service manager |  |
-| `CustomerGatewayAssociation` | none | - | whole resource (4 attrs) | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | S | `networkmanager.aws.hfl.dev/CustomerGatewayAssociation`, in a new service manager |  |
-| `Device` | none | - | whole resource (14 attrs) | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | S | `networkmanager.aws.hfl.dev/Device`, in a new service manager |  |
-| `DirectConnectGatewayAttachment` | none | - | whole resource (11 attrs) | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | S | `networkmanager.aws.hfl.dev/DirectConnectGatewayAttachment`, in a new service manager |  |
-| `Link` | none | - | whole resource (9 attrs) | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | S | `networkmanager.aws.hfl.dev/Link`, in a new service manager |  |
-| `LinkAssociation` | none | - | whole resource (3 attrs) | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | S | `networkmanager.aws.hfl.dev/LinkAssociation`, in a new service manager |  |
-| `Site` | none | - | whole resource (7 attrs) | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | S | `networkmanager.aws.hfl.dev/Site`, in a new service manager |  |
-| `SiteToSiteVpnAttachment` | none | - | whole resource (11 attrs) | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | S | `networkmanager.aws.hfl.dev/SiteToSiteVpnAttachment`, in a new service manager |  |
-| `TransitGatewayPeering` | none | - | whole resource (4 attrs) | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | S | `networkmanager.aws.hfl.dev/TransitGatewayPeering`, in a new service manager |  |
-| `TransitGatewayRegistration` | none | - | whole resource (2 attrs) | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | S | `networkmanager.aws.hfl.dev/TransitGatewayRegistration`, in a new service manager |  |
-| `TransitGatewayRouteTableAttachment` | none | - | whole resource (6 attrs) | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | S | `networkmanager.aws.hfl.dev/TransitGatewayRouteTableAttachment`, in a new service manager |  |
+| `ConnectAttachment` | none | `ConnectAttachment (Cloud Control)`: +12 | none | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | - | none (covered) |  |
+| `ConnectPeer` | none | `ConnectPeer (Cloud Control)`: +8 | none | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | - | none (covered) |  |
+| `CoreNetwork` | none | `CoreNetwork (Cloud Control)`: +5 | none | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | - | none (covered) | [F13](#f13) |
+| `CoreNetworkPrefixListAssociation` | none | `CoreNetworkPrefixListAssociation (Cloud Control)`: +3 | none | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | - | none (covered) |  |
+| `CustomerGatewayAssociation` | none | `CustomerGatewayAssociation (Cloud Control)`: +4 | none | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | - | none (covered) |  |
+| `Device` | none | `Device (Cloud Control)`: +14 | none | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | - | none (covered) |  |
+| `DirectConnectGatewayAttachment` | none | `DirectConnectGatewayAttachment (Cloud Control)`: +11 | none | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | - | none (covered) |  |
+| `GlobalNetwork` | none | `GlobalNetwork (Cloud Control)`: +5 | none | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | - | none (covered) | [F13](#f13) |
+| `Link` | none | `Link (Cloud Control)`: +9 | none | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | - | none (covered) |  |
+| `LinkAssociation` | none | `LinkAssociation (Cloud Control)`: +3 | none | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | - | none (covered) |  |
+| `Site` | none | `Site (Cloud Control)`: +7 | none | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | - | none (covered) |  |
+| `SiteToSiteVpnAttachment` | none | `SiteToSiteVpnAttachment (Cloud Control)`: +11 | none | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | - | none (covered) |  |
+| `TransitGatewayPeering` | none | `TransitGatewayPeering (Cloud Control)`: +4 | none | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | - | none (covered) |  |
+| `TransitGatewayRegistration` | none | `TransitGatewayRegistration (Cloud Control)`: +2 | none | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | - | none (covered) |  |
+| `TransitGatewayRouteTableAttachment` | none | `TransitGatewayRouteTableAttachment (Cloud Control)`: +6 | none | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | - | none (covered) |  |
+| `VpcAttachment` | none | `VpcAttachment (Cloud Control)`: +14 | none | no released controller | 0 | service-level only: moto `networkmanager`: 18 of 97 operations: `CreateGlobalNetwork`, `CreateCoreNetwork`, `C... | - | none (covered) | [F13](#f13) |
 ### platform-foundation: `directconnect`
 
 - **ACK controller:** none
@@ -645,7 +645,7 @@ One section per service in queue order; inside a service, resources that still n
 | Resource | ACK | Ours | Missing | Upstream | Modules | moto | Size | Proposed | Item |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |
 | `LaunchTemplate` | `LaunchTemplate` v1.24.0: 116/133 | `LaunchTemplate`: +9 | 8 of 133 attrs: `LaunchTemplateData.SecurityGroupIds[]`, `LaunchTemplateData.SecurityGroups[]`, `TagSpecifications[].ResourceType`, `LaunchTemplateData.TagSpecifications[].ResourceType`, `TagSpecifications[].Tags[].Key`, `TagSpecifications[].Tags[].Value` and 2 more | kind released; the rest is not in it | 2 | service-level only: moto `ec2`: 232 of 809 operations | L | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
-| `KeyPair` | none | - | whole resource (6 attrs) | ACK PR #396 (open, updated 2026-11-04): wait for it | 1 | service-level only: moto `ec2`: 232 of 809 operations | S | none: wait for ACK PR #396 |  |
+| `KeyPair` | none | `KeyPair`: +4 | 2 of 6 attrs: `KeyFormat`, `KeyType` | ACK PR #396 (open, updated 2026-11-04): wait for it | 1 | service-level only: moto `ec2`: 232 of 809 operations | S | none: wait for ACK PR #396 |  |
 | `VolumeAttachment` | none | `VolumeAttachment`: +3 | 1 of 4 attrs: `EbsCardIndex` | controller exists; resource not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/VolumeAttachment`, generated |  |
 | `Instance` | `Instance` v1.24.0: 66/79 | - | 13 of 79 attrs: `AdditionalInfo`, `IamInstanceProfile`, `Monitoring`, `PlacementGroupName`, `PropagateTagsToVolumeOnCreation`, `SsmAssociations[].DocumentName` and 7 more | kind released; the rest is not in it | 1 | service-level only: moto `ec2`: 232 of 809 operations | L | the missing fields: upstream PR or our copy (plan section 9, question 1) |  |
 | `FpgaImage` | none | - | whole resource (8 attrs) | controller exists; resource not in it | 0 | service-level only: moto `ec2`: 232 of 809 operations | S | `ec2.aws.hfl.dev/FpgaImage`, generated |  |

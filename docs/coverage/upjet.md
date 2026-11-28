@@ -6,16 +6,16 @@
 
 | | Before | After |
 | --- | ---: | ---: |
-| Cloud Control kinds with a reference field | 7 | 153 |
-| Upjet references applied (reference fields) | 0 | 186 |
+| Cloud Control kinds with a reference field | 7 | 155 |
+| Upjet references applied (reference fields) | 0 | 188 |
 | Upjet references that agree with the overlay's | | 24 |
-| Upjet hand examples running on the fake (`TestUpjetExamples`) | 0 | 162 |
-| Upjet hand examples the kind cannot express (listed) | | 386 |
-| ID format checks (agree / differ / other) | 0 | 292 / 97 / 127 |
+| Upjet hand examples running on the fake (`TestUpjetExamples`) | 0 | 173 |
+| Upjet hand examples the kind cannot express (listed) | | 392 |
+| ID format checks (agree / differ / other) | 0 | 302 / 97 / 132 |
 | Late-init checks | 0 | 9 |
 | Secret checks (exposed / listed / not top-level) | 0 | 0 / 1 / 2 |
 | Disagreements found (listed, not applied) | 0 | 2 |
-| Upjet resources on served Cloud Control types that Upjet does not test | | 88 |
+| Upjet resources on served Cloud Control types that Upjet does not test | | 91 |
 
 ## Tested where (HFL-701)
 
@@ -23,11 +23,11 @@
 
 | Fake | Kinds |
 | --- | ---: |
-| moto | 72 |
+| moto | 73 |
 | none | 2 |
-| schema fake only | 1315 |
+| schema fake only | 1331 |
 
-Upjet's flag on the same kinds: tested 404, not tested 82, no Upjet resource 903.
+Upjet's flag on the same kinds: tested 415, not tested 85, no Upjet resource 906.
 
 ## Our ACK-generated kinds: Upjet's references against `generator.yaml`
 
@@ -76,37 +76,37 @@ A reference Upjet gives one of our ACK-generated kinds, to a target served here,
 
 ## Gaps Upjet has a resource for (ranked)
 
-API resources with an Upjet resource and no kind here, ACK's or ours: 112. Ranked by tier (a resource `foundation.yaml` marks covered inline, as a field of another kind, last), then whether Cloud Control could serve it (provisionable, CRD accepted), Upjet's tested flag, a hand example, and references to kinds served here. All are in [upjet-gaps.csv](upjet-gaps.csv). The join inherits the catalog mapping's precision (a name and attribute match): check the Terraform name before starting one. The first 30:
+API resources with an Upjet resource and no kind here, ACK's or ours: 98. Ranked by tier (a resource `foundation.yaml` marks covered inline, as a field of another kind, last), then whether Cloud Control could serve it (provisionable, CRD accepted), Upjet's tested flag, a hand example, and references to kinds served here. All are in [upjet-gaps.csv](upjet-gaps.csv). The join inherits the catalog mapping's precision (a name and attribute match): check the Terraform name before starting one. The first 30:
 
 | Rank | Resource | Tier | Upjet | Tested | References (to served) | Hand examples | Cloud Control |
 | ---: | --- | ---: | --- | --- | ---: | ---: | --- |
 | 1 | `ec2/SpotFleet` | 1 | `aws_spot_fleet_request` | yes | 3 (3) | 2 | FULLY_MUTABLE |
 | 2 | `ec2/CarrierGateway` | 1 | `aws_ec2_carrier_gateway aws_egress_only_internet_gateway` | yes | 2 (2) | 2 | FULLY_MUTABLE |
 | 3 | `ec2/EC2Fleet` | 1 | `aws_ec2_fleet` | yes | 2 (2) | 1 | FULLY_MUTABLE |
-| 4 | `networkmanager/CustomerGatewayAssociation` | 1 | `aws_networkmanager_customer_gateway_association aws_networkmanager_transit_gateway_connect_peer_association` | yes | 6 (2) | 2 | IMMUTABLE |
-| 5 | `networkmanager/VpcAttachment` | 1 | `aws_networkmanager_vpc_attachment` | yes | 3 (2) | 2 | FULLY_MUTABLE |
-| 6 | `networkmanager/LinkAssociation` | 1 | `aws_networkmanager_link_association aws_networkmanager_transit_gateway_connect_peer_association` | yes | 6 (1) | 2 | IMMUTABLE |
-| 7 | `networkmanager/TransitGatewayRegistration` | 1 | `aws_networkmanager_transit_gateway_registration` | yes | 2 (1) | 1 | IMMUTABLE |
-| 8 | `directconnect/PrivateVirtualInterface` | 1 | `aws_dx_private_virtual_interface` | yes | 3 (0) | 1 | FULLY_MUTABLE |
-| 9 | `directconnect/PublicVirtualInterface` | 1 | `aws_dx_hosted_public_virtual_interface aws_dx_public_virtual_interface` | yes | 2 (0) | 2 | FULLY_MUTABLE |
-| 10 | `directconnect/TransitVirtualInterface` | 1 | `aws_dx_transit_virtual_interface` | yes | 2 (0) | 1 | FULLY_MUTABLE |
-| 11 | `ec2/Host` | 1 | `aws_ec2_host` | yes | 0 (0) | 1 | FULLY_MUTABLE |
-| 12 | `ec2/KeyPair` | 1 | `aws_key_pair` | yes | 0 (0) | 1 | IMMUTABLE |
-| 13 | `networkmanager/ConnectAttachment` | 1 | `aws_networkmanager_connect_attachment` | yes | 3 (0) | 2 | FULLY_MUTABLE |
-| 14 | `networkmanager/CoreNetwork` | 1 | `aws_networkmanager_core_network` | yes | 1 (0) | 1 | FULLY_MUTABLE |
-| 15 | `networkmanager/Device` | 1 | `aws_networkmanager_device` | yes | 2 (0) | 2 | FULLY_MUTABLE |
-| 16 | `networkmanager/GlobalNetwork` | 1 | `aws_networkmanager_global_network` | yes | 0 (0) | 1 | FULLY_MUTABLE |
-| 17 | `networkmanager/Link` | 1 | `aws_networkmanager_link` | yes | 2 (0) | 2 | FULLY_MUTABLE |
-| 18 | `networkmanager/Site` | 1 | `aws_networkmanager_site` | yes | 1 (0) | 2 | FULLY_MUTABLE |
-| 19 | `ec2/LocalGatewayRoute` | 1 | `aws_ec2_local_gateway_route` | no | 0 (0) | 0 | FULLY_MUTABLE |
-| 20 | `ec2/LocalGatewayRouteTableVPCAssociation` | 1 | `aws_ec2_local_gateway_route_table_vpc_association` | no | 0 (0) | 0 | FULLY_MUTABLE |
-| 21 | `networkmanager/SiteToSiteVpnAttachment` | 1 | `aws_networkmanager_site_to_site_vpn_attachment` | no | 0 (0) | 0 | FULLY_MUTABLE |
-| 22 | `networkmanager/TransitGatewayPeering` | 1 | `aws_networkmanager_transit_gateway_peering` | no | 0 (0) | 0 | FULLY_MUTABLE |
-| 23 | `networkmanager/TransitGatewayRouteTableAttachment` | 1 | `aws_networkmanager_transit_gateway_route_table_attachment` | no | 0 (0) | 0 | FULLY_MUTABLE |
-| 24 | `sso/Instance` | 1 | `aws_instance` | yes | 7 (5) | 2 | FULLY_MUTABLE; **check the mapping** |
-| 25 | `s3tables/TableBucketPolicy` | 2 | `aws_s3tables_table_bucket_policy aws_s3tables_table_bucket_replication` | yes | 4 (4) | 2 | FULLY_MUTABLE |
-| 26 | `redshift/Cluster` | 2 | `aws_redshift_cluster` | yes | 4 (3) | 2 | FULLY_MUTABLE |
-| 27 | `lambda/EventInvokeConfig` | 2 | `aws_lambda_function_event_invoke_config` | yes | 2 (2) | 2 | FULLY_MUTABLE |
-| 28 | `redshift/EventSubscription` | 2 | `aws_db_event_subscription aws_redshift_event_subscription` | yes | 4 (2) | 2 | FULLY_MUTABLE |
-| 29 | `s3/BucketPolicy` | 2 | `aws_s3_bucket_abac aws_s3_bucket_acl aws_s3_bucket_inventory aws_s3_bucket_logging aws_s3_bucket_metric aws_s3_bucket_object aws_s3_bucket_policy aws_s3_bucket_versioning aws_s3_directory_bucket aws_s3control_bucket_policy` | no | 12 (12) | 16 | FULLY_MUTABLE |
-| 30 | `ssm/Association` | 2 | `aws_ssm_association` | yes | 2 (2) | 2 | FULLY_MUTABLE |
+| 4 | `directconnect/PrivateVirtualInterface` | 1 | `aws_dx_private_virtual_interface` | yes | 3 (0) | 1 | FULLY_MUTABLE |
+| 5 | `directconnect/PublicVirtualInterface` | 1 | `aws_dx_hosted_public_virtual_interface aws_dx_public_virtual_interface` | yes | 2 (0) | 2 | FULLY_MUTABLE |
+| 6 | `directconnect/TransitVirtualInterface` | 1 | `aws_dx_transit_virtual_interface` | yes | 2 (0) | 1 | FULLY_MUTABLE |
+| 7 | `ec2/Host` | 1 | `aws_ec2_host` | yes | 0 (0) | 1 | FULLY_MUTABLE |
+| 8 | `ec2/LocalGatewayRoute` | 1 | `aws_ec2_local_gateway_route` | no | 0 (0) | 0 | FULLY_MUTABLE |
+| 9 | `ec2/LocalGatewayRouteTableVPCAssociation` | 1 | `aws_ec2_local_gateway_route_table_vpc_association` | no | 0 (0) | 0 | FULLY_MUTABLE |
+| 10 | `sso/Instance` | 1 | `aws_instance` | yes | 7 (5) | 2 | FULLY_MUTABLE; **check the mapping** |
+| 11 | `s3tables/TableBucketPolicy` | 2 | `aws_s3tables_table_bucket_policy aws_s3tables_table_bucket_replication` | yes | 4 (4) | 2 | FULLY_MUTABLE |
+| 12 | `redshift/Cluster` | 2 | `aws_redshift_cluster` | yes | 4 (3) | 2 | FULLY_MUTABLE |
+| 13 | `lambda/EventInvokeConfig` | 2 | `aws_lambda_function_event_invoke_config` | yes | 2 (2) | 2 | FULLY_MUTABLE |
+| 14 | `redshift/EventSubscription` | 2 | `aws_db_event_subscription aws_redshift_event_subscription` | yes | 4 (2) | 2 | FULLY_MUTABLE |
+| 15 | `s3/BucketPolicy` | 2 | `aws_s3_bucket_abac aws_s3_bucket_acl aws_s3_bucket_inventory aws_s3_bucket_logging aws_s3_bucket_metric aws_s3_bucket_object aws_s3_bucket_policy aws_s3_bucket_versioning aws_s3_directory_bucket aws_s3control_bucket_policy` | no | 12 (12) | 16 | FULLY_MUTABLE |
+| 16 | `ssm/Association` | 2 | `aws_ssm_association` | yes | 2 (2) | 2 | FULLY_MUTABLE |
+| 17 | `ecs/ClusterCapacityProviderAssociations` | 2 | `aws_ecs_cluster_capacity_providers` | yes | 1 (1) | 1 | FULLY_MUTABLE |
+| 18 | `elasticache/GlobalReplicationGroup` | 2 | `aws_elasticache_global_replication_group` | yes | 1 (1) | 1 | FULLY_MUTABLE |
+| 19 | `inspector/AssessmentTemplate` | 2 | `aws_inspector_assessment_template` | yes | 2 (1) | 1 | IMMUTABLE |
+| 20 | `redshift/ClusterSubnetGroup` | 2 | `aws_redshift_subnet_group` | yes | 1 (1) | 1 | FULLY_MUTABLE |
+| 21 | `redshift/EndpointAccess` | 2 | `aws_redshift_endpoint_access aws_redshiftserverless_endpoint_access` | yes | 5 (1) | 2 | FULLY_MUTABLE |
+| 22 | `redshift/ScheduledAction` | 2 | `aws_redshift_scheduled_action` | yes | 1 (1) | 2 | FULLY_MUTABLE |
+| 23 | `redshift/SnapshotCopyGrant` | 2 | `aws_redshift_snapshot_copy_grant` | yes | 1 (1) | 1 | FULLY_MUTABLE |
+| 24 | `redshift/UsageLimit` | 2 | `aws_redshift_usage_limit aws_redshiftserverless_usage_limit` | yes | 2 (1) | 2 | FULLY_MUTABLE |
+| 25 | `sqs/QueueInlinePolicy` | 2 | `aws_sqs_queue_policy` | yes | 1 (1) | 1 | FULLY_MUTABLE |
+| 26 | `autoscaling/LaunchConfiguration` | 2 | `aws_launch_configuration` | yes | 0 (0) | 2 | IMMUTABLE |
+| 27 | `inspector/AssessmentTarget` | 2 | `aws_inspector_assessment_target` | yes | 1 (0) | 1 | FULLY_MUTABLE |
+| 28 | `inspector/ResourceGroup` | 2 | `aws_inspector_resource_group` | yes | 0 (0) | 1 | IMMUTABLE |
+| 29 | `redshift/ClusterParameterGroup` | 2 | `aws_redshift_parameter_group` | yes | 0 (0) | 1 | FULLY_MUTABLE |
+| 30 | `redshift/SnapshotSchedule` | 2 | `aws_redshift_snapshot_schedule aws_redshift_snapshot_schedule_association` | yes | 2 (0) | 2 | FULLY_MUTABLE |

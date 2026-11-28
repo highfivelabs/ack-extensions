@@ -151,6 +151,11 @@ pull_requests:
     read_on: "2026-11-16"
     role: copied
     for: LaunchTemplate (references under spec.data)
+  - ref: aws-controllers-k8s/ec2-controller#396
+    head: 91d99b7a5fd88d4eb98944c46e23c5a45c3d05bb
+    read_on: "2026-11-28"
+    role: copied
+    for: KeyPair
   - ref: aws-controllers-k8s/ecr-controller#121
     head: f6c7d57e0b169547ed2300cbba0c65b11691b0eb
     read_on: "2026-11-09"
@@ -275,6 +280,18 @@ copied:
     from: {pr: aws-controllers-k8s/rds-controller#257, paths: [pkg/resource/option_group/]}
   - here: [services/rds/pkg/util/tags.go]
     from: {pr: aws-controllers-k8s/rds-controller#257, paths: [pkg/util/tags.go]}
+  - here: [services/ec2/generator.yaml]
+    from: {pr: aws-controllers-k8s/ec2-controller#396, paths: [generator.yaml]}
+  - here:
+      - services/ec2/templates/hooks/key_pair/sdk_create_post_build_request.go.tpl
+      - services/ec2/templates/hooks/key_pair/sdk_read_many_post_build_request.go.tpl
+    from:
+      pr: aws-controllers-k8s/ec2-controller#396
+      paths:
+        - templates/hooks/key_pair/sdk_create_post_build_request.go.tpl
+        - templates/hooks/key_pair/sdk_read_many_post_build_request.go.tpl
+  - here: [services/ec2/pkg/resource/key_pair/hooks.go, services/ec2/pkg/resource/key_pair/hooks_test.go]
+    from: {pr: aws-controllers-k8s/ec2-controller#396, paths: [pkg/resource/key_pair/]}
   - here: [services/ecr/apis/v1alpha1/replication_configuration.go]
     from: {pr: aws-controllers-k8s/ecr-controller#121, paths: [apis/v1alpha1/replication_configuration.go]}
   - here: [services/ecr/pkg/resource/replication_configuration/sdk.go]

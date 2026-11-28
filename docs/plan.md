@@ -5,7 +5,7 @@ Status, 2026-11-15: the repository has thirty-six kinds:
 - `applicationautoscaling.aws.hfl.dev` `ScheduledAction`;
 - `autoscaling.aws.hfl.dev` `ScalingPolicy` and `ScheduledAction`;
 - `ec2.aws.hfl.dev` `CustomerGateway`, `DefaultSecurityGroup`, `LaunchTemplate` (ACK's, fixed: section 6.43), `VPNGateway`, `VPNConnection`,
-  `VPNGatewayRoutePropagation`, `NetworkInterfacePermission`, `ResourceTag`,
+  `VPNGatewayRoutePropagation`, `NetworkInterfacePermission`, `ResourceTag`, `KeyPair`,
   `Volume` and `VolumeAttachment`;
 - `ecr.aws.hfl.dev` `ReplicationConfiguration`;
 - `eventbridge.aws.hfl.dev` `Connection` and `APIDestination`;
@@ -227,7 +227,8 @@ So:
   for the tests at `@latest` moved `aws-sdk-go-v2` from `v1.41.5` to
   `v1.47.8`; it is pinned to ACK ec2-controller's `v1.290.1` instead.
 - **Copied from open pull requests.** PR #184 (iam-controller, head
-  `78eb350e`) and PR #257 (rds-controller, head `32c3cb23`). Both are open
+  `78eb350e`), PR #257 (rds-controller, head `32c3cb23`) and PR #396
+  (ec2-controller, head `91d99b7a`, `KeyPair`, section 6.50). Both are open
   and conflict with their base (`mergeable_state: dirty`). When either
   changes, re-copy from the new head. When either merges and ships in a
   release, retire ours.
@@ -500,6 +501,10 @@ controller to show it can fail:
 
 ### 4.4 What moto does differently from AWS
 
+- **Key pairs** (section 6.50): a malformed public key is
+  `InvalidKeyPair.Format` on moto, `InvalidKey.Format` on AWS (terminal
+  in our `KeyPair`, retried on moto); a deleted key pair read by ID is an
+  empty list on moto, `InvalidKeyPair.NotFound` on AWS.
 - **The REGISTERING state.** moto reports a new proxy target REGISTERING
   only in the `RegisterDBProxyTargets` response, and AVAILABLE on every
   read after. ACK's runtime reads right after a create and keeps that
@@ -1045,6 +1050,82 @@ EC2-Classic security groups of RDS, ElastiCache and Redshift, CloudFront
   RDS activity streams and automated backup replication, and the Network
   Firewall resource policy have no moto support (moto 5.2.5 has none of
   their calls): they wait.
+
+**The Upjet gap list, worked 2026-11-28** (HFL-699;
+`docs/coverage/upjet-gaps.csv`, 112 rows at main `75fb6d6`: API
+resources Upjet has a resource for and nothing here serves). Upstream
+read-only the same day with `git ls-remote` and shallow clones, as `gh`
+could not read ACK's repositories from the session. What each row
+became, by the list's rank on that day:
+
+- **Network Manager, ranks 4 to 7, 13 to 18 and 21 to 23: built**, as
+  Cloud Control kinds (batch 18, `networkmanager.cloudcontrol.aws.hfl.dev`,
+  16 types: the 13 ranked rows and `ConnectPeer`,
+  `CoreNetworkPrefixListAssociation` and `DirectConnectGatewayAttachment`).
+  networkmanager-controller has no release; its `main` (`0ecd0e6`,
+  2026-11-10) has `GlobalNetwork` only, and pull requests #3 (head
+  `890a055`), #4 (`d77ae50`) and #16 (`f8d4f6c`, 2026-11-27) are still open,
+  so section 3's rule (2026-11-24: "Network Manager (F13: #3, #4, #16,
+  through Cloud Control)") applies. The generator wired the Upjet slice's
+  references (`globalNetworkIdRef` and the rest, two kinds more with a
+  reference field); none of the `secrets:` candidates the batch tool
+  printed (`RoutingPolicyLabel`, `CoreNetworkAddress`, `SubnetArn`) is a
+  secret. On the schema fake only: `TestEveryKindOnSchemaFake`, and 11
+  Upjet hand examples in `TestUpjetExamples` (6 more are listed in
+  `cloudcontrol/zz_generated.upjet.md` as ones the kind cannot express).
+  moto 5.2.5's `networkmanager` has 18 of 97 operations (create, get and
+  delete for core networks, sites, links and devices; create and
+  describe for global networks, with no delete; no updates), so a moto
+  backend could prove sites, links, devices and core networks but not a
+  global network's delete: not written. They retire when ACK releases
+  the controller (section 3). The coverage tool's gap list now also drops
+  a resource this run's `resources.csv` serves, since the slice's join is
+  frozen at factory's fold.
+- **EC2 `KeyPair`, rank 12:** ec2-controller pull request #396 is still
+  open (head `91d99b7a`, 2026-11-13) and `main` (`de423fc`) still ignores
+  `KeyPair`: built here from the pull request's code, ACK-generated in
+  `services/ec2` (section 6.50).
+- **Ranks 1 to 3, 8 to 11, 19 and 20** (EC2 `SpotFleet`, `CarrierGateway`
+  and `EC2Fleet`, Direct Connect's private, public and transit virtual
+  interfaces, EC2 `Host`, the two Outposts local gateway types): excluded
+  as not foundation (`cloudcontrol/excluded.yaml`), though Upjet ranks
+  them tier 1 and tests them. Open question 28.
+- **Flagged as likely mapping slips** (ranks 24, 67, 79, 80, 105, 106, 107
+  and 112): skipped; krm-packages pull request #270 fixes the catalog
+  mapping they come from.
+- **Fields of ACK's kinds** (ranks 25, 27, 29, 31, 39, 45, 46 and 108 to
+  111): already excluded or marked inline, each with the kind and field.
+- **Wait for a new ACK-generated service here, from upstream code**
+  (section 3): Redshift (ranks 26, 28, 34 to 38, 43, 44 and 48;
+  redshift-controller has no release, `main` `d0d8755` has
+  `ClusterSubnetGroup`, pull request #6 is open), SSM `Association`
+  (ssm-controller #85), Bedrock `KnowledgeBase` (bedrockagent-controller
+  #31), Kinesis `StreamConsumer` (#93), FSx `DataRepositoryAssociation`
+  (#8) and OpenSearch Serverless `SecurityConfig` (#48); ElastiCache
+  `GlobalReplicationGroup` (elasticache-controller #237, head `25ab233`)
+  can go in the existing `services/elasticache`. Each is a pull request
+  of its own; none was started in this round. Read for size the same
+  day: elasticache-controller #237 is 42 files and about 6,500 lines
+  (a 725-line `hooks.go`, and changes to `ReplicationGroup`, which our
+  fixed copy of section 6.47 would have to take too), and moto 5.2.5 has
+  none of ElastiCache's global datastore calls, so it would be proven by
+  unit tests and a live run only.
+- **End of support or deprecated by AWS:** Inspector Classic (ranks 33, 41,
+  42), `LaunchConfiguration` (40), WAF and WAF Regional Classic (49 to
+  65), Redshift's EC2-Classic `ClusterSecurityGroup` (47), App Mesh,
+  QLDB, MediaStore, Pinpoint and the Glue development endpoint (83, 84,
+  86 to 91, 94 to 104): no kind.
+- **Not provisionable through Cloud Control and not deprecated:** Lake
+  Formation `Permissions` and `DataLakeSettings` (81, 85) and MediaLive
+  `Channel` (82): ACK-generated candidates for a later round (no ACK
+  controller for either service).
+- **A CRD that is not clean** (ranks 68, 69, 71, 73, 75, 76, 78, 92 and 93:
+  `BedrockAgentCore::GatewayRule`, `CloudFormation::Stack`,
+  `RedshiftServerless::Snapshot`, `Budgets::Budget`, `IoT::Policy`,
+  `Lex::Bot`, `ApiGateway::Model`, `EMR::Cluster`,
+  `EMR::InstanceFleetConfig`): preserve-unknown nodes or skipped CEL rules
+  in `cloudcontrol/readiness.csv`, which the batch tool refuses; a gap of
+  the generator, not of the type.
 
 Built before this ranking:
 
@@ -3230,6 +3311,46 @@ pending): SSE-KMS (S3 then returns an ETag that is not the content's MD5,
 which the drift check does not need), a bucket with Object Lock, and an
 object over the API server's object size.
 
+### 6.50 `ec2.aws.hfl.dev` `KeyPair`
+
+The Upjet gap list's rank 12 (`aws_key_pair`, tier 1, tested by Upjet's
+maintainers; foundation F06 named pull request #396). ACK's ec2-controller has it
+only in pull request #396 (open, head `91d99b7a`, 2026-11-13; `main`
+`de423fc` and `v1.25.1` still ignore `KeyPair`), so it is built here from
+that pull request's code (section 3, 2026-11-24) and retires when ACK
+releases it. `cloudcontrol/excluded.yaml` keeps `AWS::EC2::KeyPair` off
+the Cloud Control route, so it is not built both ways.
+
+- **Copied** (`UPSTREAM.md`): the pull request's `generator.yaml` entry
+  (`ImportKeyPair` as the create, `CreateKeyPair` ignored so the private
+  key never leaves its owner; `DescribeKeyPairs` read by name until the
+  status has the ID; tags from `CreateTags`; `keyName` and
+  `publicKeyMaterial` immutable, the key never written back, since
+  `DescribeKeyPairs` does not return it), its two hook templates and its
+  `hooks.go` (`customUpdateKeyPair`: tags only) and `hooks_test.go`, with
+  our import paths. Generated by our generator at its pin (`v0.67.0`; the
+  pull request regenerated with `v0.68.0`): `sdk.go`, `delta.go`,
+  `resource.go`, `references.go` and `tags.go` are the pull request's
+  files but for the import paths, and `manager.go` but for the API
+  group. Adding the resource also brings timestamp fields into a hundred
+  of the EC2 model's unused shapes in `types.go` (the generator's output;
+  no CRD changes but the new one).
+- **Proven on moto** (`TestKeyPair`): an ed25519 public key imported with
+  tags, the status's ID (`key-...`) and fingerprint, tags changed in
+  place, `keyName` and `publicKeyMaterial` refused by the CRD once set,
+  the key pair deleted. The pull request's unit tests pass on our
+  generated code (`services/ec2/pkg/resource/key_pair`).
+- **What moto does differently** (section 4.4): it answers a malformed
+  key with `InvalidKeyPair.Format`, where AWS's code is
+  `InvalidKey.Format` (the terminal code the pull request lists), so on
+  moto a bad key is retried rather than terminal; and after a delete it
+  answers `DescribeKeyPairs` by ID with an empty list, where AWS answers
+  `InvalidKeyPair.NotFound` (both read as not found).
+- **Not proven:** adoption (the pull request's e2e has a case; an adopted
+  key pair has no `publicKeyMaterial`, so it cannot be re-imported) and
+  any live run (`docs/live-runs.md`; the live-test role's policies gain
+  `ec2:ImportKeyPair`, `ec2:DescribeKeyPairs` and `ec2:DeleteKeyPair`).
+
 ## 7. The operator: ACK's identity, beside ACK's controller
 
 ### 7.1 How ACK's controllers get their identity (read at the pins)
@@ -5062,3 +5183,28 @@ Before it can run on a real cluster:
     annotation of section 6.47; hand-written on ACK's runtime, as above.
 
     **Built** (2026-11-23): `s3.aws.hfl.dev` `Object`, section 6.49.
+
+28. **The "not foundation" exclusions against the Upjet ranking**
+    (2026-11-28, HFL-699). `cloudcontrol/excluded.yaml` keeps nine types
+    out of the Cloud Control route as not what a chart creates for a
+    platform foundation: EC2 `SpotFleet`, `EC2Fleet`, `CarrierGateway`
+    (Wavelength) and `Host` (billed while allocated), Direct Connect's
+    `PrivateVirtualInterface`, `PublicVirtualInterface` and
+    `TransitVirtualInterface` (on a physical circuit), and the Outposts
+    `LocalGatewayRoute` and `LocalGatewayRouteTableVPCAssociation`. The
+    Upjet gap list (`docs/coverage/upjet-gaps.csv`) ranks all nine tier 1,
+    and Upjet's maintainers test seven of them. Batch 15 served every
+    other provisionable type with a clean CRD, tier 3 included, so the
+    exclusion is now the only thing between these and a kind: each would
+    be one line in `types.yaml`, on the schema fake (moto 5.2.5 has
+    `RequestSpotFleet`, `CreateFleet`, `CreateCarrierGateway` and
+    `AllocateHosts`, and none of Direct Connect's virtual interfaces).
+    Should they be served?
+
+    Recommended: serve the fleets, the carrier gateway and the three
+    virtual interfaces (a kind costs nothing until an object is made, and
+    the fleets and the virtual interfaces are what a platform team
+    writes beside a VPC or a Direct Connect gateway, which is served),
+    keep `Host` and the Outposts types excluded (dedicated hardware,
+    billed or set up with AWS outside a chart). Not changed until the
+    builder answers.

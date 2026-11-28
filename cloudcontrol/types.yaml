@@ -3054,3 +3054,40 @@ types:
     unproven: "no moto backend yet (moto 5.2.5 has xray); on the schema fake only"
   - typeName: AWS::XRay::TransactionSearchConfig
     unproven: "no moto backend yet (moto 5.2.5 has xray); on the schema fake only"
+  # Network Manager (Cloud WAN), foundation F13 and the Upjet gap ranks 4 to 7,
+  # 13 to 18 and 21 to 23 (HFL-699): ACK's networkmanager-controller has no
+  # release; its main has GlobalNetwork only and pull requests #3, #4 and #16
+  # add the rest, so these are served here now (docs/plan.md section 3,
+  # 2026-11-24) and retire when ACK releases them.
+  - typeName: AWS::NetworkManager::ConnectAttachment
+    unproven: "no moto backend yet (moto 5.2.5 has networkmanager); on the schema fake only"
+  - typeName: AWS::NetworkManager::ConnectPeer
+    unproven: "no moto backend yet (moto 5.2.5 has networkmanager); on the schema fake only"
+  - typeName: AWS::NetworkManager::CoreNetwork
+    unproven: "no moto backend yet (moto 5.2.5 has networkmanager); on the schema fake only"
+  - typeName: AWS::NetworkManager::CoreNetworkPrefixListAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has networkmanager); on the schema fake only"
+  - typeName: AWS::NetworkManager::CustomerGatewayAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has networkmanager); on the schema fake only"
+  - typeName: AWS::NetworkManager::Device
+    unproven: "no moto backend yet (moto 5.2.5 has networkmanager); on the schema fake only"
+  - typeName: AWS::NetworkManager::DirectConnectGatewayAttachment
+    unproven: "no moto backend yet (moto 5.2.5 has networkmanager); on the schema fake only"
+  - typeName: AWS::NetworkManager::GlobalNetwork
+    unproven: "no moto backend yet (moto 5.2.5 has networkmanager); on the schema fake only"
+  - typeName: AWS::NetworkManager::Link
+    unproven: "no moto backend yet (moto 5.2.5 has networkmanager); on the schema fake only"
+  - typeName: AWS::NetworkManager::LinkAssociation
+    unproven: "no moto backend yet (moto 5.2.5 has networkmanager); on the schema fake only"
+  - typeName: AWS::NetworkManager::Site
+    unproven: "no moto backend yet (moto 5.2.5 has networkmanager); on the schema fake only"
+  - typeName: AWS::NetworkManager::SiteToSiteVpnAttachment
+    unproven: "no moto backend yet (moto 5.2.5 has networkmanager); on the schema fake only"
+  - typeName: AWS::NetworkManager::TransitGatewayPeering
+    unproven: "no moto backend yet (moto 5.2.5 has networkmanager); on the schema fake only"
+  - typeName: AWS::NetworkManager::TransitGatewayRegistration
+    unproven: "no moto backend yet (moto 5.2.5 has networkmanager); on the schema fake only"
+  - typeName: AWS::NetworkManager::TransitGatewayRouteTableAttachment
+    unproven: "no moto backend yet (moto 5.2.5 has networkmanager); on the schema fake only"
+  - typeName: AWS::NetworkManager::VpcAttachment
+    unproven: "no moto backend yet (moto 5.2.5 has networkmanager); on the schema fake only"

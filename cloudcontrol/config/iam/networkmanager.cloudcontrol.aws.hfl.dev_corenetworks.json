@@ -1,0 +1,66 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkManagerCoreNetwork",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerCoreNetworkCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "networkmanager:CreateCoreNetwork",
+        "networkmanager:GetCoreNetwork",
+        "networkmanager:GetCoreNetworkPolicy",
+        "networkmanager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerCoreNetworkRead",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:GetCoreNetwork",
+        "networkmanager:GetCoreNetworkPolicy"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerCoreNetworkUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "networkmanager:ExecuteCoreNetworkChangeSet",
+        "networkmanager:GetCoreNetwork",
+        "networkmanager:GetCoreNetworkPolicy",
+        "networkmanager:ListTagsForResource",
+        "networkmanager:PutCoreNetworkPolicy",
+        "networkmanager:TagResource",
+        "networkmanager:UntagResource",
+        "networkmanager:UpdateCoreNetwork"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerCoreNetworkDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "networkmanager:DeleteCoreNetwork",
+        "networkmanager:GetCoreNetwork",
+        "networkmanager:GetCoreNetworkPolicy",
+        "networkmanager:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

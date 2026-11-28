@@ -37,6 +37,7 @@ rules:
   - defaultroutetables
   - defaultsecuritygroups
   - defaultvpcs
+  - keypairs
   - launchtemplates
   - networkinterfacepermissions
   - resourcetags
@@ -61,6 +62,7 @@ rules:
   - defaultroutetables/status
   - defaultsecuritygroups/status
   - defaultvpcs/status
+  - keypairs/status
   - launchtemplates/status
   - networkinterfacepermissions/status
   - resourcetags/status

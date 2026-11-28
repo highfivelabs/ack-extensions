@@ -1,0 +1,44 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkManagerTransitGatewayRegistration",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerTransitGatewayRegistrationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "networkmanager:GetTransitGatewayRegistrations",
+        "networkmanager:RegisterTransitGateway"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerTransitGatewayRegistrationRead",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:GetTransitGatewayRegistrations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerTransitGatewayRegistrationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:DeregisterTransitGateway",
+        "networkmanager:GetTransitGatewayRegistrations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

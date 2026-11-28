@@ -1356,6 +1356,22 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 | `AWS::XRay::ResourcePolicy` | `ResourcePolicy.xray.cloudcontrol.aws.hfl.dev` | 3 | 0 | 2 | 0 | 0 | 1 |
 | `AWS::XRay::SamplingRule` | `SamplingRule.xray.cloudcontrol.aws.hfl.dev` | 5 | 1 | 2 | 0 | 0 | 0 |
 | `AWS::XRay::TransactionSearchConfig` | `TransactionSearchConfig.xray.cloudcontrol.aws.hfl.dev` | 2 | 1 | 2 | 0 | 0 | 2 |
+| `AWS::NetworkManager::ConnectAttachment` | `ConnectAttachment.networkmanager.cloudcontrol.aws.hfl.dev` | 9 | 14 | 8 | 0 | 0 | 2 |
+| `AWS::NetworkManager::ConnectPeer` | `ConnectPeer.networkmanager.cloudcontrol.aws.hfl.dev` | 7 | 7 | 12 | 0 | 0 | 0 |
+| `AWS::NetworkManager::CoreNetwork` | `CoreNetwork.networkmanager.cloudcontrol.aws.hfl.dev` | 4 | 8 | 2 | 0 | 0 | 0 |
+| `AWS::NetworkManager::CoreNetworkPrefixListAssociation` | `CoreNetworkPrefixListAssociation.networkmanager.cloudcontrol.aws.hfl.dev` | 3 | 0 | 6 | 0 | 0 | 0 |
+| `AWS::NetworkManager::CustomerGatewayAssociation` | `CustomerGatewayAssociation.networkmanager.cloudcontrol.aws.hfl.dev` | 4 | 0 | 8 | 0 | 0 | 0 |
+| `AWS::NetworkManager::Device` | `Device.networkmanager.cloudcontrol.aws.hfl.dev` | 10 | 4 | 2 | 0 | 0 | 0 |
+| `AWS::NetworkManager::DirectConnectGatewayAttachment` | `DirectConnectGatewayAttachment.networkmanager.cloudcontrol.aws.hfl.dev` | 8 | 14 | 4 | 0 | 0 | 2 |
+| `AWS::NetworkManager::GlobalNetwork` | `GlobalNetwork.networkmanager.cloudcontrol.aws.hfl.dev` | 4 | 2 | 0 | 0 | 0 | 0 |
+| `AWS::NetworkManager::Link` | `Link.networkmanager.cloudcontrol.aws.hfl.dev` | 7 | 4 | 4 | 0 | 0 | 0 |
+| `AWS::NetworkManager::LinkAssociation` | `LinkAssociation.networkmanager.cloudcontrol.aws.hfl.dev` | 3 | 0 | 6 | 0 | 0 | 0 |
+| `AWS::NetworkManager::Site` | `Site.networkmanager.cloudcontrol.aws.hfl.dev` | 4 | 4 | 2 | 0 | 0 | 0 |
+| `AWS::NetworkManager::SiteToSiteVpnAttachment` | `SiteToSiteVpnAttachment.networkmanager.cloudcontrol.aws.hfl.dev` | 8 | 14 | 4 | 0 | 0 | 2 |
+| `AWS::NetworkManager::TransitGatewayPeering` | `TransitGatewayPeering.networkmanager.cloudcontrol.aws.hfl.dev` | 3 | 10 | 4 | 0 | 0 | 0 |
+| `AWS::NetworkManager::TransitGatewayRegistration` | `TransitGatewayRegistration.networkmanager.cloudcontrol.aws.hfl.dev` | 2 | 0 | 8 | 0 | 0 | 0 |
+| `AWS::NetworkManager::TransitGatewayRouteTableAttachment` | `TransitGatewayRouteTableAttachment.networkmanager.cloudcontrol.aws.hfl.dev` | 5 | 15 | 4 | 0 | 0 | 0 |
+| `AWS::NetworkManager::VpcAttachment` | `VpcAttachment.networkmanager.cloudcontrol.aws.hfl.dev` | 8 | 16 | 8 | 0 | 0 | 2 |
 
 ## `AWS::IAM::SAMLProvider`
 
@@ -17709,3 +17725,197 @@ What `hack/cloudcontrol-gen` made of each type in `cloudcontrol/types.yaml`, and
 - IAM actions (15): `application-signals:StartDiscovery`, `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `iam:CreateServiceLinkedRole`, `kms:DescribeKey`, `logs:CreateLogGroup`, `logs:CreateLogStream`, `logs:PutRetentionPolicy`, `xray:GetIndexingRules`, `xray:GetTraceSegmentDestination`, `xray:UpdateIndexingRule`, `xray:UpdateTraceSegmentDestination`
 - Sensitive IAM actions: `iam:CreateServiceLinkedRole`
 - Left out (list handler only): none
+
+## `AWS::NetworkManager::ConnectAttachment`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/RoutingPolicyLabel`, `/properties/NatGatewayRules`
+- Of those, write-only strings that could be opted in if they are secrets: `/properties/RoutingPolicyLabel`
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (17): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:DescribeRegions`, `networkmanager:CreateConnectAttachment`, `networkmanager:DeleteAttachment`, `networkmanager:GetConnectAttachment`, `networkmanager:ListAttachmentNatConfigurations`, `networkmanager:ListAttachmentRoutingPolicyAssociations`, `networkmanager:ListTagsForResource`, `networkmanager:PutAttachmentRoutingPolicyLabel`, `networkmanager:RemoveAttachmentRoutingPolicyLabel`, `networkmanager:TagResource`, `networkmanager:UntagResource`, `networkmanager:UpdateAttachmentNatConfiguration`
+- Sensitive IAM actions: none
+- Left out (list handler only): `networkmanager:ListAttachments`
+
+## `AWS::NetworkManager::ConnectPeer`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/CoreNetworkAddress`, `/properties/BgpOptions`, `/properties/SubnetArn`
+- Of those, write-only strings that could be opted in if they are secrets: `/properties/CoreNetworkAddress`, `/properties/SubnetArn`
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (12): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:DescribeRegions`, `networkmanager:CreateConnectPeer`, `networkmanager:DeleteConnectPeer`, `networkmanager:GetConnectPeer`, `networkmanager:ListTagsForResource`, `networkmanager:TagResource`, `networkmanager:UntagResource`
+- Sensitive IAM actions: none
+- Left out (list handler only): `networkmanager:ListConnectPeers`
+
+## `AWS::NetworkManager::CoreNetwork`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (16): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:DescribeRegions`, `networkmanager:CreateCoreNetwork`, `networkmanager:DeleteCoreNetwork`, `networkmanager:ExecuteCoreNetworkChangeSet`, `networkmanager:GetCoreNetwork`, `networkmanager:GetCoreNetworkPolicy`, `networkmanager:ListTagsForResource`, `networkmanager:PutCoreNetworkPolicy`, `networkmanager:TagResource`, `networkmanager:UntagResource`, `networkmanager:UpdateCoreNetwork`
+- Sensitive IAM actions: none
+- Left out (list handler only): `networkmanager:ListCoreNetworks`
+
+## `AWS::NetworkManager::CoreNetworkPrefixListAssociation`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (9): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `networkmanager:CreateCoreNetworkPrefixListAssociation`, `networkmanager:DeleteCoreNetworkPrefixListAssociation`, `networkmanager:GetCoreNetwork`, `networkmanager:ListCoreNetworkPrefixListAssociations`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::NetworkManager::CustomerGatewayAssociation`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (8): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `networkmanager:AssociateCustomerGateway`, `networkmanager:DisassociateCustomerGateway`, `networkmanager:GetCustomerGatewayAssociations`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::NetworkManager::Device`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (12): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `networkmanager:CreateDevice`, `networkmanager:DeleteDevice`, `networkmanager:GetDevices`, `networkmanager:ListTagsForResource`, `networkmanager:TagResource`, `networkmanager:UntagResource`, `networkmanager:UpdateDevice`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::NetworkManager::DirectConnectGatewayAttachment`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/RoutingPolicyLabel`, `/properties/NatGatewayRules`
+- Of those, write-only strings that could be opted in if they are secrets: `/properties/RoutingPolicyLabel`
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (19): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:DescribeRegions`, `iam:CreateServiceLinkedRole`, `networkmanager:CreateDirectConnectGatewayAttachment`, `networkmanager:DeleteAttachment`, `networkmanager:GetDirectConnectGatewayAttachment`, `networkmanager:ListAttachmentNatConfigurations`, `networkmanager:ListAttachmentRoutingPolicyAssociations`, `networkmanager:ListTagsForResource`, `networkmanager:PutAttachmentRoutingPolicyLabel`, `networkmanager:RemoveAttachmentRoutingPolicyLabel`, `networkmanager:TagResource`, `networkmanager:UntagResource`, `networkmanager:UpdateAttachmentNatConfiguration`, `networkmanager:UpdateDirectConnectGatewayAttachment`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`
+- Left out (list handler only): `networkmanager:ListAttachments`
+
+## `AWS::NetworkManager::GlobalNetwork`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (13): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `iam:CreateServiceLinkedRole`, `networkmanager:CreateGlobalNetwork`, `networkmanager:DeleteGlobalNetwork`, `networkmanager:DescribeGlobalNetworks`, `networkmanager:ListTagsForResource`, `networkmanager:TagResource`, `networkmanager:UntagResource`, `networkmanager:UpdateGlobalNetwork`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`
+- Left out (list handler only): none
+
+## `AWS::NetworkManager::Link`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (12): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `networkmanager:CreateLink`, `networkmanager:DeleteLink`, `networkmanager:GetLinks`, `networkmanager:ListTagsForResource`, `networkmanager:TagResource`, `networkmanager:UntagResource`, `networkmanager:UpdateLink`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::NetworkManager::LinkAssociation`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (8): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `networkmanager:AssociateLink`, `networkmanager:DisassociateLink`, `networkmanager:GetLinkAssociations`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::NetworkManager::Site`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (12): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `networkmanager:CreateSite`, `networkmanager:DeleteSite`, `networkmanager:GetSites`, `networkmanager:ListTagsForResource`, `networkmanager:TagResource`, `networkmanager:UntagResource`, `networkmanager:UpdateSite`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::NetworkManager::SiteToSiteVpnAttachment`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/RoutingPolicyLabel`, `/properties/NatGatewayRules`
+- Of those, write-only strings that could be opted in if they are secrets: `/properties/RoutingPolicyLabel`
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (17): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:DescribeRegions`, `networkmanager:CreateSiteToSiteVpnAttachment`, `networkmanager:DeleteAttachment`, `networkmanager:GetSiteToSiteVpnAttachment`, `networkmanager:ListAttachmentNatConfigurations`, `networkmanager:ListAttachmentRoutingPolicyAssociations`, `networkmanager:ListTagsForResource`, `networkmanager:PutAttachmentRoutingPolicyLabel`, `networkmanager:RemoveAttachmentRoutingPolicyLabel`, `networkmanager:TagResource`, `networkmanager:UntagResource`, `networkmanager:UpdateAttachmentNatConfiguration`
+- Sensitive IAM actions: none
+- Left out (list handler only): `networkmanager:ListAttachments`
+
+## `AWS::NetworkManager::TransitGatewayPeering`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (15): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:AcceptTransitGatewayPeeringAttachment`, `ec2:CreateTransitGatewayPeeringAttachment`, `ec2:DescribeRegions`, `iam:CreateServiceLinkedRole`, `networkmanager:CreateTransitGatewayPeering`, `networkmanager:DeletePeering`, `networkmanager:GetTransitGatewayPeering`, `networkmanager:ListTagsForResource`, `networkmanager:TagResource`, `networkmanager:UntagResource`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`
+- Left out (list handler only): `networkmanager:ListPeerings`
+
+## `AWS::NetworkManager::TransitGatewayRegistration`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `transitGatewayRef`
+- Write-only kept as plain fields: none
+- Of those, write-only strings that could be opted in if they are secrets: none
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (9): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:DescribeRegions`, `networkmanager:DeregisterTransitGateway`, `networkmanager:GetTransitGatewayRegistrations`, `networkmanager:RegisterTransitGateway`
+- Sensitive IAM actions: none
+- Left out (list handler only): none
+
+## `AWS::NetworkManager::TransitGatewayRouteTableAttachment`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Write-only kept as plain fields: `/properties/RoutingPolicyLabel`
+- Of those, write-only strings that could be opted in if they are secrets: `/properties/RoutingPolicyLabel`
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (16): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:DescribeRegions`, `iam:CreateServiceLinkedRole`, `networkmanager:CreateTransitGatewayRouteTableAttachment`, `networkmanager:DeleteAttachment`, `networkmanager:GetTransitGatewayRouteTableAttachment`, `networkmanager:ListAttachmentRoutingPolicyAssociations`, `networkmanager:ListTagsForResource`, `networkmanager:PutAttachmentRoutingPolicyLabel`, `networkmanager:RemoveAttachmentRoutingPolicyLabel`, `networkmanager:TagResource`, `networkmanager:UntagResource`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`
+- Left out (list handler only): `networkmanager:ListAttachments`
+
+## `AWS::NetworkManager::VpcAttachment`
+
+- Secret references (opted in, `secrets` in types.yaml): none
+- Reference fields (the overlay, `references` in types.yaml, and the Upjet facts, `zz_generated.upjet.md`): `vpcRef`
+- Write-only kept as plain fields: `/properties/RoutingPolicyLabel`, `/properties/NatGatewayRules`
+- Of those, write-only strings that could be opted in if they are secrets: `/properties/RoutingPolicyLabel`
+- Create-only paths without a CEL rule: none
+- Nodes made `x-kubernetes-preserve-unknown-fields`: none
+- Read-only properties nested in writable objects (dropped): none
+- IAM actions (19): `cloudformation:CreateResource`, `cloudformation:DeleteResource`, `cloudformation:GetResource`, `cloudformation:GetResourceRequestStatus`, `cloudformation:UpdateResource`, `ec2:DescribeRegions`, `iam:CreateServiceLinkedRole`, `networkmanager:CreateVpcAttachment`, `networkmanager:DeleteAttachment`, `networkmanager:GetVpcAttachment`, `networkmanager:ListAttachmentNatConfigurations`, `networkmanager:ListAttachmentRoutingPolicyAssociations`, `networkmanager:ListTagsForResource`, `networkmanager:PutAttachmentRoutingPolicyLabel`, `networkmanager:RemoveAttachmentRoutingPolicyLabel`, `networkmanager:TagResource`, `networkmanager:UntagResource`, `networkmanager:UpdateAttachmentNatConfiguration`, `networkmanager:UpdateVpcAttachment`
+- Sensitive IAM actions: `iam:CreateServiceLinkedRole`
+- Left out (list handler only): `networkmanager:ListAttachments`

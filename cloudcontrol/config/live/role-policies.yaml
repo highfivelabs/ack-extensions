@@ -131,6 +131,7 @@ policies:
       - ec2:CreateVpnGateway
       - ec2:DeleteCustomerGateway
       - ec2:DeleteInternetGateway
+      - ec2:DeleteKeyPair
       - ec2:DeleteLaunchTemplate
       - ec2:DeleteNetworkAcl
       - ec2:DeleteNetworkAclEntry
@@ -151,6 +152,7 @@ policies:
       - ec2:DescribeCustomerGateways
       - ec2:DescribeImages
       - ec2:DescribeInternetGateways
+      - ec2:DescribeKeyPairs
       - ec2:DescribeLaunchTemplateVersions
       - ec2:DescribeLaunchTemplates
       - ec2:DescribeNetworkAcls
@@ -175,6 +177,7 @@ policies:
       - ec2:EnableVgwRoutePropagation
       - ec2:GetTransitGatewayRouteTableAssociations
       - ec2:GetTransitGatewayRouteTablePropagations
+      - ec2:ImportKeyPair
       - ec2:ModifyLaunchTemplate
       - ec2:ModifyTransitGateway
       - ec2:ModifyVolume

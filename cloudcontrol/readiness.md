@@ -6,11 +6,11 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 
 | Category | Types | Provisionable | FULLY_MUTABLE | IMMUTABLE | CRD accepted | Clean | Gap types | Gap, provisionable | Gap, CRD accepted | Gap, clean |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 56 | 52 | 52 | 52 |
+| platform-foundation | 241 | 234 | 186 | 48 | 234 | 216 | 39 | 35 | 35 | 35 |
 | security-adjacent | 112 | 94 | 87 | 7 | 94 | 89 | 22 | 4 | 4 | 4 |
 | application | 263 | 251 | 233 | 18 | 251 | 231 | 38 | 27 | 27 | 25 |
 | other | 1262 | 1190 | 1086 | 104 | 1190 | 1139 | 122 | 54 | 54 | 12 |
-| all | 1878 | 1769 | 1592 | 177 | 1769 | 1675 | 238 | 137 | 137 | 93 |
+| all | 1878 | 1769 | 1592 | 177 | 1769 | 1675 | 221 | 120 | 120 | 76 |
 
 ## Foundation gaps (platform-foundation and security-adjacent types with no kind)
 
@@ -28,7 +28,6 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::EC2::FpgaImage` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::Host` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::IPv4Pool` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::EC2::KeyPair` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 1 | 0 |
 | `AWS::EC2::LocalGatewayRoute` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::LocalGatewayRouteTable` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::EC2::LocalGatewayRouteTableVirtualInterfaceGroupAssociation` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
@@ -56,22 +55,6 @@ Every `AWS::` type in the pinned schema zip, run through the same generator as `
 | `AWS::Inspector::AssessmentTarget` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Inspector::AssessmentTemplate` | security-adjacent | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::Inspector::ResourceGroup` | security-adjacent | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::NetworkManager::ConnectAttachment` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
-| `AWS::NetworkManager::ConnectPeer` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 2 | 0 |
-| `AWS::NetworkManager::CoreNetwork` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::NetworkManager::CoreNetworkPrefixListAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::NetworkManager::CustomerGatewayAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::NetworkManager::Device` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::NetworkManager::DirectConnectGatewayAttachment` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 1 |
-| `AWS::NetworkManager::GlobalNetwork` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::NetworkManager::Link` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::NetworkManager::LinkAssociation` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::NetworkManager::Site` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::NetworkManager::SiteToSiteVpnAttachment` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 0 |
-| `AWS::NetworkManager::TransitGatewayPeering` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 1 |
-| `AWS::NetworkManager::TransitGatewayRegistration` | platform-foundation | IMMUTABLE | ok | 0 | 0 | 0 | 0 |
-| `AWS::NetworkManager::TransitGatewayRouteTableAttachment` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 1 |
-| `AWS::NetworkManager::VpcAttachment` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 1 | 1 |
 | `AWS::Route53::RecordSetGroup` | platform-foundation | NON_PROVISIONABLE | not provisionable | 0 | 0 | 0 | 0 |
 | `AWS::Route53Resolver::OutpostResolver` | platform-foundation | FULLY_MUTABLE | ok | 0 | 0 | 0 | 0 |
 | `AWS::SecretsManager::RotationSchedule` | security-adjacent | FULLY_MUTABLE | ok | 0 | 0 | 11 | 1 |

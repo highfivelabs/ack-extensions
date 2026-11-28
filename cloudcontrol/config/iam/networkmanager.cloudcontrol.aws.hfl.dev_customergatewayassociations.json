@@ -1,0 +1,42 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkManagerCustomerGatewayAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerCustomerGatewayAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:AssociateCustomerGateway",
+        "networkmanager:GetCustomerGatewayAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerCustomerGatewayAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:GetCustomerGatewayAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerCustomerGatewayAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:DisassociateCustomerGateway"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

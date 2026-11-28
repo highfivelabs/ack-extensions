@@ -99,6 +99,7 @@ Filled in as batches land (types, coverage before and after).
 | 14, the catalog's types | #92 | 8 | 323 |
 | 15, tier 3 (category other) | #97 | 1,043 | 1,366 (all resources 87.0% with ACK) |
 | 16, the last two foundation policies, by hand | #134 | 2 | 1,370 (foundation 130 of 241) |
+| 18, Network Manager (the Upjet gap list, HFL-699) | #160 | 16 | 1,389 (foundation 146 of 241) |
 
 Then five kinds moved from the schema fake to proven on moto (#77, #78):
 ECR `RegistryPolicy` and `RegistryScanningConfiguration`, Identity Store

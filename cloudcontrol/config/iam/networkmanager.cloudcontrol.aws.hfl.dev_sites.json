@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkManagerSite",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerSiteCreate",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:CreateSite",
+        "networkmanager:GetSites",
+        "networkmanager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerSiteRead",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:GetSites"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerSiteUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:GetSites",
+        "networkmanager:ListTagsForResource",
+        "networkmanager:TagResource",
+        "networkmanager:UntagResource",
+        "networkmanager:UpdateSite"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerSiteDelete",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:DeleteSite",
+        "networkmanager:GetSites"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

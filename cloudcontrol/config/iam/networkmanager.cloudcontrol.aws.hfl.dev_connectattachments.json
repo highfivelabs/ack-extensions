@@ -1,0 +1,65 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkManagerConnectAttachment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerConnectAttachmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "networkmanager:CreateConnectAttachment",
+        "networkmanager:GetConnectAttachment",
+        "networkmanager:ListAttachmentNatConfigurations",
+        "networkmanager:TagResource",
+        "networkmanager:UpdateAttachmentNatConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerConnectAttachmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:GetConnectAttachment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerConnectAttachmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "networkmanager:GetConnectAttachment",
+        "networkmanager:ListAttachmentNatConfigurations",
+        "networkmanager:ListAttachmentRoutingPolicyAssociations",
+        "networkmanager:ListTagsForResource",
+        "networkmanager:PutAttachmentRoutingPolicyLabel",
+        "networkmanager:RemoveAttachmentRoutingPolicyLabel",
+        "networkmanager:TagResource",
+        "networkmanager:UntagResource",
+        "networkmanager:UpdateAttachmentNatConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerConnectAttachmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "networkmanager:DeleteAttachment",
+        "networkmanager:GetConnectAttachment"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
