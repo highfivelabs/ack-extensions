@@ -319,10 +319,19 @@ func (m *model) upjetOutputs(c config, r *results, files map[string][]byte) erro
 	if err != nil {
 		return err
 	}
+	// The slice's join is factory's, frozen at the fold: a resource it
+	// lists with no kind may have one now, so the gaps are also checked
+	// against this run's resources.csv rows.
+	servedNow := map[string]bool{}
+	for _, rr := range r.res {
+		if len(rr.officialKinds)+len(rr.oursKinds) > 0 {
+			servedNow[rr.service+"/"+rr.resource] = true
+		}
+	}
 	var gaps []gap
 	for k, es := range entriesByKey {
 		e0 := es[0]
-		if len(e0.Ours.OfficialKinds)+len(e0.Ours.OursKinds) > 0 {
+		if len(e0.Ours.OfficialKinds)+len(e0.Ours.OursKinds) > 0 || servedNow[k] {
 			continue
 		}
 		svc := e0.Ours.Service
