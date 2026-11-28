@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkManagerDirectConnectGatewayAttachment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerDirectConnectGatewayAttachmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "iam:CreateServiceLinkedRole",
+        "networkmanager:CreateDirectConnectGatewayAttachment",
+        "networkmanager:GetDirectConnectGatewayAttachment",
+        "networkmanager:ListAttachmentNatConfigurations",
+        "networkmanager:TagResource",
+        "networkmanager:UpdateAttachmentNatConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerDirectConnectGatewayAttachmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:GetDirectConnectGatewayAttachment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerDirectConnectGatewayAttachmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "networkmanager:GetDirectConnectGatewayAttachment",
+        "networkmanager:ListAttachmentNatConfigurations",
+        "networkmanager:ListAttachmentRoutingPolicyAssociations",
+        "networkmanager:ListTagsForResource",
+        "networkmanager:PutAttachmentRoutingPolicyLabel",
+        "networkmanager:RemoveAttachmentRoutingPolicyLabel",
+        "networkmanager:TagResource",
+        "networkmanager:UntagResource",
+        "networkmanager:UpdateAttachmentNatConfiguration",
+        "networkmanager:UpdateDirectConnectGatewayAttachment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerDirectConnectGatewayAttachmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "networkmanager:DeleteAttachment",
+        "networkmanager:GetDirectConnectGatewayAttachment",
+        "networkmanager:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

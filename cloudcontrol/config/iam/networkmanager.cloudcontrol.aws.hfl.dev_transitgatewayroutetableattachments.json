@@ -1,0 +1,62 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkManagerTransitGatewayRouteTableAttachment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerTransitGatewayRouteTableAttachmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "iam:CreateServiceLinkedRole",
+        "networkmanager:CreateTransitGatewayRouteTableAttachment",
+        "networkmanager:GetTransitGatewayRouteTableAttachment",
+        "networkmanager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerTransitGatewayRouteTableAttachmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:GetTransitGatewayRouteTableAttachment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerTransitGatewayRouteTableAttachmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "networkmanager:GetTransitGatewayRouteTableAttachment",
+        "networkmanager:ListAttachmentRoutingPolicyAssociations",
+        "networkmanager:ListTagsForResource",
+        "networkmanager:PutAttachmentRoutingPolicyLabel",
+        "networkmanager:RemoveAttachmentRoutingPolicyLabel",
+        "networkmanager:TagResource",
+        "networkmanager:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerTransitGatewayRouteTableAttachmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "networkmanager:DeleteAttachment",
+        "networkmanager:GetTransitGatewayRouteTableAttachment"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

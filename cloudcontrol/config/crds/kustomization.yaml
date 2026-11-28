@@ -1350,3 +1350,19 @@ resources:
   - xray.cloudcontrol.aws.hfl.dev_resourcepolicies.yaml
   - xray.cloudcontrol.aws.hfl.dev_samplingrules.yaml
   - xray.cloudcontrol.aws.hfl.dev_transactionsearchconfigs.yaml
+  - networkmanager.cloudcontrol.aws.hfl.dev_connectattachments.yaml
+  - networkmanager.cloudcontrol.aws.hfl.dev_connectpeers.yaml
+  - networkmanager.cloudcontrol.aws.hfl.dev_corenetworks.yaml
+  - networkmanager.cloudcontrol.aws.hfl.dev_corenetworkprefixlistassociations.yaml
+  - networkmanager.cloudcontrol.aws.hfl.dev_customergatewayassociations.yaml
+  - networkmanager.cloudcontrol.aws.hfl.dev_devices.yaml
+  - networkmanager.cloudcontrol.aws.hfl.dev_directconnectgatewayattachments.yaml
+  - networkmanager.cloudcontrol.aws.hfl.dev_globalnetworks.yaml
+  - networkmanager.cloudcontrol.aws.hfl.dev_links.yaml
+  - networkmanager.cloudcontrol.aws.hfl.dev_linkassociations.yaml
+  - networkmanager.cloudcontrol.aws.hfl.dev_sites.yaml
+  - networkmanager.cloudcontrol.aws.hfl.dev_sitetositevpnattachments.yaml
+  - networkmanager.cloudcontrol.aws.hfl.dev_transitgatewaypeerings.yaml
+  - networkmanager.cloudcontrol.aws.hfl.dev_transitgatewayregistrations.yaml
+  - networkmanager.cloudcontrol.aws.hfl.dev_transitgatewayroutetableattachments.yaml
+  - networkmanager.cloudcontrol.aws.hfl.dev_vpcattachments.yaml

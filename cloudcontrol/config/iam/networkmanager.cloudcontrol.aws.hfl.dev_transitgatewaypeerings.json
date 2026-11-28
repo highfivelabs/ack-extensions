@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkManagerTransitGatewayPeering",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerTransitGatewayPeeringCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:AcceptTransitGatewayPeeringAttachment",
+        "ec2:CreateTransitGatewayPeeringAttachment",
+        "ec2:DescribeRegions",
+        "iam:CreateServiceLinkedRole",
+        "networkmanager:CreateTransitGatewayPeering",
+        "networkmanager:GetTransitGatewayPeering",
+        "networkmanager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerTransitGatewayPeeringRead",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:GetTransitGatewayPeering"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerTransitGatewayPeeringUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "networkmanager:GetTransitGatewayPeering",
+        "networkmanager:ListTagsForResource",
+        "networkmanager:TagResource",
+        "networkmanager:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerTransitGatewayPeeringDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "networkmanager:DeletePeering",
+        "networkmanager:GetTransitGatewayPeering"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

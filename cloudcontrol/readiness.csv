@@ -1239,22 +1239,22 @@ AWS::NetworkFirewall::TLSInspectionConfiguration,networkfirewall,TLSInspectionCo
 AWS::NetworkFirewall::VpcEndpointAssociation,networkfirewall,VpcEndpointAssociation,security-adjacent,FULLY_MUTABLE,,VpcEndpointAssociation (Cloud Control),ok,0,0,0,0,1,true
 AWS::NetworkFlowMonitor::Monitor,networkflowmonitor,Monitor,other,FULLY_MUTABLE,,Monitor (Cloud Control),ok,0,0,1,1,0,true
 AWS::NetworkFlowMonitor::Scope,networkflowmonitor,Scope,other,FULLY_MUTABLE,,Scope (Cloud Control),ok,0,0,0,0,1,true
-AWS::NetworkManager::ConnectAttachment,networkmanager,ConnectAttachment,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,2,0,true
-AWS::NetworkManager::ConnectPeer,networkmanager,ConnectPeer,platform-foundation,FULLY_MUTABLE,,,ok,0,0,2,3,0,true
-AWS::NetworkManager::CoreNetwork,networkmanager,CoreNetwork,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::NetworkManager::CoreNetworkPrefixListAssociation,networkmanager,CoreNetworkPrefixListAssociation,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::NetworkManager::CustomerGatewayAssociation,networkmanager,CustomerGatewayAssociation,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::NetworkManager::Device,networkmanager,Device,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::NetworkManager::DirectConnectGatewayAttachment,networkmanager,DirectConnectGatewayAttachment,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,2,1,true
-AWS::NetworkManager::GlobalNetwork,networkmanager,GlobalNetwork,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::NetworkManager::Link,networkmanager,Link,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::NetworkManager::LinkAssociation,networkmanager,LinkAssociation,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::NetworkManager::Site,networkmanager,Site,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,0,true
-AWS::NetworkManager::SiteToSiteVpnAttachment,networkmanager,SiteToSiteVpnAttachment,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,2,0,true
-AWS::NetworkManager::TransitGatewayPeering,networkmanager,TransitGatewayPeering,platform-foundation,FULLY_MUTABLE,,,ok,0,0,0,0,1,true
-AWS::NetworkManager::TransitGatewayRegistration,networkmanager,TransitGatewayRegistration,platform-foundation,IMMUTABLE,,,ok,0,0,0,0,0,true
-AWS::NetworkManager::TransitGatewayRouteTableAttachment,networkmanager,TransitGatewayRouteTableAttachment,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,1,1,true
-AWS::NetworkManager::VpcAttachment,networkmanager,VpcAttachment,platform-foundation,FULLY_MUTABLE,,,ok,0,0,1,2,1,true
+AWS::NetworkManager::ConnectAttachment,networkmanager,ConnectAttachment,platform-foundation,FULLY_MUTABLE,,ConnectAttachment (Cloud Control),ok,0,0,1,2,0,true
+AWS::NetworkManager::ConnectPeer,networkmanager,ConnectPeer,platform-foundation,FULLY_MUTABLE,,ConnectPeer (Cloud Control),ok,0,0,2,3,0,true
+AWS::NetworkManager::CoreNetwork,networkmanager,CoreNetwork,platform-foundation,FULLY_MUTABLE,,CoreNetwork (Cloud Control),ok,0,0,0,0,0,true
+AWS::NetworkManager::CoreNetworkPrefixListAssociation,networkmanager,CoreNetworkPrefixListAssociation,platform-foundation,IMMUTABLE,,CoreNetworkPrefixListAssociation (Cloud Control),ok,0,0,0,0,0,true
+AWS::NetworkManager::CustomerGatewayAssociation,networkmanager,CustomerGatewayAssociation,platform-foundation,IMMUTABLE,,CustomerGatewayAssociation (Cloud Control),ok,0,0,0,0,0,true
+AWS::NetworkManager::Device,networkmanager,Device,platform-foundation,FULLY_MUTABLE,,Device (Cloud Control),ok,0,0,0,0,0,true
+AWS::NetworkManager::DirectConnectGatewayAttachment,networkmanager,DirectConnectGatewayAttachment,platform-foundation,FULLY_MUTABLE,,DirectConnectGatewayAttachment (Cloud Control),ok,0,0,1,2,1,true
+AWS::NetworkManager::GlobalNetwork,networkmanager,GlobalNetwork,platform-foundation,FULLY_MUTABLE,,GlobalNetwork (Cloud Control),ok,0,0,0,0,1,true
+AWS::NetworkManager::Link,networkmanager,Link,platform-foundation,FULLY_MUTABLE,,Link (Cloud Control),ok,0,0,0,0,0,true
+AWS::NetworkManager::LinkAssociation,networkmanager,LinkAssociation,platform-foundation,IMMUTABLE,,LinkAssociation (Cloud Control),ok,0,0,0,0,0,true
+AWS::NetworkManager::Site,networkmanager,Site,platform-foundation,FULLY_MUTABLE,,Site (Cloud Control),ok,0,0,0,0,0,true
+AWS::NetworkManager::SiteToSiteVpnAttachment,networkmanager,SiteToSiteVpnAttachment,platform-foundation,FULLY_MUTABLE,,SiteToSiteVpnAttachment (Cloud Control),ok,0,0,1,2,0,true
+AWS::NetworkManager::TransitGatewayPeering,networkmanager,TransitGatewayPeering,platform-foundation,FULLY_MUTABLE,,TransitGatewayPeering (Cloud Control),ok,0,0,0,0,1,true
+AWS::NetworkManager::TransitGatewayRegistration,networkmanager,TransitGatewayRegistration,platform-foundation,IMMUTABLE,,TransitGatewayRegistration (Cloud Control),ok,0,0,0,0,0,true
+AWS::NetworkManager::TransitGatewayRouteTableAttachment,networkmanager,TransitGatewayRouteTableAttachment,platform-foundation,FULLY_MUTABLE,,TransitGatewayRouteTableAttachment (Cloud Control),ok,0,0,1,1,1,true
+AWS::NetworkManager::VpcAttachment,networkmanager,VpcAttachment,platform-foundation,FULLY_MUTABLE,,VpcAttachment (Cloud Control),ok,0,0,1,2,1,true
 AWS::NetworkMonitor::Monitor,networkmonitor,Monitor,other,FULLY_MUTABLE,,Monitor (Cloud Control),ok,0,0,0,0,1,true
 AWS::NetworkMonitor::Probe,networkmonitor,Probe,other,FULLY_MUTABLE,,Probe (Cloud Control),ok,0,0,0,0,0,true
 AWS::NetworkSecurityManager::Deployment,networksecuritymanager,Deployment,other,FULLY_MUTABLE,,Deployment (Cloud Control),ok,0,0,0,0,0,true

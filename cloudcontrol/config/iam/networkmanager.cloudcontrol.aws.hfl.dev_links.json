@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkManagerLink",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerLinkCreate",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:CreateLink",
+        "networkmanager:GetLinks",
+        "networkmanager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerLinkRead",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:GetLinks"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerLinkUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:GetLinks",
+        "networkmanager:ListTagsForResource",
+        "networkmanager:TagResource",
+        "networkmanager:UntagResource",
+        "networkmanager:UpdateLink"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerLinkDelete",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:DeleteLink",
+        "networkmanager:GetLinks"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

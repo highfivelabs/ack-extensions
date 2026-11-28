@@ -1,0 +1,57 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkManagerGlobalNetwork",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerGlobalNetworkCreate",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateServiceLinkedRole",
+        "networkmanager:CreateGlobalNetwork",
+        "networkmanager:DescribeGlobalNetworks",
+        "networkmanager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerGlobalNetworkRead",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:DescribeGlobalNetworks"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerGlobalNetworkUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:DescribeGlobalNetworks",
+        "networkmanager:ListTagsForResource",
+        "networkmanager:TagResource",
+        "networkmanager:UntagResource",
+        "networkmanager:UpdateGlobalNetwork"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerGlobalNetworkDelete",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:DeleteGlobalNetwork",
+        "networkmanager:DescribeGlobalNetworks"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

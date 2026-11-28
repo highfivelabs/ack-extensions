@@ -1,0 +1,56 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkManagerDevice",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerDeviceCreate",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:CreateDevice",
+        "networkmanager:GetDevices",
+        "networkmanager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerDeviceRead",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:GetDevices"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerDeviceUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:GetDevices",
+        "networkmanager:ListTagsForResource",
+        "networkmanager:TagResource",
+        "networkmanager:UntagResource",
+        "networkmanager:UpdateDevice"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerDeviceDelete",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:DeleteDevice",
+        "networkmanager:GetDevices"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

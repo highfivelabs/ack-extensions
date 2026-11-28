@@ -6,19 +6,19 @@
 
 | | Count |
 | --- | ---: |
-| Cloud Control kinds served | 1350 |
-| with an Upjet resource | 458 |
-| of those, not tested by Upjet's maintainers | 82 |
+| Cloud Control kinds served | 1366 |
+| with an Upjet resource | 471 |
+| of those, not tested by Upjet's maintainers | 85 |
 | kinds with a reference field, before (the overlay alone) | 7 |
-| kinds with a reference field, after (with Upjet's) | 153 |
+| kinds with a reference field, after (with Upjet's) | 155 |
 | reference fields, before | 16 |
-| reference fields, after | 202 |
-| Upjet references applied | 186 |
+| reference fields, after | 204 |
+| Upjet references applied | 188 |
 | Upjet references the overlay already had | 24 |
 | Upjet references that disagree (listed, not applied) | 2 |
-| Upjet references not applied (reason in the CSV) | 410 |
-| example checks | fixture 162, not-expressible 386 |
-| id checks | agrees 292, differs 97, listed 127 |
+| Upjet references not applied (reason in the CSV) | 434 |
+| example checks | fixture 173, not-expressible 392 |
+| id checks | agrees 302, differs 97, listed 132 |
 | late-init checks | agrees 5, n/a 4 |
 | secret checks | listed 1, n/a 2 |
 
@@ -212,6 +212,8 @@
 | `AWS::VpcLattice::AccessLogSubscription` | `DestinationArn` | `destinationRef` | `Bucket.s3.services.k8s.aws` | `status.ackResourceMetadata.arn` | `hack/upjet/provider-upjet-aws.json:74682` | `apis/cluster/vpclattice/v1beta1/zz_accesslogsubscription_types.go:90` |
 | `AWS::VpcLattice::AuthPolicy` | `ResourceIdentifier` | `resourceIdentifierRef` | `Service.vpclattice.cloudcontrol.aws.hfl.dev` | `status.ackResourceMetadata.arn` | `hack/upjet/provider-upjet-aws.json:74764` | `apis/cluster/vpclattice/v1beta1/zz_authpolicy_types.go:72` |
 | `AWS::VpcLattice::ServiceNetworkVpcAssociation` | `VpcIdentifier` | `vpcIdentifierRef` | `VPC.ec2.services.k8s.aws` | `status.vpcID` | `hack/upjet/provider-upjet-aws.json:75891` | `apis/cluster/vpclattice/v1beta1/zz_servicenetworkvpcassociation_types.go:196` |
+| `AWS::NetworkManager::TransitGatewayRegistration` | `TransitGatewayArn` | `transitGatewayRef` | `TransitGateway.ec2.services.k8s.aws` | `status.ackResourceMetadata.arn` | `hack/upjet/provider-upjet-aws.json:56451` | `apis/cluster/networkmanager/v1beta1/zz_transitgatewayregistration_types.go:50` |
+| `AWS::NetworkManager::VpcAttachment` | `VpcArn` | `vpcRef` | `VPC.ec2.services.k8s.aws` | `status.ackResourceMetadata.arn` | `hack/upjet/provider-upjet-aws.json:56544` | `apis/cluster/networkmanager/v1beta2/zz_vpcattachment_types.go:221` |
 
 ## Disagreements
 
@@ -227,16 +229,17 @@ The overlay is kept; each is a gap to settle by hand.
 | Reason | References |
 | --- | ---: |
 | nested field | 192 |
-| no top-level property of that name in the CloudFormation schema | 90 |
-| not a string property | 30 |
+| no top-level property of that name in the CloudFormation schema | 92 |
+| the target is not served here | 38 |
+| not a string property | 31 |
 | the reference copies a field other than the target's ARN or ID | 30 |
 | our Cloud Control target's identifier does not fit the property | 28 |
-| the target is not served here | 18 |
 | the property is read-only | 8 |
 | our Cloud Control target has no Arn property | 4 |
 | the property takes an ARN; Upjet's reference copies the target's ID | 4 |
 | our Cloud Control target has a compound identifier | 3 |
 | ACK's kind serves the target; its ID path is not in `referenceTargets` | 2 |
+| our ACK-generated CustomerGateway | 1 |
 | our ACK-generated Organization | 1 |
 
 ## Secrets: fields Upjet keeps secret
@@ -925,3 +928,20 @@ Each hand-written example of a served type: a fixture when the kind can express 
 | `AWS::XRay::Group` | `examples/xray/cluster/v1beta1/group.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
 | `AWS::XRay::Group` | `examples/xray/cluster/v1beta2/group.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
 | `AWS::XRay::SamplingRule` | `examples/xray/cluster/v1beta1/samplingrule.yaml` | not-expressible | attributes: no top-level property of that name |
+| `AWS::NetworkManager::ConnectAttachment` | `examples/networkmanager/cluster/v1beta1/connectattachment.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: coreNetworkId, edgeLocation, transportAttachmentId |
+| `AWS::NetworkManager::ConnectAttachment` | `examples/networkmanager/cluster/v1beta2/connectattachment.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: coreNetworkId, edgeLocation, transportAttachmentId |
+| `AWS::NetworkManager::CoreNetwork` | `examples/networkmanager/cluster/v1beta1/corenetwork.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: globalNetworkId |
+| `AWS::NetworkManager::CustomerGatewayAssociation` | `examples/networkmanager/cluster/v1beta1/customergatewayassociation.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: customerGatewayArn, deviceId, globalNetworkId |
+| `AWS::NetworkManager::CustomerGatewayAssociation` | `examples/networkmanager/cluster/v1beta1/transitgatewayconnectpeerassociation.yaml` | not-expressible | transit_gateway_connect_peer_arn (by reference): no top-level property of that name |
+| `AWS::NetworkManager::Device` | `examples/networkmanager/cluster/v1beta1/device.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: globalNetworkId, siteId |
+| `AWS::NetworkManager::Device` | `examples/networkmanager/cluster/v1beta2/device.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: globalNetworkId, siteId |
+| `AWS::NetworkManager::GlobalNetwork` | `examples/networkmanager/cluster/v1beta1/globalnetwork.yaml` | fixture | runs on the schema fake in TestUpjetExamples |
+| `AWS::NetworkManager::Link` | `examples/networkmanager/cluster/v1beta1/link.yaml` | not-expressible | provider_name: no top-level property of that name |
+| `AWS::NetworkManager::Link` | `examples/networkmanager/cluster/v1beta2/link.yaml` | not-expressible | provider_name: no top-level property of that name |
+| `AWS::NetworkManager::LinkAssociation` | `examples/networkmanager/cluster/v1beta1/linkassociation.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: deviceId, globalNetworkId, linkId |
+| `AWS::NetworkManager::LinkAssociation` | `examples/networkmanager/cluster/v1beta1/transitgatewayconnectpeerassociation.yaml` | not-expressible | transit_gateway_connect_peer_arn (by reference): no top-level property of that name |
+| `AWS::NetworkManager::Site` | `examples/networkmanager/cluster/v1beta1/site.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: globalNetworkId |
+| `AWS::NetworkManager::Site` | `examples/networkmanager/cluster/v1beta2/site.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: globalNetworkId |
+| `AWS::NetworkManager::TransitGatewayRegistration` | `examples/networkmanager/cluster/v1beta1/transitgatewayregistration.yaml` | fixture | runs on the schema fake in TestUpjetExamples; stood in for references: globalNetworkId, transitGatewayArn |
+| `AWS::NetworkManager::VpcAttachment` | `examples/networkmanager/cluster/v1beta1/vpcattachment.yaml` | not-expressible | subnet_arns (by reference): SubnetArns is not a string |
+| `AWS::NetworkManager::VpcAttachment` | `examples/networkmanager/cluster/v1beta2/vpcattachment.yaml` | not-expressible | subnet_arns (by reference): SubnetArns is not a string |

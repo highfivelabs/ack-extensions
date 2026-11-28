@@ -1,0 +1,68 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkManagerVpcAttachment",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerVpcAttachmentCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "iam:CreateServiceLinkedRole",
+        "networkmanager:CreateVpcAttachment",
+        "networkmanager:GetVpcAttachment",
+        "networkmanager:ListAttachmentNatConfigurations",
+        "networkmanager:TagResource",
+        "networkmanager:UpdateAttachmentNatConfiguration"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerVpcAttachmentRead",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:GetVpcAttachment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerVpcAttachmentUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "networkmanager:GetVpcAttachment",
+        "networkmanager:ListAttachmentNatConfigurations",
+        "networkmanager:ListAttachmentRoutingPolicyAssociations",
+        "networkmanager:ListTagsForResource",
+        "networkmanager:PutAttachmentRoutingPolicyLabel",
+        "networkmanager:RemoveAttachmentRoutingPolicyLabel",
+        "networkmanager:TagResource",
+        "networkmanager:UntagResource",
+        "networkmanager:UpdateAttachmentNatConfiguration",
+        "networkmanager:UpdateVpcAttachment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerVpcAttachmentDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "networkmanager:DeleteAttachment",
+        "networkmanager:GetVpcAttachment",
+        "networkmanager:UntagResource"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

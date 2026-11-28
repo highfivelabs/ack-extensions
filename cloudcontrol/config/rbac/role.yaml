@@ -4913,6 +4913,56 @@ rules:
   - patch
   - update
 - apiGroups:
+  - networkmanager.cloudcontrol.aws.hfl.dev
+  resources:
+  - connectattachments
+  - connectpeers
+  - corenetworkprefixlistassociations
+  - corenetworks
+  - customergatewayassociations
+  - devices
+  - directconnectgatewayattachments
+  - globalnetworks
+  - linkassociations
+  - links
+  - sites
+  - sitetositevpnattachments
+  - transitgatewaypeerings
+  - transitgatewayregistrations
+  - transitgatewayroutetableattachments
+  - vpcattachments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - networkmanager.cloudcontrol.aws.hfl.dev
+  resources:
+  - connectattachments/status
+  - connectpeers/status
+  - corenetworkprefixlistassociations/status
+  - corenetworks/status
+  - customergatewayassociations/status
+  - devices/status
+  - directconnectgatewayattachments/status
+  - globalnetworks/status
+  - linkassociations/status
+  - links/status
+  - sites/status
+  - sitetositevpnattachments/status
+  - transitgatewaypeerings/status
+  - transitgatewayregistrations/status
+  - transitgatewayroutetableattachments/status
+  - vpcattachments/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - networkmonitor.cloudcontrol.aws.hfl.dev
   resources:
   - monitors

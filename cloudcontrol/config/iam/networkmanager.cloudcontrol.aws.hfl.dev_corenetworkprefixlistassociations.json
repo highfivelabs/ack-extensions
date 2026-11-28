@@ -1,0 +1,46 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkManagerCoreNetworkPrefixListAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerCoreNetworkPrefixListAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:CreateCoreNetworkPrefixListAssociation",
+        "networkmanager:GetCoreNetwork",
+        "networkmanager:ListCoreNetworkPrefixListAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerCoreNetworkPrefixListAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:GetCoreNetwork",
+        "networkmanager:ListCoreNetworkPrefixListAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerCoreNetworkPrefixListAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:DeleteCoreNetworkPrefixListAssociation",
+        "networkmanager:GetCoreNetwork",
+        "networkmanager:ListCoreNetworkPrefixListAssociations"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

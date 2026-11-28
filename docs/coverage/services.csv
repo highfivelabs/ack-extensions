@@ -193,7 +193,7 @@ neptune,7,0,7,76,0,76,0,0.0,100.0,0.0
 neptunegraph,3,0,3,29,0,29,0,0.0,100.0,0.0
 networkfirewall,7,3,4,116,65,36,15,56.0,31.0,12.9
 networkflowmonitor,2,0,2,13,0,13,0,0.0,100.0,0.0
-networkmanager,16,0,0,118,0,0,118,0.0,0.0,100.0
+networkmanager,16,0,16,118,0,118,0,0.0,100.0,0.0
 networkmonitor,2,0,2,12,0,12,0,0.0,100.0,0.0
 networksecuritymanager,5,0,5,37,0,37,0,0.0,100.0,0.0
 notifications,7,0,7,21,0,21,0,0.0,100.0,0.0

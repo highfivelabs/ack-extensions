@@ -1046,6 +1046,77 @@ EC2-Classic security groups of RDS, ElastiCache and Redshift, CloudFront
   Firewall resource policy have no moto support (moto 5.2.5 has none of
   their calls): they wait.
 
+**The Upjet gap list, worked 2026-11-28** (HFL-699;
+`docs/coverage/upjet-gaps.csv`, 112 rows at main `75fb6d6`: API
+resources Upjet has a resource for and nothing here serves). Upstream
+read-only the same day with `git ls-remote` and shallow clones, as `gh`
+could not read ACK's repositories from the session. What each row
+became, by the list's rank on that day:
+
+- **Network Manager, ranks 4 to 7, 13 to 18 and 21 to 23: built**, as
+  Cloud Control kinds (batch 18, `networkmanager.cloudcontrol.aws.hfl.dev`,
+  16 types: the 13 ranked rows and `ConnectPeer`,
+  `CoreNetworkPrefixListAssociation` and `DirectConnectGatewayAttachment`).
+  networkmanager-controller has no release; its `main` (`0ecd0e6`,
+  2026-11-10) has `GlobalNetwork` only, and pull requests #3 (head
+  `890a055`), #4 (`d77ae50`) and #16 (`f8d4f6c`, 2026-11-27) are still open,
+  so section 3's rule (2026-11-24: "Network Manager (F13: #3, #4, #16,
+  through Cloud Control)") applies. The generator wired the Upjet slice's
+  references (`globalNetworkIdRef` and the rest, two kinds more with a
+  reference field); none of the `secrets:` candidates the batch tool
+  printed (`RoutingPolicyLabel`, `CoreNetworkAddress`, `SubnetArn`) is a
+  secret. On the schema fake only: `TestEveryKindOnSchemaFake`, and 11
+  Upjet hand examples in `TestUpjetExamples` (6 more are listed in
+  `cloudcontrol/zz_generated.upjet.md` as ones the kind cannot express).
+  moto 5.2.5's `networkmanager` has 18 of 97 operations (create, get and
+  delete for core networks, sites, links and devices; create and
+  describe for global networks, with no delete; no updates), so a moto
+  backend could prove sites, links, devices and core networks but not a
+  global network's delete: not written. They retire when ACK releases
+  the controller (section 3). The coverage tool's gap list now also drops
+  a resource this run's `resources.csv` serves, since the slice's join is
+  frozen at factory's fold.
+- **EC2 `KeyPair`, rank 12:** ec2-controller pull request #396 is still
+  open (head `91d99b7a`, 2026-11-13) and `main` (`de423fc`) still ignores
+  `KeyPair`: next, from the pull request's code, ACK-generated in
+  `services/ec2`.
+- **Ranks 1 to 3, 8 to 11, 19 and 20** (EC2 `SpotFleet`, `CarrierGateway`
+  and `EC2Fleet`, Direct Connect's private, public and transit virtual
+  interfaces, EC2 `Host`, the two Outposts local gateway types): excluded
+  as not foundation (`cloudcontrol/excluded.yaml`), though Upjet ranks
+  them tier 1 and tests them. Open question 28.
+- **Flagged as likely mapping slips** (ranks 24, 67, 79, 80, 105, 106, 107
+  and 112): skipped; krm-packages pull request #270 fixes the catalog
+  mapping they come from.
+- **Fields of ACK's kinds** (ranks 25, 27, 29, 31, 39, 45, 46 and 108 to
+  111): already excluded or marked inline, each with the kind and field.
+- **Wait for a new ACK-generated service here, from upstream code**
+  (section 3): Redshift (ranks 26, 28, 34 to 38, 43, 44 and 48;
+  redshift-controller has no release, `main` `d0d8755` has
+  `ClusterSubnetGroup`, pull request #6 is open), SSM `Association`
+  (ssm-controller #85), Bedrock `KnowledgeBase` (bedrockagent-controller
+  #31), Kinesis `StreamConsumer` (#93), FSx `DataRepositoryAssociation`
+  (#8) and OpenSearch Serverless `SecurityConfig` (#48); ElastiCache
+  `GlobalReplicationGroup` (elasticache-controller #237, head `25ab233`)
+  can go in the existing `services/elasticache`. Each is a pull request
+  of its own; none was started in this round.
+- **End of support or deprecated by AWS:** Inspector Classic (ranks 33, 41,
+  42), `LaunchConfiguration` (40), WAF and WAF Regional Classic (49 to
+  65), Redshift's EC2-Classic `ClusterSecurityGroup` (47), App Mesh,
+  QLDB, MediaStore, Pinpoint and the Glue development endpoint (83, 84,
+  86 to 91, 94 to 104): no kind.
+- **Not provisionable through Cloud Control and not deprecated:** Lake
+  Formation `Permissions` and `DataLakeSettings` (81, 85) and MediaLive
+  `Channel` (82): ACK-generated candidates for a later round (no ACK
+  controller for either service).
+- **A CRD that is not clean** (ranks 68, 69, 71, 73, 75, 76, 78, 92 and 93:
+  `BedrockAgentCore::GatewayRule`, `CloudFormation::Stack`,
+  `RedshiftServerless::Snapshot`, `Budgets::Budget`, `IoT::Policy`,
+  `Lex::Bot`, `ApiGateway::Model`, `EMR::Cluster`,
+  `EMR::InstanceFleetConfig`): preserve-unknown nodes or skipped CEL rules
+  in `cloudcontrol/readiness.csv`, which the batch tool refuses; a gap of
+  the generator, not of the type.
+
 Built before this ranking:
 
 - `RolePolicyAttachment`: iam-controller PR #184.
@@ -5062,3 +5133,28 @@ Before it can run on a real cluster:
     annotation of section 6.47; hand-written on ACK's runtime, as above.
 
     **Built** (2026-11-23): `s3.aws.hfl.dev` `Object`, section 6.49.
+
+28. **The "not foundation" exclusions against the Upjet ranking**
+    (2026-11-28, HFL-699). `cloudcontrol/excluded.yaml` keeps nine types
+    out of the Cloud Control route as not what a chart creates for a
+    platform foundation: EC2 `SpotFleet`, `EC2Fleet`, `CarrierGateway`
+    (Wavelength) and `Host` (billed while allocated), Direct Connect's
+    `PrivateVirtualInterface`, `PublicVirtualInterface` and
+    `TransitVirtualInterface` (on a physical circuit), and the Outposts
+    `LocalGatewayRoute` and `LocalGatewayRouteTableVPCAssociation`. The
+    Upjet gap list (`docs/coverage/upjet-gaps.csv`) ranks all nine tier 1,
+    and Upjet's maintainers test seven of them. Batch 15 served every
+    other provisionable type with a clean CRD, tier 3 included, so the
+    exclusion is now the only thing between these and a kind: each would
+    be one line in `types.yaml`, on the schema fake (moto 5.2.5 has
+    `RequestSpotFleet`, `CreateFleet`, `CreateCarrierGateway` and
+    `AllocateHosts`, and none of Direct Connect's virtual interfaces).
+    Should they be served?
+
+    Recommended: serve the fleets, the carrier gateway and the three
+    virtual interfaces (a kind costs nothing until an object is made, and
+    the fleets and the virtual interfaces are what a platform team
+    writes beside a VPC or a Direct Connect gateway, which is served),
+    keep `Host` and the Outposts types excluded (dedicated hardware,
+    billed or set up with AWS outside a chart). Not changed until the
+    builder answers.

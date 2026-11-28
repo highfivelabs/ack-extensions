@@ -2790,6 +2790,196 @@
           "notificationsEnabled": true
         }
       }
+    },
+    {
+      "typeName": "AWS::NetworkManager::ConnectAttachment",
+      "group": "networkmanager.cloudcontrol.aws.hfl.dev",
+      "kind": "ConnectAttachment",
+      "plural": "connectattachments",
+      "example": "networkmanager/v1beta1/connectattachment",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/networkmanager/cluster/v1beta1/connectattachment.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:55661",
+      "referencesStoodIn": [
+        "coreNetworkId",
+        "edgeLocation",
+        "transportAttachmentId"
+      ],
+      "spec": {
+        "coreNetworkId": "upjet-ref-core-network-id",
+        "edgeLocation": "upjet-ref-edge-location",
+        "options": {
+          "protocol": "GRE"
+        },
+        "transportAttachmentId": "upjet-ref-transport-attachment-id"
+      }
+    },
+    {
+      "typeName": "AWS::NetworkManager::ConnectAttachment",
+      "group": "networkmanager.cloudcontrol.aws.hfl.dev",
+      "kind": "ConnectAttachment",
+      "plural": "connectattachments",
+      "example": "networkmanager/v1beta2/connectattachment",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/networkmanager/cluster/v1beta2/connectattachment.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:55692",
+      "referencesStoodIn": [
+        "coreNetworkId",
+        "edgeLocation",
+        "transportAttachmentId"
+      ],
+      "spec": {
+        "coreNetworkId": "upjet-ref-core-network-id",
+        "edgeLocation": "upjet-ref-edge-location",
+        "options": {
+          "protocol": "GRE"
+        },
+        "transportAttachmentId": "upjet-ref-transport-attachment-id"
+      }
+    },
+    {
+      "typeName": "AWS::NetworkManager::CoreNetwork",
+      "group": "networkmanager.cloudcontrol.aws.hfl.dev",
+      "kind": "CoreNetwork",
+      "plural": "corenetworks",
+      "example": "networkmanager/v1beta1/corenetwork",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/networkmanager/cluster/v1beta1/corenetwork.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:55760",
+      "referencesStoodIn": [
+        "globalNetworkId"
+      ],
+      "spec": {
+        "globalNetworkId": "upjet-ref-global-network-id"
+      }
+    },
+    {
+      "typeName": "AWS::NetworkManager::CustomerGatewayAssociation",
+      "group": "networkmanager.cloudcontrol.aws.hfl.dev",
+      "kind": "CustomerGatewayAssociation",
+      "plural": "customergatewayassociations",
+      "example": "networkmanager/v1beta1/customergatewayassociation",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/networkmanager/cluster/v1beta1/customergatewayassociation.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:55838",
+      "referencesStoodIn": [
+        "customerGatewayArn",
+        "deviceId",
+        "globalNetworkId"
+      ],
+      "spec": {
+        "customerGatewayArn": "upjet-ref-customer-gateway-arn",
+        "deviceId": "upjet-ref-device-id",
+        "globalNetworkId": "upjet-ref-global-network-id"
+      }
+    },
+    {
+      "typeName": "AWS::NetworkManager::Device",
+      "group": "networkmanager.cloudcontrol.aws.hfl.dev",
+      "kind": "Device",
+      "plural": "devices",
+      "example": "networkmanager/v1beta1/device",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/networkmanager/cluster/v1beta1/device.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:55995",
+      "referencesStoodIn": [
+        "globalNetworkId",
+        "siteId"
+      ],
+      "spec": {
+        "globalNetworkId": "upjet-ref-global-network-id",
+        "siteId": "upjet-ref-site-id"
+      }
+    },
+    {
+      "typeName": "AWS::NetworkManager::Device",
+      "group": "networkmanager.cloudcontrol.aws.hfl.dev",
+      "kind": "Device",
+      "plural": "devices",
+      "example": "networkmanager/v1beta2/device",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/networkmanager/cluster/v1beta2/device.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:56008",
+      "referencesStoodIn": [
+        "globalNetworkId",
+        "siteId"
+      ],
+      "spec": {
+        "globalNetworkId": "upjet-ref-global-network-id",
+        "siteId": "upjet-ref-site-id"
+      }
+    },
+    {
+      "typeName": "AWS::NetworkManager::GlobalNetwork",
+      "group": "networkmanager.cloudcontrol.aws.hfl.dev",
+      "kind": "GlobalNetwork",
+      "plural": "globalnetworks",
+      "example": "networkmanager/v1beta1/globalnetwork",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/networkmanager/cluster/v1beta1/globalnetwork.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:56050",
+      "spec": {
+        "description": "example"
+      }
+    },
+    {
+      "typeName": "AWS::NetworkManager::LinkAssociation",
+      "group": "networkmanager.cloudcontrol.aws.hfl.dev",
+      "kind": "LinkAssociation",
+      "plural": "linkassociations",
+      "example": "networkmanager/v1beta1/linkassociation",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/networkmanager/cluster/v1beta1/linkassociation.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:56225",
+      "referencesStoodIn": [
+        "deviceId",
+        "globalNetworkId",
+        "linkId"
+      ],
+      "spec": {
+        "deviceId": "upjet-ref-device-id",
+        "globalNetworkId": "upjet-ref-global-network-id",
+        "linkId": "upjet-ref-link-id"
+      }
+    },
+    {
+      "typeName": "AWS::NetworkManager::Site",
+      "group": "networkmanager.cloudcontrol.aws.hfl.dev",
+      "kind": "Site",
+      "plural": "sites",
+      "example": "networkmanager/v1beta1/site",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/networkmanager/cluster/v1beta1/site.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:56368",
+      "referencesStoodIn": [
+        "globalNetworkId"
+      ],
+      "spec": {
+        "globalNetworkId": "upjet-ref-global-network-id"
+      }
+    },
+    {
+      "typeName": "AWS::NetworkManager::Site",
+      "group": "networkmanager.cloudcontrol.aws.hfl.dev",
+      "kind": "Site",
+      "plural": "sites",
+      "example": "networkmanager/v1beta2/site",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/networkmanager/cluster/v1beta2/site.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:56379",
+      "referencesStoodIn": [
+        "globalNetworkId"
+      ],
+      "spec": {
+        "globalNetworkId": "upjet-ref-global-network-id"
+      }
+    },
+    {
+      "typeName": "AWS::NetworkManager::TransitGatewayRegistration",
+      "group": "networkmanager.cloudcontrol.aws.hfl.dev",
+      "kind": "TransitGatewayRegistration",
+      "plural": "transitgatewayregistrations",
+      "example": "networkmanager/v1beta1/transitgatewayregistration",
+      "upstream": "crossplane-contrib/provider-upjet-aws@v2.10.0 examples/networkmanager/cluster/v1beta1/transitgatewayregistration.yaml",
+      "slice": "hack/upjet/provider-upjet-aws.json:56475",
+      "referencesStoodIn": [
+        "globalNetworkId",
+        "transitGatewayArn"
+      ],
+      "spec": {
+        "globalNetworkId": "upjet-ref-global-network-id",
+        "transitGatewayArn": "upjet-ref-transit-gateway-arn"
+      }
     }
   ],
   "generatedBy": "Code generated by cloudcontrol-gen. DO NOT EDIT."

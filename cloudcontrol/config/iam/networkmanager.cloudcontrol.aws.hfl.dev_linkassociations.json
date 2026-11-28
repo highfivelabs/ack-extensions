@@ -1,0 +1,42 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkManagerLinkAssociation",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerLinkAssociationCreate",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:AssociateLink",
+        "networkmanager:GetLinkAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerLinkAssociationRead",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:GetLinkAssociations"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerLinkAssociationDelete",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:DisassociateLink"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

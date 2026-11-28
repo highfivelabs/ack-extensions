@@ -331,6 +331,10 @@ AWS::MediaLive::SignalMap
 AWS::MediaTailor::Program
 AWS::NeptuneGraph::PrivateGraphEndpoint
 AWS::NetworkFirewall::LoggingConfiguration
+AWS::NetworkManager::CoreNetworkPrefixListAssociation
+AWS::NetworkManager::CustomerGatewayAssociation
+AWS::NetworkManager::LinkAssociation
+AWS::NetworkManager::TransitGatewayRegistration
 AWS::Notifications::ChannelAssociation
 AWS::Notifications::EventRule
 AWS::Notifications::ManagedNotificationAccountContactAssociation

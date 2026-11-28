@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudControlNetworkManagerConnectPeer",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateResource",
+        "cloudformation:DeleteResource",
+        "cloudformation:GetResource",
+        "cloudformation:GetResourceRequestStatus",
+        "cloudformation:UpdateResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerConnectPeerCreate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "networkmanager:CreateConnectPeer",
+        "networkmanager:GetConnectPeer",
+        "networkmanager:TagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerConnectPeerRead",
+      "Effect": "Allow",
+      "Action": [
+        "networkmanager:GetConnectPeer"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerConnectPeerUpdate",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "networkmanager:GetConnectPeer",
+        "networkmanager:ListTagsForResource",
+        "networkmanager:TagResource",
+        "networkmanager:UntagResource"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "NetworkManagerConnectPeerDelete",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "networkmanager:DeleteConnectPeer",
+        "networkmanager:GetConnectPeer"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
