@@ -38,4 +38,4 @@ jobs:
       licenses-packages: "./services/iam/cmd/controller ./services/rds/cmd/controller ./cmd/operator"
       govulncheck-packages: "./services/iam/cmd/controller ./services/rds/cmd/controller ./cmd/operator"
       test-shards: 1
-      trust-offload-status: true
+      trust-offload-status: false

@@ -3,7 +3,9 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 # The pre-push hook (task hooks installs it: core.hooksPath=hack/hooks).
-# For every branch commit pushed, hack/ci/gate.sh runs what hfl-ci.yml's
+# Opt-in (HFL-818): it does nothing unless HFL_PREPUSH_GATE=1. The merge
+# gate is hfl-ci.yml's `ci` on GitHub's free runners, since the repository
+# is public. With HFL_PREPUSH_GATE=1, for every branch commit pushed, hack/ci/gate.sh runs what hfl-ci.yml's
 # pull-request jobs run and posts the commit status offload/ci; a failure
 # refuses the push. Skipped: deletions, tags, a commit whose offload/ci is
 # already success, and the gate's own push of a commit it just passed
@@ -15,6 +17,8 @@ set -euo pipefail
 # commit, branch and configure here instead (it did, 2026-11-11). Unset them.
 # shellcheck disable=SC2046
 unset $(git rev-parse --local-env-vars)
+
+[[ "${HFL_PREPUSH_GATE:-}" == 1 ]] || exit 0
 
 ROOT="$(git rev-parse --show-toplevel)"
 REPO="$(git remote get-url origin | sed -E 's#^(git@github\.com:|https://github\.com/)##; s#\.git$##')"

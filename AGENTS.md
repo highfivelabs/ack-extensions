@@ -63,10 +63,11 @@ itself lives in its own repository and is never changed from here.
 
 - Sign off every commit (`git commit -s`, DCO).
 - Merge only when the `ci` check (`.github/workflows/hfl-ci.yml`, from
-  highfivelabs/krm-ci) is green on the PR head. `task ci` runs the same
-  jobs on an offload VM before a push (the pre-push hook; `docs/testing.md`, "The
+  highfivelabs/krm-ci) is green on the PR head. It runs on GitHub's free
+  runners (the repository is public; HFL-818). `task ci` runs the same jobs
+  on an offload VM, by hand or, opted in, before a push (`docs/testing.md`, "The
   merge gate").
-- After `task ci` is green, run `../factory/review/run.sh --post` and loop
+- After `ci` is green, run `../factory/review/run.sh --post` and loop
   as factory's `review/README.md` says. In this repository that is every
   pull request that touches hand-written code, plus a weekly sweep;
   `.review-generated` lists the generated paths the review skips.
