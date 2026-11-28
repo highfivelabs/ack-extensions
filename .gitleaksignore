@@ -10,3 +10,15 @@ cc28a8d63040d98a200d424ed642b0419a32dcb7:hack/upjet/provider-upjet-aws.json:gene
 # VPC endpoint ID, as accessAssociationSource in the example generated from
 # that Upjet example.
 89984430a7fe07659bd80d558ab4524eeffe675d:cloudcontrol/zz_generated.upjet-examples.json:generic-api-key:1007
+# HFL-815: example values from API specs, test inputs and generated IDs, each read and none a credential.
+1334793f3b4eb097b954f8f07da179a939d4959e:services/ec2/pkg/resource/launch_template/sdk.go:generic-api-key:1171
+1334793f3b4eb097b954f8f07da179a939d4959e:services/ec2/pkg/resource/launch_template/sdk.go:generic-api-key:3082
+21f314b1dfa9307969783296314eefb71e36c2d4:cloudcontrol/cmd/manager/served_test.go:generic-api-key:70
+2683d65abc69e4e4a1c5e5f34a8566faac5b3ef8:tests/e2e/ec2_vpn_connection_test.go:generic-api-key:75
+3bdc55a4e2be57dc398346509f905cffbebbd203:cloudcontrol/pkg/registry/schemas/aws-paymentcryptography-key.json:generic-api-key:7
+3bdc55a4e2be57dc398346509f905cffbebbd203:cloudcontrol/pkg/registry/schemas/aws-paymentcryptography-key.json:generic-api-key:99
+7508da3b3b6f4d86440157d20ac559817438b64b:config/crds/bases/ec2.aws.hfl.dev_volumes.yaml:generic-api-key:103
+7508da3b3b6f4d86440157d20ac559817438b64b:services/ec2/apis/v1alpha1/volume.go:generic-api-key:70
+94ef462222210096c02406c13e8609779046d7fd:services/s3/pkg/resource/bucket/sdk_file_end.go:generic-api-key:2970
+94ef462222210096c02406c13e8609779046d7fd:services/s3/pkg/resource/bucket/sdk_file_end.go:generic-api-key:3043
+f9c5553513d7d7702ec738f022d23fb71ced42c0:hack/coverage/sources.go:generic-api-key:321
