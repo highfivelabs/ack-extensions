@@ -16,7 +16,8 @@
 // Modified by High Five Labs for ack-extensions: copied from
 // aws-controllers-k8s/ec2-controller pull request #396 (head 91d99b7a),
 // pkg/resource/key_pair/hooks_test.go. Changes: the API types and the tags
-// package are this repository's ec2.aws.hfl.dev ones.
+// package are this repository's ec2.aws.hfl.dev ones; the stub's client
+// comes from pkg/fakeaws (task noaws).
 
 package key_pair
 
@@ -33,6 +34,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	svcsdk "github.com/aws/aws-sdk-go-v2/service/ec2"
 
+	"github.com/highfivelabs/ack-extensions/pkg/fakeaws"
 	svcapitypes "github.com/highfivelabs/ack-extensions/services/ec2/apis/v1alpha1"
 )
 
@@ -48,8 +50,13 @@ func stubEC2(t *testing.T, response string) (*resourceManager, *url.Values) {
 		_, _ = io.WriteString(w, response)
 	}))
 	t.Cleanup(srv.Close)
+	// The stub on loopback, through the guarded client (pkg/fakeaws).
+	cfg, err := fakeaws.Config(srv.URL, "us-west-2")
+	if err != nil {
+		t.Fatal(err)
+	}
 	return &resourceManager{
-		sdkapi:  svcsdk.New(svcsdk.Options{Region: "us-west-2", BaseEndpoint: aws.String(srv.URL), Credentials: aws.AnonymousCredentials{}}),
+		sdkapi:  svcsdk.NewFromConfig(cfg),
 		metrics: ackmetrics.NewMetrics("ec2"),
 	}, form
 }
