@@ -1104,7 +1104,12 @@ became, by the list's rank on that day:
   (#8) and OpenSearch Serverless `SecurityConfig` (#48); ElastiCache
   `GlobalReplicationGroup` (elasticache-controller #237, head `25ab233`)
   can go in the existing `services/elasticache`. Each is a pull request
-  of its own; none was started in this round.
+  of its own; none was started in this round. Read for size the same
+  day: elasticache-controller #237 is 42 files and about 6,500 lines
+  (a 725-line `hooks.go`, and changes to `ReplicationGroup`, which our
+  fixed copy of section 6.47 would have to take too), and moto 5.2.5 has
+  none of ElastiCache's global datastore calls, so it would be proven by
+  unit tests and a live run only.
 - **End of support or deprecated by AWS:** Inspector Classic (ranks 33, 41,
   42), `LaunchConfiguration` (40), WAF and WAF Regional Classic (49 to
   65), Redshift's EC2-Classic `ClusterSecurityGroup` (47), App Mesh,
